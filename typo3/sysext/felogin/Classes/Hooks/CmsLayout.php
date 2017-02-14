@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Felogin\Hooks;
 
 /**
  * Hook to display verbose information about the felogin plugin
- *
  */
 class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
 {
@@ -28,7 +27,6 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
      * @param string $headerContent Header content
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
-     * @return void
      */
     public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row)
     {

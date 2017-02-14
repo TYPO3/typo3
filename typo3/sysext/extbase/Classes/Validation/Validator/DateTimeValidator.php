@@ -26,7 +26,6 @@ class DateTimeValidator extends AbstractValidator
      * the case, the function adds an error.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      */
     public function isValid($value)
     {

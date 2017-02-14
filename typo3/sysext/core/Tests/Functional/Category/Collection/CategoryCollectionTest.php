@@ -56,8 +56,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * Sets up this test suite.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -90,7 +88,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::fromArray
-     * @return void
      */
     public function checkIfFromArrayMethodSetCorrectProperties()
     {
@@ -105,7 +102,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
-     * @return void
      */
     public function canCreateDummyCollection()
     {
@@ -116,7 +112,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
-     * @return void
      */
     public function canCreateDummyCollectionAndFillItems()
     {
@@ -127,7 +122,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getCollectedRecords
-     * @return void
      */
     public function getCollectedRecordsReturnsEmptyRecordSet()
     {
@@ -141,7 +135,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName
-     * @return void
      */
     public function isStorageTableNameEqualsToSysCategory()
     {
@@ -151,7 +144,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField
-     * @return void
      */
     public function isStorageItemsFieldEqualsToItems()
     {
@@ -160,7 +152,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * @test
-     * @return void
      */
     public function canLoadADummyCollectionFromDatabase()
     {
@@ -194,7 +185,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * @test
-     * @return void
      */
     public function canLoadADummyCollectionFromDatabaseAndAddRecord()
     {
@@ -213,7 +203,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * @test
-     * @return void
      */
     public function canLoadADummyCollectionWithoutContentFromDatabase()
     {
@@ -225,7 +214,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * @test
-     * @return void
      */
     public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation()
     {
@@ -246,8 +234,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /********************/
     /**
      * Create dummy table for testing purpose
-     *
-     * @return void
      */
     private function populateDummyTable()
     {
@@ -263,8 +249,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * Make relation between tables
-     *
-     * @return void
      */
     private function makeRelationBetweenCategoryAndDummyTable()
     {
@@ -283,8 +267,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * Create dummy table for testing purpose
-     *
-     * @return void
      */
     private function createDummyTable()
     {
@@ -309,8 +291,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * Drop dummy table
-     *
-     * @return void
      */
     private function dropDummyTable()
     {
@@ -329,8 +309,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
     /**
      * Add is_dummy_record record and create dummy record
-     *
-     * @return void
      */
     private function prepareTables()
     {

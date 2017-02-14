@@ -47,7 +47,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
 
     /**
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @return void
      */
     public function setRenderingContext(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
@@ -113,7 +112,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     /**
      * Register method arguments for "render" by analysing the doc comment above.
      *
-     * @return void
      * @throws \TYPO3Fluid\Fluid\Core\Parser\Exception
      */
     protected function registerRenderMethodArguments()

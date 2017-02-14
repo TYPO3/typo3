@@ -58,7 +58,6 @@ interface FrontendInterface
      * @param mixed $data The data to cache - also depends on the concrete cache implementation
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null);
@@ -100,8 +99,6 @@ interface FrontendInterface
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @return void
      */
     public function flush();
 
@@ -109,7 +106,6 @@ interface FrontendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag);
@@ -118,7 +114,6 @@ interface FrontendInterface
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
      * @param string[] $tags List of tags
-     * @return void
      * @api
      */
     public function flushByTags(array $tags);
@@ -126,7 +121,6 @@ interface FrontendInterface
     /**
      * Does garbage collection
      *
-     * @return void
      * @api
      */
     public function collectGarbage();

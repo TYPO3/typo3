@@ -21,7 +21,6 @@ interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backend
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag);
@@ -30,7 +29,6 @@ interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backend
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
      * @param string[] $tags List of tags
-     * @return void
      * @api
      */
     public function flushByTags(array $tags);

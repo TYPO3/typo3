@@ -139,7 +139,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the username value
      *
      * @param string $username
-     * @return void
      * @api
      */
     public function setUsername($username)
@@ -162,7 +161,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the password value
      *
      * @param string $password
-     * @return void
      * @api
      */
     public function setPassword($password)
@@ -186,7 +184,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * although it can hold several usergroups.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup
-     * @return void
      * @api
      */
     public function setUsergroup(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup)
@@ -198,7 +195,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a usergroup to the frontend user
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
-     * @return void
      * @api
      */
     public function addUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup)
@@ -210,7 +206,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Removes a usergroup from the frontend user
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
-     * @return void
      * @api
      */
     public function removeUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup)
@@ -234,7 +229,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the name value
      *
      * @param string $name
-     * @return void
      * @api
      */
     public function setName($name)
@@ -257,7 +251,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the firstName value
      *
      * @param string $firstName
-     * @return void
      * @api
      */
     public function setFirstName($firstName)
@@ -280,7 +273,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the middleName value
      *
      * @param string $middleName
-     * @return void
      * @api
      */
     public function setMiddleName($middleName)
@@ -303,7 +295,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the lastName value
      *
      * @param string $lastName
-     * @return void
      * @api
      */
     public function setLastName($lastName)
@@ -326,7 +317,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the address value
      *
      * @param string $address
-     * @return void
      * @api
      */
     public function setAddress($address)
@@ -349,7 +339,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the telephone value
      *
      * @param string $telephone
-     * @return void
      * @api
      */
     public function setTelephone($telephone)
@@ -372,7 +361,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the fax value
      *
      * @param string $fax
-     * @return void
      * @api
      */
     public function setFax($fax)
@@ -395,7 +383,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the email value
      *
      * @param string $email
-     * @return void
      * @api
      */
     public function setEmail($email)
@@ -418,7 +405,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the lockToDomain value
      *
      * @param string $lockToDomain
-     * @return void
      * @api
      */
     public function setLockToDomain($lockToDomain)
@@ -441,7 +427,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the title value
      *
      * @param string $title
-     * @return void
      * @api
      */
     public function setTitle($title)
@@ -464,7 +449,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the zip value
      *
      * @param string $zip
-     * @return void
      * @api
      */
     public function setZip($zip)
@@ -487,7 +471,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the city value
      *
      * @param string $city
-     * @return void
      * @api
      */
     public function setCity($city)
@@ -510,7 +493,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the country value
      *
      * @param string $country
-     * @return void
      * @api
      */
     public function setCountry($country)
@@ -533,7 +515,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the www value
      *
      * @param string $www
-     * @return void
      * @api
      */
     public function setWww($www)
@@ -556,7 +537,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the company value
      *
      * @param string $company
-     * @return void
      * @api
      */
     public function setCompany($company)
@@ -601,7 +581,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the lastlogin value
      *
      * @param \DateTime $lastlogin
-     * @return void
      * @api
      */
     public function setLastlogin(\DateTime $lastlogin)

@@ -86,7 +86,6 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      * Add the given arguments to the TemplateVariableContainer of the widget.
      *
      * @param array $arguments
-     * @return void
      */
     protected function addArgumentsToTemplateVariableContainer(array $arguments)
     {
@@ -100,7 +99,6 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      * Remove the given arguments from the TemplateVariableContainer of the widget.
      *
      * @param array $arguments
-     * @return void
      */
     protected function removeArgumentsFromTemplateVariableContainer(array $arguments)
     {

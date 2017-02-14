@@ -25,7 +25,6 @@ interface NewContentElementWizardHookInterface
      *
      * @param array $wizardItems Array of Wizard Items
      * @param \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController $parentObject Parent object New Content element wizard
-     * @return void
      */
     public function manipulateWizardItems(&$wizardItems, &$parentObject);
 }

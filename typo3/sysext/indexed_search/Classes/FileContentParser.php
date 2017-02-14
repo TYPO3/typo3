@@ -707,7 +707,6 @@ class FileContentParser
      *
      * @staticvar string $lastLocale Stores the locale used before it is overridden by this method.
      * @param bool $resetLocale TRUE resets the locale to $lastLocale.
-     * @return void
      * @throws \RuntimeException
      */
     protected function setLocaleForServerFileSystem($resetLocale = false)

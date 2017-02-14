@@ -26,7 +26,6 @@ class TypoScriptFrontendHook
      *
      * @param array $params Parameters from frontend
      * @param TypoScriptFrontendController $ref TSFE object
-     * @return void
      */
     public function headerNoCache(array &$params, $ref)
     {

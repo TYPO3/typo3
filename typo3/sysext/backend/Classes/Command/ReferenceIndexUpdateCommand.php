@@ -46,7 +46,6 @@ class ReferenceIndexUpdateCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

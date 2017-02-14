@@ -49,7 +49,6 @@ interface RendererInterface
 
     /**
      * @param FormRuntime $formRuntime
-     * @return void
      * @api
      */
     public function setFormRuntime(FormRuntime $formRuntime);

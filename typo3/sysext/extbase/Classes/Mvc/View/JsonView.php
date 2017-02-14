@@ -183,7 +183,6 @@ class JsonView extends AbstractView
      * By default only the variable 'value' will be rendered
      *
      * @param array $variablesToRender
-     * @return void
      * @api
      */
     public function setVariablesToRender(array $variablesToRender)
@@ -193,7 +192,6 @@ class JsonView extends AbstractView
 
     /**
      * @param array $configuration The rendering configuration for this JSON view
-     * @return void
      */
     public function setConfiguration(array $configuration)
     {

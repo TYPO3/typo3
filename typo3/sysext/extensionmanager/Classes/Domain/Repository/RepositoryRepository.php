@@ -21,8 +21,6 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     /**
      * Do not include pid in queries
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -37,7 +35,6 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @param int $extCount
      * @param int $uid
-     * @return void
      */
     public function updateRepositoryCount($extCount, $uid = 1)
     {

@@ -25,7 +25,6 @@ class FrontendEditAssetLoader
 {
     /**
      * @param EditDocumentController $controller
-     * @return void
      */
     public function attachAssets(EditDocumentController $controller)
     {

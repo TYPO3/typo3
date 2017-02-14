@@ -93,7 +93,6 @@ class FormResultCompiler
      * Merge existing data with the given result array
      *
      * @param array $resultArray Array returned by child
-     * @return void
      * @internal Temporary method to use FormEngine class as final data merger
      */
     public function mergeResult(array $resultArray)

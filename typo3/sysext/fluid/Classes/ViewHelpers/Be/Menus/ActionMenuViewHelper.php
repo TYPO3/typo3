@@ -63,7 +63,6 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
      * Setter for ChildNodes - as defined in ChildNodeAccessInterface
      *
      * @param array $childNodes Child nodes of this syntax tree node
-     * @return void
      * @api
      */
     public function setChildNodes(array $childNodes)
@@ -107,7 +106,6 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
      * @param string $initializationPhpCode
      * @param ViewHelperNode $node
      * @param TemplateCompiler $compiler
-     * @return null
      */
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {

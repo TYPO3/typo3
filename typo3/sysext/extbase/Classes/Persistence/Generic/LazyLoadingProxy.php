@@ -124,7 +124,6 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
      *
      * @param string $propertyName The name of the property to set
      * @param mixed $value The value for the property to set
-     * @return void
      */
     public function __set($propertyName, $value)
     {
@@ -148,7 +147,6 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
      * Magic unset call implementation.
      *
      * @param string $propertyName The name of the property to unset
-     * @return void
      */
     public function __unset($propertyName)
     {
@@ -191,8 +189,6 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 
     /**
      * Returns the next position of the storage array
-     *
-     * @return void
      */
     public function next()
     {
@@ -202,8 +198,6 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 
     /**
      * Resets the array pointer of the storage
-     *
-     * @return void
      */
     public function rewind()
     {

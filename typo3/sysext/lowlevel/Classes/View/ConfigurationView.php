@@ -99,8 +99,6 @@ class ConfigurationView extends BaseScriptClass
 
     /**
      * Initialization
-     *
-     * @return void
      */
     public function init()
     {
@@ -111,8 +109,6 @@ class ConfigurationView extends BaseScriptClass
 
     /**
      * Menu Configuration
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -143,8 +139,6 @@ class ConfigurationView extends BaseScriptClass
 
     /**
      * Main function
-     *
-     * @return void
      */
     public function main()
     {

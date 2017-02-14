@@ -118,7 +118,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @throws MvcException
-     * @return void
      */
     protected function loadDefaultValues()
     {

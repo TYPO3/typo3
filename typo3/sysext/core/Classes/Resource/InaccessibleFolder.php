@@ -29,7 +29,6 @@ class InaccessibleFolder extends Folder
      * used to prevent duplicate code in all the methods
      *
      * @throws Exception\InsufficientFolderReadPermissionsException
-     * @return void
      */
     protected function throwInaccessibleException()
     {
@@ -45,7 +44,6 @@ class InaccessibleFolder extends Folder
      * as the name is more seen as a label
      *
      * @param string $name The new name
-     * @return void
      */
     public function setName($name)
     {
@@ -250,7 +248,6 @@ class InaccessibleFolder extends Folder
      * NOTE: This method should not be called from outside the File Abstraction Layer (FAL)!
      *
      * @param array $properties
-     * @return void
      * @internal
      */
     public function updateProperties(array $properties)

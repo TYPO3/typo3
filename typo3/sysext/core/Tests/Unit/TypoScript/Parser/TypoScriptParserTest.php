@@ -28,8 +28,6 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

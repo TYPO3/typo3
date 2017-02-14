@@ -53,7 +53,6 @@ class EidUtility
      * Initializes $GLOBALS['LANG'] for use in eID scripts.
      *
      * @param string $language TYPO3 language code
-     * @return void
      */
     public static function initLanguage($language = 'default')
     {
@@ -65,8 +64,6 @@ class EidUtility
 
     /**
      * Makes TCA available inside eID
-     *
-     * @return void
      */
     public static function initTCA()
     {
@@ -84,7 +81,6 @@ class EidUtility
      * you need not to include the whole $GLOBALS['TCA'].
      *
      * @param string $extensionKey Extension key
-     * @return void
      */
     public static function initExtensionTCA($extensionKey)
     {

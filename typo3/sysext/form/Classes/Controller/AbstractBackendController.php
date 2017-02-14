@@ -40,7 +40,6 @@ abstract class AbstractBackendController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager
-     * @return void
      * @internal
      */
     public function injectFormPersistenceManager(\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager)

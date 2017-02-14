@@ -108,8 +108,6 @@ class Package implements PackageInterface
     /**
      * Loads package management related flags from the "extra:typo3/cms:Package" section
      * of extensions composer.json files into local properties
-     *
-     * @return void
      */
     protected function loadFlagsFromComposerManifest()
     {
@@ -165,7 +163,6 @@ class Package implements PackageInterface
      * Sets the protection flag of the package
      *
      * @param bool $protected TRUE if the package should be protected, otherwise FALSE
-     * @return void
      * @api
      */
     public function setProtected($protected)

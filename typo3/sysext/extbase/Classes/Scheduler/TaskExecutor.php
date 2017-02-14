@@ -88,7 +88,6 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface
      * Initializes configuration manager, object container and reflection service
      *
      * @param array $configuration
-     * @return void
      */
     protected function initialize(array $configuration)
     {
@@ -124,7 +123,6 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface
      * must be caught manually if you manually execute Tasks through your code.
      *
      * @param \TYPO3\CMS\Extbase\Scheduler\Task $task the task to execute
-     * @return void
      */
     public function execute(\TYPO3\CMS\Extbase\Scheduler\Task $task)
     {
@@ -143,8 +141,6 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Resets framework singletons
-     *
-     * @return void
      */
     protected function shutdown()
     {

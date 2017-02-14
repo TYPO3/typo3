@@ -55,7 +55,6 @@ class FormEditorController extends AbstractBackendController
      *
      * @param string $formPersistenceIdentifier
      * @param string $prototypeName
-     * @return void
      * @throws PersistenceManagerException
      * @internal
      */

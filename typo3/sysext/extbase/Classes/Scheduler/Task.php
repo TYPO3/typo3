@@ -76,8 +76,6 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
     /**
      * Wakeup
-     *
-     * @return void
      */
     public function __wakeup()
     {

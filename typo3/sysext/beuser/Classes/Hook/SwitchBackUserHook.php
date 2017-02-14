@@ -31,7 +31,6 @@ class SwitchBackUserHook
      * @param array $params
      * @param AbstractUserAuthentication $authentication
      * @see AbstractUserAuthentication
-     * @return void
      */
     public function switchBack($params, AbstractUserAuthentication $authentication)
     {

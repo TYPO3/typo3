@@ -72,7 +72,6 @@ class SimpleLockStrategy implements LockingStrategyInterface
     /**
      * @param int $loops Number of times a locked resource is tried to be acquired.
      * @param int $step Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock.
-     * @return void
      */
     public function init($loops = 0, $step = 0)
     {
@@ -188,8 +187,6 @@ class SimpleLockStrategy implements LockingStrategyInterface
 
     /**
      * Destroys the resource associated with the lock
-     *
-     * @return void
      */
     public function destroy()
     {

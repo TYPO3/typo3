@@ -32,7 +32,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
      * @param int $mountPoint
      * @param int $level
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection)
     {
@@ -47,7 +46,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
      * @param string $searchFilter
      * @param int $mountPoint
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection)
     {
@@ -60,7 +58,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
     /**
      * @param string $searchFilter
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessGetTreeMounts($searchFilter, $nodeCollection)
     {
@@ -75,7 +72,6 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
      * in the current workspace
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-     * @return void
      */
     protected function highlightVersionizedElements(\TYPO3\CMS\Backend\Tree\TreeNode $node)
     {

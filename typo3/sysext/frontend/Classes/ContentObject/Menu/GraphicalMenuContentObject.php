@@ -27,7 +27,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
      * Calls makeGifs() for all "normal" items and if configured for, also the "rollover" items.
      *
-     * @return void
      * @see AbstractMenuContentObject::procesItemStates(), makeGifs()
      */
     public function generate()
@@ -71,7 +70,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      *
      * @param array $conf Array with configuration for each item.
      * @param string $resKey Type of images: normal ("NO") or rollover ("RO"). Valid values are "NO" and "RO
-     * @return void
      * @internal
      * @see generate()
      */
@@ -474,7 +472,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called right before the traversing of $this->result begins.
      * Can be used for various initialization
      *
-     * @return void
      * @internal
      * @see writeMenu()
      */
@@ -486,7 +483,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called after all processing for RollOver of an element has been done.
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
-     * @return void
      * @internal
      * @see writeMenu()
      */
@@ -498,7 +494,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Called right before the creation of the link for the menu item
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @return void
      * @internal
      * @see writeMenu()
      */
@@ -513,7 +508,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
      * Further this calls the subMenu function in the parent class to create any submenu there might be.
      *
      * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @return void
      * @internal
      * @see writeMenu(), AbstractMenuContentObject::subMenu()
      */

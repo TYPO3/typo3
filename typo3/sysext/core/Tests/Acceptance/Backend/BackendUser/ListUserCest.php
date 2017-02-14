@@ -23,7 +23,6 @@ class ListUserCest
 {
     /**
      * @param Admin $I
-     * @return void
      */
     public function _before(Admin $I)
     {
@@ -42,7 +41,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function showsHeadingAndListsBackendUsers(Admin $I)
     {
@@ -57,7 +55,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterUsersByUsername(Admin $I)
     {
@@ -85,7 +82,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterUsersByAdmin(Admin $I)
     {
@@ -113,7 +109,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterUsersByStatus(Admin $I)
     {
@@ -141,7 +136,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterUsersByLogin(Admin $I)
     {
@@ -169,7 +163,6 @@ class ListUserCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterUsersByUserGroup(Admin $I)
     {
@@ -191,7 +184,6 @@ class ListUserCest
     /**
      * @param Admin $I
      * @param int $countOfUsers
-     * @return void
      */
     protected function checkCountOfUsers(Admin $I, $countOfUsers)
     {

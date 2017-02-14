@@ -60,8 +60,6 @@ class Status implements ReportInterface
 
     /**
      * Gets all registered status providers and creates instances of them.
-     *
-     * @return void
      */
     protected function getStatusProviders()
     {

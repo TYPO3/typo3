@@ -79,7 +79,6 @@ class ExtensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @dataProvider getCategoryIndexFromStringOrNumberReturnsIndexDataProvider
      * @param string|int $input Given input
      * @param int $expected Expected result
-     * @return void
      */
     public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
     {

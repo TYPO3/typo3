@@ -76,7 +76,6 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the title of the file mount.
      *
      * @param string $value
-     * @return void
      */
     public function setTitle($value)
     {
@@ -97,7 +96,6 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the description of the file mount.
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -118,7 +116,6 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the path of the file mount.
      *
      * @param string $value
-     * @return void
      */
     public function setPath($value)
     {
@@ -139,7 +136,6 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for is absolute path of the file mount.
      *
      * @param bool $value
-     * @return void
      */
     public function setIsAbsolutePath($value)
     {

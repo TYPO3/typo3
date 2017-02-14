@@ -31,7 +31,6 @@ class FrontendSimulatorUtility
      * This somewhat hacky work around is currently needed because the cObjGetSingle() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
      *
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|NULL $cObj
-     * @return void
      */
     public static function simulateFrontendEnvironment(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = null)
     {
@@ -44,7 +43,6 @@ class FrontendSimulatorUtility
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @return void
      * @see simulateFrontendEnvironment()
      */
     public static function resetFrontendEnvironment()

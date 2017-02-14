@@ -75,7 +75,6 @@ class SaltedPasswordsUtility
      *
      * @param array $params Parameter the hook delivers
      * @param \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj Parent Object from which the hook is called
-     * @return void
      */
     public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj)
     {

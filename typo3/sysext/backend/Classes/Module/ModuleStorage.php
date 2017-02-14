@@ -38,7 +38,6 @@ class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface
      * Set Entries
      *
      * @param \SplObjectStorage $entries
-     * @return void
      */
     public function setEntries($entries)
     {
@@ -59,7 +58,6 @@ class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface
      * Attach Entry
      *
      * @param BackendModule $entry
-     * @return void
      */
     public function attachEntry(BackendModule $entry)
     {

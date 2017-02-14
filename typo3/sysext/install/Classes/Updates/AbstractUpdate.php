@@ -80,7 +80,6 @@ abstract class AbstractUpdate
      * Sets the title attribute
      *
      * @param string $title The title of this update wizard
-     * @return void
      */
     public function setTitle($title)
     {
@@ -101,7 +100,6 @@ abstract class AbstractUpdate
      * Sets the identifier attribute
      *
      * @param string $identifier The identifier of this update wizard
-     * @return void
      */
     public function setIdentifier($identifier)
     {
@@ -178,7 +176,6 @@ abstract class AbstractUpdate
      * (e.g. installing in extList, respecting priority, etc.)
      *
      * @param array $extensionKeys List of keys of extensions to install
-     * @return void
      */
     protected function installExtensions(array $extensionKeys)
     {
@@ -197,7 +194,6 @@ abstract class AbstractUpdate
      * Writes the info in LocalConfiguration.php
      *
      * @param mixed $confValue The configuration is set to this value
-     * @return void
      */
     protected function markWizardAsDone($confValue = 1)
     {

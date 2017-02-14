@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Frontend\Page;
 
 /**
  * Interface for classes which hook into pageSelect and do additional getPage processing
- *
  */
 interface PageRepositoryInitHookInterface
 {
@@ -24,7 +23,6 @@ interface PageRepositoryInitHookInterface
      * Modifies the DB params
      *
      * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
-     * @return void
      */
     public function init_postProcess(PageRepository $parentObject);
 }

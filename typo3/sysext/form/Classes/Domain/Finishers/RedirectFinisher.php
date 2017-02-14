@@ -58,8 +58,6 @@ class RedirectFinisher extends AbstractFinisher
     /**
      * Executes this finisher
      * @see AbstractFinisher::execute()
-     *
-     * @return void
      */
     protected function executeInternal()
     {
@@ -91,7 +89,6 @@ class RedirectFinisher extends AbstractFinisher
      * @param string $additionalParameters
      * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @return void
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @see forward()
      */

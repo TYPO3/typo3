@@ -117,8 +117,6 @@ class TableController extends AbstractWizardController
 
     /**
      * Initialization of the class
-     *
-     * @return void
      */
     protected function init()
     {
@@ -151,8 +149,6 @@ class TableController extends AbstractWizardController
 
     /**
      * Main function, rendering the table wizard
-     *
-     * @return void
      */
     public function main()
     {
@@ -453,7 +449,6 @@ class TableController extends AbstractWizardController
      * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will
      * manipulate the internal TABLECFG array
      *
-     * @return void
      * @internal
      */
     public function changeFunc()

@@ -43,8 +43,6 @@ class FrontendEditingController
 
     /**
      * Initializes configuration options.
-     *
-     * @return void
      */
     public function initConfigOptions()
     {
@@ -197,7 +195,6 @@ class FrontendEditingController
      * Management of the on-page frontend editing forms and edit panels.
      * Basically taking in the data and commands and passes them on to the proper classes as they should be.
      *
-     * @return void
      * @throws \UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
@@ -234,7 +231,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to hide.
      * @param int $uid The UID for the record to hide.
-     * @return void
      */
     public function doHide($table, $uid)
     {
@@ -253,7 +249,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to unhide.
      * @param int $uid The UID for the record to unhide.
-     * @return void
      */
     public function doUnhide($table, $uid)
     {
@@ -272,7 +267,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to move.
      * @param int $uid The UID for the record to hide.
-     * @return void
      */
     public function doUp($table, $uid)
     {
@@ -284,7 +278,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to move.
      * @param int $uid The UID for the record to move.
-     * @return void
      */
     public function doDown($table, $uid)
     {
@@ -296,7 +289,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to move.
      * @param int $uid The UID for the record to move.
-     * @return void
      */
     public function doMoveAfter($table, $uid)
     {
@@ -311,7 +303,6 @@ class FrontendEditingController
      * @param int $uid The UID for the record to move.
      * @param string $direction The direction to move, either 'up' or 'down'.
      * @param int $afterUID The UID of record to move after. This is specified for dragging only.
-     * @return void
      */
     protected function move($table, $uid, $direction = '', $afterUID = 0)
     {
@@ -430,7 +421,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to delete.
      * @param int $uid The UID for the record to delete.
-     * @return void
      */
     public function doDelete($table, $uid)
     {
@@ -447,7 +437,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to save.
      * @param int $uid The UID for the record to save.
-     * @return void
      */
     public function doSave($table, $uid)
     {
@@ -470,7 +459,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to save.
      * @param int $uid The UID for the record to save.
-     * @return void
      * @note 	This method is only a wrapper for doSave() but is needed so
      */
     public function doSaveAndClose($table, $uid)
@@ -484,7 +472,6 @@ class FrontendEditingController
      *
      * @param string $table The table name for the record to close.
      * @param int $uid The UID for the record to close.
-     * @return void
      */
     public function doClose($table, $uid)
     {
@@ -636,8 +623,6 @@ class FrontendEditingController
 
     /**
      * Initializes \TYPO3\CMS\Core\DataHandling\DataHandler since it is used on modification actions.
-     *
-     * @return void
      */
     protected function initializeTceMain()
     {

@@ -60,7 +60,6 @@ interface RootRenderableInterface
      * is outputted to the browser.
      *
      * @param FormRuntime $formRuntime
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

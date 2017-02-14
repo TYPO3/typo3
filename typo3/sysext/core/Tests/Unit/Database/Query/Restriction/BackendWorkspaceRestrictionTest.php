@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     * @return void
      */
     protected function setUp()
     {

@@ -41,8 +41,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
 
     /**
      * Create required parser
-     *
-     * @return void
      */
     protected function createParser()
     {
@@ -54,7 +52,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
      * Method parses a mirror.xml file.
      *
      * @param string $file GZIP stream resource
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of XML parser errors
      */
     public function parseXml($file)
@@ -89,7 +86,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
      * @param resource $parser parser resource
      * @param string $elementName element name at parser's current position
      * @param array $attrs array of an element's attributes if available
-     * @return void
      */
     protected function startElement($parser, $elementName, $attrs)
     {
@@ -107,7 +103,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
      * @see xml_set_element_handler
      * @param resource $parser parser resource
      * @param string $elementName element name at parser's current position
-     * @return void
      */
     protected function endElement($parser, $elementName)
     {
@@ -129,7 +124,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
      * @see xml_set_character_data_handler
      * @param resource $parser parser resource
      * @param string $data an element's value
-     * @return void
      */
     protected function characterData($parser, $data)
     {

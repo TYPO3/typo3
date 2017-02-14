@@ -420,8 +420,6 @@ abstract class AbstractMenuContentObject
      * Basically this will read the page records needed and fill in the internal $this->menuArr
      * Based on a hash of this array and some other variables the $this->result variable will be
      * loaded either from cache OR by calling the generate() method of the class to create the menu for real.
-     *
-     * @return void
      */
     public function makeMenu()
     {
@@ -519,8 +517,6 @@ abstract class AbstractMenuContentObject
      * Generates the the menu data.
      *
      * Subclasses should overwrite this method.
-     *
-     * @return void
      */
     public function generate()
     {
@@ -1216,7 +1212,6 @@ abstract class AbstractMenuContentObject
      * Analyzes the parameters to find if the link needs a cHash parameter.
      *
      * @param string $queryString
-     * @return void
      */
     protected function analyzeCacheHashRequirements($queryString)
     {
@@ -1762,7 +1757,6 @@ abstract class AbstractMenuContentObject
      * @param array $page Page array
      * @param string $mainTarget Main target value
      * @param string $typeOverride Type number override if any
-     * @return void ($LD passed by reference might be changed.)
      */
     public function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
     {
@@ -2050,7 +2044,6 @@ abstract class AbstractMenuContentObject
     /**
      * Creates the <A> tag parts for the current item (in $this->I, [A1] and [A2]) based on other information in this array (like $this->I['linkHREF'])
      *
-     * @return void
      * @internal
      */
     public function setATagParts()

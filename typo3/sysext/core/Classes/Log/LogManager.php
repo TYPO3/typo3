@@ -56,8 +56,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 
     /**
      * For use in unit test context only. Resets the internal logger registry.
-     *
-     * @return void
      */
     public function reset()
     {
@@ -100,7 +98,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
      * For use in unit test context only.
      *
      * @param string $name
-     * @return void
      */
     public function registerLogger($name)
     {
@@ -121,7 +118,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
      * Appends the writers to the given logger as configured.
      *
      * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
-     * @return void
      */
     protected function setWritersForLogger(Logger $logger)
     {
@@ -146,7 +142,6 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
      * Appends the processors to the given logger as configured.
      *
      * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
-     * @return void
      */
     protected function setProcessorsForLogger(Logger $logger)
     {

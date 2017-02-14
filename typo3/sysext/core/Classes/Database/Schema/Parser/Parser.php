@@ -81,7 +81,6 @@ class Parser
      *
      * @param int $token The token type.
      *
-     * @return void
      *
      * @throws StatementException If the tokens don't match.
      */
@@ -123,8 +122,6 @@ class Parser
      *
      * @param bool $deep Whether to clean peek and reset errors.
      * @param int $position Position to reset.
-     *
-     * @return void
      */
     public function free($deep = false, $position = 0)
     {
@@ -169,7 +166,6 @@ class Parser
      * @param string $expected Expected string.
      * @param array|null $token Got token.
      *
-     * @return void
      *
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */
@@ -194,7 +190,6 @@ class Parser
      * @param string $message Optional message.
      * @param array|null $token Optional token.
      *
-     * @return void
      *
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException
      */

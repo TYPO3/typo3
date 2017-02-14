@@ -43,8 +43,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
 
     /**
      * Create required parser
-     *
-     * @return void
      */
     protected function createParser()
     {
@@ -56,7 +54,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      * Method parses an extensions.xml file.
      *
      * @param string $file GZIP stream resource
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of parse errors
      */
     public function parseXml($file)
@@ -91,7 +88,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      * @param resource $parser parser resource
      * @param string $elementName element name at parser's current position
      * @param array $attrs array of an element's attributes if available
-     * @return void
      */
     protected function startElement($parser, $elementName, $attrs)
     {
@@ -112,7 +108,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      *
      * @param resource $parser parser resource
      * @param string $elementName Element name at parser's current position
-     * @return void
      */
     protected function endElement($parser, $elementName)
     {
@@ -134,7 +129,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      *
      * @param resource $parser parser resource
      * @param string $data An element's value
-     * @return void
      */
     protected function characterData($parser, $data)
     {

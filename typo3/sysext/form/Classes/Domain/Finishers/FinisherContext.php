@@ -84,7 +84,6 @@ class FinisherContext
     /**
      * Cancels the finisher invocation after the current finisher
      *
-     * @return void
      * @api
      */
     public function cancel()

@@ -275,8 +275,6 @@ abstract class ImportExport
 
     /**
      * Init the object, both import and export
-     *
-     * @return void
      */
     public function init()
     {
@@ -357,7 +355,6 @@ abstract class ImportExport
      * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
      * @param array $lines Output lines array (is passed by reference and modified)
      * @param string $preCode Pre-HTML code
-     * @return void
      */
     public function traversePageTree($pT, &$lines, $preCode = '')
     {
@@ -408,7 +405,6 @@ abstract class ImportExport
      *
      * @param int $pageUid Uid of the page to exclude
      * @param array $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree]
-     * @return void
      */
     protected function excludePageAndRecords($pageUid, $pageTree)
     {
@@ -439,7 +435,6 @@ abstract class ImportExport
      *
      * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
      * @param array $lines Output lines array (is passed by reference and modified)
-     * @return void
      */
     public function traversePageRecords($pT, &$lines)
     {
@@ -464,7 +459,6 @@ abstract class ImportExport
      *
      * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
      * @param array $lines Output lines array (is passed by reference and modified)
-     * @return void
      */
     public function traverseAllRecords($pT, &$lines)
     {
@@ -483,7 +477,6 @@ abstract class ImportExport
      * Log general error message for a given table
      *
      * @param string $table database table name
-     * @return void
      */
     protected function addGeneralErrorsByTable($table)
     {
@@ -503,7 +496,6 @@ abstract class ImportExport
      * @param array $lines Output lines array (is passed by reference and modified)
      * @param string $preCode Pre-HTML code
      * @param bool $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
-     * @return void
      */
     public function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord = false)
     {
@@ -670,7 +662,6 @@ abstract class ImportExport
      * @param string $preCode Pre-HTML code
      * @param array $recurCheck Recursivity check stack
      * @param string $htmlColorClass Alternative HTML color class to use.
-     * @return void
      * @access private
      * @see singleRecordLines()
      */
@@ -735,7 +726,6 @@ abstract class ImportExport
      * @param string $preCode Pre-HTML code
      * @param string $htmlColorClass Alternative HTML color class to use.
      * @param string $tokenID Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
-     * @return void
      * @access private
      * @see singleRecordLines()
      */
@@ -966,7 +956,6 @@ abstract class ImportExport
      *****************************/
 
     /**
-     *
      * @return string
      */
     protected function getTemporaryFolderName()
@@ -1224,7 +1213,6 @@ abstract class ImportExport
      *
      * @param string $name Name of the hook
      * @param array $params Array with params
-     * @return void
      */
     public function callHook($name, $params)
     {
@@ -1256,7 +1244,6 @@ abstract class ImportExport
      * Sets error message in the internal error log
      *
      * @param string $msg Error message
-     * @return void
      */
     public function error($msg)
     {

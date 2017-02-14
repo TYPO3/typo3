@@ -221,7 +221,6 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      *
      * @param string $id
      * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value
-     * @return void
      */
     public function setClassInfoCacheCallback($id, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value)
     {

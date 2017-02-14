@@ -38,7 +38,6 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

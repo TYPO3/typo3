@@ -84,7 +84,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * Add a new form element at the end of the section
      *
      * @param FormElementInterface $formElement The form element to add
-     * @return void
      * @throws FormDefinitionConsistencyException if FormElement is already added to a section
      * @api
      */
@@ -155,7 +154,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      *
      * @param FormElementInterface $elementToMove
      * @param FormElementInterface $referenceElement
-     * @return void
      * @api
      */
     public function moveElementBefore(FormElementInterface $elementToMove, FormElementInterface $referenceElement)
@@ -170,7 +168,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      *
      * @param FormElementInterface $elementToMove
      * @param FormElementInterface $referenceElement
-     * @return void
      * @api
      */
     public function moveElementAfter(FormElementInterface $elementToMove, FormElementInterface $referenceElement)
@@ -182,7 +179,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * Remove $elementToRemove from this Section/Page
      *
      * @param FormElementInterface $elementToRemove
-     * @return void
      * @api
      */
     public function removeElement(FormElementInterface $elementToRemove)
@@ -198,7 +194,6 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * @param FormRuntime $formRuntime
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

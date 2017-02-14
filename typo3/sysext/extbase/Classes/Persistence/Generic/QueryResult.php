@@ -77,8 +77,6 @@ class QueryResult implements QueryResultInterface
 
     /**
      * Loads the objects this QueryResult is supposed to hold
-     *
-     * @return void
      */
     protected function initialize()
     {
@@ -181,7 +179,6 @@ class QueryResult implements QueryResultInterface
      *
      * @param mixed $offset
      * @param mixed $value
-     * @return void
      * @see ArrayAccess::offsetSet()
      */
     public function offsetSet($offset, $value)
@@ -194,7 +191,6 @@ class QueryResult implements QueryResultInterface
      * This method has no effect on the persisted objects but only on the result set
      *
      * @param mixed $offset
-     * @return void
      * @see ArrayAccess::offsetUnset()
      */
     public function offsetUnset($offset)
@@ -224,7 +220,6 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return void
      * @see Iterator::next()
      */
     public function next()
@@ -234,7 +229,6 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return void
      * @see Iterator::rewind()
      */
     public function rewind()
@@ -256,7 +250,6 @@ class QueryResult implements QueryResultInterface
     /**
      * Ensures that the objectManager, persistenceManager and dataMapper are back when loading the QueryResult
      * from the cache
-     * @return void
      */
     public function __wakeup()
     {

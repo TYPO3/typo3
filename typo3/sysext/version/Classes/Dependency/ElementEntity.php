@@ -176,7 +176,6 @@ class ElementEntity
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     public function setDataValue($key, $value)
     {

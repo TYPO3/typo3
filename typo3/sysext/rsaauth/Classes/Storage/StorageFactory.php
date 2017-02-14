@@ -59,7 +59,6 @@ class StorageFactory
      * another extension or ext_localconf.php
      *
      * @param string $preferredStorage Preferred storage
-     * @return void
      */
     public static function setPreferredStorage($preferredStorage)
     {

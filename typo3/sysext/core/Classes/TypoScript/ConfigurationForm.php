@@ -102,7 +102,6 @@ class ConfigurationForm extends ExtendedTemplateService
 
     /**
      * @param string $cat
-     * @return void
      */
     public function ext_makeHelpInformationForCategory($cat)
     {
@@ -192,7 +191,6 @@ class ConfigurationForm extends ExtendedTemplateService
     /**
      * @param string $key
      * @param string $var
-     * @return void
      */
     public function ext_putValueInConf($key, $var)
     {
@@ -201,7 +199,6 @@ class ConfigurationForm extends ExtendedTemplateService
 
     /**
      * @param string $key
-     * @return void
      */
     public function ext_removeValueInConf($key)
     {

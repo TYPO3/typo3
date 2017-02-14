@@ -102,7 +102,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      * Set mode by file
      *
      * @param string $file
-     * @return void
      */
     public function setModeByFile($file)
     {
@@ -114,7 +113,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface
      * Set mode by type
      *
      * @param string $type
-     * @return void
      */
     public function setModeByType($type)
     {

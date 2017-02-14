@@ -270,7 +270,6 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      * @param string $expected
      * @param array $altLanguageKeys
      * @param array $arguments
-     * @return void
      * @dataProvider translateDataProvider
      * @test
      */
@@ -392,7 +391,6 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      * @param array $typoScriptLocalLang
      * @param string $languageKey
      * @param array $expected
-     * @return void
      * @dataProvider loadTypoScriptLabelsProvider
      * @test
      */
@@ -423,7 +421,6 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
     }
 
     /**
-     * @return void
      * @test
      */
     public function clearLabelWithTypoScript()

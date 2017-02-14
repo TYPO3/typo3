@@ -25,7 +25,6 @@ class TestValidator extends AbstractValidator
 {
     /**
      * @param mixed $value
-     * @return void
      */
     public function isValid($value)
     {

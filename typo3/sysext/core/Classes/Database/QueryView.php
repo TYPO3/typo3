@@ -1253,7 +1253,6 @@ class QueryView
      * Sets the current name of the input form.
      *
      * @param string $formName The name of the form.
-     * @return void
      */
     public function setFormName($formName)
     {

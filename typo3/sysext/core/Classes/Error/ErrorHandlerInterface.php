@@ -32,7 +32,6 @@ interface ErrorHandlerInterface
      * Defines which error levels should result in an exception thrown.
      *
      * @param int $exceptionalErrors The integer representing the E_* error level to handle as exceptions
-     * @return void
      */
     public function setExceptionalErrors($exceptionalErrors);
 

@@ -61,7 +61,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * 		}
  * 	}
  * }
- *
  */
 class PageTsBackendLayoutDataProvider implements DataProviderInterface
 {
@@ -90,7 +89,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * Set PageTsConfig
      *
      * @param array $pageTsConfig
-     * @return void
      */
     protected function setPageTsConfig(array $pageTsConfig)
     {
@@ -111,7 +109,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * Set PageId
      *
      * @param int $pageId
-     * @return void
      */
     protected function setPageId($pageId)
     {
@@ -133,7 +130,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * if not it will be generated for the current Page.
      *
      * @param DataProviderContext $dataProviderContext
-     * @return void
      */
     protected function generatePageTsConfig($dataProviderContext = null)
     {
@@ -151,7 +147,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      * Generate the Backend Layout configs
      *
      * @param DataProviderContext $dataProviderContext
-     * @return void
      */
     protected function generateBackendLayouts($dataProviderContext = null)
     {
@@ -203,7 +198,6 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
     /**
      * @param DataProviderContext $dataProviderContext
      * @param BackendLayoutCollection $backendLayoutCollection
-     * @return void
      */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
     {

@@ -20,7 +20,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
- *
  */
 class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -45,8 +44,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * Set the test up
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -316,7 +313,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @dataProvider stripOrderByForOrderByKeywordDataProvider
      * @param string $orderByClause The clause to test
      * @param string $expectedResult The expected result
-     * @return void
      */
     public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult)
     {
@@ -386,7 +382,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @dataProvider stripGroupByForGroupByKeywordDataProvider
      * @param string $groupByClause The clause to test
      * @param string $expectedResult The expected result
-     * @return void
      */
     public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult)
     {
@@ -466,7 +461,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @dataProvider cleanIntArrayDataProvider
      * @param array $exampleData The array to sanitize
      * @param array $expectedResult The expected result
-     * @return void
      */
     public function cleanIntArray($exampleData, $expectedResult)
     {
@@ -476,8 +470,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function cleanIntListReturnsCleanedString()
     {
@@ -601,8 +593,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function insertQueryCreateValidQuery()
     {
@@ -621,8 +611,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function insertQueryCreateValidQueryFromMultipleValues()
     {
@@ -644,8 +632,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function insertMultipleRowsCreateValidQuery()
     {
@@ -669,8 +655,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function updateQueryCreateValidQuery()
     {
@@ -689,8 +673,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function deleteQueryCreateValidQuery()
     {
@@ -701,8 +683,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectQueryCreateValidQuery()
     {
@@ -713,8 +693,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectQueryCreateValidQueryWithEmptyWhereClause()
     {
@@ -725,8 +703,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectQueryCreateValidQueryWithGroupByClause()
     {
@@ -737,8 +713,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectQueryCreateValidQueryWithOrderByClause()
     {
@@ -749,8 +723,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectQueryCreateValidQueryWithLimitClause()
     {
@@ -761,8 +733,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function selectSubQueryCreateValidQuery()
     {
@@ -773,8 +743,6 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * @test
-     *
-     * @return void
      */
     public function truncateQueryCreateValidQuery()
     {

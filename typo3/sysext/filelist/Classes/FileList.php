@@ -204,7 +204,6 @@ class FileList extends AbstractRecordList
      * @param bool $sortRev Sorting direction
      * @param bool $clipBoard
      * @param bool $bigControlPanel Show clipboard flag
-     * @return void
      */
     public function start(Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = false, $bigControlPanel = false)
     {
@@ -227,8 +226,6 @@ class FileList extends AbstractRecordList
 
     /**
      * Reading files and directories, counting elements and generating the list in ->HTMLcode
-     *
-     * @return void
      */
     public function generateList()
     {

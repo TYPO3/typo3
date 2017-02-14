@@ -23,7 +23,6 @@ interface FeatureInterface
      * Initialize presets
      *
      * @param array $postValues List of $POST values of this feature
-     * @return void
      */
     public function initializePresets(array $postValues);
 

@@ -23,8 +23,6 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
 {
     /**
      * Initializes the repository.
-     *
-     * @return void
      */
     public function initializeObject()
     {

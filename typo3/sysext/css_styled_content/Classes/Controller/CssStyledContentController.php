@@ -826,7 +826,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
      *
      * @param int $fileUid The UID of the file or file reference (depending on $treatAsReference) that should be loaded.
      * @param bool $treatAsReference If TRUE the given UID will be used to load a file reference otherwise it will be used to load a regular file.
-     * @return void
      */
     protected function initializeCurrentFileInContentObjectRenderer($fileUid, $treatAsReference)
     {
@@ -956,7 +955,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
      *
      * @param string $selector The selector
      * @param string $declaration The declaration
-     * @return void
      */
     protected function addPageStyle($selector, $declaration)
     {

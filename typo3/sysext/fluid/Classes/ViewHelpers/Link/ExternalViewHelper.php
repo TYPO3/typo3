@@ -45,7 +45,6 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

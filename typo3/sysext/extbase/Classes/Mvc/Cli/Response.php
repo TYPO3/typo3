@@ -31,7 +31,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      *
      * @param int $exitCode
      * @throws \InvalidArgumentException
-     * @return void
      * @api
      */
     public function setExitCode($exitCode)
@@ -56,7 +55,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
     /**
      * Renders and sends the whole web response
      *
-     * @return void
      * @api
      */
     public function send()

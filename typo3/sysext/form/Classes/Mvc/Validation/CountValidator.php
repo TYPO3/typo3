@@ -39,7 +39,6 @@ class CountValidator extends AbstractValidator
      * The given value is valid if it is an array or \Countable that contains the specified amount of elements.
      *
      * @param mixed $value
-     * @return void
      * @api
      */
     public function isValid($value)

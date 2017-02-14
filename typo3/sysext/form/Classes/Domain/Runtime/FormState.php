@@ -66,7 +66,6 @@ class FormState
 
     /**
      * @param int $lastDisplayedPageIndex
-     * @return void
      */
     public function setLastDisplayedPageIndex(int $lastDisplayedPageIndex)
     {
@@ -84,7 +83,6 @@ class FormState
     /**
      * @param string $propertyPath
      * @param mixed $value
-     * @return void
      */
     public function setFormValue(string $propertyPath, $value)
     {

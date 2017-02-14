@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 class StartTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     * @return void
      */
     protected function setUp()
     {

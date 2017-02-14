@@ -142,7 +142,6 @@ class Typo3DbQueryParser
      * Creates the queryBuilder object whether it is a regular select or a JOIN
      *
      * @param Qom\SourceInterface $source The source
-     * @return void
      */
     protected function initializeQueryBuilder(Qom\SourceInterface $source)
     {
@@ -230,7 +229,6 @@ class Typo3DbQueryParser
      * @param array $orderings An array of orderings (Qom\Ordering)
      * @param Qom\SourceInterface $source The source
      * @throws UnsupportedOrderException
-     * @return void
      */
     protected function parseOrderings(array $orderings, Qom\SourceInterface $source)
     {
@@ -263,7 +261,6 @@ class Typo3DbQueryParser
      * add TYPO3 Constraints for all tables to the queryBuilder
      *
      * @param QueryInterface $query
-     * @return void
      */
     protected function addTypo3Constraints(QueryInterface $query)
     {
@@ -496,7 +493,6 @@ class Typo3DbQueryParser
      * Add a constraint to ensure that the record type of the returned tuples is matching the data type of the repository.
      *
      * @param string $className The class name
-     * @return void
      */
     protected function addRecordTypeConstraint($className)
     {
@@ -803,7 +799,6 @@ class Typo3DbQueryParser
      *
      * @param Qom\JoinInterface $join The join
      * @param string $leftTableAlias The alias from the table to main
-     * @return void
      */
     protected function parseJoin(Qom\JoinInterface $join, $leftTableAlias)
     {

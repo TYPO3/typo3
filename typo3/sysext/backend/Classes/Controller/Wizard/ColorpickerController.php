@@ -138,8 +138,6 @@ class ColorpickerController extends AbstractWizardController
 
     /**
      * Initialises the Class
-     *
-     * @return void
      */
     protected function init()
     {
@@ -207,8 +205,6 @@ class ColorpickerController extends AbstractWizardController
 
     /**
      * Main Method, rendering either colorpicker or frameset depending on ->showPicker
-     *
-     * @return void
      */
     public function main()
     {
@@ -258,8 +254,6 @@ class ColorpickerController extends AbstractWizardController
      * Returns a frameset so our JavaScript Reference isn't lost
      * Took some brains to figure this one out ;-)
      * If Peter wouldn't have been I would've gone insane...
-     *
-     * @return void
      */
     public function frameSet()
     {

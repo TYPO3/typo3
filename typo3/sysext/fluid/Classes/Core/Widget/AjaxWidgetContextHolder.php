@@ -46,8 +46,6 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Loads the windget contexts from the TYPO3 user session
-     *
-     * @return void
      */
     protected function loadWidgetContexts()
     {
@@ -78,7 +76,6 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      * AjaxWidgetIdentifier inside the Widget Context correctly.
      *
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
-     * @return void
      */
     public function store(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
     {
@@ -90,8 +87,6 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Persists the widget contexts in the TYPO3 user session
-     *
-     * @return void
      */
     protected function storeWidgetContexts()
     {

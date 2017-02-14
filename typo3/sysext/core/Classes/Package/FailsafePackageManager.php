@@ -29,8 +29,6 @@ class FailsafePackageManager extends PackageManager
     /**
      * Loads the states of available packages from the PackageStates.php file.
      * The result is stored in $this->packageStatesConfiguration.
-     *
-     * @return void
      */
     protected function loadPackageStates()
     {
@@ -45,8 +43,6 @@ class FailsafePackageManager extends PackageManager
 
     /**
      * Sort and save states
-     *
-     * @return void
      */
     protected function sortAndSavePackageStates()
     {

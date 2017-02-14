@@ -91,8 +91,6 @@ class MoveElementController extends AbstractModule
 
     /**
      * Constructor, initializing internal variables.
-     *
-     * @return void
      */
     public function init()
     {
@@ -127,8 +125,6 @@ class MoveElementController extends AbstractModule
 
     /**
      * Creating the module output.
-     *
-     * @return void
      */
     public function main()
     {

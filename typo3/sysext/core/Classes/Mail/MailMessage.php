@@ -46,7 +46,6 @@ class MailMessage extends \Swift_Message
     protected $failedRecipients = [];
 
     /**
-     * @return void
      */
     private function initializeMailer()
     {

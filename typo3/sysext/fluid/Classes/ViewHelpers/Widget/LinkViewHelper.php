@@ -39,7 +39,6 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

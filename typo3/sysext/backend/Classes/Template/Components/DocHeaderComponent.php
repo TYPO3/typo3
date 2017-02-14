@@ -61,8 +61,6 @@ class DocHeaderComponent
      * Set page information
      *
      * @param array $metaInformation Record array
-     *
-     * @return void
      */
     public function setMetaInformation(array $metaInformation)
     {

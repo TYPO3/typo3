@@ -126,7 +126,6 @@ class BackendLoginCest
      * @param \AcceptanceTester $I
      * @param string $username
      * @param string $password
-     * @return void
      */
     protected function login(\AcceptanceTester $I, string $username, string $password)
     {
@@ -147,7 +146,6 @@ class BackendLoginCest
      * Logout user by clicking logout button in toolbar
      *
      * @param \AcceptanceTester $I
-     * @return void
      */
     protected function logout(\AcceptanceTester $I)
     {

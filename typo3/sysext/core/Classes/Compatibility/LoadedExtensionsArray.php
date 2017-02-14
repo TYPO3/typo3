@@ -81,7 +81,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
      * @param mixed $offset The offset to assign the value to.
      * @param mixed $value The value to set.
      * @throws \InvalidArgumentException
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -94,7 +93,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      * @param mixed $offset The offset to unset.
      * @throws \InvalidArgumentException
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -150,7 +148,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
      * Move forward to next element
      *
      * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
      */
     public function next()
     {
@@ -189,7 +186,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
      * Rewind the Iterator to the first element
      *
      * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
      */
     public function rewind()
     {
@@ -199,8 +195,6 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 
     /**
      * Reset
-     *
-     * @return void
      */
     public function reset()
     {

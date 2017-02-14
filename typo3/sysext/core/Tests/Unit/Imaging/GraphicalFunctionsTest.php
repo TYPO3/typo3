@@ -26,8 +26,6 @@ class GraphicalFunctionsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

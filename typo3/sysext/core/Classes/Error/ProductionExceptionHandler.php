@@ -50,7 +50,6 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
      * Echoes an exception for the web.
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     public function echoExceptionWeb(\Throwable $exception)
     {
@@ -68,7 +67,6 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
      * Echoes an exception for the command line.
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     public function echoExceptionCLI(\Throwable $exception)
     {

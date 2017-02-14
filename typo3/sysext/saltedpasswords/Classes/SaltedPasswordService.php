@@ -213,7 +213,6 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
      *
      * @param int $uid uid of user record that will be updated
      * @param mixed $updateFields Field values as key=>value pairs to be updated in database
-     * @return void
      */
     protected function updatePassword($uid, $updateFields)
     {
@@ -244,7 +243,6 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
      *
      * @param string $message Message to output
      * @param array<int, mixed> $params
-     * @return void
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
      */
     public function writeLogMessage($message, ...$params)

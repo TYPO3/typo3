@@ -345,7 +345,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string $search Search word, if any
      * @param int $levels Number of levels to search down the page tree
      * @param int $showLimit Limit of records to be listed.
-     * @return void
      */
     public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0)
     {
@@ -436,8 +435,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Traverses the table(s) to be listed and renders the output code for each:
      * The HTML is accumulated in $this->HTMLcode
      * Finishes off with a stopper-gif
-     *
-     * @return void
      */
     public function generateList()
     {
@@ -631,8 +628,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     /**
      * Setting the field names to display in extended list.
      * Sets the internal variable $this->setFields
-     *
-     * @return void
      */
     public function setDispFields()
     {
@@ -1294,7 +1289,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Redirects to FormEngine if a record is just localized.
      *
      * @param string $justLocalized String with table, orig uid and language separated by ":
-     * @return void
      */
     public function localizationRedirect($justLocalized)
     {
@@ -1344,7 +1338,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * Set URL parameters to override or add in the listUrl() method.
      *
      * @param string[] $urlParameters
-     * @return void
      */
     public function setOverrideUrlParameters(array $urlParameters)
     {

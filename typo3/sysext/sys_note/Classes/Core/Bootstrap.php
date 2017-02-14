@@ -102,7 +102,6 @@ class Bootstrap
      * provides a clean way to force a controller and action in backend mode.
      *
      * @param array $arguments The arguments to set
-     * @return void
      */
     protected function overrideGetArguments(array $arguments)
     {
@@ -112,8 +111,6 @@ class Bootstrap
 
     /**
      * Revert previously backuped get arguments
-     *
-     * @return void
      */
     protected function revertGetArguments()
     {

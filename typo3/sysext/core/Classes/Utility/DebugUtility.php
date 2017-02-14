@@ -201,7 +201,6 @@ class DebugUtility
      * Prints an array
      *
      * @param mixed $array_in Array to print visually (in a table).
-     * @return void
      * @see viewArray()
      */
     public static function printArray($array_in)

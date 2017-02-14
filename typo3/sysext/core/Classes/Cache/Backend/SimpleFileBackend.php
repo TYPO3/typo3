@@ -72,7 +72,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The cache frontend
      * @throws \TYPO3\CMS\Core\Cache\Exception
-     * @return void
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
@@ -109,7 +108,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      * option was handled.
      *
      * @param string $cacheDirectory The cache base directory. If a relative path
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if the directory is not within allowed
      */
     public function setCacheDirectory($cacheDirectory)
@@ -180,7 +178,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      * exists in TYPO3 v4 only.
      *
      * @param string $finalCacheDirectory Absolute path to final cache directory
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception If directory is not writable after creation
      */
     protected function createFinalCacheDirectory($finalCacheDirectory)
@@ -213,7 +210,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime This cache backend does not support life times
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data to bes stored is not a string.
      * @throws \InvalidArgumentException
@@ -307,7 +303,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -331,7 +326,6 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     /**
      * Not necessary
      *
-     * @return void
      * @api
      */
     public function collectGarbage()

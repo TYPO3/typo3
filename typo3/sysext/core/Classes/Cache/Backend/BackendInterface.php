@@ -24,7 +24,6 @@ interface BackendInterface
      * Sets a reference to the cache frontend which uses this backend
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
-     * @return void
      * @api
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache);
@@ -36,7 +35,6 @@ interface BackendInterface
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
      * @api
@@ -75,7 +73,6 @@ interface BackendInterface
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @api
      */
     public function flush();
@@ -83,7 +80,6 @@ interface BackendInterface
     /**
      * Does garbage collection
      *
-     * @return void
      * @api
      */
     public function collectGarbage();

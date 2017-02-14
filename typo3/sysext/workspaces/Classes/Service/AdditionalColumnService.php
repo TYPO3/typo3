@@ -45,7 +45,6 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $columnName
      * @param string|object $dataProviderClassOrObject
-     * @return void
      * @throws \RuntimeException
      */
     public function register($columnName, $dataProviderClassOrObject)

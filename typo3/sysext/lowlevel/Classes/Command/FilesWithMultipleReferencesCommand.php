@@ -78,8 +78,6 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -119,7 +117,6 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input holds information about entered parameters
      * @param SymfonyStyle $io necessary for outputting information
-     * @return void
      */
     protected function updateReferenceIndex(InputInterface $input, SymfonyStyle $io)
     {
@@ -194,7 +191,6 @@ If you want to get more detailed information, use the --verbose option.')
      * @param array $multipleReferencesToFiles Contains files which have been referenced multiple times
      * @param bool $dryRun if set, the info is just displayed, but no files are copied nor reference index updated
      * @param SymfonyStyle $io the IO object for output
-     * @return void
      */
     protected function copyMultipleReferencedFiles(array $multipleReferencesToFiles, bool $dryRun, SymfonyStyle $io)
     {

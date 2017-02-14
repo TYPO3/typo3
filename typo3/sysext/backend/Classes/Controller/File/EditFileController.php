@@ -139,8 +139,6 @@ class EditFileController extends AbstractModule
 
     /**
      * Main function, redering the actual content of the editing page
-     *
-     * @return void
      */
     public function main()
     {

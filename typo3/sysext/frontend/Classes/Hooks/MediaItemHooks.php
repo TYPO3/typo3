@@ -26,7 +26,6 @@ class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $params Existing types by reference
      * @param array $conf Config array
-     * @return void
      */
     public function customMediaRenderTypes(&$params, $conf)
     {
@@ -43,7 +42,6 @@ class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $params Existing types by reference
      * @param array $conf Config array
-     * @return void
      */
     public function customMediaParams(&$params, $conf)
     {

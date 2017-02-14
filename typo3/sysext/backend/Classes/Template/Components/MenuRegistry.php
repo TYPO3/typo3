@@ -35,8 +35,6 @@ class MenuRegistry
      * @param Menu $menu Menu object to add to the menuRegistry
      *
      * @throws \InvalidArgumentException In case a menu is not valid
-     *
-     * @return void
      */
     public function addMenu(Menu $menu)
     {

@@ -52,7 +52,6 @@ class FlashMessageQueue extends \SplQueue
      *
      * @param FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
      * @throws \TYPO3\CMS\Core\Exception
-     * @return void
      */
     public function enqueue($message)
     {
@@ -71,7 +70,6 @@ class FlashMessageQueue extends \SplQueue
 
     /**
      * @param FlashMessage $message
-     * @return void
      */
     public function addMessage(FlashMessage $message)
     {
@@ -80,7 +78,6 @@ class FlashMessageQueue extends \SplQueue
 
     /**
      * This method is empty, as it will not move any flash message (e.g. from the session)
-     * @return void
      */
     public function dequeue()
     {
@@ -92,7 +89,6 @@ class FlashMessageQueue extends \SplQueue
      * flash messages that will be stored in the session.
      *
      * @param FlashMessage $message
-     * @return void
      */
     protected function addFlashMessageToSession(FlashMessage $message)
     {
@@ -147,7 +143,6 @@ class FlashMessageQueue extends \SplQueue
      * Stores given flash messages in the session
      *
      * @param FlashMessage[] $flashMessages
-     * @return void
      */
     protected function storeFlashMessagesInSession(array $flashMessages = null)
     {
@@ -158,7 +153,6 @@ class FlashMessageQueue extends \SplQueue
      * Removes all flash messages from the session
      *
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
-     * @return void
      */
     protected function removeAllFlashMessagesFromSession($severity = null)
     {
@@ -238,7 +232,6 @@ class FlashMessageQueue extends \SplQueue
      * Removes all items from the queue
      *
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
-     * @return void
      */
     public function clear($severity = null)
     {

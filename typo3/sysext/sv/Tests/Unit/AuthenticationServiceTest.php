@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Sv\Tests\Unit;
 
 /**
  * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
- *
  */
 class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

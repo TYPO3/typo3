@@ -497,7 +497,6 @@ class PreparedStatement
      * Releases the cursor. Should always be call after having fetched rows from
      * a query execution.
      *
-     * @return void
      * @api
      */
     public function free()
@@ -549,7 +548,6 @@ class PreparedStatement
      * Sets the default fetch mode for this prepared query.
      *
      * @param int $mode One of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants
-     * @return void
      * @api
      */
     public function setFetchMode($mode)
@@ -602,7 +600,6 @@ class PreparedStatement
      * @param string $query
      * @param array $parameterValues
      * @param array $precompiledQueryParts
-     * @return void
      */
     protected function convertNamedPlaceholdersToQuestionMarks(&$query, array &$parameterValues, array &$precompiledQueryParts)
     {

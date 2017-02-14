@@ -204,7 +204,6 @@ class FormProtectionFactory
      * @access private
      * @param string $classNameOrType
      * @param AbstractFormProtection $instance
-     * @return void
      */
     public static function set($classNameOrType, AbstractFormProtection $instance)
     {
@@ -215,8 +214,6 @@ class FormProtectionFactory
      * Purges all existing instances.
      *
      * This function is particularly useful when cleaning up in unit testing.
-     *
-     * @return void
      */
     public static function purgeInstances()
     {

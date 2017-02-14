@@ -46,8 +46,6 @@ class CategoryBasedFileCollection extends AbstractFileCollection
 
     /**
      * Populates the content-entries of the collection
-     *
-     * @return void
      */
     public function loadContents()
     {

@@ -66,8 +66,6 @@ class ElementBrowserFramesetController
     /**
      * Main function.
      * Creates the header code in XHTML, the JavaScript, then the frameset for the two frames.
-     *
-     * @return void
      */
     public function main()
     {

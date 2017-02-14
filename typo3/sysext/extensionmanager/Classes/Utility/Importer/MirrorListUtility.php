@@ -75,7 +75,6 @@ class MirrorListUtility implements \SplObserver
      * Method receives an update from a subject.
      *
      * @param \SplSubject $subject a subject notifying this observer
-     * @return void
      */
     public function update(\SplSubject $subject)
     {

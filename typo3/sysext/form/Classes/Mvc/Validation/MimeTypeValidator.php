@@ -42,7 +42,6 @@ class MimeTypeValidator extends AbstractValidator
      * Note: a value of NULL or empty string ('') is considered valid
      *
      * @param FileReference|File $resource The resource that should be validated
-     * @return void
      * @api
      */
     public function isValid($resource)
@@ -78,7 +77,6 @@ class MimeTypeValidator extends AbstractValidator
     /**
      * Checks if this validator is correctly configured
      *
-     * @return void
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
     protected function validateOptions()

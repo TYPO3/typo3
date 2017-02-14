@@ -47,7 +47,6 @@ abstract class AbstractLinktype implements LinktypeInterface
      * Set the value of the protected property errorParams
      *
      * @param array $value All parameters needed for the rendering of the error message
-     * @return void
      */
     protected function setErrorParams($value)
     {

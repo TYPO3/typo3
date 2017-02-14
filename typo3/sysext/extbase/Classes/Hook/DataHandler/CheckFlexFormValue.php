@@ -35,7 +35,6 @@ class CheckFlexFormValue
      * @param DataHandler $dataHander
      * @param array &$currentValue
      * @param array &$newValue
-     * @return void
      */
     public function checkFlexFormValue_beforeMerge(DataHandler $dataHander, array &$currentValue, array &$newValue)
     {

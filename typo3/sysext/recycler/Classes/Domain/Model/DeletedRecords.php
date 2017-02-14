@@ -138,7 +138,6 @@ class DeletedRecords
      * @param string $table Tablename from record
      * @param int $depth How many levels recursive
      * @param string $filter Filter text
-     * @return void
      */
     protected function setData($id, $table, $depth, $filter)
     {
@@ -340,7 +339,6 @@ class DeletedRecords
      *
      * @param string $table Name of the table
      * @param array $rows Record row
-     * @return void
      */
     protected function checkRecordAccess($table, array $rows)
     {
@@ -488,7 +486,6 @@ class DeletedRecords
      *
      * @param string $table Tablename
      * @param array $row Deleted record row
-     * @return void
      */
     public function setDeletedRows($table, array $row)
     {

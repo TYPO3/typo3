@@ -58,8 +58,6 @@ class ConsoleOutput
 
     /**
      * Creates and initializes the Symfony I/O instances
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -88,7 +86,6 @@ class ConsoleOutput
      *
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
-     * @return void
      */
     public function output($text, array $arguments = [])
     {
@@ -103,7 +100,6 @@ class ConsoleOutput
      *
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
-     * @return void
      * @see output()
      * @see outputLines()
      */
@@ -119,7 +115,6 @@ class ConsoleOutput
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
      * @param int $leftPadding The number of spaces to use for indentation
-     * @return void
      * @see outputLine()
      */
     public function outputFormatted($text = '', array $arguments = [], $leftPadding = 0)
@@ -273,7 +268,6 @@ class ConsoleOutput
      * Starts the progress output
      *
      * @param int $max Maximum steps. If NULL an indeterminate progress bar is rendered
-     * @return void
      */
     public function progressStart($max = null)
     {
@@ -284,7 +278,6 @@ class ConsoleOutput
      * Advances the progress output X steps
      *
      * @param int $step Number of steps to advance
-     * @return void
      * @throws \LogicException
      */
     public function progressAdvance($step = 1)
@@ -296,7 +289,6 @@ class ConsoleOutput
      * Sets the current progress
      *
      * @param int $current The current progress
-     * @return void
      * @throws \LogicException
      */
     public function progressSet($current)
@@ -306,8 +298,6 @@ class ConsoleOutput
 
     /**
      * Finishes the progress output
-     *
-     * @return void
      */
     public function progressFinish()
     {

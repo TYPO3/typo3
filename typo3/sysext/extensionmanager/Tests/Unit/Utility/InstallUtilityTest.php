@@ -40,7 +40,6 @@ class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $installMock;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -90,7 +89,6 @@ class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return void
      */
     protected function tearDown()
     {
@@ -327,7 +325,6 @@ class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     *
      * @param string $fileName
      * @param string $registryNameReturnsFalse
      * @param string $registryNameReturnsTrue

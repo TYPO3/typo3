@@ -78,8 +78,6 @@ class DebuggerUtility
 
     /**
      * Clear the state of the debugger
-     *
-     * @return void
      */
     protected static function clearState()
     {

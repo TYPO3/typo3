@@ -38,7 +38,6 @@ class BindVariableValue implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Bi
      * Fills an array with the names of all bound variables in the operand
      *
      * @param array &$boundVariables
-     * @return void
      */
     public function collectBoundVariableNames(&$boundVariables)
     {

@@ -85,7 +85,6 @@ class AbstractAuthenticationService extends AbstractService
      * @param array $loginData Submitted login form data
      * @param array $authInfo Information array. Holds submitted form data etc.
      * @param AbstractUserAuthentication $pObj Parent object
-     * @return void
      */
     public function initAuth($mode, $loginData, $authInfo, $pObj)
     {
@@ -125,7 +124,6 @@ class AbstractAuthenticationService extends AbstractService
      * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @return void
      */
     public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '')
     {

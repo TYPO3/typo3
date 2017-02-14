@@ -78,8 +78,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Lifecycle method
-     *
-     * @return void
      */
     public function initializeObject()
     {

@@ -257,7 +257,6 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
 
     /**
      * @test
-     *
      */
     public function addAdditionalIdentityPropertiesIfNeededCallsRenderIdentityFieldWithTheRightParameters()
     {

@@ -323,8 +323,6 @@ class GraphicalFunctions
     /**
      * Init function. Must always call this when using the class.
      * This function will read the configuration information from $GLOBALS['TYPO3_CONF_VARS']['GFX'] can set some values in internal variables.
-     *
-     * @return void
      */
     public function init()
     {
@@ -394,7 +392,6 @@ class GraphicalFunctions
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function maskImageOntoImage(&$im, $conf, $workArea)
@@ -481,7 +478,6 @@ class GraphicalFunctions
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), maskImageOntoImage()
      */
     public function copyImageOntoImage(&$im, $conf, $workArea)
@@ -504,7 +500,6 @@ class GraphicalFunctions
      * @param resource $cpImg GDlib image pointer, source (top image)
      * @param array $conf TypoScript array with the properties for the IMAGE GIFBUILDER object. Only used for the "tile" property value.
      * @param array $workArea Work area
-     * @return void Works on the $im image pointer
      * @access private
      */
     public function copyGifOntoGif(&$im, $cpImg, $conf, $workArea)
@@ -584,7 +579,6 @@ class GraphicalFunctions
      * @param int $dstHeight Destination height
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
-     * @return void
      * @access private
      */
     public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
@@ -614,7 +608,6 @@ class GraphicalFunctions
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function makeText(&$im, $conf, $workArea)
@@ -845,7 +838,6 @@ class GraphicalFunctions
      *
      * @param array $cords Coordinates for a polygon image map as created by ->calcTextCordsForMap()
      * @param array $conf Configuration for "imgMap." property of a TEXT GIFBUILDER object.
-     * @return void
      * @access private
      * @see makeText(), calcTextCordsForMap()
      */
@@ -899,7 +891,6 @@ class GraphicalFunctions
      * @param int $wordSpacing The spacing of words in pixels
      * @param array $splitRenderingConf Array
      * @param int $sF Scale factor
-     * @return void
      * @access private
      */
     public function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1)
@@ -1028,7 +1019,6 @@ class GraphicalFunctions
      * @param string $string (See argument for PHP function imageTTFtext()). UTF-8 string, possibly with entities in.
      * @param array $splitRendering Split-rendering configuration
      * @param int $sF Scale factor
-     * @return void
      */
     public function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF = 1)
     {
@@ -1254,7 +1244,6 @@ class GraphicalFunctions
      * @param array $splitRendering Split-rendering configuration
      * @param array $conf The configuration
      * @param int $sF Scale factor
-     * @return void
      */
     protected function renderTTFText(&$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1)
     {
@@ -1359,7 +1348,6 @@ class GraphicalFunctions
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText()
      */
     public function makeOutline(&$im, $conf, $workArea, $txtConf)
@@ -1418,7 +1406,6 @@ class GraphicalFunctions
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeShadow()
      */
     public function makeEmboss(&$im, $conf, $workArea, $txtConf)
@@ -1441,7 +1428,6 @@ class GraphicalFunctions
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
      * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText(), makeEmboss()
      */
     public function makeShadow(&$im, $conf, $workArea, $txtConf)
@@ -1542,7 +1528,6 @@ class GraphicalFunctions
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function makeBox(&$im, $conf, $workArea)
@@ -1582,7 +1567,6 @@ class GraphicalFunctions
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @param array $workArea The current working area coordinates.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function makeEllipse(&$im, array $conf, array $workArea)
@@ -1603,7 +1587,6 @@ class GraphicalFunctions
      *
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), applyImageMagickToPHPGif()
      */
     public function makeEffect(&$im, $conf)
@@ -1697,7 +1680,6 @@ class GraphicalFunctions
      *
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), autoLevels(), outputLevels(), inputLevels()
      */
     public function adjust(&$im, $conf)
@@ -1733,7 +1715,6 @@ class GraphicalFunctions
      *
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function crop(&$im, $conf)
@@ -1772,7 +1753,6 @@ class GraphicalFunctions
      *
      * @param resource $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
     public function scale(&$im, $conf)
@@ -1805,7 +1785,6 @@ class GraphicalFunctions
      * Setting internal working area boundaries (->workArea)
      *
      * @param string $workArea Working area dimensions, comma separated
-     * @return void
      * @access private
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
      */
@@ -1830,7 +1809,6 @@ class GraphicalFunctions
      * Apply auto-levels to input image pointer
      *
      * @param resource $im GDlib Image Pointer
-     * @return void
      */
     public function autolevels(&$im)
     {
@@ -1861,7 +1839,6 @@ class GraphicalFunctions
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      * @param bool $swap If swap, then low and high are swapped. (Useful for negated masks...)
-     * @return void
      */
     public function outputLevels(&$im, $low, $high, $swap = false)
     {
@@ -1891,7 +1868,6 @@ class GraphicalFunctions
      * @param resource $im GDlib Image Pointer
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
-     * @return void
      */
     public function inputLevels(&$im, $low, $high)
     {
@@ -2701,7 +2677,6 @@ class GraphicalFunctions
      *
      * @param resource $im The image pointer (reference)
      * @param string $command The ImageMagick parameters. Like effects, scaling etc.
-     * @return void
      */
     public function applyImageMagickToPHPGif(&$im, $command)
     {
@@ -2791,7 +2766,6 @@ class GraphicalFunctions
     /**
      * Destroy internal image pointer, $this->im
      *
-     * @return void
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
      */
     public function destroy()
@@ -2982,7 +2956,6 @@ class GraphicalFunctions
      * @param string $textline1 Text line 1
      * @param string $textline2 Text line 2
      * @param string $textline3 Text line 3
-     * @return void
      * @throws \RuntimeException
      */
     public function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3)

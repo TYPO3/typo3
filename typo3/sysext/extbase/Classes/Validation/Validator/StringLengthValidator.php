@@ -35,7 +35,6 @@ class StringLengthValidator extends AbstractValidator
      * specified in the validation options.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
      * @api
      */

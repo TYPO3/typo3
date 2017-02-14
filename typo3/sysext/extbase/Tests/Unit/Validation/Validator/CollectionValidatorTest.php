@@ -52,7 +52,6 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
     }
 
     /**
-     * @return void
      */
     protected function setUp()
     {

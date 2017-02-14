@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
- *
  */
 class ConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -47,8 +46,6 @@ class ConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Create a new database connection mock object for every test.
-     *
-     * @return void
      */
     protected function setUp()
     {

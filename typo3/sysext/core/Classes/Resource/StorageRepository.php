@@ -80,8 +80,6 @@ class StorageRepository extends AbstractRepository
 
     /**
      * Initializes the Storage
-     *
-     * @return void
      */
     protected function initializeLocalCache()
     {

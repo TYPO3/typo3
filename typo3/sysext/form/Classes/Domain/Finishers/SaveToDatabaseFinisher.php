@@ -192,7 +192,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * Executes this finisher
      * @see AbstractFinisher::execute()
      *
-     * @return void
      * @throws FinisherException
      */
     protected function executeInternal()
@@ -213,7 +212,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * Perform the current database operation
      *
      * @param int $iterationCount
-     * @return void
      */
     protected function process(int $iterationCount)
     {
@@ -283,7 +281,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * @param [] $databaseData
      * @param string $table
      * @param int $iterationCount
-     * @return void
      */
     protected function saveToDatabase(array $databaseData, string $table, int $iterationCount)
     {
@@ -314,7 +311,6 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * Throws an exception if some inconsistent configuration
      * are detected.
      *
-     * @return void
      * @throws FinisherException
      */
     protected function throwExceptionOnInconsistentConfiguration()

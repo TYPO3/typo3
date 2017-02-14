@@ -59,7 +59,6 @@ class LanguageCommandController extends CommandController
      * Update language file for each extension
      *
      * @param string $localesToUpdate Comma separated list of locales that needs to be updated
-     * @return void
      */
     public function updateCommand($localesToUpdate = '')
     {

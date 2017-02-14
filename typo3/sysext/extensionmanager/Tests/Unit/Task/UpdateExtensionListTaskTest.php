@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Task;
 
 /**
  * Test case
- *
  */
 class UpdateExtensionListTaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

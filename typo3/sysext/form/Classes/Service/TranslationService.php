@@ -476,7 +476,6 @@ class TranslationService implements SingletonInterface
 
     /**
      * @param string $locallangPathAndFilename
-     * @return void
      */
     protected function initializeLocalization(string $locallangPathAndFilename)
     {
@@ -502,8 +501,6 @@ class TranslationService implements SingletonInterface
     /**
      * Sets the currently active language/language_alt keys.
      * Default values are "default" for language key and "" for language_alt key.
-     *
-     * @return void
      */
     protected function setLanguageKeys()
     {
@@ -536,8 +533,6 @@ class TranslationService implements SingletonInterface
      * Overwrites labels that are set via TypoScript.
      * TS locallang labels have to be configured like:
      * plugin.tx_form._LOCAL_LANG.languageKey.key = value
-     *
-     * @return void
      */
     protected function loadTypoScriptLabels()
     {

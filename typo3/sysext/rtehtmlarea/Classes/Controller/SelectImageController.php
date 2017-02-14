@@ -156,7 +156,6 @@ class SelectImageController extends AbstractLinkBrowserController
      * Initialize hook objects implementing the interface
      *
      * @throws \UnexpectedValueException
-     * @return void
      */
     protected function initHookObjects()
     {
@@ -198,8 +197,6 @@ class SelectImageController extends AbstractLinkBrowserController
 
     /**
      * Initialize $this->currentLinkParts and $this->currentLinkHandler
-     *
-     * @return void
      */
     protected function initCurrentUrl()
     {

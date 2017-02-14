@@ -31,7 +31,6 @@ class TextValidator extends AbstractValidator
      * See http://php.net/filter_var for details.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

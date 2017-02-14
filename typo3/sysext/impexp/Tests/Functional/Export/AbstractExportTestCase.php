@@ -48,8 +48,6 @@ abstract class AbstractExportTestCase extends \TYPO3\TestingFramework\Core\Funct
     /**
      * Set up for set up the backend user, initialize the language object
      * and creating the Export instance
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -69,7 +67,6 @@ abstract class AbstractExportTestCase extends \TYPO3\TestingFramework\Core\Funct
      *
      * @param int $pidToStart
      * @param int $depth
-     * @return void
      */
     protected function setPageTree($pidToStart, $depth = 1)
     {
@@ -97,7 +94,6 @@ abstract class AbstractExportTestCase extends \TYPO3\TestingFramework\Core\Funct
      *
      * @param int $pid Page id for which to select records to add
      * @param array $tables Array of table names to select from
-     * @return void
      */
     protected function addRecordsForPid($pid, array $tables)
     {

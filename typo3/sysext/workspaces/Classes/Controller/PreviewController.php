@@ -57,8 +57,6 @@ class PreviewController extends AbstractController
 
     /**
      * Initializes the controller before invoking an action method.
-     *
-     * @return void
      */
     protected function initializeAction()
     {
@@ -79,7 +77,6 @@ class PreviewController extends AbstractController
      * only the frames-urls we've to generate here
      *
      * @param int $previewWS
-     * @return void
      */
     public function indexAction($previewWS = null)
     {
@@ -190,7 +187,6 @@ class PreviewController extends AbstractController
     }
 
     /**
-     * @return void
      */
     public function newPageAction()
     {

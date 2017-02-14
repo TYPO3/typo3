@@ -28,7 +28,6 @@ abstract class FormFieldViewHelperBaseTestcase extends ViewHelperBaseTestcase
     protected $mockConfigurationManager;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -38,7 +37,6 @@ abstract class FormFieldViewHelperBaseTestcase extends ViewHelperBaseTestcase
 
     /**
      * @param ViewHelperInterface $viewHelper
-     * @return void
      */
     protected function injectDependenciesIntoViewHelper(ViewHelperInterface $viewHelper)
     {

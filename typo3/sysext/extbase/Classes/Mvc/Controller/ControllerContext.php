@@ -77,7 +77,6 @@ class ControllerContext
      * Set the request of the controller
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Request $request
-     * @return void
      */
     public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request)
     {
@@ -99,7 +98,6 @@ class ControllerContext
      * Set the response of the controller
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Response $response
-     * @return void
      */
     public function setResponse(\TYPO3\CMS\Extbase\Mvc\Response $response)
     {
@@ -121,7 +119,6 @@ class ControllerContext
      * Set the arguments of the controller
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments
-     * @return void
      */
     public function setArguments(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments)
     {
@@ -141,7 +138,6 @@ class ControllerContext
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
-     * @return void
      */
     public function setUriBuilder(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder)
     {

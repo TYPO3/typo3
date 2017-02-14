@@ -29,7 +29,6 @@ class UserFileInlineLabelService
      * Get the user function label for the file_reference table
      *
      * @param array $params
-     * @return void
      */
     public function getInlineLabel(array &$params)
     {

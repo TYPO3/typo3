@@ -267,7 +267,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
      * @param array $hierarchicArray The hierarchic array (passed by reference)
      * @param array $rootlineArray The rootline array
      * @param array $row The row from the database containing the uid and TSConfig fields
-     * @return void
      */
     protected function setInPageArray(&$hierarchicArray, $rootlineArray, $row)
     {

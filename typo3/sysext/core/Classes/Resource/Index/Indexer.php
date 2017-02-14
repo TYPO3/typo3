@@ -77,7 +77,6 @@ class Indexer
      * Update index entry
      *
      * @param File $fileObject
-     * @return void
      */
     public function updateIndexEntry(File $fileObject)
     {
@@ -88,7 +87,6 @@ class Indexer
     }
 
     /**
-     * @return void
      */
     public function processChangesInStorages()
     {
@@ -102,7 +100,6 @@ class Indexer
 
     /**
      * @param int $maximumFileCount
-     * @return void
      */
     public function runMetaDataExtraction($maximumFileCount = -1)
     {
@@ -196,7 +193,6 @@ class Indexer
      * Adds updated files to the processing queue
      *
      * @param array $fileIdentifierArray
-     * @return void
      */
     protected function detectChangedFilesInStorage(array $fileIdentifierArray)
     {
@@ -225,8 +221,6 @@ class Indexer
     /**
      * Processes the Files which have been detected as "changed or new"
      * in the storage
-     *
-     * @return void
      */
     protected function processChangedAndNewFiles()
     {

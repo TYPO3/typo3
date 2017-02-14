@@ -69,7 +69,6 @@ class EmailFinisher extends AbstractFinisher
      * Executes this finisher
      * @see AbstractFinisher::execute()
      *
-     * @return void
      * @throws FinisherException
      */
     protected function executeInternal()

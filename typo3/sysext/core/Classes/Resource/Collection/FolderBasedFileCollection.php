@@ -60,8 +60,6 @@ class FolderBasedFileCollection extends AbstractFileCollection
      * If the content entries of the storage had not been loaded on creation
      * ($fillItems = false) this function is to be used for loading the contents
      * afterwards.
-     *
-     * @return void
      */
     public function loadContents()
     {

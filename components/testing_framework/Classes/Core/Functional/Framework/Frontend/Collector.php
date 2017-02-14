@@ -125,7 +125,6 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param string $content
      * @param NULL|array $configuration
-     * @return void
      */
     public function attachSection($content, array $configuration = null)
     {
@@ -189,8 +188,6 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Collector needs to be reset after attaching a section, otherwise records will pile up.
-     *
-     * @return void
      */
     protected function reset()
     {

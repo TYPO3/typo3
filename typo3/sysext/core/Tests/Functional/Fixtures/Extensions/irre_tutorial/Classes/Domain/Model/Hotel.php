@@ -48,7 +48,6 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -65,7 +64,6 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer> $offers
-     * @return void
      */
     public function setOffers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers)
     {

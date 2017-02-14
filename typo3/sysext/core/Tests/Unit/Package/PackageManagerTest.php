@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Testcase for the default package manager
- *
  */
 class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -33,7 +32,6 @@ class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up this test case
-     *
      */
     protected function setUp()
     {

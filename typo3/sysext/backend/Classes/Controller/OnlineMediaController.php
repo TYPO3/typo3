@@ -132,7 +132,6 @@ class OnlineMediaController
      * Add flash message to message queue
      *
      * @param FlashMessage $flashMessage
-     * @return void
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {

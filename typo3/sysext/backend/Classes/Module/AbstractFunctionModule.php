@@ -187,7 +187,6 @@ abstract class AbstractFunctionModule
      * If $this->function_key is set (which means there are two levels of object connectivity) then
      * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
      *
-     * @return void
      * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
      */
     public function handleExternalFunctionValue()
@@ -202,8 +201,6 @@ abstract class AbstractFunctionModule
     /**
      * Including any locallang file configured and merging its content over
      * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
-     *
-     * @return void
      */
     public function incLocalLang()
     {
@@ -225,7 +222,6 @@ abstract class AbstractFunctionModule
     /**
      * Same as \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
      *
-     * @return void
      * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
      */
     public function checkExtObj()
@@ -240,8 +236,6 @@ abstract class AbstractFunctionModule
 
     /**
      * Calls the main function inside ANOTHER sub-submodule which might exist.
-     *
-     * @return void
      */
     public function extObjContent()
     {

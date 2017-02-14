@@ -445,8 +445,6 @@ abstract class AbstractFile implements FileInterface
     /**
      * Marks this file as deleted. This should only be used inside the
      * File Abstraction Layer, as it is a low-level API method.
-     *
-     * @return void
      */
     public function setDeleted()
     {

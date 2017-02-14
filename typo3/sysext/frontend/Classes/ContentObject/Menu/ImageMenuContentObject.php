@@ -28,7 +28,6 @@ class ImageMenuContentObject extends AbstractMenuContentObject
      * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
      * Calls makeImageMap() to generate the image map image-file
      *
-     * @return void
      * @see AbstractMenuContentObject::procesItemStates(), makeImageMap()
      */
     public function generate()
@@ -50,7 +49,6 @@ class ImageMenuContentObject extends AbstractMenuContentObject
      * The data of the files are stored in $this->result
      *
      * @param array $conf Array with configuration for each item.
-     * @return void
      * @access private
      * @see generate()
      */

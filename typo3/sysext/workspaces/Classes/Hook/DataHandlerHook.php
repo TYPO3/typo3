@@ -36,7 +36,6 @@ class DataHandlerHook
      * @param string $id
      * @param string $value
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
-     * @return void
      */
     public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler)
     {
@@ -54,7 +53,6 @@ class DataHandlerHook
      * executed
      *
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler reference to the main DataHandler object
-     * @return void
      */
     public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler)
     {
@@ -67,7 +65,6 @@ class DataHandlerHook
      * as orphan records.
      *
      * @param int $stageId Elements with this stage are resetted
-     * @return void
      */
     protected function resetStageOfElements($stageId)
     {
@@ -102,7 +99,6 @@ class DataHandlerHook
      * Flushes elements of a particular workspace to avoid orphan records.
      *
      * @param int $workspaceId The workspace to be flushed
-     * @return void
      */
     protected function flushWorkspaceElements($workspaceId)
     {
@@ -156,7 +152,6 @@ class DataHandlerHook
      * Flushes the workspace cache for current workspace and for the virtual "all workspaces" too.
      *
      * @param int $workspaceId The workspace to be flushed in cache
-     * @return void
      */
     protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId)
     {

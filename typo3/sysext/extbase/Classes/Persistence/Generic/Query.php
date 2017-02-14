@@ -154,7 +154,6 @@ class Query implements QueryInterface
      * the specific Storage Backend.
      *
      * @param QuerySettingsInterface $querySettings The Query Settings
-     * @return void
      * @api This method is not part of TYPO3.Flow API
      */
     public function setQuerySettings(QuerySettingsInterface $querySettings)
@@ -619,7 +618,6 @@ class Query implements QueryInterface
     }
 
     /**
-     * @return void
      */
     public function __wakeup()
     {

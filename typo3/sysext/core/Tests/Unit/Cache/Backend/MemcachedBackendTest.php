@@ -25,8 +25,6 @@ class MemcachedBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 {
     /**
      * Sets up this testcase
-     *
-     * @return void
      */
     protected function setUp()
     {

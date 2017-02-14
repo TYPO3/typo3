@@ -39,7 +39,6 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      * @api
@@ -121,7 +120,6 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -134,7 +132,6 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -148,7 +145,6 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
     /**
      * Does nothing
      *
-     * @return void
      * @api
      */
     public function collectGarbage()

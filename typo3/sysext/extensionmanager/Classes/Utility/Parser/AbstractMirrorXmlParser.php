@@ -179,7 +179,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      * Method resets version class properties.
      *
      * @access protected
-     * @return void
      * @see $country, $host, $path, $sponsorlink, $sponsorlogo, $sponsorname, $title
      */
     protected function resetProperties()

@@ -51,7 +51,6 @@ class FormManagerController extends AbstractBackendController
      * Initialize the references action.
      * This action use the Fluid JsonView::class as view.
      *
-     * @return void
      * @internal
      */
     public function initializeReferencesAction()
@@ -62,7 +61,6 @@ class FormManagerController extends AbstractBackendController
     /**
      * Displays the Form Manager
      *
-     * @return void
      * @internal
      */
     public function indexAction()
@@ -169,7 +167,6 @@ class FormManagerController extends AbstractBackendController
      * Show references to this persistence identifier
      *
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
-     * @return void
      * @internal
      */
     public function referencesAction(string $formPersistenceIdentifier)
@@ -188,7 +185,6 @@ class FormManagerController extends AbstractBackendController
      * Delete a formDefinition identified by the $formPersistenceIdentifier.
      *
      * @param string $formPersistenceIdentifier persistence identifier to delete
-     * @return void
      * @internal
      */
     public function deleteAction(string $formPersistenceIdentifier)

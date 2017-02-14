@@ -86,7 +86,6 @@ class ReplaceFileController extends AbstractModule
     /**
      * Init
      *
-     * @return void
      * @throws \RuntimeException
      * @throws InsufficientFileAccessPermissionsException
      */
@@ -143,8 +142,6 @@ class ReplaceFileController extends AbstractModule
 
     /**
      * Main function, rendering the content of the rename form
-     *
-     * @return void
      */
     public function main()
     {

@@ -51,7 +51,6 @@ class DebuggerUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function varDumpRespectsBlacklistedProperties()
     {
@@ -65,7 +64,6 @@ class DebuggerUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function varDumpRespectsBlacklistedClasses()
     {

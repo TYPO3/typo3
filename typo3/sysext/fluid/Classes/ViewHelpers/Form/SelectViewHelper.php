@@ -90,7 +90,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     /**
      * Initialize arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

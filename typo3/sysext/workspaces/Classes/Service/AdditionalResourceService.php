@@ -55,7 +55,6 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param string $name
      * @param string $resourcePath
-     * @return void
      */
     public function addJavaScriptResource($name, $resourcePath)
     {
@@ -65,7 +64,6 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param string $name
      * @param string $resourcePath
-     * @return void
      */
     public function addStylesheetResource($name, $resourcePath)
     {
@@ -74,7 +72,6 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $resourcePath
-     * @return void
      */
     public function addLocalizationResource($resourcePath)
     {

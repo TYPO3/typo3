@@ -262,7 +262,6 @@ class CommandMap
      *
      * @param string $callbackMethod
      * @param array $arguments Optional leading arguments for the callback method
-     * @return void
      */
     protected function invokeWorkspacesSwapItems($callbackMethod, array $arguments = [])
     {
@@ -285,8 +284,6 @@ class CommandMap
      * Workspaces records that have children or (relative) parents which are versionized
      * but not published with this request, are removed from the command map. Otherwise
      * this would produce hanging record sets and lost references.
-     *
-     * @return void
      */
     protected function resolveWorkspacesSwapDependencies()
     {
@@ -305,7 +302,6 @@ class CommandMap
      * @param string $table
      * @param int $liveId
      * @param array $properties
-     * @return void
      */
     protected function applyWorkspacesSwapBehaviour($table, $liveId, array $properties)
     {
@@ -333,7 +329,6 @@ class CommandMap
      * @param string $table
      * @param int $liveId
      * @param array $properties
-     * @return void
      */
     protected function addWorkspacesSwapElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $liveId, array $properties)
     {
@@ -357,7 +352,6 @@ class CommandMap
      *
      * @param string $callbackMethod
      * @param array $arguments Optional leading arguments for the callback method
-     * @return void
      */
     protected function invokeWorkspacesSetStageItems($callbackMethod, array $arguments = [])
     {
@@ -379,8 +373,6 @@ class CommandMap
      * Resolves workspaces related dependencies for staging of the command map.
      * Workspaces records that have children or (relative) parents which are versionized
      * but not staged with this request, are removed from the command map.
-     *
-     * @return void
      */
     protected function resolveWorkspacesSetStageDependencies()
     {
@@ -400,7 +392,6 @@ class CommandMap
      * @param string $table
      * @param string $versionIdList
      * @param array $properties
-     * @return void
      */
     protected function applyWorkspacesSetStageBehaviour($table, $versionIdList, array $properties)
     {
@@ -443,7 +434,6 @@ class CommandMap
      * @param string $table
      * @param string $versionId
      * @param array $properties
-     * @return void
      */
     protected function addWorkspacesSetStageElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $versionId, array $properties)
     {
@@ -454,8 +444,6 @@ class CommandMap
      * Resolves workspaces related dependencies for clearing/flushing of the command map.
      * Workspaces records that have children or (relative) parents which are versionized
      * but not cleared/flushed with this request, are removed from the command map.
-     *
-     * @return void
      */
     protected function resolveWorkspacesClearDependencies()
     {
@@ -481,7 +469,6 @@ class CommandMap
      * @param string $table
      * @param string $versionIdList
      * @param array $properties
-     * @return void
      */
     protected function explodeSetStage($table, $versionIdList, array $properties)
     {
@@ -505,7 +492,6 @@ class CommandMap
      *
      * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
      * @param string $scope
-     * @return void
      */
     protected function applyWorkspacesDependencies(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $scope)
     {
@@ -541,7 +527,6 @@ class CommandMap
      *
      * @param array $elements
      * @param string $scope
-     * @return void
      */
     protected function purgeWithErrorMessage(array $elements, $scope)
     {
@@ -564,7 +549,6 @@ class CommandMap
      * @param ElementEntity $intersectingElement
      * @param array $elements
      * @param string $scope
-     * @return void
      */
     protected function update(ElementEntity $intersectingElement, array $elements, $scope)
     {
@@ -594,7 +578,6 @@ class CommandMap
      * Merges command map elements to the top of the current command map..
      *
      * @param array $commandMap
-     * @return void
      */
     protected function mergeToTop(array $commandMap)
     {
@@ -606,7 +589,6 @@ class CommandMap
      * Merges command map elements to the bottom of the current command map.
      *
      * @param array $commandMap
-     * @return void
      */
     protected function mergeToBottom(array $commandMap)
     {
@@ -619,7 +601,6 @@ class CommandMap
      * @param string $table
      * @param string $id
      * @param string $command (optional)
-     * @return void
      */
     protected function remove($table, $id, $command = null)
     {
@@ -770,8 +751,6 @@ class CommandMap
     /**
      * Constructs the scope settings.
      * Currently the scopes for swapping/publishing and staging are available.
-     *
-     * @return void
      */
     protected function constructScopes()
     {

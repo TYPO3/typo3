@@ -21,8 +21,6 @@ class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController
 {
     /**
      * Set context to 'in page mode'
-     *
-     * @return void
      */
     public function initializeAction()
     {

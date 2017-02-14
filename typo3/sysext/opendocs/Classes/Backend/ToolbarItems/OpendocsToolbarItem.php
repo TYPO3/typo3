@@ -57,8 +57,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface
 
     /**
      * Loads the opened and recently opened documents from the user
-     *
-     * @return void
      */
     public function loadDocsFromUserSession()
     {

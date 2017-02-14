@@ -38,7 +38,6 @@ class TextfieldViewHelper extends AbstractFormFieldViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @api
      */

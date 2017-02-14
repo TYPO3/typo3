@@ -129,8 +129,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
     /**
      * Init
-     *
-     * @return void
      */
     public function init()
     {
@@ -144,8 +142,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
     /**
      * Clear cache
-     *
-     * @return void
      */
     public function clearCache()
     {
@@ -159,8 +155,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
     /**
      * Main
-     *
-     * @return void
      */
     public function main()
     {
@@ -249,7 +243,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * Generates the menu based on $this->MOD_MENU
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function generateMenu()
@@ -586,7 +579,6 @@ page.10.value = HELLO WORLD!
      * @param array $pArray
      * @param array $rlArr
      * @param array $row
-     * @return void
      */
     public function setInPageArray(&$pArray, $rlArr, $row)
     {

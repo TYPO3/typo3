@@ -91,8 +91,6 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
 
     /**
      * Execute TYPO3 bootstrap
-     *
-     * @return void
      */
     protected function boot()
     {

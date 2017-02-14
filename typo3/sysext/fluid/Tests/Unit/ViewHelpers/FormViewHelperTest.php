@@ -76,7 +76,6 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
 
     /**
      * @param ViewHelperInterface $viewHelper
-     * @return void
      */
     protected function injectDependenciesIntoViewHelper(ViewHelperInterface $viewHelper)
     {

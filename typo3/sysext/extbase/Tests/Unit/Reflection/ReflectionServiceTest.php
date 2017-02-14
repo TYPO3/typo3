@@ -26,7 +26,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 {
     /**
      * @param array $foo The foo parameter
-     * @return void
+     * @return string
      */
     public function fixtureMethodForMethodTagsValues(array $foo)
     {
@@ -35,7 +35,6 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @param bool $dummy
      * @param int $foo
-     * @return void
      */
     public function fixtureMethodForMethodTagsValuesWithShortTypes($dummy, $foo)
     {
@@ -85,7 +84,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $tagsValues = $service->getMethodTagsValues(get_class($this), 'fixtureMethodForMethodTagsValues');
         $this->assertEquals([
             'param' => ['array $foo The foo parameter'],
-            'return' => ['void']
+            'return' => ['string']
         ], $tagsValues);
     }
 

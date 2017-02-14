@@ -108,7 +108,6 @@ abstract class AbstractValidator implements ValidatorInterface
      * to result.
      *
      * @param mixed $value
-     * @return void
      */
     abstract protected function isValid($value);
 
@@ -119,7 +118,6 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param int $code The error code (a unix timestamp)
      * @param array $arguments Arguments to be replaced in message
      * @param string $title title of the error
-     * @return void
      */
     protected function addError($message, $code, array $arguments = [], $title = '')
     {

@@ -95,7 +95,6 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
      * Register a field name for inclusion in the HMAC / Form Token generation
      *
      * @param string $fieldName name of the field to register
-     * @return void
      */
     protected function registerFieldNameForFormTokenGeneration($fieldName)
     {

@@ -125,8 +125,6 @@ class UpgradeWizard extends Action\AbstractAction
 
     /**
      * List of available updates
-     *
-     * @return void
      */
     protected function listUpdates()
     {
@@ -392,7 +390,6 @@ class UpgradeWizard extends Action\AbstractAction
      * Force creation / update of caching framework tables that are needed by some update wizards
      *
      * @TODO: See also the other remarks on this topic in the abstract class, this whole area needs improvements
-     * @return void
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException

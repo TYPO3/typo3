@@ -116,8 +116,6 @@ class SimpleDataHandlerController
 
     /**
      * Initialization of the class
-     *
-     * @return void
      */
     public function init()
     {
@@ -158,8 +156,6 @@ class SimpleDataHandlerController
 
     /**
      * Clipboard pasting and deleting.
-     *
-     * @return void
      */
     public function initClipboard()
     {
@@ -183,8 +179,6 @@ class SimpleDataHandlerController
 
     /**
      * Executing the posted actions ...
-     *
-     * @return void
      */
     public function main()
     {

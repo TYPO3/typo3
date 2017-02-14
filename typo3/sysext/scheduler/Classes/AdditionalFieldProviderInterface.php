@@ -43,7 +43,6 @@ interface AdditionalFieldProviderInterface
      *
      * @param array $submittedData An array containing the data submitted by the add/edit task form
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the scheduler backend module
-     * @return void
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task);
 }

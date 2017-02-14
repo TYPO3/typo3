@@ -143,7 +143,6 @@ class ActionController extends AbstractController
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @return void
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {
@@ -192,7 +191,6 @@ class ActionController extends AbstractController
      * for example you do this in a plugin that gets used multiple time on a page.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return void
      */
     protected function renderAssetsForRequest($request)
     {
@@ -222,7 +220,6 @@ class ActionController extends AbstractController
      * Don't override this method - use initializeAction() instead.
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
-     * @return void
      * @see initializeArguments()
      */
     protected function initializeActionMethodArguments()
@@ -250,8 +247,6 @@ class ActionController extends AbstractController
      * - Custom validators specified with validate annotations.
      * - Model-based validators (validate annotations in the model)
      * - Custom model validator classes
-     *
-     * @return void
      */
     protected function initializeActionMethodValidators()
     {
@@ -306,7 +301,6 @@ class ActionController extends AbstractController
      * response object. If the action doesn't return anything and a valid
      * view exists, the view is rendered automatically.
      *
-     * @return void
      * @api
      */
     protected function callActionMethod()
@@ -410,8 +404,6 @@ class ActionController extends AbstractController
 
     /**
      * @param ViewInterface $view
-     *
-     * @return void
      */
     protected function setViewConfiguration(ViewInterface $view)
     {
@@ -524,7 +516,6 @@ class ActionController extends AbstractController
      *
      * @param ViewInterface $view The view to be initialized
      *
-     * @return void
      * @api
      */
     protected function initializeView(ViewInterface $view)
@@ -537,7 +528,6 @@ class ActionController extends AbstractController
      * Override this method to solve tasks which all actions have in
      * common.
      *
-     * @return void
      * @api
      */
     protected function initializeAction()
@@ -569,8 +559,6 @@ class ActionController extends AbstractController
     /**
      * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
      * Better would be just do delete the cache for the error action, but that is not possible right now.
-     *
-     * @return void
      */
     protected function clearCacheOnError()
     {
@@ -586,8 +574,6 @@ class ActionController extends AbstractController
     /**
      * If an error occurred during this request, this adds a flash message describing the error to the flash
      * message container.
-     *
-     * @return void
      */
     protected function addErrorFlashMessage()
     {
@@ -615,7 +601,6 @@ class ActionController extends AbstractController
      * to the originating request. This effectively ends processing of the current request, so do not
      * call this method before you have finished the necessary business logic!
      *
-     * @return void
      * @throws StopActionException
      */
     protected function forwardToReferringRequest()

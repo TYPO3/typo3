@@ -152,7 +152,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      *
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @param bool $legacyMode
-     * @return void
      */
     public function setLegacyMode($legacyMode)
     {
@@ -199,7 +198,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 
     /**
      * @param string $action
-     * @return void
      */
     public function setControllerAction($action)
     {

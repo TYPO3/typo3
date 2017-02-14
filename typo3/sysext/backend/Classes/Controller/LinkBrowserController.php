@@ -30,8 +30,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
 {
     /**
      * Initialize $this->currentLinkParts
-     *
-     * @return void
      */
     protected function initCurrentUrl()
     {
@@ -55,8 +53,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
 
     /**
      * Initialize document template object
-     *
-     * @return void
      */
     protected function initDocumentTemplate()
     {

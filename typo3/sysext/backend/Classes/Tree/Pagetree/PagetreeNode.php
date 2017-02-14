@@ -74,7 +74,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Sets the background color
      *
      * @param string $backgroundColor
-     * @return void
      */
     public function setBackgroundColor($backgroundColor)
     {
@@ -95,7 +94,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Set's the original id of the element
      *
      * @param int $workspaceId
-     * @return void
      */
     public function setWorkspaceId($workspaceId)
     {
@@ -136,7 +134,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Sets the mount point id
      *
      * @param int $mountPoint
-     * @return void
      */
     public function setMountPoint($mountPoint)
     {
@@ -157,7 +154,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Sets the indicator if the node is a mount point
      *
      * @param bool $isMountPoint
-     * @return void
      */
     public function setIsMountPoint($isMountPoint)
     {
@@ -178,7 +174,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Sets the readable rootline
      *
      * @param string $rootline
-     * @return void
      */
     public function setReadableRootline($rootline)
     {
@@ -438,7 +433,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      * Sets data of the node by a given data array
      *
      * @param array $data
-     * @return void
      */
     public function dataFromArray($data)
     {

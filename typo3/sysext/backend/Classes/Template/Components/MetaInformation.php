@@ -41,8 +41,6 @@ class MetaInformation
      * Set the RecordArray
      *
      * @param array $recordArray RecordArray
-     *
-     * @return void
      */
     public function setRecordArray(array $recordArray)
     {

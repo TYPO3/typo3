@@ -478,8 +478,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 
     /**
      * Ensures that the personal dictionary is utf-8 encoded
-     *
-     * @return void
      */
     protected function fixPersonalDictionaryCharacterSet()
     {

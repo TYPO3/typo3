@@ -203,8 +203,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
     /**
      * Initialize document template object
-     *
-     *  @return void
      */
     protected function initDocumentTemplate()
     {
@@ -216,8 +214,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
     /**
      * Initialize $this->currentLink and $this->currentLinkHandler
-     *
-     * @return void
      */
     protected function initCurrentUrl()
     {

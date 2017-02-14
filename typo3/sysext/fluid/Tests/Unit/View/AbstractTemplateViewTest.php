@@ -40,8 +40,6 @@ class AbstractTemplateViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
 
     /**
      * Sets up this test case
-     *
-     * @return void
      */
     protected function setUp()
     {

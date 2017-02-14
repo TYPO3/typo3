@@ -77,7 +77,6 @@ class BrowseTreeView extends AbstractTreeView
      *
      * @param string $clause Additional clause for selecting pages.
      * @param string $orderByFields record ORDER BY field
-     * @return void
      */
     public function init($clause = '', $orderByFields = '')
     {

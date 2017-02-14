@@ -33,7 +33,6 @@ class NumberRangeValidator extends AbstractValidator
      * The given value is valid if it is a number in the specified range.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

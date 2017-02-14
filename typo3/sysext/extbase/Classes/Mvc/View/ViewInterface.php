@@ -25,7 +25,6 @@ interface ViewInterface
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return void
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext);
 
@@ -69,7 +68,6 @@ interface ViewInterface
     /**
      * Initializes this view.
      *
-     * @return void
      * @api
      */
     public function initializeView();

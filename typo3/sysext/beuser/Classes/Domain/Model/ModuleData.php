@@ -47,7 +47,6 @@ class ModuleData
 
     /**
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-     * @return void
      */
     public function setDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
     {
@@ -69,7 +68,6 @@ class ModuleData
      * Cannot be ObjectStorage, must be array
      *
      * @param int $uid
-     * @return void
      */
     public function attachUidCompareUser($uid)
     {
@@ -80,7 +78,6 @@ class ModuleData
      * Strip one backend user from the compare user list
      *
      * @param int $uid
-     * @return void
      */
     public function detachUidCompareUser($uid)
     {

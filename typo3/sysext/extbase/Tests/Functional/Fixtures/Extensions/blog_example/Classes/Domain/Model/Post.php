@@ -85,7 +85,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the blog this post is part of
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog
-     * @return void
      */
     public function setBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
     {
@@ -106,7 +105,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -127,7 +125,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for date
      *
      * @param \DateTime $date
-     * @return void
      */
     public function setDate(\DateTime $date)
     {
@@ -149,7 +146,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for tags
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags One or more Tag objects
-     * @return void
      */
     public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
     {
@@ -160,7 +156,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a tag to this post
      *
      * @param Tag $tag
-     * @return void
      */
     public function addTag(Tag $tag)
     {
@@ -171,7 +166,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Removes a tag from this post
      *
      * @param Tag $tag
-     * @return void
      */
     public function removeTag(Tag $tag)
     {
@@ -180,8 +174,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Remove all tags from this post
-     *
-     * @return void
      */
     public function removeAllTags()
     {
@@ -243,7 +235,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the author for this post
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $author
-     * @return void
      */
     public function setAuthor(\ExtbaseTeam\BlogExample\Domain\Model\Person $author)
     {
@@ -264,7 +255,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the content for this post
      *
      * @param string $content
-     * @return void
      */
     public function setContent($content)
     {
@@ -285,7 +275,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the comments to this post
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments An Object Storage of related Comment instances
-     * @return void
      */
     public function setComments(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments)
     {
@@ -296,7 +285,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a comment to this post
      *
      * @param Comment $comment
-     * @return void
      */
     public function addComment(Comment $comment)
     {
@@ -307,7 +295,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Removes Comment from this post
      *
      * @param Comment $commentToDelete
-     * @return void
      */
     public function removeComment(Comment $commentToDelete)
     {
@@ -316,8 +303,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Remove all comments from this post
-     *
-     * @return void
      */
     public function removeAllComments()
     {
@@ -339,7 +324,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the related posts
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts An Object Storage containing related Posts instances
-     * @return void
      */
     public function setRelatedPosts(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts)
     {
@@ -350,7 +334,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a related post
      *
      * @param Post $post
-     * @return void
      */
     public function addRelatedPost(Post $post)
     {
@@ -359,8 +342,6 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Remove all related posts
-     *
-     * @return void
      */
     public function removeAllRelatedPosts()
     {

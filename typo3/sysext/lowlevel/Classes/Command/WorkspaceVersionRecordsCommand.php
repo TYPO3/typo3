@@ -101,8 +101,6 @@ class WorkspaceVersionRecordsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -267,7 +265,6 @@ class WorkspaceVersionRecordsCommand extends Command
      * @param int $depth Depth
      * @param bool $isInsideVersionedPage DON'T set from outside, internal. (indicates we are inside a version of a page)
      * @param bool $rootIsVersion DON'T set from outside, internal. Indicates that rootID is a version of a page
-     * @return void
      */
     protected function traversePageTreeForVersionedRecords(int $rootID, int $depth, bool $isInsideVersionedPage = false, bool $rootIsVersion = false)
     {
@@ -544,7 +541,6 @@ class WorkspaceVersionRecordsCommand extends Command
      * @param array $records two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
      * @param SymfonyStyle $io
-     * @return void
      */
     protected function deleteRecords(array $records, bool $dryRun, SymfonyStyle $io)
     {

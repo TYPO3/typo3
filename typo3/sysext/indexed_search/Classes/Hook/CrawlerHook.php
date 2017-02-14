@@ -64,7 +64,6 @@ class CrawlerHook
      * In reality we select indexing configurations and evaluate if any of them needs to run.
      *
      * @param object $pObj Parent object (tx_crawler lib)
-     * @return void
      */
     public function crawler_init(&$pObj)
     {
@@ -262,7 +261,6 @@ class CrawlerHook
      * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
      * @param array $params Parameters from the log queue.
      * @param object $pObj Parent object (from "crawler" extension!)
-     * @return void
      */
     public function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj)
     {
@@ -328,7 +326,6 @@ class CrawlerHook
      * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
      * @param array $params Parameters from the log queue.
      * @param object $pObj Parent object (from "crawler" extension!)
-     * @return void
      */
     public function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj)
     {
@@ -390,7 +387,6 @@ class CrawlerHook
      * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
      * @param array $params Parameters from the log queue.
      * @param object $pObj Parent object (from "crawler" extension!)
-     * @return void
      */
     public function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj)
     {
@@ -431,7 +427,6 @@ class CrawlerHook
      * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
      * @param array $params Parameters from the log queue.
      * @param object $pObj Parent object (from "crawler" extension!)
-     * @return void
      */
     public function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj)
     {
@@ -491,8 +486,6 @@ class CrawlerHook
 
     /**
      * Look up all old index configurations which are finished and needs to be reset and done
-     *
-     * @return void
      */
     public function cleanUpOldRunningConfigurations()
     {
@@ -661,7 +654,6 @@ class CrawlerHook
      * @param array $r Record to index
      * @param array $cfgRec Configuration Record
      * @param array $rl Rootline array to relate indexing to
-     * @return void
      */
     public function indexSingleRecord($r, $cfgRec, $rl = null)
     {
@@ -762,7 +754,6 @@ class CrawlerHook
      *
      * @param array $cfgRec Configuration record
      * @param string $title Title/URL
-     * @return void
      */
     public function addQueueEntryForHook($cfgRec, $title)
     {
@@ -779,7 +770,6 @@ class CrawlerHook
      * Deletes all data stored by indexed search for a given page
      *
      * @param int $id Uid of the page to delete all pHash
-     * @return void
      */
     public function deleteFromIndex($id)
     {
@@ -840,7 +830,6 @@ class CrawlerHook
      * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
      * @param mixed $value Target value (ignored)
      * @param DataHandler $pObj DataHandler calling object
-     * @return void
      */
     public function processCmdmap_preProcess($command, $table, $id, $value, $pObj)
     {
@@ -858,7 +847,6 @@ class CrawlerHook
      * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
      * @param array $fieldArray Field array of updated fields in the operation
      * @param DataHandler $pObj DataHandler calling object
-     * @return void
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj)
     {

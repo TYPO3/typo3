@@ -73,8 +73,6 @@ interface LockingStrategyInterface
 
     /**
      * Destroys the resource associated with the lock
-     *
-     * @return void
      */
     public function destroy();
 

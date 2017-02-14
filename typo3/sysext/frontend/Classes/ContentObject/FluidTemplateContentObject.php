@@ -134,8 +134,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * are not always re-created by the content object rendered for every
      * usage, but can be re-used. Thus, we need a fresh instance of
      * StandaloneView every time render() is called.
-     *
-     * @return void
      */
     protected function initializeStandaloneViewInstance()
     {
@@ -146,7 +144,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Set template
      *
      * @param array $conf With possibly set file resource
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function setTemplate(array $conf)
@@ -180,7 +177,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Set layout root path if given in configuration
      *
      * @param array $conf Configuration array
-     * @return void
      */
     protected function setLayoutRootPath(array $conf)
     {
@@ -204,7 +200,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Set partial root path if given in configuration
      *
      * @param array $conf Configuration array
-     * @return void
      */
     protected function setPartialRootPath(array $conf)
     {
@@ -227,7 +222,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Set different format if given in configuration
      *
      * @param array $conf Configuration array
-     * @return void
      */
     protected function setFormat(array $conf)
     {
@@ -241,7 +235,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * Set some extbase variables if given
      *
      * @param array $conf Configuration array
-     * @return void
      */
     protected function setExtbaseVariables(array $conf)
     {
@@ -326,7 +319,6 @@ class FluidTemplateContentObject extends AbstractContentObject
      * default MVC action controller in extbase.
      *
      * @param array $conf Configuration
-     * @return void
      */
     protected function assignSettings(array $conf)
     {

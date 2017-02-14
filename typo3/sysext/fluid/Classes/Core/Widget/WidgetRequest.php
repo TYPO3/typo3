@@ -34,7 +34,6 @@ class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
-     * @return void
      */
     public function setWidgetContext(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
     {

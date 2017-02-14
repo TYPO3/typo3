@@ -93,8 +93,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Cleans the execution lists of the scheduled tasks, executions older than 24h are removed
      * @todo find a way to actually kill the job
-     *
-     * @return void
      */
     protected function cleanExecutionArrays()
     {
@@ -206,7 +204,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      * This method stores information about the last run of the Scheduler into the system registry
      *
      * @param string $type Type of run (manual or command-line (assumed to be cron))
-     * @return void
      */
     public function recordLastRun($type = 'cron')
     {
@@ -458,7 +455,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $message The message to write to the log
      * @param int $status Status (0 = message, 1 = error)
      * @param mixed $code Key for the message
-     * @return void
      */
     public function log($message, $status = 0, $code = 'scheduler')
     {

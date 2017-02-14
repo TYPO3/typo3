@@ -39,7 +39,6 @@ interface PersistableCollectionInterface
      * Sets the identifier of the collection
      *
      * @param int|string $id
-     * @return void
      */
     public function setIdentifier($id);
 
@@ -58,8 +57,6 @@ interface PersistableCollectionInterface
 
     /**
      * Persists current collection state to underlying storage
-     *
-     * @return void
      */
     public function persist();
 
@@ -72,8 +69,6 @@ interface PersistableCollectionInterface
      * If the content entries of the storage had not been loaded on creation
      * ($fillItems = false) this function is to be used for loading the contents
      * afterwards.
-     *
-     * @return void
      */
     public function loadContents();
 }

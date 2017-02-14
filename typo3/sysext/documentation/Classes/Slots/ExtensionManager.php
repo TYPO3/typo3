@@ -50,7 +50,6 @@ class ExtensionManager
      *
      * @param array $extension
      * @param array $actions
-     * @return void
      */
     public function processActions(array $extension, array &$actions)
     {

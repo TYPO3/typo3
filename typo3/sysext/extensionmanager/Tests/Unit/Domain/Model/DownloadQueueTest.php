@@ -17,7 +17,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Download queue test
- *
  */
 class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -32,7 +31,6 @@ class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $extensionMock;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -46,7 +44,6 @@ class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function addExtensionToQueueAddsExtensionToDownloadStorageArray()
     {
@@ -58,7 +55,6 @@ class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function addExtensionToQueueAddsExtensionToUpdateStorageArray()
     {
@@ -80,7 +76,6 @@ class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists()
     {
@@ -99,7 +94,6 @@ class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function removeExtensionFromQueueRemovesExtension()
     {

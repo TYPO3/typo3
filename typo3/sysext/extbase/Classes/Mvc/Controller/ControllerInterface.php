@@ -35,7 +35,6 @@ interface ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by the controller
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
      * @api
      */

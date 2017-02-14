@@ -553,7 +553,6 @@ class ContentObjectRenderer
      *
      * @param array $data The record data that is rendered.
      * @param string $table The table that the data record is from.
-     * @return void
      */
     public function start($data, $table = '')
     {
@@ -626,7 +625,6 @@ class ContentObjectRenderer
      *
      * @param array $data The record array
      * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation. Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
-     * @return void
      * @access private
      */
     public function setParent($data, $currentRecord)
@@ -659,7 +657,6 @@ class ContentObjectRenderer
      * Sets the "current" value.
      *
      * @param mixed $value The variable that you want to set as "current
-     * @return void
      * @see getCurrentVal()
      */
     public function setCurrentVal($value)
@@ -943,7 +940,6 @@ class ContentObjectRenderer
      * Sets the user object type
      *
      * @param mixed $userObjectType
-     * @return void
      */
     public function setUserObjectType($userObjectType)
     {
@@ -952,8 +948,6 @@ class ContentObjectRenderer
 
     /**
      * Requests the current USER object to be converted to USER_INT.
-     *
-     * @return void
      */
     public function convertToUserIntObject()
     {
@@ -975,7 +969,6 @@ class ContentObjectRenderer
      * @param string|array $flexData Flexform data
      * @param array $conf Array to write the data into, by reference
      * @param bool $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
-     * @return void
      */
     public function readFlexformIntoConf($flexData, &$conf, $recursive = false)
     {
@@ -1408,7 +1401,6 @@ class ContentObjectRenderer
      * Therefore you should call this function with the last-changed timestamp of any element you display.
      *
      * @param int $tstamp Unix timestamp (number of seconds since 1970)
-     * @return void
      * @see TypoScriptFrontendController::setSysLastChanged()
      */
     public function lastChanged($tstamp)

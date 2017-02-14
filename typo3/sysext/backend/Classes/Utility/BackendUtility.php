@@ -565,7 +565,6 @@ class BackendUtility
      *
      * @param int $pid Page id.
      * @param bool $clearExpansion If set, then other open branches are closed.
-     * @return void
      */
     public static function openPageTree($pid, $clearExpansion)
     {
@@ -1136,7 +1135,6 @@ class BackendUtility
      * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
      * @param mixed $data The data to store
      * @param string $ident $ident is just a textual identification in order to inform about the content!
-     * @return void
      */
     public static function storeHash($hash, $data, $ident)
     {
@@ -3457,7 +3455,6 @@ class BackendUtility
      *
      * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
      * @param mixed $params Additional information for the update signal, used to only refresh a branch of the tree
-     * @return void
      * @see BackendUtility::getUpdateSignalCode()
      */
     public static function setUpdateSignal($set = '', $params = '')
@@ -3701,7 +3698,6 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record uid
      * @param int $pid Record pid
-     * @return void
      * @internal
      */
     public static function lockRecords($table = '', $uid = 0, $pid = 0)
@@ -4403,7 +4399,6 @@ class BackendUtility
      * @param string $table Table name
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
      * @param bool $ignoreWorkspaceMatch Ignore workspace match
-     * @return void
      * @see PageRepository::fixVersioningPid()
      */
     public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
@@ -4466,7 +4461,6 @@ class BackendUtility
      * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
      * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
-     * @return void
      * @see fixVersioningPid()
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)

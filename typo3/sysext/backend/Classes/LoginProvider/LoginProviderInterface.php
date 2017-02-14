@@ -39,8 +39,6 @@ interface LoginProviderInterface
      * @param StandaloneView $view
      * @param PageRenderer $pageRenderer
      * @param LoginController $loginController
-     *
-     * @return void
      */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);
 }

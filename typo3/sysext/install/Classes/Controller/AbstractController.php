@@ -52,8 +52,6 @@ class AbstractController
      * Checking ENABLE_INSTALL_TOOL validity is simple:
      * As soon as there is a typo3conf directory at all (not step 1 of "first install"),
      * the file must be there and valid in order to proceed.
-     *
-     * @return void
      */
     protected function outputInstallToolNotEnabledMessageIfNeeded()
     {
@@ -95,7 +93,6 @@ class AbstractController
      * Use form protection API to find out if protected POST forms are ok.
      *
      * @throws Exception
-     * @return void
      */
     protected function checkSessionToken()
     {
@@ -130,7 +127,6 @@ class AbstractController
      * if in install tool, the login form is displayed.
      *
      * @param bool $tokenOk
-     * @return void
      */
     protected function handleSessionTokenCheck($tokenOk)
     {
@@ -154,8 +150,6 @@ class AbstractController
 
     /**
      * Check if session expired.
-     *
-     * @return void
      */
     protected function checkSessionLifetime()
     {
@@ -171,8 +165,6 @@ class AbstractController
     /**
      * If session expired, the current step of step controller is reloaded
      * (if first installation is running) - or the login form is displayed.
-     *
-     * @return void
      */
     protected function handleSessionLifeTimeExpired()
     {
@@ -212,8 +204,6 @@ class AbstractController
 
     /**
      * Validate install tool password and login user if requested
-     *
-     * @return void
      */
     protected function loginIfRequested()
     {
@@ -261,8 +251,6 @@ class AbstractController
     /**
      * Show login for if user is not authorized yet and if
      * not in first installation process.
-     *
-     * @return void
      */
     protected function outputLoginFormIfNotAuthorized()
     {
@@ -277,8 +265,6 @@ class AbstractController
 
     /**
      * If install tool login mail is set, send a mail for a successful login.
-     *
-     * @return void
      */
     protected function sendLoginSuccessfulMail()
     {
@@ -301,8 +287,6 @@ class AbstractController
 
     /**
      * If install tool login mail is set, send a mail for a failed login.
-     *
-     * @return void
      */
     protected function sendLoginFailedMail()
     {
@@ -376,8 +360,6 @@ class AbstractController
      * Initialize session object.
      * Subclass will throw exception if session can not be created or if
      * preconditions like a valid encryption key are not set.
-     *
-     * @return void
      */
     protected function initializeSession()
     {
@@ -404,8 +386,6 @@ class AbstractController
     /**
      * Required extbase ext_localconf
      * Set caching to NullBackend, install tool must not cache anything
-     *
-     * @return void
      */
     protected function loadBaseExtensions()
     {
@@ -493,7 +473,6 @@ class AbstractController
      * @param string $controller Can be set to 'tool' to redirect from step to tool controller
      * @param string $action Set specific action for next request, used in step controller to specify next step
      * @throws Exception\RedirectLoopException
-     * @return void
      */
     protected function redirect($controller = '', $action = '')
     {

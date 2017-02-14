@@ -67,8 +67,6 @@ class CleanFlexFormsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -249,7 +247,6 @@ class CleanFlexFormsCommand extends Command
      * @param array $records
      * @param bool $dryRun
      * @param SymfonyStyle $io
-     * @return void
      */
     protected function cleanFlexFormRecords(array $records, bool $dryRun, SymfonyStyle $io)
     {

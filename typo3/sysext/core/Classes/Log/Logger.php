@@ -133,7 +133,6 @@ class Logger implements \Psr\Log\LoggerInterface
      *
      * @param int $minimumLevel
      * @param \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $processor The processor to add.
-     * @return void
      */
     public function addProcessor($minimumLevel, Processor\ProcessorInterface $processor)
     {
@@ -208,7 +207,6 @@ class Logger implements \Psr\Log\LoggerInterface
      * Passes the \TYPO3\CMS\Core\Log\LogRecord to all registered writers.
      *
      * @param \TYPO3\CMS\Core\Log\LogRecord $record
-     * @return void
      */
     protected function writeLog(LogRecord $record)
     {

@@ -91,7 +91,6 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  *     padding = 0
  *   }
  * }
- *
  */
 class GalleryProcessor implements DataProcessorInterface
 {
@@ -314,8 +313,6 @@ class GalleryProcessor implements DataProcessorInterface
      *
      * Gallery has a horizontal and a vertical position towards the text
      * and a possible wrapping of the text around the gallery.
-     *
-     * @return void
      */
     protected function determineGalleryPosition()
     {
@@ -334,8 +331,6 @@ class GalleryProcessor implements DataProcessorInterface
 
     /**
      * Get the gallery width based on vertical position
-     *
-     * @return void
      */
     protected function determineMaximumGalleryWidth()
     {
@@ -348,8 +343,6 @@ class GalleryProcessor implements DataProcessorInterface
 
     /**
      * Calculate the amount of rows and columns
-     *
-     * @return void
      */
     protected function calculateRowsAndColumns()
     {
@@ -380,8 +373,6 @@ class GalleryProcessor implements DataProcessorInterface
      * the use of a border, defined by user, where the border width and padding are taken into account
      *
      * File objects MUST already be filtered. They need a height and width to be shown in the gallery
-     *
-     * @return void
      */
     protected function calculateMediaWidthsAndHeights()
     {
@@ -495,8 +486,6 @@ class GalleryProcessor implements DataProcessorInterface
      * Prepare the gallery data
      *
      * Make an array for rows, columns and configuration
-     *
-     * @return void
      */
     protected function prepareGalleryData()
     {

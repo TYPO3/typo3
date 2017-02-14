@@ -165,7 +165,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $authorEmail
-     * @return void
      */
     public function setAuthorEmail($authorEmail)
     {
@@ -182,7 +181,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $authorName
-     * @return void
      */
     public function setAuthorName($authorName)
     {
@@ -199,7 +197,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $category
-     * @return void
      */
     public function setCategory($category)
     {
@@ -254,7 +251,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -271,7 +267,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $extensionKey
-     * @return void
      */
     public function setExtensionKey($extensionKey)
     {
@@ -288,7 +283,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \DateTime $lastUpdated
-     * @return void
      */
     public function setLastUpdated(\DateTime $lastUpdated)
     {
@@ -305,7 +299,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $state
-     * @return void
      */
     public function setState($state)
     {
@@ -371,7 +364,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -388,7 +380,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $updateComment
-     * @return void
      */
     public function setUpdateComment($updateComment)
     {
@@ -405,7 +396,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $version
-     * @return void
      */
     public function setVersion($version)
     {
@@ -422,7 +412,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param bool $currentVersion
-     * @return void
      */
     public function setCurrentVersion($currentVersion)
     {
@@ -439,7 +428,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $md5hash
-     * @return void
      */
     public function setMd5hash($md5hash)
     {
@@ -505,7 +493,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $dependencies
-     * @return void
      */
     public function setSerializedDependencies($dependencies)
     {
@@ -522,7 +509,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \SplObjectStorage $dependencies
-     * @return void
      */
     public function setDependencies($dependencies)
     {
@@ -544,7 +530,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency
-     * @return void
      */
     public function addDependency(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency)
     {
@@ -553,7 +538,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $integerVersion
-     * @return void
      */
     public function setIntegerVersion($integerVersion)
     {
@@ -570,7 +554,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $reviewState
-     * @return void
      */
     public function setReviewState($reviewState)
     {
@@ -587,7 +570,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $position
-     * @return void
      */
     public function setPosition($position)
     {

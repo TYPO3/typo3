@@ -105,7 +105,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Move forward to next element
      *
      * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
      */
     public function next()
     {
@@ -142,7 +141,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Rewind the Iterator to the first element
      *
      * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
      */
     public function rewind()
     {
@@ -224,7 +222,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Setter for the title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -235,7 +232,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Setter for the description
      *
      * @param string $desc
-     * @return void
      */
     public function setDescription($desc)
     {
@@ -256,7 +252,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Setter for the name of the data-source table
      *
      * @param string $tableName
-     * @return void
      */
     public function setItemTableName($tableName)
     {
@@ -271,7 +266,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @param $callbackFunction
      * @see http://www.php.net/manual/en/function.usort.php
-     * @return void
      */
     public function usort($callbackFunction)
     {
@@ -287,7 +281,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @param int $currentPosition
      * @param int $newPosition
-     * @return void
      */
     public function moveItemAt($currentPosition, $newPosition = 0)
     {
@@ -309,7 +302,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Sets the identifier of the collection
      *
      * @param int $id
-     * @return void
      */
     public function setIdentifier($id)
     {
@@ -359,8 +351,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
 
     /**
      * Persists current collection state to underlying storage
-     *
-     * @return void
      */
     public function persist()
     {
@@ -432,7 +422,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Loads the properties of this collection from an array
      *
      * @param array $array
-     * @return void
      */
     public function fromArray(array $array)
     {

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Provides click menu items for filemounts
- *
  */
 class FilemountsProvider extends FileProvider
 {

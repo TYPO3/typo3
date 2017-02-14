@@ -66,7 +66,6 @@ class SplitStorage extends AbstractStorage
      * Adds a key to the storage or removes existing key
      *
      * @param string $key The key
-     * @return void
      * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
      */
     public function put($key)

@@ -129,7 +129,6 @@ class Avatar
     /**
      * Validates the registered avatar providers
      *
-     * @return void
      * @throws \RuntimeException
      */
     protected function validateSortAndInitiateAvatarProviders()

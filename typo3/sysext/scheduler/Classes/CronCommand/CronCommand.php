@@ -69,7 +69,6 @@ class CronCommand
      * Calculates the date of the next execution.
      *
      * @api
-     * @return void
      * @throws \RuntimeException
      */
     public function calculateNextValue()

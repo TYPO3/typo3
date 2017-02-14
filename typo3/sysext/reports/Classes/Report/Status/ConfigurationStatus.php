@@ -347,8 +347,6 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * Currently implemented commands are:
      * - Remove deprecation log file
-     *
-     * @return void
      */
     protected function executeAdminCommand()
     {
@@ -364,8 +362,6 @@ class ConfigurationStatus implements StatusProviderInterface
 
     /**
      * Remove deprecation log file.
-     *
-     * @return void
      */
     protected static function removeDeprecationLogFile()
     {

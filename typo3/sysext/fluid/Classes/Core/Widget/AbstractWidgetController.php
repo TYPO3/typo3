@@ -43,7 +43,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
-     * @return void
      * @api
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
@@ -57,7 +56,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      * e.g. plugin.tx_extension.view.widget.<WidgetViewHelperClassName>.templateRootPath
      *
      * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     * @return void
      */
     protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view)
     {

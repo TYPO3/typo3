@@ -78,7 +78,6 @@ class Result
      * cached error states upwards
      *
      * @param Result $parent
-     * @return void
      */
     public function setParent(Result $parent)
     {
@@ -100,7 +99,6 @@ class Result
      * Add an error to the current Result object
      *
      * @param \TYPO3\CMS\Extbase\Error\Error $error
-     * @return void
      * @api
      */
     public function addError(\TYPO3\CMS\Extbase\Error\Error $error)
@@ -113,7 +111,6 @@ class Result
      * Add a warning to the current Result object
      *
      * @param \TYPO3\CMS\Extbase\Error\Warning $warning
-     * @return void
      * @api
      */
     public function addWarning(\TYPO3\CMS\Extbase\Error\Warning $warning)
@@ -126,7 +123,6 @@ class Result
      * Add a notice to the current Result object
      *
      * @param \TYPO3\CMS\Extbase\Error\Notice $notice
-     * @return void
      * @api
      */
     public function addNotice(\TYPO3\CMS\Extbase\Error\Notice $notice)
@@ -254,8 +250,6 @@ class Result
     /**
      * Sets the error cache to TRUE and propagates the information
      * upwards the Result-Object Tree
-     *
-     * @return void
      */
     protected function setErrorsExist()
     {
@@ -268,8 +262,6 @@ class Result
     /**
      * Sets the warning cache to TRUE and propagates the information
      * upwards the Result-Object Tree
-     *
-     * @return void
      */
     protected function setWarningsExist()
     {
@@ -282,8 +274,6 @@ class Result
     /**
      * Sets the notices cache to TRUE and propagates the information
      * upwards the Result-Object Tree
-     *
-     * @return void
      */
     protected function setNoticesExist()
     {
@@ -305,8 +295,6 @@ class Result
 
     /**
      * Clears the result
-     *
-     * @return void
      */
     public function clear()
     {
@@ -427,7 +415,6 @@ class Result
      * @param string $propertyName
      * @param array $result
      * @param array $level
-     * @return void
      */
     public function flattenTree($propertyName, &$result, $level)
     {
@@ -445,7 +432,6 @@ class Result
      * Merge the given Result object into this one.
      *
      * @param \TYPO3\CMS\Extbase\Error\Result $otherResult
-     * @return void
      * @api
      */
     public function merge(Result $otherResult)
@@ -477,7 +463,6 @@ class Result
      * @param \TYPO3\CMS\Extbase\Error\Result $otherResult
      * @param string $getterName
      * @param string $adderName
-     * @return void
      */
     protected function mergeProperty(Result $otherResult, $getterName, $adderName)
     {

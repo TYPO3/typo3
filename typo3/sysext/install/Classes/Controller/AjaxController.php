@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Install tool ajax controller, handles ajax requests
- *
  */
 class AjaxController extends AbstractController
 {
@@ -53,8 +52,6 @@ class AjaxController extends AbstractController
 
     /**
      * Main entry point
-     *
-     * @return void
      */
     public function execute()
     {
@@ -72,8 +69,6 @@ class AjaxController extends AbstractController
 
     /**
      * Check whether the install tool is enabled
-     *
-     * @return void
      */
     protected function outputInstallToolNotEnabledMessageIfNeeded()
     {
@@ -84,8 +79,6 @@ class AjaxController extends AbstractController
 
     /**
      * Check if the install tool password is set
-     *
-     * @return void
      */
     protected function checkInstallToolPasswordNotSet()
     {
@@ -96,8 +89,6 @@ class AjaxController extends AbstractController
 
     /**
      * Check login status
-     *
-     * @return void
      */
     protected function checkLogin()
     {
@@ -113,7 +104,6 @@ class AjaxController extends AbstractController
      * In contrast to abstract method, a response "you are not authorized is outputted"
      *
      * @param bool $tokenOk
-     * @return void
      */
     protected function handleSessionTokenCheck($tokenOk)
     {
@@ -125,8 +115,6 @@ class AjaxController extends AbstractController
     /**
      * Overwrites abstract method
      * In contrast to abstract method, a response "you are not authorized is outputted"
-     *
-     * @return void
      */
     protected function handleSessionLifeTimeExpired()
     {

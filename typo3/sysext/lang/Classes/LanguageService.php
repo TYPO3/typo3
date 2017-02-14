@@ -122,7 +122,6 @@ class LanguageService
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)
-     * @return void
      */
     public function init($languageKey)
     {
@@ -157,7 +156,6 @@ class LanguageService
      *
      * @param array $arr Array with references to module labels, keys: ['labels']['table'],
      * @param string $prefix Module name prefix
-     * @return void
      * @see \TYPO3\CMS\Backend\Module\ModuleLoader
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use ModuleLoader instead.
      */
@@ -315,7 +313,6 @@ class LanguageService
      * $TCA_DESCR is a global var
      *
      * @param string $table Table name found as key in global array $TCA_DESCR
-     * @return void
      */
     public function loadSingleTableDescription($table)
     {
@@ -451,7 +448,6 @@ class LanguageService
      * @param string $index
      * @param string $value
      * @param bool $overrideDefault Overrides default language
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function overrideLL($index, $value, $overrideDefault = true)

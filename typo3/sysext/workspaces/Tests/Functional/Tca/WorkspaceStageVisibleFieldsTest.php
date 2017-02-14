@@ -39,8 +39,6 @@ class WorkspaceStageVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Funct
 
     /**
      * Sets up this test case.
-     *
-     * @return void
      */
     protected function setUp()
     {

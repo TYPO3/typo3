@@ -117,7 +117,6 @@ class ElementBrowserRecordList extends DatabaseRecordList
     /**
      * Local version that sets allFields to TRUE to support userFieldSelect
      *
-     * @return void
      * @see fieldSelectBox
      */
     public function generateList()

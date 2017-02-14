@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * An abstract implementation of a storage driver.
- *
  */
 abstract class AbstractDriver implements DriverInterface
 {
@@ -88,7 +87,6 @@ abstract class AbstractDriver implements DriverInterface
      * Sets the storage uid the driver belongs to
      *
      * @param int $storageUid
-     * @return void
      */
     public function setStorageUid($storageUid)
     {

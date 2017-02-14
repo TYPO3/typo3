@@ -53,7 +53,6 @@ class ExtensionManagerConfigurationUtility
      * is set already
      *
      * @param string $level One out of error, ok, warning, info
-     * @return void
      */
     protected function setErrorLevel($level)
     {
@@ -143,8 +142,6 @@ class ExtensionManagerConfigurationUtility
 
     /**
      * Initializes this object.
-     *
-     * @return void
      */
     private function init()
     {

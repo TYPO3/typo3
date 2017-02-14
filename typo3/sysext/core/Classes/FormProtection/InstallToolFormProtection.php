@@ -60,8 +60,6 @@ class InstallToolFormProtection extends AbstractFormProtection
 {
     /**
      * Retrieves or generates the session token.
-     *
-     * @return void
      */
     protected function retrieveSessionToken()
     {
@@ -76,8 +74,6 @@ class InstallToolFormProtection extends AbstractFormProtection
     /**
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
-     *
-     * @return void
      */
     public function persistSessionToken()
     {

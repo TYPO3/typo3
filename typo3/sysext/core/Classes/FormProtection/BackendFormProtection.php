@@ -125,7 +125,6 @@ class BackendFormProtection extends AbstractFormProtection
      * class.
      *
      * @access private
-     * @return void
      */
     public function persistSessionToken()
     {
@@ -154,7 +153,6 @@ class BackendFormProtection extends AbstractFormProtection
      * available during re-login of the user.
      *
      * @access private
-     * @return void
      */
     public function storeSessionTokenInRegistry()
     {

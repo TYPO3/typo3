@@ -23,7 +23,6 @@ interface PersistenceManagerInterface
      * Commits new objects and changes to objects in the current persistence
      * session into the backend
      *
-     * @return void
      * @api
      */
     public function persistAll();
@@ -33,8 +32,6 @@ interface PersistenceManagerInterface
      *
      * Managed instances become detached, any fetches will
      * return data directly from the persistence "backend".
-     *
-     * @return void
      */
     public function clearState();
 
@@ -103,7 +100,6 @@ interface PersistenceManagerInterface
      * @param string $className The class name of the repository to be registered
      * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
      * in sync with Flow in future and will stay in Generic Persistence.
-     * @return void
      */
     public function registerRepositoryClassName($className);
 
@@ -111,7 +107,6 @@ interface PersistenceManagerInterface
      * Adds an object to the persistence.
      *
      * @param object $object The object to add
-     * @return void
      * @api
      */
     public function add($object);
@@ -120,7 +115,6 @@ interface PersistenceManagerInterface
      * Removes an object to the persistence.
      *
      * @param object $object The object to remove
-     * @return void
      * @api
      */
     public function remove($object);
@@ -129,7 +123,6 @@ interface PersistenceManagerInterface
      * Update an object in the persistence.
      *
      * @param object $object The modified object
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      * @api
      */
@@ -139,7 +132,6 @@ interface PersistenceManagerInterface
      * Injects the Extbase settings, called by Extbase.
      *
      * @param array $settings
-     * @return void
      * @api
      */
     public function injectSettings(array $settings);

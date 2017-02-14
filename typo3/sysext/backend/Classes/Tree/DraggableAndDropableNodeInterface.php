@@ -25,7 +25,6 @@ interface DraggableAndDropableNodeInterface
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $destination
-     * @return void
      */
     public function moveNodeInDestinationNode($node, $destination);
 
@@ -34,7 +33,6 @@ interface DraggableAndDropableNodeInterface
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $destination
-     * @return void
      */
     public function moveNodeAfterDestinationNode($node, $destination);
 
@@ -43,7 +41,6 @@ interface DraggableAndDropableNodeInterface
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $destination
-     * @return void
      */
     public function copyNodeInDestinationNode($node, $destination);
 
@@ -52,7 +49,6 @@ interface DraggableAndDropableNodeInterface
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $destination
-     * @return void
      */
     public function copyNodeAfterDestinationNode($node, $destination);
 }

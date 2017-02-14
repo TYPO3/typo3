@@ -31,7 +31,6 @@ class GridContainer extends Section implements GridContainerInterface
     /**
      * Register this element at the parent form, if there is a connection to the parent form.
      *
-     * @return void
      * @throws TypeDefinitionNotValidException
      * @internal
      */
@@ -52,7 +51,6 @@ class GridContainer extends Section implements GridContainerInterface
      * Add a new row element at the end of the grid container
      *
      * @param FormElementInterface $formElement The form element to add
-     * @return void
      * @api
      */
     public function addElement(FormElementInterface $formElement)

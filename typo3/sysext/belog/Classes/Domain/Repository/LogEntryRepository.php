@@ -31,8 +31,6 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * Initialize some local variables to be used during creation of objects
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -99,7 +97,6 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param array &$queryConstraints the query constraints to add to, will be modified
-     * @return void
      */
     protected function addPageTreeConstraintsToQuery(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint, \TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$queryConstraints)
     {
@@ -127,7 +124,6 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param array &$queryConstraints the query constraints to add to, will be modified
-     * @return void
      */
     protected function addUsersAndGroupsToQueryConstraints(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint, \TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$queryConstraints)
     {

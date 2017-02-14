@@ -40,8 +40,6 @@ class ElementBrowserFolderTreeView extends FolderTreeView
 
     /**
      * @param LinkParameterProviderInterface $linkParameterProvider
-     *
-     * @return void
      */
     public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider)
     {

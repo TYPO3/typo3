@@ -224,8 +224,6 @@ class TypoScriptParser
      *
      * @param string $string The TypoScript text
      * @param object|string $matchObj If is object, then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
-     *
-     * @return void
      */
     public function parse($string, $matchObj = '')
     {
@@ -662,7 +660,6 @@ class TypoScriptParser
      * @param array $setup The local setup array from the function calling this function.
      * @param array|string $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
      * @param bool $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
-     * @return void
      */
     public function setVal($string, array &$setup, $value, $wipeOut = false)
     {
@@ -768,7 +765,6 @@ class TypoScriptParser
      *
      * @param string $err The error message string
      * @param int $num The error severity (in the scale of TimeTracker::setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
-     * @return void
      */
     public function error($err, $num = 2)
     {
@@ -1230,7 +1226,6 @@ class TypoScriptParser
      * @param string $code Key from the internal array $this->highLightStyles
      * @param int $pointer Pointer to the line in $this->raw which this is about
      * @param int $strlen The number of chars LEFT on this line before the end is reached.
-     * @return void
      * @access private
      * @see parse()
      */

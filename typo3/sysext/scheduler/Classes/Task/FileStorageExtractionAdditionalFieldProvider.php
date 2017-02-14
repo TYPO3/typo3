@@ -24,7 +24,6 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 
 /**
  * Additional BE fields for task which extracts metadata from storage
- *
  */
 class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
@@ -172,7 +171,6 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      *
      * @param array $submittedData Contains data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)

@@ -44,8 +44,6 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 
     /**
      * Initialize the default number of days for all configured tables
-     *
-     * @return void
      */
     protected function initDefaultNumberOfDays()
     {
@@ -248,7 +246,6 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
      *
      * @param array $submittedData Contains data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
-     * @return void
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {

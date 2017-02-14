@@ -24,8 +24,6 @@ class UnitTestPackageManager extends PackageManager
 {
     /**
      * Initializes the package manager
-     *
-     * @return void
      */
     public function initialize()
     {
@@ -38,8 +36,6 @@ class UnitTestPackageManager extends PackageManager
     /**
      * Overwrite the original method to avoid resolving dependencies (which we do not need)
      * and saving the PackageStates.php file (which we do not want), when calling scanAvailablePackages()
-     *
-     * @return void
      */
     protected function sortAndSavePackageStates()
     {

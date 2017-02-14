@@ -57,8 +57,6 @@ class AboutController extends ActionController
 
     /**
      * Main action: Show standard information
-     *
-     * @return void
      */
     public function indexAction()
     {

@@ -86,7 +86,6 @@ class SyslogWriter extends AbstractWriter
      * Sets the facility to use when logging to syslog.
      *
      * @param int $facility Facility to use when logging.
-     * @return void
      */
     public function setFacility($facility)
     {

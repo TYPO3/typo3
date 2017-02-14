@@ -178,7 +178,6 @@ class ConditionMatcher extends AbstractConditionMatcher
      * Set/write a log message.
      *
      * @param string $message The log message to set/write
-     * @return void
      */
     protected function log($message)
     {

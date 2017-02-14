@@ -111,7 +111,6 @@ class ListController extends AbstractModuleController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -145,8 +144,6 @@ class ListController extends AbstractModuleController
 
     /**
      * Shows list of extensions present in the system
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -162,7 +159,6 @@ class ListController extends AbstractModuleController
      *
      * @param string $extensionKey
      * @throws ExtensionManagerException
-     * @return void
      */
     public function unresolvedDependenciesAction($extensionKey)
     {
@@ -189,7 +185,6 @@ class ListController extends AbstractModuleController
      * Either all extensions or depending on a search param
      *
      * @param string $search
-     * @return void
      */
     public function terAction($search = '')
     {
@@ -210,7 +205,6 @@ class ListController extends AbstractModuleController
      * Action for listing all possible distributions
      *
      * @param bool $showUnsuitableDistributions
-     * @return void
      */
     public function distributionsAction($showUnsuitableDistributions = false)
     {
@@ -251,7 +245,6 @@ class ListController extends AbstractModuleController
      * Shows all versions of a specific extension
      *
      * @param string $extensionKey
-     * @return void
      */
     public function showAllVersionsAction($extensionKey)
     {

@@ -29,7 +29,6 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 
     /**
      * Initialize additional arguments available for this tag view helper.
-     * @return void
      */
     public function initializeArguments()
     {

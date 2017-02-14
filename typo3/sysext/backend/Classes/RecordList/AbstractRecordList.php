@@ -303,8 +303,6 @@ abstract class AbstractRecordList
 
     /**
      * Dummy function, used to write the top of a table listing.
-     *
-     * @return void
      */
     public function writeTop()
     {
@@ -420,8 +418,6 @@ abstract class AbstractRecordList
 
     /**
      * Initializes page languages and icons
-     *
-     * @return void
      */
     public function initializeLanguages()
     {

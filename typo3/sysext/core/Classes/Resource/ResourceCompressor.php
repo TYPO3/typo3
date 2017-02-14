@@ -91,7 +91,6 @@ class ResourceCompressor
      * Sets absolute path to working directory
      *
      * @param string $rootPath Absolute path
-     * @return void
      */
     public function setRootPath($rootPath)
     {
@@ -603,7 +602,6 @@ class ResourceCompressor
      *
      * @param string $filename Target filename
      * @param string $contents File contents
-     * @return void
      */
     protected function writeFileAndCompressed($filename, $contents)
     {

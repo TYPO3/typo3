@@ -84,7 +84,6 @@ class HttpUtility
      * Set a specific response code like 404.
      *
      * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
-     * @return void
      */
     public static function setResponseCode($httpStatus = self::HTTP_STATUS_303)
     {
@@ -95,7 +94,6 @@ class HttpUtility
      * Set a specific response code and exit script execution.
      *
      * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
-     * @return void
      */
     public static function setResponseCodeAndExit($httpStatus = self::HTTP_STATUS_303)
     {

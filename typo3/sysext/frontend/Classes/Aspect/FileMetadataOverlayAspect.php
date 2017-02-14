@@ -30,7 +30,6 @@ class FileMetadataOverlayAspect
      * Do translation and workspace overlay
      *
      * @param \ArrayObject $data
-     * @return void
      */
     public function languageAndWorkspaceOverlay(\ArrayObject $data)
     {

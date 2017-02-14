@@ -45,8 +45,6 @@ class PropertyMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up this test case
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -321,7 +319,6 @@ class PropertyMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param mixed $typeConverters
      * @param bool $shouldFailWithException
      * @throws \Exception
-     * @return void
      */
     public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = false)
     {

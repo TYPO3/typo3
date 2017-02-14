@@ -112,7 +112,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $localExtensionStorage
-     * @return void
      */
     public function setLocalExtensionStorage($localExtensionStorage)
     {
@@ -122,8 +121,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Setter for available extensions
      * gets available extensions from list utility if not already done
-     *
-     * @return void
      */
     protected function setAvailableExtensions()
     {
@@ -132,7 +129,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param bool $skipDependencyCheck
-     * @return void
      */
     public function setSkipDependencyCheck($skipDependencyCheck)
     {
@@ -143,7 +139,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Checks dependencies for special cases (currently typo3 and php)
      *
      * @param Extension $extension
-     * @return void
      */
     public function checkDependencies(Extension $extension)
     {
@@ -355,7 +350,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @param Dependency $dependency
-     * @return void
      * @throws Exception\UnresolvedDependencyException
      */
     protected function getExtensionFromRepository($extensionKey, Dependency $dependency)
@@ -391,7 +385,6 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey
      * @param Dependency $dependency
      * @throws Exception\UnresolvedDependencyException
-     * @return void
      */
     protected function getExtensionFromTer($extensionKey, Dependency $dependency)
     {

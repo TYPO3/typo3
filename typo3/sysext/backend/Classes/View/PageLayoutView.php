@@ -2239,7 +2239,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     /**
      * Initializes the clipboard for generating paste links
      *
-     * @return void
      *
      * @see \TYPO3\CMS\Recordlist\RecordList::main()
      * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
@@ -2267,7 +2266,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * Generates the data for previous and next elements which is needed for movements.
      *
      * @param array $rowArray
-     * @return void
      */
     protected function generateTtContentDataArray(array $rowArray)
     {
@@ -2371,7 +2369,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * @param string $fieldList Comma separated list of fields.
      * @param array $row Record from which to take values for processing.
      * @param array $info Array to which the processed values are added.
-     * @return void
      */
     public function getProcessedValue($table, $fieldList, array $row, array &$info)
     {

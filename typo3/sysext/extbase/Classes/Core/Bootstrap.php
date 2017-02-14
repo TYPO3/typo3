@@ -70,7 +70,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      *
      * @param array $configuration The TS configuration array
      * @throws \RuntimeException
-     * @return void
      * @see run()
      * @api
      */
@@ -95,7 +94,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Initializes the Object framework.
      *
-     * @return void
      * @see initialize()
      */
     protected function initializeObjectManager()
@@ -107,7 +105,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * Initializes the Object framework.
      *
      * @param array $configuration
-     * @return void
      * @see initialize()
      */
     public function initializeConfiguration($configuration)
@@ -123,7 +120,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * Configures the object manager object configuration from
      * config.tx_extbase.objects and plugin.tx_foo.objects
      *
-     * @return void
      * @see initialize()
      */
     public function configureObjectManager()
@@ -144,7 +140,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Initializes the cache framework
      *
-     * @return void
      * @see initialize()
      */
     protected function initializeCache()
@@ -155,7 +150,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Initializes the Reflection Service
      *
-     * @return void
      * @see initialize()
      */
     protected function initializeReflection()
@@ -170,7 +164,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     /**
      * Initializes the persistence framework
      *
-     * @return void
      * @see initialize()
      */
     public function initializePersistence()
@@ -224,8 +217,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
 
     /**
      * Resets global singletons for the next plugin
-     *
-     * @return void
      */
     protected function resetSingletons()
     {

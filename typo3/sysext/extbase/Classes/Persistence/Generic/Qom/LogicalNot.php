@@ -38,7 +38,6 @@ class LogicalNot implements NotInterface
      * Fills an array with the names of all bound variables in the constraint
      *
      * @param array &$boundVariables
-     * @return void
      */
     public function collectBoundVariableNames(&$boundVariables)
     {

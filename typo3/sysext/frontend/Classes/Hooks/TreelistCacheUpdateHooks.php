@@ -67,7 +67,6 @@ class TreelistCacheUpdateHooks
      * @param mixed $recordId The record's uid for update records, a string to look the record's uid up after it has been created
      * @param array $updatedFields Array of changed fields and their new values
      * @param DataHandler $dataHandler DataHandler parent object
-     * @return void
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, DataHandler $dataHandler)
     {
@@ -101,7 +100,6 @@ class TreelistCacheUpdateHooks
      * @param int $recordId The record's uid
      * @param array $commandValue The commands value, typically an array with more detailed command information
      * @param DataHandler $dataHandler The DataHandler parent object
-     * @return void
      */
     public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $dataHandler)
     {
@@ -138,7 +136,6 @@ class TreelistCacheUpdateHooks
      * @param array $movedRecord The record that moved
      * @param array $updatedFields Array of changed fields
      * @param DataHandler $dataHandler DataHandler parent object
-     * @return void
      */
     public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
@@ -165,7 +162,6 @@ class TreelistCacheUpdateHooks
      * @param array $movedRecord The record that moved
      * @param array $updatedFields Array of changed fields
      * @param DataHandler $dataHandler DataHandler parent object
-     * @return void
      */
     public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, DataHandler $dataHandler)
     {
@@ -207,7 +203,6 @@ class TreelistCacheUpdateHooks
      * @param int $affectedParentPage parent uid of the affected page
      * @param array $updatedFields Array of updated fields and their new values
      * @param array $actions Array of actions to carry out
-     * @return void
      */
     protected function processClearCacheActions($affectedPage, $affectedParentPage, $updatedFields, array $actions)
     {
@@ -240,7 +235,6 @@ class TreelistCacheUpdateHooks
      * gets called after creating a new page and after moving a page
      *
      * @param int $affectedParentPage Parent page id of the changed page, the page to start clearing from
-     * @return void
      */
     protected function clearCacheForAllParents($affectedParentPage)
     {
@@ -271,7 +265,6 @@ class TreelistCacheUpdateHooks
      * in the treelist
      *
      * @param int $affectedPage ID of the changed page
-     * @return void
      */
     protected function clearCacheWhereUidInTreelist($affectedPage)
     {
@@ -291,7 +284,6 @@ class TreelistCacheUpdateHooks
      *
      * @param int $affectedPage Uid of the changed page
      * @param int $expirationTime
-     * @return void
      */
     protected function setCacheExpiration($affectedPage, $expirationTime)
     {
@@ -308,8 +300,6 @@ class TreelistCacheUpdateHooks
 
     /**
      * Removes all expired treelist cache entries
-     *
-     * @return void
      */
     protected function removeExpiredCacheEntries()
     {

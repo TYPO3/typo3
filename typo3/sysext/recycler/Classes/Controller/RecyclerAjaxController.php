@@ -156,7 +156,6 @@ class RecyclerAjaxController
      *
      * @param string $identifier The identifier to be used to set the data
      * @param string $data The data to be stored in the session
-     * @return void
      */
     protected function setDataInSession($identifier, $data)
     {

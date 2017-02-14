@@ -67,7 +67,6 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Download an extension
      *
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-     * @return void
      */
     public function download(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
     {
@@ -83,7 +82,6 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $downloadPath
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @return void
      */
     public function setDownloadPath($downloadPath)
     {

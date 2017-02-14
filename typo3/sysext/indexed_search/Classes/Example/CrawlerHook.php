@@ -41,7 +41,6 @@ class CrawlerHook
      * @param array $session_data Session data variable. Passed by reference. Changed content is saved and passed back upon next instance in the session.
      * @param array $params Params array from the queue entry.
      * @param \TYPO3\CMS\IndexedSearch\Hook\CrawlerHook $pObj Parent Object (from "indexed_search" extension)
-     * @return void
      */
     public function indexOperation($cfgRec, &$session_data, $params, &$pObj)
     {

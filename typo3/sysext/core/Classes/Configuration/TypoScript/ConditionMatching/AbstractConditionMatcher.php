@@ -59,7 +59,6 @@ abstract class AbstractConditionMatcher
      * Sets the id of the page to evaluate conditions for.
      *
      * @param int $pageId Id of the page (must be positive)
-     * @return void
      */
     public function setPageId($pageId)
     {
@@ -82,7 +81,6 @@ abstract class AbstractConditionMatcher
      * Sets the rootline.
      *
      * @param array $rootline The rootline to be used for matching (must have elements)
-     * @return void
      */
     public function setRootline(array $rootline)
     {
@@ -105,7 +103,6 @@ abstract class AbstractConditionMatcher
      * Sets whether to simulate the behaviour and match all conditions.
      *
      * @param bool $simulateMatchResult Whether to simulate positive matches
-     * @return void
      */
     public function setSimulateMatchResult($simulateMatchResult)
     {
@@ -118,7 +115,6 @@ abstract class AbstractConditionMatcher
      * Sets whether to simulate the behaviour and match specific conditions.
      *
      * @param array $simulateMatchConditions Conditions to simulate a match for
-     * @return void
      */
     public function setSimulateMatchConditions(array $simulateMatchConditions)
     {
@@ -662,7 +658,6 @@ abstract class AbstractConditionMatcher
      * Sets a log message.
      *
      * @param string $message The log message to set/write
-     * @return void
      */
     abstract protected function log($message);
 }

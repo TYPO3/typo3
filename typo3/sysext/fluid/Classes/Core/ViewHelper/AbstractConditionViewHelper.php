@@ -45,7 +45,6 @@ abstract class AbstractConditionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHe
 
     /**
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @return void
      */
     public function setRenderingContext(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {

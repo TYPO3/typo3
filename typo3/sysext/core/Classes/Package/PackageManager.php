@@ -127,8 +127,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes the package manager
-     *
-     * @return void
      */
     public function initialize()
     {
@@ -222,7 +220,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * The result is stored in $this->packageStatesConfiguration.
      *
      * @throws Exception\PackageStatesUnavailableException
-     * @return void
      */
     protected function loadPackageStates()
     {
@@ -255,8 +252,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Initializes activePackages property
      *
      * Saves PackageStates.php if list of required extensions has changed.
-     *
-     * @return void
      */
     protected function initializePackageObjects()
     {
@@ -293,8 +288,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes a backwards compatibility $GLOBALS['TYPO3_LOADED_EXT'] array
-     *
-     * @return void
      */
     protected function initializeCompatibilityLoadedExtArray()
     {
@@ -305,8 +298,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Scans all directories in the packages directories for available packages.
      * For each package a Package object is created and stored in $this->packages.
-     *
-     * @return void
      */
     public function scanAvailablePackages()
     {
@@ -461,7 +452,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Unregisters a package from the list of available packages
      *
      * @param string $packageKey Package Key of the package to be unregistered
-     * @return void
      */
     protected function unregisterPackageByPackageKey($packageKey)
     {
@@ -813,7 +803,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Unregisters a package from the list of available packages
      *
      * @param PackageInterface $package The package to be unregistered
-     * @return void
      * @throws Exception\InvalidPackageStateException
      */
     public function unregisterPackage(PackageInterface $package)

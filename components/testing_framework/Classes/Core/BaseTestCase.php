@@ -19,7 +19,6 @@ namespace TYPO3\TestingFramework\Core;
  *
  * Don't sub class this test case but rather choose a more specialized base test case,
  * such as UnitTestCase or FunctionalTestCase
- *
  */
 abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -97,7 +96,6 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @throws \InvalidArgumentException
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     *
      */
     protected function getAccessibleMockForAbstractClass(
         $originalClassName, array $arguments = [], $mockClassName = '',
@@ -252,7 +250,6 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param object $target The instance which needs the dependency
      * @param string $name Name of the property to be injected
      * @param mixed $dependency The dependency to inject – usually an object but can also be any other type
-     * @return void
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */

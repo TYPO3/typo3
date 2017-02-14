@@ -30,7 +30,6 @@ class FluidTemplateCache extends PhpFrontend implements FluidCacheInterface
 {
     /**
      * @param null $name
-     * @return void
      */
     public function flush($name = null)
     {

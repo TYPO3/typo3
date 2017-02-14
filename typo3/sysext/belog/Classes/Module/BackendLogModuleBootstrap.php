@@ -26,8 +26,6 @@ class BackendLogModuleBootstrap
 {
     /**
      * Dummy method, called by SCbase external object handling
-     *
-     * @return void
      */
     public function init()
     {
@@ -35,8 +33,6 @@ class BackendLogModuleBootstrap
 
     /**
      * Dummy method, called by SCbase external object handling
-     *
-     * @return void
      */
     public function checkExtObj()
     {

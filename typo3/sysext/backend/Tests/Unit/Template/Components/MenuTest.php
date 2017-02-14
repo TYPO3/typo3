@@ -26,7 +26,6 @@ class MenuTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try setting an empty menu
      *
      * @test
-     * @return void
      */
     public function isMenuValidBlankCallExpectFalse()
     {
@@ -39,7 +38,6 @@ class MenuTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Set a valid menu
      *
      * @test
-     * @return void
      */
     public function isMenuValidValidMenuWithDefaultsExpectTrue()
     {
@@ -53,7 +51,6 @@ class MenuTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Set a valid menu
      *
      * @test
-     * @return void
      */
     public function makeMenuAllGoodExpectTrue()
     {
@@ -69,7 +66,6 @@ class MenuTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Tests if empty menus get removed from the stack
      *
      * @test
-     * @return void
      */
     public function getMenusremovedEmptyMenusExpectsEquals()
     {

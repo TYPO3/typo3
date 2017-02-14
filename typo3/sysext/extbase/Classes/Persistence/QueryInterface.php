@@ -327,7 +327,6 @@ interface QueryInterface
      * the specific Storage Backend.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
-     * @return void
      * @todo decide whether this can be deprecated somewhen
      * @api This method is not part of TYPO3Flow API
      */

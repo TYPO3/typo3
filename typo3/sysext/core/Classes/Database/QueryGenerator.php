@@ -278,7 +278,6 @@ class QueryGenerator
      * @param string $name The name
      * @param string $table The table name
      * @param string $fieldList The field list
-     * @return void
      */
     public function init($name, $table, $fieldList = '')
     {
@@ -407,7 +406,6 @@ class QueryGenerator
      * @param string $name The name
      * @param string $list The list
      * @param string $force
-     * @return void
      */
     public function setAndCleanUpExternalLists($name, $list, $force = '')
     {
@@ -425,7 +423,6 @@ class QueryGenerator
      * Process data
      *
      * @param string $qC Query config
-     * @return void
      */
     public function procesData($qC = '')
     {
@@ -1221,8 +1218,6 @@ class QueryGenerator
 
     /**
      * Init user definition
-     *
-     * @return void
      */
     public function initUserDef()
     {
@@ -1364,7 +1359,6 @@ class QueryGenerator
      *
      * @param array $qcArr
      * @param bool $first
-     * @return void
      */
     public function getUserDefQuery($qcArr, $first)
     {
@@ -1689,7 +1683,6 @@ class QueryGenerator
      * Sets the current name of the input form.
      *
      * @param string $formName The name of the form.
-     * @return void
      */
     public function setFormName($formName)
     {

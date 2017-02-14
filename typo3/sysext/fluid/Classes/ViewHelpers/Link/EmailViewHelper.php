@@ -44,8 +44,6 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 
     /**
      * Arguments initialization
-     *
-     * @return void
      */
     public function initializeArguments()
     {

@@ -56,8 +56,6 @@ class LoginFramesetController
     /**
      * Main function.
      * Creates the header code and the frameset for the two frames.
-     *
-     * @return void
      */
     public function main()
     {

@@ -25,7 +25,6 @@ interface RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
-     * @return void
      * @api
      */
     public function setDispatched($flag);
@@ -57,7 +56,6 @@ interface RequestInterface
      *
      * @param string $argumentName Name of the argument to set
      * @param mixed $value The new value
-     * @return void
      * @api
      */
     public function setArgument($argumentName, $value);
@@ -67,7 +65,6 @@ interface RequestInterface
      * which existed before.
      *
      * @param array $arguments An array of argument names and their values
-     * @return void
      * @api
      */
     public function setArguments(array $arguments);

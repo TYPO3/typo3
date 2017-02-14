@@ -101,7 +101,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
-     * @return void
      * @internal
      */
     public function injectResourceFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory)
@@ -111,7 +110,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-     * @return void
      * @internal
      */
     public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
@@ -121,7 +119,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     * @return void
      * @internal
      */
     public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)

@@ -89,7 +89,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Initializes the identifier prefix when setting the cache.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
-     * @return void
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
@@ -127,7 +126,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws Cache\Exception if no cache frontend has been set.
      * @throws Cache\Exception\InvalidDataException if $data is not a string
      * @api
@@ -230,7 +228,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @throws Cache\Exception
      * @api
      */
@@ -246,7 +243,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -262,7 +258,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param string $entryIdentifier
      * @param array $tags
-     * @return void
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {
@@ -294,7 +289,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
      * Removes association of the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @return void
      */
     protected function removeIdentifierFromAllTags($entryIdentifier)
     {
@@ -323,8 +317,6 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Does nothing, as APCu does GC itself
-     *
-     * @return void
      */
     public function collectGarbage()
     {

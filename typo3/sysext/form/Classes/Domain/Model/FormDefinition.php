@@ -324,7 +324,6 @@ class FormDefinition extends AbstractCompositeRenderable
     /**
      * Initialize the form defaults of the current type
      *
-     * @return void
      * @throws TypeDefinitionNotFoundException
      * @internal
      */
@@ -343,7 +342,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * the passed $options array.
      *
      * @param array $options
-     * @return void
      * @internal
      */
     public function setOptions(array $options)
@@ -427,7 +425,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Instead of this method, you should often use {@link createPage} instead.
      *
      * @param Page $page
-     * @return void
      * @throws FormDefinitionConsistencyException if Page is already added to a FormDefinition
      * @see createPage
      * @api
@@ -482,7 +479,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Adds the specified finisher to this form
      *
      * @param FinisherInterface $finisher
-     * @return void
      * @api
      */
     public function addFinisher(FinisherInterface $finisher)
@@ -528,7 +524,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Add an element to the ElementsByIdentifier Cache.
      *
      * @param RenderableInterface $renderable
-     * @return void
      * @throws DuplicateFormElementException
      * @internal
      */
@@ -546,7 +541,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Remove an element from the ElementsByIdentifier cache
      *
      * @param RenderableInterface $renderable
-     * @return void
      * @internal
      */
     public function unregisterRenderable(RenderableInterface $renderable)
@@ -575,7 +569,6 @@ class FormDefinition extends AbstractCompositeRenderable
      *
      * @param string $elementIdentifier identifier of the form element. This supports property paths!
      * @param mixed $defaultValue
-     * @return void
      * @internal
      */
     public function addElementDefaultValue(string $elementIdentifier, $defaultValue)
@@ -606,7 +599,6 @@ class FormDefinition extends AbstractCompositeRenderable
      *
      * @param Page $pageToMove
      * @param Page $referencePage
-     * @return void
      * @api
      */
     public function movePageBefore(Page $pageToMove, Page $referencePage)
@@ -619,7 +611,6 @@ class FormDefinition extends AbstractCompositeRenderable
      *
      * @param Page $pageToMove
      * @param Page $referencePage
-     * @return void
      * @api
      */
     public function movePageAfter(Page $pageToMove, Page $referencePage)
@@ -631,7 +622,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Remove $pageToRemove from form
      *
      * @param Page $pageToRemove
-     * @return void
      * @api
      */
     public function removePage(Page $pageToRemove)
@@ -710,7 +700,6 @@ class FormDefinition extends AbstractCompositeRenderable
      * Set the renderer class name
      *
      * @param string $rendererClassName
-     * @return void
      * @api
      */
     public function setRendererClassName(string $rendererClassName)

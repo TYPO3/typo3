@@ -40,8 +40,6 @@ class IconTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

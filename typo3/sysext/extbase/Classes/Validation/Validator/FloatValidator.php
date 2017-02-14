@@ -25,7 +25,6 @@ class FloatValidator extends AbstractValidator
      * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

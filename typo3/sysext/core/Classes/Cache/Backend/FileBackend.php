@@ -57,7 +57,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * On the positive side, a frozen cache backend is much faster on read access.
      * A frozen backend can only be thawed by calling the flush() method.
      *
-     * @return void
      * @throws \RuntimeException
      */
     public function freeze()
@@ -104,7 +103,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * does not exist in v4.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The cache frontend
-     * @return void
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
@@ -122,7 +120,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \RuntimeException
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
@@ -278,7 +275,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
     /**
      * Removes all cache entries of this cache and sets the frozen flag to FALSE.
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -293,7 +289,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -328,7 +323,6 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
     /**
      * Does garbage collection
      *
-     * @return void
      * @api
      */
     public function collectGarbage()

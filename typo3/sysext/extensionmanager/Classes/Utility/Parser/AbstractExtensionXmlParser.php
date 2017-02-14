@@ -381,7 +381,6 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
      * Method resets version class properties.
      *
      * @param bool $resetAll If TRUE, additionally extension properties are reset
-     * @return void
      * @see $extensionKey, $version, $extensionDLCounter, $versionDLCounter,
      */
     protected function resetProperties($resetAll = false)

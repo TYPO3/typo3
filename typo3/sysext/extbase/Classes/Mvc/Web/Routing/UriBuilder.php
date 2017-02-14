@@ -156,8 +156,6 @@ class UriBuilder
 
     /**
      * Life-cycle method that is called by the DI container as soon as this object is completely built
-     *
-     * @return void
      */
     public function initializeObject()
     {

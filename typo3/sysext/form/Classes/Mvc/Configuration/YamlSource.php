@@ -116,7 +116,6 @@ class YamlSource
      *
      * @param File|string $fileToSave The file to write to.
      * @param array $configuration The configuration to save
-     * @return void
      * @internal
      */
     public function save($fileToSave, array $configuration)

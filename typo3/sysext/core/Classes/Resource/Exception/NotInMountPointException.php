@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 
 /**
  * An exception when something is wrong with the Mount Point
- *
  */
 class NotInMountPointException extends \TYPO3\CMS\Core\Resource\Exception
 {

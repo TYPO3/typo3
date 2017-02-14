@@ -431,8 +431,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Reset all vars to initial values
-     *
-     * @return void
      */
     protected function reset()
     {
@@ -462,7 +460,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets the title
      *
      * @param string $title	title of webpage
-     * @return void
      */
     public function setTitle($title)
     {
@@ -473,7 +470,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Enables/disables rendering of XHTML code
      *
      * @param bool $enable Enable XHTML
-     * @return void
      */
     public function setRenderXhtml($enable)
     {
@@ -484,7 +480,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets xml prolog and docType
      *
      * @param string $xmlPrologAndDocType Complete tags for xml prolog and docType
-     * @return void
      */
     public function setXmlPrologAndDocType($xmlPrologAndDocType)
     {
@@ -495,7 +490,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets meta charset
      *
      * @param string $charSet Used charset
-     * @return void
      */
     public function setCharSet($charSet)
     {
@@ -506,7 +500,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets language
      *
      * @param string $lang Used language
-     * @return void
      */
     public function setLanguage($lang)
     {
@@ -526,7 +519,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Set the meta charset tag
      *
      * @param string $metaCharsetTag
-     * @return void
      */
     public function setMetaCharsetTag($metaCharsetTag)
     {
@@ -537,7 +529,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets html tag
      *
      * @param string $htmlTag Html tag
-     * @return void
      */
     public function setHtmlTag($htmlTag)
     {
@@ -548,7 +539,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets HTML head tag
      *
      * @param string $headTag HTML head tag
-     * @return void
      */
     public function setHeadTag($headTag)
     {
@@ -559,7 +549,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets favicon
      *
      * @param string $favIcon
-     * @return void
      */
     public function setFavIcon($favIcon)
     {
@@ -570,7 +559,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets icon mime type
      *
      * @param string $iconMimeType
-     * @return void
      */
     public function setIconMimeType($iconMimeType)
     {
@@ -581,7 +569,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets HTML base URL
      *
      * @param string $baseUrl HTML base URL
-     * @return void
      */
     public function setBaseUrl($baseUrl)
     {
@@ -592,7 +579,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets template file
      *
      * @param string $file
-     * @return void
      */
     public function setTemplateFile($file)
     {
@@ -603,7 +589,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets Content for Body
      *
      * @param string $content
-     * @return void
      */
     public function setBodyContent($content)
     {
@@ -614,7 +599,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets path to requireJS library (relative to typo3 directory)
      *
      * @param string $path Path to requireJS library
-     * @return void
      */
     public function setRequireJsPath($path)
     {
@@ -625,7 +609,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Sets Path for ExtJs library (relative to typo3 directory)
      *
      * @param string $path
-     * @return void
      */
     public function setExtJsPath($path)
     {
@@ -640,8 +623,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*****************************************************/
     /**
      * Enables MoveJsFromHeaderToFooter
-     *
-     * @return void
      */
     public function enableMoveJsFromHeaderToFooter()
     {
@@ -650,8 +631,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables MoveJsFromHeaderToFooter
-     *
-     * @return void
      */
     public function disableMoveJsFromHeaderToFooter()
     {
@@ -660,8 +639,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables compression of javascript
-     *
-     * @return void
      */
     public function enableCompressJavascript()
     {
@@ -670,8 +647,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables compression of javascript
-     *
-     * @return void
      */
     public function disableCompressJavascript()
     {
@@ -680,8 +655,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables compression of css
-     *
-     * @return void
      */
     public function enableCompressCss()
     {
@@ -690,8 +663,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables compression of css
-     *
-     * @return void
      */
     public function disableCompressCss()
     {
@@ -700,8 +671,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables concatenation of js and css files
-     *
-     * @return void
      */
     public function enableConcatenateFiles()
     {
@@ -710,8 +679,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables concatenation of js and css files
-     *
-     * @return void
      */
     public function disableConcatenateFiles()
     {
@@ -720,8 +687,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables concatenation of js files
-     *
-     * @return void
      */
     public function enableConcatenateJavascript()
     {
@@ -730,8 +695,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables concatenation of js files
-     *
-     * @return void
      */
     public function disableConcatenateJavascript()
     {
@@ -740,8 +703,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Enables concatenation of css files
-     *
-     * @return void
      */
     public function enableConcatenateCss()
     {
@@ -750,8 +711,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Disables concatenation of css files
-     *
-     * @return void
      */
     public function disableConcatenateCss()
     {
@@ -760,8 +719,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Sets removal of all line breaks in template
-     *
-     * @return void
      */
     public function enableRemoveLineBreaksFromTemplate()
     {
@@ -770,8 +727,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Unsets removal of all line breaks in template
-     *
-     * @return void
      */
     public function disableRemoveLineBreaksFromTemplate()
     {
@@ -781,8 +736,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Enables Debug Mode
      * This is a shortcut to switch off all compress/concatenate features to enable easier debug
-     *
-     * @return void
      */
     public function enableDebugMode()
     {
@@ -1030,7 +983,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds meta data
      *
      * @param string $meta Meta data (complete metatag)
-     * @return void
      */
     public function addMetaTag($meta)
     {
@@ -1043,7 +995,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds inline HTML comment
      *
      * @param string $comment
-     * @return void
      */
     public function addInlineComment($comment)
     {
@@ -1056,7 +1007,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds header data
      *
      * @param string $data Free header data for HTML header
-     * @return void
      */
     public function addHeaderData($data)
     {
@@ -1069,7 +1019,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds footer data
      *
      * @param string $data Free header data for HTML header
-     * @return void
      */
     public function addFooterData($data)
     {
@@ -1091,7 +1040,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
-     * @return void
      */
     public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
     {
@@ -1127,7 +1075,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
-     * @return void
      */
     public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
     {
@@ -1162,7 +1109,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
-     * @return void
      */
     public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
     {
@@ -1197,7 +1143,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
-     * @return void
      */
     public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
     {
@@ -1227,7 +1172,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $block
      * @param bool $compress
      * @param bool $forceOnTop
-     * @return void
      */
     public function addJsInlineCode($name, $block, $compress = true, $forceOnTop = false)
     {
@@ -1248,7 +1192,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $block
      * @param bool $compress
      * @param bool $forceOnTop
-     * @return void
      */
     public function addJsFooterInlineCode($name, $block, $compress = true, $forceOnTop = false)
     {
@@ -1267,7 +1210,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $block Javascript code
      * @param bool $forceOnTop Position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
-     * @return void
      */
     public function addExtOnReadyCode($block, $forceOnTop = false)
     {
@@ -1284,7 +1226,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds the ExtDirect code
      *
      * @param array $filterNamespaces Limit the output to defined namespaces. If empty, all namespaces are generated
-     * @return void
      */
     public function addExtDirectCode(array $filterNamespaces = [])
     {
@@ -1414,7 +1355,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $allWrap
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
-     * @return void
      */
     public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
     {
@@ -1445,7 +1385,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $allWrap
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
-     * @return void
      */
     public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
     {
@@ -1471,7 +1410,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $block
      * @param bool $compress
      * @param bool $forceOnTop
-     * @return void
      */
     public function addCssInlineBlock($name, $block, $compress = false, $forceOnTop = false)
     {
@@ -1490,7 +1428,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param null|string $version The jQuery version that should be included, either "latest" or any available version
      * @param null|string $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
      * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
-     * @return void
      * @throws \UnexpectedValueException
      */
     public function loadJquery($version = null, $source = null, $namespace = self::JQUERY_NAMESPACE_DEFAULT)
@@ -1520,8 +1457,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * this automatically adds the JavaScript path of all loaded extensions in the requireJS path option
      * so it resolves names like TYPO3/CMS/MyExtension/MyJsFile to EXT:MyExtension/Resources/Public/JavaScript/MyJsFile.js
      * when using requireJS
-     *
-     * @return void
      */
     public function loadRequireJs()
     {
@@ -1615,7 +1550,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *      ),
      *
      * @param array $configuration The configuration that will be merged with existing one.
-     * @return void
      */
     public function addRequireJsConfiguration(array $configuration)
     {
@@ -1641,7 +1575,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
      * @param string $callBackFunction loaded right after the requireJS loading, must be wrapped in function() {}
-     * @return void
      */
     public function loadRequireJsModule($mainModuleName, $callBackFunction = null)
     {
@@ -1664,7 +1597,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param bool $css Flag, if set the ext-css will be loaded
      * @param bool $theme Flag, if set the ext-theme "grey" will be loaded
-     * @return void
      */
     public function loadExtJS($css = true, $theme = true)
     {
@@ -1675,8 +1607,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Call this function to load debug version of ExtJS. Use this for development only
-     *
-     * @return void
      */
     public function enableExtJsDebug()
     {
@@ -1690,7 +1620,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $key
      * @param string $value
-     * @return void
      */
     public function addInlineLanguageLabel($key, $value)
     {
@@ -1705,7 +1634,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $array
      * @param bool $parseWithLanguageService
-     * @return void
      */
     public function addInlineLanguageLabelArray(array $array, $parseWithLanguageService = false)
     {
@@ -1729,7 +1657,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $selectionPrefix Prefix to select the correct labels (default: '')
      * @param string $stripFromSelectionName String to be removed from the label names in the output. (default: '')
      * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
-     * @return void
      */
     public function addInlineLanguageLabelFile($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0)
     {
@@ -1752,7 +1679,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $namespace
      * @param string $key
      * @param string $value
-     * @return void
      */
     public function addInlineSetting($namespace, $key, $value)
     {
@@ -1780,7 +1706,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $namespace
      * @param array $array
-     * @return void
      */
     public function addInlineSettingArray($namespace, array $array)
     {
@@ -1804,7 +1729,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds content to body content
      *
      * @param string $content
-     * @return void
      */
     public function addBodyContent($content)
     {
@@ -1894,8 +1818,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Remove ending slashes from static header block
      * if the page is being rendered as html (not xhtml)
      * and define property $this->endingSlash for further use
-     *
-     * @return void
      */
     protected function prepareRendering()
     {
@@ -2468,7 +2390,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $selectionPrefix
      * @param string $stripFromSelectionName
      * @param int $errorMode
-     * @return void
      * @throws \RuntimeException
      */
     protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0)
@@ -2546,8 +2467,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Concatenate files into one file
      * registered handler
-     *
-     * @return void
      */
     protected function doConcatenate()
     {
@@ -2557,8 +2476,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Concatenate JavaScript files according to the configuration.
-     *
-     * @return void
      */
     protected function doConcatenateJavaScript()
     {
@@ -2583,8 +2500,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Concatenate CSS files according to configuration.
-     *
-     * @return void
      */
     protected function doConcatenateCss()
     {
@@ -2611,8 +2526,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Compresses inline code
-     *
-     * @return void
      */
     protected function doCompress()
     {
@@ -2622,8 +2535,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Compresses CSS according to configuration.
-     *
-     * @return void
      */
     protected function doCompressCss()
     {
@@ -2647,8 +2558,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Compresses JavaScript according to configuration.
-     *
-     * @return void
      */
     protected function doCompressJavaScript()
     {
@@ -2773,8 +2682,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*****************************************************/
     /**
      * Execute PreRenderHook for possible manipulation
-     *
-     * @return void
      */
     protected function executePreRenderHook()
     {
@@ -2800,8 +2707,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * PostTransform for possible manipulation of concatenated and compressed files
-     *
-     * @return void
      */
     protected function executeRenderPostTransformHook()
     {
@@ -2837,7 +2742,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param $cssInline string
      * @param $jsFooterInline string
      * @param $jsFooterLibs string
-     * @return void
      */
     protected function executePostRenderHook(&$jsLibs, &$jsFiles, &$jsFooterFiles, &$cssLibs, &$cssFiles, &$jsInline, &$cssInline, &$jsFooterInline, &$jsFooterLibs)
     {

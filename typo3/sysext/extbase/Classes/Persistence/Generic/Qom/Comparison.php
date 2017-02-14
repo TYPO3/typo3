@@ -139,7 +139,6 @@ class Comparison implements ComparisonInterface
 
     /**
      * @param string $parameterIdentifier
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function setParameterIdentifier($parameterIdentifier)
@@ -162,7 +161,6 @@ class Comparison implements ComparisonInterface
      * Fills an array with the names of all bound variables in the constraints
      *
      * @param array &$boundVariables
-     * @return void
      */
     public function collectBoundVariableNames(&$boundVariables)
     {

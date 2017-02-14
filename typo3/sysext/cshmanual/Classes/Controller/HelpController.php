@@ -54,8 +54,6 @@ class HelpController extends ActionController
 
     /**
      * Initialize the controller
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -66,7 +64,6 @@ class HelpController extends ActionController
      * Initialize the view
      *
      * @param ViewInterface $view The view
-     * @return void
      */
     public function initializeView(ViewInterface $view)
     {
@@ -78,8 +75,6 @@ class HelpController extends ActionController
 
     /**
      * Show table of contents
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -88,8 +83,6 @@ class HelpController extends ActionController
 
     /**
      * Show the table of contents and all manuals
-     *
-     * @return void
      */
     public function allAction()
     {
@@ -101,7 +94,6 @@ class HelpController extends ActionController
      *
      * @param string $table
      * @param string $field
-     * @return void
      */
     public function detailAction($table = '', $field = '*')
     {

@@ -64,7 +64,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \DateTime $creationDate
-     * @return void
      */
     public function setCreationDate($creationDate)
     {
@@ -81,7 +80,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \DateTime $modificationDate
-     * @return void
      */
     public function setModificationDate($modificationDate)
     {
@@ -98,7 +96,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author
-     * @return void
      */
     public function setAuthor(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $author)
     {
@@ -115,7 +112,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $subject
-     * @return void
      */
     public function setSubject($subject)
     {
@@ -132,7 +128,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $message
-     * @return void
      */
     public function setMessage($message)
     {
@@ -149,7 +144,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param bool $personal
-     * @return void
      */
     public function setPersonal($personal)
     {
@@ -166,7 +160,6 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $category
-     * @return void
      */
     public function setCategory($category)
     {

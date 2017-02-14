@@ -70,7 +70,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     /**
      * Override this method in your custom FormElements if needed
      *
-     * @return void
      * @api
      */
     public function initializeFormElement()
@@ -120,7 +119,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * Set the default value of the element
      *
      * @param mixed $defaultValue
-     * @return void
      * @api
      */
     public function setDefaultValue($defaultValue)
@@ -150,7 +148,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      * @api
      */
     public function setProperty(string $key, $value)
@@ -175,7 +172,6 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * @param FormRuntime $formRuntime
      * @param mixed $elementValue
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

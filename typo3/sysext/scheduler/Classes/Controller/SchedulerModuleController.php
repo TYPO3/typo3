@@ -118,8 +118,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Initializes the backend module
-     *
-     * @return void
      */
     public function init()
     {
@@ -131,8 +129,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -148,8 +144,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Main function of the module. Write the content to $this->content
-     *
-     * @return void
      */
     public function main()
     {
@@ -423,8 +417,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Delete a task from the execution queue
-     *
-     * @return void
      */
     protected function deleteTask()
     {
@@ -470,8 +462,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      * Note that this doesn't actually stop the running script. It just unmarks
      * all executions.
      * @todo find a way to really kill the running task
-     *
-     * @return void
      */
     protected function stopTask()
     {
@@ -498,8 +488,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Toggles the disabled state of the submitted task
-     *
-     * @return void
      */
     protected function toggleDisableAction()
     {
@@ -515,8 +503,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Sets the next execution time of the submitted task to now
-     *
-     * @return void
      */
     protected function setNextExecutionTimeAction()
     {
@@ -854,8 +840,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Execute all selected tasks
-     *
-     * @return void
      */
     protected function executeTasks()
     {
@@ -1226,8 +1210,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
     /**
      * Saves a task specified in the backend form to the database
-     *
-     * @return void
      */
     protected function saveTask()
     {
@@ -1426,7 +1408,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      *
      * @param string $input
      * @return int
-     *
      */
     protected function convertToTimestamp(string $input): int
     {
@@ -1449,7 +1430,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
      *
      * @param string $message The message itself
      * @param int $severity Message level (according to FlashMessage class constants)
-     * @return void
      */
     public function addMessage($message, $severity = FlashMessage::OK)
     {

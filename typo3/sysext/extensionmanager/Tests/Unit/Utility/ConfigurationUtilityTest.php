@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 /**
  * Configuration utility test
- *
  */
 class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -241,7 +240,6 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
      *
      * @param array $configuration
      * @param array $expected
-     * @return void
      */
     public function convertValuedToNestedConfiguration(array $configuration, array $expected)
     {
@@ -309,7 +307,6 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
      *
      * @param array $configuration
      * @param array $expected
-     * @return void
      */
     public function convertNestedToValuedConfiguration(array $configuration, array $expected)
     {

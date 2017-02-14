@@ -38,7 +38,6 @@ class ExistsViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @return void
      */
     public function initializeArguments()
     {

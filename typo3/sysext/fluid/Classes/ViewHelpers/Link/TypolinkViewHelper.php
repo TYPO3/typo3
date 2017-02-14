@@ -49,7 +49,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Linktext
  * </a>
  * </output>
- *
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

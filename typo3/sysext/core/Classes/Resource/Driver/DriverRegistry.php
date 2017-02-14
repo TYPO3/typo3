@@ -85,8 +85,6 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Adds the TCA information so the registered drivers can be selected when creating a sys_file_storage
      * in the TYPO3 Backend.
-     *
-     * @return void
      */
     public function addDriversToTCA()
     {

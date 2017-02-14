@@ -89,7 +89,6 @@ class FlashMessagesViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

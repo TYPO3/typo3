@@ -46,7 +46,6 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @return void
      * @internal
      */
     public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
@@ -57,7 +56,6 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()
@@ -178,7 +176,6 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
     /**
      * @param string $uniqueIdentifier
      * @param string $datePickerDateFormat
-     * @return void
      */
     protected function renderInlineJavascript(string $uniqueIdentifier, string $datePickerDateFormat)
     {

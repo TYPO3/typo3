@@ -16,13 +16,11 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
 /**
  * Testcase
- *
  */
 class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function resolveDependenciesCallsDownloadDependenciesIfDownloadKeyExistsInQueue()
     {
@@ -55,7 +53,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function resolveDependenciesCallsUpdateAndDownloadDependenciesIfUpdateKeyExistsInQueue()
     {
@@ -89,7 +86,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function downloadDependenciesCallsDownloadUtilityDownloadMethod()
     {
@@ -124,7 +120,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function downloadDependenciesCallsRemoveExtensionFromQueue()
     {
@@ -162,7 +157,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function downloadDependenciesReturnsResolvedDependencies()
     {
@@ -198,7 +192,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function uninstallDependenciesToBeUpdatedCallsUninstall()
     {
@@ -220,7 +213,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function uninstallDependenciesToBeUpdatedReturnsResolvedDependencies()
     {
@@ -242,7 +234,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function installDependenciesCallsInstall()
     {
@@ -266,7 +257,6 @@ class ExtensionManagementServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
 
     /**
      * @test
-     * @return void
      */
     public function installDependenciesReturnsResolvedDependencies()
     {

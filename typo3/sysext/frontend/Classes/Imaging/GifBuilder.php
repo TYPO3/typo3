@@ -107,7 +107,6 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
      * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
-     * @return void
      * @see ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
      */
     public function start($conf, $data)
@@ -365,7 +364,6 @@ class GifBuilder extends GraphicalFunctions
      * Creates a GDlib resource in $this->im and works on that
      * Called by gifBuild()
      *
-     * @return void
      * @access private
      * @see gifBuild()
      */

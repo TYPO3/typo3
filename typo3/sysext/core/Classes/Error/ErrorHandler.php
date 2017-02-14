@@ -56,7 +56,6 @@ class ErrorHandler implements ErrorHandlerInterface
      * Defines which error levels should result in an exception thrown.
      *
      * @param int $exceptionalErrors The integer representing the E_* error level to handle as exceptions
-     * @return void
      */
     public function setExceptionalErrors($exceptionalErrors)
     {
@@ -179,7 +178,6 @@ class ErrorHandler implements ErrorHandlerInterface
      *
      * @param string $logMessage Default text that follows the message (in english!).
      * @param int $severity The error level of the message (0 = OK, 1 = warning, 2 = error)
-     * @return void
      */
     protected function writeLog($logMessage, $severity)
     {

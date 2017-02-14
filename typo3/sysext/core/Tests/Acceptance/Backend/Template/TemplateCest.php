@@ -23,7 +23,6 @@ class TemplateCest
 {
     /**
      * @param Admin $I
-     * @return void
      */
     public function _before(Admin $I)
     {
@@ -44,7 +43,6 @@ class TemplateCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(Admin $I)
     {
@@ -78,7 +76,6 @@ class TemplateCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function addANewSiteTemplate(Admin $I)
     {

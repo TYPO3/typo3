@@ -71,7 +71,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the id of the tree
      *
      * @param string $treeId
-     * @return void
      */
     public function setTreeId($treeId)
     {
@@ -92,7 +91,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the expandAll
      *
      * @param bool $expandAll
-     * @return void
      */
     public function setExpandAll($expandAll)
     {
@@ -113,7 +111,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the levelMaximum
      *
      * @param int $levelMaximum
-     * @return void
      */
     public function setLevelMaximum($levelMaximum)
     {
@@ -145,7 +142,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the list for expanded nodes
      *
      * @param string $expandedList
-     * @return void
      */
     public function setExpandedList($expandedList)
     {
@@ -164,8 +160,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 
     /**
      * Read the list for expanded nodes from user settings
-     *
-     * @return void
      */
     public function initializeTreeData()
     {
@@ -176,7 +170,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the list for selected nodes
      *
      * @param string $selectedList
-     * @return void
      */
     public function setSelectedList($selectedList)
     {
@@ -197,7 +190,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Sets the list for non selectable tree levels
      *
      * @param string $nonSelectableLevelList
-     * @return void
      */
     public function setNonSelectableLevelList($nonSelectableLevelList)
     {
@@ -218,7 +210,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Setter for the itemWhiteList
      *
      * @param array $itemWhiteList
-     * @return void
      */
     public function setItemWhiteList(array $itemWhiteList)
     {
@@ -239,7 +230,6 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
      * Setter for $itemUnselectableList
      *
      * @param array $itemUnselectableList
-     * @return void
      */
     public function setItemUnselectableList(array $itemUnselectableList)
     {

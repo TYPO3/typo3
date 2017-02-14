@@ -61,7 +61,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      * Sets the child nodes collection
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $childNodes
-     * @return void
      */
     public function setChildNodes(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $childNodes)
     {
@@ -70,8 +69,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 
     /**
      * Removes child nodes collection
-     *
-     * @return void
      */
     public function removeChildNodes()
     {
@@ -108,7 +105,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      * Sets the identifier
      *
      * @param string $id
-     * @return void
      */
     public function setId($id)
     {
@@ -129,7 +125,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      * Sets the parent node
      *
      * @param NULL|\TYPO3\CMS\Backend\Tree\TreeNode $parentNode
-     * @return void
      */
     public function setParentNode(\TYPO3\CMS\Backend\Tree\TreeNode $parentNode = null)
     {
@@ -205,7 +200,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      * Sets data of the node by a given data array
      *
      * @param array $data
-     * @return void
      */
     public function dataFromArray($data)
     {
@@ -233,7 +227,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
      *
      * @throws \TYPO3\CMS\Core\Exception if the deserialized object type is not identical to the current one
      * @param string $serializedString
-     * @return void
      */
     public function unserialize($serializedString)
     {

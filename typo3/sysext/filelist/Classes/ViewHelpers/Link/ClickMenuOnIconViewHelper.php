@@ -26,7 +26,6 @@ class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 
     /**
      * Defines additional arguments that are allowed for this view helper.
-     * @return void
      */
     public function initializeArguments()
     {

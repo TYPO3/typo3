@@ -336,7 +336,6 @@ class LogRecord implements \ArrayAccess
      *
      * @param mixed $offset
      * @param mixed $value
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -349,7 +348,6 @@ class LogRecord implements \ArrayAccess
      * Offset to unset, required by ArrayAccess interface
      *
      * @param mixed $offset
-     * @return void
      */
     public function offsetUnset($offset)
     {

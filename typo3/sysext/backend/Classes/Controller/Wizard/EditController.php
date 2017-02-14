@@ -62,8 +62,6 @@ class EditController extends AbstractWizardController
 
     /**
      * Initialization of the script
-     *
-     * @return void
      */
     protected function init()
     {

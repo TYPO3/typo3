@@ -96,7 +96,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @access public
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository
-     * @return void
      * @see $repository
      */
     public function setRepository(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository)
@@ -110,7 +109,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Delegates to {@link fetchFile()}.
      *
      * @access public
-     * @return void
      * @throws ExtensionManagerException
      * @see fetchFile()
      */
@@ -125,7 +123,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Delegates to {@link fetchFile()}.
      *
      * @access public
-     * @return void
      * @throws ExtensionManagerException
      * @see fetchFile()
      */
@@ -140,7 +137,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $remoteResource remote resource to read contents from
      * @param string $localResource local resource (absolute file path) to store retrieved contents to (must be within typo3temp/)
-     * @return void
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(), \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
      * @throws ExtensionManagerException
      */

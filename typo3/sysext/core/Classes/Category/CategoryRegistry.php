@@ -135,7 +135,6 @@ class CategoryRegistry implements SingletonInterface
      *
      * @param array $configuration Current field configuration
      * @throws \UnexpectedValueException
-     * @return void
      */
     public function getCategoryFieldsForTable(array &$configuration)
     {
@@ -215,7 +214,6 @@ class CategoryRegistry implements SingletonInterface
     /**
      * Apply TCA to all registered tables
      *
-     * @return void
      * @internal
      */
     public function applyTcaForPreRegisteredTables()
@@ -242,8 +240,6 @@ class CategoryRegistry implements SingletonInterface
 
     /**
      * Add default categorized tables to the registry
-     *
-     * @return void
      */
     protected function registerDefaultCategorizedTables()
     {
@@ -268,7 +264,6 @@ class CategoryRegistry implements SingletonInterface
      *              + fieldList: field configuration to be added to showitems
      *              + typesList: list of types that shall visualize the categories field
      *              + position: insert position of the categories field
-     * @return void
      */
     protected function addToAllTCAtypes($tableName, $fieldName, array $options)
     {
@@ -326,7 +321,6 @@ class CategoryRegistry implements SingletonInterface
      *              + interface: boolean if the category should be included in the "interface" section of the TCA table
      *              + l10n_mode
      *              + l10n_display
-     * @return void
      */
     protected function addTcaColumn($tableName, $fieldName, array $options)
     {

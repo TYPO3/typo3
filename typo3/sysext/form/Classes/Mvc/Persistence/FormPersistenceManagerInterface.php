@@ -58,7 +58,6 @@ interface FormPersistenceManagerInterface
      * Delete the form representation identified by $persistenceIdentifier
      *
      * @param string $persistenceIdentifier
-     * @return void
      * @api
      */
     public function delete(string $persistenceIdentifier);

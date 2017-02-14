@@ -28,8 +28,6 @@ class AutoPublishService
      * the autopublication process
      * It searches for workspaces whose publication date is in the past
      * and publishes them
-     *
-     * @return void
      */
     public function autoPublishWorkspaces()
     {

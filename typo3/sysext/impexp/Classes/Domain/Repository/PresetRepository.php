@@ -102,7 +102,6 @@ class PresetRepository
      * Manipulate presets
      *
      * @param array $inData In data array, passed by reference!
-     * @return void
      */
     public function processPresets(&$inData)
     {

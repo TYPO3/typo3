@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 
 /**
  * PHP type handling functions
- *
  */
 class TypeHandlingUtility
 {

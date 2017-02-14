@@ -86,7 +86,6 @@ class ModuleLoader
      *
      * @param array $modulesArray Should be the global var $TBE_MODULES, $BE_USER can optionally be set to an alternative Backend user object than the global var $BE_USER (which is the currently logged in user)
      * @param BackendUserAuthentication $beUser Optional backend user object to use. If not set, the global BE_USER object is used.
-     * @return void
      */
     public function load($modulesArray, BackendUserAuthentication $beUser = null)
     {

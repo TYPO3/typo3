@@ -908,7 +908,6 @@ class FlexFormTools
      * @param array $PA Additional configuration used in calling function
      * @param string $path Path of value in DS structure
      * @param FlexFormTools $pObj caller
-     * @return void
      */
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {

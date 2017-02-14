@@ -25,8 +25,6 @@ interface ObjectMonitoringInterface
     /**
      * Register an object's clean state, e.g. after it has been reconstituted
      * from the database
-     *
-     * @return void
      */
     public function _memorizeCleanState();
 

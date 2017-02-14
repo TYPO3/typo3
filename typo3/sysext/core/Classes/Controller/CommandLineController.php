@@ -60,7 +60,6 @@ class CommandLineController
      * Constructor
      * Make sure child classes also call this!
      *
-     * @return void
      * @deprecated the CommandLineController is deprecated since TYPO3 v8 and will be removed in TYPO3 v9, use a separate CLI Command instead
      */
     public function __construct()
@@ -146,7 +145,6 @@ class CommandLineController
     /**
      * Validates if the input arguments in this->cli_args are all listed in this->cli_options and if not,
      * will exit with an error.
-     *
      */
     public function cli_validateArgs()
     {
@@ -186,7 +184,6 @@ class CommandLineController
      * Set environment array to $cli_args
      *
      * @param array $argv Configuration options
-     * @return void
      */
     public function cli_setArguments(array $argv = [])
     {
@@ -247,8 +244,6 @@ class CommandLineController
 
     /**
      * Prints help-output from ->cli_help array
-     *
-     * @return void
      */
     public function cli_help()
     {

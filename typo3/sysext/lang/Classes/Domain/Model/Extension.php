@@ -75,7 +75,6 @@ class Extension extends AbstractEntity
      * Setter for the icon
      *
      * @param string $icon ext_icon path relative to typo3 folder like ../typo3conf/ext/extensionkey/ext_icon.png
-     * @return void
      */
     public function setIcon($icon)
     {
@@ -128,7 +127,6 @@ class Extension extends AbstractEntity
      * Setter for the key
      *
      * @param string $key
-     * @return void
      */
     public function setKey($key)
     {
@@ -149,7 +147,6 @@ class Extension extends AbstractEntity
      * Setter for the title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -170,7 +167,6 @@ class Extension extends AbstractEntity
      * Setter for the version
      *
      * @param int $version Needs to have a valid version format like 1003007
-     * @return void
      */
     public function setVersion($version)
     {
@@ -182,7 +178,6 @@ class Extension extends AbstractEntity
      *
      * @param string $version Needs to have a format like '1.3.7' and converts it into an integer like 1003007 before setting the version
      * @see \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger
-     * @return void
      */
     public function setVersionFromString($version)
     {
@@ -203,7 +198,6 @@ class Extension extends AbstractEntity
      * Setter for updateResult
      *
      * @param array $updateResult Needs to be in a structure like array('icon' => '', 'message' => '')
-     * @return void
      */
     public function setUpdateResult($updateResult)
     {

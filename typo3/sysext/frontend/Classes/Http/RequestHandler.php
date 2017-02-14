@@ -315,8 +315,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Timetracking started depending if a Backend User is logged in
-     *
-     * @return void
      */
     protected function initializeTimeTracker()
     {
@@ -329,8 +327,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Creates an instance of TSFE and sets it as a global variable
-     *
-     * @return void
      */
     protected function initializeController()
     {

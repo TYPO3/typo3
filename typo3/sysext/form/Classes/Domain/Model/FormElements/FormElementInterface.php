@@ -40,7 +40,6 @@ interface FormElementInterface extends RenderableInterface
      * Will be called as soon as the element is (tried to be) added to a form
      * @see registerInFormIfPossible()
      *
-     * @return void
      * @internal
      */
     public function initializeFormElement();
@@ -78,7 +77,6 @@ interface FormElementInterface extends RenderableInterface
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      * @api
      */
     public function setProperty(string $key, $value);
@@ -112,7 +110,6 @@ interface FormElementInterface extends RenderableInterface
      * Registers a validator for this element
      *
      * @param ValidatorInterface $validator
-     * @return void
      * @api
      */
     public function addValidator(ValidatorInterface $validator);
@@ -121,7 +118,6 @@ interface FormElementInterface extends RenderableInterface
      * Set the target data type for this element
      *
      * @param string $dataType the target data type
-     * @return void
      * @api
      */
     public function setDataType(string $dataType);
@@ -141,7 +137,6 @@ interface FormElementInterface extends RenderableInterface
      * @param FormRuntime $formRuntime
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @see FormRuntime::mapAndValidate()
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9

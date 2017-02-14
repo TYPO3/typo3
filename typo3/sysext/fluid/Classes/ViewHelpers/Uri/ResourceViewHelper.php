@@ -37,7 +37,6 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

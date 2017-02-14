@@ -81,7 +81,6 @@ class IntegrityService
      * Sets the affected elements.
      *
      * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[] $affectedElements
-     * @return void
      */
     public function setAffectedElements(array $affectedElements)
     {
@@ -90,8 +89,6 @@ class IntegrityService
 
     /**
      * Checks integrity of affected records.
-     *
-     * @return void
      */
     public function check()
     {
@@ -104,7 +101,6 @@ class IntegrityService
      * Checks a single element.
      *
      * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element
-     * @return void
      */
     public function checkElement(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element)
     {
@@ -118,7 +114,6 @@ class IntegrityService
      * then boths (localization and localization parent) should be published.
      *
      * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element
-     * @return void
      */
     protected function checkLocalization(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element)
     {
@@ -232,7 +227,6 @@ class IntegrityService
      * @param string $identifier Record identifier (table:id)
      * @param int $status Status code (see constants)
      * @param string $message Message/description of the issue
-     * @return void
      */
     protected function addIssue($identifier, $status, $message)
     {

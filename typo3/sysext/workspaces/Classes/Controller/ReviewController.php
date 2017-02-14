@@ -61,8 +61,6 @@ class ReviewController extends AbstractController
     /**
      * Renders the review module user dependent with all workspaces.
      * The module will show all records of one workspace.
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -132,8 +130,6 @@ class ReviewController extends AbstractController
     /**
      * Renders the review module user dependent.
      * The module will show all records of all workspaces.
-     *
-     * @return void
      */
     public function fullIndexAction()
     {
@@ -164,8 +160,6 @@ class ReviewController extends AbstractController
     /**
      * Renders the review module for a single page. This is used within the
      * workspace-preview frame.
-     *
-     * @return void
      */
     public function singleIndexAction()
     {
@@ -194,8 +188,6 @@ class ReviewController extends AbstractController
 
     /**
      * Initializes the controller before invoking an action method.
-     *
-     * @return void
      */
     protected function initializeAction()
     {

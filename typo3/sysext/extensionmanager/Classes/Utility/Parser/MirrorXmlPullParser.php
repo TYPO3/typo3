@@ -34,8 +34,6 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
 
     /**
      * Create required parser
-     *
-     * @return void
      */
     protected function createParser()
     {
@@ -46,7 +44,6 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
      * Method parses an extensions.xml file.
      *
      * @param string $file file resource, typically a stream
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of XML parser errors
      */
     public function parseXml($file)
@@ -76,7 +73,6 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
      * Method is invoked when parser accesses start tag of an element.
      *
      * @param string $elementName element name at parser's current position
-     * @return void
      * @see endElement()
      */
     protected function startElement($elementName)
@@ -112,7 +108,6 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
      * Method is invoked when parser accesses end tag of an element.
      *
      * @param string $elementName element name at parser's current position
-     * @return void
      * @see startElement()
      */
     protected function endElement($elementName)

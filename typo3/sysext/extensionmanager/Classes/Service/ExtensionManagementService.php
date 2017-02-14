@@ -101,7 +101,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $extensionKey
-     * @return void
      */
     public function markExtensionForInstallation($extensionKey)
     {
@@ -118,7 +117,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @param string $sourceFolder
-     * @return void
      */
     public function markExtensionForCopy($extensionKey, $sourceFolder)
     {
@@ -129,7 +127,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      * Mark an extension for download
      *
      * @param Extension $extension
-     * @return void
      */
     public function markExtensionForDownload(Extension $extension)
     {
@@ -143,7 +140,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param Extension $extension
-     * @return void
      */
     public function markExtensionForUpdate(Extension $extension)
     {
@@ -320,7 +316,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      * Copies locally provided extensions to typo3conf/ext
      *
      * @param array $copyQueue
-     * @return void
      */
     protected function copyDependencies(array $copyQueue)
     {
@@ -416,7 +411,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
      * as an extension is able to provide it's own dependencies
      *
      * @param Extension $extension
-     * @return void
      */
     public function downloadMainExtension(Extension $extension)
     {

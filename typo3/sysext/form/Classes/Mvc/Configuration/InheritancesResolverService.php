@@ -252,7 +252,6 @@ class InheritancesResolverService
      * @toDo: More description
      * @param string $path
      * @param string $pathToCheck
-     * @return void
      * @throws CycleInheritancesException
      */
     protected function throwExceptionIfCycleInheritances(string $path, string $pathToCheck)

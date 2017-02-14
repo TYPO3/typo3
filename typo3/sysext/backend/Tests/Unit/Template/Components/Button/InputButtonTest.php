@@ -26,7 +26,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try to validate an empty button
      *
      * @test
-     * @return void
      */
     public function isButtonValidBlankCallExpectFalse()
     {
@@ -39,7 +38,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the Icon
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedIconExpectFalse()
     {
@@ -53,7 +51,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the title
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedTitleExpectFalse()
     {
@@ -68,7 +65,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the name
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedNameExpectFalse()
     {
@@ -83,7 +79,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the Value
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedValueExpectFalse()
     {
@@ -98,7 +93,6 @@ class InputButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Set a 100% valid button
      *
      * @test
-     * @return void
      */
     public function isButtonValidAllValuesSetExpectTrue()
     {

@@ -23,7 +23,6 @@ interface EditableCollectionInterface
      * Adds on entry to the collection
      *
      * @param mixed $data
-     * @return void
      */
     public function add($data);
 
@@ -31,7 +30,6 @@ interface EditableCollectionInterface
      * Adds a set of entries to the collection
      *
      * @param CollectionInterface $other
-     * @return void
      */
     public function addAll(CollectionInterface $other);
 
@@ -41,7 +39,6 @@ interface EditableCollectionInterface
      * Note: not the given "index"
      *
      * @param mixed $data
-     * @return void
      */
     public function remove($data);
 
@@ -49,8 +46,6 @@ interface EditableCollectionInterface
      * Removes all entries from the collection
      *
      * collection will be empty afterwards
-     *
-     * @return void
      */
     public function removeAll();
 }

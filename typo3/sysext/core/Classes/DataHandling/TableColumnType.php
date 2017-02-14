@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 /**
  * Enumeration object for tca type
- *
  */
 class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration
 {

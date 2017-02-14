@@ -368,7 +368,6 @@ abstract class AbstractUserAuthentication
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
      *
      * @throws Exception
-     * @return void
      */
     public function start()
     {
@@ -469,7 +468,6 @@ abstract class AbstractUserAuthentication
     /**
      * Sets the session cookie for the current disposal.
      *
-     * @return void
      * @throws Exception
      */
     protected function setSessionCookie()
@@ -568,7 +566,6 @@ abstract class AbstractUserAuthentication
      * Checks if a submission of username and password is present or use other authentication by auth services
      *
      * @throws \RuntimeException
-     * @return void
      * @internal
      */
     public function checkAuthentication()
@@ -1016,8 +1013,6 @@ abstract class AbstractUserAuthentication
      * Log out current user!
      * Removes the current session record, sets the internal ->user array to a blank string;
      * Thereby the current user (if any) is effectively logged out!
-     *
-     * @return void
      */
     public function logoff()
     {
@@ -1049,8 +1044,6 @@ abstract class AbstractUserAuthentication
      * Perform the logoff action. Called from logoff() as a way to allow subclasses to override
      * what happens when a user logs off, without needing to reproduce the hook calls and logging
      * that happens in the public logoff() API method.
-     *
-     * @return void
      */
     protected function performLogoff()
     {
@@ -1064,7 +1057,6 @@ abstract class AbstractUserAuthentication
      * Empty / unset the cookie
      *
      * @param string $cookieName usually, this is $this->name
-     * @return void
      */
     public function removeCookie($cookieName)
     {
@@ -1220,7 +1212,6 @@ abstract class AbstractUserAuthentication
      * If $variable is not an array, $this->uc is saved!
      *
      * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default
-     * @return void
      */
     public function writeUC($variable = '')
     {
@@ -1248,7 +1239,6 @@ abstract class AbstractUserAuthentication
      * If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
      *
      * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record
-     * @return void
      */
     public function unpack_uc($theUC = '')
     {
@@ -1268,7 +1258,6 @@ abstract class AbstractUserAuthentication
      * @param string $module Is the name of the module ($MCONF['name'])
      * @param mixed $data Is the data you want to store for that module (array, string, ...)
      * @param bool|int $noSave If $noSave is set, then the ->uc array (which carries all kinds of user data) is NOT written immediately, but must be written by some subsequent call.
-     * @return void
      */
     public function pushModuleData($module, $data, $noSave = 0)
     {
@@ -1312,7 +1301,6 @@ abstract class AbstractUserAuthentication
      *
      * @param string $key A non empty string to store the data under
      * @param mixed $data Data store store in session
-     * @return void
      */
     public function setSessionData($key, $data)
     {
@@ -1328,7 +1316,6 @@ abstract class AbstractUserAuthentication
      *
      * @param string $key Pointer to an associative key in the session data array which is stored serialized in the field "ses_data" of the session table.
      * @param mixed $data The data to store in index $key
-     * @return void
      */
     public function setAndSaveSessionData($key, $data)
     {
@@ -1475,7 +1462,6 @@ abstract class AbstractUserAuthentication
     /**
      * Garbage collector, removing old expired sessions.
      *
-     * @return void
      * @internal
      */
     public function gc()
@@ -1495,7 +1481,6 @@ abstract class AbstractUserAuthentication
      * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      * @param int $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
      * @param int $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @return void
      */
     public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid)
     {
@@ -1507,7 +1492,6 @@ abstract class AbstractUserAuthentication
      * @param string $email Email address
      * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance
      * @param int $maxFailures Max allowed failures before a warning mail is sent
-     * @return void
      * @ignore
      */
     public function checkLogFailures($email, $secondsBack, $maxFailures)
@@ -1523,7 +1507,6 @@ abstract class AbstractUserAuthentication
      * Will check the users for disabled, start/endtime, etc. ($this->user_where_clause())
      *
      * @param int $uid The UID of the backend user to set in ->user
-     * @return void
      * @internal
      * @see SC_mod_tools_be_user_index::compareUsers(), \TYPO3\CMS\Setup\Controller\SetupModuleController::simulateUser(), freesite_admin::startCreate()
      */
@@ -1536,7 +1519,6 @@ abstract class AbstractUserAuthentication
      * Raw initialization of the be_user with username=$name
      *
      * @param string $name The username to look up.
-     * @return void
      * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::setBeUserByUid()
      * @internal
      */

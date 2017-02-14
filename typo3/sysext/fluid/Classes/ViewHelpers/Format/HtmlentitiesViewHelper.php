@@ -56,8 +56,6 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements Singl
 
     /**
      * Initialize ViewHelper arguments
-     *
-     * @return void
      */
     public function initializeArguments()
     {

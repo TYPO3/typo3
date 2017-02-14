@@ -99,8 +99,6 @@ class LanguageController extends ActionController
 
     /**
      * List languages
-     *
-     * @return void
      */
     public function listLanguagesAction()
     {
@@ -113,8 +111,6 @@ class LanguageController extends ActionController
 
     /**
      * List translations
-     *
-     * @return void
      */
     public function listTranslationsAction()
     {
@@ -126,8 +122,6 @@ class LanguageController extends ActionController
 
     /**
      * Returns the translations
-     *
-     * @return void
      */
     public function getTranslationsAction()
     {
@@ -139,7 +133,6 @@ class LanguageController extends ActionController
      * Fetch all translations for given locale
      *
      * @param array $data The request data
-     * @return void
      */
     public function updateLanguageAction(array $data)
     {
@@ -189,7 +182,6 @@ class LanguageController extends ActionController
      * Fetch the translation for given extension and locale
      *
      * @param array $data The request data
-     * @return void
      */
     public function updateTranslationAction(array $data)
     {
@@ -212,7 +204,6 @@ class LanguageController extends ActionController
      * Activate a language
      *
      * @param array $data The request data
-     * @return void
      */
     public function activateLanguageAction(array $data)
     {
@@ -227,7 +218,6 @@ class LanguageController extends ActionController
      * Deactivate a language
      *
      * @param array $data The request data
-     * @return void
      */
     public function deactivateLanguageAction(array $data)
     {
@@ -242,7 +232,6 @@ class LanguageController extends ActionController
      * Remove a language
      *
      * @param array $data The request data
-     * @return void
      */
     public function removeLanguageAction(array $data)
     {

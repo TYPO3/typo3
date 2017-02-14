@@ -238,8 +238,6 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      * Should only be called if:
      * a) we have a valid session running
      * b) the "password" or some other authorization mechanism really matched
-     *
-     * @return void
      */
     public function setAuthorized()
     {
@@ -292,8 +290,6 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      * Refreshes our session information, rising the expire time.
      * Also generates a new session ID every 5 minutes to minimize the risk of
      * session hijacking.
-     *
-     * @return void
      */
     public function refreshSession()
     {
@@ -310,7 +306,6 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      * Add a message to "Flash" message storage.
      *
      * @param \TYPO3\CMS\Install\Status\StatusInterface $message A message to add
-     * @return void
      */
     public function addMessage(\TYPO3\CMS\Install\Status\StatusInterface $message)
     {
@@ -486,8 +481,6 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
      * which due to the APC bug throws a "Fatal error: Class 'GeneralUtility' not found"
      * (and the session data is not saved). Calling session_write_close() at this point
      * seems to be the most easy solution, according to PHP author.
-     *
-     * @return void
      */
     public function __destruct()
     {

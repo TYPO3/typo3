@@ -730,7 +730,6 @@ class DataHandler
      * @param array $data Data to be modified or inserted in the database
      * @param array $cmd Commands to copy, move, delete, localize, versionize records.
      * @param BackendUserAuthentication|NULL $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
-     * @return void
      */
     public function start($data, $cmd, $altUserObject = null)
     {
@@ -776,7 +775,6 @@ class DataHandler
      * Example: $mirror[table][11] = '22,33' will look for content in $this->datamap[table][11] and copy it to $this->datamap[table][22] and $this->datamap[table][33]
      *
      * @param array $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
-     * @return void
      */
     public function setMirror($mirror)
     {
@@ -806,7 +804,6 @@ class DataHandler
      * Initializes default values coming from User TSconfig
      *
      * @param array $userTS User TSconfig array
-     * @return void
      */
     public function setDefaultsFromUserTS($userTS)
     {
@@ -833,7 +830,6 @@ class DataHandler
      * It turns out that some versions of PHP arranges submitted data for files different if sent in an array. This function will unify this so the internal array $this->uploadedFileArray will always contain files arranged in the same structure.
      *
      * @param array $postFiles $_FILES array
-     * @return void
      */
     public function process_uploads($postFiles)
     {
@@ -869,7 +865,6 @@ class DataHandler
      * @param array $outputArr $this->uploadedFileArray passed by reference
      * @param array $inputArr Input array  ($_FILES parts)
      * @param string $keyToSet The current $_FILES array key to set on the outermost level.
-     * @return void
      * @access private
      * @see process_uploads()
      */
@@ -901,7 +896,6 @@ class DataHandler
      * @param string $table (reference) The table currently processing data for
      * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
      * @param array $fieldArray (reference) The field array of a record
-     * @return void
      */
     public function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray)
     {
@@ -1356,7 +1350,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $id Record uid
-     * @return void
      */
     public function placeholderShadowing($table, $id)
     {
@@ -2848,7 +2841,6 @@ class DataHandler
      * @param bool $set TRUE if an update should be done
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Exception
-     * @return void
      */
     protected function checkValue_input_ValidateEmail($value, &$set)
     {
@@ -2992,7 +2984,6 @@ class DataHandler
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
      * @param string $structurePath
      * @param array $workspaceOptions
-     * @return void
      * @see checkValue_flex_procInData()
      */
     public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = [])
@@ -3459,7 +3450,6 @@ class DataHandler
      *
      * @param int $uid Page UID to copy
      * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @return void
      */
     public function copyPages($uid, $destPid)
     {
@@ -4032,7 +4022,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $theNewSQLID Record UID
-     * @return void
      */
     public function copyRecord_fixRTEmagicImages($table, $theNewSQLID)
     {
@@ -4138,7 +4127,6 @@ class DataHandler
      * @param bool $first
      * @param array $overrideValues
      * @param string $excludeFields
-     * @return void
      */
     public function copyL10nOverlayRecords($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '')
     {
@@ -4257,7 +4245,6 @@ class DataHandler
      * @param string $table Table name to move
      * @param int $uid Record uid to move
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @return void
      */
     public function moveRecord($table, $uid, $destPid)
     {
@@ -4343,7 +4330,6 @@ class DataHandler
      * @param string $table Table name to move
      * @param int $uid Record uid to move
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @return void
      * @see moveRecord()
      */
     public function moveRecord_raw($table, $uid, $destPid)
@@ -4497,7 +4483,6 @@ class DataHandler
      * @param string $table Record Table
      * @param string $uid Record UID
      * @param string $destPid Position to move to
-     * @return void
      */
     public function moveRecord_procFields($table, $uid, $destPid)
     {
@@ -4519,7 +4504,6 @@ class DataHandler
      * @param string $field Record field
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
-     * @return void
      */
     public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
     {
@@ -4556,7 +4540,6 @@ class DataHandler
      * @param string $uid Record UID
      * @param string $destPid Position to move to
      * @param string $originalRecordDestinationPid Position to move the original record to
-     * @return void
      */
     public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid)
     {
@@ -4828,7 +4811,6 @@ class DataHandler
      * @param string $table The table of the localized parent record
      * @param int $id The uid of the localized parent record
      * @param array|string $command Defines the command to be performed (see example above)
-     * @return void
      */
     protected function inlineLocalizeSynchronize($table, $id, $command)
     {
@@ -4981,7 +4963,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $id Record UID
-     * @return void
      */
     public function deleteAction($table, $id)
     {
@@ -5011,7 +4992,6 @@ class DataHandler
      * @param int $uid Record UID
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @return void
      */
     public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
     {
@@ -5029,7 +5009,6 @@ class DataHandler
      * @param string $table Table name
      * @param int $uid Record UID
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @return void
      */
     public function deleteVersionsForRecord($table, $uid, $forceHardDelete)
     {
@@ -5061,7 +5040,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @return void
      */
     public function undeleteRecord($table, $uid)
     {
@@ -5081,7 +5059,6 @@ class DataHandler
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @param bool $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
-     * @return void
      */
     public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false, $undeleteRecord = false)
     {
@@ -5249,7 +5226,6 @@ class DataHandler
      * @param array $PA
      * @param string $structurePath not used
      * @param object $pObj not used
-     * @return void
      */
     public function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj)
     {
@@ -5276,7 +5252,6 @@ class DataHandler
      * @param int $uid Page id
      * @param bool $force If TRUE, pages are not checked for permission.
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @return void
      */
     public function deletePages($uid, $force = false, $forceHardDelete = false)
     {
@@ -5316,7 +5291,6 @@ class DataHandler
      *
      * @param int $uid Page id
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @return void
      * @access private
      * @see deletePages()
      */
@@ -5364,7 +5338,6 @@ class DataHandler
      *
      * @param string $table Record table
      * @param int $uid Record uid
-     * @return void
      */
     protected function copyMovedRecordToNewLocation($table, $uid)
     {
@@ -5493,7 +5466,6 @@ class DataHandler
      * @param string $table Record Table
      * @param string $uid Record UID
      * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
-     * @return void
      * @see deleteRecord()
      */
     public function deleteRecord_procFields($table, $uid, $undeleteRecord = false)
@@ -5518,7 +5490,6 @@ class DataHandler
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
      * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
-     * @return void
      * @see deleteRecord()
      */
     public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = false)
@@ -5566,7 +5537,6 @@ class DataHandler
      *
      * @param string $table Record Table
      * @param string $uid Record UID
-     * @return void
      */
     public function deleteL10nOverlayRecords($table, $uid)
     {
@@ -5743,7 +5713,6 @@ class DataHandler
      * @param string $table Table for the two input records
      * @param int $id Current record (about to go offline)
      * @param int $swapWith Swap record (about to go online)
-     * @return void
      * @see version_swap()
      */
     public function version_remapMMForVersionSwap($table, $id, $swapWith)
@@ -5838,7 +5807,6 @@ class DataHandler
      * @param string $table Table for the two input records
      * @param int $id Current record (about to go offline)
      * @param int $swapWith Swap record (about to go online)
-     * @return void
      * @see version_remapMMForVersionSwap()
      */
     public function version_remapMMForVersionSwap_execSwap($table, $id, $swapWith)
@@ -5888,8 +5856,6 @@ class DataHandler
 
     /**
      * Processes the fields with references as registered during the copy process. This includes all FlexForm fields which had references.
-     *
-     * @return void
      */
     public function remapListedDBRecords()
     {
@@ -6052,7 +6018,6 @@ class DataHandler
      * @param string $value Field value
      * @param int $uid The uid of the ORIGINAL record
      * @param string $table Table name
-     * @return void
      */
     public function remapListedDBRecords_procInline($conf, $value, $uid, $table)
     {
@@ -6105,8 +6070,6 @@ class DataHandler
     /**
      * Processes the $this->remapStack at the end of copying, inserting, etc. actions.
      * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
-     *
-     * @return void
      */
     public function processRemapStack()
     {
@@ -6236,7 +6199,6 @@ class DataHandler
      *
      * @param string $flexFormId, e.g. <table>:<uid>:<field>
      * @param array $modifications Modifications with paths and values (e.g. 'sDEF/lDEV/field/vDEF' => 'TYPO3')
-     * @return void
      */
     protected function updateFlexFormData($flexFormId, array $modifications)
     {
@@ -6286,7 +6248,6 @@ class DataHandler
      * @param array $callback The method to be called
      * @param array $arguments The arguments to be submitted to the callback method
      * @param bool $forceRemapStackActions Whether to force to use the stack
-     * @return void
      * @see processRemapStack
      */
     protected function triggerRemapAction($table, $id, array $callback, array $arguments, $forceRemapStackActions = false)
@@ -6306,7 +6267,6 @@ class DataHandler
      * @param int $id The affected ID
      * @param array $callback The callback information (object and method)
      * @param array $arguments The arguments to be used with the callback
-     * @return void
      */
     public function addRemapAction($table, $id, array $callback, array $arguments)
     {
@@ -6325,7 +6285,6 @@ class DataHandler
      *
      * @param string $table
      * @param int $id
-     * @return void
      */
     public function addRemapStackRefIndex($table, $id)
     {
@@ -6342,7 +6301,6 @@ class DataHandler
      * @param int $id Uid of the parent record
      * @param array $incomingFieldArray Reference to the incomingFieldArray of process_datamap
      * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to DataHandler in process_datamap.
-     * @return void
      */
     public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList)
     {
@@ -6958,7 +6916,6 @@ class DataHandler
      * @param string $table Record table name
      * @param int $id Record uid
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
-     * @return void
      */
     public function updateDB($table, $id, $fieldArray)
     {
@@ -7176,7 +7133,6 @@ class DataHandler
      * @param string $table Table name
      * @param int $id Record ID
      * @param int $logId Log entry ID, important for linking between log and history views
-     * @return void
      */
     public function setHistory($table, $id, $logId)
     {
@@ -7200,7 +7156,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $id Record UID
-     * @return void
      */
     public function updateRefIndex($table, $id)
     {
@@ -7521,7 +7476,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param array $incomingFieldArray Incoming array (passed by reference)
-     * @return void
      */
     public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray)
     {
@@ -7726,8 +7680,6 @@ class DataHandler
      * Disables the delete clause for fetching records.
      * In general only undeleted records will be used. If the delete
      * clause is disabled, also deleted records are taken into account.
-     *
-     * @return void
      */
     public function disableDeleteClause()
     {
@@ -7754,7 +7706,6 @@ class DataHandler
      * Add delete restriction if not disabled
      *
      * @param QueryRestrictionContainerInterface $restrictions
-     * @return void
      */
     protected function addDeleteRestriction(QueryRestrictionContainerInterface $restrictions)
     {
@@ -7834,8 +7785,6 @@ class DataHandler
     /**
      * Executing dbAnalysisStore
      * This will save MM relations for new records but is executed after records are created because we need to know the ID of them
-     *
-     * @return void
      */
     public function dbAnalysisStoreExec()
     {
@@ -7849,8 +7798,6 @@ class DataHandler
 
     /**
      * Removing files registered for removal before exit
-     *
-     * @return void
      */
     public function removeRegisteredFiles()
     {
@@ -7944,7 +7891,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @return void
      */
     public function fixUniqueInPid($table, $uid)
     {
@@ -8191,7 +8137,6 @@ class DataHandler
      * @param string $field Field name
      * @param string $filelist List of files to work on from field
      * @param string $func Function, eg. "deleteAll" which will delete all files listed.
-     * @return void
      */
     public function extFileFunctions($table, $field, $filelist, $func)
     {
@@ -8298,7 +8243,6 @@ class DataHandler
      * @param string $table Table name of record that was just updated.
      * @param int $uid UID of updated / inserted record
      * @param int $pid REAL PID of page of a deleted/moved record to get TSconfig in ClearCache.
-     * @return void
      * @internal This method is not meant to be called directly but only from the core itself or from hooks
      */
     public function registerRecordIdForPageCacheClearing($table, $uid, $pid = null)
@@ -8317,7 +8261,6 @@ class DataHandler
 
     /**
      * Do the actual clear cache
-     * @return void
      */
     protected function processClearCacheQueue()
     {
@@ -8525,7 +8468,6 @@ class DataHandler
      *
      *
      * @param string $cacheCmd The cache command, see above description
-     * @return void
      */
     public function clear_cacheCmd($cacheCmd)
     {
@@ -8679,7 +8621,6 @@ class DataHandler
      * Print log error messages from the operations of this script instance
      *
      * @param string $redirect Redirect URL (for creating link in message)
-     * @return void (Will exit on error)
      */
     public function printLogErrorMessages($redirect)
     {
@@ -8799,7 +8740,6 @@ class DataHandler
      * Adds new values to the remapStackChildIds array.
      *
      * @param array $idValues uid values
-     * @return void
      */
     protected function addNewValuesToRemapStackChildIds(array $idValues)
     {
@@ -8910,7 +8850,6 @@ class DataHandler
      * @param string $table Name of the table
      * @param int $id Uid of the record
      * @param string $identifier Name of the action to be tracked
-     * @return void
      */
     protected function registerNestedElementCall($table, $id, $identifier)
     {
@@ -8921,8 +8860,6 @@ class DataHandler
 
     /**
      * Resets the nested element calls.
-     *
-     * @return void
      */
     protected function resetNestedElementCalls()
     {
@@ -8949,7 +8886,6 @@ class DataHandler
     /**
      * Registers elements to be deleted in the registry.
      *
-     * @return void
      * @see process_datamap
      */
     protected function registerElementsToBeDeleted()
@@ -8961,7 +8897,6 @@ class DataHandler
     /**
      * Resets the elements to be deleted in the registry.
      *
-     * @return void
      * @see process_datamap
      */
     protected function resetElementsToBeDeleted()
@@ -9011,8 +8946,6 @@ class DataHandler
     /**
      * Controls active elements and sets NULL values if not active.
      * Datamap is modified accordant to submitted control values.
-     *
-     * @return void
      */
     protected function controlActiveElements()
     {
@@ -9031,7 +8964,6 @@ class DataHandler
      *
      * @param array $active hierarchical array with active elements
      * @param array $haystack hierarchical array with haystack to be modified
-     * @return void
      */
     protected function setNullValues(array $active, array &$haystack)
     {

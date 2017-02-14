@@ -81,7 +81,6 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
      * Sets a reference to the cache frontend which uses this backend
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
-     * @return void
      * @api
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
@@ -94,7 +93,6 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
      * Sets the default lifetime for this cache backend
      *
      * @param int $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \InvalidArgumentException
      * @api
      */

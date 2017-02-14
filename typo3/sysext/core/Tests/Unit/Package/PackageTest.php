@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Testcase for the package class
- *
  */
 class PackageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

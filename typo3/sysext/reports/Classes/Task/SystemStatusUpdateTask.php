@@ -77,7 +77,6 @@ class SystemStatusUpdateTask extends AbstractTask
      * Sets the notification email address.
      *
      * @param string $notificationEmail Notification email address.
-     * @return void
      */
     public function setNotificationEmail($notificationEmail)
     {
@@ -88,7 +87,6 @@ class SystemStatusUpdateTask extends AbstractTask
      * Sends a notification email, reporting system issues.
      *
      * @param Status[] $systemStatus Array of statuses
-     * @return void
      */
     protected function sendNotificationEmail(array $systemStatus)
     {

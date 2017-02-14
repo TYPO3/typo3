@@ -22,7 +22,6 @@ class TypoScriptFrontendControllerHook
     /**
      * @param array $params
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
-     * @return void
      */
     public function hook_eofe($params, $pObj)
     {

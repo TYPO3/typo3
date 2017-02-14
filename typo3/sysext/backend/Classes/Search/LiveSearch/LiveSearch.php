@@ -424,7 +424,6 @@ class LiveSearch
      * Setter for limit value.
      *
      * @param int $limitCount
-     * @return void
      */
     public function setLimitCount($limitCount)
     {
@@ -438,7 +437,6 @@ class LiveSearch
      * Setter for start count value.
      *
      * @param int $startCount
-     * @return void
      */
     public function setStartCount($startCount)
     {
@@ -449,7 +447,6 @@ class LiveSearch
      * Setter for the search query string.
      *
      * @param string $queryString
-     * @return void
      */
     public function setQueryString($queryString)
     {

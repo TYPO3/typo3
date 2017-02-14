@@ -92,7 +92,6 @@ class FileStreamWrapper
      * Initialize the stream wrapper with a root path and register itself
      *
      * @param $rootPath
-     * @return void
      */
     public static function init($rootPath)
     {
@@ -102,7 +101,6 @@ class FileStreamWrapper
 
     /**
      * Unregister the stream wrapper and reset all static members to their default values
-     * @return void
      */
     public static function destroy()
     {
@@ -119,7 +117,6 @@ class FileStreamWrapper
      * @param string $overlay Relative path to the root folder
      * @param string $replace The path that should replace the overlay path
      * @param bool $createFolder TRUE of the folder should be created (mkdir)
-     * @return void
      */
     public static function registerOverlayPath($overlay, $replace, $createFolder = true)
     {
@@ -165,7 +162,6 @@ class FileStreamWrapper
      * file:// scheme a \BadFunctionCallException will be thrown.
      *
      * @throws \BadFunctionCallException
-     * @return void
      */
     protected static function register()
     {
@@ -185,8 +181,6 @@ class FileStreamWrapper
 
     /**
      * Restore the file handler
-     *
-     * @return void
      */
     protected static function restore()
     {
@@ -341,7 +335,6 @@ class FileStreamWrapper
 
     /**
      * Close a file
-     *
      */
     public function stream_close()
     {

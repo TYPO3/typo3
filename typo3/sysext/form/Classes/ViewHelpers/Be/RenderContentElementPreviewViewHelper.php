@@ -43,7 +43,6 @@ class RenderContentElementPreviewViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

@@ -48,7 +48,6 @@ class LogicalOr implements OrInterface
      * Fills an array with the names of all bound variables in the constraints
      *
      * @param array &$boundVariables
-     * @return void
      */
     public function collectBoundVariableNames(&$boundVariables)
     {

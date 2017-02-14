@@ -48,7 +48,6 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $items
-     * @return void
      */
     public function setItems($items)
     {
@@ -67,7 +66,6 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
      * Adds a subcategory
      *
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $item
-     * @return void
      */
     public function addItem(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $item)
     {
@@ -76,7 +74,6 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 
     /**
      * @param string $name
-     * @return void
      */
     public function setName($name)
     {
@@ -95,7 +92,6 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
      * Set sub category label
      *
      * @param string $label
-     * @return void
      */
     public function setLabel($label)
     {

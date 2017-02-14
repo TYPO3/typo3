@@ -139,8 +139,6 @@ class NewContentElementController extends AbstractModule
 
     /**
      * Constructor, initializing internal variables.
-     *
-     * @return void
      */
     public function init()
     {
@@ -192,7 +190,6 @@ class NewContentElementController extends AbstractModule
      * Creating the module output.
      *
      * @throws \UnexpectedValueException
-     * @return void
      */
     public function main()
     {
@@ -457,7 +454,6 @@ class NewContentElementController extends AbstractModule
      * The values will be added to the "params" key of the array (which should probably be unset or empty by default).
      *
      * @param array $wizardItems Wizard items, passed by reference
-     * @return void
      */
     public function removeInvalidElements(&$wizardItems)
     {
@@ -537,8 +533,6 @@ class NewContentElementController extends AbstractModule
      *
      * @param array  $wizardGroup TypoScript wizard tab configuration
      * @param string $key         Which array key should be prepared
-     *
-     * @return void
      */
     protected function prepareDependencyOrdering(&$wizardGroup, $key)
     {

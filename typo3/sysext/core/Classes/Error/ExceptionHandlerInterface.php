@@ -30,7 +30,6 @@ interface ExceptionHandlerInterface
      * Handles the given exception
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     public function handleException(\Throwable $exception);
 
@@ -38,7 +37,6 @@ interface ExceptionHandlerInterface
      * Formats and echoes the exception as XHTML.
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     public function echoExceptionWeb(\Throwable $exception);
 
@@ -46,7 +44,6 @@ interface ExceptionHandlerInterface
      * Formats and echoes the exception for the command line
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     public function echoExceptionCLI(\Throwable $exception);
 }

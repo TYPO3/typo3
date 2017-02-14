@@ -65,7 +65,6 @@ class FileDeletionAspect
      * Cleanup database record for a deleted file
      *
      * @param FileInterface $fileObject
-     * @return void
      */
     public function removeFromRepository(FileInterface $fileObject)
     {
@@ -122,7 +121,6 @@ class FileDeletionAspect
      * Remove all category references of the deleted file.
      *
      * @param File $fileObject
-     * @return void
      */
     protected function cleanupCategoryReferences(File $fileObject)
     {
@@ -144,7 +142,6 @@ class FileDeletionAspect
      * Remove all processed files that belong to the given File object
      *
      * @param FileInterface $fileObject
-     * @return void
      */
     protected function cleanupProcessedFiles(FileInterface $fileObject)
     {

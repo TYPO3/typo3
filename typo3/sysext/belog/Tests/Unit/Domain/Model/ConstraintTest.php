@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
 
 /**
  * Test case
- *
  */
 class ConstraintTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

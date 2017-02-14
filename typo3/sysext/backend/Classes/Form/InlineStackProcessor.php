@@ -54,7 +54,6 @@ class InlineStackProcessor
      * - 'unstable': Containing partly filled data (e.g. only table and possibly field)
      *
      * @param string $domObjectId The DOM object-id
-     * @return void
      */
     public function initializeByParsingDomObjectIdString($domObjectId)
     {
@@ -110,7 +109,6 @@ class InlineStackProcessor
      * This is used by inline ajax calls that transfer configuration options back to the stack for initialization
      *
      * @param array $config Given config extracted from ajax call
-     * @return void
      * @todo: Review this construct - Why can't the ajax call fetch these data on its own and transfers it to client instead?
      */
     public function injectAjaxConfiguration(array $config)
@@ -141,7 +139,6 @@ class InlineStackProcessor
      * Add a stable structure to the stack
      *
      * @param array $structureItem
-     * @return void
      */
     public function pushStableStructureItem(array $structureItem = [])
     {

@@ -39,8 +39,6 @@ interface LinkHandlerInterface
      * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
      * @param array $configuration Page TSconfig
-     *
-     * @return void
      */
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration);
 

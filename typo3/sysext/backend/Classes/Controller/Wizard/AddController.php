@@ -95,8 +95,6 @@ class AddController extends AbstractWizardController
 
     /**
      * Initialization of the class.
-     *
-     * @return void
      */
     protected function init()
     {
@@ -171,8 +169,6 @@ class AddController extends AbstractWizardController
     /**
      * Main function
      * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
-     *
-     * @return void
      */
     public function main()
     {

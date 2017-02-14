@@ -21,7 +21,6 @@ class ExtensionModelUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 {
     /**
      * @test
-     * @return void
      */
     public function convertDependenciesToObjectsCreatesObjectStorage()
     {
@@ -44,7 +43,6 @@ class ExtensionModelUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function convertDependenciesToObjectsSetsIdentifier()
     {
@@ -125,7 +123,6 @@ class ExtensionModelUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      * @dataProvider convertDependenciesToObjectSetsVersionDataProvider
      * @param array $dependencies
      * @param array $returnValue
-     * @return void
      */
     public function convertDependenciesToObjectSetsVersion(array $dependencies, array $returnValue)
     {

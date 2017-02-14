@@ -47,8 +47,6 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     /**
      * Set up for initialization of the Import instance
-     *
-     * @return void
      */
     protected function setUp()
     {

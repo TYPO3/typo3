@@ -28,7 +28,6 @@ class InstallModuleCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function _before(Admin $I)
     {
@@ -49,7 +48,6 @@ class InstallModuleCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function unlockAndLockInstallTool(Admin $I)
     {
@@ -77,7 +75,6 @@ class InstallModuleCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function loginToInstallTool(Admin $I)
     {

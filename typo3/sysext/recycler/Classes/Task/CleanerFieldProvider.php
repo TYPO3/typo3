@@ -187,7 +187,6 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
      *
      * @param array $submittedData An array containing the data submitted by the add/edit task form
      * @param AbstractTask $task Reference to the scheduler backend module
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)

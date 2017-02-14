@@ -587,7 +587,6 @@ class InlineRecordContainer extends AbstractContainer
      * \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface
      *
      * @throws \UnexpectedValueException
-     * @return void
      */
     protected function initHookObjects()
     {

@@ -425,7 +425,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      *
      * @param int $userId Id of the BE user
      * @param int $actionId Id of the action
-     * @return void
      */
     protected function deleteUser($userId, $actionId)
     {
@@ -702,7 +701,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      * Create a user directory if defined
      *
      * @param int $uid Id of the user record
-     * @return void
      */
     protected function action_createDir($uid)
     {
@@ -757,7 +755,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      * Action to create a new record
      *
      * @param array $record sys_action record
-     * @return void Redirect to form to create a record
      */
     protected function viewNewRecord($record)
     {

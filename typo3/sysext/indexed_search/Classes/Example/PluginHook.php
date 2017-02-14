@@ -37,8 +37,6 @@ class PluginHook
      *
      * This hook is activated by this key / value pair in ext_localconf.php
      * 'initialize_postProc' => \TYPO3\CMS\IndexedSearch\Example\PluginHook::class,
-     *
-     * @return void
      */
     public function initialize_postProc()
     {

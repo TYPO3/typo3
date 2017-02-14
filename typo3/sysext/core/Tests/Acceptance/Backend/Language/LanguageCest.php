@@ -23,7 +23,6 @@ class LanguageCest
 {
     /**
      * @param Admin $I
-     * @return void
      */
     public function _before(Admin $I)
     {
@@ -45,7 +44,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function showsHeadingAndListsInstalledLanguages(Admin $I)
     {
@@ -57,7 +55,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterInstalledLanguages(Admin $I)
     {
@@ -77,7 +74,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function activateAndDeactivateALanguage(Admin $I)
     {
@@ -98,7 +94,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function downloadALanguage(Admin $I)
     {
@@ -123,7 +118,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function showsHeadingAndListsTranslationOverview(Admin $I)
     {
@@ -135,7 +129,6 @@ class LanguageCest
 
     /**
      * @param Admin $I
-     * @return void
      */
     public function filterTranslationOverview(Admin $I)
     {

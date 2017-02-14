@@ -75,8 +75,6 @@ class RecyclerModuleController extends ActionController
 
     /**
      * Initializes the Module
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -108,7 +106,6 @@ class RecyclerModuleController extends ActionController
      * Initialize the view
      *
      * @param ViewInterface $view The view
-     * @return void
      */
     public function initializeView(ViewInterface $view)
     {
@@ -120,8 +117,6 @@ class RecyclerModuleController extends ActionController
 
     /**
      * Renders the content of the module.
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -140,7 +135,6 @@ class RecyclerModuleController extends ActionController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()

@@ -48,7 +48,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
-     * @return void
      * @api
      */
     public function initializeFormElement()
@@ -119,7 +118,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      * @internal
      */
     public function setProperty(string $key, $value)
@@ -150,7 +148,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * @param FormRuntime $formRuntime
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9

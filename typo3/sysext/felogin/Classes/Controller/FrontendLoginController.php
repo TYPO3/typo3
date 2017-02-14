@@ -841,8 +841,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     /**
      * Reads flexform configuration and merge it with $this->conf
-     *
-     * @return void
      */
     protected function mergeflexFormValuesIntoConf()
     {

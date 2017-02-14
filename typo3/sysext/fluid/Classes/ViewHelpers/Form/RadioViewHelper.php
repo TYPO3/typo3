@@ -56,7 +56,6 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

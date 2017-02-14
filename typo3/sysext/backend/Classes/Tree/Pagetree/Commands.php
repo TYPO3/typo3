@@ -56,7 +56,6 @@ class Commands
      * Visibly the page
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-     * @return void
      */
     public static function visiblyNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node)
     {
@@ -68,7 +67,6 @@ class Commands
      * Hide the page
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-     * @return void
      */
     public static function disableNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node)
     {
@@ -80,7 +78,6 @@ class Commands
      * Delete the page
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-     * @return void
      */
     public static function deleteNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node)
     {
@@ -93,7 +90,6 @@ class Commands
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param int $targetId
-     * @return void
      */
     public static function restoreNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node, $targetId)
     {
@@ -109,7 +105,6 @@ class Commands
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
      * @param string $updatedLabel
-     * @return void
      */
     public static function updateNodeLabel(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node, $updatedLabel)
     {
@@ -144,7 +139,6 @@ class Commands
      *
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $sourceNode
      * @param int $targetId
-     * @return void
      */
     public static function moveNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $sourceNode, $targetId)
     {

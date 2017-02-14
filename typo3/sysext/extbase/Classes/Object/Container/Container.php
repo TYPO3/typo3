@@ -218,7 +218,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $instance
      * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
-     * @return void
      */
     protected function injectDependencies($instance, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo)
     {
@@ -264,7 +263,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $message Message (in english).
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     * @return void
      */
     protected function log($message, $severity)
     {

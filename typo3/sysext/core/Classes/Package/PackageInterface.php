@@ -82,7 +82,6 @@ interface PackageInterface
      * Sets the protection flag of the package
      *
      * @param bool $protected TRUE if the package should be protected, otherwise FALSE
-     * @return void
      * @api
      */
     public function setProtected($protected);

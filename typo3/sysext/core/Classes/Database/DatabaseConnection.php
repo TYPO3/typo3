@@ -182,8 +182,6 @@ class DatabaseConnection
 
     /**
      * Initialize the database connection
-     *
-     * @return void
      */
     public function initialize()
     {
@@ -1623,7 +1621,6 @@ class DatabaseConnection
      * The default value of this setting is utf8.
      *
      * @param string $connectionCharset The connection charset that will be passed on to mysqli_set_charset() when connecting the database. Default is utf8.
-     * @return void
      */
     public function setConnectionCharset($connectionCharset = 'utf8')
     {
@@ -1636,7 +1633,6 @@ class DatabaseConnection
      *
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
-     * @return void
      */
     public function connectDB()
     {
@@ -1719,7 +1715,6 @@ class DatabaseConnection
      * If the character set does not match or if the session variables
      * can not be read a RuntimeException is thrown.
      *
-     * @return void
      * @throws \RuntimeException
      */
     protected function checkConnectionCharset()
@@ -1787,8 +1782,6 @@ class DatabaseConnection
 
     /**
      * Disconnect from database if connected
-     *
-     * @return void
      */
     protected function disconnectIfConnected()
     {
@@ -1840,7 +1833,6 @@ class DatabaseConnection
      *
      * @param string $func Function calling debug()
      * @param string $query Last query if not last built query
-     * @return void
      */
     public function debug($func, $query = '')
     {

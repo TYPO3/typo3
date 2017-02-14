@@ -24,7 +24,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 {
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessagesIfSetupIsUpdated()
     {
@@ -50,7 +49,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessageIfSettingsAreResetToDefault()
     {
@@ -76,7 +74,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessageIfPasswordWasSuccessfullyUpdated()
     {
@@ -102,7 +99,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessageIfOldPasswordWasWrong()
     {
@@ -128,7 +124,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessageIfPasswordsNotTheSame()
     {
@@ -154,7 +149,6 @@ class SetupModuleControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
 
     /**
      * @test
-     * @return void
      */
     public function addFlashMessagesAddsMessagesToQueue()
     {

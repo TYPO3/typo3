@@ -306,7 +306,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Sets the aggregate root objects
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
-     * @return void
      */
     public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects)
     {
@@ -317,7 +316,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Sets the changed objects
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-     * @return void
      */
     public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities)
     {
@@ -328,7 +326,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Sets the deleted objects
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-     * @return void
      */
     public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities)
     {
@@ -337,8 +334,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
     /**
      * Commits the current persistence session.
-     *
-     * @return void
      */
     public function commit()
     {
@@ -348,8 +343,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
     /**
      * Traverse and persist all aggregate roots and their object graph.
-     *
-     * @return void
      */
     protected function persistObjects()
     {
@@ -370,7 +363,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Persists the given object.
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be inserted
-     * @return void
      */
     protected function persistObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object)
     {
@@ -455,7 +447,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
      * @param string $propertyName The name of the property holding the object storage.
      * @param array &$row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
-     * @return void
      */
     protected function persistObjectStorage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, array &$row)
     {
@@ -541,7 +532,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
-     * @return void
      */
     protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0)
     {
@@ -561,7 +551,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
-     * @return void
      */
     protected function updateRelationOfObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0)
     {
@@ -582,7 +571,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param string $parentPropertyName
      * @param int $sortingPosition
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
-     * @return void
      */
     protected function attachObjectToParentObjectRelationHasMany(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0)
     {
@@ -623,7 +611,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
      * @param string $parentPropertyName
-     * @return void
      */
     protected function detachObjectFromParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName)
     {
@@ -661,7 +648,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be insterted in the storage
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parentobject.
      * @param string $parentPropertyName
-     * @return void
      */
     protected function insertObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject = null, $parentPropertyName = '')
     {
@@ -987,7 +973,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
      * @param array &$row
-     * @return void
      */
     protected function addCommonFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row)
     {
@@ -1006,7 +991,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
      * @param array &$row The row to be updated
-     * @return void
      */
     protected function addCommonDateFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row)
     {
@@ -1021,8 +1005,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
     /**
      * Iterate over deleted aggregate root objects and process them
-     *
-     * @return void
      */
     protected function processDeletedObjects()
     {
@@ -1041,7 +1023,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be removed from the storage
      * @param bool $markAsDeleted Whether to just flag the row deleted (default) or really delete it
-     * @return void
      */
     protected function removeEntity(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = true)
     {
@@ -1082,7 +1063,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Remove related objects
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to scanned for related objects
-     * @return void
      */
     protected function removeRelatedObjects(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object)
     {

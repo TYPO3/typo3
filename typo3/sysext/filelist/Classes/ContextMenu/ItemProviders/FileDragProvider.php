@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Drag drop menu provider for legacy tree (used in filelist folder tree)
- *
  */
 class FileDragProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider
 {

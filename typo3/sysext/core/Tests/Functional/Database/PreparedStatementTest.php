@@ -43,8 +43,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\Func
 
     /**
      * Set the test up
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -62,8 +60,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\Func
 
     /**
      * Tear the test down
-     *
-     * @return void
      */
     protected function tearDown()
     {
@@ -75,7 +71,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\Func
      * @test
      *
      * @group mysql
-     * @return void
      */
     public function prepareSelectQueryCreateValidQuery()
     {

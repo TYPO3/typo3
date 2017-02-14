@@ -137,7 +137,6 @@ class LogLevel
      * Validates a log level.
      *
      * @param int $level log level to validate
-     * @return void
      * @throws \Psr\Log\InvalidArgumentException if the given log level is invalid
      */
     public static function validateLevel($level)

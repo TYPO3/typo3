@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Driver for the local file system
- *
  */
 class LocalDriver extends AbstractHierarchicalFilesystemDriver
 {
@@ -90,8 +89,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
 
     /**
      * Processes the configuration for this driver.
-     *
-     * @return void
      */
     public function processConfiguration()
     {
@@ -106,8 +103,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     /**
      * Initializes this object. This is called by the storage after the driver
      * has been attached.
-     *
-     * @return void
      */
     public function initialize()
     {
@@ -116,8 +111,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     /**
      * Determines the base URL for this driver, from the configuration or
      * the TypoScript frontend object
-     *
-     * @return void
      */
     protected function determineBaseUrl()
     {
@@ -1381,7 +1374,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
      * buffer before. Will be taken care of by the Storage.
      *
      * @param string $identifier
-     * @return void
      */
     public function dumpFileContents($identifier)
     {

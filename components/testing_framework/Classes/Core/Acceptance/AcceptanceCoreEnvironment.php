@@ -267,8 +267,6 @@ class AcceptanceCoreEnvironment extends Extension
 
     /**
      * Method executed after each test
-     *
-     * @return void
      */
     public function cleanupTypo3Environment()
     {

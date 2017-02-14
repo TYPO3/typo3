@@ -1239,7 +1239,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param array $mountPointUids Page UIDs that should be used as web mountpoints
      * @param bool $append If TRUE the given mount point will be appended. Otherwise the current mount points will be replaced.
-     * @return void
      */
     public function setWebmounts(array $mountPointUids, $append = false)
     {
@@ -1279,7 +1278,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * if the backend user login has verified OK.
      * Generally this is required initialization of a backend user.
      *
-     * @return void
      * @access private
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
@@ -1424,7 +1422,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $grList Commalist of be_groups uid numbers
      * @param string $idList List of already processed be_groups-uids so the function will not fall into an eternal recursion.
-     * @return void
      * @access private
      */
     public function fetchGroups($grList, $idList = '')
@@ -1530,7 +1527,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * a representation of the exact groups/subgroups which the BE_USER has membership with.
      *
      * @param string $cList The newly compiled group-list which must be compared with the current list in the user record and possibly stored if a difference is detected.
-     * @return void
      * @access private
      */
     public function setCachedList($cList)
@@ -1547,8 +1543,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Sets up all file storages for a user.
      * Needs to be called AFTER the groups have been loaded.
-     *
-     * @return void
      */
     protected function initializeFileStorages()
     {
@@ -1777,8 +1771,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Adds filters based on what the user has set
      * this should be done in this place, and called whenever needed,
      * but only when needed
-     *
-     * @return void
      */
     public function evaluateUserSpecificFileFilterSettings()
     {
@@ -2026,7 +2018,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Initializing workspace.
      * Called from within this function, see fetchGroupData()
      *
-     * @return void
      * @see fetchGroupData()
      */
     public function workspaceInit()
@@ -2043,8 +2034,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Limiting the DB mountpoints if there any selected in the workspace record
-     *
-     * @return void
      */
     protected function initializeDbMountpointsInWorkspace()
     {
@@ -2171,7 +2160,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Setting workspace ID
      *
      * @param int $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
-     * @return void
      */
     public function setWorkspace($workspaceId)
     {
@@ -2215,8 +2203,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Sets the default workspace in the context of the current backend user.
-     *
-     * @return void
      */
     public function setDefaultWorkspace()
     {
@@ -2228,7 +2214,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Setting workspace preview state for user:
      *
      * @param bool $previewState State of user preview.
-     * @return void
      */
     public function setWorkspacePreview($previewState)
     {
@@ -2373,7 +2358,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $email Email address
      * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance.
      * @param int $max Max allowed failures before a warning mail is sent
-     * @return void
      * @access private
      */
     public function checkLogFailures($email, $secondsBack = 3600, $max = 3)
@@ -2500,7 +2484,6 @@ This is a dump of the failures:
      *
      * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      * @throws \RuntimeException
-     * @return void
      */
     public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
     {
@@ -2533,7 +2516,6 @@ This is a dump of the failures:
      * Initialize the internal ->uc array for the backend user
      * Will make the overrides if necessary, and write the UC back to the be_users record if changes has happened
      *
-     * @return void
      * @internal
      */
     public function backendSetUC()
@@ -2583,7 +2565,6 @@ This is a dump of the failures:
      * Override: Call this function every time the uc is updated.
      * That is 1) by reverting to default values, 2) in the setup-module, 3) userTS changes (userauthgroup)
      *
-     * @return void
      * @internal
      */
     public function overrideUC()
@@ -2594,7 +2575,6 @@ This is a dump of the failures:
     /**
      * Clears the user[uc] and ->uc to blank strings. Then calls ->backendSetUC() to fill it again with reset contents
      *
-     * @return void
      * @internal
      */
     public function resetUC()
@@ -2608,7 +2588,6 @@ This is a dump of the failures:
      * Will send an email notification to warning_email_address/the login users email address when a login session is just started.
      * Depends on various parameters whether mails are send and to whom.
      *
-     * @return void
      * @access private
      */
     private function emailAtLogin()

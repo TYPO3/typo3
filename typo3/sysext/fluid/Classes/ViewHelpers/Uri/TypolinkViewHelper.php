@@ -43,7 +43,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * index.php?id=19&X=y&u=b
  * </output>
- *
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

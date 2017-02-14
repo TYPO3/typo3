@@ -39,7 +39,6 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

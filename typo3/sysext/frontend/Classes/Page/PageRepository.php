@@ -175,7 +175,6 @@ class PageRepository
      * into account
      *
      * @param bool $show_hidden If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
-     * @return void
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id(), \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::initialize_editor()
      */
     public function init($show_hidden)
@@ -1283,7 +1282,6 @@ class PageRepository
      * @param mixed $data The data to store
      * @param string $ident Is just a textual identification in order to inform about the content!
      * @param int $lifetime The lifetime for the cache entry in seconds
-     * @return void
      * @see tslib_TStemplate::start(), getHash()
      */
     public static function storeHash($hash, $data, $ident, $lifetime = 0)
@@ -1469,7 +1467,6 @@ class PageRepository
      *
      * @param string $table Table name
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
-     * @return void (Passed by ref).
      * @see BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
      */
     public function fixVersioningPid($table, &$rr)
@@ -1529,7 +1526,6 @@ class PageRepository
      * @param array $row Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!
      * @param bool $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
      * @param bool $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
-     * @return void (Passed by ref).
      * @see fixVersioningPid(), BackendUtility::workspaceOL()
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)

@@ -118,7 +118,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * to be formatted like "<host>[:<port>]" or "unix://<path>"
      *
      * @param array $servers An array of servers to add.
-     * @return void
      * @api
      */
     protected function setServers(array $servers)
@@ -130,7 +129,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Setter for compression flags bit
      *
      * @param bool $useCompression
-     * @return void
      * @api
      */
     protected function setCompression($useCompression)
@@ -157,7 +155,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     /**
      * Initializes the identifier prefix
      *
-     * @return void
      * @throws Exception
      */
     public function initializeObject()
@@ -209,7 +206,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Initializes the identifier prefix when setting the cache.
      *
      * @param FrontendInterface $cache The frontend for this backend
-     * @return void
      */
     public function setCache(FrontendInterface $cache)
     {
@@ -225,7 +221,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
      * @throws Exception\InvalidDataException if $data is not a string
@@ -361,7 +356,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @throws Exception
      * @api
      */
@@ -377,7 +371,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -393,7 +386,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param string $entryIdentifier
      * @param array $tags
-     * @return void
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {
@@ -425,7 +417,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * Removes association of the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @return void
      */
     protected function removeIdentifierFromAllTags($entryIdentifier)
     {
@@ -469,7 +460,6 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     /**
      * Does nothing, as memcached does GC itself
      *
-     * @return void
      * @api
      */
     public function collectGarbage()

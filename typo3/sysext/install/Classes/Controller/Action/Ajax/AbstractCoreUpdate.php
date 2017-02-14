@@ -67,7 +67,6 @@ abstract class AbstractCoreUpdate extends AbstractAjaxAction
     /**
      * Initialize the handle action, sets up fluid stuff and assigns default variables.
      *
-     * @return void
      * @throws \TYPO3\CMS\Install\Controller\Exception
      */
     protected function initializeHandle()

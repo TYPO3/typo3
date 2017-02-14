@@ -43,8 +43,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * Do not include pid in queries
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -337,7 +335,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * For performance reasons, the "native" database connection is used here directly.
      *
      * @param int $repositoryUid
-     * @return void
      */
     protected function markExtensionWithMaximumVersionAsCurrent($repositoryUid)
     {

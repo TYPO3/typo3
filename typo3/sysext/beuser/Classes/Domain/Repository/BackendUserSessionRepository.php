@@ -79,7 +79,6 @@ class BackendUserSessionRepository extends Repository
      * Update current session to move back to the original user.
      *
      * @param AbstractUserAuthentication $authentication
-     * @return void
      */
     public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
     {

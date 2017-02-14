@@ -52,8 +52,6 @@ class LogoutController
 
     /**
      * Performs the logout processing
-     *
-     * @return void
      */
     public function logout()
     {

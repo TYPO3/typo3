@@ -35,7 +35,6 @@ class FormElementsOnSubmitHooks
      * @param RenderableInterface $renderable
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
      */

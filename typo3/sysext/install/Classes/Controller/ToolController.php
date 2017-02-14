@@ -43,8 +43,6 @@ class ToolController extends AbstractController
 
     /**
      * Main dispatch method
-     *
-     * @return void
      */
     public function execute()
     {
@@ -66,8 +64,6 @@ class ToolController extends AbstractController
 
     /**
      * Logout user if requested
-     *
-     * @return void
      */
     protected function logoutIfRequested()
     {
@@ -91,8 +87,6 @@ class ToolController extends AbstractController
      * This function registers a shutdown function, which is called even if a fatal error occurs.
      * The request either gets redirected to an action where all extension configurations are checked for compatibility or
      * an information with a link to that action.
-     *
-     * @return void
      */
     protected function registerExtensionConfigurationErrorHandler()
     {

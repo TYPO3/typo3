@@ -69,8 +69,6 @@ abstract class AbstractLinkHandler
      * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
      * @param array $configuration Page TSconfig
-     *
-     * @return void
      */
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
@@ -114,7 +112,6 @@ abstract class AbstractLinkHandler
 
     /**
      * Sets a DB mount and stores it in the currently defined backend user in her/his uc
-     * @return void
      */
     protected function setTemporaryDbMounts()
     {

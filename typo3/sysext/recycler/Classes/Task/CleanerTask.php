@@ -168,7 +168,6 @@ class CleanerTask extends AbstractTask
      *
      * @param string $table
      * @param array $constraints
-     * @return void
      */
     protected function checkFileResourceFieldsBeforeDeletion($table, array $constraints)
     {
@@ -184,7 +183,6 @@ class CleanerTask extends AbstractTask
      * @param string $table
      * @param array $constraints
      * @param array $fieldList
-     * @return void
      */
     protected function deleteFilesForTable($table, array $constraints, array $fieldList)
     {

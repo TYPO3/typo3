@@ -54,7 +54,6 @@ abstract class AbstractStatus implements StatusInterface
      * Set title
      *
      * @param string $title The title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -75,7 +74,6 @@ abstract class AbstractStatus implements StatusInterface
      * Set status message
      *
      * @param string $message Status message
-     * @return void
      */
     public function setMessage($message)
     {

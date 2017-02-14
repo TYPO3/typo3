@@ -47,8 +47,6 @@ class ReportController extends ActionController
 
     /**
      * Redirect to the saved report
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -71,8 +69,6 @@ class ReportController extends ActionController
      * Initialize the view
      *
      * @param ViewInterface $view The view
-     *
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -85,8 +81,6 @@ class ReportController extends ActionController
 
     /**
      * Overview
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -99,8 +93,6 @@ class ReportController extends ActionController
      *
      * @param string $extension Extension
      * @param string $report Report
-     *
-     * @return void
      */
     public function detailAction($extension, $report)
     {
@@ -136,8 +128,6 @@ class ReportController extends ActionController
 
     /**
      * Generates the menu
-     *
-     * @return void
      */
     protected function generateMenu()
     {
@@ -173,8 +163,6 @@ class ReportController extends ActionController
 
     /**
      * Gets all buttons for the docheader
-     *
-     * @return void
      */
     protected function generateButtons()
     {
@@ -199,8 +187,6 @@ class ReportController extends ActionController
      *
      * @param string $extension Extension name
      * @param string $report Report name
-     *
-     * @return void
      */
     protected function saveState($extension = '', $report = '')
     {

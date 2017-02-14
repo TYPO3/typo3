@@ -27,7 +27,6 @@ class Renderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param string $content
      * @param NULL|array $configuration
-     * @return void
      */
     public function parseValues($content, array $configuration = null)
     {

@@ -28,7 +28,6 @@ class NullTimeTracker
      *
      * does nothing
      *
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in v9, use the regular time tracking
      */
     public function start()
@@ -43,7 +42,6 @@ class NullTimeTracker
      *
      * @param string $tslabel Label string for the entry, eg. TypoScript property name
      * @param string $value Additional value(?)
-     * @return void
      */
     public function push($tslabel, $value = '')
     {
@@ -55,7 +53,6 @@ class NullTimeTracker
      * does nothing
      *
      * @param string $content The content string generated within the push/pull part.
-     * @return void
      */
     public function pull($content = '')
     {
@@ -68,7 +65,6 @@ class NullTimeTracker
      *
      * @param array $data Query array
      * @param string $msg Message/Label to attach
-     * @return void
      */
     public function setTSselectQuery(array $data, $msg = '')
     {
@@ -81,7 +77,6 @@ class NullTimeTracker
      *
      * @param string $content The message string
      * @param int $num Message type: 0: information, 1: message, 2: warning, 3: error
-     * @return void
      */
     public function setTSlogMessage($content, $num = 0)
     {
@@ -102,8 +97,6 @@ class NullTimeTracker
      * Increases the stack pointer
      *
      * does nothing
-     *
-     * @return void
      */
     public function incStackPointer()
     {
@@ -113,8 +106,6 @@ class NullTimeTracker
      * Decreases the stack pointer
      *
      * does nothing
-     *
-     * @return void
      */
     public function decStackPointer()
     {

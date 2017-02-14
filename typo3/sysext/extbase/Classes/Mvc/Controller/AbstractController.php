@@ -146,7 +146,6 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
-     * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -158,7 +157,6 @@ abstract class AbstractController implements ControllerInterface
      * Injects the object manager
      *
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -173,7 +171,6 @@ abstract class AbstractController implements ControllerInterface
      * @param string $messageTitle Optional message title
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
-     * @return void
      * @throws \InvalidArgumentException if the message body is no string
      * @see \TYPO3\CMS\Core\Messaging\FlashMessage
      * @api
@@ -216,7 +213,6 @@ abstract class AbstractController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
-     * @return void
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
      * @api
      */
@@ -268,7 +264,6 @@ abstract class AbstractController implements ControllerInterface
      * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
      * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array $arguments Arguments to pass to the target action
-     * @return void
      * @throws StopActionException
      * @see redirect()
      * @api
@@ -306,7 +301,6 @@ abstract class AbstractController implements ControllerInterface
      * @param int $pageUid Target page uid. If NULL, the current page uid is used
      * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @return void
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
      * @see forward()
@@ -399,8 +393,6 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Collects the base validators which were defined for the data type of each
      * controller argument and adds them to the argument's validator chain.
-     *
-     * @return void
      */
     public function initializeControllerArgumentsBaseValidators()
     {
@@ -417,7 +409,6 @@ abstract class AbstractController implements ControllerInterface
      * Maps arguments delivered by the request object to the local controller arguments.
      *
      * @throws Exception\RequiredArgumentMissingException
-     * @return void
      */
     protected function mapRequestArgumentsToControllerArguments()
     {

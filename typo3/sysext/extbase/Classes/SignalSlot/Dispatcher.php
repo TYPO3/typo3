@@ -49,8 +49,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * Since this dispatches is used very early when the ObjectManager
      * is not fully initialized (especially concerning caching framework),
      * this is the only way.
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -70,7 +68,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $slotMethodName Name of the method to be used as a slot. If $slotClassNameOrObject is a Closure object, this parameter is ignored
      * @param bool $passSignalInformation If set to TRUE, the last argument passed to the slot will be information about the signal (EmitterClassName::signalName)
      * @throws \InvalidArgumentException
-     * @return void
      * @api
      */
     public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $passSignalInformation = true)

@@ -40,7 +40,6 @@ class DistributionController extends AbstractModuleController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -83,7 +82,6 @@ class DistributionController extends AbstractModuleController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()

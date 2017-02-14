@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * ResourceInterface
- *
  */
 interface ResourceInterface
 {

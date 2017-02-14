@@ -218,7 +218,6 @@ class BackendController
      * Initialize toolbar item objects
      *
      * @throws \RuntimeException
-     * @return void
      */
     protected function initializeToolbarItems()
     {
@@ -267,8 +266,6 @@ class BackendController
 
     /**
      * Main function generating the BE scaffolding
-     *
-     * @return void
      */
     public function render()
     {
@@ -438,8 +435,6 @@ class BackendController
 
     /**
      * Loads the css and javascript files of all registered navigation widgets
-     *
-     * @return void
      */
     protected function loadResourcesForRegisteredNavigationComponents()
     {
@@ -659,8 +654,6 @@ class BackendController
 
     /**
      * Generates the JavaScript code for the backend.
-     *
-     * @return void
      */
     protected function generateJavascript()
     {
@@ -719,8 +712,6 @@ class BackendController
 
     /**
      * Checking if the "&edit" variable was sent so we can open it for editing the page.
-     *
-     * @return void
      */
     protected function handlePageEditing()
     {
@@ -837,7 +828,6 @@ class BackendController
      * Adds a javascript snippet to the backend
      *
      * @param string $javascript Javascript snippet
-     * @return void
      * @throws \InvalidArgumentException
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Use the "constructPostProcess" hook within BackendController instead.
      */
@@ -874,7 +864,6 @@ class BackendController
      * Adds a css snippet to the backend
      *
      * @param string $css Css snippet
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function addCss($css)
@@ -914,7 +903,6 @@ class BackendController
      *
      * @param string $identifier Specific hook identifier
      * @param array $hookConfiguration Additional configuration passed to hook functions
-     * @return void
      */
     protected function executeHook($identifier, array $hookConfiguration = [])
     {

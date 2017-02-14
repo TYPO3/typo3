@@ -35,7 +35,6 @@ interface DomainObjectInterface
      * Setter for the pid.
      *
      * @param int $pid
-     * @return void
      */
     public function setPid($pid);
 
@@ -58,7 +57,6 @@ interface DomainObjectInterface
      *
      * @param string $propertyName
      * @param string $value
-     * @return void
      */
     public function _setProperty($propertyName, $value);
 

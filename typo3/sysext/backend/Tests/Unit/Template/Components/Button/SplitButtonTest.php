@@ -27,7 +27,6 @@ class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try to validate an empty button
      *
      * @test
-     * @return void
      */
     public function isButtonValidBlankCallExpectFalse()
     {
@@ -40,7 +39,6 @@ class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try adding an invalid button to a splitButton
      *
      * @test
-     * @return void
      */
     public function isButtonValidInvalidButtonGivenExpectFalse()
     {
@@ -59,7 +57,6 @@ class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try to add multiple primary actions
      *
      * @test
-     * @return void
      */
     public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse()
     {
@@ -84,7 +81,6 @@ class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try to add an invalid button as second parameter
      *
      * @test
-     * @return void
      */
     public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse()
     {
@@ -109,7 +105,6 @@ class SplitButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Send in a valid button
      *
      * @test
-     * @return void
      */
     public function isButtonValidValidSetupExpectTrue()
     {

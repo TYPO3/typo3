@@ -104,8 +104,6 @@ class SilentConfigurationUpgradeService
     /**
      * Executed configuration upgrades. Single upgrade methods must throw a
      * RedirectException if something was written to LocalConfiguration.
-     *
-     * @return void
      */
     public function execute()
     {
@@ -131,8 +129,6 @@ class SilentConfigurationUpgradeService
      * and have no impact on the core anymore.
      * To keep the configuration clean, those old settings are just silently
      * removed from LocalConfiguration if set.
-     *
-     * @return void
      */
     protected function removeObsoleteLocalConfigurationSettings()
     {
@@ -148,8 +144,6 @@ class SilentConfigurationUpgradeService
      * Backend login security is set to rsa if rsaauth
      * is installed (but not used) otherwise the default value "normal" has to be used.
      * This forces either 'normal' or 'rsa' to be set in LocalConfiguration.
-     *
-     * @return void
      */
     protected function configureBackendLoginSecurity()
     {
@@ -176,8 +170,6 @@ class SilentConfigurationUpgradeService
      * and the whole TYPO3 link rendering later on. A random key is set here in
      * LocalConfiguration if it does not exist yet. This might possible happen
      * during upgrading and will happen during first install.
-     *
-     * @return void
      */
     protected function generateEncryptionKeyIfNeeded()
     {
@@ -197,8 +189,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Parse old curl and HTTP options and set new HTTP options, related to Guzzle
-     *
-     * @return void
      */
     protected function transferHttpSettings()
     {
@@ -393,8 +383,6 @@ class SilentConfigurationUpgradeService
      * "Configuration presets" in install tool is not type safe, so value
      * comparisons here are not type safe too, to not trigger changes to
      * LocalConfiguration again.
-     *
-     * @return void
      */
     protected function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
@@ -456,8 +444,6 @@ class SilentConfigurationUpgradeService
      * "Configuration presets" in install tool is not type safe, so value
      * comparisons here are not type safe too, to not trigger changes to
      * LocalConfiguration again.
-     *
-     * @return void
      */
     protected function setImageMagickDetailSettings()
     {
@@ -499,8 +485,6 @@ class SilentConfigurationUpgradeService
     /**
      * Migrate the definition of the image processor from the configuration value
      * im_version_5 to the setting processor.
-     *
-     * @return void
      */
     protected function migrateImageProcessorSetting()
     {
@@ -578,8 +562,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration value thumbnails_png to a boolean value.
-     *
-     * @return void
      */
     protected function migrateThumbnailsPngSetting()
     {
@@ -601,8 +583,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting BE/lockSSL to boolean if set in the LocalConfiguration.php file
-     *
-     * @return void
      */
     protected function migrateLockSslSetting()
     {
@@ -620,8 +600,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Move the database connection settings to a "Default" connection
-     *
-     * @return void
      */
     protected function migrateDatabaseConnectionSettings()
     {
@@ -703,8 +681,6 @@ class SilentConfigurationUpgradeService
     /**
      * Migrate the configuration setting DB/Connections/Default/charset to 'utf8' as
      * 'utf-8' is not supported by all MySQL versions.
-     *
-     * @return void
      */
     protected function migrateDatabaseConnectionCharset()
     {
@@ -723,8 +699,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting DB/Connections/Default/driverOptions to array type.
-     *
-     * @return void
      */
     protected function migrateDatabaseDriverOptions()
     {
@@ -744,8 +718,6 @@ class SilentConfigurationUpgradeService
 
     /**
      * Migrate the configuration setting BE/lang/debug if set in the LocalConfiguration.php file
-     *
-     * @return void
      */
     protected function migrateLangDebug()
     {

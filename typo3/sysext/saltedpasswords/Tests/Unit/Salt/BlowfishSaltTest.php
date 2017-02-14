@@ -30,8 +30,6 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up the fixtures for this testcase.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -42,8 +40,6 @@ class BlowfishSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Marks tests as skipped if the blowfish method is not available.
-     *
-     * @return void
      */
     protected function skipTestIfBlowfishIsNotAvailable()
     {

@@ -40,7 +40,6 @@ class ValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
      * Sets this value object's name
      *
      * @param string $name The value object's name
-     * @return void
      */
     public function setName($name)
     {

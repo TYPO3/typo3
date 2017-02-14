@@ -261,7 +261,6 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
      *
      * @param array $submittedData Array containing the data submitted by the user
      * @param AbstractTask $task Reference to the current task object
-     * @return void
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

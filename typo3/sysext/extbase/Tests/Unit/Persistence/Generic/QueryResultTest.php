@@ -46,8 +46,6 @@ class QueryResultTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up this test case
-     *
-     * @return void
      */
     protected function setUp()
     {

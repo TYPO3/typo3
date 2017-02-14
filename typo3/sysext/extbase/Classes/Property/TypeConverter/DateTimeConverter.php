@@ -210,7 +210,6 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
      *
      * @param \DateTime $date
      * @param array $source
-     * @return void
      */
     protected function overrideTimeIfSpecified(\DateTime $date, array $source)
     {

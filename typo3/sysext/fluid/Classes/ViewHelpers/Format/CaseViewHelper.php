@@ -100,8 +100,6 @@ class CaseViewHelper extends AbstractViewHelper
 
     /**
      * Initialize ViewHelper arguments
-     *
-     * @return void
      */
     public function initializeArguments()
     {

@@ -21,7 +21,6 @@ use TYPO3\CMS\Reports\Status;
 
 /**
  * Provides an status report of the security of the install tool
- *
  */
 class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
 {
@@ -109,8 +108,6 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
 
     /**
      * Executes commands like removing the Install Tool enable file.
-     *
-     * @return void
      */
     protected function executeAdminCommand()
     {

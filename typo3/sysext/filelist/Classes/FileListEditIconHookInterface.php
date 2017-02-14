@@ -24,7 +24,6 @@ interface FileListEditIconHookInterface
      *
      * @param array $cells Array of edit icons
      * @param \TYPO3\CMS\Filelist\FileList $parentObject Parent object
-     * @return void
      */
     public function manipulateEditIcons(&$cells, &$parentObject);
 }

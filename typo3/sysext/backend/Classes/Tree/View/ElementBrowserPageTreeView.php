@@ -56,8 +56,6 @@ class ElementBrowserPageTreeView extends BrowseTreeView
 
     /**
      * @param LinkParameterProviderInterface $linkParameterProvider
-     *
-     * @return void
      */
     public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider)
     {

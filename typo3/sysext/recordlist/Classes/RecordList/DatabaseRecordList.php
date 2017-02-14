@@ -2157,8 +2157,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      ************************************/
     /**
      * Initializes internal csvLines array with the header of field names
-     *
-     * @return void
      */
     protected function initCSV()
     {
@@ -2167,8 +2165,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
     /**
      * Add header line with field names as CSV line
-     *
-     * @return void
      */
     protected function addHeaderRowToCSV()
     {
@@ -2180,7 +2176,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      * Adds selected columns of one table row as CSV line.
      *
      * @param mixed[] $row Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
-     * @return void
      */
     protected function addToCSV(array $row = [])
     {
@@ -2216,7 +2211,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      * Adds input row of values to the internal csvLines array as a CSV formatted line
      *
      * @param mixed[] $csvRow Array with values to be listed.
-     * @return void
      */
     public function setCsvRow($csvRow)
     {
@@ -2228,7 +2222,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      * This function exits!
      *
      * @param string $prefix Filename prefix:
-     * @return void EXITS php execution!
      */
     public function outputCSV($prefix)
     {

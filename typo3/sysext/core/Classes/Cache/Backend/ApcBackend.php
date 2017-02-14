@@ -88,7 +88,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Initializes the identifier prefix when setting the cache.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
-     * @return void
      */
     public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
@@ -126,7 +125,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
      * @api
@@ -229,7 +227,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception
      * @api
      */
@@ -245,7 +242,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -261,7 +257,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      *
      * @param string $entryIdentifier
      * @param array $tags
-     * @return void
      */
     protected function addIdentifierToTags($entryIdentifier, array $tags)
     {
@@ -293,7 +288,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Removes association of the identifier with the given tags
      *
      * @param string $entryIdentifier
-     * @return void
      */
     protected function removeIdentifierFromAllTags($entryIdentifier)
     {
@@ -322,8 +316,6 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 
     /**
      * Does nothing, as APC does GC itself
-     *
-     * @return void
      */
     public function collectGarbage()
     {

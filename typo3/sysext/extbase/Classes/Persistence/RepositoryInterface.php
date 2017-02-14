@@ -25,7 +25,6 @@ interface RepositoryInterface
      * Adds an object to this repository.
      *
      * @param object $object The object to add
-     * @return void
      * @api
      */
     public function add($object);
@@ -34,7 +33,6 @@ interface RepositoryInterface
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
-     * @return void
      * @api
      */
     public function remove($object);
@@ -67,7 +65,6 @@ interface RepositoryInterface
      * Removes all objects of this repository as if remove() was called for
      * all of them.
      *
-     * @return void
      * @api
      */
     public function removeAll();
@@ -99,7 +96,6 @@ interface RepositoryInterface
      * )
      *
      * @param array $defaultOrderings The property names to order by
-     * @return void
      * @api
      */
     public function setDefaultOrderings(array $defaultOrderings);
@@ -108,7 +104,6 @@ interface RepositoryInterface
      * Sets the default query settings to be used in this repository
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-     * @return void
      * @api
      */
     public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings);

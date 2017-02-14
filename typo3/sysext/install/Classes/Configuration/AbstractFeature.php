@@ -45,7 +45,6 @@ abstract class AbstractFeature
      * Initialize presets of feature
      *
      * @param array $postValues List of $POST values of this feature
-     * @return void
      * @throws Exception
      */
     public function initializePresets(array $postValues)

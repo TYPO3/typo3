@@ -141,7 +141,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property email.
      *
      * @param string $email Email address to which an email report is sent
-     * @return void
      */
     public function setEmail($email)
     {
@@ -162,7 +161,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property emailOnBrokenLinkOnly
      *
      * @param bool $emailOnBrokenLinkOnly Only send an email, if new broken links were found
-     * @return void
      */
     public function setEmailOnBrokenLinkOnly($emailOnBrokenLinkOnly)
     {
@@ -183,7 +181,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property page
      *
      * @param int $page UID of the start page for this task.
-     * @return void
      */
     public function setPage($page)
     {
@@ -204,7 +201,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property depth
      *
      * @param int $depth Level of pages the task should check
-     * @return void
      */
     public function setDepth($depth)
     {
@@ -225,7 +221,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property emailTemplateFile
      *
      * @param string $emailTemplateFile Template to be used for the email
-     * @return void
      */
     public function setEmailTemplateFile($emailTemplateFile)
     {
@@ -246,7 +241,6 @@ class ValidatorTask extends AbstractTask
      * Set the value of the private property configuration
      *
      * @param array $configuration specific TSconfig for this task
-     * @return void
      */
     public function setConfiguration($configuration)
     {
@@ -606,8 +600,6 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Simulate cli call with setting the required options to the $_SERVER['argv']
-     *
-     * @return void
      */
     protected function setCliArguments()
     {

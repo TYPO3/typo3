@@ -119,7 +119,6 @@ class LinkAnalyzer
      * @param array $searchField List of fields in which to search for links
      * @param string $pid List of comma separated page uids in which to search for links
      * @param array $tsConfig The currently active TSConfig.
-     * @return void
      */
     public function init(array $searchField, $pid, $tsConfig)
     {
@@ -133,7 +132,6 @@ class LinkAnalyzer
      *
      * @param array $checkOptions List of hook object to activate
      * @param bool $considerHidden Defines whether to look into hidden fields
-     * @return void
      */
     public function getLinkStatistics($checkOptions = [], $considerHidden = false)
     {
@@ -264,7 +262,6 @@ class LinkAnalyzer
      * @param string $table Table name of the record
      * @param array $fields Array of fields to analyze
      * @param array $record Record to analyse
-     * @return void
      */
     public function analyzeRecord(array &$results, $table, array $fields, array $record)
     {
@@ -328,7 +325,6 @@ class LinkAnalyzer
      * @param array $record UID of the current record
      * @param string $field The current field
      * @param string $table The current table
-     * @return void
      */
     protected function analyseLinks(array $resultArray, array &$results, array $record, $field, $table)
     {
@@ -364,7 +360,6 @@ class LinkAnalyzer
      * @param array $record The current record
      * @param string $field The current field
      * @param string $table The current table
-     * @return void
      */
     protected function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
     {

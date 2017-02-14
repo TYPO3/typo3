@@ -51,8 +51,6 @@ abstract class AbstractCustomPreset extends AbstractPreset
      * with other presets.
      * Marking the custom preset as active is therefor taken care
      * off by the feature itself if no other preset is active.
-     *
-     * @return void
      */
     public function setActive()
     {

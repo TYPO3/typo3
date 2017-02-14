@@ -85,7 +85,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param string $title title of repository to set
-     * @return void
      * @see $title, getTitle()
      */
     public function setTitle($title)
@@ -112,7 +111,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param string $description title of repository to set
-     * @return void
      */
     public function setDescription($description)
     {
@@ -140,7 +138,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param string $url URL of file that contains repository mirrors
-     * @return void
      * @see $mirrorListUrl, getMirrorListUrl()
      */
     public function setMirrorListUrl($url)
@@ -166,7 +163,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method sets URL of repository WSDL.
      *
      * @param string $url URL of repository WSDL
-     * @return void
      * @see $wsdlUrl, getWsdlUrl()
      */
     public function setWsdlUrl($url)
@@ -192,7 +188,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param \DateTime $time URL of repository WSDL
-     * @return void
      */
     public function setLastUpdate(\DateTime $time)
     {
@@ -215,7 +210,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param string $count count of read extensions
-     * @return void
      */
     public function setExtensionCount($count)
     {
@@ -229,7 +223,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @access public
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors mirror list
-     * @return void
      * @see $mirrors, getMirrors(), hasMirrors(), removeMirrors()
      */
     public function addMirrors(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors)
@@ -270,7 +263,6 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method unregisters a repository mirrors object.
      *
      * @access public
-     * @return void
      * @see $mirrors, addMirrors(), getMirrors(), hasMirrors()
      */
     public function removeMirrors()

@@ -77,7 +77,6 @@ class CacheManager implements SingletonInterface
      * Existing cache configurations are preserved.
      *
      * @param array $cacheConfigurations The cache configurations to set
-     * @return void
      * @throws \InvalidArgumentException If $cacheConfigurations is not an array
      */
     public function setCacheConfigurations(array $cacheConfigurations)
@@ -94,7 +93,6 @@ class CacheManager implements SingletonInterface
      * Registers a cache so it can be retrieved at a later point.
      *
      * @param FrontendInterface $cache The cache frontend to be registered
-     * @return void
      * @throws DuplicateIdentifierException if a cache with the given identifier has already been registered.
      * @api
      */
@@ -141,7 +139,6 @@ class CacheManager implements SingletonInterface
     /**
      * Flushes all registered caches
      *
-     * @return void
      * @api
      */
     public function flushCaches()
@@ -156,7 +153,6 @@ class CacheManager implements SingletonInterface
      * Flushes all registered caches of a specific group
      *
      * @param string $groupIdentifier
-     * @return void
      * @throws NoSuchCacheGroupException
      * @api
      */
@@ -179,7 +175,6 @@ class CacheManager implements SingletonInterface
      *
      * @param string $groupIdentifier
      * @param string|array $tag Tag to search for
-     * @return void
      * @throws NoSuchCacheGroupException
      * @api
      */
@@ -205,7 +200,6 @@ class CacheManager implements SingletonInterface
      *
      * @param string $groupIdentifier
      * @param string[] $tags Tags to search for
-     * @return void
      * @throws NoSuchCacheGroupException
      * @api
      */
@@ -230,7 +224,6 @@ class CacheManager implements SingletonInterface
      * caches.
      *
      * @param string $tag Tag to search for
-     * @return void
      * @api
      */
     public function flushCachesByTag($tag)
@@ -245,7 +238,6 @@ class CacheManager implements SingletonInterface
      * Flushes entries tagged by any of the specified tags in all registered caches.
      *
      * @param string[] $tags Tags to search for
-     * @return void
      * @api
      */
     public function flushCachesByTags(array $tags)
@@ -258,8 +250,6 @@ class CacheManager implements SingletonInterface
 
     /**
      * Instantiates all registered caches.
-     *
-     * @return void
      */
     protected function createAllCaches()
     {

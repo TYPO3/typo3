@@ -66,7 +66,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $category
-     * @return void
      */
     public function setCategory($category)
     {
@@ -83,7 +82,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $labelHeadline
-     * @return void
      */
     public function setLabelHeadline($labelHeadline)
     {
@@ -100,7 +98,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $labelText
-     * @return void
      */
     public function setLabelText($labelText)
     {
@@ -117,7 +114,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $subCategory
-     * @return void
      */
     public function setSubCategory($subCategory)
     {
@@ -134,7 +130,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $type
-     * @return void
      */
     public function setType($type)
     {
@@ -151,7 +146,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param mixed $userFunc
-     * @return void
      */
     public function setGeneric($userFunc)
     {
@@ -168,7 +162,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $name
-     * @return void
      */
     public function setName($name)
     {
@@ -185,7 +178,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $value
-     * @return void
      */
     public function setValue($value)
     {
@@ -202,7 +194,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param int $highlight
-     * @return void
      */
     public function setHighlight($highlight)
     {

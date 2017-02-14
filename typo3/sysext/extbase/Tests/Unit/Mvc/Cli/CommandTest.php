@@ -42,7 +42,6 @@ class CommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @return void
      */
     protected function setUp()
     {

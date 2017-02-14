@@ -28,8 +28,6 @@ class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abstr
 
     /**
      * Set up the test
-     *
-     * @return void
      */
     protected function setUp()
     {

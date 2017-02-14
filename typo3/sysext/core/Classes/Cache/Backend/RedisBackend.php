@@ -147,7 +147,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     /**
      * Initializes the redis backend
      *
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if access to redis with password is denied or if database selection fails
      */
     public function initializeObject()
@@ -182,7 +181,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for persistent connection
      *
      * @param bool $persistentConnection
-     * @return void
      * @api
      */
     public function setPersistentConnection($persistentConnection)
@@ -194,7 +192,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for server hostname
      *
      * @param string $hostname Hostname
-     * @return void
      * @api
      */
     public function setHostname($hostname)
@@ -206,7 +203,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for server port
      *
      * @param int $port Port
-     * @return void
      * @api
      */
     public function setPort($port)
@@ -218,7 +214,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for database number
      *
      * @param int $database Database
-     * @return void
      * @throws \InvalidArgumentException if database number is not valid
      * @api
      */
@@ -237,7 +232,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Setter for authentication password
      *
      * @param string $password Password
-     * @return void
      * @api
      */
     public function setPassword($password)
@@ -249,7 +243,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Enable data compression
      *
      * @param bool $compression TRUE to enable compression
-     * @return void
      * @throws \InvalidArgumentException if compression parameter is not of type boolean
      * @api
      */
@@ -267,7 +260,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * gzcompress default level will be used.
      *
      * @param int $compressionLevel -1 to 9: Compression level
-     * @return void
      * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
      * @api
      */
@@ -289,7 +281,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * of seconds to wait if a connection can be established.
      *
      * @param int $connectionTimeout limit in seconds, a value greater or equal than 0
-     * @return void
      * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
      * @api
      */
@@ -316,7 +307,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * @param string $data Data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \InvalidArgumentException if identifier is not valid
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if data is not a string
      * @api
@@ -468,7 +458,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * Scales O(1) with number of cache entries
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -485,7 +474,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * Scales O(n^2) with number of tag entries
      *
      * @param string $tag Tag the entries must have
-     * @return void
      * @throws \InvalidArgumentException if identifier is not a string
      * @api
      */
@@ -510,7 +498,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * Scales O(n*m) with number of cache entries (n) and number of tags (m)
      *
-     * @return void
      * @api
      */
     public function collectGarbage()
@@ -540,7 +527,6 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      *
      * @param array $identifiers List of identifiers to remove
      * @param array $tags List of tags to be handled
-     * @return void
      */
     protected function removeIdentifierEntriesAndRelations(array $identifiers, array $tags)
     {

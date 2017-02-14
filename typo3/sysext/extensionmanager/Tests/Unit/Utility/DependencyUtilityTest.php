@@ -18,7 +18,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Test for DependencyUtility
- *
  */
 class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -28,7 +27,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     protected $objectManagerMock;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -37,7 +35,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooLow()
     {
@@ -56,7 +53,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooHigh()
     {
@@ -76,7 +72,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyThrowsExceptionIfIdentifierIsNotTypo3()
     {
@@ -94,7 +89,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange()
     {
@@ -112,7 +106,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion()
     {
@@ -130,7 +123,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion()
     {
@@ -148,7 +140,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooLow()
     {
@@ -167,7 +158,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh()
     {
@@ -187,7 +177,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyThrowsExceptionIfIdentifierIsNotTypo3()
     {
@@ -205,7 +194,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange()
     {
@@ -223,7 +211,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyCanHandleEmptyVersionHighestVersion()
     {
@@ -241,7 +228,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkPhpDependencyCanHandleEmptyVersionLowestVersion()
     {
@@ -259,7 +245,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkDependenciesCallsMethodToCheckPhpDependencies()
     {
@@ -285,7 +270,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function checkDependenciesCallsMethodToCheckTypo3Dependencies()
     {
@@ -312,7 +296,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isVersionCompatibleReturnsTrueForCompatibleVersion()
     {
@@ -330,7 +313,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isVersionCompatibleReturnsFalseForIncompatibleVersion()
     {
@@ -348,7 +330,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isDependentExtensionAvailableReturnsTrueIfExtensionIsAvailable()
     {
@@ -369,7 +350,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isDependentExtensionAvailableReturnsFalseIfExtensionIsNotAvailable()
     {
@@ -390,7 +370,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion()
     {
@@ -419,7 +398,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isExtensionDownloadableFromTerReturnsTrueIfOneVersionExists()
     {
@@ -437,7 +415,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isExtensionDownloadableFromTerReturnsFalseIfNoVersionExists()
     {
@@ -455,7 +432,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists()
     {
@@ -479,7 +455,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function isDownloadableVersionCompatibleReturnsFalseIfIncompatibleVersionExists()
     {
@@ -505,7 +480,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function getLowestAndHighestIntegerVersionsReturnsArrayWithVersions()
     {
@@ -527,7 +501,6 @@ class DependencyUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function getLatestCompatibleExtensionByIntegerVersionDependencyWillReturnExtensionModelOfLatestExtension()
     {

@@ -63,7 +63,6 @@ abstract class AbstractMessage
      * Sets the message's title
      *
      * @param string $title The message's title
-     * @return void
      */
     public function setTitle(string $title)
     {
@@ -84,7 +83,6 @@ abstract class AbstractMessage
      * Sets the message
      *
      * @param string $message The message
-     * @return void
      */
     public function setMessage(string $message)
     {
@@ -105,7 +103,6 @@ abstract class AbstractMessage
      * Sets the message' severity
      *
      * @param int $severity The severity, must be one of AbstractMessage::INFO or similar constants
-     * @return void
      */
     public function setSeverity(int $severity = self::OK)
     {

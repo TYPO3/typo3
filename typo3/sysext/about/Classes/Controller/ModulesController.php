@@ -68,8 +68,6 @@ class ModulesController extends ActionController
 
     /**
      * Show general information and the installed modules
-     *
-     * @return void
      */
     public function indexAction()
     {

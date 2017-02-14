@@ -89,7 +89,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Sets the request method
      *
      * @param string $method Name of the request method
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException if the request method is not supported
      */
     public function setMethod($method)
@@ -115,7 +114,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Sets the request URI
      *
      * @param string $requestUri URI of this web request
-     * @return void
      */
     public function setRequestUri($requestUri)
     {
@@ -137,7 +135,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
      * Sets the base URI for this request.
      *
      * @param string $baseUri New base URI
-     * @return void
      */
     public function setBaseUri($baseUri)
     {

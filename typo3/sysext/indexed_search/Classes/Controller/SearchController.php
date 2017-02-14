@@ -243,7 +243,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Performs the search, the display and writing stats
      *
      * @param array $search the search parameters, an associative array
-     * @return void
      * @ignorevalidation $search
      */
     public function searchAction($search = [])
@@ -799,7 +798,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $searchWords Search Word array
      * @param int $count Number of hits
      * @param int $pt Milliseconds the search took
-     * @return void
      */
     protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
     {
@@ -934,7 +932,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Sort options about the search form
      *
      * @param array $search The search data / params
-     * @return void
      * @ignorevalidation $search
      */
     public function formAction($search = [])
@@ -1452,8 +1449,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * simple function to initialize possible external parsers
      * feeds the $this->externalParsers array
-     *
-     * @return void
      */
     protected function initializeExternalParsers()
     {

@@ -142,7 +142,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Set existingFilesConflictMode
      *
      * @param \TYPO3\CMS\Core\Resource\DuplicationBehavior|string $existingFilesConflictMode Instance or constant of \TYPO3\CMS\Core\Resource\DuplicationBehavior
-     * @return void
      * @throws Exception
      */
     public function setExistingFilesConflictMode($existingFilesConflictMode)
@@ -165,7 +164,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Initialization of the class
      *
      * @param array $fileCmds Array with the commands to execute. See "TYPO3 Core API" document
-     * @return void
      */
     public function start($fileCmds)
     {
@@ -180,7 +178,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * If no argument is given, permissions of the currently logged in backend user are taken into account.
      *
      * @param array $permissions File Permissions.
-     * @return void
      */
     public function setActionPermissions(array $permissions = [])
     {
@@ -289,7 +286,6 @@ class ExtendedFileUtility extends BasicFileUtility
     /**
      * Adds all log error messages from the operations of this script instance to the FlashMessageQueue
      *
-     * @return void
      * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     public function pushErrorMessagesToFlashMessageQueue()
@@ -323,7 +319,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.
      * @param string $details This is the default, raw error message in english
      * @param array $data Array with special information that may go into $details by "%s" marks / sprintf() when the log is shown
-     * @return void
      */
     public function writeLog($action, $error, $details_nr, $details, $data)
     {
@@ -343,7 +338,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * @param string $localizationKey
      * @param array $replaceMarkers
      * @param int $severity
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = FlashMessage::ERROR)
@@ -1203,7 +1197,6 @@ class ExtendedFileUtility extends BasicFileUtility
      * Add flash message to message queue
      *
      * @param FlashMessage $flashMessage
-     * @return void
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {

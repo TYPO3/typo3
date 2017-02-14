@@ -17,7 +17,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Testcase
- *
  */
 class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -52,7 +51,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists()
     {
@@ -118,7 +116,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function makeAndClearExtensionDirAddsDir()
     {
@@ -135,7 +132,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath()
     {
@@ -149,7 +145,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function addDirectoryAddsDirectory()
     {
@@ -162,7 +157,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function removeDirectoryRemovesDirectory()
     {
@@ -175,7 +169,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function removeDirectoryRemovesSymlink()
     {
@@ -191,7 +184,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory()
     {
@@ -214,7 +206,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory()
     {
@@ -238,7 +229,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray()
     {
@@ -308,7 +298,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function extractFilesArrayFromExtensionDataReturnsFileArray()
     {
@@ -327,7 +316,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function writeExtensionFilesWritesFiles()
     {
@@ -355,7 +343,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function extractDirectoriesFromExtensionDataExtractsDirectories()
     {
@@ -407,7 +394,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function createDirectoriesForExtensionFilesCreatesDirectories()
     {
@@ -426,7 +412,6 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
 
     /**
      * @test
-     * @return void
      */
     public function writeEmConfWritesEmConfFile()
     {

@@ -318,8 +318,6 @@ class SetupModuleController extends AbstractModule
      ******************************/
     /**
      * Initializes the module for display of the settings form.
-     *
-     * @return void
      */
     public function init()
     {
@@ -359,8 +357,6 @@ class SetupModuleController extends AbstractModule
 
     /**
      * Generate the main settings form:
-     *
-     * @return void
      */
     public function main()
     {
@@ -740,8 +736,6 @@ class SetupModuleController extends AbstractModule
     /**
      * Will make the simulate-user selector if the logged in user is administrator.
      * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
-     *
-     * @return void
      */
     public function simulateUser()
     {
@@ -1080,8 +1074,6 @@ class SetupModuleController extends AbstractModule
 
     /**
      * Add FlashMessages for various actions
-     *
-     * @return void
      */
     protected function addFlashMessages()
     {
@@ -1125,7 +1117,6 @@ class SetupModuleController extends AbstractModule
     /**
      * @param array $flashMessages
      * @throws \TYPO3\CMS\Core\Exception
-     * @return void
      */
     protected function enqueueFlashMessages(array $flashMessages)
     {

@@ -31,7 +31,6 @@ class MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend
      * Sets some option
      *
      * @param mixed $value
-     * @return void
      */
     public function setSomeOption($value)
     {

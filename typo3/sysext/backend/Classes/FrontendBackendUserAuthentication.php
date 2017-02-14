@@ -97,8 +97,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
 
     /**
      * Initializes the admin panel.
-     *
-     * @return void
      */
     public function initializeAdminPanel()
     {
@@ -116,8 +114,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
 
     /**
      * Initializes frontend editing.
-     *
-     * @return void
      */
     public function initializeFrontendEdit()
     {

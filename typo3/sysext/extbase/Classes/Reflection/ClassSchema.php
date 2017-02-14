@@ -98,7 +98,6 @@ class ClassSchema
      * @param string $type Type of the property
      * @param bool $lazy Whether the property should be lazy-loaded when reconstituting
      * @param string $cascade Strategy to cascade the object graph.
-     * @return void
      */
     public function addProperty($name, $type, $lazy = false, $cascade = '')
     {
@@ -138,7 +137,6 @@ class ClassSchema
      *
      * @param int $modelType The model type, one of the MODELTYPE_* constants.
      * @throws \InvalidArgumentException
-     * @return void
      */
     public function setModelType($modelType)
     {
@@ -163,7 +161,6 @@ class ClassSchema
      * through a repository - or not.
      *
      * @param bool $isRoot TRUE if it is the root of an aggregate
-     * @return void
      */
     public function setAggregateRoot($isRoot)
     {
@@ -197,7 +194,6 @@ class ClassSchema
      *
      * @param string $propertyName
      * @throws \InvalidArgumentException
-     * @return void
      */
     public function setUuidPropertyName($propertyName)
     {
@@ -224,7 +220,6 @@ class ClassSchema
      *
      * @param string $propertyName
      * @throws \InvalidArgumentException
-     * @return void
      */
     public function markAsIdentityProperty($propertyName)
     {

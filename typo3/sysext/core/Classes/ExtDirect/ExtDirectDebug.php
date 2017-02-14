@@ -42,7 +42,6 @@ class ExtDirectDebug
      * Adds a new message of any data type to the internal debug message array.
      *
      * @param mixed $message
-     * @return void
      */
     public function debug($message)
     {

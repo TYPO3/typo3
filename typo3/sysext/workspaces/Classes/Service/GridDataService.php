@@ -113,7 +113,6 @@ class GridDataService
      *
      * @param array $versions All available version records
      * @param string $filterTxt Text to be used to filter record result
-     * @return void
      */
     protected function generateDataArray(array $versions, $filterTxt)
     {
@@ -233,8 +232,6 @@ class GridDataService
     /**
      * Resolves dependencies of nested structures
      * and sort data elements considering these dependencies.
-     *
-     * @return void
      */
     protected function resolveDataArrayDependencies()
     {
@@ -283,8 +280,6 @@ class GridDataService
 
     /**
      * Initializes the workspace cache
-     *
-     * @return void
      */
     protected function initializeWorkspacesCachingFramework()
     {
@@ -347,8 +342,6 @@ class GridDataService
     /**
      * Performs sorting on the data array accordant to the
      * selected column in the grid view to be used for sorting.
-     *
-     * @return void
      */
     protected function sortDataArray()
     {

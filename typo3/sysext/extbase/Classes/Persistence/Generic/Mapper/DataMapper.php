@@ -225,7 +225,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param DomainObjectInterface $object The object to set properties on
      * @param array $row
-     * @return void
      */
     protected function thawProperties(DomainObjectInterface $object, array $row)
     {

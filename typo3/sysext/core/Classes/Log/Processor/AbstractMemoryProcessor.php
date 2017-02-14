@@ -42,7 +42,6 @@ abstract class AbstractMemoryProcessor extends AbstractProcessor
      * Sets the allocated memory usage type
      *
      * @param bool $realMemoryUsage Which allocated memory type to use
-     * @return void
      */
     public function setRealMemoryUsage($realMemoryUsage)
     {
@@ -63,7 +62,6 @@ abstract class AbstractMemoryProcessor extends AbstractProcessor
      * Sets whether size should be formatted
      *
      * @param bool $formatSize
-     * @return void
      */
     public function setFormatSize($formatSize)
     {

@@ -83,7 +83,6 @@ class FlashMessage extends AbstractMessage
      * Sets the message's storeInSession flag
      *
      * @param bool $storeInSession The persistence flag
-     * @return void
      */
     public function setStoreInSession($storeInSession)
     {

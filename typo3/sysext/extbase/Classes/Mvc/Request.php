@@ -114,7 +114,6 @@ class Request implements RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
-     * @return void
      * @api
      */
     public function setDispatched($flag)
@@ -194,8 +193,6 @@ class Request implements RequestInterface
      * Explicitly sets the object name of the controller
      *
      * @param string $controllerObjectName The fully qualified controller object name
-     *
-     * @return void
      */
     public function setControllerObjectName($controllerObjectName)
     {
@@ -210,8 +207,6 @@ class Request implements RequestInterface
      * Sets the plugin name.
      *
      * @param string|NULL $pluginName
-     *
-     * @return void
      */
     public function setPluginName($pluginName = null)
     {
@@ -236,7 +231,6 @@ class Request implements RequestInterface
      *
      * @param string $controllerExtensionName The extension name.
      *
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
      */
     public function setControllerExtensionName($controllerExtensionName)
@@ -272,8 +266,6 @@ class Request implements RequestInterface
      * Sets the subpackage key of the controller.
      *
      * @param string $subpackageKey The subpackage key.
-     *
-     * @return void
      */
     public function setControllerSubpackageKey($subpackageKey)
     {
@@ -298,7 +290,6 @@ class Request implements RequestInterface
      * @param string $controllerName Name of the controller
      *
      * @throws Exception\InvalidControllerNameException
-     * @return void
      */
     public function setControllerName($controllerName)
     {
@@ -332,7 +323,6 @@ class Request implements RequestInterface
      *
      * @param string $actionName Name of the action to execute by the controller
      *
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
      */
     public function setControllerActionName($actionName)
@@ -379,7 +369,6 @@ class Request implements RequestInterface
      * @param mixed $value The new value
      *
      * @throws Exception\InvalidArgumentNameException
-     * @return void
      */
     public function setArgument($argumentName, $value)
     {
@@ -399,8 +388,6 @@ class Request implements RequestInterface
      * sets the VendorName
      *
      * @param string $vendorName
-     *
-     * @return void
      */
     public function setControllerVendorName($vendorName)
     {
@@ -422,8 +409,6 @@ class Request implements RequestInterface
      * which existed before.
      *
      * @param array $arguments An array of argument names and their values
-     *
-     * @return void
      */
     public function setArguments(array $arguments)
     {
@@ -478,8 +463,6 @@ class Request implements RequestInterface
      * Sets the requested representation format
      *
      * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
-     *
-     * @return void
      */
     public function setFormat($format)
     {
@@ -509,8 +492,6 @@ class Request implements RequestInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
-     *
-     * @return void
      */
     public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest)
     {

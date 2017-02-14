@@ -42,7 +42,6 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @return void
      * @internal
      */
     public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
@@ -53,7 +52,6 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

@@ -122,8 +122,6 @@ abstract class AbstractLinkBrowserController
 
     /**
      * Initialize the controller
-     *
-     * @return void
      */
     protected function init()
     {
@@ -134,7 +132,6 @@ abstract class AbstractLinkBrowserController
      * Initialize hook objects implementing the interface
      *
      * @throws \UnexpectedValueException
-     * @return void
      */
     protected function initHookObjects()
     {
@@ -221,7 +218,6 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * @return void
      * @throws \UnexpectedValueException
      */
     protected function loadLinkHandlers()
@@ -278,8 +274,6 @@ abstract class AbstractLinkBrowserController
 
     /**
      * Initialize $this->currentLinkParts and $this->currentLinkHandler
-     *
-     * @return void
      */
     protected function initCurrentUrl()
     {
@@ -314,8 +308,6 @@ abstract class AbstractLinkBrowserController
 
     /**
      * Initialize document template object
-     *
-     *  @return void
      */
     protected function initDocumentTemplate()
     {

@@ -157,7 +157,6 @@ class MetaDataRepository implements SingletonInterface
      *
      * @param int $fileUid the file uid to update
      * @param array $data Data to update
-     * @return void
      * @internal
      */
     public function update($fileUid, array $data)
@@ -193,7 +192,6 @@ class MetaDataRepository implements SingletonInterface
      * Remove all metadata records for a certain file from the database
      *
      * @param int $fileUid
-     * @return void
      */
     public function removeByFileUid($fileUid)
     {

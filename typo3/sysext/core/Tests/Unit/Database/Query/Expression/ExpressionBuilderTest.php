@@ -42,8 +42,6 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * Create a new database connection mock object for every test.
-     *
-     * @return void
      */
     protected function setUp()
     {

@@ -46,7 +46,6 @@ class RequestHandler implements RequestHandlerInterface
      * Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
      *
      * @param ServerRequestInterface $request
-     * @return void
      */
     public function handleRequest(ServerRequestInterface $request)
     {

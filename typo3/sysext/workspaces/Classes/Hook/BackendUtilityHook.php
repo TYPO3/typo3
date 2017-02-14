@@ -42,7 +42,6 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $viewScript
      * @param string $additionalGetVars
      * @param bool $switchFocus
-     * @return void
      */
     public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus)
     {

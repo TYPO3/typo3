@@ -88,8 +88,6 @@ class FileController
 
     /**
      * Registering incoming data
-     *
-     * @return void
      */
     protected function init()
     {
@@ -110,8 +108,6 @@ class FileController
 
     /**
      * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
-     *
-     * @return void
      */
     public function initClipboard()
     {
@@ -132,8 +128,6 @@ class FileController
     /**
      * Performing the file admin action:
      * Initializes the objects, setting permissions, sending data to object.
-     *
-     * @return void
      */
     public function main()
     {
@@ -154,8 +148,6 @@ class FileController
     /**
      * Redirecting the user after the processing has been done.
      * Might also display error messages directly, if any.
-     *
-     * @return void
      */
     public function finish()
     {

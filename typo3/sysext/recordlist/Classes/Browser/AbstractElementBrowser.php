@@ -93,8 +93,6 @@ abstract class AbstractElementBrowser
 
     /**
      * Main initialization
-     *
-     * @return void
      */
     protected function initialize()
     {
@@ -104,8 +102,6 @@ abstract class AbstractElementBrowser
 
     /**
      * Sets the script url depending on being a module or script request
-     *
-     * @return void
      */
     protected function determineScriptUrl()
     {
@@ -122,7 +118,6 @@ abstract class AbstractElementBrowser
     }
 
     /**
-     * @return void
      */
     protected function initVariables()
     {
@@ -134,8 +129,6 @@ abstract class AbstractElementBrowser
 
     /**
      * Initialize document template object
-     *
-     *  @return void
      */
     protected function initDocumentTemplate()
     {

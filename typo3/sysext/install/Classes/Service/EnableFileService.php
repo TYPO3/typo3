@@ -158,8 +158,6 @@ class EnableFileService
 
     /**
      * Updates the last modification of the ENABLE_INSTALL_TOOL file
-     *
-     * @return void
      */
     protected static function extendInstallToolEnableFileLifetime()
     {

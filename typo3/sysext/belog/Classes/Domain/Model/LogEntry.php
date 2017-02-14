@@ -142,7 +142,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set pid
      *
      * @param int $pid
-     * @return void
      */
     public function setPid($pid)
     {
@@ -163,7 +162,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set backend user uid
      *
      * @param int $beUserUid
-     * @return void
      */
     public function setBackendUserUid($beUserUid)
     {
@@ -184,7 +182,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set action
      *
      * @param int $action
-     * @return void
      */
     public function setAction($action)
     {
@@ -205,7 +202,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set record uid
      *
      * @param int $recordUid
-     * @return void
      */
     public function setRecordUid($recordUid)
     {
@@ -226,7 +222,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set table name
      *
      * @param string $tableName
-     * @return void
      */
     public function setTableName($tableName)
     {
@@ -247,7 +242,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set record pid
      *
      * @param int $recordPid
-     * @return void
      */
     public function setRecordPid($recordPid)
     {
@@ -268,7 +262,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set error
      *
      * @param int $error
-     * @return void
      */
     public function setError($error)
     {
@@ -289,7 +282,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set details
      *
      * @param string $details
-     * @return void
      */
     public function setDetails($details)
     {
@@ -310,7 +302,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set tstamp
      *
      * @param int $tstamp
-     * @return void
      */
     public function setTstamp($tstamp)
     {
@@ -331,7 +322,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set type
      *
      * @param int $type
-     * @return void
      */
     public function setType($type)
     {
@@ -352,7 +342,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set details number
      *
      * @param int $detailsNumber
-     * @return void
      */
     public function setDetailsNumber($detailsNumber)
     {
@@ -373,7 +362,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set ip
      *
      * @param string $ip
-     * @return void
      */
     public function setIp($ip)
     {
@@ -394,7 +382,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set log data
      *
      * @param string $logData
-     * @return void
      */
     public function setLogData($logData)
     {
@@ -422,7 +409,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set event pid
      *
      * @param int $eventPid
-     * @return void
      */
     public function setEventPid($eventPid)
     {
@@ -443,7 +429,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set workspace uid
      *
      * @param int $workspaceUid
-     * @return void
      */
     public function setWorkspaceUid($workspaceUid)
     {
@@ -464,7 +449,6 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set new id
      *
      * @param string $newId
-     * @return void
      */
     public function setNewId($newId)
     {

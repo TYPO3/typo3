@@ -76,7 +76,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * Setter for the pid.
      *
      * @param int|NULL $pid
-     * @return void
      */
     public function setPid($pid)
     {
@@ -170,7 +169,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * from the database.
      *
      * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
-     * @return void
      */
     public function _memorizeCleanState($propertyName = null)
     {
@@ -194,7 +192,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      * from the database.
      *
      * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
-     * @return void
      */
     public function _memorizePropertyCleanState($propertyName)
     {
@@ -315,8 +312,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 
     /**
      * Clone method. Sets the _isClone property.
-     *
-     * @return void
      */
     public function __clone()
     {

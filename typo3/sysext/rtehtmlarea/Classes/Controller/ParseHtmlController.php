@@ -69,8 +69,6 @@ class ParseHtmlController
 
     /**
      * Initializes necessary parameters before calling the actual main action.
-     *
-     * @return void
      */
     public function init()
     {
@@ -158,7 +156,6 @@ class ParseHtmlController
      * Such tags are used by the RTE in order to restore the cursor position when the cleaning operation is completed.
      *
      * @param array $HTMLparserConfig: incoming HTMLParser configuration (wil be modified)
-     * @return void
      */
     protected function keepSpanTagsWithId(&$HTMLparserConfig)
     {

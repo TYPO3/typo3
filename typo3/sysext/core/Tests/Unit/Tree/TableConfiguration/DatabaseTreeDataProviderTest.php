@@ -48,8 +48,6 @@ class DatabaseTreeDataProviderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

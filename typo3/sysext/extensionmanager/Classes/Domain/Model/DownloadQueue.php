@@ -63,7 +63,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
      * @param string $stack
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @return void
      */
     public function addExtensionToQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download')
     {
@@ -99,7 +98,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
      * @param string $stack Stack to remove extension from (download, update or install)
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @return void
      */
     public function removeExtensionFromQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download')
     {
@@ -117,7 +115,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      * Adds an extension to the install queue for later installation
      *
      * @param Extension $extension
-     * @return void
      */
     public function addExtensionToInstallQueue($extension)
     {
@@ -128,7 +125,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      * Removes an extension from the install queue
      *
      * @param string $extensionKey
-     * @return void
      */
     public function removeExtensionFromInstallQueue($extensionKey)
     {
@@ -142,7 +138,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @param string $sourceFolder
-     * @return void
      */
     public function addExtensionToCopyQueue($extensionKey, $sourceFolder)
     {
@@ -153,7 +148,6 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
      * Remove an extension from extension copy storage
      *
      * @param $extensionKey
-     * @return void
      */
     public function removeExtensionFromCopyQueue($extensionKey)
     {

@@ -89,7 +89,6 @@ class BackendUserController extends BackendUserActionController
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
@@ -108,7 +107,6 @@ class BackendUserController extends BackendUserActionController
     /**
      * Initialize actions
      *
-     * @return void
      * @throws \RuntimeException
      */
     public function initializeAction()
@@ -128,7 +126,6 @@ class BackendUserController extends BackendUserActionController
      * - Switch session to different user
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-     * @return void
      */
     public function indexAction(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand = null)
     {
@@ -165,8 +162,6 @@ class BackendUserController extends BackendUserActionController
 
     /**
      * Views all currently logged in BackendUsers and their sessions
-     *
-     * @return void
      */
     public function onlineAction()
     {
@@ -186,8 +181,6 @@ class BackendUserController extends BackendUserActionController
 
     /**
      * Compare backend users from demand
-     *
-     * @return void
      */
     public function compareAction()
     {
@@ -201,7 +194,6 @@ class BackendUserController extends BackendUserActionController
      * Attaches one backend user to the compare list
      *
      * @param int $uid
-     * @return void
      */
     public function addToCompareListAction($uid)
     {
@@ -214,7 +206,6 @@ class BackendUserController extends BackendUserActionController
      * Removes given backend user to the compare list
      *
      * @param int $uid
-     * @return void
      */
     public function removeFromCompareListAction($uid)
     {
@@ -229,7 +220,6 @@ class BackendUserController extends BackendUserActionController
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser
      * @param string $sessionId
-     * @return void
      */
     protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
     {
@@ -246,7 +236,6 @@ class BackendUserController extends BackendUserActionController
      * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
      *
      * @param string $switchUser BE-user record that will be switched to
-     * @return void
      */
     protected function switchUser($switchUser)
     {

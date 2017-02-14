@@ -132,7 +132,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @param string $mode 'FE' for frontend, 'BE' for backend user records
      * @param array $users With user uids and passwords
-     * @return void
      */
     protected function convertPasswords($mode, array $users)
     {
@@ -154,7 +153,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @param string $mode 'FE' for frontend, 'BE' for backend user records
      * @param array $users With user uids and passwords
-     * @return void
      */
     protected function updatePasswords($mode, array $users)
     {
@@ -222,7 +220,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      *
      * @param string $mode 'FE' for frontend, 'BE' for backend user records
      * @param int $number Number of handled rows
-     * @return void
      */
     protected function incrementUserRecordPointer($mode, $number)
     {
@@ -232,8 +229,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * Activates this task instance.
      * Uses setDisabled() method of parent \TYPO3\CMS\Scheduler\Task\AbstractTask
-     *
-     * @return void
      */
     protected function activateSelf()
     {
@@ -243,8 +238,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     /**
      * Deactivates this task instance.
      * Uses setDisabled() method of parent \TYPO3\CMS\Scheduler\Task\AbstractTask
-     *
-     * @return void
      */
     protected function deactivateSelf()
     {
@@ -255,7 +248,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * Set if it can deactivate self
      *
      * @param bool $canDeactivateSelf
-     * @return void
      */
     public function setCanDeactivateSelf($canDeactivateSelf)
     {
@@ -276,7 +268,6 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * Set number of records
      *
      * @param int $numberOfRecords
-     * @return void
      */
     public function setNumberOfRecords($numberOfRecords)
     {

@@ -75,7 +75,6 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * Sets up all properties of a viewhelper needed to test a viewhelper
-     * @return void
      */
     protected function setUp()
     {
@@ -110,7 +109,6 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @param ViewHelperInterface $viewHelper
-     * @return void
      */
     protected function injectDependenciesIntoViewHelper(ViewHelperInterface $viewHelper)
     {

@@ -157,8 +157,6 @@ class DummyClassWithGettersAndSetters
      * sets the AnotherBooleanProperty
      *
      * @param bool $anotherBooleanProperty
-     *
-     * @return void
      */
     public function setAnotherBooleanProperty($anotherBooleanProperty)
     {

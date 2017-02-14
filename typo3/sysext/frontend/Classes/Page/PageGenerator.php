@@ -42,7 +42,6 @@ class PageGenerator
      * Setting some vars in TSFE, primarily based on TypoScript config settings.
      *
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     * @return void
      */
     public static function pagegenInit()
     {
@@ -172,8 +171,6 @@ class PageGenerator
 
     /**
      * Rendering the page content
-     *
-     * @return void
      */
     public static function renderContent()
     {
@@ -208,7 +205,6 @@ class PageGenerator
      * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
      *
      * @param string $pageContent The page content which TypoScript objects has generated
-     * @return void
      */
     public static function renderContentWithHeader($pageContent)
     {
@@ -1025,8 +1021,6 @@ class PageGenerator
      * Takes the settings [config][noPageTitle], [config][pageTitleFirst], [config][titleTagFunction]
      * [config][pageTitleSeparator] and [config][noPageTitle] into account.
      * Furthermore $GLOBALS[TSFE]->altPageTitle is observed.
-     *
-     * @return void
      */
     public static function generatePageTitle()
     {

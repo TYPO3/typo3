@@ -108,8 +108,6 @@ class BulkInsertQuery
      *                                   for a single column (named and indexed) or
      *                                   multiple types are given for a single column
      *                                   (named and indexed).
-     *
-     * @return void
      */
     public function addValues(array $values, array $types = [])
     {

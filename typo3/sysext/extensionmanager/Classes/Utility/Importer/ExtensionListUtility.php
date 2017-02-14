@@ -161,7 +161,6 @@ class ExtensionListUtility implements \SplObserver
      * Method collects and stores extension version details into the database.
      *
      * @param \SplSubject|\TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser &$subject a subject notifying this observer
-     * @return void
      */
     protected function loadIntoDatabase(\SplSubject &$subject)
     {
@@ -208,7 +207,6 @@ class ExtensionListUtility implements \SplObserver
      * Method receives an update from a subject.
      *
      * @param \SplSubject $subject a subject notifying this observer
-     * @return void
      */
     public function update(\SplSubject $subject)
     {

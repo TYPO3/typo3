@@ -51,7 +51,6 @@ class CategoryPermissionsAspect
      *
      * @param DatabaseTreeDataProvider $dataProvider
      * @param TreeNode $treeData
-     * @return void
      */
     public function addUserPermissionsToCategoryTreeData(DatabaseTreeDataProvider $dataProvider, $treeData)
     {

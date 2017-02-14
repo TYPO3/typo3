@@ -25,7 +25,6 @@ class FullyRenderedButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      * Try to valide an empty button
      *
      * @test
-     * @return void
      */
     public function isButtonValidBlankCallExpectFalse()
     {
@@ -38,7 +37,6 @@ class FullyRenderedButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      * Tests a valid HTML Button
      *
      * @test
-     * @return void
      */
     public function isButtonValidHtmlSourceGivenExpectTrue()
     {

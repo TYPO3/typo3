@@ -29,7 +29,6 @@ class BackendControllerHook
      *
      * @param array $configuration
      * @param BackendController $backendController
-     * @return void
      */
     public function addJavaScript(array $configuration, BackendController $backendController)
     {

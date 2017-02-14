@@ -22,7 +22,6 @@ use TYPO3\CMS\Impexp\Import;
 /**
  * Utility for import / export
  * Can be used for API access for simple importing of files
- *
  */
 class ImportExportUtility
 {

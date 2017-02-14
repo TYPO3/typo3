@@ -50,7 +50,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
      *
      * @param \Throwable $exception The throwable object.
      * @param string $context The context where the exception was thrown, WEB or CLI
-     * @return void
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(), \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
      */
     protected function writeLogEntries(\Throwable $exception, $context)
@@ -92,7 +91,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
      * Writes an exception in the sys_log table
      *
      * @param string $logMessage Default text that follows the message.
-     * @return void
      */
     protected function writeLog($logMessage)
     {
@@ -140,7 +138,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
      * TYPO3\CMS\Core\Error\Http\StatusException and headers are not sent, yet.
      *
      * @param \Throwable $exception The throwable object.
-     * @return void
      */
     protected function sendStatusHeaders(\Throwable $exception)
     {

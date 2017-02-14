@@ -24,7 +24,6 @@ class ArrayUtility
      *
      * @param array $arrayToTest
      * @param array $allowedArrayKeys
-     * @return void
      * @throws \InvalidArgumentException if an element in $arrayToTest is not in $allowedArrayKeys
      * @internal
      */
@@ -607,7 +606,6 @@ class ArrayUtility
      * @param bool $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
      * @param bool $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
      * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
-     * @return void
      */
     public static function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = true, $includeEmptyValues = true, $enableUnsetFeature = true)
     {

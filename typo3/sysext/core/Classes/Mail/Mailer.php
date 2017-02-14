@@ -172,8 +172,6 @@ class Mailer extends \Swift_Mailer
 
     /**
      * Emits a signal after mailer initialization
-     *
-     * @return void
      */
     protected function emitPostInitializeMailerSignal()
     {

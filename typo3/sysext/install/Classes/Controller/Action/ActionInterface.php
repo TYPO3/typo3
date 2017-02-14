@@ -30,7 +30,6 @@ interface ActionInterface
      * Set form protection token
      *
      * @param string $token Form protection token
-     * @return void
      */
     public function setToken($token);
 
@@ -38,7 +37,6 @@ interface ActionInterface
      * Set controller, Either string 'step', 'tool' or 'common'
      *
      * @param string $controller Controller name
-     * @return void
      */
     public function setController($controller);
 
@@ -47,7 +45,6 @@ interface ActionInterface
      * only for loginForm, the action is login
      *
      * @param string $action Name of target action for forms
-     * @return void
      */
     public function setAction($action);
 
@@ -55,7 +52,6 @@ interface ActionInterface
      * Set POST values
      *
      * @param array $postValues List of values submitted via POST
-     * @return void
      */
     public function setPostValues(array $postValues);
 

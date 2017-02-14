@@ -505,7 +505,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      * @test
      *
      * If a user has an anonymous session, and its data is set to null, then the record is removed
-     *
      */
     public function destroysAnonymousSessionIfDataIsNull()
     {
@@ -559,7 +558,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      * Any session data set when logged in should be preserved when logging out
-     *
      */
     public function sessionDataShouldBePreservedOnLogout()
     {

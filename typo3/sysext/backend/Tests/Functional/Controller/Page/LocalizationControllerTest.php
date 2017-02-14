@@ -31,8 +31,6 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
 
     /**
      * Sets up this test case.
-     *
-     * @return void
      */
     protected function setUp()
     {

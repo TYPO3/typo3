@@ -49,7 +49,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Sets the DSN to use
      *
      * @param string $DSN The DSN to use for connecting to the DB
-     * @return void
      * @api
      */
     public function setDataSourceName($DSN)
@@ -61,7 +60,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Sets the username to use
      *
      * @param string $username The username to use for connecting to the DB
-     * @return void
      * @api
      */
     public function setUsername($username)
@@ -73,7 +71,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Sets the password to use
      *
      * @param string $password The password to use for connecting to the DB
-     * @return void
      * @api
      */
     public function setPassword($password)
@@ -83,8 +80,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 
     /**
      * Initialize the cache backend.
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -98,7 +93,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \InvalidArgumentException if the identifier is not valid
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if $data is not a string
@@ -177,7 +171,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -192,7 +185,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -221,7 +213,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Does garbage collection
      *
-     * @return void
      * @api
      */
     public function collectGarbage()
@@ -245,7 +236,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Connect to the database
      *
-     * @return void
      * @throws \RuntimeException if something goes wrong
      */
     protected function connect()
@@ -271,7 +261,6 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
     /**
      * Creates the tables needed for the cache backend.
      *
-     * @return void
      * @throws \RuntimeException if something goes wrong
      */
     protected function createCacheTables()

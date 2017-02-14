@@ -159,8 +159,6 @@ class NewRecordController extends AbstractModule
 
     /**
      * Constructor function for the class
-     *
-     * @return void
      */
     protected function init()
     {
@@ -241,8 +239,6 @@ class NewRecordController extends AbstractModule
 
     /**
      * Main processing, creating the list of new record tables to select from
-     *
-     * @return void
      */
     public function main()
     {
@@ -382,8 +378,6 @@ class NewRecordController extends AbstractModule
 
     /**
      * Creates the position map for pages wizard
-     *
-     * @return void
      */
     public function pagesOnly()
     {
@@ -429,8 +423,6 @@ class NewRecordController extends AbstractModule
 
     /**
      * Create a regular new element (pages and records)
-     *
-     * @return void
      */
     public function regularNew()
     {

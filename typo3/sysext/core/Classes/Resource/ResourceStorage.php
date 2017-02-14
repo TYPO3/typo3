@@ -401,8 +401,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Can only be modified by an admin.
      *
      * Typically, this is only done if the configuration is wrong.
-     *
-     * @return void
      */
     public function markAsPermanentlyOffline()
     {
@@ -425,8 +423,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * Non-permanent: This typically happens for remote storages
      * that are "flaky" and not available all the time.
-     *
-     * @return void
      */
     public function markAsTemporaryOffline()
     {
@@ -447,7 +443,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param array $additionalData
      *
      * @throws Exception\FolderDoesNotExistException
-     * @return void
      */
     public function addFileMount($folderIdentifier, $additionalData = [])
     {
@@ -564,7 +559,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Sets the user permissions of the storage.
      *
      * @param array $userPermissions
-     * @return void
      */
     public function setUserPermissions(array $userPermissions)
     {
@@ -758,7 +752,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Assures read permission for given folder.
      *
      * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
-     * @return void
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
     protected function assureFolderReadPermission(Folder $folder = null)
@@ -783,7 +776,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder delete permissions are checked.
      * @param bool $checkDeleteRecursively
-     * @return void
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\InsufficientUserPermissionsException
@@ -813,7 +805,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Assures read permission for given file.
      *
      * @param FileInterface $file
-     * @return void
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\IllegalFileExtensionException
      */
@@ -837,7 +828,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Assures write permission for given file.
      *
      * @param FileInterface $file
-     * @return void
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientUserPermissionsException
@@ -857,7 +847,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Assure replace permission for given file.
      *
      * @param FileInterface $file
-     * @return void
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      */
@@ -877,7 +866,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Assures delete permission for given file.
      *
      * @param FileInterface $file
-     * @return void
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -909,7 +897,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $targetFolder The target folder where the file should be written
      * @param string $targetFileName The file name which should be written into the storage
-     * @return void
      *
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\IllegalFileExtensionException
@@ -939,7 +926,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $targetFolder The target folder where the file should be uploaded
      * @param string $targetFileName the destination file name $_FILES['file1']['name']
      * @param int $uploadedFileSize
-     * @return void
      *
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\UploadException
@@ -972,7 +958,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param string $targetFileName
-     * @return void
      */
     protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, $targetFileName)
     {
@@ -1003,7 +988,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
-     * @return void
      */
     protected function assureFileRenamePermissions(FileInterface $file, $targetFileName)
     {
@@ -1037,7 +1021,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
-     * @return void
      */
     protected function assureFileCopyPermissions(FileInterface $file, Folder $targetFolder, $targetFileName)
     {
@@ -1065,7 +1048,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FolderInterface $folderToCopy
      * @param FolderInterface $targetParentFolder
-     * @return void
      *
      * @throws Exception
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1109,7 +1091,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      * @throws \RuntimeException
-     * @return void
      */
     protected function assureFolderMovePermissions(FolderInterface $folderToMove, FolderInterface $targetParentFolder)
     {
@@ -1404,8 +1385,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Unsets the file and folder name filters, thus making this storage return unfiltered filelists.
-     *
-     * @return void
      */
     public function unsetFileAndFolderNameFilters()
     {
@@ -1414,8 +1393,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Resets the file and folder name filters to the default values defined in the TYPO3 configuration.
-     *
-     * @return void
      */
     public function resetFileAndFolderNameFiltersToDefault()
     {
@@ -1653,7 +1630,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
-     * @return void
      */
     public function dumpFileContents(FileInterface $file, $asDownload = false, $alternativeFilename = null, $overrideMimeType = null)
     {
@@ -2461,7 +2437,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
-     * @return void
      */
     protected function emitPostFileAddSignal(FileInterface $file, Folder $targetFolder)
     {
@@ -2473,7 +2448,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
-     * @return void
      */
     protected function emitPreFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
@@ -2485,7 +2459,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
-     * @return void
      */
     protected function emitPostFileCopySignal(FileInterface $file, Folder $targetFolder)
     {
@@ -2497,7 +2470,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param Folder $targetFolder
-     * @return void
      */
     protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder)
     {
@@ -2510,7 +2482,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FileInterface $file
      * @param Folder $targetFolder
      * @param FolderInterface $originalFolder
-     * @return void
      */
     protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, FolderInterface $originalFolder)
     {
@@ -2522,7 +2493,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param $targetFolder
-     * @return void
      */
     protected function emitPreFileRenameSignal(FileInterface $file, $targetFolder)
     {
@@ -2534,7 +2504,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param string $sanitizedTargetFileName
-     * @return void
      */
     protected function emitPostFileRenameSignal(FileInterface $file, $sanitizedTargetFileName)
     {
@@ -2546,7 +2515,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param $localFilePath
-     * @return void
      */
     protected function emitPreFileReplaceSignal(FileInterface $file, $localFilePath)
     {
@@ -2558,7 +2526,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param string $localFilePath
-     * @return void
      */
     protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath)
     {
@@ -2580,7 +2547,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the file pre-deletion signal.
      *
      * @param FileInterface $file
-     * @return void
      */
     protected function emitPreFileDeleteSignal(FileInterface $file)
     {
@@ -2591,7 +2557,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the file post-deletion signal
      *
      * @param FileInterface $file
-     * @return void
      */
     protected function emitPostFileDeleteSignal(FileInterface $file)
     {
@@ -2603,7 +2568,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param mixed $content
-     * @return void
      */
     protected function emitPostFileSetContentsSignal(FileInterface $file, $content)
     {
@@ -2615,7 +2579,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $targetFolder
      * @param string $name
-     * @return void
      */
     protected function emitPreFolderAddSignal(Folder $targetFolder, $name)
     {
@@ -2626,7 +2589,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the folder post-add signal.
      *
      * @param Folder $folder
-     * @return void
      */
     protected function emitPostFolderAddSignal(Folder $folder)
     {
@@ -2639,7 +2601,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folder
      * @param Folder $targetFolder
      * @param $newName
-     * @return void
      */
     protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
@@ -2652,7 +2613,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folder
      * @param Folder $targetFolder
      * @param $newName
-     * @return void
      */
     protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName)
     {
@@ -2665,7 +2625,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $folder
      * @param Folder $targetFolder
      * @param $newName
-     * @return void
      */
     protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName)
     {
@@ -2679,7 +2638,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder $targetFolder
      * @param string $newName
      * @param Folder $originalFolder
-     * @return void
      */
     protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName, Folder $originalFolder)
     {
@@ -2691,7 +2649,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folder
      * @param string $newName
-     * @return void
      */
     protected function emitPreFolderRenameSignal(Folder $folder, $newName)
     {
@@ -2703,7 +2660,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folder
      * @param string $newName
-     * @return void
      */
     protected function emitPostFolderRenameSignal(Folder $folder, $newName)
     {
@@ -2714,7 +2670,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits the folder pre-deletion signal.
      *
      * @param Folder $folder
-     * @return void
      */
     protected function emitPreFolderDeleteSignal(Folder $folder)
     {
@@ -2725,7 +2680,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Emits folder post-deletion signal..
      *
      * @param Folder $folder
-     * @return void
      */
     protected function emitPostFolderDeleteSignal(Folder $folder)
     {
@@ -3016,7 +2970,6 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * @param bool $isDefault
-     * @return void
      */
     public function setDefault($isDefault)
     {

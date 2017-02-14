@@ -413,7 +413,6 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      * @param array $getArray
      * @param string $preserveVars
      * @param string $expected
-     * @return void
      */
     public function getPreserveGetVarsReturnsCorrectResult(array $getArray, $preserveVars, $expected)
     {

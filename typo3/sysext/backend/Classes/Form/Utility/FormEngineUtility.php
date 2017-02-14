@@ -148,7 +148,6 @@ class FormEngineUtility
      *
      * @param array $uc The uc array to be processed and saved (by reference)
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of FormEngine that saved data before
-     * @return void
      * @internal
      */
     public static function updateInlineView(&$uc, $tce)

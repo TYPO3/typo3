@@ -580,7 +580,6 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param array $groups
-     * @return void
      */
     private function fetchGroupsFromDB(array $groups)
     {

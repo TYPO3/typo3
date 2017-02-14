@@ -175,7 +175,6 @@ class ConfigurationManager
      * Override local configuration with new values.
      *
      * @param array $configurationToMerge Override configuration array
-     * @return void
      */
     public function updateLocalConfiguration(array $configurationToMerge)
     {
@@ -295,7 +294,6 @@ class ConfigurationManager
      *
      * @access private
      * @throws \UnexpectedValueException
-     * @return void
      */
     public function exportConfiguration()
     {
@@ -373,7 +371,6 @@ class ConfigurationManager
      * by the install tool in an early step.
      *
      * @throws \RuntimeException
-     * @return void
      * @access private
      */
     public function createLocalConfigurationFromFactoryConfiguration()

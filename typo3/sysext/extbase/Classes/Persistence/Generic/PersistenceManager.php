@@ -97,7 +97,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Registers a repository
      *
      * @param string $className The class name of the repository to be registered
-     * @return void
      */
     public function registerRepositoryClassName($className)
     {
@@ -170,7 +169,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Commits new objects and changes to objects in the current persistence
      * session into the backend
      *
-     * @return void
      * @api
      */
     public function persistAll()
@@ -204,7 +202,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Adds an object to the persistence.
      *
      * @param object $object The object to add
-     * @return void
      * @api
      */
     public function add($object)
@@ -217,7 +214,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Removes an object to the persistence.
      *
      * @param object $object The object to remove
-     * @return void
      * @api
      */
     public function remove($object)
@@ -233,7 +229,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Update an object in the persistence.
      *
      * @param object $object The modified object
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      * @api
      */
@@ -249,7 +244,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * Injects the Extbase settings, called by Extbase.
      *
      * @param array $settings
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @api
      */
@@ -260,8 +254,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
     /**
      * Initializes the persistence manager, called by Extbase.
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -275,7 +267,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * return data directly from the persistence "backend".
      *
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     * @return void
      */
     public function clearState()
     {
@@ -308,7 +299,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * method.
      *
      * @param object $object The new object to register
-     * @return void
      */
     public function registerNewObject($object)
     {
@@ -349,8 +339,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      *
      * This method is called in functional tests to reset the storage between tests.
      * The implementation is optional and depends on the underlying persistence backend.
-     *
-     * @return void
      */
     public function tearDown()
     {

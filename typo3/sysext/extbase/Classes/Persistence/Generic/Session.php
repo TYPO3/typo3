@@ -77,7 +77,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $entity
      * @param array $entityData
-     * @return void
      */
     public function registerReconstitutedEntity($entity, array $entityData = [])
     {
@@ -90,7 +89,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param object $oldEntity
      * @param object $newEntity
-     * @return void
      */
     public function replaceReconstitutedEntity($oldEntity, $newEntity)
     {
@@ -102,7 +100,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      * Unregisters data for a reconstituted object
      *
      * @param object $entity
-     * @return void
      */
     public function unregisterReconstitutedEntity($entity)
     {
@@ -206,7 +203,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
      * Unregister an object
      *
      * @param object $object
-     * @return void
      */
     public function unregisterObject($object)
     {
@@ -217,8 +213,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Destroy the state of the persistence session and reset
      * all internal data.
-     *
-     * @return void
      */
     public function destroy()
     {

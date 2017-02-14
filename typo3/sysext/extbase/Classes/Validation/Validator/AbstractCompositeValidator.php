@@ -85,7 +85,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      * Adds a new validator to the conjunction.
      *
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator that should be added
-     * @return void
      * @api
      */
     public function addValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
@@ -102,7 +101,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      *
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator to remove
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
-     * @return void
      */
     public function removeValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator)
     {
@@ -147,7 +145,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      * Allows to set a container to keep track of validated instances.
      *
      * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
-     * @return void
      * @api
      */
     public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer)

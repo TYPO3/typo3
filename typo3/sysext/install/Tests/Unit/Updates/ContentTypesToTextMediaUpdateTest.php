@@ -71,7 +71,6 @@ class ContentTypesToTextMediaUpdateTest extends BaseTestCase
 
     /**
      * @test
-     * @return void
      */
     public function updateWizardDoesNotRunIfCssStyledContentIsInstalled()
     {

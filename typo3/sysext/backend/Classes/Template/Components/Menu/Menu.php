@@ -84,8 +84,6 @@ class Menu
      * @param MenuItem $menuItem The menuItem to add to the menu
      *
      * @throws \InvalidArgumentException In case a menuItem is not valid
-     *
-     * @return void
      */
     public function addMenuItem(MenuItem $menuItem)
     {

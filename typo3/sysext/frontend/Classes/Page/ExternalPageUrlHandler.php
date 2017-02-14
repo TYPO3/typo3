@@ -49,8 +49,6 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
 
     /**
      * Redirects the user to the detected external URL.
-     *
-     * @return void
      */
     public function handle()
     {

@@ -42,7 +42,6 @@ class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set workspace title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {

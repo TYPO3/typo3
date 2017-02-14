@@ -100,7 +100,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the label field
      *
      * @param string $labelField
-     * @return void
      */
     public function setLabelField($labelField)
     {
@@ -121,7 +120,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the table name
      *
      * @param string $tableName
-     * @return void
      */
     public function setTableName($tableName)
     {
@@ -142,7 +140,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the lookup field
      *
      * @param string $lookupField
-     * @return void
      */
     public function setLookupField($lookupField)
     {
@@ -163,7 +160,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the lookup mode
      *
      * @param int $lookupMode
-     * @return void
      */
     public function setLookupMode($lookupMode)
     {
@@ -204,7 +200,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the root uid
      *
      * @param int $rootUid
-     * @return void
      */
     public function setRootUid($rootUid)
     {
@@ -225,7 +220,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the tableWhere clause
      *
      * @param string $tableWhere
-     * @return void
      */
     public function setTableWhere($tableWhere)
     {
@@ -285,8 +279,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Init the tree data
-     *
-     * @return void
      */
     public function initializeTreeData()
     {
@@ -303,8 +295,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Loads the tree data (all possible children)
-     *
-     * @return void
      */
     protected function loadTreeData()
     {
@@ -515,8 +505,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     /**
      * Emits the post processing tree data signal.
-     *
-     * @return void
      */
     protected function emitPostProcessTreeDataSignal()
     {

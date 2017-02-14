@@ -49,8 +49,6 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initialize cache instance to be ready to use
-     *
-     * @return void
      */
     protected function initializeCache()
     {
@@ -163,7 +161,6 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $charset
      * @param int $errorMode
      * @param array $LOCAL_LANG
-     * @return void
      */
     protected function localizationOverride($fileReference, $languageKey, $charset, $errorMode, array &$LOCAL_LANG)
     {

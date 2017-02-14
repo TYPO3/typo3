@@ -164,8 +164,6 @@ class CreateFolderController extends AbstractModule
 
     /**
      * Main function, rendering the main module content
-     *
-     * @return void
      */
     public function main()
     {

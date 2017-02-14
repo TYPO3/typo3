@@ -34,8 +34,6 @@ class FontawesomeIconProviderTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

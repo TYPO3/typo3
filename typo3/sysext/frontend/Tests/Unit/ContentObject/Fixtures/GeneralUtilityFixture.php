@@ -21,7 +21,6 @@ class GeneralUtilityFixture extends \TYPO3\CMS\Core\Utility\GeneralUtility
 {
     /**
      * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
-     * @return void
      */
     public static function setApplicationContext($applicationContext)
     {

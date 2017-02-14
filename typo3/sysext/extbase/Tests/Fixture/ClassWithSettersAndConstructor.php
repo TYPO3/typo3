@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *                                                                        */
 /**
  * A dummy class with setters for testing data mapping
- *
  */
 class ClassWithSettersAndConstructor
 {

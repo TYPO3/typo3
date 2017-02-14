@@ -39,7 +39,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * <output>
  * Url encoded text (rawurlencode() applied)
  * </output>
- *
  */
 class UrlencodeViewHelper extends AbstractViewHelper
 {

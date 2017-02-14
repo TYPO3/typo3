@@ -42,7 +42,6 @@ class TcaMigrationsCheck extends AbstractAjaxAction
     /**
      * Initialize the handle action, sets up fluid stuff and assigns default variables.
      * @ToDo Refactor View Initialization for all Ajax Controllers
-     * @return void
      */
     protected function initializeHandle()
     {

@@ -56,7 +56,6 @@ class Lexer
 
     /**
      * Constructor: Initializes the charset class
-     *
      */
     public function __construct()
     {
@@ -112,7 +111,6 @@ class Lexer
      * @param string $wordString Complete Input string from where to extract word
      * @param int $start Start position of word in input string
      * @param int $len The Length of the word string from start position
-     * @return void
      */
     public function addWords(&$words, &$wordString, $start, $len)
     {

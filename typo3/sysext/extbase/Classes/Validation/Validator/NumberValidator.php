@@ -25,7 +25,6 @@ class NumberValidator extends AbstractValidator
      * Checks if the given value is a valid number.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      */
     public function isValid($value)
     {

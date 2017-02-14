@@ -40,7 +40,6 @@ interface UrlHandlerInterface
      * This hook will be called BEFORE the user is redirected to an external URL configured in the page properties.
      *
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::redirectToExternalUrl()
-     * @return void
      */
     public function handle();
 }

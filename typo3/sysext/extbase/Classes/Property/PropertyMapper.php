@@ -83,7 +83,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
      * Here, the typeConverter array gets initialized.
      *
      * @throws Exception\DuplicateTypeConverterException
-     * @return void
      */
     public function initializeObject()
     {

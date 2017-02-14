@@ -133,7 +133,6 @@ class Export extends ImportExport
      * Init the object
      *
      * @param bool $dontCompress If set, compression of t3d files is disabled
-     * @return void
      */
     public function init($dontCompress = false)
     {
@@ -148,8 +147,6 @@ class Export extends ImportExport
 
     /**
      * Set header basics
-     *
-     * @return void
      */
     public function setHeaderBasics()
     {
@@ -181,7 +178,6 @@ class Export extends ImportExport
      * Set charset
      *
      * @param string $charset Charset for the content in the export. During import the character set will be converted if the target system uses another charset.
-     * @return void
      */
     public function setCharset($charset)
     {
@@ -197,7 +193,6 @@ class Export extends ImportExport
      * @param string $packager_username Backend Username of the packager (the guy making the export)
      * @param string $packager_name Real name of the packager
      * @param string $packager_email Email of the packager
-     * @return void
      */
     public function setMetaData($title, $description, $notes, $packager_username, $packager_name, $packager_email)
     {
@@ -272,7 +267,6 @@ class Export extends ImportExport
      *
      * @param array $recordTypesIncludeFields Keys are [recordname], values are an array of fields to be included in the export
      * @throws Exception if an array value is not type of array
-     * @return void
      */
     public function setRecordTypesIncludeFields(array $recordTypesIncludeFields)
     {
@@ -289,7 +283,6 @@ class Export extends ImportExport
      *
      * @param string $table The record type
      * @param array $fields The fields to be included
-     * @return void
      */
     public function setRecordTypeIncludeFields($table, array $fields)
     {
@@ -303,7 +296,6 @@ class Export extends ImportExport
      * @param string $table Table name
      * @param array $row Record row.
      * @param int $relationLevel (Internal) if the record is added as a relation, this is set to the "level" it was on.
-     * @return void
      */
     public function export_addRecord($table, $row, $relationLevel = 0)
     {
@@ -538,7 +530,6 @@ class Export extends ImportExport
      * @param array $fI Array with table/id keys to add
      * @param array $addR Add array, passed by reference to be modified
      * @param string $tokenID Softref Token ID, if applicable.
-     * @return void
      * @see export_addDBRelations()
      */
     public function export_addDBRelations_registerRelation($fI, &$addR, $tokenID = '')
@@ -559,7 +550,6 @@ class Export extends ImportExport
      * This adds all files in relations.
      * Call this method AFTER adding all records including relations.
      *
-     * @return void
      * @see export_addDBRelations()
      */
     public function export_addFilesFromRelations()
@@ -650,8 +640,6 @@ class Export extends ImportExport
 
     /**
      * This adds all files from sys_file records
-     *
-     * @return void
      */
     public function export_addFilesFromSysFilesRecords()
     {
@@ -669,7 +657,6 @@ class Export extends ImportExport
      * Adds a files content from a sys file record to the export memory
      *
      * @param File $file
-     * @return void
      */
     public function export_addSysFile(File $file)
     {
@@ -729,7 +716,6 @@ class Export extends ImportExport
      * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile". "relFileName" is optional for files attached to records, but mandatory for soft referenced files (since the relFileName determines where such a file should be stored!)
      * @param string $recordRef If the file is related to a record, this is the id on the form [table]:[id]. Information purposes only.
      * @param string $fieldname If the file is related to a record, this is the field name it was related to. Information purposes only.
-     * @return void
      */
     public function export_addFile($fI, $recordRef = '', $fieldname = '')
     {

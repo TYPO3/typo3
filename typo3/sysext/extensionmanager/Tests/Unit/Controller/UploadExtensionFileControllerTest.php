@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 /**
  * Update from TER controller test
- *
  */
 class UploadExtensionFileControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -61,7 +60,6 @@ class UploadExtensionFileControllerTest extends \TYPO3\TestingFramework\Core\Uni
      * @dataProvider getExtensionFromZipFileExtractsExtensionKeyDataProvider
      * @param string $filename The file name to test
      * @param string $expectedKey The expected extension key
-     * @return void
      */
     public function getExtensionFromZipFileExtractsExtensionKey($filename, $expectedKey)
     {

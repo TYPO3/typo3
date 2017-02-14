@@ -79,7 +79,6 @@ abstract class AbstractFinisher implements FinisherInterface
 
     /**
      * @param array $options configuration options in the format ['option1' => 'value1', 'option2' => 'value2', ...]
-     * @return void
      * @api
      */
     public function setOptions(array $options)
@@ -92,7 +91,6 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * @param string $optionName name of the option to be set
      * @param mixed $optionValue value of the option
-     * @return void
      * @api
      */
     public function setOption(string $optionName, $optionValue)
@@ -104,7 +102,6 @@ abstract class AbstractFinisher implements FinisherInterface
      * Executes the finisher
      *
      * @param FinisherContext $finisherContext The Finisher context that contains the current Form Runtime and Response
-     * @return void
      * @api
      */
     final public function execute(FinisherContext $finisherContext)
@@ -120,7 +117,6 @@ abstract class AbstractFinisher implements FinisherInterface
      *
      * Override and fill with your own implementation!
      *
-     * @return void
      * @api
      */
     abstract protected function executeInternal();

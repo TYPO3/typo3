@@ -171,7 +171,6 @@ class ElementEntityProcessor
      * @param array $callerArguments
      * @param array $targetArgument
      * @param string $eventName
-     * @return void
      */
     public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {

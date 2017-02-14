@@ -158,7 +158,6 @@ class TableManualRepository
      * @param array $outputSections Array for accumulation of rendered HELP Content (in "renderALL" mode). Passed by reference!
      * @param array $tocArray TOC array; Here TOC index elements are created. Passed by reference!
      * @param array $CSHkeys CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
-     * @return void
      */
     protected function renderTableOfContentItem($mode, $table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)
     {

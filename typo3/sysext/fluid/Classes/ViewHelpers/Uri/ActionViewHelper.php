@@ -32,7 +32,6 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()
@@ -58,7 +57,6 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     }
 
     /**
-     *
      * @return string Rendered link
      */
     public function render()

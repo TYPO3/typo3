@@ -61,7 +61,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * Set cache frontend instance and calculate data and tags table name
      *
      * @param FrontendInterface $cache The frontend for this backend
-     * @return void
      * @api
      */
     public function setCache(FrontendInterface $cache)
@@ -79,7 +78,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws Exception if no cache frontend has been set.
      * @throws InvalidDataException if the data to be stored is not a string.
      */
@@ -250,8 +248,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @return void
      */
     public function flush()
     {
@@ -331,7 +327,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      */
     public function flushByTag($tag)
     {
@@ -381,8 +376,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
 
     /**
      * Does garbage collection
-     *
-     * @return void
      */
     public function collectGarbage()
     {
@@ -528,7 +521,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * Check if required frontend instance exists
      *
      * @throws Exception If there is no frontend instance in $this->cache
-     * @return void
      */
     protected function throwExceptionIfFrontendDoesNotExist()
     {

@@ -41,7 +41,6 @@ class AbstractValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
      * to Result.
      *
      * @param mixed $value
-     * @return void
      */
     protected function isValid($value)
     {

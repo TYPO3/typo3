@@ -78,8 +78,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
 
     /**
      * Delete the protocol files if they exist
-     *
-     * @return void
      */
     protected function deleteProtocolFile()
     {
@@ -133,7 +131,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * successful.
      *
      * @param array $extensions
-     * @return void
      */
     protected function tryToLoadExtLocalconfAndExtTablesOfExtensions(array $extensions)
     {
@@ -156,7 +153,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      *
      * @param string $extensionKey
      * @param \ArrayAccess $extension
-     * @return void
      */
     protected function loadExtTablesForExtension($extensionKey, array $extension)
     {
@@ -182,7 +178,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      *
      * @param string $extensionKey
      * @param \ArrayAccess $extension
-     * @return void
      */
     protected function loadExtLocalconfForExtension($extensionKey, array $extension)
     {
@@ -205,7 +200,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * the end of the file.
      *
      * @param string $extensionKey
-     * @return void
      */
     protected function writeCurrentExtensionToFile($extensionKey)
     {
@@ -220,7 +214,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * Removes $extensionKey from protocol file.
      *
      * @param string $extensionKey
-     * @return void
      */
     protected function removeCurrentExtensionFromFile($extensionKey)
     {
@@ -235,8 +228,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
 
     /**
      * Log last occurred error for logging.
-     *
-     * @return void
      */
     public function logError()
     {

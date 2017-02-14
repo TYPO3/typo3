@@ -160,7 +160,6 @@ class ExtdirectTreeCommands
      * Clear cache of the page
      *
      * @param \stdClass $nodeData
-     * @return void
      */
     public static function clearCacheOfPage($nodeData)
     {

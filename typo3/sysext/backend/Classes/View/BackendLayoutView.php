@@ -49,8 +49,6 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes data providers
-     *
-     * @return void
      */
     protected function initializeDataProviderCollection()
     {
@@ -240,7 +238,6 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      * for tt_content.colPos.
      *
      * @param array $parameters
-     * @return void
      */
     public function colPosListItemProcFunc(array $parameters)
     {

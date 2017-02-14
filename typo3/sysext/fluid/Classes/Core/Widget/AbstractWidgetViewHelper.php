@@ -66,7 +66,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
-     * @return void
      */
     public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder)
     {
@@ -75,7 +74,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -115,8 +113,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * Initialize the Widget Context, before the Render method is called.
-     *
-     * @return void
      */
     private function initializeWidgetContext()
     {
@@ -140,7 +136,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * rendered with <f:widget.renderChildren> lateron.
      *
      * @param array $childNodes The SyntaxTree Child nodes of this ViewHelper.
-     * @return void
      */
     public function setChildNodes(array $childNodes)
     {
@@ -191,7 +186,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * Pass the arguments of the widget to the subrequest.
      *
      * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest $subRequest
-     * @return void
      */
     private function passArgumentsToSubRequest(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest $subRequest)
     {
@@ -211,7 +205,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * in the URI as a namespace for the widget's arguments.
      *
      * @return string the widget identifier for this widget
-     * @return void
      * @todo clean up, and make it somehow more routing compatible.
      */
     private function initializeWidgetIdentifier()

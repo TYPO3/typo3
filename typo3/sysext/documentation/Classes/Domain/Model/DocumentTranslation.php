@@ -62,8 +62,6 @@ class DocumentTranslation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Initializes all ObjectStorage properties.
-     *
-     * @return void
      */
     protected function initStorageObjects()
     {

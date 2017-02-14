@@ -111,8 +111,6 @@ class UploadExtensionFileController extends AbstractController
 
     /**
      * Render upload extension form
-     *
-     * @return void
      */
     public function formAction()
     {
@@ -129,7 +127,6 @@ class UploadExtensionFileController extends AbstractController
      *
      * @param bool $overwrite Overwrite existing extension if TRUE
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @return void
      */
     public function extractAction($overwrite = false)
     {
@@ -189,7 +186,6 @@ class UploadExtensionFileController extends AbstractController
      * Validate the filename of an uploaded file
      *
      * @param string $fileName
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */
     public function checkFileName($fileName)
@@ -322,7 +318,6 @@ class UploadExtensionFileController extends AbstractController
      *
      * @param string $extensionKey
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @return void
      */
     protected function copyExtensionFolderToTempFolder($extensionKey)
     {
@@ -339,7 +334,6 @@ class UploadExtensionFileController extends AbstractController
      *
      * @param string $fileName
      * @see UploadExtensionFileController::extractAction
-     * @return void
      */
     protected function removeExtensionAndRestoreFromBackup($fileName)
     {
@@ -355,7 +349,6 @@ class UploadExtensionFileController extends AbstractController
 
     /**
      * Removes the backup folder in typo3temp
-     * @return void
      */
     protected function removeBackupFolder()
     {

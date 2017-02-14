@@ -130,8 +130,6 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes the languages.
-     *
-     * @return void
      */
     public static function initialize()
     {

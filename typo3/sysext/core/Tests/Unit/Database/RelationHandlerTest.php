@@ -25,7 +25,6 @@ class RelationHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $subject;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -35,7 +34,6 @@ class RelationHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return void
      */
     protected function tearDown()
     {

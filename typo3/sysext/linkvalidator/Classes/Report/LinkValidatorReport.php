@@ -234,8 +234,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Initializes the Module
-     *
-     * @return void
      */
     protected function initialize()
     {
@@ -267,8 +265,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Updates the table of stored broken links
-     *
-     * @return void
      */
     protected function updateBrokenLinks()
     {
@@ -308,8 +304,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Renders the content of the module
-     *
-     * @return void
      */
     protected function render()
     {

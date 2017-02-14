@@ -259,7 +259,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $indexKey The key to use as index in $this->baseValidatorConjunctions; calculated from target class name and validation groups
      * @param string $targetClassName The data type to build the validation conjunction for. Needs to be the fully qualified class name.
      * @param array $validationGroups The validation groups to build the validator for
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      * @throws \InvalidArgumentException
      */
@@ -412,7 +411,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      * This method is meant as a helper for regular expression results.
      *
      * @param string &$quotedValue Value to unquote
-     * @return void
      */
     protected function unquoteString(&$quotedValue)
     {

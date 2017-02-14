@@ -156,7 +156,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Starts a user session
      *
-     * @return void
      * @see AbstractUserAuthentication::start()
      */
     public function start()
@@ -379,7 +378,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * If the flag $this->userData_change has been set, the function ->writeUC is called (which will save persistent user session data)
      * If the flag $this->sesData_change has been set, the current session record is updated with the content of $this->sessionData
      *
-     * @return void
      * @see getKey(), setKey()
      */
     public function storeSessionData()
@@ -418,8 +416,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Removes data of the current session.
-     *
-     * @return void
      */
     public function removeSessionData()
     {
@@ -446,8 +442,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Additionally the cookie is removed, but only if there is no session data.
      * If session data exists, only the user information is removed and the session
      * gets converted into an anonymous session.
-     *
-     * @return void
      */
     protected function performLogoff()
     {
@@ -531,7 +525,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
      * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sessionData) and this value determines in which key the $data value will be stored.
      * @param mixed $data The data value to store in $key
-     * @return void
      * @see setKey(), storeSessionData(), record_registration()
      */
     public function setKey($type, $key, $data)
@@ -562,7 +555,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $key A non empty string to store the data under
      * @param mixed $data Data store store in session
-     * @return void
      */
     public function setSessionData($key, $data)
     {
@@ -579,7 +571,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * @param string $key
      * @param mixed $data
-     * @return void
      */
     public function setAndSaveSessionData($key, $data)
     {
@@ -594,7 +585,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * @param array $recs The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
      * @param int $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Automatically feeding a "basket" by magic GET/POST keyword "recs" has been deprecated.
      */
     public function record_registration($recs, $maxSizeOfSessionData = 0)
@@ -628,7 +618,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Garbage collector, removing old expired sessions.
      *
-     * @return void
      * @internal
      */
     public function gc()
@@ -641,8 +630,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * This is used by the fe_login_mode feature for pages.
      * A current login is unset, but we remember that there has been one.
-     *
-     * @return void
      */
     public function hideActiveLogin()
     {

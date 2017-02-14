@@ -79,7 +79,6 @@ class CollectionValidator extends GenericObjectValidator
      * will be skipped.
      *
      * @param mixed $value A collection to be validated
-     * @return void
      */
     protected function isValid($value)
     {

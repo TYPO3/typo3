@@ -82,7 +82,6 @@ class RequestHandler implements RequestHandlerInterface
      * Does the main work for setting up the backend environment for any Backend request
      *
      * @param bool $proceedIfNoUserIsLoggedIn option to allow to render the request even if no user is logged in
-     * @return void
      */
     protected function boot($proceedIfNoUserIsLoggedIn)
     {

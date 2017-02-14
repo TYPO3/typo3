@@ -37,7 +37,6 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

@@ -24,7 +24,6 @@ class RequestBootstrap
      * to start clean for a functional test.
      *
      * @param array $requestArguments usually JSON encoded arguments, should include "documentRoot" and "requestUrl"
-     * @return void
      */
     public static function setGlobalVariables(array $requestArguments = null)
     {

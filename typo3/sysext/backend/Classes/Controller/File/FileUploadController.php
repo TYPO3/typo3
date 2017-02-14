@@ -120,8 +120,6 @@ class FileUploadController extends AbstractModule
 
     /**
      * Main function, rendering the upload file form fields
-     *
-     * @return void
      */
     public function main()
     {

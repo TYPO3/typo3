@@ -301,7 +301,6 @@ class FileIndexRepository implements SingletonInterface
      * Adds a file to the index
      *
      * @param File $file
-     * @return void
      */
     public function add(File $file)
     {
@@ -390,7 +389,6 @@ class FileIndexRepository implements SingletonInterface
      * Updates the index record in the database
      *
      * @param File $file
-     * @return void
      */
     public function update(File $file)
     {
@@ -491,7 +489,6 @@ class FileIndexRepository implements SingletonInterface
      * Updates the timestamp when the file indexer extracted metadata
      *
      * @param int $fileUid
-     * @return void
      */
     public function updateIndexingTime($fileUid)
     {
@@ -511,7 +508,6 @@ class FileIndexRepository implements SingletonInterface
      * Marks given file as missing in sys_file
      *
      * @param int $fileUid
-     * @return void
      */
     public function markFileAsMissing($fileUid)
     {
@@ -532,7 +528,6 @@ class FileIndexRepository implements SingletonInterface
      * Remove a sys_file record from the database
      *
      * @param int $fileUid
-     * @return void
      */
     public function remove($fileUid)
     {
@@ -551,7 +546,6 @@ class FileIndexRepository implements SingletonInterface
      * Update Reference Index (sys_refindex) for a file
      *
      * @param int $id Record UID
-     * @return void
      */
     public function updateRefIndex($id)
     {

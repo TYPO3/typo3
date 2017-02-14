@@ -40,8 +40,6 @@ class SaltedPasswordServiceTest extends \TYPO3\TestingFramework\Core\Functional\
 
     /**
      * Sets up this test suite.
-     *
-     * @return void
      */
     protected function setUp()
     {

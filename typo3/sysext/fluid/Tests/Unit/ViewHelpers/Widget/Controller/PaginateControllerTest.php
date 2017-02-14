@@ -52,8 +52,6 @@ class PaginateControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
     /**
      * Sets up this test case
-     *
-     * @return void
      */
     protected function setUp()
     {

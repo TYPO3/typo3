@@ -58,7 +58,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the title.
      *
      * @param string $title the title to set, may be empty
-     * @return void
      * @api
      */
     public function setTitle($title)
@@ -81,7 +80,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the description.
      *
      * @param string $description the description to set, may be empty
-     * @return void
      * @api
      */
     public function setDescription($description)
@@ -105,7 +103,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the icon
      *
      * @param string $icon
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function setIcon($icon)
@@ -132,7 +129,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the parent category.
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\Category $parent the parent category
-     * @return void
      * @api
      */
     public function setParent(\TYPO3\CMS\Extbase\Domain\Model\Category $parent)

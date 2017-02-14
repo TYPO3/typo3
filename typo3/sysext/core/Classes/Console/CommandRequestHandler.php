@@ -55,7 +55,6 @@ class CommandRequestHandler implements RequestHandlerInterface
      * Handles any commandline request
      *
      * @param InputInterface $input
-     * @return void
      */
     public function handleRequest(InputInterface $input)
     {
@@ -114,7 +113,6 @@ class CommandRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     *
      * @param InputInterface $input
      * @return bool|Command
      */

@@ -116,7 +116,6 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
      * @param string $identifier
      * @param array $configuration Page TSconfig
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)

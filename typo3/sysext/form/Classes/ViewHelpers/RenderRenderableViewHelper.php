@@ -46,7 +46,6 @@ class RenderRenderableViewHelper extends AbstractViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

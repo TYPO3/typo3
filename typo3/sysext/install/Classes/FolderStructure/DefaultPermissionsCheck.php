@@ -18,7 +18,6 @@ use TYPO3\CMS\Install\Status;
 
 /**
  * Service class to check the default folder permissions
- *
  */
 class DefaultPermissionsCheck
 {

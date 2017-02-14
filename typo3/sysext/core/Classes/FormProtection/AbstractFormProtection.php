@@ -61,8 +61,6 @@ abstract class AbstractFormProtection
      * Deletes the session token and persists the (empty) token.
      *
      * This function is intended to be called when a user logs on or off.
-     *
-     * @return void
      */
     public function clean()
     {
@@ -129,8 +127,6 @@ abstract class AbstractFormProtection
     /**
      * Creates or displays an error message telling the user that the submitted
      * form token is invalid.
-     *
-     * @return void
      */
     protected function createValidationErrorMessage()
     {
@@ -151,7 +147,6 @@ abstract class AbstractFormProtection
      * of this class.
      *
      * @access private
-     * @return void
      */
     abstract public function persistSessionToken();
 }

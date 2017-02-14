@@ -36,8 +36,6 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
 
     /**
      * Sets up this test case
-     *
-     * @return void
      */
     protected function setUp()
     {

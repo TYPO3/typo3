@@ -70,8 +70,6 @@ abstract class AbstractAction implements ActionInterface
 
     /**
      * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     *
-     * @return void
      */
     protected function initializeHandle()
     {
@@ -110,7 +108,6 @@ abstract class AbstractAction implements ActionInterface
      * Set form protection token
      *
      * @param string $token Form protection token
-     * @return void
      */
     public function setToken($token)
     {
@@ -121,7 +118,6 @@ abstract class AbstractAction implements ActionInterface
      * Set action group. Either string 'step', 'tool' or 'common'
      *
      * @param string $controller Controller name
-     * @return void
      */
     public function setController($controller)
     {
@@ -133,7 +129,6 @@ abstract class AbstractAction implements ActionInterface
      * only for loginForm, the action is login
      *
      * @param string $action Name of target action for forms
-     * @return void
      */
     public function setAction($action)
     {
@@ -144,7 +139,6 @@ abstract class AbstractAction implements ActionInterface
      * Set POST form values of install tool
      *
      * @param array $postValues
-     * @return void
      */
     public function setPostValues(array $postValues)
     {
@@ -192,8 +186,6 @@ abstract class AbstractAction implements ActionInterface
      *
      * Those actions can potentially fatal if some old extension is loaded that triggers
      * a fatal in ext_localconf or ext_tables code! Use only if really needed.
-     *
-     * @return void
      */
     protected function loadExtLocalconfDatabaseAndExtTables()
     {

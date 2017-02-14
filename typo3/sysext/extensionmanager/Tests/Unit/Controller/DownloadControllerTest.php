@@ -16,14 +16,11 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 /**
  * Download from TER controller test
- *
  */
 class DownloadControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test
-     *
-     * @return void
      */
     public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown()
     {

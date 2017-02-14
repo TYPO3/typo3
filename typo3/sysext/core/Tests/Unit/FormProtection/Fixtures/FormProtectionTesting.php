@@ -35,8 +35,6 @@ class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
     /**
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
-     *
-     * @return void
      */
     public function persistSessionToken()
     {

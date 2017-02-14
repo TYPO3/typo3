@@ -148,7 +148,6 @@ abstract class AbstractService
      * @param string $msg Debug message
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param array|bool $dataVar dditional data you want to pass to the logger.
-     * @return void
      */
     public function devLog($msg, $severity = 0, $dataVar = false)
     {
@@ -162,7 +161,6 @@ abstract class AbstractService
      *
      * @param int $errNum Error number (see T3_ERR_SV_* constants)
      * @param string $errMsg Error message
-     * @return void
      */
     public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred')
     {
@@ -174,8 +172,6 @@ abstract class AbstractService
 
     /**
      * Removes the last error from the error stack.
-     *
-     * @return void
      */
     public function errorPull()
     {
@@ -241,8 +237,6 @@ abstract class AbstractService
 
     /**
      * Reset the error stack.
-     *
-     * @return void
      */
     public function resetErrors()
     {
@@ -276,8 +270,6 @@ abstract class AbstractService
 
     /**
      * Deactivate the service. Use this if the service fails at runtime and will not be available.
-     *
-     * @return void
      */
     public function deactivateService()
     {
@@ -376,7 +368,6 @@ abstract class AbstractService
      * Register file which should be deleted afterwards.
      *
      * @param string File name with absolute path.
-     * @return void
      */
     public function registerTempFile($absFile)
     {
@@ -389,8 +380,6 @@ abstract class AbstractService
 
     /**
      * Delete registered temporary files.
-     *
-     * @return void
      */
     public function unlinkTempFiles()
     {
@@ -410,7 +399,6 @@ abstract class AbstractService
      *
      * @param mixed $content Input content (going into ->inputContent)
      * @param string $type The type of the input content (or file). Might be the same as the service subtypes.
-     * @return void
      */
     public function setInput($content, $type = '')
     {
@@ -424,7 +412,6 @@ abstract class AbstractService
      *
      * @param string $absFile File name
      * @param string $type The type of the input content (or file). Might be the same as the service subtypes.
-     * @return void
      */
     public function setInputFile($absFile, $type = '')
     {
@@ -473,7 +460,6 @@ abstract class AbstractService
      * Set the output file name.
      *
      * @param string $absFile File name
-     * @return void
      */
     public function setOutputFile($absFile)
     {
@@ -535,8 +521,6 @@ abstract class AbstractService
     /**
      * Resets the service.
      * Will be called by init(). Should be used before every use if a service instance is used multiple times.
-     *
-     * @return void
      */
     public function reset()
     {
@@ -552,8 +536,6 @@ abstract class AbstractService
     /**
      * Clean up the service.
      * Child classes should explicitly call parent::__destruct() in their destructors for this to work
-     *
-     * @return void
      */
     public function __destruct()
     {

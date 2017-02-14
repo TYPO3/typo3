@@ -76,7 +76,6 @@ class TcaFlexProcess implements FormDataProviderInterface
      *
      * @param array $result Result array
      * @param string $fieldName Handled field name
-     * @return void
      * @throws \UnexpectedValueException
      */
     protected function scanForInvalidSectionContainerTca(array $result, string $fieldName)

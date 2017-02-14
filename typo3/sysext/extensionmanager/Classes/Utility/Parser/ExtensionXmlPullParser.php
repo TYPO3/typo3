@@ -32,8 +32,6 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
 
     /**
      * Create required parser
-     *
-     * @return void
      */
     protected function createParser()
     {
@@ -44,7 +42,6 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
      * Method parses an extensions.xml file.
      *
      * @param string $file GZIP stream resource
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of parser error
      */
     public function parseXml($file)
@@ -77,7 +74,6 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
      * Method is invoked when parser accesses start tag of an element.
      *
      * @param string $elementName element name at parser's current position
-     * @return void
      */
     protected function startElement($elementName)
     {
@@ -143,7 +139,6 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
      * Method is invoked when parser accesses end tag of an element.
      *
      * @param string $elementName: element name at parser's current position
-     * @return void
      */
     protected function endElement($elementName)
     {

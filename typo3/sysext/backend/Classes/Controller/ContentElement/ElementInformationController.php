@@ -115,8 +115,6 @@ class ElementInformationController
     /**
      * Determines if table/uid point to database record or file and
      * if user has access to view information
-     *
-     * @return void
      */
     public function init()
     {

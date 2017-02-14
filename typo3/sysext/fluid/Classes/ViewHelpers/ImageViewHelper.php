@@ -83,8 +83,6 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 
     /**
      * Initialize arguments.
-     *
-     * @return void
      */
     public function initializeArguments()
     {

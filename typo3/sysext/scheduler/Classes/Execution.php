@@ -70,7 +70,6 @@ class Execution
      * This method is used to set the start date
      *
      * @param int $start Start date (timestamp)
-     * @return void
      */
     public function setStart($start)
     {
@@ -91,7 +90,6 @@ class Execution
      * This method is used to set the end date
      *
      * @param int $end End date (timestamp)
-     * @return void
      */
     public function setEnd($end)
     {
@@ -112,7 +110,6 @@ class Execution
      * This method is used to set the interval
      *
      * @param int $interval Interval (in seconds)
-     * @return void
      */
     public function setInterval($interval)
     {
@@ -133,7 +130,6 @@ class Execution
      * This method is used to set the multiple execution flag
      *
      * @param bool $multiple TRUE if concurrent executions are allowed, FALSE otherwise
-     * @return void
      */
     public function setMultiple($multiple)
     {
@@ -154,7 +150,6 @@ class Execution
      * Set the value of the cron command
      *
      * @param string $cmd Cron command, using cron-like syntax
-     * @return void
      */
     public function setCronCmd($cmd)
     {
@@ -181,7 +176,6 @@ class Execution
      * Upon next execution, this flag is set to FALSE.
      *
      * @param bool $isNewSingleExecution Is newly created single execution?
-     * @return void
      * @see \TYPO3\CMS\Scheduler\Execution::getNextExecution()
      */
     public function setIsNewSingleExecution($isNewSingleExecution)

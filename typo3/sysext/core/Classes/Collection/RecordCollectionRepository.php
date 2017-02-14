@@ -147,7 +147,6 @@ class RecordCollectionRepository
      * Deletes a record collection by uid.
      *
      * @param int $uid uid to be deleted
-     * @return void
      */
     public function deleteByUid($uid)
     {

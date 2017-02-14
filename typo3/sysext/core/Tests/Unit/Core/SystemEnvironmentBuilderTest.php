@@ -26,8 +26,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
 
     /**
      * Set up testcase
-     *
-     * @return void
      */
     protected function setUp()
     {

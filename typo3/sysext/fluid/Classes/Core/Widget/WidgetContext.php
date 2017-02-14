@@ -105,7 +105,6 @@ class WidgetContext
 
     /**
      * @param string $widgetIdentifier
-     * @return void
      */
     public function setWidgetIdentifier($widgetIdentifier)
     {
@@ -122,7 +121,6 @@ class WidgetContext
 
     /**
      * @param string $ajaxWidgetIdentifier
-     * @return void
      */
     public function setAjaxWidgetIdentifier($ajaxWidgetIdentifier)
     {
@@ -133,7 +131,6 @@ class WidgetContext
      * Sets the URI namespace of the plugin that contains the widget
      *
      * @param string $parentPluginNamespace
-     * @return void
      */
     public function setParentPluginNamespace($parentPluginNamespace)
     {
@@ -154,7 +151,6 @@ class WidgetContext
      * Sets the Extension name of the plugin that contains the widget
      *
      * @param string $parentExtensionName
-     * @return void
      */
     public function setParentExtensionName($parentExtensionName)
     {
@@ -175,7 +171,6 @@ class WidgetContext
      * Sets the name of the plugin that contains the widget
      *
      * @param string $parentPluginName
-     * @return void
      */
     public function setParentPluginName($parentPluginName)
     {
@@ -196,7 +191,6 @@ class WidgetContext
      * Sets the fully qualified class name of the view helper this context belongs to
      *
      * @param string $widgetViewHelperClassName
-     * @return void
      */
     public function setWidgetViewHelperClassName($widgetViewHelperClassName)
     {
@@ -223,7 +217,6 @@ class WidgetContext
 
     /**
      * @param array $widgetConfiguration
-     * @return void
      */
     public function setWidgetConfiguration($widgetConfiguration)
     {
@@ -240,7 +233,6 @@ class WidgetContext
 
     /**
      * @param string $controllerObjectName
-     * @return void
      */
     public function setControllerObjectName($controllerObjectName)
     {
@@ -250,7 +242,6 @@ class WidgetContext
     /**
      * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext
-     * @return void
      */
     public function setViewHelperChildNodes(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode $viewHelperChildNodes, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $viewHelperChildNodeRenderingContext)
     {

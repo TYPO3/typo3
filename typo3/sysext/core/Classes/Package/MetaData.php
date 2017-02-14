@@ -123,7 +123,6 @@ class MetaData
 
     /**
      * @param string $version The package version to set
-     * @return void
      */
     public function setVersion($version)
     {
@@ -140,7 +139,6 @@ class MetaData
 
     /**
      * @param string $description The package description to set
-     * @return void
      */
     public function setDescription($description)
     {
@@ -175,7 +173,6 @@ class MetaData
      * Add a constraint
      *
      * @param MetaData\PackageConstraint $constraint The constraint to add
-     * @return void
      */
     public function addConstraint(MetaData\PackageConstraint $constraint)
     {

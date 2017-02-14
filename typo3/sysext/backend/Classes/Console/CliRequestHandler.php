@@ -52,7 +52,6 @@ class CliRequestHandler implements RequestHandlerInterface
      * Handles any commandline request
      *
      * @param InputInterface $input
-     * @return void
      */
     public function handleRequest(InputInterface $input)
     {

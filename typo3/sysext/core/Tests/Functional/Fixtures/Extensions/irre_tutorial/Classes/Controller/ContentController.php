@@ -31,7 +31,6 @@ class ContentController extends AbstractController
     protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
 
     /**
-     * @return void
      */
     public function listAction()
     {
@@ -42,7 +41,6 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
-     * @return void
      */
     public function showAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
     {
@@ -53,7 +51,6 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
      * @ignorevalidation $newContent
-     * @return void
      */
     public function newAction(\OliverHader\IrreTutorial\Domain\Model\Content $newContent = null)
     {
@@ -62,7 +59,6 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
-     * @return void
      */
     public function createAction(\OliverHader\IrreTutorial\Domain\Model\Content $newContent)
     {
@@ -73,7 +69,6 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      * @ignorevalidation $content
-     * @return void
      */
     public function editAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
     {
@@ -82,7 +77,6 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
-     * @return void
      */
     public function updateAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
     {
@@ -92,7 +86,6 @@ class ContentController extends AbstractController
 
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
-     * @return void
      */
     public function deleteAction(\OliverHader\IrreTutorial\Domain\Model\Content $content)
     {

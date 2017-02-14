@@ -43,7 +43,6 @@ class PhpFrontend extends StringFrontend
      * @param string $sourceCode PHP source code
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
      * @throws InvalidDataException If $sourceCode is not a string
      * @api

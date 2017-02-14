@@ -37,7 +37,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     protected $expandPage;
 
     /**
-     * @return void
      */
     protected function initialize()
     {
@@ -46,7 +45,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     }
 
     /**
-     * @return void
      */
     protected function initVariables()
     {
@@ -159,7 +157,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
     /**
      * If the current Backend User has set a temporary DB mount, it is stored to her/his UC.
-     * @return void
      */
     protected function setTemporaryDbMounts()
     {

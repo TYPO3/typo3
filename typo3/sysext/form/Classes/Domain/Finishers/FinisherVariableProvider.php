@@ -41,7 +41,6 @@ final class FinisherVariableProvider implements \ArrayAccess
      * @param string $finisherIdentifier
      * @param string $key
      * @param mixed $value
-     * @return void
      * @api
      */
     public function add(string $finisherIdentifier, string $key, $value)
@@ -56,7 +55,6 @@ final class FinisherVariableProvider implements \ArrayAccess
      * @param string $finisherIdentifier
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     public function addOrUpdate(string $finisherIdentifier, string $key, $value)
     {
@@ -111,7 +109,6 @@ final class FinisherVariableProvider implements \ArrayAccess
      *
      * @param string $finisherIdentifier
      * @param string $key
-     * @return void
      * @api
      */
     public function remove(string $finisherIdentifier, string $key)
@@ -165,7 +162,6 @@ final class FinisherVariableProvider implements \ArrayAccess
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      * @param mixed $offset The offset to assign the value to.
      * @param mixed $value The value to set.
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -177,7 +173,6 @@ final class FinisherVariableProvider implements \ArrayAccess
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      * @param mixed $offset The offset to unset.
-     * @return void
      */
     public function offsetUnset($offset)
     {

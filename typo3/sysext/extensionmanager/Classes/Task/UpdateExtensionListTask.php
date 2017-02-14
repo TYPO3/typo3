@@ -36,7 +36,6 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      * Update extension list
      *
      * @TODO: Adapt to multiple repositories if the Helper can handle this
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */
     protected function updateExtensionList()

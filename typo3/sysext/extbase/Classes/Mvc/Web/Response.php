@@ -132,7 +132,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @param int $code The status code
      * @param string $message If specified, this message is sent instead of the standard message
      * @throws \InvalidArgumentException if the specified status code is not valid
-     * @return void
      * @api
      */
     public function setStatus($code, $message = null)
@@ -165,7 +164,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @param mixed $value The value of the given header
      * @param bool $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
      * @throws \InvalidArgumentException
-     * @return void
      * @api
      */
     public function setHeader($name, $value, $replaceExistingHeader = true)
@@ -207,7 +205,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      *
      * If headers have already been sent, this method fails silently.
      *
-     * @return void
      * @api
      */
     public function sendHeaders()
@@ -223,7 +220,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
     /**
      * Renders and sends the whole web response
      *
-     * @return void
      * @api
      */
     public function send()
@@ -242,7 +238,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
      * @param string $additionalHeaderData The value additional header
      * @throws \InvalidArgumentException
-     * @return void
      * @api
      */
     public function addAdditionalHeaderData($additionalHeaderData)

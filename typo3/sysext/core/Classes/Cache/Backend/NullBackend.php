@@ -29,7 +29,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      * @param string $data ignored
      * @param array $tags ignored
      * @param int $lifetime ignored
-     * @return void
      * @api
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
@@ -40,7 +39,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      * Acts as if it would enable data compression
      *
      * @param bool $compression ignored
-     * @return void
      */
     public function setCompression($compression)
     {
@@ -97,7 +95,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
     /**
      * Does nothing
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -108,7 +105,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      * Does nothing
      *
      * @param string $tag ignored
-     * @return void
      * @api
      */
     public function flushByTag($tag)
@@ -118,7 +114,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
     /**
      * Does nothing
      *
-     * @return void
      * @api
      */
     public function collectGarbage()
@@ -129,7 +124,6 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
      * Does nothing
      *
      * @param string $identifier An identifier which describes the cache entry to load
-     * @return void
      * @api
      */
     public function requireOnce($identifier)

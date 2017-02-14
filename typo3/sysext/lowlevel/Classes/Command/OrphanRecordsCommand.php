@@ -66,8 +66,6 @@ Manual repair suggestions:
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -235,7 +233,6 @@ Manual repair suggestions:
      * @param array $orphanedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
      * @param SymfonyStyle $io
-     * @return void
      */
     protected function deleteRecords(array $orphanedRecords, bool $dryRun, SymfonyStyle $io)
     {

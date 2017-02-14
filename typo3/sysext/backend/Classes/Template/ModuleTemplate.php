@@ -204,7 +204,6 @@ class ModuleTemplate
      * Set content
      *
      * @param string $content Content of the module
-     * @return void
      */
     public function setContent($content)
     {
@@ -251,8 +250,6 @@ class ModuleTemplate
 
     /**
      * Loads all necessary Javascript Files
-     *
-     * @return void
      */
     protected function loadJavaScripts()
     {
@@ -265,8 +262,6 @@ class ModuleTemplate
 
     /**
      * Loads all necessary stylesheets
-     *
-     * @return void
      */
     protected function loadStylesheets()
     {
@@ -280,8 +275,6 @@ class ModuleTemplate
 
     /**
      * Sets mandatory parameters for the view (pageRenderer)
-     *
-     * @return void
      */
     protected function setupPage()
     {
@@ -294,8 +287,6 @@ class ModuleTemplate
 
     /**
      * Wrapper function for adding JS inline blocks
-     *
-     * @return void
      */
     protected function setJavaScriptCodeArray()
     {
@@ -309,8 +300,6 @@ class ModuleTemplate
      *
      * @param string $name Javascript code block name
      * @param string $code Inline Javascript
-     *
-     * @return void
      */
     public function addJavaScriptCode($name = '', $code = '')
     {
@@ -371,8 +360,6 @@ class ModuleTemplate
      * Set form tag
      *
      * @param string $formTag Form tag to add
-     *
-     * @return void
      */
     public function setForm($formTag = '')
     {
@@ -383,8 +370,6 @@ class ModuleTemplate
      * Sets the ModuleId
      *
      * @param string $moduleId ID of the module
-     *
-     * @return void
      */
     public function setModuleId($moduleId)
     {
@@ -396,8 +381,6 @@ class ModuleTemplate
      * Sets the ModuleName
      *
      * @param string $moduleName Name of the module
-     *
-     * @return void
      */
     public function setModuleName($moduleName)
     {
@@ -479,7 +462,6 @@ class ModuleTemplate
      * @param string $lib Library name. Call it with the full path like
      * "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
      *
-     * @return void
      * @internal
      */
     public function loadJavascriptLib($lib)
@@ -710,7 +692,6 @@ class ModuleTemplate
      * @param string $messageTitle Optional message title
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default)
-     * @return void
      * @throws \InvalidArgumentException if the message body is no string
      */
     public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true)

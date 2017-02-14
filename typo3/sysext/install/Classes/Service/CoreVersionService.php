@@ -57,7 +57,6 @@ class CoreVersionService
     /**
      * Update version matrix from remote and store in registry
      *
-     * @return void
      * @throws Exception\RemoteFetchException
      */
     public function updateVersionMatrix()

@@ -34,7 +34,6 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

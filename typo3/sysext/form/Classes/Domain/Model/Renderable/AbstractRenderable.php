@@ -114,7 +114,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Set the identifier of the element
      *
      * @param string $identifier
-     * @return void
      * @api
      */
     public function setIdentifier(string $identifier)
@@ -128,7 +127,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * the passed $options array.
      *
      * @param array $options
-     * @return void
      * @api
      */
     public function setOptions(array $options)
@@ -208,7 +206,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Add a validator to the element
      *
      * @param ValidatorInterface $validator
-     * @return void
      * @api
      */
     public function addValidator(ValidatorInterface $validator)
@@ -233,7 +230,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Set the datatype
      *
      * @param string $dataType
-     * @return void
      * @api
      */
     public function setDataType(string $dataType)
@@ -281,7 +277,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Get the parent renderable
      *
      * @return null|CompositeRenderableInterface
-     * @return void
      * @api
      */
     public function getParentRenderable()
@@ -293,7 +288,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Set the parent renderable
      *
      * @param CompositeRenderableInterface $parentRenderable
-     * @return void
      * @api
      */
     public function setParentRenderable(CompositeRenderableInterface $parentRenderable)
@@ -325,7 +319,6 @@ abstract class AbstractRenderable implements RenderableInterface
     /**
      * Register this element at the parent form, if there is a connection to the parent form.
      *
-     * @return void
      * @internal
      */
     public function registerInFormIfPossible()
@@ -340,7 +333,6 @@ abstract class AbstractRenderable implements RenderableInterface
     /**
      * Triggered when the renderable is removed from it's parent
      *
-     * @return void
      * @internal
      */
     public function onRemoveFromParentRenderable()
@@ -382,7 +374,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Set the index of the renderable
      *
      * @param int $index
-     * @return void
      * @internal
      */
     public function setIndex(int $index)
@@ -405,7 +396,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Set the label which shall be displayed next to the form element
      *
      * @param string $label
-     * @return void
      * @api
      */
     public function setLabel(string $label)
@@ -430,7 +420,6 @@ abstract class AbstractRenderable implements RenderableInterface
      * Override this method in your custom Renderable if needed
      *
      * @param FormRuntime $formRuntime
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
@@ -445,7 +434,6 @@ abstract class AbstractRenderable implements RenderableInterface
      *
      * Override this method in your custom Renderable if needed.
      *
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

@@ -30,8 +30,6 @@ class DatePickerViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

@@ -103,8 +103,6 @@ class AbstractWidgetViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\Uni
 
     /**
      * Calls the ViewHelper, and emulates a rendering.
-     *
-     * @return void
      */
     public function callViewHelper()
     {

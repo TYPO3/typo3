@@ -69,7 +69,6 @@ class Registry implements SingletonInterface
      * @param string $namespace Extension key of extension
      * @param string $key The key of the entry to set.
      * @param mixed $value The value to set. This can be any PHP data type; This class takes care of serialization
-     * @return void
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function set($namespace, $key, $value)
@@ -108,7 +107,6 @@ class Registry implements SingletonInterface
      *
      * @param string $namespace Extension key of extension
      * @param string $key The key of the entry to unset.
-     * @return void
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function remove($namespace, $key)
@@ -127,7 +125,6 @@ class Registry implements SingletonInterface
      * Unset all persistent entries of given namespace.
      *
      * @param string $namespace Extension key of extension
-     * @return void
      * @throws \InvalidArgumentException Throws an exception if given namespace is invalid
      */
     public function removeAllByNamespace($namespace)
@@ -157,7 +154,6 @@ class Registry implements SingletonInterface
      * Loads all entries of given namespace into the internal $entries cache.
      *
      * @param string $namespace Extension key of extension
-     * @return void
      * @throws \InvalidArgumentException Thrown if given namespace is invalid
      */
     protected function loadEntriesByNamespace($namespace)
@@ -182,7 +178,6 @@ class Registry implements SingletonInterface
      * It must be at least two characters long. The word 'core' is reserved for TYPO3 core usage.
      *
      * @param string $namespace Namespace
-     * @return void
      * @throws \InvalidArgumentException Thrown if given namespace is invalid
      */
     protected function validateNamespace($namespace)

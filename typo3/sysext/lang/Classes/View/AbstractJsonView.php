@@ -38,8 +38,6 @@ abstract class AbstractJsonView extends AbstractView
 
     /**
      * Render template content
-     *
-     * @return void
      */
     public function render()
     {
@@ -58,7 +56,6 @@ abstract class AbstractJsonView extends AbstractView
      * Send response to browser
      *
      * @param array $data The response data
-     * @return void
      */
     protected function sendResponse(array $data)
     {

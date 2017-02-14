@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 
 /**
  * Tests for ConfigurationItemRepository
- *
  */
 class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -32,8 +31,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -177,7 +174,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function addMetaInformationUnsetsOriginalConfigurationMetaKey()
     {
@@ -191,7 +187,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function addMetaInformationReturnsMetaInformation()
     {
@@ -255,7 +250,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
      * @test
      * @dataProvider extractInformationForConfigFieldsOfTypeUserAddsGenericAndTypeInformationDataProvider
      * @param $configurationOption
-     * @return void
      */
     public function extractInformationForConfigFieldsOfTypeUserAddsGenericAndTypeInformation($configurationOption)
     {
@@ -266,7 +260,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function extractInformationForConfigFieldsOfTypeOptionsAddsGenericTypeAndLabelInformation()
     {
@@ -296,7 +289,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function extractInformationForConfigFieldsOfTypeOptionsWithLabelsAndValuesAddsGenericTypeAndLabelInformation()
     {
@@ -326,7 +318,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function mergeDefaultConfigurationCatchesExceptionOfConfigurationManagerIfNoLocalConfigurationExists()
     {
@@ -350,7 +341,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration()
     {
@@ -377,7 +367,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
-     * @return void
      */
     public function mergeWithExistingConfigurationOverwritesDefaultKeysWithCurrent()
     {

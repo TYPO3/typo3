@@ -151,7 +151,6 @@ class FileListController extends ActionController
      * Initialize variables, file object
      * Incoming GET vars include id, pointer, table, imagemode
      *
-     * @return void
      * @throws \RuntimeException
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
@@ -254,8 +253,6 @@ class FileListController extends ActionController
 
     /**
      * Setting the menu/session variables
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -282,7 +279,6 @@ class FileListController extends ActionController
      * Initialize the view
      *
      * @param ViewInterface $view The view
-     * @return void
      */
     public function initializeView(ViewInterface $view)
     {
@@ -296,7 +292,6 @@ class FileListController extends ActionController
     }
 
     /**
-     * @return void
      */
     public function initializeIndexAction()
     {
@@ -332,7 +327,6 @@ class FileListController extends ActionController
     }
 
     /**
-     * @return void
      */
     public function indexAction()
     {
@@ -452,7 +446,6 @@ class FileListController extends ActionController
     }
 
     /**
-     * @return void
      */
     public function missingFolderAction()
     {
@@ -526,7 +519,6 @@ class FileListController extends ActionController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocHeaderButtons()

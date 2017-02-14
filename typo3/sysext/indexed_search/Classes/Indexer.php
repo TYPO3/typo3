@@ -247,7 +247,6 @@ class Indexer
      * Parent Object (TSFE) Initialization
      *
      * @param TypoScriptFrontendController $pObj Parent Object, passed by reference
-     * @return void
      */
     public function hook_indexContent(&$pObj)
     {
@@ -349,7 +348,6 @@ class Indexer
      * @param array $uidRL Rootline array of only UIDs.
      * @param array $cHash_array Array of GET variables to register with this indexing
      * @param bool $createCHash If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cacheable pages from the backend!
-     * @return void
      */
     public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = [], $createCHash = false)
     {
@@ -399,7 +397,6 @@ class Indexer
      *
      * @param int $freeIndexUid Free index UID
      * @param int $freeIndexSetId Set id - an integer identifying the "set" of indexing operations.
-     * @return void
      */
     public function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId = 0)
     {
@@ -418,7 +415,6 @@ class Indexer
      * @param int $mtime Last modification time, in seconds
      * @param int $crdate The creation date of the content, in seconds
      * @param int $recordUid The record UID that the content comes from (for registration with the indexed rows)
-     * @return void
      */
     public function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate = 0, $recordUid = 0)
     {
@@ -458,8 +454,6 @@ class Indexer
      *******************************/
     /**
      * Initializes the object. $this->conf MUST be set with proper values prior to this call!!!
-     *
-     * @return void
      */
     public function init()
     {
@@ -505,7 +499,6 @@ class Indexer
     /**
      * Initialize external parsers
      *
-     * @return void
      * @access private
      * @see init()
      */
@@ -530,8 +523,6 @@ class Indexer
      *******************************/
     /**
      * Start indexing of the TYPO3 page
-     *
-     * @return void
      */
     public function indexTypo3PageContent()
     {
@@ -759,7 +750,6 @@ class Indexer
      * Extract links (hrefs) from HTML content and if indexable media is found, it is indexed.
      *
      * @param string $content HTML content
-     * @return void
      */
     public function extractLinks($content)
     {
@@ -897,7 +887,6 @@ class Indexer
      * Index External URLs HTML content
      *
      * @param string $externalUrl URL, eg. "http://typo3.org/
-     * @return void
      * @see indexRegularDocument()
      */
     public function indexExternalUrl($externalUrl)
@@ -1115,7 +1104,6 @@ class Indexer
      * @param bool $force If set, indexing is forced (despite content hashes, mtime etc).
      * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
      * @param string $altExtension File extension for temporary file.
-     * @return void
      */
     public function indexRegularDocument($file, $force = false, $contentTmpFile = '', $altExtension = '')
     {
@@ -1275,7 +1263,6 @@ class Indexer
      *
      * @param array $contentArr Standard content array
      * @param string $charset Charset of the input content (converted to utf-8)
-     * @return void
      */
     public function charsetEntity2utf8(&$contentArr, $charset)
     {
@@ -1352,7 +1339,6 @@ class Indexer
      * @param array $content Standard content array
      * @param string $key Key from standard content array
      * @param int $offset Bit-wise priority to type
-     * @return void
      */
     public function analyzeHeaderinfo(&$retArr, $content, $key, $offset)
     {
@@ -1383,7 +1369,6 @@ class Indexer
      *
      * @param array $retArr Index array, passed by reference
      * @param array $content Standard content array
-     * @return void
      */
     public function analyzeBody(&$retArr, $content)
     {
@@ -1442,8 +1427,6 @@ class Indexer
      *******************************/
     /**
      * Updates db with information about the page (TYPO3 page, not external media)
-     *
-     * @return void
      */
     public function submitPage()
     {
@@ -1530,7 +1513,6 @@ class Indexer
      *
      * @param int $hash Search result record phash
      * @param int $phash_x Actual phash of current content
-     * @return void
      * @see update_grlist()
      */
     public function submit_grlist($hash, $phash_x)
@@ -1555,7 +1537,6 @@ class Indexer
      *
      * @param int $hash phash of TYPO3 parent search result record
      * @param int $hash_t3 phash of the file indexation search record
-     * @return void
      */
     public function submit_section($hash, $hash_t3)
     {
@@ -1576,7 +1557,6 @@ class Indexer
      * Removes records for the indexed page, $phash
      *
      * @param int $phash phash value to flush
-     * @return void
      */
     public function removeOldIndexedPages($phash)
     {
@@ -1616,7 +1596,6 @@ class Indexer
      * @param int $size Size of file in bytes
      * @param int $content_md5h Content HASH value.
      * @param array $contentParts Standard content array (using only title and body for a file)
-     * @return void
      */
     public function submitFilePage($hash, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts)
     {
@@ -1695,7 +1674,6 @@ class Indexer
      * Stores file gr_list for a file IF it does not exist already
      *
      * @param int $hash phash value of file
-     * @return void
      */
     public function submitFile_grlist($hash)
     {
@@ -1742,7 +1720,6 @@ class Indexer
      * Stores file section for a file IF it does not exist
      *
      * @param int $hash phash value of file
-     * @return void
      */
     public function submitFile_section($hash)
     {
@@ -1777,7 +1754,6 @@ class Indexer
      * Removes records for the indexed page, $phash
      *
      * @param int $phash phash value to flush
-     * @return void
      */
     public function removeOldIndexedFiles($phash)
     {
@@ -1950,7 +1926,6 @@ class Indexer
      *
      * @param int $phash phash of the search result that should be found
      * @param int $phash_x The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
-     * @return void
      * @see submit_grlist()
      */
     public function update_grlist($phash, $phash_x)
@@ -1979,7 +1954,6 @@ class Indexer
      *
      * @param int $phash phash value
      * @param int $mtime If set, update the mtime field to this value.
-     * @return void
      */
     public function updateTstamp($phash, $mtime = 0)
     {
@@ -2010,7 +1984,6 @@ class Indexer
      * Update SetID of the index_phash record.
      *
      * @param int $phash phash value
-     * @return void
      */
     public function updateSetId($phash)
     {
@@ -2036,7 +2009,6 @@ class Indexer
      *
      * @param int $phash phash value.
      * @param int $parsetime Parsetime value to set.
-     * @return void
      */
     public function updateParsetime($phash, $parsetime)
     {
@@ -2059,8 +2031,6 @@ class Indexer
 
     /**
      * Update section rootline for the page
-     *
-     * @return void
      */
     public function updateRootline()
     {
@@ -2087,7 +2057,6 @@ class Indexer
      * rl0, rl1 and rl2 are standard. A hook might add more.
      *
      * @param array $fieldArray Field array, passed by reference
-     * @return void
      */
     public function getRootLineFields(array &$fieldArray)
     {
@@ -2104,7 +2073,6 @@ class Indexer
     /**
      * Includes the crawler class
      *
-     * @return void
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, autoloader is taking care of that functionality
      */
     public function includeCrawlerClass()
@@ -2122,7 +2090,6 @@ class Indexer
      * Adds new words to db
      *
      * @param array $wordListArray Word List array (where each word has information about position etc).
-     * @return void
      */
     public function checkWordList($wordListArray)
     {
@@ -2185,7 +2152,6 @@ class Indexer
      *
      * @param array $wordList Word list array
      * @param int $phash phash value
-     * @return void
      */
     public function submitWords($wordList, $phash)
     {
@@ -2254,8 +2220,6 @@ class Indexer
      *******************************/
     /**
      * Get search hash, T3 pages
-     *
-     * @return void
      */
     public function setT3Hashes()
     {
@@ -2306,7 +2270,6 @@ class Indexer
      *
      * @param string $msg Title to set
      * @param string $key Key (?)
-     * @return void
      */
     public function log_push($msg, $key)
     {
@@ -2315,8 +2278,6 @@ class Indexer
 
     /**
      * Pull function wrapper for TT logging
-     *
-     * @return void
      */
     public function log_pull()
     {
@@ -2328,7 +2289,6 @@ class Indexer
      *
      * @param string $msg Message to set
      * @param int $errorNum Error number
-     * @return void
      */
     public function log_setTSlogMessage($msg, $errorNum = 0)
     {

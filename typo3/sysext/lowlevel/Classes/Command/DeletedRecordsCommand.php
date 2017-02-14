@@ -67,8 +67,6 @@ class DeletedRecordsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -261,7 +259,6 @@ class DeletedRecordsCommand extends Command
      * @param array $deletedRecords two level array with tables and uids
      * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
      * @param SymfonyStyle $io
-     * @return void
      */
     protected function deleteRecords(array $deletedRecords, bool $dryRun, SymfonyStyle $io)
     {

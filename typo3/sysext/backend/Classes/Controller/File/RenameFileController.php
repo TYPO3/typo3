@@ -131,8 +131,6 @@ class RenameFileController extends AbstractModule
 
     /**
      * Main function, rendering the content of the rename form
-     *
-     * @return void
      */
     public function main()
     {

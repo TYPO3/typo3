@@ -139,7 +139,6 @@ class RootlineUtility
      * Initialize a state to work with
      *
      * @throws \RuntimeException
-     * @return void
      */
     protected function initializeObject()
     {
@@ -166,8 +165,6 @@ class RootlineUtility
      * Purges all rootline caches.
      *
      * Note: This function is intended to be used in unit tests only.
-     *
-     * @return void
      */
     public static function purgeCaches()
     {
@@ -388,7 +385,6 @@ class RootlineUtility
      * Actual function to generate the rootline and cache it
      *
      * @throws \RuntimeException
-     * @return void
      */
     protected function generateRootlineCache()
     {
@@ -471,8 +467,6 @@ class RootlineUtility
      * Parse the MountPoint Parameters
      * Splits the MP-Param via "," for several nested mountpoints
      * and afterwords registers the mountpoint configurations
-     *
-     * @return void
      */
     protected function parseMountPointParameter()
     {

@@ -57,7 +57,6 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface
      * Clears the page cache
      *
      * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
-     * @return void
      */
     public function clearPageCache($pageIdsToClear = null)
     {
@@ -77,8 +76,6 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Walks through the pageIdStack, collects all pageIds
      * as array and passes them on to clearPageCache.
-     *
-     * @return void
      */
     public function clearCachesOfRegisteredPageIds()
     {

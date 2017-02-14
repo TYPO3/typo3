@@ -198,8 +198,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      * If the content entries of the storage had not been loaded on creation
      * ($fillItems = false) this function is to be used for loading the contents
      * afterwards.
-     *
-     * @return void
      */
     public function loadContents()
     {
@@ -230,7 +228,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      * Adds on entry to the collection
      *
      * @param mixed $data
-     * @return void
      */
     public function add($data)
     {
@@ -241,7 +238,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      * Adds a set of entries to the collection
      *
      * @param CollectionInterface $other
-     * @return void
      */
     public function addAll(CollectionInterface $other)
     {
@@ -255,7 +251,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
      * Note: not the given "index"
      *
      * @param mixed $data
-     * @return void
      */
     public function remove($data)
     {
@@ -272,8 +267,6 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
     /**
      * Removes all entries from the collection
      * collection will be empty afterwards
-     *
-     * @return void
      */
     public function removeAll()
     {

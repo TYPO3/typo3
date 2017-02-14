@@ -26,7 +26,6 @@ interface ExtendedFileUtilityProcessDataHookInterface
      * @param array $cmdArr The parameter sent to the action handler
      * @param array $result The results of all calls to the action handler
      * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $parentObject Parent object
-     * @return void
      */
     public function processData_postProcessAction($action, array $cmdArr, array $result, ExtendedFileUtility $parentObject);
 }

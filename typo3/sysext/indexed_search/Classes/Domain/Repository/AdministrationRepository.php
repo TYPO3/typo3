@@ -434,7 +434,6 @@ class AdministrationRepository
      * Add additional information to the result row
      *
      * @param array $row
-     * @return void
      */
     protected function addAdditionalInformation(array &$row)
     {
@@ -666,7 +665,6 @@ class AdministrationRepository
      * @param string $phashList
      * @param int $pageId
      * @param int $depth
-     * @return void
      */
     public function removeIndexedPhashRow($phashList, $pageId, $depth = 4)
     {
@@ -728,7 +726,6 @@ class AdministrationRepository
      * Save stop words
      *
      * @param array $words stop words
-     * @return void
      */
     public function saveStopWords(array $words)
     {
@@ -752,7 +749,6 @@ class AdministrationRepository
      *
      * @param array $words keywords
      * @param int $pageId page id
-     * @return void
      */
     public function saveKeywords(array $words, $pageId)
     {

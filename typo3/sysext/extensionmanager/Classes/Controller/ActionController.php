@@ -111,7 +111,6 @@ class ActionController extends AbstractController
      * Install an extension and omit dependency checking
      *
      * @param string $extensionKey
-     * @return void
      */
     public function installExtensionWithoutSystemDependencyCheckAction($extensionKey)
     {

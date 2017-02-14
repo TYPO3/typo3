@@ -145,8 +145,6 @@ class DocumentController extends ActionController
 
     /**
      * Lists the available documents.
-     *
-     * @return void
      */
     public function listAction()
     {
@@ -207,8 +205,6 @@ class DocumentController extends ActionController
 
     /**
      * Shows documents to be downloaded/fetched from a remote location.
-     *
-     * @return void
      */
     public function downloadAction()
     {
@@ -233,7 +229,6 @@ class DocumentController extends ActionController
      * @param string $url
      * @param string $key
      * @param string $version
-     * @return void
      */
     public function fetchAction($url, $key, $version = null)
     {

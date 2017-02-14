@@ -54,7 +54,6 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for date
      *
      * @param \DateTime $date
-     * @return void
      */
     public function setDate(\DateTime $date)
     {
@@ -75,7 +74,6 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the author for this comment
      *
      * @param string $author
-     * @return void
      */
     public function setAuthor($author)
     {
@@ -96,7 +94,6 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the authors email for this comment
      *
      * @param string $email email of the author
-     * @return void
      */
     public function setEmail($email)
     {
@@ -117,7 +114,6 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the content for this comment
      *
      * @param string $content
-     * @return void
      */
     public function setContent($content)
     {

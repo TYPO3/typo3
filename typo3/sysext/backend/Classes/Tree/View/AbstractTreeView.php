@@ -313,7 +313,6 @@ abstract class AbstractTreeView
      *
      * @param string $clause Record WHERE clause
      * @param string $orderByFields Record ORDER BY field
-     * @return void
      */
     public function init($clause = '', $orderByFields = '')
     {
@@ -342,7 +341,6 @@ abstract class AbstractTreeView
      *
      * @param string $field Field name to
      * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
-     * @return void
      */
     public function addField($field, $noCheck = false)
     {
@@ -353,8 +351,6 @@ abstract class AbstractTreeView
 
     /**
      * Resets the tree, recs, ids, ids_hierarchy and orig_ids_hierarchy internal variables. Use it if you need it.
-     *
-     * @return void
      */
     public function reset()
     {
@@ -620,7 +616,6 @@ abstract class AbstractTreeView
     /**
      * Get stored tree structure AND updating it if needed according to incoming PM GET var.
      *
-     * @return void
      * @access private
      */
     public function initializePositionSaving()
@@ -650,7 +645,6 @@ abstract class AbstractTreeView
      * Saves the content of ->stored (keeps track of expanded positions in the tree)
      * $this->treeName will be used as key for BE_USER->uc[] to store it in
      *
-     * @return void
      * @access private
      */
     public function savePosition()
@@ -997,7 +991,6 @@ abstract class AbstractTreeView
      * Getting the tree data: frees data handle
      *
      * @param mixed $res Data handle
-     * @return void
      * @access private
      */
     public function getDataFree(&$res)
@@ -1017,7 +1010,6 @@ abstract class AbstractTreeView
      * @param array $dataArr The input array, see examples below in this script.
      * @param bool $traverse Internal, for recursion.
      * @param int $pid Internal, for recursion.
-     * @return void
      */
     public function setDataFromArray(&$dataArr, $traverse = false, $pid = 0)
     {
@@ -1043,7 +1035,6 @@ abstract class AbstractTreeView
      *
      * @param array $treeArr Content for $this->data
      * @param array $treeLookupArr Content for $this->dataLookup
-     * @return void
      */
     public function setDataFromTreeArray(&$treeArr, &$treeLookupArr)
     {

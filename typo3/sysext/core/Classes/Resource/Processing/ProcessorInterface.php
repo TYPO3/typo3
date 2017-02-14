@@ -31,7 +31,6 @@ interface ProcessorInterface
      * Processes the given task and sets the processing result in the task object.
      *
      * @param TaskInterface $task
-     * @return void
      */
     public function processTask(TaskInterface $task);
 }

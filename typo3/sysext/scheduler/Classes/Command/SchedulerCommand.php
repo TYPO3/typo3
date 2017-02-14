@@ -72,7 +72,6 @@ Call it like this: typo3/cli_dispatch.phpsh scheduler --task=13 -f')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

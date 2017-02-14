@@ -63,7 +63,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $params (not needed right now)
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
-     * @return void
      */
     public function checkForPreview($params, &$pObj)
     {
@@ -102,7 +101,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $params holding the BE_USER object
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
-     * @return void
      */
     public function initializePreviewUser(&$params, &$pObj)
     {

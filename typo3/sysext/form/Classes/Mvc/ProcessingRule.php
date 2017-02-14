@@ -62,7 +62,6 @@ class ProcessingRule
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration
-     * @return void
      * @internal
      */
     public function injectPropertyMappingConfiguration(\TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration)
@@ -72,7 +71,6 @@ class ProcessingRule
 
     /**
      * @param \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator $validator
-     * @return void
      * @internal
      */
     public function injectConjunctionValidator(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator $validator)
@@ -82,7 +80,6 @@ class ProcessingRule
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @return void
      * @internal
      */
     public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
@@ -140,7 +137,6 @@ class ProcessingRule
 
     /**
      * @param ValidatorInterface $validator
-     * @return void
      * @internal
      */
     public function addValidator(ValidatorInterface $validator)

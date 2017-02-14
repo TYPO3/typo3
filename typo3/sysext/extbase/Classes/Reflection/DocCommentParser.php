@@ -35,7 +35,6 @@ class DocCommentParser
      * getTags() getTagValues() and getDescription() methods.
      *
      * @param string $docComment A doc comment as returned by the reflection getDocComment() method
-     * @return void
      */
     public function parseDocComment($docComment)
     {
@@ -105,7 +104,6 @@ class DocCommentParser
      * The result is stored in the interal tags array.
      *
      * @param string $line A line of a doc comment which starts with an @-sign
-     * @return void
      */
     protected function parseTag($line)
     {

@@ -44,7 +44,6 @@ class UploadedResourceViewHelper extends UploadViewHelper
 
     /**
      * @param HashService $hashService
-     * @return void
      * @internal
      */
     public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
@@ -54,7 +53,6 @@ class UploadedResourceViewHelper extends UploadViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @return void
      * @internal
      */
     public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper)
@@ -65,7 +63,6 @@ class UploadedResourceViewHelper extends UploadViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

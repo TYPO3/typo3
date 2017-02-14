@@ -116,7 +116,6 @@ class UserSettingsController
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     protected function set($key, $value)
     {
@@ -135,7 +134,6 @@ class UserSettingsController
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     protected function addToList($key, $value)
     {
@@ -156,7 +154,6 @@ class UserSettingsController
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     protected function removeFromList($key, $value)
     {
@@ -170,8 +167,6 @@ class UserSettingsController
 
     /**
      * Resets the user settings to the default
-     *
-     * @return void
      */
     protected function clear()
     {
@@ -182,7 +177,6 @@ class UserSettingsController
      * Unsets a key in user settings
      *
      * @param string $key
-     * @return void
      */
     protected function unsetOption($key)
     {
@@ -219,7 +213,6 @@ class UserSettingsController
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     protected function setFromDottedNotation($key, $value)
     {

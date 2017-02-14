@@ -67,7 +67,6 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
      * The marker array passed, will be merged with already present markers.
      *
      * @param array $markers Array containing the markers and values (e.g. ###MARKERNAME### => value)
-     * @return void
      */
     public function setMarkers(array $markers)
     {
@@ -119,7 +118,6 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
      * Sets the filename to the HTML template
      *
      * @param string $htmlTemplate The filename of the HTML template, relative to PATH_site
-     * @return void
      */
     public function setHtmlTemplate($htmlTemplate)
     {
@@ -145,8 +143,6 @@ abstract class AbstractStandaloneMessage extends AbstractMessage
 
     /**
      * Renders the message and echoes it.
-     *
-     * @return void
      */
     public function output()
     {

@@ -44,7 +44,6 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subcategories
-     * @return void
      */
     public function setSubcategories($subcategories)
     {
@@ -63,7 +62,6 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
      * Adds a subcategories
      *
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory $subcategory
-     * @return void
      */
     public function addSubcategory(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory $subcategory)
     {
@@ -72,7 +70,6 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 
     /**
      * @param string $name
-     * @return void
      */
     public function setName($name)
     {
@@ -89,7 +86,6 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 
     /**
      * @param string $highlightText
-     * @return void
      */
     public function setHighlightText($highlightText)
     {

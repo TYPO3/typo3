@@ -28,8 +28,6 @@ class ActionHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Function
 
     /**
      * Set up
-     *
-     * @return void
      */
     protected function setUp()
     {

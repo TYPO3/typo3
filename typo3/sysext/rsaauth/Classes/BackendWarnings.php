@@ -24,7 +24,6 @@ class BackendWarnings
      * Checks RSA configuration and creates warnings if necessary.
      *
      * @param array $warnings Warnings
-     * @return void
      */
     public function displayWarningMessages_postProcess(array &$warnings)
     {

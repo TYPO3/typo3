@@ -92,7 +92,6 @@ class CombinedRecord
      * Sets the name of the database table.
      *
      * @param string $table
-     * @return void
      */
     public function setTable($table)
     {
@@ -113,7 +112,6 @@ class CombinedRecord
      * Sets the live-record object.
      *
      * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord
-     * @return void
      */
     public function setLiveRecord(DatabaseRecord $liveRecord)
     {
@@ -134,7 +132,6 @@ class CombinedRecord
      * Sets the version-record object.
      *
      * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord
-     * @return void
      */
     public function setVersionRecord(DatabaseRecord $versionRecord)
     {

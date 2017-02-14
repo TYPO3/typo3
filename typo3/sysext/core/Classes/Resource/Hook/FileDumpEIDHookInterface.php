@@ -26,7 +26,6 @@ interface FileDumpEIDHookInterface
      * or 401 if authentication is required
      *
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $file
-     * @return void
      */
     public function checkFileAccess(\TYPO3\CMS\Core\Resource\ResourceInterface $file);
 }

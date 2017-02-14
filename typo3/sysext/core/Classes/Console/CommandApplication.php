@@ -69,7 +69,6 @@ class CommandApplication implements ApplicationInterface
      * Run the Symfony Console application in this TYPO3 application
      *
      * @param callable $execute
-     * @return void
      */
     public function run(callable $execute = null)
     {
@@ -92,8 +91,6 @@ class CommandApplication implements ApplicationInterface
 
     /**
      * Check the script is called from a cli environment.
-     *
-     * @return void
      */
     protected function checkEnvironmentOrDie()
     {

@@ -26,8 +26,6 @@ class SessionStorage extends AbstractStorage
     /**
      * Creates an instance of this class. It checks and initializes PHP
      * sessions if necessary.
-     *
-     * @return void
      */
     public function __construct()
     {

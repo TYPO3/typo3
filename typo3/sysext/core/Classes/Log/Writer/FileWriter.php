@@ -148,7 +148,6 @@ class FileWriter extends AbstractWriter
     /**
      * Opens the log file handle
      *
-     * @return void
      * @throws \RuntimeException if the log file can't be opened.
      */
     protected function openLogFile()
@@ -166,8 +165,6 @@ class FileWriter extends AbstractWriter
 
     /**
      * Closes the log file handle.
-     *
-     * @return void
      */
     protected function closeLogFile()
     {
@@ -180,8 +177,6 @@ class FileWriter extends AbstractWriter
     /**
      * Creates the log file with correct permissions
      * and parent directories, if needed
-     *
-     * @return void
      */
     protected function createLogFile()
     {
@@ -205,7 +200,6 @@ class FileWriter extends AbstractWriter
      * Creates .htaccess file inside a new directory to access protect it
      *
      * @param string $htaccessFile Path of .htaccess file
-     * @return void
      */
     protected function createHtaccessFile($htaccessFile)
     {

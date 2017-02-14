@@ -34,7 +34,6 @@ class GridRow extends Section implements GridRowInterface
      * Add a new form element at the end of the grid row
      *
      * @param FormElementInterface $formElement The form element to add
-     * @return void
      * @throws TypeDefinitionNotValidException if FormElement is already added to a section
      * @api
      */

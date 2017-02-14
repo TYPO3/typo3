@@ -55,8 +55,6 @@ class AbstractModuleController extends AbstractController
 
     /**
      * Generates the action menu
-     *
-     * @return void
      */
     protected function generateMenu()
     {

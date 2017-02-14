@@ -440,8 +440,6 @@ class EditDocumentController extends AbstractModule
 
     /**
      * First initialization.
-     *
-     * @return void
      */
     public function preInit()
     {
@@ -514,8 +512,6 @@ class EditDocumentController extends AbstractModule
 
     /**
      * Do processing of data, submitting it to DataHandler.
-     *
-     * @return void
      */
     public function processData()
     {
@@ -707,8 +703,6 @@ class EditDocumentController extends AbstractModule
 
     /**
      * Initialize the normal module operation
-     *
-     * @return void
      */
     public function init()
     {
@@ -932,8 +926,6 @@ class EditDocumentController extends AbstractModule
 
     /**
      * Main module operation
-     *
-     * @return void
      */
     public function main()
     {
@@ -1636,7 +1628,6 @@ class EditDocumentController extends AbstractModule
      * Redirects to FormEngine with new parameters to edit a just created localized record
      *
      * @param string $justLocalized String passed by GET &justLocalized=
-     * @return void
      */
     public function localizationRedirect($justLocalized)
     {
@@ -1752,7 +1743,6 @@ class EditDocumentController extends AbstractModule
      * Fix $this->editconf if versioning applies to any of the records
      *
      * @param array|bool $mapArray Mapping between old and new ids if auto-versioning has been performed.
-     * @return void
      */
     public function fixWSversioningInEditConf($mapArray = false)
     {
@@ -1845,7 +1835,6 @@ class EditDocumentController extends AbstractModule
     /**
      * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
      *
-     * @return void
      * @see makeDocSel()
      */
     public function compileStoreDat()
@@ -1882,7 +1871,6 @@ class EditDocumentController extends AbstractModule
      * - other values will call setDocument with ->retUrl
      *
      * @param int $mode the close mode: one of self::DOCUMENT_CLOSE_MODE_*
-     * @return void
      */
     public function closeDocument($mode = self::DOCUMENT_CLOSE_MODE_DEFAULT)
     {
@@ -1933,7 +1921,6 @@ class EditDocumentController extends AbstractModule
      *
      * @param string $currentDocFromHandlerMD5 Pointer to the document in the docHandler array
      * @param string $retUrl Alternative/Default retUrl
-     * @return void
      */
     public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = '')
     {

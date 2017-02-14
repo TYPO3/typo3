@@ -52,8 +52,6 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 
     /**
      * Arguments initialization
-     *
-     * @return void
      */
     public function initializeArguments()
     {

@@ -104,7 +104,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
-     * @return void
      */
     public function setDispatched($flag)
     {
@@ -129,7 +128,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * Sets the object name of the controller
      *
      * @param string $controllerObjectName The fully qualified controller object name
-     * @return void
      */
     public function setControllerObjectName($controllerObjectName)
     {
@@ -166,7 +164,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * Note that the command name must start with a lower case letter and is case sensitive.
      *
      * @param string $commandName Name of the command to execute by the controller
-     * @return void
      */
     public function setControllerCommandName($commandName)
     {
@@ -203,7 +200,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * @param string $argumentName Name of the argument to set
      * @param mixed $value The new value
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
-     * @return void
      */
     public function setArgument($argumentName, $value)
     {
@@ -218,7 +214,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * which existed before.
      *
      * @param array $arguments An array of argument names and their values
-     * @return void
      */
     public function setArguments(array $arguments)
     {
@@ -265,7 +260,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * Sets the exceeding arguments
      *
      * @param array $exceedingArguments Numeric array of exceeding arguments
-     * @return void
      */
     public function setExceedingArguments(array $exceedingArguments)
     {

@@ -33,7 +33,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      * Allow creation of a certain sub property
      *
      * @param string $propertyPath
-     * @return void
      * @api
      */
     public function allowCreationForSubProperty($propertyPath)
@@ -45,7 +44,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      * Allow modification for a given property path
      *
      * @param string $propertyPath
-     * @return void
      * @api
      */
     public function allowModificationForSubProperty($propertyPath)
@@ -60,7 +58,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
      *
      * @param string $propertyPath
      * @param string $targetType
-     * @return void
      * @api
      */
     public function setTargetTypeForSubProperty($propertyPath, $targetType)

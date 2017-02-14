@@ -30,8 +30,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * Create a new database mock object for every test
      * and backup the original global database object.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -77,7 +75,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function setUpAndReturnDatabaseStubReturnsMockObjectOfDatabaseConnection()
     {
@@ -86,7 +83,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
     /**
      * @test
-     * @return void
      */
     public function createPreparedStatementReturnsInstanceOfPreparedStatementClass()
     {
@@ -143,7 +139,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * @param string $query Query with unreplaced markers
      * @param array  $parameters Array of parameters to be replaced in the query
      * @param string $expectedResult Query with all markers replaced
-     * @return void
      */
     public function parametersAreReplacedByQuestionMarkInQueryByCallingExecute($query, $parameters, $expectedResult)
     {
@@ -163,7 +158,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * @param string $query Query with unreplaced markers
      * @param array  $parameters Array of parameters to be replaced in the query
      * @param string $expectedResult Query with all markers replaced
-     * @return void
      */
     public function parametersAreReplacedInQueryWhenBoundWithBindValues($query, $parameters, $expectedResult)
     {
@@ -241,7 +235,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * @param mixed $parameter Parameter to be replaced in the query
      * @param int $type Type of the parameter value
      * @param int $exceptionCode Expected exception code
-     * @return void
      */
     public function invalidParameterTypesPassedToBindValueThrowsException($parameter, $type, $exceptionCode)
     {
@@ -296,7 +289,6 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * @dataProvider passingInvalidMarkersThrowsExceptionDataProvider
      * @param string $query Query with unreplaced markers
      * @param array  $parameters Array of parameters to be replaced in the query
-     * @return void
      */
     public function passingInvalidMarkersThrowsException($query, $parameters)
     {

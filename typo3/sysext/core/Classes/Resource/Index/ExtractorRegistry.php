@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Registry for MetaData extraction Services
- *
  */
 class ExtractorRegistry implements SingletonInterface
 {

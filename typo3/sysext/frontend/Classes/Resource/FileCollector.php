@@ -89,7 +89,6 @@ class FileCollector implements \Countable
      * @param string $relationTable The table of the relation (e.g. tt_content or pages)
      * @param string $relationField The field which holds the files (e.g. media or images)
      * @param array $referenceRecord the record which is referencing the files
-     * @return void
      */
     public function addFilesFromRelation($relationTable, $relationField, array $referenceRecord)
     {
@@ -108,7 +107,6 @@ class FileCollector implements \Countable
      * Add files from UIDs of a reference
      *
      * @param array $fileReferenceUids
-     * @return void
      */
     public function addFileReferences(array $fileReferenceUids = [])
     {
@@ -122,7 +120,6 @@ class FileCollector implements \Countable
      * Add files to the collection from multiple file collections
      *
      * @param array $fileCollectionUids The file collections uids
-     * @return void
      */
     public function addFilesFromFileCollections(array $fileCollectionUids = [])
     {
@@ -135,7 +132,6 @@ class FileCollector implements \Countable
      * Add files to the collection from one single file collection
      *
      * @param int $fileCollectionUid The file collections uid
-     * @return void
      */
     public function addFilesFromFileCollection($fileCollectionUid = null)
     {
@@ -164,7 +160,6 @@ class FileCollector implements \Countable
      *
      * @param array $folderIdentifiers The folder identifiers
      * @param bool $recursive Add files recursive from given folders
-     * @return void
      */
     public function addFilesFromFolders(array $folderIdentifiers = [], $recursive = false)
     {
@@ -203,7 +198,6 @@ class FileCollector implements \Countable
      *
      * @param string $sortingProperty The sorting property
      * @param string $sortingOrder can be ascending or descending or "random"
-     * @return void
      */
     public function sort($sortingProperty = '', $sortingOrder = 'ascending')
     {
@@ -239,7 +233,6 @@ class FileCollector implements \Countable
      * Add a file object to the collection
      *
      * @param FileInterface $file The file object
-     * @return void
      */
     public function addFileObject(FileInterface $file)
     {
@@ -250,7 +243,6 @@ class FileCollector implements \Countable
      * Add multiple file objects to the collection
      *
      * @param FileInterface[] $files The file objects
-     * @return void
      */
     public function addFileObjects($files)
     {

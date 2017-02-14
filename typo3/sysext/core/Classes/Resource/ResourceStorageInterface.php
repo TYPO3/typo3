@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * The interface for a resource storage containing all constants
- *
  */
 interface ResourceStorageInterface
 {

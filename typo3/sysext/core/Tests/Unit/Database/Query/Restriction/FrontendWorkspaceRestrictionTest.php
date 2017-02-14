@@ -21,7 +21,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     * @return void
      */
     protected function setUp()
     {

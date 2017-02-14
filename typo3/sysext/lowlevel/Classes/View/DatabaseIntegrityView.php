@@ -82,8 +82,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Initialization
-     *
-     * @return void
      */
     public function init()
     {
@@ -103,8 +101,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Configure menu
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -193,8 +189,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Main functions, is rendering the content
-     *
-     * @return void
      */
     public function main()
     {
@@ -288,8 +282,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Creates the overview menu.
-     *
-     * @return void
      */
     protected function func_default()
     {
@@ -308,8 +300,6 @@ class DatabaseIntegrityView extends BaseScriptClass
      ****************************/
     /**
      * Check and update reference index!
-     *
-     * @return void
      */
     public function func_refindex()
     {
@@ -329,8 +319,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Search (Full / Advanced)
-     *
-     * @return void
      */
     public function func_search()
     {
@@ -367,8 +355,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Records overview
-     *
-     * @return void
      */
     public function func_records()
     {
@@ -465,8 +451,6 @@ class DatabaseIntegrityView extends BaseScriptClass
 
     /**
      * Show list references
-     *
-     * @return void
      */
     public function func_relations()
     {

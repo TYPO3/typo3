@@ -202,8 +202,6 @@ class RecordList extends AbstractModule
 
     /**
      * Initializing the module
-     *
-     * @return void
      */
     public function init()
     {
@@ -235,8 +233,6 @@ class RecordList extends AbstractModule
 
     /**
      * Initialize function menu array
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -254,8 +250,6 @@ class RecordList extends AbstractModule
 
     /**
      * Clears page cache for the current id, $this->id
-     *
-     * @return void
      */
     public function clearCache()
     {
@@ -268,8 +262,6 @@ class RecordList extends AbstractModule
 
     /**
      * Main function, starting the rendering of the list.
-     *
-     * @return void
      */
     public function main()
     {

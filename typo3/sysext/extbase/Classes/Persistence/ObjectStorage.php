@@ -81,8 +81,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Rewinds the iterator to the first storage element.
-     *
-     * @return void
      */
     public function rewind()
     {
@@ -124,8 +122,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Moves to the next entry.
-     *
-     * @return void
      */
     public function next()
     {
@@ -147,7 +143,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param object $object The object to add.
      * @param mixed $information The data to associate with the object.
-     * @return void
      */
     public function offsetSet($object, $information)
     {
@@ -173,7 +168,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Removes an object from the storage. offsetUnset() is an alias of detach().
      *
      * @param object $object The object to remove.
-     * @return void
      */
     public function offsetUnset($object)
     {
@@ -215,7 +209,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param object $object The object to add.
      * @param mixed $information The data to associate with the object.
-     * @return void
      */
     public function attach($object, $information = null)
     {
@@ -226,7 +219,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Removes an object from the storage.
      *
      * @param object $object The object to remove.
-     * @return void
      */
     public function detach($object)
     {
@@ -248,7 +240,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Associates data, or info, with the object currently pointed to by the iterator.
      *
      * @param mixed $data
-     * @return void
      */
     public function setInfo($data)
     {
@@ -261,7 +252,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Adds all objects-data pairs from a different storage in the current storage.
      *
      * @param ObjectStorage $objectStorage
-     * @return void
      */
     public function addAll(ObjectStorage $objectStorage)
     {
@@ -274,7 +264,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Removes objects contained in another storage from the current storage.
      *
      * @param ObjectStorage $objectStorage The storage containing the elements to remove.
-     * @return void
      */
     public function removeAll(ObjectStorage $objectStorage)
     {
@@ -314,7 +303,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Dummy method to avoid serialization.
      *
      * @throws \RuntimeException
-     * @return void
      */
     public function serialize()
     {
@@ -326,7 +314,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param string $serialized
      * @throws \RuntimeException
-     * @return void
      */
     public function unserialize($serialized)
     {
@@ -335,8 +322,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * Register the storage's clean state, e.g. after it has been reconstituted from the database.
-     *
-     * @return void
      */
     public function _memorizeCleanState()
     {

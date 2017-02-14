@@ -169,7 +169,6 @@ class IndexSearchRepository
      * @param array $searchData the search data
      * @param array $externalParsers
      * @param string $searchRootPageIdList
-     * @return void
      */
     public function initialize($settings, $searchData, $externalParsers, $searchRootPageIdList)
     {

@@ -25,7 +25,6 @@ interface PageRepositoryGetPageHookInterface
      * @param int $uid The page ID
      * @param bool $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
      * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
-     * @return void
      */
     public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, PageRepository $parentObject);
 }

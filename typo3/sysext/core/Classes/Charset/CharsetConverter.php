@@ -340,7 +340,6 @@ class CharsetConverter implements SingletonInterface
      * @param string $fromCharset From charset (the current charset of the string)
      * @param string $toCharset To charset (the output charset wanted)
      * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
-     * @return void
      * @see conv()
      */
     public function convArray(&$array, $fromCharset, $toCharset, $useEntityForNoChar = false)

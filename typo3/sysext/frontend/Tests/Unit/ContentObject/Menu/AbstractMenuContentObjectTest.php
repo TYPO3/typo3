@@ -19,7 +19,6 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 
 /**
  * Test case
- *
  */
 class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -47,8 +46,6 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
     ////////////////////////////////
     /**
      * Prepares a test for the method sectionIndex
-     *
-     * @return void
      */
     protected function prepareSectionIndexTest()
     {

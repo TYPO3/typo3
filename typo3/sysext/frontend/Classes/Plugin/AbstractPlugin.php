@@ -317,8 +317,6 @@ class AbstractPlugin
 
     /**
      * If internal TypoScript property "_DEFAULT_PI_VARS." is set then it will merge the current $this->piVars array onto these default values.
-     *
-     * @return void
      */
     public function pi_setPiVarDefaults()
     {
@@ -989,7 +987,6 @@ class AbstractPlugin
      * Supported file extensions xlf, xml
      *
      * @param string $languageFilePath path to the plugin language file in format EXT:....
-     * @return void
      */
     public function pi_loadLL($languageFilePath = '')
     {
@@ -1362,7 +1359,6 @@ class AbstractPlugin
      * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
      *
      * @param string $field Field name to convert
-     * @return void
      */
     public function pi_initPIflexForm($field = 'pi_flexform')
     {

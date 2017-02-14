@@ -176,7 +176,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @throws ExtensionManagerException
-     * @return void
      */
     public function install($extensionKey)
     {
@@ -211,7 +210,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @throws ExtensionManagerException
-     * @return void
      */
     public function uninstall($extensionKey)
     {
@@ -253,7 +251,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Wrapper function for loading extensions
      *
      * @param string $extensionKey
-     * @return void
      */
     protected function loadExtension($extensionKey)
     {
@@ -264,7 +261,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Wrapper function for unloading extensions
      *
      * @param string $extensionKey
-     * @return void
      */
     protected function unloadExtension($extensionKey)
     {
@@ -445,8 +441,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Reload Cache files and Typo3LoadedExtensions
-     *
-     * @return void
      */
     public function reloadCaches()
     {
@@ -469,7 +463,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Save default configuration of an extension
      *
      * @param string $extensionKey
-     * @return void
      */
     protected function saveDefaultConfiguration($extensionKey)
     {
@@ -482,7 +475,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Update database / process db updates from ext_tables
      *
      * @param string $rawDefinitions The raw SQL statements from ext_tables.sql
-     * @return void
      */
     public function updateDbWithExtTablesSql($rawDefinitions)
     {
@@ -498,7 +490,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Import static SQL data (normally used for ext_tables_static+adt.sql)
      *
      * @param string $rawDefinitions
-     * @return void
      */
     public function importStaticSql($rawDefinitions)
     {
@@ -514,7 +505,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extension
      * @throws ExtensionManagerException
-     * @return void
      */
     public function removeExtension($extension)
     {
@@ -614,7 +604,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Execution state is saved in the this->registry, so it only happens once
      *
      * @param string $extensionSiteRelPath
-     * @return void
      */
     protected function importT3DFile($extensionSiteRelPath)
     {
@@ -670,7 +659,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Execution state is saved in the this->registry, so it only happens once
      *
      * @param string $extensionSiteRelPath
-     * @return void
      */
     protected function importStaticSqlFile($extensionSiteRelPath)
     {

@@ -56,7 +56,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
      *
      * @param TypoScriptTemplateModuleController $pObj
      * @param array $conf
-     * @return void
      */
     public function init(&$pObj, $conf)
     {
@@ -388,7 +387,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
      * Add flash message to queue
      *
      * @param FlashMessage $flashMessage
-     * @return void
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {

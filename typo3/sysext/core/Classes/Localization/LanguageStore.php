@@ -57,8 +57,6 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initializes the current class.
-     *
-     * @return void
      */
     public function initialize()
     {

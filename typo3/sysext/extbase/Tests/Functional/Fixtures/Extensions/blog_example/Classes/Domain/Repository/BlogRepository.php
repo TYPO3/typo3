@@ -26,8 +26,6 @@ class BlogRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * Life cycle method.
-     *
-     * @return void
      */
     public function initializeObject()
     {

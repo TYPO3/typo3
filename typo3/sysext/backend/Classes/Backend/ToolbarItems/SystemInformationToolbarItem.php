@@ -150,8 +150,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Gets the PHP version
-     *
-     * @return void
      */
     protected function getPhpVersion()
     {
@@ -164,8 +162,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Get the database info
-     *
-     * @return void
      */
     protected function getDatabase()
     {
@@ -184,8 +180,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Gets the application context
-     *
-     * @return void
      */
     protected function getApplicationContext()
     {
@@ -217,8 +211,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Gets the current GIT revision and branch
-     *
-     * @return void
      */
     protected function getGitRevision()
     {
@@ -245,8 +237,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Gets the system kernel and version
-     *
-     * @return void
      */
     protected function getOperatingSystem()
     {
@@ -294,8 +284,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Emits the "getSystemInformation" signal
-     *
-     * @return void
      */
     protected function emitGetSystemInformation()
     {
@@ -304,8 +292,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     /**
      * Emits the "loadMessages" signal
-     *
-     * @return void
      */
     protected function emitLoadMessages()
     {

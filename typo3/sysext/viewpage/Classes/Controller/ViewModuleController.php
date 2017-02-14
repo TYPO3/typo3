@@ -88,8 +88,6 @@ class ViewModuleController extends ActionController
 
     /**
      * Gets called before each action
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -100,8 +98,6 @@ class ViewModuleController extends ActionController
 
     /**
      * Show selected page from pagetree in iframe
-     *
-     * @return void
      */
     public function showAction()
     {

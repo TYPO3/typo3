@@ -39,7 +39,6 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return void
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -96,7 +95,6 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      *
      * Override this method for initializing your concrete view implementation.
      *
-     * @return void
      * @api
      */
     public function initializeView()

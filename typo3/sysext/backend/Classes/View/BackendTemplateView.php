@@ -82,7 +82,6 @@ class BackendTemplateView implements ViewInterface
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
-     * @return void
      * @api
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
@@ -142,7 +141,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the templates.
      *
      * @param array $templateRootPaths Root path(s) to the templates.
-     * @return void
      * @api
      */
     public function setTemplateRootPaths(array $templateRootPaths)
@@ -154,7 +152,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the partials.
      *
      * @param array $partialRootPaths Root paths to the partials.
-     * @return void
      * @api
      */
     public function setPartialRootPaths(array $partialRootPaths)
@@ -166,7 +163,6 @@ class BackendTemplateView implements ViewInterface
      * Set the root path(s) to the layouts.
      *
      * @param array $layoutRootPaths Root path to the layouts.
-     * @return void
      * @api
      */
     public function setLayoutRootPaths(array $layoutRootPaths)

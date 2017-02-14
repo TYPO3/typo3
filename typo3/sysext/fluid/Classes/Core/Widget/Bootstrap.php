@@ -61,7 +61,6 @@ class Bootstrap
      * Initializes the Object framework.
      *
      * @param array $configuration
-     * @return void
      * @see initialize()
      */
     public function initializeConfiguration($configuration)
@@ -77,7 +76,6 @@ class Bootstrap
      * Configures the object manager object configuration from
      * config.tx_extbase.objects
      *
-     * @return void
      * @see initialize()
      * @todo this is duplicated code (see \TYPO3\CMS\Extbase\Core\Bootstrap::configureObjectManager())
      */

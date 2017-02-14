@@ -57,7 +57,6 @@ class Arguments extends \ArrayObject
      * @param mixed $offset Offset - not used here
      * @param mixed $value The argument
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -74,7 +73,6 @@ class Arguments extends \ArrayObject
      *
      * @param mixed $value The value
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
-     * @return void
      */
     public function append($value)
     {
@@ -88,7 +86,6 @@ class Arguments extends \ArrayObject
      * Unsets an argument
      *
      * @param mixed $offset Offset
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -157,7 +154,6 @@ class Arguments extends \ArrayObject
      * Note that the argument will be cloned, not referenced.
      *
      * @param Argument $argument The argument to add
-     * @return void
      */
     public function addArgument(Argument $argument)
     {
@@ -223,7 +219,6 @@ class Arguments extends \ArrayObject
      * @param string $methodName Name of the method
      * @param array $arguments Method arguments
      * @throws \LogicException
-     * @return void
      */
     public function __call($methodName, array $arguments)
     {
@@ -267,8 +262,6 @@ class Arguments extends \ArrayObject
 
     /**
      * Remove all arguments and resets this object
-     *
-     * @return void
      */
     public function removeAll()
     {

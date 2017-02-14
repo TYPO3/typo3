@@ -47,8 +47,6 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * Handles trigger arguments, e.g. refreshing the module menu
      * widget if an extension with backend modules has been enabled
      * or disabled.
-     *
-     * @return void
      */
     protected function handleTriggerArguments()
     {

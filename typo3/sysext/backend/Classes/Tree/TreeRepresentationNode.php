@@ -57,7 +57,6 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
 
     /**
      * @param string $class
-     * @return void
      */
     public function setClass($class)
     {
@@ -74,7 +73,6 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
 
     /**
      * @param string|Icon $icon
-     * @return void
      */
     public function setIcon($icon)
     {
@@ -107,7 +105,6 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
 
     /**
      * @param string $type
-     * @return void
      */
     public function setType($type)
     {
@@ -126,7 +123,6 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
      * Sets the callback action
      *
      * @param string $callbackAction
-     * @return void
      */
     public function setCallbackAction($callbackAction)
     {
@@ -166,7 +162,6 @@ class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode
      * Sets data of the node by a given data array
      *
      * @param array $data
-     * @return void
      */
     public function dataFromArray($data)
     {

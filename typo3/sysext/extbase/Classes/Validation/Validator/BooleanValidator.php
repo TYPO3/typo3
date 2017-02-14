@@ -39,7 +39,6 @@ class BooleanValidator extends AbstractValidator
      * tests and actual usage. This makes the validator loose but still keeping functionality.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      */
     public function isValid($value)
     {

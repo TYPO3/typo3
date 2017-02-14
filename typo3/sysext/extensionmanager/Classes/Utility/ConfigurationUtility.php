@@ -41,7 +41,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Used by the InstallUtility to initialize local extension config.
      *
      * @param string $extensionKey Extension key
-     * @return void
      */
     public function saveDefaultConfiguration($extensionKey)
     {
@@ -61,7 +60,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $configuration Configuration to save
      * @param string $extensionKey Extension key
-     * @return void
      */
     public function writeConfiguration(array $configuration = [], $extensionKey)
     {

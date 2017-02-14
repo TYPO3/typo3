@@ -113,7 +113,6 @@ abstract class AbstractFrontend implements FrontendInterface
     /**
      * Removes all cache entries of this cache.
      *
-     * @return void
      * @api
      */
     public function flush()
@@ -125,7 +124,6 @@ abstract class AbstractFrontend implements FrontendInterface
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
      * @param string[] $tags
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function flushByTags(array $tags)
@@ -144,7 +142,6 @@ abstract class AbstractFrontend implements FrontendInterface
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     * @return void
      * @throws \InvalidArgumentException
      * @api
      */
@@ -167,7 +164,6 @@ abstract class AbstractFrontend implements FrontendInterface
     /**
      * Does garbage collection
      *
-     * @return void
      * @api
      */
     public function collectGarbage()

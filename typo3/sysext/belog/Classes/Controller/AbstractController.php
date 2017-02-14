@@ -94,7 +94,6 @@ abstract class AbstractController extends ActionController
      * Initialize the view
      *
      * @param ViewInterface $view The view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -107,7 +106,6 @@ abstract class AbstractController extends ActionController
 
     /**
      * init all actions
-     * @return void
      */
     public function initializeAction()
     {
@@ -119,7 +117,6 @@ abstract class AbstractController extends ActionController
     /**
      * Initialize index action
      *
-     * @return void
      * @throws \RuntimeException
      */
     public function initializeIndexAction()
@@ -147,7 +144,6 @@ abstract class AbstractController extends ActionController
      * Show general information and the installed modules
      *
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return void
      */
     public function indexAction(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint = null)
     {
@@ -188,7 +184,6 @@ abstract class AbstractController extends ActionController
      * Save current constraint object in be user settings (uC)
      *
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return void
      */
     protected function persistConstraintInBeUserData(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
     {
@@ -290,7 +285,6 @@ abstract class AbstractController extends ActionController
      * and the workspace selector is not shown.
      *
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return void
      */
     protected function forceWorkspaceSelectionIfInWorkspace(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
     {
@@ -325,7 +319,6 @@ abstract class AbstractController extends ActionController
      * Calculate the start- and end timestamp from the different time selector options
      *
      * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return void
      */
     protected function setStartAndEndTimeFromTimeSelector(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
     {

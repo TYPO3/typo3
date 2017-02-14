@@ -344,7 +344,6 @@ class Bootstrap
      *
      * @param string $objectName Object name, as later used by the Object Manager
      * @param object $instance The instance to register
-     * @return void
      * @internal This is not a public API method, do not use in own extensions
      */
     public function setEarlyInstance($objectName, $instance)
@@ -956,7 +955,6 @@ class Bootstrap
      * Check for registered ext tables hooks and run them
      *
      * @throws \UnexpectedValueException
-     * @return void
      */
     protected function runExtTablesPostProcessingHooks()
     {

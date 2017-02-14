@@ -82,8 +82,6 @@ class InfoModuleController extends BaseScriptClass
 
     /**
      * Initialize module header etc and call extObjContent function
-     *
-     * @return void
      */
     public function main()
     {

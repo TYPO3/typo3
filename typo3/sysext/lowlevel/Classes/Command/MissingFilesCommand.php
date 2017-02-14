@@ -78,8 +78,6 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -123,7 +121,6 @@ If you want to get more detailed information, use the --verbose option.')
      *
      * @param InputInterface $input holds information about entered parameters
      * @param SymfonyStyle $io necessary for outputting information
-     * @return void
      */
     protected function updateReferenceIndex(InputInterface $input, SymfonyStyle $io)
     {
@@ -218,7 +215,6 @@ If you want to get more detailed information, use the --verbose option.')
      * @param array $missingManagedFiles Contains the records of sys_refindex which need to be updated
      * @param bool $dryRun if set, the references are just displayed, but not removed
      * @param SymfonyStyle $io the IO object for output
-     * @return void
      */
     protected function removeReferencesToMissingFiles(array $missingManagedFiles, bool $dryRun, SymfonyStyle $io)
     {

@@ -133,7 +133,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-     * @return void
      * @internal
      */
     public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService)
@@ -170,7 +169,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return void
      * @internal
      */
     public function initializeObject()
@@ -188,7 +186,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Initializes the current state of the form, based on the request
-     * @return void
      */
     protected function initializeFormStateFromRequest()
     {
@@ -203,7 +200,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Initializes the current page data based on the current request, also modifiable by a hook
-     * @return void
      */
     protected function initializeCurrentPageFromRequest()
     {
@@ -264,8 +260,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Checks if the honey pot is active, and adds a validator if so.
-     *
-     * @return void
      */
     protected function initializeHoneypotFromRequest()
     {
@@ -293,8 +287,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Renders a hidden field if the honey pot is active.
-     *
-     * @return void
      */
     protected function renderHoneypot()
     {
@@ -362,7 +354,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * @param Page $page
      * @param string $honeypotName
-     * @return void
      */
     protected function setHoneypotNameInSession(Page $page, string $honeypotName)
     {
@@ -403,7 +394,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Runs throuh all validations
-     * @return void
      */
     protected function processSubmittedFormValues()
     {
@@ -533,7 +523,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * some kind of "preview" of the form.
      *
      * @param int $pageIndex
-     * @return void
      * @api
      */
     public function overrideCurrentPage(int $pageIndex)
@@ -575,8 +564,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Executes all finishers of this form
-     *
-     * @return void
      */
     protected function invokeFinishers()
     {
@@ -746,7 +733,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * @param string $identifier
      * @param mixed $value
-     * @return void
      * @internal
      */
     public function offsetSet($identifier, $value)
@@ -756,7 +742,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param string $identifier
-     * @return void
      * @internal
      */
     public function offsetUnset($identifier)
@@ -860,7 +845,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * is outputted to the browser.
      *
      * @param FormRuntime $formRuntime
-     * @return void
      * @api
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

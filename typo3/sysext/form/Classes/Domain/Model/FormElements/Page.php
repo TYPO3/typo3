@@ -56,7 +56,6 @@ class Page extends AbstractSection
      * Set the parent renderable
      *
      * @param CompositeRenderableInterface $parentRenderable
-     * @return void
      * @throws FormException
      * @api
      */

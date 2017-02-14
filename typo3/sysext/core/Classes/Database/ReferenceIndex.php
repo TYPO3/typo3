@@ -464,7 +464,6 @@ class ReferenceIndex
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
      * @param int $deleted Whether record is deleted-flagged or not
      * @param array $items Data array with database relations (table/id)
-     * @return void
      */
     public function createEntryData_dbRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
@@ -482,7 +481,6 @@ class ReferenceIndex
      * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
      * @param int $deleted Whether record is deleted-flagged or not
      * @param array $items Data array with file relations
-     * @return void
      */
     public function createEntryData_fileRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
@@ -504,7 +502,6 @@ class ReferenceIndex
      * @param string $flexPointer Pointer to location inside FlexForm structure
      * @param int $deleted
      * @param array $keys Data array with soft reference keys
-     * @return void
      */
     public function createEntryData_softreferences($table, $uid, $fieldName, $flexPointer, $deleted, $keys)
     {
@@ -660,7 +657,6 @@ class ReferenceIndex
      * @param array $PA Additional configuration used in calling function
      * @param string $structurePath Path of value in DS structure
      * @param object $parentObject Object reference to caller (unused)
-     * @return void
      * @see DataHandler::checkValue_flex_procInData_travDS(),FlexFormTools::traverseFlexFormXMLData()
      */
     public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $parentObject)

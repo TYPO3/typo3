@@ -133,7 +133,6 @@ class AjaxRequestHandler
      * Sets the content format for the ajax call
      *
      * @param string $format Can be one of 'plain' (default), 'xml', 'json', 'javascript', 'jsonbody' or 'jsonhead'
-     * @return void
      */
     public function setContentFormat($format)
     {
@@ -148,7 +147,6 @@ class AjaxRequestHandler
      * adds <script>-Tags around it.
      *
      * @param string $javascriptCallbackWrap The javascript callback wrap to be used
-     * @return void
      */
     public function setJavascriptCallbackWrap($javascriptCallbackWrap)
     {
@@ -159,7 +157,6 @@ class AjaxRequestHandler
      * Sets an error message and the error flag
      *
      * @param string $errorMsg The error message
-     * @return void
      */
     public function setError($errorMsg = '')
     {

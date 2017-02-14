@@ -286,7 +286,6 @@ class FolderTreeView extends AbstractTreeView
      * Get a tree for one storage
      *
      * @param ResourceStorage $storageObject
-     * @return void
      */
     public function getBrowseableTreeForStorage(ResourceStorage $storageObject)
     {
@@ -590,7 +589,6 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Get stored tree structure AND updating it if needed according to incoming PM GET var.
      *
-     * @return void
      * @access private
      */
     public function initializePositionSaving()

@@ -216,7 +216,6 @@ class GeneralUtility
      *
      * @param mixed $inputGet
      * @param string $key
-     * @return void
      */
     public static function _GETset($inputGet, $key = '')
     {
@@ -2274,7 +2273,6 @@ class GeneralUtility
      *
      * @param string $directory Target directory to create. Must a have trailing slash
      * @param string $deepDirectory Directory to create. This second parameter
-     * @return void
      * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
      * @throws \RuntimeException If directory could not be created
      */
@@ -3960,7 +3958,6 @@ class GeneralUtility
      * @see makeInstance
      * @param string $className
      * @param \TYPO3\CMS\Core\SingletonInterface $instance
-     * @return void
      * @internal
      */
     public static function setSingletonInstance($className, SingletonInterface $instance)
@@ -3982,7 +3979,6 @@ class GeneralUtility
      * @throws \InvalidArgumentException
      * @param string $className
      * @param \TYPO3\CMS\Core\SingletonInterface $instance
-     * @return void
      * @internal
      */
     public static function removeSingletonInstance($className, SingletonInterface $instance)
@@ -4009,7 +4005,6 @@ class GeneralUtility
      *
      * @internal
      * @param array $newSingletonInstances $className => $object
-     * @return void
      */
     public static function resetSingletonInstances(array $newSingletonInstances)
     {
@@ -4049,7 +4044,6 @@ class GeneralUtility
      * @throws \InvalidArgumentException if class extends \TYPO3\CMS\Core\SingletonInterface
      * @param string $className
      * @param object $instance
-     * @return void
      */
     public static function addInstance($className, $instance)
     {
@@ -4070,7 +4064,6 @@ class GeneralUtility
      * @throws \InvalidArgumentException if $className is empty or if $instance is no instance of $className
      * @param string $className a class name
      * @param object $instance an object
-     * @return void
      */
     protected static function checkInstanceClassName($className, $instance)
     {
@@ -4091,7 +4084,6 @@ class GeneralUtility
      * Warning: This is a helper method for unit tests. Do not call this directly in production code!
      *
      * @see makeInstance
-     * @return void
      */
     public static function purgeInstances()
     {
@@ -4104,7 +4096,6 @@ class GeneralUtility
      *
      * Used in unit tests only.
      *
-     * @return void
      * @internal
      */
     public static function flushInternalRuntimeCaches()
@@ -4172,7 +4163,6 @@ class GeneralUtility
      * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
      *
      * @param string $requireFile: Path of the file to be included
-     * @return void
      * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
      */
     public static function requireOnce($requireFile)
@@ -4189,7 +4179,6 @@ class GeneralUtility
      * A limited set of global variables are available (see function)
      *
      * @param string $requireFile: Path of the file to be included
-     * @return void
      * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
      */
     public static function requireFile($requireFile)
@@ -4253,7 +4242,6 @@ class GeneralUtility
     /**
      * Initialize the system log.
      *
-     * @return void
      * @see sysLog()
      */
     public static function initSysLog()
@@ -4297,7 +4285,6 @@ class GeneralUtility
      * @param string $msg Message (in English).
      * @param string $extKey Extension key (from which extension you are calling the log) or "Core
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     * @return void
      */
     public static function sysLog($msg, $extKey, $severity = 0)
     {
@@ -4370,7 +4357,6 @@ class GeneralUtility
      * @param string $extKey Extension key (from which extension you are calling the log)
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @return void
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
@@ -4387,7 +4373,6 @@ class GeneralUtility
      * Writes a message to the deprecation log.
      *
      * @param string $msg Message (in English).
-     * @return void
      */
     public static function deprecationLog($msg)
     {
@@ -4474,8 +4459,6 @@ class GeneralUtility
     /**
      * Logs a call to a deprecated function.
      * The log message will be taken from the annotation.
-     *
-     * @return void
      */
     public static function logDeprecatedFunction()
     {
@@ -4602,7 +4585,6 @@ class GeneralUtility
     /**
      * Ends and flushes all output buffers
      *
-     * @return void
      * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function flushOutputBuffers()

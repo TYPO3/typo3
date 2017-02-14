@@ -86,7 +86,6 @@ class DatabaseRecord
      * Sets the name of the database table.
      *
      * @param string $table
-     * @return void
      */
     public function setTable($table)
     {
@@ -107,7 +106,6 @@ class DatabaseRecord
      * Sets the id of the database record row.
      *
      * @param int $uid
-     * @return void
      */
     public function setUid($uid)
     {
@@ -129,7 +127,6 @@ class DatabaseRecord
      * Sets the database record row.
      *
      * @param array $row
-     * @return void
      */
     public function setRow(array $row)
     {
@@ -148,8 +145,6 @@ class DatabaseRecord
 
     /**
      * Loads the database record row (if not available yet).
-     *
-     * @return void
      */
     protected function loadRow()
     {

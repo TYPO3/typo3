@@ -124,7 +124,6 @@ class ProcessedFileRepository extends AbstractRepository
      * Adds a processedfile object in the database
      *
      * @param ProcessedFile $processedFile
-     * @return void
      */
     public function add($processedFile)
     {
@@ -151,7 +150,6 @@ class ProcessedFileRepository extends AbstractRepository
      * Updates an existing file object in the database
      *
      * @param ProcessedFile $processedFile
-     * @return void
      */
     public function update($processedFile)
     {

@@ -68,7 +68,6 @@ class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     *
      */
     public function setExponentCalledTwoTimesThrowsException()
     {
@@ -104,7 +103,6 @@ class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     *
      */
     public function setPrivateKeyCalledTwoTimesThrowsException()
     {
@@ -140,7 +138,6 @@ class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     *
      */
     public function setPublicKeyCalledTwoTimesThrowsException()
     {

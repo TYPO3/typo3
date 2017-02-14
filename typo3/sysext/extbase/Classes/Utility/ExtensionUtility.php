@@ -40,7 +40,6 @@ class ExtensionUtility
      * @param array $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
      * @param string $pluginType either \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN (default) or \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
      * @throws \InvalidArgumentException
-     * @return void
      */
     public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], $pluginType = self::PLUGIN_TYPE_PLUGIN)
     {
@@ -112,7 +111,6 @@ tt_content.' . $pluginSignature . ' {
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
      * @param string $pluginIconPathAndFilename is a path to an icon file (relative to TYPO3_mainDir), that will be displayed in the drop down menu in the backend (optional)
      * @throws \InvalidArgumentException
-     * @return void
      */
     public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = null)
     {
@@ -153,7 +151,6 @@ tt_content.' . $pluginSignature . ' {
      * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
      * @param array $moduleConfiguration The configuration options of the module (icon, locallang.xlf file)
      * @throws \InvalidArgumentException
-     * @return void
      */
     public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = [])
     {
@@ -214,7 +211,6 @@ tt_content.' . $pluginSignature . ' {
      * Register a type converter by class name.
      *
      * @param string $typeConverterClassName
-     * @return void
      * @api
      */
     public static function registerTypeConverter($typeConverterClassName)
@@ -231,7 +227,6 @@ tt_content.' . $pluginSignature . ' {
      *
      * @param string $vendorName The vendor name to check
      * @param string $extensionName The extension name that is affected
-     * @return void
      */
     protected static function checkVendorNameFormat($vendorName, $extensionName)
     {
@@ -245,7 +240,6 @@ tt_content.' . $pluginSignature . ' {
      *
      * @param string $extensionName The name of the extension
      * @throws \InvalidArgumentException
-     * @return void
      */
     protected static function checkExtensionNameFormat($extensionName)
     {
@@ -259,7 +253,6 @@ tt_content.' . $pluginSignature . ' {
      *
      * @param string $pluginName The name of the plugin
      * @throws \InvalidArgumentException
-     * @return void
      */
     protected static function checkPluginNameFormat($pluginName)
     {

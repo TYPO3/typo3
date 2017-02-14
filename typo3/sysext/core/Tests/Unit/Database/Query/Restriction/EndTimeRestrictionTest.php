@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 class EndTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     /**
-     * @return void
      */
     protected function setUp()
     {

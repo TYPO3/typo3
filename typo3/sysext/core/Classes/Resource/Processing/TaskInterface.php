@@ -113,7 +113,6 @@ interface TaskInterface
      * the file processing service.
      *
      * @param bool $successful Set this to FALSE if executing the task failed
-     * @return void
      */
     public function setExecuted($successful);
 

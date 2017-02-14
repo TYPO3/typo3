@@ -61,7 +61,6 @@ abstract class BaseTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * Adds the given directory structure to the mount folder in the VFS. Existing files will be overwritten!
      *
      * @param array $dirStructure
-     * @return void
      */
     protected function addToMount(array $dirStructure)
     {
@@ -83,7 +82,6 @@ abstract class BaseTestCase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      * Adds the given directory structure to the VFS. Existing files will be overwritten!
      *
      * @param array $dirStructure
-     * @return void
      */
     protected function addToVfs(array $dirStructure)
     {

@@ -149,7 +149,6 @@ class DataMap
      * Sets the name of the class the column map represents
      *
      * @param string $className
-     * @return void
      */
     public function setClassName($className)
     {
@@ -170,7 +169,6 @@ class DataMap
      * Sets the name of the table the column map represents
      *
      * @param string $tableName
-     * @return void
      */
     public function setTableName($tableName)
     {
@@ -191,7 +189,6 @@ class DataMap
      * Sets the record type
      *
      * @param string $recordType The record type
-     * @return void
      */
     public function setRecordType($recordType)
     {
@@ -212,7 +209,6 @@ class DataMap
      * Sets the subclasses
      *
      * @param array $subclasses An array of subclasses
-     * @return void
      */
     public function setSubclasses(array $subclasses)
     {
@@ -233,7 +229,6 @@ class DataMap
      * Adds a given column map to the data map.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
-     * @return void
      */
     public function addColumnMap(ColumnMap $columnMap)
     {
@@ -266,7 +261,6 @@ class DataMap
      * Sets the name of a column holding the page id
      *
      * @param string $pageIdColumnName The field name
-     * @return void
      */
     public function setPageIdColumnName($pageIdColumnName)
     {
@@ -287,7 +281,6 @@ class DataMap
      * Sets the name of a column holding the language id of the record
      *
      * @param string $languageIdColumnName The field name
-     * @return void
      */
     public function setLanguageIdColumnName($languageIdColumnName)
     {
@@ -308,7 +301,6 @@ class DataMap
      * Sets the name of a column holding the the uid of the record which this record is a translation of.
      *
      * @param string $translationOriginColumnName The field name
-     * @return void
      */
     public function setTranslationOriginColumnName($translationOriginColumnName)
     {
@@ -329,7 +321,6 @@ class DataMap
      * Sets the name of a column holding the the diff data for the record which this record is a translation of.
      *
      * @param string $translationOriginDiffSourceName The field name
-     * @return void
      */
     public function setTranslationOriginDiffSourceName($translationOriginDiffSourceName)
     {
@@ -350,7 +341,6 @@ class DataMap
      * Sets the name of a column holding the timestamp the record was modified
      *
      * @param string $modificationDateColumnName The field name
-     * @return void
      */
     public function setModificationDateColumnName($modificationDateColumnName)
     {
@@ -371,7 +361,6 @@ class DataMap
      * Sets the name of a column holding the creation date timestamp
      *
      * @param string $creationDateColumnName The field name
-     * @return void
      */
     public function setCreationDateColumnName($creationDateColumnName)
     {
@@ -392,7 +381,6 @@ class DataMap
      * Sets the name of a column holding the uid of the back-end user who created this record
      *
      * @param string $creatorColumnName The field name
-     * @return void
      */
     public function setCreatorColumnName($creatorColumnName)
     {
@@ -413,7 +401,6 @@ class DataMap
      * Sets the name of a column indicating the 'deleted' state of the row
      *
      * @param string $deletedFlagColumnName The field name
-     * @return void
      */
     public function setDeletedFlagColumnName($deletedFlagColumnName)
     {
@@ -434,7 +421,6 @@ class DataMap
      * Sets the name of a column indicating the 'hidden' state of the row
      *
      * @param string $disabledFlagColumnName The field name
-     * @return void
      */
     public function setDisabledFlagColumnName($disabledFlagColumnName)
     {
@@ -455,7 +441,6 @@ class DataMap
      * Sets the name of a column holding the timestamp the record should not displayed before
      *
      * @param string $startTimeColumnName The field name
-     * @return void
      */
     public function setStartTimeColumnName($startTimeColumnName)
     {
@@ -476,7 +461,6 @@ class DataMap
      * Sets the name of a column holding the timestamp the record should not displayed afterwards
      *
      * @param string $endTimeColumnName The field name
-     * @return void
      */
     public function setEndTimeColumnName($endTimeColumnName)
     {
@@ -497,7 +481,6 @@ class DataMap
      * Sets the name of a column holding the uid of the front-end user group which is allowed to edit this record
      *
      * @param string $frontendUserGroupColumnName The field name
-     * @return void
      */
     public function setFrontEndUserGroupColumnName($frontendUserGroupColumnName)
     {
@@ -518,7 +501,6 @@ class DataMap
      * Sets the name of a column holding the record type
      *
      * @param string $recordTypeColumnName The field name
-     * @return void
      */
     public function setRecordTypeColumnName($recordTypeColumnName)
     {

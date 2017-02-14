@@ -28,7 +28,6 @@ interface NameableCollectionInterface
      * Setter for the title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title);
 
@@ -36,7 +35,6 @@ interface NameableCollectionInterface
      * Setter for the description
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description);
 
@@ -49,8 +47,6 @@ interface NameableCollectionInterface
 
     /**
      * Getter for the description
-     *
-     * @return void
      */
     public function getDescription();
 }

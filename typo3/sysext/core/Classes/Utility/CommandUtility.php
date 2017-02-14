@@ -245,7 +245,6 @@ class CommandUtility
      * Extend the preset paths. This way an extension can install an executable and provide the path to \TYPO3\CMS\Core\Utility\CommandUtility
      *
      * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-     * @return void
      */
     public static function addPaths($paths)
     {
@@ -298,7 +297,6 @@ class CommandUtility
      * Initializes and extends the preset paths with own
      *
      * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-     * @return void
      */
     protected static function initPaths($paths = '')
     {

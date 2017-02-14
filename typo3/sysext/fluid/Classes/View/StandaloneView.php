@@ -84,7 +84,6 @@ class StandaloneView extends AbstractTemplateView
      * Sets the format of the current request (default format is "html")
      *
      * @param string $format
-     * @return void
      * @throws \RuntimeException
      * @api
      */
@@ -130,7 +129,6 @@ class StandaloneView extends AbstractTemplateView
      * Sets the absolute path to a Fluid template file
      *
      * @param string $templatePathAndFilename Fluid template path
-     * @return void
      * @api
      */
     public function setTemplatePathAndFilename($templatePathAndFilename)
@@ -159,7 +157,6 @@ class StandaloneView extends AbstractTemplateView
      * You can use setTemplatePathAndFilename() alternatively if you only want to specify the template path
      *
      * @param string $templateSource Fluid template source code
-     * @return void
      * @api
      */
     public function setTemplateSource($templateSource)
@@ -171,7 +168,6 @@ class StandaloneView extends AbstractTemplateView
      * Set the root path(s) to the templates.
      *
      * @param string[] $templateRootPaths Root paths to the templates.
-     * @return void
      * @api
      */
     public function setTemplateRootPaths(array $templateRootPaths)
@@ -183,7 +179,6 @@ class StandaloneView extends AbstractTemplateView
      * Set the root path(s) to the layouts.
      *
      * @param string[] $layoutRootPaths Root path to the layouts
-     * @return void
      * @api
      */
     public function setLayoutRootPaths(array $layoutRootPaths)
@@ -208,7 +203,6 @@ class StandaloneView extends AbstractTemplateView
      * If set, overrides the one determined from $this->partialRootPathPattern
      *
      * @param string[] $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
-     * @return void
      * @api
      */
     public function setPartialRootPaths(array $partialRootPaths)

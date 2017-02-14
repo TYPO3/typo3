@@ -26,7 +26,6 @@ interface CollectionProcessorInterface
      * @param int $mountPoint
      * @param int $level
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
 
@@ -37,7 +36,6 @@ interface CollectionProcessorInterface
      * @param string $searchFilter
      * @param int $mountPoint
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
 
@@ -46,7 +44,6 @@ interface CollectionProcessorInterface
      *
      * @param string $searchFilter
      * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
-     * @return void
      */
     public function postProcessGetTreeMounts($searchFilter, $nodeCollection);
 }

@@ -37,7 +37,6 @@ class EmptyValidator extends AbstractValidator
      * Checks if the given property ($propertyValue) is empty (NULL, empty string, empty array or empty object).
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

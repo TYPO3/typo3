@@ -67,7 +67,6 @@ class PaginateController extends AbstractWidgetController
 
     /**
      * Initializes the current information on which page the visitor is.
-     * @return void
      */
     public function initializeAction()
     {
@@ -80,7 +79,6 @@ class PaginateController extends AbstractWidgetController
 
     /**
      * @param int $currentPage
-     * @return void
      */
     public function indexAction($currentPage = 1)
     {
@@ -111,8 +109,6 @@ class PaginateController extends AbstractWidgetController
     /**
      * If a certain number of links should be displayed, adjust before and after
      * amounts accordingly.
-     *
-     * @return void
      */
     protected function calculateDisplayRange()
     {

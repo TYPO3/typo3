@@ -100,7 +100,6 @@ EOF;
     /**
      * Init function, setting the input vars in the global space.
      *
-     * @return void
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
@@ -141,8 +140,6 @@ EOF;
     /**
      * Main function which creates the image if needed and outputs the HTML code for the page displaying the image.
      * Accumulates the content in $this->content
-     *
-     * @return void
      */
     public function main()
     {

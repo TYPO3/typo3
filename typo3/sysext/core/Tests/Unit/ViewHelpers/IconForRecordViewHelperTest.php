@@ -56,7 +56,6 @@ class IconForRecordViewHelperTest extends ViewHelperBaseTestcase
 
     /**
      * @test
-     * @return void
      */
     public function renderRendersIconByWayOfTheIconFactoryAccordingToGivenArguments()
     {

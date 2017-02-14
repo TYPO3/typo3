@@ -109,8 +109,6 @@ class Clipboard
      ****************************************/
     /**
      * Initialize the clipboard from the be_user session
-     *
-     * @return void
      */
     public function initializeClipboard()
     {
@@ -134,8 +132,6 @@ class Clipboard
      * Call this method after initialization if you want to lock the clipboard to operate on the normal pad only.
      * Trying to switch pad through ->setCmd will not work.
      * This is used by the clickmenu since it only allows operation on single elements at a time (that is the "normal" pad)
-     *
-     * @return void
      */
     public function lockToNormal()
     {
@@ -153,7 +149,6 @@ class Clipboard
      * Selecting elements for 'copy' should be done by simultaneously setting setCopyMode.
      *
      * @param array $cmd Array of actions, see function description
-     * @return void
      */
     public function setCmd($cmd)
     {
@@ -195,7 +190,6 @@ class Clipboard
      * Setting the current pad on clipboard
      *
      * @param string $padIdent Key in the array $this->clipData
-     * @return void
      */
     public function setCurrentPad($padIdent)
     {
@@ -215,8 +209,6 @@ class Clipboard
     /**
      * Call this after initialization and setCmd in order to save the clipboard to the user session.
      * The function will check if the internal flag ->changed has been set and if so, save the clipboard. Else not.
-     *
-     * @return void
      */
     public function endClipboard()
     {
@@ -803,7 +795,6 @@ class Clipboard
      * Removes element on clipboard
      *
      * @param string $el Key of element in ->clipData array
-     * @return void
      */
     public function removeElement($el)
     {
@@ -816,7 +807,6 @@ class Clipboard
      * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
      *
      * @access private
-     * @return void
      */
     public function saveClipboard()
     {
@@ -836,8 +826,6 @@ class Clipboard
     /**
      * This traverses the elements on the current clipboard pane
      * and unsets elements which does not exist anymore or are disabled.
-     *
-     * @return void
      */
     public function cleanCurrent()
     {

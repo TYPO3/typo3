@@ -68,7 +68,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
     /**
      * Loads additional JavaScript
-     * @return void
      */
     protected function initialize()
     {
@@ -79,7 +78,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
     /**
      * Checks additional GET/POST requests
-     * @return void
      */
     protected function initVariables()
     {

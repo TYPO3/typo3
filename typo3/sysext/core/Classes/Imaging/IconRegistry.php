@@ -3115,8 +3115,6 @@ class IconRegistry implements SingletonInterface
 
     /**
      * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons
-     *
-     * @return void
      */
     protected function registerTCAIcons()
     {
@@ -3152,8 +3150,6 @@ class IconRegistry implements SingletonInterface
 
     /**
      * Register module icons
-     *
-     * @return void
      */
     protected function registerModuleIcons()
     {

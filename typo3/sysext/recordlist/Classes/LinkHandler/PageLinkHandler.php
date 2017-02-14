@@ -152,8 +152,6 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * This adds all content elements on a page to the view and lets you create a link to the element.
      *
      * @param int $pageId Page uid to expand
-     *
-     * @return void
      */
     protected function getRecordsOnExpandedPage($pageId)
     {
@@ -224,7 +222,6 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * Sets a DB mount and stores it in the currently defined backend user in her/his uc
-     * @return void
      */
     protected function setTemporaryDbMounts()
     {

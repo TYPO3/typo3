@@ -19,7 +19,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Update from TER controller test
- *
  */
 class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -64,7 +63,6 @@ class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
     /**
      * @test
-     * @return void
      */
     public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsEmpty()
     {
@@ -90,7 +88,6 @@ class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
     /**
      * @test
-     * @return void
      */
     public function updateExtensionListFromTerDoesNotCallsUpdateExtListIfExtensionListIsNotEmpty()
     {
@@ -116,7 +113,6 @@ class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
 
     /**
      * @test
-     * @return void
      */
     public function updateExtensionListFromTerCallsUpdateExtListIfForceUpdateCheckIsSet()
     {

@@ -83,8 +83,6 @@ class RteController extends AbstractWizardController
 
     /**
      * Initialization of the class
-     *
-     * @return void
      */
     protected function init()
     {
@@ -116,8 +114,6 @@ class RteController extends AbstractWizardController
 
     /**
      * Main function, rendering the document with the iFrame with the RTE in.
-     *
-     * @return void
      */
     public function main()
     {

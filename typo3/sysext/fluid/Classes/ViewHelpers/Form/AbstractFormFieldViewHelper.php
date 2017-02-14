@@ -47,7 +47,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Initialize arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()
@@ -75,7 +74,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      * Define respectSubmittedDataValue to enable or disable the usage of the submitted values in the viewhelper.
      *
      * @param bool $respectSubmittedDataValue
-     * @return void
      */
     public function setRespectSubmittedDataValue($respectSubmittedDataValue)
     {
@@ -240,8 +238,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Add additional identity properties in case the current property is hierarchical (of the form "bla.blubb").
      * Then, [bla][__identity] has to be generated as well.
-     *
-     * @return void
      */
     protected function addAdditionalIdentityPropertiesIfNeeded()
     {
@@ -316,8 +312,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Add an CSS class if this view helper has errors
-     *
-     * @return void
      */
     protected function setErrorClassAttribute()
     {

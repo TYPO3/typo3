@@ -21,8 +21,6 @@ class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 {
     /**
      * Simply assigns the ID of the widget.
-     *
-     * @return void
      */
     public function indexAction()
     {

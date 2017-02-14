@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core;
 
 /**
  * An exception
- *
  */
 class Exception extends \Exception
 {

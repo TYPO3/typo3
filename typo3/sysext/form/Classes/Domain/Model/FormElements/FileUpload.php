@@ -27,7 +27,6 @@ class FileUpload extends AbstractFormElement
 
     /**
      * Initializes the Form Element by setting the data type to a Extbase File Reference
-     * @return void
      * @internal
      */
     public function initializeFormElement()
@@ -37,7 +36,6 @@ class FileUpload extends AbstractFormElement
     }
 
     /**
-     * @return void
      * @internal
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */

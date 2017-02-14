@@ -34,7 +34,6 @@ interface DatabaseFileIconsHookInterface
      * @param array $uidList The array of item-uids. Have a look at \TYPO3\CMS\Backend\Form\FormEngine::dbFileIcons parameter "$itemArray
      * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid.
      * @param object $parentObject Parent object
-     * @return void
      */
     public function dbFileIcons_postProcess(array &$params, &$selector, &$thumbnails, array &$icons, &$rightbox, &$fName, array &$uidList, array $additionalParams, $parentObject);
 }

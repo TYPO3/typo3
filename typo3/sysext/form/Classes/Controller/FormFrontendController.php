@@ -35,7 +35,6 @@ class FormFrontendController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager
-     * @return void
      * @internal
      */
     public function injectFormPersistenceManager(\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager)
@@ -50,7 +49,6 @@ class FormFrontendController extends ActionController
      * This method is used directly to display the first page from the
      * formDefinition because its cached.
      *
-     * @return void
      * @internal
      */
     public function renderAction()
@@ -69,7 +67,6 @@ class FormFrontendController extends ActionController
      * This method is used to display all pages / finishers except the
      * first page because its non cached.
      *
-     * @return void
      * @internal
      */
     public function performAction()

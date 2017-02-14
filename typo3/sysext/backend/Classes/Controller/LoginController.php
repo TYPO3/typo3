@@ -322,8 +322,6 @@ class LoginController
 
     /**
      * Making interface selector:
-     *
-     * @return void
      */
     public function makeInterfaceSelectorBox()
     {

@@ -64,7 +64,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Adds an object to this repository.
      *
      * @param object $object The object to add
-     * @return void
      * @api
      */
     public function add($object)
@@ -75,7 +74,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes an object from this repository.
      *
      * @param object $object The object to remove
-     * @return void
      * @api
      */
     public function remove($object)
@@ -87,7 +85,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      *
      * @param object $existingObject The existing object
      * @param object $newObject The new object
-     * @return void
      * @api
      */
     public function replace($existingObject, $newObject)
@@ -181,7 +178,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * Removes all objects of this repository as if remove() was called for
      * all of them.
      *
-     * @return void
      * @api
      */
     public function removeAll()
@@ -232,7 +228,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param array $defaultOrderings The property names to order by
      *
      * @throws \BadMethodCallException
-     * @return void
      * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
@@ -246,7 +241,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
      *
      * @throws \BadMethodCallException
-     * @return void
      * @api
      */
     public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)
@@ -285,7 +279,6 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
      * @param array $arguments The arguments
      *
      * @throws \BadMethodCallException
-     * @return void
      */
     public function __call($method, $arguments)
     {

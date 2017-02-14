@@ -71,7 +71,6 @@ class TypoScriptReferenceLoader
      * Load XML file
      *
      * @param string $filepath
-     * @return void
      */
     protected function loadFile($filepath)
     {

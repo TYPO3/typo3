@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Validation;
 
 /**
  * This object holds a validation error.
- *
  */
 class Error extends \TYPO3\CMS\Extbase\Error\Error
 {

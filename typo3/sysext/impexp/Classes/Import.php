@@ -112,8 +112,6 @@ class Import extends ImportExport
 
     /**
      * Init the object
-     *
-     * @return void
      */
     public function init()
     {
@@ -127,8 +125,6 @@ class Import extends ImportExport
 
     /**
      * Initialize all settings for the import
-     *
-     * @return void
      */
     protected function initializeImport()
     {
@@ -149,8 +145,6 @@ class Import extends ImportExport
 
     /**
      * Initialize the all present storage objects
-     *
-     * @return void
      */
     protected function initializeStorageObjects()
     {
@@ -163,7 +157,6 @@ class Import extends ImportExport
      * Imports the internal data array to $pid.
      *
      * @param int $pid Page ID in which to import the content
-     * @return void
      */
     public function importData($pid)
     {
@@ -190,8 +183,6 @@ class Import extends ImportExport
 
     /**
      * Imports the sys_file_storage records from internal data array.
-     *
-     * @return void
      */
     protected function writeSysFileStorageRecords()
     {
@@ -341,8 +332,6 @@ class Import extends ImportExport
 
     /**
      * Imports the sys_file records and the binary files data from internal data array.
-     *
-     * @return void
      */
     protected function writeSysFileRecords()
     {
@@ -468,8 +457,6 @@ class Import extends ImportExport
     /**
      * Removes all sys_file_reference records from the import data array that are pointing to sys_file records which
      * are missing not in the import data to prevent exceptions on checking the related file started by the Datahandler.
-     *
-     * @return void
      */
     protected function removeSysFileReferenceRecordsFromImportDataWithRelationToMissingFile()
     {
@@ -515,7 +502,6 @@ class Import extends ImportExport
      *
      * @param int $oldFileUid
      * @param int $newFileUid
-     * @return void
     */
     protected function fixUidLocalInSysFileReferenceRecords($oldFileUid, $newFileUid)
     {
@@ -587,7 +573,6 @@ class Import extends ImportExport
      * Writing pagetree/pages to database:
      *
      * @param int $pid PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
-     * @return void
      * @see writeRecords_records()
      */
     public function writeRecords_pages($pid)
@@ -642,7 +627,6 @@ class Import extends ImportExport
      * Organize all updated pages in page tree so they are related like in the import file
      * Only used for updates and when $this->dat['header']['pagetree'] is an array.
      *
-     * @return void
      * @access private
      * @see writeRecords_pages(), writeRecords_records_order()
      */
@@ -706,7 +690,6 @@ class Import extends ImportExport
      * Write all database records except pages (writtein in writeRecords_pages())
      *
      * @param int $pid Page id in which to import
-     * @return void
      * @see writeRecords_pages()
      */
     public function writeRecords_records($pid)
@@ -767,7 +750,6 @@ class Import extends ImportExport
      * Only used for updates
      *
      * @param int $mainPid Main PID into which we import.
-     * @return void
      * @access private
      * @see writeRecords_records(), writeRecords_pages_order()
      */
@@ -822,7 +804,6 @@ class Import extends ImportExport
      * @param string $table Table name (from import memory)
      * @param int $uid Record UID (from import memory)
      * @param int $pid Page id
-     * @return void
      * @see writeRecords()
      */
     public function addSingle($table, $uid, $pid)
@@ -934,7 +915,6 @@ class Import extends ImportExport
      * Registers the substNEWids in memory.
      *
      * @param array $substNEWwithIDs From DataHandler to be merged into internal mapping variable in this object
-     * @return void
      * @see writeRecords()
      */
     public function addToMapId($substNEWwithIDs)
@@ -975,8 +955,6 @@ class Import extends ImportExport
 
     /**
      * Cleaning up all the temporary files stored in typo3temp/ folder
-     *
-     * @return void
      */
     public function unlinkTempFiles()
     {
@@ -1003,7 +981,6 @@ class Import extends ImportExport
      * to imported records are all re-created so imported records are correctly related again)
      * Relations in flexform fields are processed in setFlexFormRelations() after this function
      *
-     * @return void
      * @see setFlexFormRelations()
      */
     public function setRelations()
@@ -1155,7 +1132,6 @@ class Import extends ImportExport
      * After all DB relations has been set in the end of the import (see setRelations()) then it is time to correct all relations inside of FlexForm fields.
      * The reason for doing this after is that the setting of relations may affect (quite often!) which data structure is used for the flexforms field!
      *
-     * @return void
      * @see setRelations()
      */
     public function setFlexFormRelations()
@@ -1275,8 +1251,6 @@ class Import extends ImportExport
 
     /**
      * Processing of soft references
-     *
-     * @return void
      */
     public function processSoftReferences()
     {
@@ -1796,7 +1770,6 @@ class Import extends ImportExport
      * (This function can be used to test the output strings from ->compileMemoryToFileContent())
      *
      * @param string $filecontent File content
-     * @return void
      */
     public function loadContent($filecontent)
     {
@@ -1846,8 +1819,6 @@ class Import extends ImportExport
 
     /**
      * Setting up the object based on the recently loaded ->dat array
-     *
-     * @return void
      */
     public function loadInit()
     {

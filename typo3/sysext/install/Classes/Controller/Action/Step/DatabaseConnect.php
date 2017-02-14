@@ -283,8 +283,6 @@ class DatabaseConnect extends AbstractStepAction
      * Unix domain socket connections are quicker than TCP/IP, so it is
      * tested if a unix domain socket connection to localhost is successful. If not,
      * a default configuration for TCP/IP is used.
-     *
-     * @return void
      */
     protected function useDefaultValuesForNotConfiguredOptions()
     {

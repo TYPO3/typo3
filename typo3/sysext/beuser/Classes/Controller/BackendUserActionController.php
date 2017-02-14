@@ -48,7 +48,6 @@ class BackendUserActionController extends ActionController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -68,8 +67,6 @@ class BackendUserActionController extends ActionController
 
     /**
      * Generates the action menu
-     *
-     * @return void
      */
     protected function generateMenu()
     {
@@ -115,7 +112,6 @@ class BackendUserActionController extends ActionController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()

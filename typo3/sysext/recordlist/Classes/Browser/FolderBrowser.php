@@ -39,7 +39,6 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
 
     /**
      * Adds additional JavaScript modules
-     * @return void
      */
     protected function initialize()
     {
@@ -53,7 +52,6 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
 
     /**
      * Checks for an additional request parameter
-     * @return void
      */
     protected function initVariables()
     {

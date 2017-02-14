@@ -118,7 +118,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * @param string $persistenceIdentifier
      * @param array $formDefinition
-     * @return void
      * @throws PersistenceManagerException
      * @internal
      */
@@ -148,7 +147,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Only files with the extension .yaml are removed.
      *
      * @param string $persistenceIdentifier
-     * @return void
      * @throws PersistenceManagerException
      * @internal
      */

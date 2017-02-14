@@ -240,8 +240,6 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 
     /**
      * Creates an array mapping all uids to the basePath of storages using the "local" driver.
-     *
-     * @return void
      */
     protected function initializeLocalStorageCache()
     {

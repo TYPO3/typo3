@@ -36,7 +36,6 @@ class AdvancedPassword extends AbstractFormElement
      * @param FormRuntime $formRuntime
      * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
-     * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9

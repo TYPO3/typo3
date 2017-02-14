@@ -25,7 +25,6 @@ class AlphanumericValidator extends AbstractValidator
      * The given $value is valid if it is an alphanumeric string, which is defined as [\pL\d]*.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

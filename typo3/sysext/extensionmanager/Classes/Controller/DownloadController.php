@@ -232,7 +232,6 @@ class DownloadController extends AbstractController
      * redirects directly to configuration after installing
      *
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-     * @return void
      */
     public function installDistributionAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
     {
@@ -317,8 +316,6 @@ class DownloadController extends AbstractController
      * Show update comments for extensions that can be updated.
      * Fetches update comments for all versions between the current
      * installed and the highest version.
-     *
-     * @return void
      */
     protected function updateCommentForUpdatableVersionsAction()
     {

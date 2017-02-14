@@ -26,7 +26,6 @@ class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try validating an empty button
      *
      * @test
-     * @return void
      */
     public function isButtonValidBlankCallExpectFalse()
     {
@@ -39,7 +38,6 @@ class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the Icon
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedIconExpectFalse()
     {
@@ -53,7 +51,6 @@ class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit the title
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedTitleExpectFalse()
     {
@@ -68,7 +65,6 @@ class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Omit Href
      *
      * @test
-     * @return void
      */
     public function isButtonValidOmittedHrefExpectFalse()
     {
@@ -83,7 +79,6 @@ class LinkButtonTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Send a valid button
      *
      * @test
-     * @return void
      */
     public function isButtonValidAllValuesSetExpectTrue()
     {

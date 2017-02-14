@@ -28,8 +28,6 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
 
     /**
      * Set up the test
-     *
-     * @return void
      */
     protected function setUp()
     {

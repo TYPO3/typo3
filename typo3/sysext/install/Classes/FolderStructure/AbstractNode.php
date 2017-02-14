@@ -67,8 +67,6 @@ abstract class AbstractNode
      * Set target permission
      *
      * @param string $permission Permissions as a 4 character octal string, i.e. 2775 or 0644
-     *
-     * @return void
      */
     protected function setTargetPermission($permission)
     {

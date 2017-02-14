@@ -142,8 +142,6 @@ class TimeTracker implements SingletonInterface
 
     /**
      * Sets the starting time
-     *
-     * @return void
      */
     public function start()
     {
@@ -158,7 +156,6 @@ class TimeTracker implements SingletonInterface
      *
      * @param string $tslabel Label string for the entry, eg. TypoScript property name
      * @param string $value Additional value(?)
-     * @return void
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), pull()
      */
     public function push($tslabel, $value = '')
@@ -185,7 +182,6 @@ class TimeTracker implements SingletonInterface
      * Pulls an element from the TypoScript tracking array
      *
      * @param string $content The content string generated within the push/pull part.
-     * @return void
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), push()
      */
     public function pull($content = '')
@@ -206,7 +202,6 @@ class TimeTracker implements SingletonInterface
      *
      * @param string $content The message string
      * @param int $num Message type: 0: information, 1: message, 2: warning, 3: error
-     * @return void
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
      */
     public function setTSlogMessage($content, $num = 0)
@@ -230,7 +225,6 @@ class TimeTracker implements SingletonInterface
      *
      * @param array $data Query array
      * @param string $msg Message/Label to attach
-     * @return void
      */
     public function setTSselectQuery(array $data, $msg = '')
     {
@@ -248,7 +242,6 @@ class TimeTracker implements SingletonInterface
     /**
      * Increases the stack pointer
      *
-     * @return void
      * @see decStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
     public function incStackPointer()
@@ -263,7 +256,6 @@ class TimeTracker implements SingletonInterface
     /**
      * Decreases the stack pointer
      *
-     * @return void
      * @see incStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
     public function decStackPointer()
@@ -536,7 +528,6 @@ class TimeTracker implements SingletonInterface
      * @param array $arr Array (passed by reference) and modified
      * @param int $pointer Pointer value
      * @param string $uniqueId Unique ID string
-     * @return void
      * @access private
      * @see printTSlog()
      */

@@ -30,7 +30,6 @@ class PdoHelper
      * @param \PDO $databaseHandle
      * @param string $pdoDriver
      * @param string $pathAndFilename
-     * @return void
      */
     public static function importSql(\PDO $databaseHandle, $pdoDriver, $pathAndFilename)
     {

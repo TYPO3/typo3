@@ -52,7 +52,6 @@ class StripTagsViewHelper extends AbstractViewHelper
     /**
      * Initialize ViewHelper arguments
      *
-     * @return void
      * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      */
     public function initializeArguments()

@@ -49,7 +49,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
 
     /**
      * @param string $allowedLanguages
-     * @return void
      */
     public function setAllowedLanguages($allowedLanguages)
     {
@@ -66,7 +65,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
 
     /**
      * @param string $dbMountPoints
-     * @return void
      */
     public function setDbMountPoints($dbMountPoints)
     {
@@ -99,7 +97,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
 
     /**
      * @param string $fileMountPoints
-     * @return void
      */
     public function setFileMountPoints($fileMountPoints)
     {

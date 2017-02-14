@@ -25,7 +25,6 @@ class StringValidator extends AbstractValidator
      * Checks if the given value is a string.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @api
      */
     public function isValid($value)

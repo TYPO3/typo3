@@ -43,7 +43,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * or "addElement" method with the correct type hint.
      *
      * @param RenderableInterface $renderable
-     * @return void
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -65,7 +64,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      *
      * @param RenderableInterface $renderableToMove
      * @param RenderableInterface $referenceRenderable
-     * @return void
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -102,7 +100,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      *
      * @param RenderableInterface $renderableToMove
      * @param RenderableInterface $referenceRenderable
-     * @return void
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -157,7 +154,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * or "removeElement" method with the correct type hint.
      *
      * @param RenderableInterface $renderableToRemove
-     * @return void
      * @throws FormDefinitionConsistencyException
      * @internal
      */
@@ -183,7 +179,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
     /**
      * Register this element at the parent form, if there is a connection to the parent form.
      *
-     * @return void
      * @internal
      */
     public function registerInFormIfPossible()
@@ -199,7 +194,6 @@ abstract class AbstractCompositeRenderable extends AbstractRenderable implements
      * renderable.
      * This just passes the event down to all child renderables of this composite renderable.
      *
-     * @return void
      * @internal
      */
     public function onRemoveFromParentRenderable()

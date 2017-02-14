@@ -56,7 +56,6 @@ class ConfigurationController extends AbstractModuleController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -74,7 +73,6 @@ class ConfigurationController extends AbstractModuleController
      *
      * @param array $extension Extension information, must contain at least the key
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     * @return void
      */
     public function showConfigurationFormAction(array $extension)
     {
@@ -106,7 +104,6 @@ class ConfigurationController extends AbstractModuleController
      *
      * @param array $config The new extension configuration
      * @param string $extensionKey The extension key
-     * @return void
      */
     public function saveAction(array $config, $extensionKey)
     {
@@ -133,7 +130,6 @@ class ConfigurationController extends AbstractModuleController
      *
      * @param array $config
      * @param string $extensionKey
-     * @return void
      */
     public function saveAndCloseAction(array $config, $extensionKey)
     {
@@ -148,7 +144,6 @@ class ConfigurationController extends AbstractModuleController
      *
      * @param string $extensionKey
      * @param array $newConfiguration
-     * @return void
      */
     protected function emitAfterExtensionConfigurationWriteSignal($extensionKey, array $newConfiguration)
     {
@@ -160,7 +155,6 @@ class ConfigurationController extends AbstractModuleController
      *
      * @param array $config
      * @param $extensionKey
-     * @return void
      */
     protected function saveConfiguration(array $config, $extensionKey)
     {
@@ -178,7 +172,6 @@ class ConfigurationController extends AbstractModuleController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()

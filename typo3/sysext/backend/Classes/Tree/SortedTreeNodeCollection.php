@@ -76,8 +76,6 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
 
     /**
      * Normalizes the array by reordering the keys
-     *
-     * @return void
      */
     protected function normalize()
     {
@@ -92,7 +90,6 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
      * Adds a node to the internal list in a sorted approach
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-     * @return void
      */
     public function append($node)
     {

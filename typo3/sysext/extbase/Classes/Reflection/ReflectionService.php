@@ -172,7 +172,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      * The cache must be set before initializing the Reflection Service.
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $dataCache Cache for the Reflection service
-     * @return void
      */
     public function setDataCache(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $dataCache)
     {
@@ -183,7 +182,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      * Initializes this service
      *
      * @throws Exception
-     * @return void
      */
     public function initialize()
     {
@@ -208,8 +206,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Shuts the Reflection Service down.
-     *
-     * @return void
      */
     public function shutdown()
     {
@@ -442,7 +438,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      * Reflects the given class and stores the results in this service's properties.
      *
      * @param string $className Full qualified name of the class to reflect
-     * @return void
      */
     protected function reflectClass($className)
     {
@@ -581,8 +576,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Tries to load the reflection data from this service's cache.
-     *
-     * @return void
      */
     protected function loadFromCache()
     {
@@ -598,7 +591,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      * Exports the internal reflection data into the ReflectionData cache.
      *
      * @throws Exception
-     * @return void
      */
     protected function saveToCache()
     {

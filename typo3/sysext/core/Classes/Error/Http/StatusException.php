@@ -52,7 +52,6 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception
      * Setter for the title.
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {

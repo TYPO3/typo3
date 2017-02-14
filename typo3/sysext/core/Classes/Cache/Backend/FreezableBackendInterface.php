@@ -26,8 +26,6 @@ interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backen
      *
      * On the positive side, a frozen cache backend is much faster on read access.
      * A frozen backend can only be thawn by calling the flush() method.
-     *
-     * @return void
      */
     public function freeze();
 

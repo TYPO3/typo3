@@ -66,7 +66,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Constructs a new Blog
-     *
      */
     public function __construct()
     {
@@ -77,7 +76,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets this blog's title
      *
      * @param string $title The blog's title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -96,7 +94,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $logo
-     * @return void
      */
     public function setLogo($logo)
     {
@@ -115,7 +112,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the description for the blog
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -136,7 +132,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a post to this blog
      *
      * @param Post $post
-     * @return void
      */
     public function addPost(Post $post)
     {
@@ -147,7 +142,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Remove a post from this blog
      *
      * @param Post $postToRemove The post to be removed
-     * @return void
      */
     public function removePost(Post $postToRemove)
     {
@@ -156,8 +150,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Remove all posts from this blog
-     *
-     * @return void
      */
     public function removeAllPosts()
     {
@@ -218,7 +210,6 @@ class Blog extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the administrator value
      *
      * @param Administrator $administrator The Administrator of this Blog
-     * @return void
      */
     public function setAdministrator(Administrator $administrator)
     {

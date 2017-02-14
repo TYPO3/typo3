@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 /**
  * Test case for the abstract driver.
- *
  */
 class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
 {

@@ -235,7 +235,6 @@ class RedisSessionBackend implements SessionBackendInterface
     /**
      * Initializes the redis backend
      *
-     * @return void
      * @throws \RuntimeException if access to redis with password is denied or if database selection fails
      */
     protected function initializeConnection()

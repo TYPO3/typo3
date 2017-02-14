@@ -18,7 +18,6 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 
 /**
  * Testcase for the JSON view
- *
  */
 class JsonViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -39,7 +38,6 @@ class JsonViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up this test case
-     * @return void
      */
     protected function setUp()
     {

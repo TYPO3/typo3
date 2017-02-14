@@ -629,7 +629,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      *
      * @param string $tableName Table name of the record
      * @param int $uid UID of the record
-     * @return void
      */
     protected function clearPageCache($tableName, $uid)
     {

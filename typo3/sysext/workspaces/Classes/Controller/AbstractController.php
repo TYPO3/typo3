@@ -55,8 +55,6 @@ class AbstractController extends ActionController
 
     /**
      * Initializes the controller before invoking an action method.
-     *
-     * @return void
      */
     protected function initializeAction()
     {
@@ -95,8 +93,6 @@ class AbstractController extends ActionController
 
     /**
      * Assigns additional Workspace settings to TYPO3.settings.Workspaces.extension
-     *
-     * @return void
      */
     protected function assignExtensionSettings()
     {

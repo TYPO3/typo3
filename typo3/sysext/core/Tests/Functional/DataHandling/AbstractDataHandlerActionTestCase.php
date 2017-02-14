@@ -120,8 +120,6 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
 
     /**
      * Asserts correct number of warning and error log entries.
-     *
-     * @return void
      */
     protected function assertErrorLogEntries()
     {

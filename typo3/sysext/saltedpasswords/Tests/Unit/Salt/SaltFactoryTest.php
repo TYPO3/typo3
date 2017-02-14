@@ -30,8 +30,6 @@ class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * Sets up the fixtures for this testcase.
-     *
-     * @return void
      */
     protected function setUp()
     {

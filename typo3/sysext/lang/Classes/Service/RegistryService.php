@@ -43,7 +43,6 @@ class RegistryService
      * Set namespace
      *
      * @param string $namespace The namespace
-     * @return void
      */
     public function setNamespace($namespace)
     {
@@ -93,7 +92,6 @@ class RegistryService
      * @param string $name Registry entry name
      * @param mixed $value The value
      * @param string $namespace Optional namespace
-     * @return void
      */
     public function set($name, $value, $namespace = null)
     {
@@ -106,7 +104,6 @@ class RegistryService
      *
      * @param string $name Registry entry name
      * @param string $namespace Optional namespace
-     * @return void
      */
     public function remove($name, $namespace = null)
     {

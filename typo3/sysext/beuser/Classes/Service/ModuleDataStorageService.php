@@ -58,7 +58,6 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface
      * Persists serialized module data to user settings
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData
-     * @return void
      */
     public function persistModuleData(\TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData)
     {

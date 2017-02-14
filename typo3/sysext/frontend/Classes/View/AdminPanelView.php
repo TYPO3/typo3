@@ -72,8 +72,6 @@ class AdminPanelView
 
     /**
      * Initializes settings for the admin panel.
-     *
-     * @return void
      */
     public function initialize()
     {
@@ -145,8 +143,6 @@ class AdminPanelView
     /**
      * Saves any change in settings made in the Admin Panel.
      * Called from \TYPO3\CMS\Frontend\Http\RequestHandler right after access check for the Admin Panel
-     *
-     * @return void
      */
     public function saveConfigOptions()
     {
@@ -222,8 +218,6 @@ class AdminPanelView
 
     /**
      * Enables the force preview option.
-     *
-     * @return void
      */
     public function forcePreview()
     {

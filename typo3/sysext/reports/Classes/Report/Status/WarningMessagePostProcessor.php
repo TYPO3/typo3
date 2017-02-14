@@ -31,7 +31,6 @@ class WarningMessagePostProcessor
      * control over the system warning messages.
      *
      * @param array $warningMessages An array of messages related to already found issues.
-     * @return void
      */
     public function displayWarningMessages_postProcess(array &$warningMessages)
     {

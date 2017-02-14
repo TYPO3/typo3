@@ -125,7 +125,6 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
      * Creates the module menu object structure from the raw data array
      *
      * @param array $rawModuleData
-     * @return void
      */
     protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData)
     {
@@ -188,8 +187,6 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Creates the "third level" menu entries (submodules for the info module for
      * example) from the TBE_MODULES_EXT array
-     *
-     * @return void
      */
     protected function createMenuEntriesForTbeModulesExt()
     {

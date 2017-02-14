@@ -108,8 +108,6 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 
     /**
      * Initialize module header etc and call extObjContent function
-     *
-     * @return void
      */
     public function main()
     {

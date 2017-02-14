@@ -56,7 +56,6 @@ abstract class AbstractElementRenderer implements RendererInterface
 
     /**
      * @param FormRuntime $formRuntime
-     * @return void
      * @api
      */
     public function setFormRuntime(FormRuntime $formRuntime)

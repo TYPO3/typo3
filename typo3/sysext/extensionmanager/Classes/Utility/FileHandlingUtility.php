@@ -65,8 +65,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Initialize method - loads language file
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -79,7 +77,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $extensionData
      * @param Extension $extension
      * @param string $pathType
-     * @return void
      */
     public function unpackExtensionFromExtensionDataArray(array $extensionData, Extension $extension = null, $pathType = 'Local')
     {
@@ -128,7 +125,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $directories
      * @param string $rootPath
-     * @return void
      */
     protected function createDirectoriesForExtensionFiles(array $directories, $rootPath)
     {
@@ -160,7 +156,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param array $files
      * @param string $rootPath
-     * @return void
      */
     protected function writeExtensionFiles(array $files, $rootPath)
     {
@@ -216,7 +211,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extDirPath
      * @throws ExtensionManagerException
-     * @return void
      */
     protected function addDirectory($extDirPath)
     {
@@ -294,7 +288,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extDirPath
      * @throws ExtensionManagerException
-     * @return void
      */
     public function removeDirectory($extDirPath)
     {
@@ -320,7 +313,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $extensionData
      * @param string $rootPath
      * @param Extension $extension
-     * @return void
      */
     protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = null)
     {
@@ -474,7 +466,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $fileName file name
      * @param string $pathType path type (Local, Global, System)
      * @throws ExtensionManagerException
-     * @return void
      */
     public function unzipExtensionFromFile($file, $fileName, $pathType = 'Local')
     {
@@ -509,7 +500,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $fileName
      * @param string $downloadName
-     * @return void
      */
     public function sendZipFileToBrowserAndDelete($fileName, $downloadName = '')
     {
@@ -529,7 +519,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $fileName
      * @param string $downloadName
-     * @return void
      */
     public function sendSqlDumpFileToBrowserAndDelete($fileName, $downloadName = '')
     {

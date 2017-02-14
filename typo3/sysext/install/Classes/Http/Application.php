@@ -69,7 +69,6 @@ class Application implements ApplicationInterface
      * Does not call "run()" therefore
      *
      * @param callable $execute
-     * @return void
      */
     public function run(callable $execute = null)
     {

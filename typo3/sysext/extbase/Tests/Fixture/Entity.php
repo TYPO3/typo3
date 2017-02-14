@@ -40,7 +40,6 @@ class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets this entity's name
      *
      * @param string $name The entity's name
-     * @return void
      */
     public function setName($name)
     {

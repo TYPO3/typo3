@@ -48,7 +48,6 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      * Sets the expand state
      *
      * @param $expanded
-     * @return void
      */
     public function setExpanded($expanded)
     {
@@ -69,7 +68,6 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      * Sets the selectable property
      *
      * @param bool $selectable
-     * @return void
      */
     public function setSelectable($selectable)
     {
@@ -90,7 +88,6 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      * Sets the select state
      *
      * @param bool $selected
-     * @return void
      */
     public function setSelected($selected)
     {
@@ -121,7 +118,6 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      * Sets the hasChildren property
      *
      * @param bool $value
-     * @return void
      */
     public function setHasChildren($value)
     {
@@ -161,7 +157,6 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode
      * Sets the sort value
      *
      * @param mixed $sortValue
-     * @return void
      */
     public function setSortValue($sortValue)
     {

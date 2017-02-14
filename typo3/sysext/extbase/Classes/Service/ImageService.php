@@ -166,7 +166,6 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * in case we are in frontend environment.
      *
      * @param ProcessedFile $processedImage
-     * @return void
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage)
     {

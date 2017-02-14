@@ -23,8 +23,6 @@ class WincacheBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Sets up this testcase
-     *
-     * @return void
      */
     protected function setUp()
     {

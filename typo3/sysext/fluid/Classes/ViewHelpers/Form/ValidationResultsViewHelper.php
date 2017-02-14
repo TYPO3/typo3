@@ -73,7 +73,6 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
     /**
      * Initialize arguments
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

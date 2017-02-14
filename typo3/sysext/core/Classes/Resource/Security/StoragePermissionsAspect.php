@@ -57,7 +57,6 @@ class StoragePermissionsAspect
      *
      * @param ResourceFactory $resourceFactory
      * @param ResourceStorage $storage
-     * @return void
      */
     public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage)
     {
@@ -76,7 +75,6 @@ class StoragePermissionsAspect
      * Adds file mounts from the user's file mount records
      *
      * @param ResourceStorage $storage
-     * @return void
      */
     protected function addFileMountsToStorage(ResourceStorage $storage)
     {

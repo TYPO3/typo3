@@ -136,7 +136,6 @@ class RteHtmlParser extends HtmlParser
      *
      * @param string $elRef Element reference, eg "tt_content:bodytext
      * @param int $recPid PID of the record (page id)
-     * @return void
      */
     public function init($elRef = '', $recPid = 0)
     {

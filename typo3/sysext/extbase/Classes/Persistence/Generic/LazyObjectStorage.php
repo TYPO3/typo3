@@ -98,8 +98,6 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
     /**
      * This is a function lazy load implementation.
-     *
-     * @return void
      */
     protected function initialize()
     {
@@ -262,7 +260,6 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
     /**
      * @param object $object The object to remove.
-     * @return void
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
      */
@@ -274,7 +271,6 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage The storage containing the elements to remove.
-     * @return void
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
      */

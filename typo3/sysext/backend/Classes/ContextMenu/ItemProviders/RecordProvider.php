@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Class responsible for providing click menu items for db records which don't have custom provider (as e.g. pages)
- *
  */
 class RecordProvider extends AbstractProvider
 {

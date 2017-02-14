@@ -23,7 +23,6 @@ interface RecordCollectionInterface extends \TYPO3\CMS\Core\Collection\Collectio
      * Setter for the name of the data-source table
      *
      * @param string $tableName
-     * @return void
      */
     public function setItemTableName($tableName);
 

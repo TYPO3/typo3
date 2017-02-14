@@ -83,7 +83,6 @@ class CommandController implements CommandControllerInterface
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @return void
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
@@ -114,7 +113,6 @@ class CommandController implements CommandControllerInterface
      *
      * @param RequestInterface $request The request object
      * @param ResponseInterface $response The response, modified by this handler
-     * @return void
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
      * @api
      */
@@ -160,7 +158,6 @@ class CommandController implements CommandControllerInterface
      * method arguments found in the designated command method.
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
-     * @return void
      * @throws InvalidArgumentTypeException
      */
     protected function initializeCommandMethodArguments()
@@ -184,8 +181,6 @@ class CommandController implements CommandControllerInterface
 
     /**
      * Maps arguments delivered by the request object to the local controller arguments.
-     *
-     * @return void
      */
     protected function mapRequestArgumentsToControllerArguments()
     {
@@ -217,7 +212,6 @@ class CommandController implements CommandControllerInterface
      * @param string $commandName
      * @param string $controllerObjectName
      * @param array $arguments
-     * @return void
      * @throws StopActionException
      */
     protected function forward($commandName, $controllerObjectName = null, array $arguments = [])
@@ -239,8 +233,6 @@ class CommandController implements CommandControllerInterface
      * If the command returns a string, it is appended to the content in the
      * response object. If the command doesn't return anything and a valid
      * view exists, the view is rendered automatically.
-     *
-     * @return void
      */
     protected function callCommandMethod()
     {
@@ -301,7 +293,6 @@ class CommandController implements CommandControllerInterface
      * @see http://www.php.net/sprintf
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
-     * @return void
      */
     protected function output($text, array $arguments = [])
     {
@@ -313,7 +304,6 @@ class CommandController implements CommandControllerInterface
      *
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
-     * @return void
      * @see output()
      */
     protected function outputLine($text = '', array $arguments = [])
@@ -328,7 +318,6 @@ class CommandController implements CommandControllerInterface
      * @param string $text Text to output
      * @param array $arguments Optional arguments to use for sprintf
      * @param int $leftPadding The number of spaces to use for indentation
-     * @return void
      * @see outputLine()
      */
     protected function outputFormatted($text = '', array $arguments = [], $leftPadding = 0)
@@ -342,7 +331,6 @@ class CommandController implements CommandControllerInterface
      *
      * @param int $exitCode Exit code to return on exit
      * @throws StopActionException
-     * @return void
      */
     protected function quit($exitCode = 0)
     {
@@ -355,7 +343,6 @@ class CommandController implements CommandControllerInterface
      * Should be used for commands that flush code caches.
      *
      * @param int $exitCode Exit code to return on exit
-     * @return void
      */
     protected function sendAndExit($exitCode = 0)
     {

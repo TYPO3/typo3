@@ -69,7 +69,6 @@ class ActionHandler extends AbstractHandler
      * @param string $table
      * @param int $t3ver_oid
      * @param int $orig_uid
-     * @return void
      * @todo What about reporting errors back to the ExtJS interface? /olly/
      */
     public function swapSingleRecord($table, $t3ver_oid, $orig_uid)
@@ -92,7 +91,6 @@ class ActionHandler extends AbstractHandler
      *
      * @param string $table
      * @param int $uid
-     * @return void
      * @todo What about reporting errors back to the ExtJS interface? /olly/
      */
     public function deleteSingleRecord($table, $uid)
@@ -189,7 +187,6 @@ class ActionHandler extends AbstractHandler
      * Saves the selected columns to be shown to the preferences of the current backend user.
      *
      * @param \stdClass $model
-     * @return void
      */
     public function saveColumnModel($model)
     {
@@ -217,7 +214,6 @@ class ActionHandler extends AbstractHandler
      * Saves the selected language.
      *
      * @param int|string $language
-     * @return void
      */
     public function saveLanguageSelection($language)
     {

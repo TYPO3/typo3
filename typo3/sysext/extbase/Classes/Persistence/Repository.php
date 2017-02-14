@@ -72,7 +72,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param object $object The object to add
      * @throws Exception\IllegalObjectTypeException
-     * @return void
      * @api
      */
     public function add($object)
@@ -88,7 +87,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      *
      * @param object $object The object to remove
      * @throws Exception\IllegalObjectTypeException
-     * @return void
      * @api
      */
     public function remove($object)
@@ -105,7 +103,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * @param object $modifiedObject The modified object
      * @throws Exception\UnknownObjectException
      * @throws Exception\IllegalObjectTypeException
-     * @return void
      * @api
      */
     public function update($modifiedObject)
@@ -142,7 +139,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Removes all objects of this repository as if remove() was called for
      * all of them.
      *
-     * @return void
      * @api
      */
     public function removeAll()
@@ -185,7 +181,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * )
      *
      * @param array $defaultOrderings The property names to order by
-     * @return void
      * @api
      */
     public function setDefaultOrderings(array $defaultOrderings)
@@ -197,7 +192,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      * Sets the default query settings to be used in this repository
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-     * @return void
      * @api
      */
     public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings)

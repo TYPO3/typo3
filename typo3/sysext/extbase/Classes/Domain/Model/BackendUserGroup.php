@@ -119,7 +119,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -140,7 +139,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for description
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -161,7 +159,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for the sub groups
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subGroups
-     * @return void
      */
     public function setSubGroups(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subGroups)
     {
@@ -172,7 +169,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a sub group to this backend user group
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $beGroup
-     * @return void
      */
     public function addSubGroup(\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $beGroup)
     {
@@ -183,7 +179,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Removes sub group from this backend user group
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $groupToDelete
-     * @return void
      */
     public function removeSubGroup(\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $groupToDelete)
     {
@@ -192,8 +187,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Remove all sub groups from this backend user group
-     *
-     * @return void
      */
     public function removeAllSubGroups()
     {
@@ -215,7 +208,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for modules
      *
      * @param string $modules
-     * @return void
      */
     public function setModules($modules)
     {
@@ -236,7 +228,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for tables listening
      *
      * @param string $tablesListening
-     * @return void
      */
     public function setTablesListening($tablesListening)
     {
@@ -257,7 +248,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for tables modify
      *
      * @param string $tablesModify
-     * @return void
      */
     public function setTablesModify($tablesModify)
     {
@@ -278,7 +268,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for page types
      *
      * @param string $pageTypes
-     * @return void
      */
     public function setPageTypes($pageTypes)
     {
@@ -299,7 +288,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for allowed exclude fields
      *
      * @param string $allowedExcludeFields
-     * @return void
      */
     public function setAllowedExcludeFields($allowedExcludeFields)
     {
@@ -320,7 +308,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for explicitly allow and deny
      *
      * @param string $explicitlyAllowAndDeny
-     * @return void
      */
     public function setExplicitlyAllowAndDeny($explicitlyAllowAndDeny)
     {
@@ -341,7 +328,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for allowed languages
      *
      * @param string $allowedLanguages
-     * @return void
      */
     public function setAllowedLanguages($allowedLanguages)
     {
@@ -362,7 +348,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for workspace permission
      *
      * @param bool $workspacePermission
-     * @return void
      */
     public function setWorkspacePermissions($workspacePermission)
     {
@@ -383,7 +368,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for database mounts
      *
      * @param string $databaseMounts
-     * @return void
      */
     public function setDatabaseMounts($databaseMounts)
     {
@@ -404,7 +388,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Getter for file operation permissions
      *
      * @param int $fileOperationPermissions
-     * @return void
      */
     public function setFileOperationPermissions($fileOperationPermissions)
     {
@@ -436,7 +419,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set the the bit for file operations are allowed.
      *
      * @param bool $value
-     * @return void
      */
     public function setFileOperationAllowed($value)
     {
@@ -457,7 +439,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set the the bit for directory operations are allowed.
      *
      * @param bool $value
-     * @return void
      */
     public function setDirectoryOperationAllowed($value)
     {
@@ -478,7 +459,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set the the bit for copy directories.
      *
      * @param bool $value
-     * @return void
      */
     public function setDirectoryCopyAllowed($value)
     {
@@ -499,7 +479,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set the the bit for remove directories recursively.
      *
      * @param bool $value
-     * @return void
      */
     public function setDirectoryRemoveRecursivelyAllowed($value)
     {
@@ -510,7 +489,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for lock to domain
      *
      * @param string $lockToDomain
-     * @return void
      */
     public function setLockToDomain($lockToDomain)
     {
@@ -531,7 +509,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Setter for hide in list
      *
      * @param bool $hideInList
-     * @return void
      */
     public function setHideInList($hideInList)
     {
@@ -584,7 +561,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @param int $permission
      * @param bool $value
-     * @return void
      */
     protected function setPermission($permission, $value)
     {

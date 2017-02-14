@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 /**
  * List utility test
- *
  */
 class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -26,7 +25,6 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $subject;
 
     /**
-     * @return void
      */
     protected function setUp()
     {
@@ -122,7 +120,6 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @dataProvider getAvailableAndInstalledExtensionsDataProvider
      * @param $availableExtensions
      * @param $expectedResult
-     * @return void
      */
     public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult)
     {
@@ -161,7 +158,6 @@ class ListUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * @param $extensions
      * @param $emConf
      * @param $expectedResult
-     * @return void
      */
     public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
     {

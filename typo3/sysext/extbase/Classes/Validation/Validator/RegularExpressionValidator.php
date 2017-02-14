@@ -32,7 +32,6 @@ class RegularExpressionValidator extends AbstractValidator
      * Checks if the given value matches the specified regular expression.
      *
      * @param mixed $value The value that should be validated
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
      * @api
      */

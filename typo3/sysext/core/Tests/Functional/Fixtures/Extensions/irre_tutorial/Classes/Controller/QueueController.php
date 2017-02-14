@@ -31,7 +31,6 @@ class QueueController extends AbstractController
     protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
 
     /**
-     * @return void
      */
     public function indexAction()
     {
@@ -47,7 +46,6 @@ class QueueController extends AbstractController
     }
 
     /**
-     * @return void
      */
     public function processAction()
     {

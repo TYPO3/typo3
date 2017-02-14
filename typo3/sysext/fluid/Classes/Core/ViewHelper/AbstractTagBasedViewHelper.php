@@ -75,7 +75,6 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
      *
      * Will be invoked just before the render method.
      *
-     * @return void
      * @api
      */
     public function initialize()
@@ -110,7 +109,6 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
      * @param string $description Description of tag attribute
      * @param bool $required set to TRUE if tag attribute is required. Defaults to FALSE.
      * @param string $default Default value
-     * @return void
      * @api
      */
     protected function registerTagAttribute($name, $type, $description, $required = false, $default = null)
@@ -123,7 +121,6 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
      * Registers all standard HTML universal attributes.
      * Should be used inside registerArguments();
      *
-     * @return void
      * @api
      */
     protected function registerUniversalTagAttributes()

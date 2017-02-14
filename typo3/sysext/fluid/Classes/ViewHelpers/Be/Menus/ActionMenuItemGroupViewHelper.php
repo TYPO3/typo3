@@ -34,7 +34,6 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  *			<f:be.menus.actionMenuItem label="XClasses" controller="Information" action="xclass" />
  *		</f:be.menus.actionMenuItemGroup>
  *	</f:be.menus.actionMenu>
- *
  */
 class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
 {
@@ -79,7 +78,6 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
      * @param string $initializationPhpCode
      * @param ViewHelperNode $node
      * @param TemplateCompiler $compiler
-     * @return null
      */
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {

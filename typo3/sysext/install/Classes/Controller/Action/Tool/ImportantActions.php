@@ -234,8 +234,6 @@ class ImportantActions extends Action\AbstractAction
 
     /**
      * Set new encryption key
-     *
-     * @return void
      */
     protected function setNewEncryptionKeyAndLogOut()
     {

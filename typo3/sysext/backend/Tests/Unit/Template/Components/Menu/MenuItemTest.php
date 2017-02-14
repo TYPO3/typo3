@@ -25,7 +25,6 @@ class MenuItemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try a blank menu Item
      *
      * @test
-     * @return void
      */
     public function isMenuItemValidBlankCallExpectFalse()
     {
@@ -38,7 +37,6 @@ class MenuItemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try omitting the title and a Href
      *
      * @test
-     * @return void
      */
     public function isMenuItemValidOmittedHrefAndRouteExpectFalse()
     {
@@ -52,7 +50,6 @@ class MenuItemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Try omitting the title
      *
      * @test
-     * @return void
      */
     public function isMenuItemValidOmittedTitleExpectFalse()
     {
@@ -66,7 +63,6 @@ class MenuItemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      * Set a valid title and href
      *
      * @test
-     * @return void
      */
     public function isMenuItemValidSetValidHrefAndTitleExpectTrue()
     {

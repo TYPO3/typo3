@@ -107,7 +107,6 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
      *
      * @param array $submittedData Contains data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Saltedpasswords\Task\BulkUpdateTask $task Reference to the current task object
-     * @return void
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {

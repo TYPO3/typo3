@@ -36,8 +36,6 @@ abstract class AbstractRecycleTestCase extends \TYPO3\TestingFramework\Core\Func
     /**
      * Set up for set up the backend user, initialize the language object
      * and creating the Export instance
-     *
-     * @return void
      */
     protected function setUp()
     {

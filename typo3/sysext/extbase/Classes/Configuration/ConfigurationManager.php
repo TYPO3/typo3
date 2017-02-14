@@ -55,8 +55,6 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 
     /**
      * Initializes the object
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -64,7 +62,6 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
     }
 
     /**
-     * @return void
      */
     protected function initializeConcreteConfigurationManager()
     {
@@ -77,7 +74,6 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 
     /**
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
-     * @return void
      */
     public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject = null)
     {
@@ -97,7 +93,6 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
      * Note that this is a low level method and only makes sense to be used by Extbase internally.
      *
      * @param array $configuration The new configuration
-     * @return void
      */
     public function setConfiguration(array $configuration = [])
     {

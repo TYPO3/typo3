@@ -52,7 +52,6 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
      *
      * @param TypoScriptTemplateModuleController $pObj
      * @param array $conf
-     * @return void
      */
     public function init(&$pObj, $conf)
     {

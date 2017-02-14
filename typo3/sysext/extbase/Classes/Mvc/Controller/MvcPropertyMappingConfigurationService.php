@@ -115,8 +115,6 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Request $request
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $controllerArguments
-     *
-     * @return void
      */
     public function initializePropertyMappingConfigurationFromRequest(\TYPO3\CMS\Extbase\Mvc\Request $request, \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $controllerArguments)
     {
@@ -145,8 +143,6 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
      *
      * @param array $propertyConfiguration
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration
-     *
-     * @return void
      */
     protected function modifyPropertyMappingConfiguration($propertyConfiguration, \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration)
     {

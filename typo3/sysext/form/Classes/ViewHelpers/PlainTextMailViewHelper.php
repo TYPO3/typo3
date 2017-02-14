@@ -32,7 +32,6 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @internal
      */
     public function initializeArguments()

@@ -23,7 +23,6 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     /**
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
-     * @return void
      */
     public function missingTableNameArgumentForObjectCategoryCollection()
     {

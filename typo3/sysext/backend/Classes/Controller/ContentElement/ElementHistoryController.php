@@ -77,8 +77,6 @@ class ElementHistoryController extends AbstractModule
 
     /**
      * Initialize the module output
-     *
-     * @return void
      */
     protected function init()
     {
@@ -90,8 +88,6 @@ class ElementHistoryController extends AbstractModule
 
     /**
      * Generate module output
-     *
-     * @return void
      */
     public function main()
     {

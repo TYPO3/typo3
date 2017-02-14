@@ -275,8 +275,6 @@ class PageLayoutController
 
     /**
      * Initializing the module
-     *
-     * @return void
      */
     public function init()
     {
@@ -318,8 +316,6 @@ class PageLayoutController
 
     /**
      * Initialize menu array
-     *
-     * @return void
      */
     public function menuConfig()
     {
@@ -489,7 +485,6 @@ class PageLayoutController
      * For now they are Columns, Quick Edit and Languages.
      *
      * @param array $actions array with the available actions
-     * @return void
      */
     protected function makeActionMenu(array $actions)
     {
@@ -523,8 +518,6 @@ class PageLayoutController
 
     /**
      * Clears page cache for the current id, $this->id
-     *
-     * @return void
      */
     public function clearCache()
     {
@@ -689,7 +682,6 @@ class PageLayoutController
     }
 
     /**
-     *
      * @return string $title
      */
     protected function getLocalizedPageTitle()
@@ -741,8 +733,6 @@ class PageLayoutController
     /**
      * Main function.
      * Creates some general objects and calls other functions for the main rendering of module content.
-     *
-     * @return void
      */
     public function main()
     {
@@ -1014,7 +1004,6 @@ class PageLayoutController
      * Print accumulated content of module
      *
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     * @return void
      */
     public function printContent()
     {
@@ -1029,8 +1018,6 @@ class PageLayoutController
      ***************************/
     /**
      * This creates the buttons for the modules
-     *
-     * @return void
      */
     protected function makeButtons()
     {
@@ -1283,8 +1270,6 @@ class PageLayoutController
 
     /**
      * Make the LanguageMenu
-     *
-     * @return void
      */
     protected function makeLanguageMenu()
     {

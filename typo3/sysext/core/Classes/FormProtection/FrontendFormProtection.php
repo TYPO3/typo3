@@ -113,7 +113,6 @@ class FrontendFormProtection extends AbstractFormProtection
      * class.
      *
      * @access private
-     * @return void
      */
     public function persistSessionToken()
     {

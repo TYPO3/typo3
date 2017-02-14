@@ -43,7 +43,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Will be called as soon as the element is (tried to be) added to a form
      * @see registerInFormIfPossible()
      *
-     * @return void
      * @internal
      */
     public function initializeFormElement()
@@ -118,7 +117,6 @@ class Section extends AbstractSection implements FormElementInterface
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      * @api
      */
     public function setProperty(string $key, $value)
@@ -155,7 +153,6 @@ class Section extends AbstractSection implements FormElementInterface
      * Add a validator to the element
      *
      * @param ValidatorInterface $validator
-     * @return void
      * @api
      */
     public function addValidator(ValidatorInterface $validator)

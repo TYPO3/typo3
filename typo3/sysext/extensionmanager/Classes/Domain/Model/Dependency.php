@@ -58,7 +58,6 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $highestVersion
-     * @return void
      */
     public function setHighestVersion($highestVersion)
     {
@@ -75,7 +74,6 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $identifier
-     * @return void
      */
     public function setIdentifier($identifier)
     {
@@ -92,7 +90,6 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $lowestVersion
-     * @return void
      */
     public function setLowestVersion($lowestVersion)
     {
@@ -110,7 +107,6 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param string $type
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException if no valid dependency type was given
-     * @return void
      */
     public function setType($type)
     {

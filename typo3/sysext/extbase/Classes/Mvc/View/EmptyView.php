@@ -25,7 +25,6 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      * Dummy method to satisfy the ViewInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return void
      */
     public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
@@ -88,7 +87,6 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      *
      * @param string $methodName
      * @param array $arguments
-     * @return void
      */
     public function __call($methodName, array $arguments)
     {
@@ -99,7 +97,6 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      *
      * Override this method for initializing your concrete view implementation.
      *
-     * @return void
      * @api
      */
     public function initializeView()

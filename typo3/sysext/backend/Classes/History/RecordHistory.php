@@ -169,7 +169,6 @@ class RecordHistory
      * Toggles highlight state of record
      *
      * @param int $uid Uid of sys_history entry
-     * @return void
      */
     public function toggleHighlight($uid)
     {
@@ -916,8 +915,6 @@ class RecordHistory
 
     /**
      * Resolve sh_uid (used from log)
-     *
-     * @return void
      */
     public function resolveShUid()
     {

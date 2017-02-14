@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
- *
  */
 class AbstractUserAuthenticationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {

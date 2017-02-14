@@ -24,7 +24,6 @@ interface EditableNodeLabelInterface
      * Sets the new label
      *
      * @param string $label
-     * @return void
      */
     public function setLabel($label);
 }

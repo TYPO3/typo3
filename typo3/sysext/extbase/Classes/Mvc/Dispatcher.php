@@ -72,7 +72,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, to be modified by the controller
      * @throws Exception\InfiniteLoopException
-     * @return void
      */
     public function dispatch(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {

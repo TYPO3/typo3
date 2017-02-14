@@ -52,8 +52,6 @@ class Testbase
 
     /**
      * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
-     *
-     * @return void
      */
     public function enableDisplayErrors()
     {
@@ -65,7 +63,6 @@ class Testbase
      * helpers during tests setup. Those are sanitized in SystemEnvironmentBuilder
      * to be not defined again.
      *
-     * @return void
      * @see SystemEnvironmentBuilder::defineBaseConstants()
      */
     public function defineBaseConstants()
@@ -92,8 +89,6 @@ class Testbase
     /**
      * Defines the PATH_site and PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
      * For unit tests only
-     *
-     * @return void
      */
     public function defineSitePath()
     {
@@ -110,8 +105,6 @@ class Testbase
      * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root.
      * For functional / acceptance tests only
      * If ORIGINAL_ROOT already is defined, this method is a no-op.
-     *
-     * @return void
      */
     public function defineOriginalRootPath()
     {
@@ -126,8 +119,6 @@ class Testbase
 
     /**
      * Define TYPO3_MODE to BE
-     *
-     * @return void
      */
     public function defineTypo3ModeBe()
     {
@@ -136,8 +127,6 @@ class Testbase
 
     /**
      * Sets the environment variable TYPO3_CONTEXT to testing.
-     *
-     * @return void
      */
     public function setTypo3TestingContext()
     {
@@ -148,7 +137,6 @@ class Testbase
      * Creates directories, recursively if required.
      *
      * @param string $directory Absolute path to directories to create
-     * @return void
      * @throws Exception
      */
     public function createDirectory($directory)
@@ -185,7 +173,6 @@ class Testbase
      * This may happen if a functional test before threw a fatal or is too old
      *
      * @param string $instancePath Absolute path to test instance
-     * @return void
      * @throws Exception
      */
     public function removeOldInstanceIfExists($instancePath)
@@ -206,7 +193,6 @@ class Testbase
      * Used in functional tests to reuse an instance for multiple tests in one test case.
      *
      * @param string $instancePath Absolute path to test instance
-     * @return void
      */
     public function createLastRunTextfile($instancePath)
     {
@@ -220,7 +206,6 @@ class Testbase
      *
      * @param string $instancePath Absolute path to test instance
      * @throws Exception
-     * @return void
      */
     public function setUpInstanceCoreLinks($instancePath)
     {
@@ -246,7 +231,6 @@ class Testbase
      * @param string $instancePath Absolute path to test instance
      * @param array $extensionPaths Contains paths to extensions relative to document root
      * @throws Exception
-     * @return void
      */
     public function linkTestExtensionsToInstance($instancePath, array $extensionPaths)
     {
@@ -277,7 +261,6 @@ class Testbase
      * @param string $instancePath Absolute path to test instance
      * @param array $pathsToLinkInTestInstance Contains paths as array of source => destination in key => value pairs of folders relative to test instance root
      * @throws Exception if a source path could not be found and on failing creating the symlink
-     * @return void
      */
     public function linkPathsInTestInstance($instancePath, array $pathsToLinkInTestInstance)
     {
@@ -396,7 +379,6 @@ class Testbase
      * @param array $configuration Base configuration array
      * @param array $overruleConfiguration Overrule factory and base configuration
      * @throws Exception
-     * @return void
      */
     public function setUpLocalConfiguration($instancePath, array $configuration, array $overruleConfiguration)
     {
@@ -485,7 +467,6 @@ class Testbase
      * @param string $databaseName Database name of this test instance
      * @param string $originalDatabaseName Original database name before suffix was added
      * @throws \TYPO3\TestingFramework\Core\Exception
-     * @return void
      */
     public function setUpTestDatabase($databaseName, $originalDatabaseName)
     {
@@ -521,7 +502,6 @@ class Testbase
      * For functional and acceptance tests.
      *
      * @param string $instancePath Absolute path to test instance
-     * @return void
      */
     public function setUpBasicTypo3Bootstrap($instancePath)
     {
@@ -545,7 +525,6 @@ class Testbase
      * For functional and acceptance tests.
      *
      * @throws Exception
-     * @return void
      */
     public function initializeTestDatabaseAndTruncateTables()
     {
@@ -564,8 +543,6 @@ class Testbase
     /**
      * Load ext_tables.php files.
      * For functional and acceptance tests.
-     *
-     * @return void
      */
     public function loadExtensionTables()
     {
@@ -575,8 +552,6 @@ class Testbase
     /**
      * Create tables and import static rows.
      * For functional and acceptance tests.
-     *
-     * @return void
      */
     public function createDatabaseStructure()
     {
@@ -596,7 +571,6 @@ class Testbase
      * Imports a data set represented as XML into the test database,
      *
      * @param string $path Absolute path to the XML file containing the data set to load
-     * @return void
      * @throws \Doctrine\DBAL\DBALException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException

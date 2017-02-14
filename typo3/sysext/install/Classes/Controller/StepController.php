@@ -40,7 +40,6 @@ class StepController extends AbstractController
      * conditions (new/existing installation). See the single method comments for details.
      *
      * @throws Exception
-     * @return void
      */
     public function execute()
     {
@@ -67,7 +66,6 @@ class StepController extends AbstractController
      * request to test the next step.
      *
      * @throws Exception
-     * @return void
      */
     protected function executeSpecificStep()
     {
@@ -89,8 +87,6 @@ class StepController extends AbstractController
      * The according step is instantiated and 'needsExecution' is called. If
      * it needs execution, the step will be rendered, otherwise a redirect
      * to test the next step is initiated.
-     *
-     * @return void
      */
     protected function outputSpecificStep()
     {
@@ -157,8 +153,6 @@ class StepController extends AbstractController
     /**
      * If the last step was reached and none needs execution, a redirect
      * to call the tool controller is initiated.
-     *
-     * @return void
      */
     protected function redirectToTool()
     {
@@ -176,7 +170,6 @@ class StepController extends AbstractController
      * PackageStates here.
      *
      * @throws \Exception
-     * @return void
      */
     protected function recreatePackageStatesFileIfNotExisting()
     {
@@ -245,8 +238,6 @@ class StepController extends AbstractController
      * So, if no typo3conf directory exists yet, the first step is just rendered, or
      * executed if called so. After that, a redirect is initiated to proceed with
      * other tasks.
-     *
-     * @return void
      */
     protected function executeOrOutputFirstInstallStepIfNeeded()
     {
@@ -313,8 +304,6 @@ class StepController extends AbstractController
 
     /**
      * Call silent upgrade class, redirect to self if configuration was changed.
-     *
-     * @return void
      */
     protected function executeSilentConfigurationUpgradesIfNeeded()
     {

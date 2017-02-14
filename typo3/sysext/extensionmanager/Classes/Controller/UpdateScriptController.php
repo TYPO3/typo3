@@ -27,7 +27,6 @@ class UpdateScriptController extends AbstractModuleController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
-     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -43,7 +42,6 @@ class UpdateScriptController extends AbstractModuleController
      * Show the content of the update script (if any).
      *
      * @param string $extensionKey Extension key
-     * @return void
      * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
      */
     public function showAction($extensionKey)
@@ -61,7 +59,6 @@ class UpdateScriptController extends AbstractModuleController
     /**
      * Registers the Icons into the docheader
      *
-     * @return void
      * @throws \InvalidArgumentException
      */
     protected function registerDocheaderButtons()

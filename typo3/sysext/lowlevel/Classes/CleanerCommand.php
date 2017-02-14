@@ -230,7 +230,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      *
      * @param string $header Name of the test (eg. function name)
      * @param array $res Result array from an analyze function
-     * @return void Outputs with echo - capture content with output buffer if needed.
      */
     public function cli_printInfo($header, $res)
     {
@@ -293,7 +292,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      * @param int $depth Depth to traverse. zero is do not traverse at all. 1 = 1 sublevel, 1000= 1000 sublevels (all...)
      * @param int $echoLevel If >0, will echo information about the traversal process.
      * @param string $callBack Call back function (from this class or subclass)
-     * @return void
      */
     public function genTree($rootID, $depth = 1000, $echoLevel = 0, $callBack = '')
     {
@@ -362,7 +360,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
      * @param bool $versionSwapmode DON'T set from outside, internal. (indicates we are inside a version of a page)
      * @param int $rootIsVersion DON'T set from outside, internal. (1: Indicates that rootID is a version of a page, 2: ...that it is even a version of a version (which triggers a warning!)
      * @param string $accumulatedPath Internal string that accumulates the path
-     * @return void
      * @access private
      */
     public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = false, $rootIsVersion = 0, $accumulatedPath = '')

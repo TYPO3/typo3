@@ -84,7 +84,6 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
      *
      * @param array $submittedData Array containing the data submitted by the user
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
-     * @return void
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {

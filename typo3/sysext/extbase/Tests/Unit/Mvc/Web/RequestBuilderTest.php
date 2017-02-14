@@ -89,7 +89,6 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return void
      */
     protected function injectDependencies()
     {

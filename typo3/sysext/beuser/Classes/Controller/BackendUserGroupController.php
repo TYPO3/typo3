@@ -37,7 +37,6 @@ class BackendUserGroupController extends BackendUserActionController
     /**
      * Initialize actions
      *
-     * @return void
      * @throws \RuntimeException
      */
     public function initializeAction()
@@ -54,8 +53,6 @@ class BackendUserGroupController extends BackendUserActionController
 
     /**
      * Displays all BackendUserGroups
-     *
-     * @return void
      */
     public function indexAction()
     {

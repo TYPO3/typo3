@@ -66,8 +66,6 @@ class ElementBrowserController
 
     /**
      * Initialize the controller
-     *
-     * @return void
      */
     protected function init()
     {

@@ -22,7 +22,6 @@ interface DriverInterface
 {
     /**
      * Processes the configuration for this driver.
-     * @return void
      */
     public function processConfiguration();
 
@@ -30,15 +29,12 @@ interface DriverInterface
      * Sets the storage uid the driver belongs to
      *
      * @param int $storageUid
-     * @return void
      */
     public function setStorageUid($storageUid);
 
     /**
      * Initializes this object. This is called by the storage after the driver
      * has been attached.
-     *
-     * @return void
      */
     public function initialize();
 
@@ -354,7 +350,6 @@ interface DriverInterface
      * buffer before. Will be taken care of by the Storage.
      *
      * @param string $identifier
-     * @return void
      */
     public function dumpFileContents($identifier);
 

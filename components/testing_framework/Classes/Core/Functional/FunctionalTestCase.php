@@ -205,7 +205,6 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * This method should be called with parent::setUp() in your test cases!
      *
-     * @return void
      * @throws \Doctrine\DBAL\DBALException
      */
     protected function setUp()
@@ -354,7 +353,6 @@ abstract class FunctionalTestCase extends BaseTestCase
      * Imports a data set represented as XML into the test database,
      *
      * @param string $path Absolute path to the XML file containing the data set to load
-     * @return void
      * @throws Exception
      */
     protected function importDataSet($path)

@@ -30,7 +30,6 @@ class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Set list of changed fields
      *
      * @param string $fieldlist
-     * @return void
      */
     public function setFieldlist($fieldlist)
     {

@@ -90,8 +90,6 @@ class FileSystemNavigationFrameController
 
     /**
      * Initialiation of the script class
-     *
-     * @return void
      */
     protected function init()
     {
@@ -136,8 +134,6 @@ class FileSystemNavigationFrameController
     /**
      * initialization for the visual parts of the class
      * Use template rendering only if this is a non-AJAX call
-     *
-     * @return void
      */
     public function initPage()
     {
@@ -186,8 +182,6 @@ class FileSystemNavigationFrameController
 
     /**
      * Main function, rendering the folder tree
-     *
-     * @return void
      */
     public function main()
     {

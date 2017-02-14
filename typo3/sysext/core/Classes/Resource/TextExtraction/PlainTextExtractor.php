@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A simple text extractor to extract text from plain text files.
- *
  */
 class PlainTextExtractor implements TextExtractorInterface
 {

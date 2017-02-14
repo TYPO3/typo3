@@ -60,8 +60,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 
     /**
      * Create main information
-     *
-     * @return void
      */
     protected function initializeBasicExtensionInformation()
     {
@@ -95,8 +93,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 
     /**
      * Initialize extension icon
-     *
-     * @return void
      */
     protected function initializeExtensionIcon()
     {
@@ -157,7 +153,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      * @param mixed $offset The offset to assign the value to.
      * @param mixed $value The value to set.
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function offsetSet($offset, $value)
@@ -170,7 +165,6 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      * @param mixed $offset The offset to unset.
-     * @return void
      * @throws \InvalidArgumentException
      */
     public function offsetUnset($offset)

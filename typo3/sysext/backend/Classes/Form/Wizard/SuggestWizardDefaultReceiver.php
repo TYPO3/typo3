@@ -210,8 +210,6 @@ class SuggestWizardDefaultReceiver
     /**
      * Prepare the statement for selecting the records which will be returned to the selector. May also return some
      * other records (e.g. from a mm-table) which will be used later on to select the real records
-     *
-     * @return void
      */
     protected function prepareSelectStatement()
     {
@@ -293,8 +291,6 @@ class SuggestWizardDefaultReceiver
     /**
      * Prepares the clause by which the result elements are sorted. See description of ORDER BY in
      * SQL standard for reference.
-     *
-     * @return void
      */
     protected function prepareOrderByStatement()
     {
@@ -346,7 +342,6 @@ class SuggestWizardDefaultReceiver
      * Overlay the given record with its workspace-version, if any
      *
      * @param array $row The record to get the workspace version for
-     * @return void (passed by reference)
      */
     protected function makeWorkspaceOverlay(&$row)
     {

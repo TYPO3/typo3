@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
  * An interface for text extractors
- *
  */
 interface TextExtractorInterface
 {

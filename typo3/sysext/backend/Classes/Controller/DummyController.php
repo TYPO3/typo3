@@ -53,8 +53,6 @@ class DummyController
 
     /**
      * Create content for the dummy script - outputting a blank page.
-     *
-     * @return void
      */
     public function main()
     {

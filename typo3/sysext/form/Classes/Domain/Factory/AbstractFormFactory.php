@@ -57,7 +57,6 @@ abstract class AbstractFormFactory implements FormFactoryInterface
      * hook on all form elements.
      *
      * @param FormDefinition $form
-     * @return void
      * @api
      */
     protected function triggerFormBuildingFinished(FormDefinition $form)

@@ -77,7 +77,6 @@ class Language extends AbstractEntity
      * Setter for the language
      *
      * @param string $language the label of the language
-     * @return void
      */
     public function setLabel($language)
     {
@@ -98,7 +97,6 @@ class Language extends AbstractEntity
      * Setter for the locale
      *
      * @param string $locale the locale for the language like da, nl or de
-     * @return void
      */
     public function setLocale($locale)
     {
@@ -119,7 +117,6 @@ class Language extends AbstractEntity
      * Setter for the selected
      *
      * @param bool $selected whether the language is available or not
-     * @return void
      */
     public function setSelected($selected)
     {

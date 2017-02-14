@@ -71,7 +71,6 @@ class Application implements ApplicationInterface
      * Set up the application and shut it down afterwards
      *
      * @param callable $execute
-     * @return void
      */
     public function run(callable $execute = null)
     {
@@ -94,8 +93,6 @@ class Application implements ApplicationInterface
 
     /**
      * Check the script is called from a cli environment.
-     *
-     * @return void
      */
     protected function checkEnvironmentOrDie()
     {
@@ -109,8 +106,6 @@ class Application implements ApplicationInterface
     /**
      * Set up cgi sapi as de facto cli, but check no HTTP
      * environment variables are set.
-     *
-     * @return void
      */
     protected function initializeCgiCompatibilityLayerOrDie()
     {

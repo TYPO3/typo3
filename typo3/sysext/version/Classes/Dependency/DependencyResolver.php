@@ -149,7 +149,6 @@ class DependencyResolver
      * Processes and registers the outermost parents accordant to the registered elements.
      *
      * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
-     * @return void
      */
     protected function processOuterMostParent(\TYPO3\CMS\Version\Dependency\ElementEntity $element)
     {

@@ -31,8 +31,6 @@ class DeleteUploadsFinisher extends AbstractFinisher
     /**
      * Executes this finisher
      * @see AbstractFinisher::execute()
-     *
-     * @return void
      */
     protected function executeInternal()
     {

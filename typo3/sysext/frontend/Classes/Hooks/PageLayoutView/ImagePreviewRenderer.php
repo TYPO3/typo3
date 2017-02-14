@@ -27,7 +27,6 @@ class ImagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDraw
      * @param string $headerContent Header content
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
-     * @return void
      */
     public function preProcess(
         \TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,

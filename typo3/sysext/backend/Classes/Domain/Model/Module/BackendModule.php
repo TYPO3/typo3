@@ -81,7 +81,6 @@ class BackendModule
      * Set children
      *
      * @param \SplObjectStorage $children
-     * @return void
      */
     public function setChildren($children)
     {
@@ -102,7 +101,6 @@ class BackendModule
      * Add Child
      *
      * @param \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child
-     * @return void
      */
     public function addChild(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $child)
     {
@@ -113,7 +111,6 @@ class BackendModule
      * Set icon
      *
      * @param string $icon
-     * @return void
      */
     public function setIcon($icon)
     {
@@ -134,7 +131,6 @@ class BackendModule
      * Set name
      *
      * @param string $name
-     * @return void
      */
     public function setName($name)
     {
@@ -155,7 +151,6 @@ class BackendModule
      * Set title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -176,7 +171,6 @@ class BackendModule
      * Set Link
      *
      * @param string $link
-     * @return void
      */
     public function setLink($link)
     {
@@ -197,7 +191,6 @@ class BackendModule
      * Set Description
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -218,7 +211,6 @@ class BackendModule
      * Set Navigation Component Id
      *
      * @param string $navigationComponentId
-     * @return void
      */
     public function setNavigationComponentId($navigationComponentId)
     {
@@ -271,7 +263,6 @@ class BackendModule
      * Set onClick
      *
      * @param string $onClick
-     * @return void
      */
     public function setOnClick($onClick)
     {

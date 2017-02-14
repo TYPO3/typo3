@@ -25,7 +25,6 @@ interface ResponseInterface
      * Overrides and sets the content of the response
      *
      * @param string $content The response content
-     * @return void
      * @api
      */
     public function setContent($content);
@@ -34,7 +33,6 @@ interface ResponseInterface
      * Appends content to the already existing content.
      *
      * @param string $content More response content
-     * @return void
      * @api
      */
     public function appendContent($content);

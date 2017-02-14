@@ -61,7 +61,6 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
      * @param string $table The name of the table to be modified
      * @param DataHandler $parent The calling parent object
      * @throws \UnexpectedValueException
-     * @return void
      */
     public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent)
     {

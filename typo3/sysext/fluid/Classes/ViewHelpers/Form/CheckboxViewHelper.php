@@ -54,7 +54,6 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
     /**
      * Initialize the arguments.
      *
-     * @return void
      * @api
      */
     public function initializeArguments()

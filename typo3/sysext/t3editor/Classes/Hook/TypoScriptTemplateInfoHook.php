@@ -44,7 +44,6 @@ class TypoScriptTemplateInfoHook
      * Hook-function: inject t3editor JavaScript code before the page is compiled
      * called in \TYPO3\CMS\Backend\Template\DocumentTemplate:startPage
      *
-     * @return void
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
      */
     public function preStartPageHook()
@@ -63,7 +62,6 @@ class TypoScriptTemplateInfoHook
      *
      * @param array $parameters
      * @param \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController $pObj
-     * @return void
      */
     public function postOutputProcessingHook($parameters, $pObj)
     {

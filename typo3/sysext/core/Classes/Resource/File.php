@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * File representation in the file abstraction layer.
- *
  */
 class File extends AbstractFile
 {
@@ -178,7 +177,6 @@ class File extends AbstractFile
 
     /**
      * Loads MetaData from Repository
-     * @return void
      */
     protected function loadMetaData()
     {
@@ -199,7 +197,6 @@ class File extends AbstractFile
      * NOTE: This method should not be called from outside the File Abstraction Layer (FAL)!
      *
      * @param array $properties
-     * @return void
      * @internal
      */
     public function updateProperties(array $properties)
@@ -242,7 +239,6 @@ class File extends AbstractFile
      * @internal Do not use outside the FileAbstraction Layer classes
      *
      * @param array $properties
-     * @return void
      */
     public function _updateMetaDataProperties(array $properties)
     {

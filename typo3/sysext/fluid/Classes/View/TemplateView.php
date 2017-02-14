@@ -45,7 +45,6 @@ class TemplateView extends AbstractTemplateView
      * dynamic resolving of a template file.
      *
      * @param string $templatePathAndFilename Template file path
-     * @return void
      * @api
      */
     public function setTemplatePathAndFilename($templatePathAndFilename)
@@ -57,7 +56,6 @@ class TemplateView extends AbstractTemplateView
      * Sets the path and name of the layout file. Overrides the dynamic resolving of the layout file.
      *
      * @param string $layoutPathAndFilename Path and filename of the layout file
-     * @return void
      * @api
      */
     public function setLayoutPathAndFilename($layoutPathAndFilename)
@@ -80,7 +78,6 @@ class TemplateView extends AbstractTemplateView
      * If set, overrides the one determined from $this->templateRootPathPattern
      *
      * @param array $templateRootPaths Root path(s) to the templates. If set, overrides the one determined from $this->templateRootPathPattern
-     * @return void
      * @api
      */
     public function setTemplateRootPaths(array $templateRootPaths)
@@ -93,7 +90,6 @@ class TemplateView extends AbstractTemplateView
      * If set, overrides the one determined from $this->partialRootPathPattern
      *
      * @param array $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
-     * @return void
      * @api
      */
     public function setPartialRootPaths(array $partialRootPaths)
@@ -106,7 +102,6 @@ class TemplateView extends AbstractTemplateView
      * If set, overrides the one determined from $this->layoutRootPathPattern
      *
      * @param array $layoutRootPaths Root path to the layouts. If set, overrides the one determined from $this->layoutRootPathPattern
-     * @return void
      * @api
      */
     public function setLayoutRootPaths(array $layoutRootPaths)

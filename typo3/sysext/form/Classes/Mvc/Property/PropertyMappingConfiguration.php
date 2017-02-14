@@ -44,7 +44,6 @@ class PropertyMappingConfiguration
      *   persistence identifier exist the default storage "1:/user_upload/" will be used.
      *
      * @param RenderableInterface $renderable
-     * @return void
      * @internal
      * @todo: could we find a not so ugly solution for that?
      */

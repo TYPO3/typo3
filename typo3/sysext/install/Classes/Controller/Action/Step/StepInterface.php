@@ -40,7 +40,6 @@ interface StepInterface
      *
      * @param int $current The current position
      * @param int $total The total number of steps
-     * @return void
      */
     public function setStepsCounter($current, $total);
 

@@ -23,7 +23,6 @@ interface BackendInterface
      * Set a PersistenceManager instance.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     * @return void
      */
     public function setPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager);
 
@@ -31,7 +30,6 @@ interface BackendInterface
      * Sets the aggregate root objects
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
-     * @return void
      */
     public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
 
@@ -39,7 +37,6 @@ interface BackendInterface
      * Sets the deleted entities
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-     * @return void
      * @api
      */
     public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
@@ -48,14 +45,11 @@ interface BackendInterface
      * Sets the changed objects
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
-     * @return void
      */
     public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
 
     /**
      * Commits the current persistence session
-     *
-     * @return void
      */
     public function commit();
 

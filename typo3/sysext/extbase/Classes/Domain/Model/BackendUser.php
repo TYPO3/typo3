@@ -86,7 +86,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the user name.
      *
      * @param string $userName the user name to set, must not be empty
-     * @return void
      */
     public function setUserName($userName)
     {
@@ -123,7 +122,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets whether this user should be an administrator.
      *
      * @param bool $isAdministrator whether this user should be an administrator
-     * @return void
      */
     public function setIsAdministrator($isAdministrator)
     {
@@ -144,7 +142,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets whether this user is disabled.
      *
      * @param bool $isDisabled whether this user is disabled
-     * @return void
      */
     public function setIsDisabled($isDisabled)
     {
@@ -165,7 +162,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the point in time from which this user is enabled.
      *
      * @param \DateTime|NULL $dateAndTime the start date and time
-     * @return void
      */
     public function setStartDateAndTime(\DateTime $dateAndTime = null)
     {
@@ -186,7 +182,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the point in time before which this user is enabled.
      *
      * @param \DateTime|NULL $dateAndTime the end date and time
-     * @return void
      */
     public function setEndDateAndTime(\DateTime $dateAndTime = null)
     {
@@ -207,7 +202,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the e-mail address of this user.
      *
      * @param string $email the e-mail address, may be empty
-     * @return void
      */
     public function setEmail($email)
     {
@@ -278,7 +272,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets whether the IP lock for this user is disabled.
      *
      * @param bool $disableIpLock whether the IP lock for this user is disabled
-     * @return void
      */
     public function setIpLockIsDisabled($disableIpLock)
     {
@@ -309,7 +302,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets this user's last login date and time.
      *
      * @param \DateTime|NULL $dateAndTime this user's last login date and time
-     * @return void
      */
     public function setLastLoginDateAndTime(\DateTime $dateAndTime = null)
     {

@@ -158,7 +158,6 @@ class PathUtility
      * @param string $path
      *
      * @return string
-     *
      */
     public static function basename($path)
     {
@@ -180,7 +179,6 @@ class PathUtility
      * @param string $path
      *
      * @return string
-     *
      */
     public static function dirname($path)
     {
@@ -203,7 +201,6 @@ class PathUtility
      * @param int $options
      *
      * @return string|array
-     *
      */
     public static function pathinfo($path, $options = null)
     {

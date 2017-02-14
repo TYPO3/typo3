@@ -25,7 +25,6 @@ use TYPO3\TestingFramework\Core\BaseTestCase;
  * to extend this class for unit test cases instead of the base test case because if,
  * at some point, specific behavior needs to be implemented for unit tests, your test cases
  * will profit from it automatically.
- *
  */
 abstract class UnitTestCase extends BaseTestCase
 {
@@ -55,7 +54,6 @@ abstract class UnitTestCase extends BaseTestCase
      * is not needed this way.
      *
      * @throws \RuntimeException
-     * @return void
      */
     protected function tearDown()
     {

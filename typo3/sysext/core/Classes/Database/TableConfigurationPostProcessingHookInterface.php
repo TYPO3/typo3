@@ -22,8 +22,6 @@ interface TableConfigurationPostProcessingHookInterface
     /**
      * Function which may process data created / registered by extTables
      * scripts (f.e. modifying TCA data of all extensions)
-     *
-     * @return void
      */
     public function processData();
 }

@@ -78,7 +78,6 @@ class Application implements ApplicationInterface
      * Set up the application and shut it down afterwards
      *
      * @param callable $execute
-     * @return void
      */
     public function run(callable $execute = null)
     {

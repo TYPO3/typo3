@@ -65,8 +65,6 @@ class OpcodeCacheService
      * Clears a file from an opcache, if one exists.
      *
      * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
-     *
-     * @return void
      */
     public function clearAllActive($fileAbsPath = null)
     {

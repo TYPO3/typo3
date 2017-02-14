@@ -30,7 +30,6 @@ class VariableFrontend extends AbstractFrontend
      * @param mixed $variable The variable to cache
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @return void
      * @throws \InvalidArgumentException if the identifier or tag is not valid
      * @api
      */

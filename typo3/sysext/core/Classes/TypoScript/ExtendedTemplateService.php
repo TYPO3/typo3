@@ -1004,7 +1004,6 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param array $editConstArray
-     * @return void
      */
     public function ext_categorizeEditableConstants($editConstArray)
     {
@@ -1084,7 +1083,6 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param string $category
-     * @return void
      */
     public function ext_getTSCE_config($category)
     {
@@ -1371,7 +1369,6 @@ class ExtendedTemplateService extends TemplateService
      ***************************/
     /**
      * @param string $constants
-     * @return void
      */
     public function ext_regObjectPositions($constants)
     {
@@ -1386,7 +1383,6 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param string $pre
-     * @return void
      */
     public function ext_regObjects($pre)
     {
@@ -1430,7 +1426,6 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @param string $key
      * @param string $var
-     * @return void
      */
     public function ext_putValueInConf($key, $var)
     {
@@ -1452,7 +1447,6 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param string $key
-     * @return void
      */
     public function ext_removeValueInConf($key)
     {
@@ -1501,7 +1495,6 @@ class ExtendedTemplateService extends TemplateService
      * @param array $http_post_files (not used anymore)
      * @param array $theConstants
      * @param array $tplRow Not used
-     * @return void
      */
     public function ext_procesInput($http_post_vars, $http_post_files, $theConstants, $tplRow)
     {

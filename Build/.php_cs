@@ -74,6 +74,9 @@ return PhpCsFixer\Config::create()
         'native_function_casing' => true,
         'self_accessor' => true,
         'no_short_bool_cast' => true,
-        'no_unneeded_control_parentheses' => true
+        'no_unneeded_control_parentheses' => true,
+        'phpdoc_no_empty_return' => true,
+        'no_blank_lines_after_phpdoc' => true,
+        'phpdoc_trim' => true
     ])
     ->setFinder($finder);

@@ -63,7 +63,6 @@ class ObjectManager implements ObjectManagerInterface
      * a call to the __sleep() method on serialization before.
      *
      * @see http://forge.typo3.org/issues/36820
-     * @return void
      */
     public function __wakeup()
     {

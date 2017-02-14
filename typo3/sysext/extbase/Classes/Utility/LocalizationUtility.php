@@ -144,7 +144,6 @@ class LocalizationUtility
      * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
      *
      * @param string $extensionName
-     * @return void
      */
     protected static function initializeLocalization($extensionName)
     {
@@ -170,8 +169,6 @@ class LocalizationUtility
     /**
      * Sets the currently active language/language_alt keys.
      * Default values are "default" for language key and "" for language_alt key.
-     *
-     * @return void
      */
     protected static function setLanguageKeys()
     {
@@ -205,7 +202,6 @@ class LocalizationUtility
      * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
      *
      * @param string $extensionName
-     * @return void
      */
     protected static function loadTypoScriptLabels($extensionName)
     {

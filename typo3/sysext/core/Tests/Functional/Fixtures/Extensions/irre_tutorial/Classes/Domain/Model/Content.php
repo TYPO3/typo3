@@ -47,7 +47,6 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $header
-     * @return void
      */
     public function setHeader($header)
     {
@@ -64,7 +63,6 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel> $hotels
-     * @return void
      */
     public function setHotels(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels)
     {

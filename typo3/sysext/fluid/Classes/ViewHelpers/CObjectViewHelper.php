@@ -82,7 +82,6 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @return void
      */
     public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
     {
@@ -162,8 +161,6 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     /**
      * Sets the $TSFE->cObjectDepthCounter in Backend mode
      * This somewhat hacky work around is currently needed because the cObjGetSingle() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
-     *
-     * @return void
      */
     protected function simulateFrontendEnvironment()
     {
@@ -175,7 +172,6 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      *
-     * @return void
      * @see simulateFrontendEnvironment()
      */
     protected function resetFrontendEnvironment()
