@@ -14,8 +14,6 @@ namespace TYPO3\Components\TestingFramework\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\StringUtility;
-
 /**
  * The mother of all test cases.
  *
@@ -295,6 +293,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getUniqueId($prefix = '')
     {
-        return $prefix . StringUtility::getUniqueId(mt_rand());
+        $uniqueId = uniqid(mt_rand(), true);
+        return $prefix . str_replace('.', '', $uniqueId);
     }
 }

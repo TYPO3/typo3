@@ -402,8 +402,8 @@ class Testbase
     {
         // Base of final LocalConfiguration is core factory configuration
         $finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
-        ArrayUtility::mergeRecursiveWithOverrule($finalConfigurationArray, $configuration);
-        ArrayUtility::mergeRecursiveWithOverrule($finalConfigurationArray, $overruleConfiguration);
+        $finalConfigurationArray = array_replace_recursive($finalConfigurationArray, $configuration);
+        $finalConfigurationArray = array_replace_recursive($finalConfigurationArray, $overruleConfiguration);
         $result = $this->writeFile(
             $instancePath . '/typo3conf/LocalConfiguration.php',
             '<?php' . chr(10) .
