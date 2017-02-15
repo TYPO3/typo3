@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
@@ -4419,6 +4420,45 @@ class GeneralUtility
         if (in_array('console', $log) !== false && isset($GLOBALS['BE_USER']->user['uid'])) {
             DebugUtility::debug($msg, $date, 'Deprecation Log');
         }
+    }
+
+    /**
+     * Logs the usage of a deprecated fluid ViewHelper argument.
+     * The log message will be generated automatically and contains the template path.
+     * With the third argument of this method it is possible to append some text to the log message.
+     *
+     * example usage:
+     *  if ($htmlEscape !== null) {
+     *      GeneralUtility::logDeprecatedViewHelperAttribute(
+     *          'htmlEscape',
+     *          $renderingContext,
+     *          'Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.'
+     *      );
+     *  }
+     *
+     * The example above will create this deprecation log message:
+     * 15-02-17 23:12: [typo3/sysext/backend/Resources/Private/Templates/ToolbarItems/HelpToolbarItemDropDown.html]
+     *   The property "htmlEscape" has been deprecated.
+     *   Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping,
+     *   which is enabled by default now.
+     *
+     * @param string $property
+     * @param RenderingContextInterface $renderingContext
+     * @param string $additionalMessage
+     */
+    public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
+    {
+        $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
+            $renderingContext->getControllerName(),
+            $renderingContext->getControllerAction()
+        );
+        $template = str_replace(PATH_site, '', $template);
+        $message = [];
+        $message[] = '[' . $template . ']';
+        $message[] = 'The property "' . $property . '" has been marked as deprecated.';
+        $message[] = $additionalMessage;
+        $message[] = 'Please check also your partial and layout files of this template';
+        self::deprecationLog(implode(' ', $message));
     }
 
     /**

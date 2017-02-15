@@ -128,7 +128,11 @@ class TranslateViewHelper extends AbstractViewHelper
         $arguments = $arguments['arguments'];
 
         if ($htmlEscape !== null) {
-            GeneralUtility::deprecationLog('htmlEscape argument has been deprecated and has no functionality any more. Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.');
+            GeneralUtility::logDeprecatedViewHelperAttribute(
+                'htmlEscape',
+                $renderingContext,
+                'Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.'
+            );
         }
 
         // Wrapper including a compatibility layer for TYPO3 Flow Translation

@@ -73,7 +73,11 @@ class CaseViewHelper extends AbstractViewHelper
         $default = (bool)$arguments['default'];
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         if ($default !== false) {
-            GeneralUtility::deprecationLog('Argument "default" on f:case is deprecated - use f:defaultCase instead');
+            GeneralUtility::logDeprecatedViewHelperAttribute(
+                'default',
+                $renderingContext,
+                'Argument "default" on f:case is deprecated - use f:defaultCase instead'
+            );
         }
         if ($value === null && $default === false) {
             throw new Exception('The case View helper must have either value or default argument', 1382867521);
