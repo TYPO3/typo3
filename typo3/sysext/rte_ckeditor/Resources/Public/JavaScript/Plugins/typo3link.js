@@ -18,17 +18,18 @@
 	CKEDITOR.plugins.add('typo3link', {
 		elementBrowser: null,
 		init: function (editor) {
-			var allowed = 'a[!href,title,class,target,rel]',
+			var allowedAttributes = ['!href', 'title', 'class', 'target', 'rel'],
 				required = 'a[href]';
 
-			if (editor.config.typo3link.additionalAttributes && editor.config.typo3link.additionalAttributes.length) {
-				allowed = allowed.replace( ']', ',' + editor.config.typo3link.additionalAttributes.join(',') + ']');
+			var additionalAttributes = getAdditionalAttributes(editor);
+			if (additionalAttributes.length) {
+				allowedAttributes.push.apply(allowedAttributes, additionalAttributes);
 			}
 
 			// Override link command
 			editor.addCommand('link', {
 				exec: openLinkBrowser,
-				allowedContent: allowed,
+				allowedContent: 'a[' + allowedAttributes.join(',') + ']',
 				requiredContent: required
 			});
 
@@ -67,7 +68,7 @@
 				}
 			}
 
-			var additionalAttributes = editor.config.typo3link.additionalAttributes;
+			var additionalAttributes = getAdditionalAttributes(editor);
 			for (i = additionalAttributes.length; --i >= 0;) {
 				if (element.hasAttribute(additionalAttributes[i])) {
 					additionalParameters += '&curUrl[' + additionalAttributes[i] + ']=';
@@ -79,7 +80,7 @@
 		openElementBrowser(
 			editor,
 			editor.lang.link.toolbar,
-			TYPO3.settings.Textarea.RTEPopupWindow.height - 20,
+			TYPO3.settings.Textarea.RTEPopupWindow.height,
 			makeUrlFromModulePath(
 				editor,
 				editor.config.typo3link.routeUrl,
@@ -132,8 +133,21 @@
 			// TODO: add this to less/css (.rte-ckeditor-window .modal-body)
 			// 		 further, make modal wider and maybe resize-able
 			elementBrowser.find('.modal-body').css('padding', 0);
-
 		});
+	}
+
+	/**
+	 * Fetch attributes for the <a> tag which are allowed additionally
+	 * @param {Object} editor The CKEditor instance
+	 *
+	 * @return {Array} registered attributes available for the link
+	 */
+	function getAdditionalAttributes(editor) {
+		if (editor.config.typo3link.additionalAttributes && editor.config.typo3link.additionalAttributes.length) {
+			return editor.config.typo3link.additionalAttributes;
+		} else {
+			return [];
+		}
 	}
 
 })();
