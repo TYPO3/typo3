@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -32,34 +31,12 @@ use TYPO3\CMS\Lang\LanguageService;
 class L10nModeUpdater implements RowUpdaterInterface
 {
     /**
-     * @var array Full, migrated TCA as prepared by upgrade wizard controller
-     */
-    protected $migratedTca;
-
-    /**
-     * @var array Full, but NOT migrated TCA
-     */
-    protected $notMigratedTca;
-
-    /**
      * List of tables with information about to migrate fields.
      * Created during hasPotentialUpdateForTable(), used in updateTableRow()
      *
      * @var array
      */
     protected $payload = [];
-
-    /**
-     * Prepare non-migrated TCA to be used in 'hasPotentialUpdateForTable' step
-     */
-    public function __construct()
-    {
-        $this->migratedTca = $GLOBALS['TCA'];
-        $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
-        $loadTcaService->loadExtensionTablesWithoutMigration();
-        $this->notMigratedTca = $GLOBALS['TCA'];
-        $GLOBALS['TCA'] = $this->migratedTca;
-    }
 
     /**
      * Get title
@@ -80,9 +57,7 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     public function hasPotentialUpdateForTable(string $tableName): bool
     {
-        $GLOBALS['TCA'] = $this->notMigratedTca;
         $this->payload[$tableName] = $this->getL10nModePayloadForTable($tableName);
-        $GLOBALS['TCA'] = $this->migratedTca;
         return !empty($this->payload[$tableName]['localizations']);
     }
 
@@ -239,17 +214,13 @@ class L10nModeUpdater implements RowUpdaterInterface
 
         $fieldModes = [];
         foreach ($tableDefinition['columns'] as $fieldName => $fieldConfiguration) {
-            if (
-                empty($fieldConfiguration['l10n_mode'])
-                || empty($fieldConfiguration['config']['type'])
-            ) {
-                continue;
-            }
-            if (
-                $fieldConfiguration['l10n_mode'] === 'exclude'
-                || $fieldConfiguration['l10n_mode'] === 'mergeIfNotBlank'
-            ) {
-                $fieldModes[$fieldName] = $fieldConfiguration['l10n_mode'];
+            $l10nMode = ($fieldConfiguration['l10n_mode'] ?? null);
+            $allowLanguageSynchronization = ($fieldConfiguration['config']['behaviour']['allowLanguageSynchronization'] ?? null);
+
+            if ($l10nMode === 'exclude') {
+                $fieldModes[$fieldName] = $l10nMode;
+            } elseif ($allowLanguageSynchronization) {
+                $fieldModes[$fieldName] = 'mergeIfNotBlank';
             }
         }
 
