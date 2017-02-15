@@ -240,8 +240,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            // @todo Actually Hotel #2 should be prefixed as well
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', 'Hotel #2'));
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', '[Translate to Dansk:] Hotel #2'));
     }
 
     /**
@@ -516,5 +515,95 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
         $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizePageWExclude.csv
+     */
+    public function localizePageWithLocalizationExclude()
+    {
+        parent::localizePageWithLocalizationExclude();
+        $this->assertAssertionDataSet('localizePageWExclude');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizePageNAddHotelChildWExclude.csv
+     */
+    public function localizePageAndAddHotelChildWithLocalizationExclude()
+    {
+        parent::localizePageAndAddHotelChildWithLocalizationExclude();
+        $this->assertAssertionDataSet('localizePageNAddHotelChildWExclude');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizePageWSynchronization.csv
+     */
+    public function localizePageWithLanguageSynchronization()
+    {
+        parent::localizePageWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizePageWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizePageNAddHotelChildWSynchronization.csv
+     */
+    public function localizePageAndAddHotelChildWithLanguageSynchronization()
+    {
+        parent::localizePageAndAddHotelChildWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizePageNAddHotelChildWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0', '[Translate to Dansk:] Hotel #007'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizePageNAddMonoglotHotelChildWSynchronization.csv
+     */
+    public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization()
+    {
+        parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizePageNAddMonoglotHotelChildWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizeNCopyPageWSynchronization.csv
+     */
+    public function localizeAndCopyPageWithLanguageSynchronization()
+    {
+        parent::localizeAndCopyPageWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeNCopyPageWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
     }
 }
