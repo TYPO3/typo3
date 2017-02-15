@@ -639,6 +639,7 @@ class UriBuilder
      */
     public function buildBackendUri()
     {
+        $arguments = [];
         if ($this->addQueryString === true) {
             if ($this->addQueryStringMethod) {
                 switch ($this->addQueryStringMethod) {
@@ -665,10 +666,14 @@ class UriBuilder
                 $arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
             }
         } else {
-            $arguments = [
-                'M' => GeneralUtility::_GP('M'),
-                'id' => GeneralUtility::_GP('id')
-            ];
+            $id = GeneralUtility::_GP('id');
+            $module = GeneralUtility::_GP('M');
+            if ($id !== null) {
+                $arguments['id'] = $id;
+            }
+            if ($module !== null) {
+                $arguments['M'] = $module;
+            }
         }
         ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
         $arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
