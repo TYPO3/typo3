@@ -84,22 +84,22 @@ class MigrateFscStaticTemplateUpdate extends AbstractUpdate
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->like(
                         'constants',
-                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/TypoScript/Static%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/Configuration/TypoScript/Static%', \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->like(
                         'config',
-                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/TypoScript/Static%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/Configuration/TypoScript/Static%', \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->like(
                         'include_static_file',
-                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/TypoScript/Static%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%EXT:fluid_styled_content/Configuration/TypoScript/Static%', \PDO::PARAM_STR)
                     )
                 )
             )
             ->execute();
         while ($record = $statement->fetch()) {
-            $search = 'EXT:fluid_styled_content/TypoScript/Static';
-            $replace = 'EXT:fluid_styled_content/TypoScript';
+            $search = 'EXT:fluid_styled_content/Configuration/TypoScript/Static';
+            $replace = 'EXT:fluid_styled_content/Configuration/TypoScript';
             $record['include_static_file'] = str_replace($search, $replace, $record['include_static_file']);
             $record['constants'] = str_replace($search, $replace, $record['constants']);
             $record['config'] = str_replace($search, $replace, $record['config']);
