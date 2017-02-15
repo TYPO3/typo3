@@ -27,10 +27,10 @@
     {icon -> f:format.raw()}
     <f:if condition="{switchUserMode}">
         <f:then>
-            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.exit', htmlEscape: 'FALSE')}
+            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
         </f:then>
         <f:else>
-            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.logout', htmlEscape: 'FALSE')}
+            {f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
         </f:else>
     </f:if>
 </f:link.typolink>

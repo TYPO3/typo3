@@ -65,12 +65,12 @@
 								2. Use this as argument for 'forPage' translate
 								3. Use this as argument for 'logForNonPageRelatedActionsOrRootLevelOrPage' translate
 							</f:comment>
-							<f:translate
-								key="logForNonPageRelatedActionsOrRootLevelOrPage"
-								arguments="{
+							<f:format.raw>
+								<f:translate
+									key="logForNonPageRelatedActionsOrRootLevelOrPage"
+									arguments="{
 									0: '{f:translate(
 										key:\'forPage\',
-										htmlEscape:\'0\',
 										arguments:\'{
 											0:\\\'{belog:be.pagePath(pid:\\\\\\\'{pid}\\\\\\\')}\\\',
 											1:\\\'{pid}\\\'
@@ -79,7 +79,8 @@
 									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
 									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
 								}"
-							/>
+								/>
+							</f:format.raw>
 						</f:else>
 					</f:if>
 				</f:then>

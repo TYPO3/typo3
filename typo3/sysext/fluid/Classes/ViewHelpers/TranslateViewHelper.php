@@ -33,7 +33,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * </output>
  *
  * <code title="Keep HTML tags">
- * <f:translate key="htmlKey" htmlEscape="false" />
+ * <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
  * </code>
  * <output>
  * value of key "htmlKey" in the current website language, no htmlspecialchars applied
