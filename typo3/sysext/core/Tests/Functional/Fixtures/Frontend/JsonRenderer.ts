@@ -12,7 +12,7 @@ config {
 
 	watcher {
 		tableFields {
-			pages = uid,_ORIG_uid,pid,sorting,title
+			pages = uid,_ORIG_uid,pid,sorting,title,tx_irretutorial_hotels
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
 			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
@@ -67,6 +67,19 @@ page {
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.__pages/pages:{field:uid}
 		}
+        15 = CONTENT
+        15 {
+            if.isTrue.field = tx_irretutorial_hotels
+            table = tx_irretutorial_1nff_hotel
+            select {
+                orderBy = sorting
+                where.field = uid
+                where.intval = 1
+                where.wrap = parenttable="pages" AND parentid=|
+            }
+            renderObj < lib.watcherDataObject
+            renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_hotels/tx_irretutorial_1nff_hotel:{field:uid}
+        }
 		20 = CONTENT
 		20 {
 			table = tt_content
