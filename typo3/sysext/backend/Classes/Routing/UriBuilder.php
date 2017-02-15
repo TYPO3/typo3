@@ -160,7 +160,7 @@ class UriBuilder
      */
     protected function buildUri($parameters, $referenceType)
     {
-        $uri = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $parameters, '', true, true), '&');
+        $uri = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $parameters, '', false, true), '&');
         if ($referenceType === self::ABSOLUTE_PATH) {
             $uri = PathUtility::getAbsoluteWebPath(PATH_typo3 . $uri);
         } else {
