@@ -4561,7 +4561,7 @@ class DataHandler
         $this->registerNestedElementCall($table, $uid, 'localize');
         if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField']
                 || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-                || $table === 'pages_language_overay')
+                || $table === 'pages_language_overlay')
             && $table !== 'pages') {
             if ($this->enableLogging) {
                 $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
