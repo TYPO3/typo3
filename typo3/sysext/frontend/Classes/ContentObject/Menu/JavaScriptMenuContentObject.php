@@ -154,7 +154,7 @@ var ' . $this->JSVarName . $a . '=0;';
                         $url = $this->getTypoScriptFrontendController()->baseUrlWrap($LD['totalURL']);
                         $target = $LD['target'];
                     }
-                    $codeLines .= LF . $var . $count . '=' . $menuName . '.add(' . $parent . ',' . $prev . ',0,' . GeneralUtility::quoteJSvalue($title, true) . ',' . GeneralUtility::quoteJSvalue($url, true) . ',' . GeneralUtility::quoteJSvalue($target, true) . ');';
+                    $codeLines .= LF . $var . $count . '=' . $menuName . '.add(' . $parent . ',' . $prev . ',0,' . GeneralUtility::quoteJSvalue($title) . ',' . GeneralUtility::quoteJSvalue($url) . ',' . GeneralUtility::quoteJSvalue($target) . ');';
                     // If the active one should be chosen...
                     $active = $levelConf['showActive'] && $this->isActive($data['uid'], $MP_var);
                     // If the first item should be shown
@@ -178,7 +178,7 @@ var ' . $this->JSVarName . $a . '=0;';
             $levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
         }
         if ($levelConf['firstLabel'] && $codeLines) {
-            $codeLines .= LF . $menuName . '.defTopTitle[' . $count . '] = ' . GeneralUtility::quoteJSvalue($levelConf['firstLabel'], true) . ';';
+            $codeLines .= LF . $menuName . '.defTopTitle[' . $count . '] = ' . GeneralUtility::quoteJSvalue($levelConf['firstLabel']) . ';';
         }
         return $codeLines;
     }

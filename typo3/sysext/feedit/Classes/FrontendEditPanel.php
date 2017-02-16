@@ -275,7 +275,7 @@ class FrontendEditPanel
         } else {
             if ($confirm && $this->backendUser->jsConfirmation(JsConfirmation::FE_EDIT)) {
                 // Gets htmlspecialchared later
-                $cf1 = 'if (confirm(' . GeneralUtility::quoteJSvalue($confirm, true) . ')) {';
+                $cf1 = 'if (confirm(' . GeneralUtility::quoteJSvalue($confirm) . ')) {';
                 $cf2 = '}';
             } else {
                 $cf1 = ($cf2 = '');
