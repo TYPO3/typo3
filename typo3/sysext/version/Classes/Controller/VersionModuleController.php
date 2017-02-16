@@ -65,6 +65,36 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public $content;
 
     /**
+     * @var string
+     */
+    public $table;
+
+    /**
+     * @var string
+     */
+    public $details;
+
+    /**
+     * @var string
+     */
+    public $diffOnly;
+
+    /**
+     * @var int
+     */
+    public $uid;
+
+    /**
+     * @var array|bool
+     */
+    public $pageinfo;
+
+    /**
+     * @var bool
+     */
+    public $recordFound;
+
+    /**
      * Accumulated content
      *
      * @var int
@@ -109,6 +139,11 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      * @var array
      */
     public $recIndex = [];
+
+    /**
+     * @var string
+     */
+    public $REQUEST_URI = '';
 
     /**
      * The name of the module
@@ -278,8 +313,8 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Diffing:
         $diff_1 = GeneralUtility::_POST('diff_1');
         $diff_2 = GeneralUtility::_POST('diff_2');
+        $content = '';
         if (GeneralUtility::_POST('do_diff')) {
-            $content = '';
             $content .= '<div class="panel panel-space panel-default">';
             $content .= '<div class="panel-heading">' . $lang->getLL('diffing') . '</div>';
             if ($diff_1 && $diff_2) {

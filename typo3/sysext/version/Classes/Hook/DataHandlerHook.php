@@ -48,6 +48,11 @@ class DataHandlerHook
      */
     protected $remappedIds = [];
 
+    /**
+     * @var \TYPO3\CMS\Workspaces\Service\WorkspaceService
+     */
+    protected $workspaceService;
+
     /****************************
      *****  Cmdmap  Hooks  ******
      ****************************/

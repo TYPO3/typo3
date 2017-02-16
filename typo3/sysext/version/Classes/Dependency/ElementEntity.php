@@ -352,7 +352,7 @@ class ElementEntity
     /**
      * Gets the outermost parent element.
      *
-     * @return ElementEntity
+     * @return ElementEntity|bool
      */
     public function getOuterMostParent()
     {
