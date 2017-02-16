@@ -210,7 +210,7 @@ class PermissionController extends ActionController
     public function indexAction()
     {
         if (!$this->id) {
-            $this->pageInfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
+            $this->pageInfo = ['title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], 'uid' => 0, 'pid' => 0];
         }
 
         if ($this->getBackendUser()->workspace != 0) {
@@ -280,7 +280,7 @@ class PermissionController extends ActionController
         $this->view->assign('depth', $this->depth);
 
         if (!$this->id) {
-            $this->pageInfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
+            $this->pageInfo = ['title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], 'uid' => 0, 'pid' => 0];
         }
         if ($this->getBackendUser()->workspace != 0) {
             // Adding FlashMessage with the permission setting matrix:

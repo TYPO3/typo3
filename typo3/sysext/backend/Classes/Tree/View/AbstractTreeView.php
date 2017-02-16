@@ -689,7 +689,8 @@ abstract class AbstractTreeView
         }
         $title = $this->showDefaultTitleAttribute ? htmlspecialchars('UID: ' . $row['uid']) : $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = '<span title="' . $title . '">' . $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = $row['pid'] === 0 ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
+        $icon = '<span title="' . $title . '">' . $icon->render() . '</span>';
         return $this->wrapIcon($icon, $row);
     }
 
