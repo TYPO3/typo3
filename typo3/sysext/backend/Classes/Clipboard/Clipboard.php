@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -100,7 +99,6 @@ class Clipboard
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->view = $this->getStandaloneView();
     }
 
