@@ -44,6 +44,11 @@ class FileFacade
     protected $resource;
 
     /**
+     * @var \TYPO3\CMS\Core\Imaging\IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * @param \TYPO3\CMS\Core\Resource\FileInterface $resource
      * @internal Do not use outside of EXT:filelist!
      */
