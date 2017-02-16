@@ -212,7 +212,7 @@ class ModuleLoader
      * fetches the conf.php file of a certain module, and also merges that with
      * some additional configuration
      *
-     * @param \string $moduleName the combined name of the module, can be "web", "web_info", or "tools_log"
+     * @param string $moduleName the combined name of the module, can be "web", "web_info", or "tools_log"
      * @return array an array with subarrays, named "configuration" (aka $MCONF), "labels" (previously known as $MLANG) and the stripped path
      */
     protected function getModuleSetupInformation($moduleName)

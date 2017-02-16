@@ -29,6 +29,7 @@ class TreeNodeCollection extends \ArrayObject
      */
     public function __construct(array $data = [])
     {
+        parent::__construct();
         if (!empty($data)) {
             $this->dataFromArray($data);
         }

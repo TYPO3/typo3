@@ -304,7 +304,7 @@ class InlineControlContainer extends AbstractContainer
 
         $html .= '</div>';
 
-        $fieldWizardResult = $this->renderfieldWizard();
+        $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
         $html .= $fieldWizardHtml;

@@ -208,6 +208,11 @@ class EditDocumentController extends AbstractModule
     public $returnEditConf;
 
     /**
+     * @var string
+     */
+    public $localizationMode;
+
+    /**
      * Workspace used for the editing action.
      *
      * @var NULL|int

@@ -133,7 +133,7 @@ class OuterWrapContainer extends AbstractContainer
         $fieldInformationHtml = $fieldInformationResult['html'];
         $result = $this->mergeChildReturnIntoExistingResult($result, $fieldInformationResult, false);
 
-        $fieldWizardResult = $this->renderfieldWizard();
+        $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $result = $this->mergeChildReturnIntoExistingResult($result, $fieldWizardResult, false);
 

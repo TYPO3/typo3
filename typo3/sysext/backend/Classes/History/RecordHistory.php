@@ -96,6 +96,11 @@ class RecordHistory
     protected $pageAccessCache = [];
 
     /**
+     * @var string
+     */
+    protected $rollbackFields = '';
+
+    /**
      * @var IconFactory
      */
     protected $iconFactory;
@@ -284,7 +289,7 @@ class RecordHistory
         }
         // Return to normal operation
         $this->lastSyslogId = false;
-        $this->rollbackFields = false;
+        $this->rollbackFields = '';
         $this->createChangeLog();
         $this->view->assign('reloadPageFrame', $reloadPageFrame);
     }

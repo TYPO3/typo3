@@ -254,7 +254,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBeDisabledAndEnabled()
     {
-        return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
+        return $this->canEdit() && $GLOBALS['BE_USER']->checkLanguageAccess(0);
     }
 
     /**
@@ -265,7 +265,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function canBeCut()
     {
         return
-            $this->canEdit($this->record)
+            $this->canEdit()
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
         ;
@@ -278,7 +278,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canBeEdited()
     {
-        return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
+        return $this->canEdit() && $GLOBALS['BE_USER']->checkLanguageAccess(0);
     }
 
     /**
@@ -302,7 +302,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
      */
     public function canCreateNewPages()
     {
-        return $this->canCreate($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
+        return $this->canCreate() && $GLOBALS['BE_USER']->checkLanguageAccess(0);
     }
 
     /**
@@ -313,7 +313,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function canBeRemoved()
     {
         return
-            $this->canRemove($this->record)
+            $this->canRemove()
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
         ;
@@ -327,7 +327,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function canBePastedInto()
     {
         return
-            $this->canCreate($this->record)
+            $this->canCreate()
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
         ;
@@ -341,7 +341,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function canBePastedAfter()
     {
         return
-            $this->canCreate($this->record)
+            $this->canCreate()
             && !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
             && $GLOBALS['BE_USER']->checkLanguageAccess(0)
         ;
