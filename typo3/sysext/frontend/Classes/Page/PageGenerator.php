@@ -41,10 +41,12 @@ class PageGenerator
     /**
      * Setting some vars in TSFE, primarily based on TypoScript config settings.
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @return void
      */
     public static function pagegenInit()
     {
+        GeneralUtility::logDeprecatedFunction();
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $GLOBALS['TSFE'];
         if ($tsfe->page['content_from_pid'] > 0) {
@@ -95,7 +97,7 @@ class PageGenerator
             $tsfe->absRefPrefix = '';
         }
         if ($tsfe->type && $tsfe->config['config']['frameReloadIfNotInFrameset']) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+            GeneralUtility::deprecationLog(
                 'frameReloadIfNotInFrameset has been marked as deprecated since TYPO3 v8, ' .
                 'and will be removed in TYPO3 v9.'
             );
@@ -145,7 +147,7 @@ class PageGenerator
                     $tsfe->xhtmlVersion = 100;
                     break;
                 case 'xhtml_frames':
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+                    GeneralUtility::deprecationLog(
                         'xhtmlDoctype = xhtml_frames  and doctype = xhtml_frames have been marked as deprecated since TYPO3 v8, ' .
                         'and will be removed in TYPO3 v9.'
                     );
@@ -873,7 +875,7 @@ class PageGenerator
         }
         // Header complete, now add content
         if ($tsfe->pSetup['frameSet.']) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+            GeneralUtility::deprecationLog(
                 'frameSet, FRAME and FRAMESET have been marked as deprecated since TYPO3 v8 ' .
                 'and will be removed in TYPO3 v9.'
             );

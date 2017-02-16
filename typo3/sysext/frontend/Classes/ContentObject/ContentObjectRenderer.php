@@ -6450,20 +6450,16 @@ class ContentObjectRenderer
         $originalMailToUrl = 'mailto:' . $mailAddress;
         $mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
 
-        $tsfe = $this->getTypoScriptFrontendController();
-        // no processing happened, therefore
+        // no processing happened, therefore, the default processing kicks in
         if ($mailToUrl === $originalMailToUrl) {
+            $tsfe = $this->getTypoScriptFrontendController();
             if ($tsfe->spamProtectEmailAddresses) {
-                if ($tsfe->spamProtectEmailAddresses === 'ascii') {
-                    $mailToUrl = $tsfe->encryptEmail($mailToUrl);
-                } else {
-                    $mailToUrl = 'javascript:linkTo_UnCryptMailto(' . GeneralUtility::quoteJSvalue($tsfe->encryptEmail($mailToUrl)) . ');';
+                $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
+                if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
+                    $mailToUrl = 'javascript:linkTo_UnCryptMailto(' . GeneralUtility::quoteJSvalue($mailToUrl) . ');';
                 }
-                $atLabel = '';
-                if ($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) {
-                    $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']);
-                }
-                $spamProtectedMailAddress = str_replace('@', $atLabel ? $atLabel : '(at)', htmlspecialchars($mailAddress));
+                $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) ?: '(at)';
+                $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
                 if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
                     $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
                     $lastDotLabel = $lastDotLabel ? $lastDotLabel : '(dot)';
@@ -6474,6 +6470,105 @@ class ContentObjectRenderer
         }
 
         return [$mailToUrl, $linktxt];
+    }
+
+    /**
+     * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
+     *
+     * @param string $string Input string to en/decode: "mailto:blabla@bla.com
+     * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
+     * @return string encoded version of $string
+     */
+    protected function encryptEmail($string, $type)
+    {
+        $out = '';
+        // obfuscates using the decimal HTML entity references for each character
+        if ($type === 'ascii') {
+            $stringLength = strlen($string);
+            for ($a = 0; $a < $stringLength; $a++) {
+                $out .= '&#' . ord(substr($string, $a, 1)) . ';';
+            }
+        } else {
+            // like str_rot13() but with a variable offset and a wider character range
+            $len = strlen($string);
+            $offset = (int)$type;
+            for ($i = 0; $i < $len; $i++) {
+                $charValue = ord($string[$i]);
+                // 0-9 . , - + / :
+                if ($charValue >= 43 && $charValue <= 58) {
+                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
+                } elseif ($charValue >= 64 && $charValue <= 90) {
+                    // A-Z @
+                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
+                } elseif ($charValue >= 97 && $charValue <= 122) {
+                    // a-z
+                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
+                } else {
+                    $out .= $string[$i];
+                }
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * Decryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
+     *
+     * @param string $string Input string to en/decode: "mailto:blabla@bla.com
+     * @param mixed  $type - either "ascii" or a number between -10 and 10 taken from config.spamProtectEmailAddresses
+     * @return string decoded version of $string
+     */
+    protected function decryptEmail($string, $type)
+    {
+        $out = '';
+        // obfuscates using the decimal HTML entity references for each character
+        if ($type === 'ascii') {
+            $stringLength = strlen($string);
+            for ($a = 0; $a < $stringLength; $a++) {
+                $out .= '&#' . ord(substr($string, $a, 1)) . ';';
+            }
+        } else {
+            // like str_rot13() but with a variable offset and a wider character range
+            $len = strlen($string);
+            $offset = (int)$type * -1;
+            for ($i = 0; $i < $len; $i++) {
+                $charValue = ord($string[$i]);
+                // 0-9 . , - + / :
+                if ($charValue >= 43 && $charValue <= 58) {
+                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
+                } elseif ($charValue >= 64 && $charValue <= 90) {
+                    // A-Z @
+                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
+                } elseif ($charValue >= 97 && $charValue <= 122) {
+                    // a-z
+                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
+                } else {
+                    $out .= $string[$i];
+                }
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * Encryption (or decryption) of a single character.
+     * Within the given range the character is shifted with the supplied offset.
+     *
+     * @param int $n Ordinal of input character
+     * @param int $start Start of range
+     * @param int $end End of range
+     * @param int $offset Offset
+     * @return string encoded/decoded version of character
+     */
+    protected function encryptCharcode($n, $start, $end, $offset)
+    {
+        $n = $n + $offset;
+        if ($offset > 0 && $n > $end) {
+            $n = $start + ($n - $end - 1);
+        } elseif ($offset < 0 && $n < $start) {
+            $n = $end - ($start - $n - 1);
+        }
+        return chr($n);
     }
 
     /**

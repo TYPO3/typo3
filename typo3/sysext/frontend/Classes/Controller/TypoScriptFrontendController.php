@@ -488,6 +488,7 @@ class TypoScriptFrontendController
 
     /**
      * Factor for form-field widths compensation
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @var string
      */
     public $compensateFieldWidth = '';
@@ -531,6 +532,7 @@ class TypoScriptFrontendController
      * A string set with a comma list of additional GET vars which should NOT be
      * included in the cHash calculation. These vars should otherwise be detected
      * and involved in caching, eg. through a condition in TypoScript.
+     * @deprecatd since TYPO3 v8, will be removed in TYPO3 v9, this is taken care of via TYPO3_CONF_VARS nowadays
      * @var string
      */
     public $excludeCHashVars = '';
@@ -703,6 +705,7 @@ class TypoScriptFrontendController
 
     /**
      * @var int
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the calculations in setParseTime() directly
      */
     public $scriptParseTime = 0;
 
@@ -3231,14 +3234,174 @@ class TypoScriptFrontendController
     }
 
     /**
+     * Previously located in static method in PageGenerator::init. Is solely used to set up TypoScript
+     * config. options and set properties in $TSFE for that.
+     */
+    public function preparePageContentGeneration()
+    {
+        if ($this->page['content_from_pid'] > 0) {
+            // make REAL copy of TSFE object - not reference!
+            $temp_copy_TSFE = clone $this;
+            // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
+            $temp_copy_TSFE->id = $this->page['content_from_pid'];
+            $temp_copy_TSFE->MP = '';
+            $temp_copy_TSFE->getPageAndRootlineWithDomain($this->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $this->domainStartPage);
+            $this->contentPid = (int)$temp_copy_TSFE->id;
+            unset($temp_copy_TSFE);
+        }
+        if ($this->config['config']['MP_defaults']) {
+            $temp_parts = GeneralUtility::trimExplode('|', $this->config['config']['MP_defaults'], true);
+            foreach ($temp_parts as $temp_p) {
+                list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
+                $temp_ids = GeneralUtility::intExplode(',', $temp_idP);
+                foreach ($temp_ids as $temp_id) {
+                    $this->MP_defaults[$temp_id] = $temp_MPp;
+                }
+            }
+        }
+        // Global vars...
+        $this->indexedDocTitle = $this->page['title'];
+        $this->debug = !empty($this->config['config']['debug']);
+        // Base url:
+        if (isset($this->config['config']['baseURL'])) {
+            $this->baseUrl = $this->config['config']['baseURL'];
+        }
+        // Internal and External target defaults
+        $this->intTarget = '' . $this->config['config']['intTarget'];
+        $this->extTarget = '' . $this->config['config']['extTarget'];
+        $this->fileTarget = '' . $this->config['config']['fileTarget'];
+        if ($this->config['config']['spamProtectEmailAddresses'] === 'ascii') {
+            $this->spamProtectEmailAddresses = 'ascii';
+        } else {
+            $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
+        }
+        // calculate the absolute path prefix
+        if (!empty($this->config['config']['absRefPrefix'])) {
+            $absRefPrefix = trim($this->config['config']['absRefPrefix']);
+            if ($absRefPrefix === 'auto') {
+                $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+            } else {
+                $this->absRefPrefix = $absRefPrefix;
+            }
+        } else {
+            $this->absRefPrefix = '';
+        }
+        if ($this->type && $this->config['config']['frameReloadIfNotInFrameset']) {
+            $this->logDeprecatedTyposcript(
+                'config.frameReloadIfNotInFrameset',
+                'frameReloadIfNotInFrameset has been marked as deprecated since TYPO3 v8, ' .
+                'and will be removed in TYPO3 v9.'
+            );
+            $tdlLD = $this->tmpl->linkData($this->page, '_top', $this->no_cache, '');
+            $this->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($this->sPre) . ' && !parent.view_frame) top.location.href="' . $this->baseUrlWrap($tdlLD['totalURL']) . '"';
+        }
+        $this->compensateFieldWidth = '' . $this->config['config']['compensateFieldWidth'];
+        $this->lockFilePath = '' . $this->config['config']['lockFilePath'];
+        $this->lockFilePath = $this->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
+        if (isset($this->config['config']['noScaleUp'])) {
+            $this->logDeprecatedTyposcript(
+                'config.noScaleUp',
+                'The TypoScript property "config.noScaleUp" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. ' .
+                'Please use the global TYPO3 configuration setting "GFX/processor_allowUpscaling" instead.'
+            );
+        }
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($this->config['config']['noScaleUp']) ? !$this->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
+        $this->ATagParams = trim($this->config['config']['ATagParams']) ? ' ' . trim($this->config['config']['ATagParams']) : '';
+        if ($this->config['config']['setJS_mouseOver']) {
+            $this->setJS('mouseOver');
+        }
+        if ($this->config['config']['setJS_openPic']) {
+            $this->setJS('openPic');
+        }
+        $this->initializeSearchWordDataInTsfe();
+        // linkVars
+        $this->calculateLinkVars();
+        // dtdAllowsFrames indicates whether to use the target attribute in links
+        $this->dtdAllowsFrames = false;
+        if ($this->config['config']['doctype']) {
+            if (in_array(
+                (string)$this->config['config']['doctype'],
+                ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'],
+                true)
+            ) {
+                $this->dtdAllowsFrames = true;
+            }
+        } else {
+            $this->dtdAllowsFrames = true;
+        }
+        // Setting XHTML-doctype from doctype
+        if (!$this->config['config']['xhtmlDoctype']) {
+            $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'];
+        }
+        if ($this->config['config']['xhtmlDoctype']) {
+            $this->xhtmlDoctype = $this->config['config']['xhtmlDoctype'];
+            // Checking XHTML-docytpe
+            switch ((string)$this->config['config']['xhtmlDoctype']) {
+                case 'xhtml_trans':
+                case 'xhtml_strict':
+                    $this->xhtmlVersion = 100;
+                    break;
+                case 'xhtml_frames':
+                    $this->logDeprecatedTyposcript(
+                        'config.xhtmlDoctype=frames',
+                        'xhtmlDoctype = xhtml_frames  and doctype = xhtml_frames have been marked as deprecated since TYPO3 v8, ' .
+                        'and will be removed in TYPO3 v9.'
+                    );
+                    $this->xhtmlVersion = 100;
+                    break;
+                case 'xhtml_basic':
+                    $this->xhtmlVersion = 105;
+                    break;
+                case 'xhtml_11':
+                case 'xhtml+rdfa_10':
+                    $this->xhtmlVersion = 110;
+                    break;
+                default:
+                    $this->pageRenderer->setRenderXhtml(false);
+                    $this->xhtmlDoctype = '';
+                    $this->xhtmlVersion = 0;
+            }
+        } else {
+            $this->pageRenderer->setRenderXhtml(false);
+        }
+
+        // Global content object
+        $this->newCObj();
+    }
+
+    /**
+     * Fills the sWordList property and builds the regular expression in TSFE that can be used to split
+     * strings by the submitted search words.
+     *
+     * @see sWordList
+     * @see sWordRegEx
+     */
+    protected function initializeSearchWordDataInTsfe()
+    {
+        $this->sWordRegEx = '';
+        $this->sWordList = GeneralUtility::_GP('sword_list');
+        if (is_array($this->sWordList)) {
+            $space = !empty($this->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
+            foreach ($this->sWordList as $val) {
+                if (trim($val) !== '') {
+                    $this->sWordRegEx .= $space . preg_quote($val, '/') . $space . '|';
+                }
+            }
+            $this->sWordRegEx = rtrim($this->sWordRegEx, '|');
+        }
+    }
+
+    /**
      * Determines to include custom or pagegen.php script
      * returns script-filename if a TypoScript (config) script is defined and should be included instead of pagegen.php
      *
      * @return string|NULL The relative filepath of "config.pageGenScript" if found and allowed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function generatePage_whichScript()
     {
         if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] && $this->config['config']['pageGenScript']) {
+            GeneralUtility::logDeprecatedFunction();
             return $this->tmpl->getFileName($this->config['config']['pageGenScript']);
         }
         return null;
@@ -3681,9 +3844,11 @@ class TypoScriptFrontendController
      *
      * @return void
      * @access private
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the Request Handler is taking care of that now
      */
     public function setParseTime()
     {
+        GeneralUtility::logDeprecatedFunction();
         // Compensates for the time consumed with Back end user initialization.
         $microtime_start = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : null;
         $microtime_end = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : null;
@@ -3779,9 +3944,11 @@ class TypoScriptFrontendController
      * @param int $end End of range
      * @param int $offset Offset
      * @return string encoded/decoded version of character
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality has been moved to ContentObjectRenderer
      */
     public function encryptCharcode($n, $start, $end, $offset)
     {
+        GeneralUtility::logDeprecatedFunction();
         $n = $n + $offset;
         if ($offset > 0 && $n > $end) {
             $n = $start + ($n - $end - 1);
@@ -3797,9 +3964,11 @@ class TypoScriptFrontendController
      * @param string $string Input string to en/decode: "mailto:blabla@bla.com
      * @param bool $back If set, the process is reversed, effectively decoding, not encoding.
      * @return string encoded/decoded version of $string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality has been moved to ContentObjectRenderer
      */
     public function encryptEmail($string, $back = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         $out = '';
         // obfuscates using the decimal HTML entity references for each character
         if ($this->spamProtectEmailAddresses === 'ascii') {
