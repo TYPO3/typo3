@@ -1036,7 +1036,7 @@ class PageLayoutController
             // Add CSH (Context Sensitive Help) icon to tool bar
             $contextSensitiveHelpButton = $this->buttonBar->makeHelpButton()
                 ->setModuleName($this->descrTable)
-                ->setFieldName('columns_' . $this->controller->MOD_SETTINGS['function']);
+                ->setFieldName('columns_' . $this->MOD_SETTINGS['function']);
             $this->buttonBar->addButton($contextSensitiveHelpButton);
         }
         $lang = $this->getLanguageService();
