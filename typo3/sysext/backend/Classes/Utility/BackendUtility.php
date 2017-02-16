@@ -2274,13 +2274,13 @@ class BackendUtility
                     if ($uid) {
                         // Display the title of MM related records in lists
                         if ($noRecordLookup) {
-                            $MMfield = $theColConf['foreign_table'] . '.uid';
+                            $MMfields = [];
+                            $MMfields[] = $theColConf['foreign_table'] . '.uid';
                         } else {
                             $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                             foreach (GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'], true) as $f) {
                                 $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                             }
-                            $MMfield = implode(',', $MMfields);
                         }
                         /** @var $dbGroup RelationHandler */
                         $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
@@ -2300,7 +2300,7 @@ class BackendUtility
                                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
                             $result = $queryBuilder
-                                ->select('uid', $MMfield)
+                                ->select('uid', ...$MMfields)
                                 ->from($theColConf['foreign_table'])
                                 ->where(
                                     $queryBuilder->expr()->in(
@@ -2423,7 +2423,8 @@ class BackendUtility
                         if ($uid) {
                             // Display the title of MM related records in lists
                             if ($noRecordLookup) {
-                                $MMfield = $theColConf['foreign_table'] . '.uid';
+                                $MMfields = [];
+                                $MMfields[] = $theColConf['foreign_table'] . '.uid';
                             } else {
                                 $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
                                 $altLabelFields = explode(
@@ -2436,7 +2437,6 @@ class BackendUtility
                                         $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
                                     }
                                 }
-                                $MMfield = implode(',', $MMfields);
                             }
                             /** @var $dbGroup RelationHandler */
                             $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
@@ -2456,7 +2456,7 @@ class BackendUtility
                                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
                                 $result = $queryBuilder
-                                    ->select('uid', $MMfield)
+                                    ->select('uid', ...$MMfields)
                                     ->from($theColConf['foreign_table'])
                                     ->where(
                                         $queryBuilder->expr()->in(
