@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  */
 
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Testcase for the external uri view helper

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 /**
  * Test case
  */
-class DatabaseRecordTypeValueTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseRecordTypeValueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseRecordTypeValue|\PHPUnit_Framework_MockObject_MockObject

@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\Formhandler;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\FormHandlerElementTestDataObject;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Formhandler;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\FormHandlerElementTestDataObject;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Tests for basic element fields
@@ -353,8 +353,8 @@ class ElementsBasicCest
     }
 
     /**
-     * @param \TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin $I
-     * @param \TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\Formhandler $formhandler
+     * @param \TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin $I
+     * @param \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Formhandler $formhandler
      * @skip
      */
     public function checkThatBrowserSideValidationWorks_EvalDate(Admin $I, Formhandler $formhandler)
@@ -586,7 +586,7 @@ class ElementsBasicCest
     }
 
     /**
-     * @param \TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\Formhandler $formhandler
+     * @param \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Formhandler $formhandler
      * @param $fieldData
      */
     protected function runTests(Formhandler $formhandler, $fieldData)
@@ -600,7 +600,7 @@ class ElementsBasicCest
     }
 
     /**
-     * @param \TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin $I
+     * @param \TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin $I
      */
     protected function waitForFormReady(Admin $I)
     {

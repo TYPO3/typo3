@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 /**
  * Test case
  */
-class QueryResultTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class QueryResultTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
@@ -185,7 +185,7 @@ class QueryResultTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitT
      */
     public function initializeExecutesQueryWithArrayFetchMode()
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, ['dummy'], [$this->mockQuery]);
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class OrderedProviderListTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class OrderedProviderListTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var OrderedProviderList

@@ -25,7 +25,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormState;
 /**
  * Test case
  */
-class FormRuntimeTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class FormRuntimeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

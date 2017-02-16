@@ -18,7 +18,7 @@
  * with phpunit parameter --bootstrap if executing single test case classes.
  */
 call_user_func(function () {
-    $testbase = new \TYPO3\Components\TestingFramework\Core\Testbase();
+    $testbase = new \TYPO3\TestingFramework\Core\Testbase();
     $testbase->enableDisplayErrors();
     $testbase->defineBaseConstants();
     $testbase->defineOriginalRootPath();

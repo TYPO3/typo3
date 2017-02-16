@@ -20,7 +20,7 @@ use TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator;
 /**
  * Testcase for SaltedPasswordsUtility
  */
-class EvaluatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class EvaluatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var Evaluator

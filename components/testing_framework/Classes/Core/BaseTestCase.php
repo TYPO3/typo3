@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core;
+namespace TYPO3\TestingFramework\Core;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -48,7 +48,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $callOriginalClone whether to call the __clone method
      * @param bool $callAutoload whether to call any autoload function
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      *         a mock of $originalClassName with access methods added
      *
      * @throws \InvalidArgumentException
@@ -96,7 +96,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      * @throws \InvalidArgumentException
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      *
      */
     protected function getAccessibleMockForAbstractClass(
@@ -133,7 +133,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         eval(
             $abstractModifier . 'class ' . $accessibleClassName .
-                ' extends ' . $className . ' implements ' . \TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface::class . ' {' .
+                ' extends ' . $className . ' implements ' . \TYPO3\TestingFramework\Core\AccessibleObjectInterface::class . ' {' .
                     'public function _call($methodName) {' .
                         'if ($methodName === \'\') {' .
                             'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .

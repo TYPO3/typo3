@@ -24,10 +24,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
 /**
  * Test case
  */
-class RequestTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class RequestTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $request;
 

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 /**
  * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
  */
-class RteHtmlParserTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class RteHtmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Html\RteHtmlParser

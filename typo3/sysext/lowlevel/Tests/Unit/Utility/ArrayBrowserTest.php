@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Lowlevel\Tests\Unit\Utility;
 /**
  * Testcase for the \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser class in the TYPO3 Core.
  */
-class ArrayBrowserTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ArrayBrowserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser

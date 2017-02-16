@@ -20,10 +20,10 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 /**
  * Test case
  */
-class ValidatorResolverTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver | \PHPUnit_Framework_MockObject_MockObject | \TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver | \PHPUnit_Framework_MockObject_MockObject | \TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $validatorResolver;
 

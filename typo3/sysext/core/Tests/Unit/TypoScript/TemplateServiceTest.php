@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  */
-class TemplateServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -32,7 +32,7 @@ class TemplateServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\U
     protected $templateService;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
      */
     protected $templateServiceMock;
 

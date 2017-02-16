@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
  */
-class DataHandlerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

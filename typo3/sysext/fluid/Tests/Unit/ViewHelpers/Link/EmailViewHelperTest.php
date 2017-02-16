@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**

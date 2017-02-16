@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 /**
  * Test case
  */
-class PropertyMappingConfigurationBuilderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PropertyMappingConfigurationBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder

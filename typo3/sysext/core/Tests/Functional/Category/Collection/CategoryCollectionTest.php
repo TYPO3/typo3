@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
  */
-class CategoryCollectionTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var CategoryCollection

@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-class Typo3DbQueryParserTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var arary

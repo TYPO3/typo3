@@ -20,7 +20,7 @@ use TYPO3\CMS\Install\Status\StatusUtility;
 /**
  * Test case
  */
-class StatusUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class StatusUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
-class TranslationTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var array

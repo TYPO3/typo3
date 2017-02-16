@@ -15,13 +15,13 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController;
-use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Update from TER controller test
  *
  */
-class UpdateFromTerControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

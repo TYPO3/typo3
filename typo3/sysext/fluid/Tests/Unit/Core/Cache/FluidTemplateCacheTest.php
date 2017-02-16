@@ -19,7 +19,7 @@ use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 /**
  * Test case
  */
-class FluidTemplateCacheTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class FluidTemplateCacheTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

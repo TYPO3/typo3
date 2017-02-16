@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated since TYPO3 8, will be removed in TYPO3 9
  */
-class Testbase extends \TYPO3\Components\TestingFramework\Core\Testbase
+class Testbase extends \TYPO3\TestingFramework\Core\Testbase
 {
 }

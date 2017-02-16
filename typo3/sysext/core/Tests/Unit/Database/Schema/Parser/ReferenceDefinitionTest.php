@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 /**
  * Tests for ReferenceDefinition
  */
-class ReferenceDefinitionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ReferenceDefinitionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

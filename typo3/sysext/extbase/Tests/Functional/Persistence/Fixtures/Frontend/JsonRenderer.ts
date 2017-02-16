@@ -28,11 +28,11 @@ page {
 			pluginName = Blogs
 			vendorName = ExtbaseTeam
 		}
-		stdWrap.postUserFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->parseValues
+		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->parseValues
 		stdWrap.postUserFunc.as = Extbase
 	}
 
-	stdWrap.postUserFunc = TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
+	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
 [globalVar = GP:L = 1]

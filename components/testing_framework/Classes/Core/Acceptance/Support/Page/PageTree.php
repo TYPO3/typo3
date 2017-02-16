@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Acceptance\Support\Page;
+namespace TYPO3\TestingFramework\Core\Acceptance\Support\Page;
 
 /*
  * This file is part of the TYPO3 CMS project.

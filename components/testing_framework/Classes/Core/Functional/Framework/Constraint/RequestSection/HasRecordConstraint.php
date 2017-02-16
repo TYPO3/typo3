@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Functional\Framework\Constraint\RequestSection;
+namespace TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +14,7 @@ namespace TYPO3\Components\TestingFramework\Core\Functional\Framework\Constraint
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\ResponseSection;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseSection;
 
 /**
  * Model of frontend response

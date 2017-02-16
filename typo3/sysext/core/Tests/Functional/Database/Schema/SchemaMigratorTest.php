@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case for \TYPO3\CMS\Core\Database\Schema\SchemaMigratorTest
  */
-class SchemaMigratorTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var SqlReader

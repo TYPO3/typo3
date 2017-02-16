@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Test case
  */
-class EnableFileServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class EnableFileServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider
@@ -66,7 +66,7 @@ class EnableFileServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit
     {
         $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
-        /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, ['dummy'], [], '', false);
         $instance->_setStatic('sitePath', 'vfs://root/');
         $this->assertEquals([], array_diff($expected, $instance->_call('getFirstInstallFilePaths')));
@@ -128,7 +128,7 @@ class EnableFileServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit
     {
         $vfs = vfsStream::setup('root');
         vfsStream::create($structure, $vfs);
-        /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $instance \TYPO3\CMS\Install\Service\EnableFileService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\EnableFileService::class, ['dummy'], [], '', false);
         $instance->_setStatic('sitePath', 'vfs://root/');
         $instance->_call('removeFirstInstallFile');

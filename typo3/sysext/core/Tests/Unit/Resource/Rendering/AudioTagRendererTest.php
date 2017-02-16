@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 /**
  * Class AudioTagRendererTest
  */
-class AudioTagRendererTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AudioTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

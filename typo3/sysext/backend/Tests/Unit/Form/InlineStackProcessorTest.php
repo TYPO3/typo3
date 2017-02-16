@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 /**
  * Test case
  */
-class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**
@@ -252,7 +252,7 @@ class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\U
      */
     public function initializeByParsingDomObjectIdStringParsesStructureString($string, array $expectedInlineStructure, array $_)
     {
-        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
@@ -265,7 +265,7 @@ class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\U
      */
     public function getCurrentStructureFormPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
-        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
         $subject->initializeByParsingDomObjectIdString($string);
         $this->assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
@@ -277,7 +277,7 @@ class InlineStackProcessorTest extends \TYPO3\Components\TestingFramework\Core\U
      */
     public function getCurrentStructureDomObjectIdPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
     {
-        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
         $subject->initializeByParsingDomObjectIdString($string);
         $this->assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));

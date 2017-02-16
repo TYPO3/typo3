@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session\Backend;
  */
 
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
-use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case

@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
 /**
  * Test case
  */
-class SaveToDatabaseFinisherTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

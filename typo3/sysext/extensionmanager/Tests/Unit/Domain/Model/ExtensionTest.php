@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 /**
  * Extension test
  */
-class ExtensionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 /**
  * Test case
  */
-class DefaultFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DefaultFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Functional;
+namespace TYPO3\TestingFramework\Core\Functional;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Components\TestingFramework\Core\BaseTestCase;
-use TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Response;
-use TYPO3\Components\TestingFramework\Core\Testbase;
+use TYPO3\TestingFramework\Core\BaseTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
+use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Base test case class for functional tests, all TYPO3 CMS

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 /**
  * Testcase for the factory of FAL
  */
-class ResourceFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ResourceFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances
@@ -93,7 +93,7 @@ class ResourceFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\U
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
+        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
         $subject = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],
@@ -113,7 +113,7 @@ class ResourceFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\U
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
+        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Core\Resource\ResourceFactory */
         $subject = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Resource\ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],

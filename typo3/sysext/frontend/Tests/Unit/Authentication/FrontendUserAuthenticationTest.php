@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Sv\AuthenticationService;
-use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test cases for FrontendUserAuthentication

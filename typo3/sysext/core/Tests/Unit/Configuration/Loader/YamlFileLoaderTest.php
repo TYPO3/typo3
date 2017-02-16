@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 /**
  * Test case for the yaml file loader class
  */
-class YamlFileLoaderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class YamlFileLoaderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Generic method to check if the load method returns an array from a YAML file

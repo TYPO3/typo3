@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated since TYPO3 8, will be removed in TYPO3 9
  */
-interface AccessibleObjectInterface extends \TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+interface AccessibleObjectInterface extends \TYPO3\TestingFramework\Core\AccessibleObjectInterface
 {
 }

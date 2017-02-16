@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers;
+namespace TYPO3\TestingFramework\Fluid\Unit\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 /**
  * Base test class for testing view helpers
  */
-abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+abstract class ViewHelperBaseTestcase extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ViewHelperVariableContainer|ObjectProphecy
@@ -54,7 +54,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework
     protected $tagBuilder;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments
+     * @var array
      */
     protected $arguments;
 
@@ -64,7 +64,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContext
+     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 

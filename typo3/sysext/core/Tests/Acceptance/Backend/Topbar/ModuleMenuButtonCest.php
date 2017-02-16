@@ -14,7 +14,7 @@ namespace TYPO3\core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 
 /**
  * Acceptance test for the menu button in the topbar

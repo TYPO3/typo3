@@ -19,7 +19,7 @@ use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 /**
  * Test case for \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility
  */
-class SaltedPasswordsUtilityTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class SaltedPasswordsUtilityTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
 
     /**

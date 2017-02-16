@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
  *
  * This file is a backport from FLOW3
  */
-class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CacheManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test
@@ -316,7 +316,7 @@ class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = $this->getUniqueId('Test');
         $configuration = [
@@ -342,7 +342,7 @@ class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
      */
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = $this->getUniqueId('Test');
         $configuration = [
@@ -426,7 +426,7 @@ class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
      */
     public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = 'aTest';
 
@@ -462,7 +462,7 @@ class CacheManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
      */
     public function flushCachesInGroupByTagsDeletesByTag()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
         $cacheIdentifier = 'aTest';
 

@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
-class LockFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class LockFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var LockFactory|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $mockFactory;
 

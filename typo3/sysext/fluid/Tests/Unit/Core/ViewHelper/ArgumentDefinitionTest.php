@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 /**
  * Test case
  */
-class ArgumentDefinitionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ArgumentDefinitionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

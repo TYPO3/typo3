@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 /**
  * Testcase for Extension
  */
-class ExtensionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Lang\Domain\Model\Extension

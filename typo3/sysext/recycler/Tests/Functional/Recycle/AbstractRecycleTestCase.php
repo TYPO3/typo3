@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functional test for the Export
  */
-abstract class AbstractRecycleTestCase extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+abstract class AbstractRecycleTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var array

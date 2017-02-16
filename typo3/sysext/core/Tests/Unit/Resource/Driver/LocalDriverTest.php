@@ -18,7 +18,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Components\TestingFramework\Core\FileStreamWrapper;
+use TYPO3\TestingFramework\Core\FileStreamWrapper;
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
@@ -167,7 +167,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function createFolderRecursiveSanitizesFilename()
     {
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $driver */
+        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->createDriver([], ['sanitizeFilename']);
         $driver->expects($this->exactly(2))
             ->method('sanitizeFileName')
@@ -183,7 +183,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
      */
     public function determineBaseUrlUrlEncodesUriParts()
     {
-        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $driver */
+        /** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Driver\LocalDriver::class, ['hasCapability'], [], '', false);
         $driver->expects($this->once())
             ->method('hasCapability')

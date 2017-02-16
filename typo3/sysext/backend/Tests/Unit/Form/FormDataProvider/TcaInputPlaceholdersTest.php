@@ -24,7 +24,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaInputPlaceholdersTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaInputPlaceholdersTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaInputPlaceholders

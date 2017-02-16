@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
-use TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case

@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Test case
  */
-class IntegerConverterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class IntegerConverterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface

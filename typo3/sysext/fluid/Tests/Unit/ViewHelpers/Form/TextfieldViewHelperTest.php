@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\TextfieldViewHelper;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test for the "Textfield" Form view helper

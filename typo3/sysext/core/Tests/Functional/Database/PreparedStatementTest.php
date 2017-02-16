@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 /**
  * Test case for \TYPO3\CMS\Core\Database\PreparedStatement
  */
-class PreparedStatementTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var DatabaseConnection

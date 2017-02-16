@@ -20,7 +20,7 @@ use TYPO3\CMS\Sv\AuthenticationService;
 /**
  * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
  */
-class AuthenticationServiceTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var AuthenticationService

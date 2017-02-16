@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 /**
  * Test case
  */
-class Typo3DatabaseBackendTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
 
     /**

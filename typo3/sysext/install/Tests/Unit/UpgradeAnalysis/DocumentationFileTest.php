@@ -22,7 +22,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 
-class DocumentationFileTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DocumentationFile

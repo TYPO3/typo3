@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 /**
  * Testcase
  */
-class MenuContentObjectFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

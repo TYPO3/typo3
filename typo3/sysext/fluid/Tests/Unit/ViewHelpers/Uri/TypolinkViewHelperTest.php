@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  */
 
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Class TypolinkViewHelperTest
@@ -81,7 +81,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      */
     public function createTypolinkParameterFromArgumentsReturnsExpectedArray($input, $additionalParametersFromFluid, $expected)
     {
-        /** @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
         $result = $subject->_call('createTypolinkParameterFromArguments', $input, $additionalParametersFromFluid);
         $this->assertSame($expected, $result);

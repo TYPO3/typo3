@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
  */
-class RecordCollectionRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var RecordCollectionRepository|\PHPUnit_Framework_MockObject_MockObject

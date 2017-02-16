@@ -17,6 +17,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 /**
  * @deprecated since TYPO3 8, will be removed in TYPO3 9
  */
-abstract class ViewHelperBaseTestcase extends \TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase
+abstract class ViewHelperBaseTestcase extends \TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase
 {
 }

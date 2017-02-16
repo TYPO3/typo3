@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 /**
  * Test case
  */
-class ArgumentTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ArgumentTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument

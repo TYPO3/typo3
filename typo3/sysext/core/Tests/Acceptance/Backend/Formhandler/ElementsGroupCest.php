@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use Facebook\WebDriver\Exception\NoSuchWindowException;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Page\PageTree;
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Tests for ElementsGroupelement fields

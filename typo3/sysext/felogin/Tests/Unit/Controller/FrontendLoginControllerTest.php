@@ -27,10 +27,10 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Test case
  */
-class FrontendLoginControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $accessibleFixture;
 

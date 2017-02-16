@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
 /**
  * Test case
  */
-class Typo3StatusTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class Typo3StatusTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Set up

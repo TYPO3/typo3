@@ -19,7 +19,7 @@ use TYPO3\CMS\Rsaauth\Keypair;
 /**
  * Test case.
  */
-class KeypairTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class KeypairTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var Keypair

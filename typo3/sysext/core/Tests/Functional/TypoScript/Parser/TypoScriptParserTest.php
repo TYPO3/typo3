@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\Parser;
 /**
  * Functional test for TypoScriptParser
  */
-class TypoScriptParserTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * This tests triggers an error if the serialize(unserialize())) call

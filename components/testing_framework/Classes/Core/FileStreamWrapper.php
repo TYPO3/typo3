@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core;
+namespace TYPO3\TestingFramework\Core;
 
 /*
  * This file is part of the TYPO3 CMS project.

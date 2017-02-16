@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 /**
  * Testcase for SaltFactory
  */
-class SaltFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Keeps instance of object to test.

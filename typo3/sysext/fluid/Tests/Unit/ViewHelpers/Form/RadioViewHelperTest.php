@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test for the "Radio" Form view helper

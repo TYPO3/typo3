@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper;
 /**
  * Test case
  */
-class DatePickerViewHelperTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DatePickerViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

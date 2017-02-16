@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle;
 /**
  * Test case
  */
-class TcaColumnsProcessRecordTitleTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaColumnsProcessRecordTitle

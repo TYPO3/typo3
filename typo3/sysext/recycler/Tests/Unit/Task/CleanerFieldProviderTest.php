@@ -23,7 +23,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 /**
  * Testcase
  */
-class CleanerFieldProviderTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CleanerFieldProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var CleanerFieldProvider

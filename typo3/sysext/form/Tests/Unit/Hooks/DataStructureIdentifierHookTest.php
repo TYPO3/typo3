@@ -23,7 +23,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 /**
  * Test case
  */
-class DataStructureIdentifierHookTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

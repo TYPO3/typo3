@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\Page\Fixtures\PageGeneratorFixture;
 /**
  * Test case
  */
-class PageGeneratorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var PageGeneratorFixture

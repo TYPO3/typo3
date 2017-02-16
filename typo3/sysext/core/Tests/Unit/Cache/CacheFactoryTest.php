@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  *
  * This file is a backport from FLOW3
  */
-class CacheFactoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CacheFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

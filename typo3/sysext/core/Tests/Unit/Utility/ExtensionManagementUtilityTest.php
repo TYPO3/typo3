@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class ExtensionManagementUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var array A backup of registered singleton instances

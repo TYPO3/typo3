@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 /**
  * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
  */
-class LocalizationControllerTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * @var LocalizationController

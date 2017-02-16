@@ -25,7 +25,7 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 /**
  * Test case
  */
-class AbstractWidgetControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractWidgetControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test
@@ -57,7 +57,7 @@ class AbstractWidgetControllerTest extends \TYPO3\Components\TestingFramework\Co
         $request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
         /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
         $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
-        /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $abstractWidgetController */
+        /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $abstractWidgetController */
         $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, ['resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'], [], '', false);
         $mockUriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);

@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface;
 /**
  * Test case
  */
-class PageRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['frontend'];
 

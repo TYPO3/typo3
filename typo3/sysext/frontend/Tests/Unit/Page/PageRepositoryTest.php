@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 /**
  * Test case
  */
-class PageRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $pageSelectObject;
 

@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Scheduler task tests

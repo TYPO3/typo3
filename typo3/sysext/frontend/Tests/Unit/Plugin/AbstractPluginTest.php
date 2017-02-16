@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\Tests\Unit\Fixtures\ResultBrowserPluginHook;
 /**
  * Testcase for TYPO3\CMS\Frontend\Plugin\AbstractPlugin
  */
-class AbstractPluginTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractPluginTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var AbstractPlugin

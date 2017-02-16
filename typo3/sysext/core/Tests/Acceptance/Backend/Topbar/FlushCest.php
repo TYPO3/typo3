@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Topbar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\Components\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
+use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar;
 
 /**
  * Tests for the flush module in the topbar

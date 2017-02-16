@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
-use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CropVariantCollectionTest extends UnitTestCase
 {

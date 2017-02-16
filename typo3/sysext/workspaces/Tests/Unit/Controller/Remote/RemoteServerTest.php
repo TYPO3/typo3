@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * RemoteServer test
  */
-class RemoteServerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class RemoteServerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer

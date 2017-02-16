@@ -15,13 +15,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  */
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
-use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Test case
  */
-class AbstractTemplateViewTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractTemplateViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var AbstractTemplateView|AccessibleObjectInterface

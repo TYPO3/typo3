@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\FileLockStrategy
  */
-class FileLockStrategyTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class FileLockStrategyTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

@@ -31,7 +31,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class DatabaseSystemLanguageRowsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseSystemLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseSystemLanguageRows

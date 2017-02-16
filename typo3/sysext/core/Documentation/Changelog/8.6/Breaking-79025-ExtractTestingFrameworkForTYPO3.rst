@@ -33,7 +33,7 @@ All installations using core testing components as base.
 Migration
 =========
 
-Change the namespace from TYPO3\CMS\Core\Tests to TYPO3\Components\TestingFramework\Core or in case of the xml fixtures the corresponding file path.
+Change the namespace from TYPO3\CMS\Core\Tests to TYPO3\TestingFramework\Core or in case of the xml fixtures the corresponding file path.
 
 If you need to ensure compatibility with multiple TYPO3 versions, use the base test classes with their old names.
 

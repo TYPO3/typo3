@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend;
+namespace TYPO3\TestingFramework\Core\Functional\Framework\Frontend;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -175,7 +175,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface
     protected function getRenderer()
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Renderer::class
+            \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer::class
         );
     }
 

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 /**
  * Tests for CreateIndexDefinitionItem
  */
-class IndexDefinitionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class IndexDefinitionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Each parameter array consists of the following values:

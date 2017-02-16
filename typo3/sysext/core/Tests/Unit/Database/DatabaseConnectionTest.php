@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
  *
  */
-class DatabaseConnectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseConnection

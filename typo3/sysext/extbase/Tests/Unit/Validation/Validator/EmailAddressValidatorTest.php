@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 /**
  * Test case
  */
-class EmailAddressValidatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class EmailAddressValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider with valid email addresses

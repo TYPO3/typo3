@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
 /**
  * Test case for class \TYPO3\CMS\Core\Utility\CommandUtility
  */
-class CommandUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CommandUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Data provider for getConfiguredApps

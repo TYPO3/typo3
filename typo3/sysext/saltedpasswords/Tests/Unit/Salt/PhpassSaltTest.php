@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Crypto\Random;
 /**
  * Testcase for PhpassSalt
  */
-class PhpassSaltTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PhpassSaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Keeps instance of object to test.

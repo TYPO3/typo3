@@ -19,7 +19,7 @@ use TYPO3\CMS\Form\Controller\AbstractBackendController;
 /**
  * Test case
  */
-class AbstractBackendControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractBackendControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

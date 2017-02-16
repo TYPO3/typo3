@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 /**
  * Testcase
  */
-class AbstractFormProtectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFormProtectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting

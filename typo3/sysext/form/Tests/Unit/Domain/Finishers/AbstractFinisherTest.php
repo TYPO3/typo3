@@ -22,7 +22,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 /**
  * Test case
  */
-class AbstractFinisherTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

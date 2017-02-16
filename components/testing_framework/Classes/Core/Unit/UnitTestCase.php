@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Unit;
+namespace TYPO3\TestingFramework\Core\Unit;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace TYPO3\Components\TestingFramework\Core\Unit;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\Components\TestingFramework\Core\BaseTestCase;
+use TYPO3\TestingFramework\Core\BaseTestCase;
 
 /**
  * Base test case for unit tests.
@@ -65,8 +65,8 @@ abstract class UnitTestCase extends BaseTestCase
             $declaringClass = $property->getDeclaringClass()->getName();
             if (
                 !$property->isStatic()
-                && $declaringClass !== \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase::class
-                && $declaringClass !== \TYPO3\Components\TestingFramework\Core\BaseTestCase::class
+                && $declaringClass !== \TYPO3\TestingFramework\Core\Unit\UnitTestCase::class
+                && $declaringClass !== \TYPO3\TestingFramework\Core\BaseTestCase::class
                 && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
             ) {
                 $propertyName = $property->getName();

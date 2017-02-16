@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 /**
  * Test case
  */
-class TcaInlineExpandCollapseStateTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaInlineExpandCollapseStateTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaInlineExpandCollapseState

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 /**
  * Test case
  */
-class QueryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class QueryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query

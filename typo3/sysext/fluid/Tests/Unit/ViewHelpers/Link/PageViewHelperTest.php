@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  */
 
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
-use TYPO3\Components\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test-case for Link\PageViewHelper

@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
 /**
  * Test case
  */
-class CommandManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CommandManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -50,7 +50,7 @@ class CommandManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Un
      */
     public function getAvailableCommandsReturnsAllAvailableCommands()
     {
-        /** @var \TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $commandManager */
+        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $commandManager */
         $commandManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class, ['dummy']);
         $commandManager->_set('objectManager', $this->mockObjectManager);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = [

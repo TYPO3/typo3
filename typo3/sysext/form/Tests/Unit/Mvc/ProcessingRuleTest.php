@@ -25,7 +25,7 @@ use TYPO3\CMS\Form\Tests\Unit\Mvc\Validation\Fixtures\TestValidator;
 /**
  * Test case
  */
-class ProcessingRuleTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ProcessingRuleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

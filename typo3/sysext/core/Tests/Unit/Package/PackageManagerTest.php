@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Testcase for the default package manager
  *
  */
-class PackageManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PackageManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $packageManager
+     * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
      */
     protected $packageManager;
 
@@ -160,7 +160,7 @@ class PackageManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Un
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy']);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
@@ -212,7 +212,7 @@ class PackageManagerTest extends \TYPO3\Components\TestingFramework\Core\Unit\Un
             $packagePaths[] = $packagePath;
         }
 
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates']);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');

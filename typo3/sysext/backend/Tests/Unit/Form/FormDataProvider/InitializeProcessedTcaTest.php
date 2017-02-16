@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
 /**
  * Test case
  */
-class InitializeProcessedTcaTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class InitializeProcessedTcaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var InitializeProcessedTca

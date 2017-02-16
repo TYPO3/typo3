@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\PlaintextRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case

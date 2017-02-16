@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 /**
  * Test case for \TYPO3\CMS\Core\Database\RelationHandler
  */
-class RelationHandlerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class RelationHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Database\RelationHandler

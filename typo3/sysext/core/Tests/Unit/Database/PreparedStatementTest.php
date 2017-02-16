@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Database\PreparedStatement;
 /**
  * Test case
  */
-class PreparedStatementTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection

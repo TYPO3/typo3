@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 /**
  * Test case
  */
-class InstallUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var string
@@ -35,7 +35,7 @@ class InstallUtilityTest extends \TYPO3\Components\TestingFramework\Core\Unit\Un
     protected $fakedExtensions = [];
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Utility\InstallUtility|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Utility\InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $installMock;
 

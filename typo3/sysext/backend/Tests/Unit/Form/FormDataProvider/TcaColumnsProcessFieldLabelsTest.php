@@ -20,7 +20,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Test case
  */
-class TcaColumnsProcessFieldLabelsTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsProcessFieldLabelsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaColumnsProcessFieldLabels

@@ -3,7 +3,7 @@ namespace TYPO3\Fluid\Tests\Functional;
 
 use TYPO3\CMS\Fluid\View\TemplateView;
 
-class EscapeChildrenRenderingTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class EscapeChildrenRenderingTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected $testExtensionsToLoad = ['typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test'];
 

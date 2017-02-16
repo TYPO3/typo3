@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 /**
  * Test case
  */
-class TaskTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TaskTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Scheduler\Task|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Scheduler\Task|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $task;
 

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection.
  */
-class SortedTreeNodeCollectionTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class SortedTreeNodeCollectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     protected function createTestCollection()
     {

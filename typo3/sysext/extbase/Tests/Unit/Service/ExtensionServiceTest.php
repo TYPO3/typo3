@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Exception;
 /**
  * Test case
  */
-class ExtensionServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Test case
  */
-class CategoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class CategoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\Category

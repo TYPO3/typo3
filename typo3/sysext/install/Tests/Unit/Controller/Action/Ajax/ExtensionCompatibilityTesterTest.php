@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class ExtensionCompatibilityTesterTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Package\UnitTestPackageManager A backup of unit test package manager

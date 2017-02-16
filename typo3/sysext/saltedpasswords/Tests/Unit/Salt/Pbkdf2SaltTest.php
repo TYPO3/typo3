@@ -20,7 +20,7 @@ use TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt;
 /**
  * Testcase for Pbkdf2Salt
  */
-class Pbkdf2SaltTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * Keeps instance of object to test.

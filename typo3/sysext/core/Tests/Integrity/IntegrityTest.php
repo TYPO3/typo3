@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * should fail if some other test before destroys the environment with
  * invalid mocking or backups.
  */
-class IntegrityTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class IntegrityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * This test fails if some test before called

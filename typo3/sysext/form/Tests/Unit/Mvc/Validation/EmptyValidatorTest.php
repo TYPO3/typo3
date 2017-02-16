@@ -19,7 +19,7 @@ use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 /**
  * Test case
  */
-class EmptyValidatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class EmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

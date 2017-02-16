@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class TcaInputPlaceholderRecordTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaInputPlaceholderRecordTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaInputPlaceholderRecord

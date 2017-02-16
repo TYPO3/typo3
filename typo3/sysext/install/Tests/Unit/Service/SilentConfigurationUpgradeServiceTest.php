@@ -23,7 +23,7 @@ use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 /**
  * Test case
  */
-class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject
@@ -86,7 +86,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function configureBackendLoginSecurity($current, $setting, $isPackageActive, $hasLocalConfig)
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -140,7 +140,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -178,7 +178,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function doNotRemoveObsoleteLocalConfigurationSettingsIfThereAreNoOldSettings()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -214,7 +214,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function doNotGenerateEncryptionKeyIfExists()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -249,7 +249,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function generateEncryptionKeyIfNotExists()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -390,7 +390,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function transferHttpSettingsIfSet($currentLocalConfiguration, $newSettings, $localConfigurationNeedsUpdate)
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -433,7 +433,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -479,7 +479,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function doNotDisableImageMagickDetailSettingsIfImageMagickIsEnabled()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -520,7 +520,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function setImageMagickDetailSettings()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -565,7 +565,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\Components\TestingFra
      */
     public function doNotSetImageMagickDetailSettings()
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],

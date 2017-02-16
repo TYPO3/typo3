@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Http\Stream;
  *
  * Adapted from https://github.com/phly/http/
  */
-class StreamTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class StreamTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var Stream

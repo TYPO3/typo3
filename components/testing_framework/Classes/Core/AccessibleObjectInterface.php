@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core;
+namespace TYPO3\TestingFramework\Core;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace TYPO3\Components\TestingFramework\Core;
  */
 
 /**
- * This interface defines the methods provided by TYPO3\Components\TestingFramework\Core\TestCase::getAccessibleMock.::
+ * This interface defines the methods provided by TYPO3\TestingFramework\Core\TestCase::getAccessibleMock.::
  */
 interface AccessibleObjectInterface
 {

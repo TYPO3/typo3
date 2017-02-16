@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+namespace TYPO3\TestingFramework\Core\Acceptance\Support\Helper;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,8 +14,6 @@ declare(strict_types=1);
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-namespace TYPO3\Components\TestingFramework\Core\Acceptance\Support\Helper;
 
 /**
  * Class FormHandlerElementTestDataObject.

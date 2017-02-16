@@ -26,7 +26,7 @@ use TYPO3\CMS\Sv\Report\ServicesListReport;
 /**
  * Test case for class ServicesListReport
  */
-class ServicesListReportTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ServicesListReportTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var ServicesListReport

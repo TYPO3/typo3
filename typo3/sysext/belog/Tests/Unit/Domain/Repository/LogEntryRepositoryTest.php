@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 /**
  * Test case
  */
-class LogEntryRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class LogEntryRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

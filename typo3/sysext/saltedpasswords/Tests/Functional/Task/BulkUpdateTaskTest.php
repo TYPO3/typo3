@@ -21,7 +21,7 @@ use TYPO3\CMS\Saltedpasswords\Task\BulkUpdateTask;
 /**
  * Test case for \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility
  */
-class BulkUpdateTaskTest extends \TYPO3\Components\TestingFramework\Core\Functional\FunctionalTestCase
+class BulkUpdateTaskTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
      * XML database fixtures to be loaded into database.

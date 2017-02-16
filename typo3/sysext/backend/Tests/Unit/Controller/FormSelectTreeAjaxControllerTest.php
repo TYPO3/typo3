@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 /**
  * Test case
  */
-class FormSelectTreeAjaxControllerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class FormSelectTreeAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

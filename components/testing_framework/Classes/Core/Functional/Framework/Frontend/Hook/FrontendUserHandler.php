@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Components\TestingFramework\Core\Functional\Framework\Frontend\Hook;
+namespace TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook;
 
 /*
  * This file is part of the TYPO3 CMS project.

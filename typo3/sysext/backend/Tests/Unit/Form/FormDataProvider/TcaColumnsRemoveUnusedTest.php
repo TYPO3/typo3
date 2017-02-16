@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused;
 /**
  * Test case
  */
-class TcaColumnsRemoveUnusedTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class TcaColumnsRemoveUnusedTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var TcaColumnsRemoveUnused

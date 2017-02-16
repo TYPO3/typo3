@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Test case
  */
-class AbstractRepositoryTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var AbstractRepository

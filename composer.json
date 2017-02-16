@@ -187,7 +187,7 @@
 			"TYPO3\\CMS\\WizardCrpages\\": "typo3/sysext/wizard_crpages/Classes/",
 			"TYPO3\\CMS\\WizardSortpages\\": "typo3/sysext/wizard_sortpages/Classes/",
 			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/",
-			"TYPO3\\Components\\TestingFramework\\": "components/testing_framework/Classes/",
+			"TYPO3\\TestingFramework\\": "components/testing_framework/Classes/",
 			"TYPO3\\CMS\\Core\\Tests\\": "components/testing_framework/compat/core/",
 			"TYPO3\\CMS\\Fluid\\Tests\\": "components/testing_framework/compat/fluid/"
 		},

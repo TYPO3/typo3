@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 /**
  * Test case
  */
-class DatabaseParentPageRowTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DatabaseParentPageRowTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var DatabaseParentPageRow|\PHPUnit_Framework_MockObject_MockObject

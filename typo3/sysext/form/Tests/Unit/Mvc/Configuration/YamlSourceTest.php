@@ -22,7 +22,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 /**
  * Test case
  */
-class YamlSourceTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class YamlSourceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
 
     /**

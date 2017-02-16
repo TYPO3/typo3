@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractCompositeV
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class AbstractCompositeValidatorTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class AbstractCompositeValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @test

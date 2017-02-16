@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 /**
  * Test case
  */
-class ContainerTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\Container\Container

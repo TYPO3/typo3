@@ -19,10 +19,10 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * Download queue test
  *
  */
-class DownloadQueueTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class DownloadQueueTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\Components\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
      */
     protected $downloadQueueMock;
 
