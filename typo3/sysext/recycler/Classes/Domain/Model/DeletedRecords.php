@@ -268,7 +268,7 @@ class DeletedRecords
                 '1',
                 ' AND ' . $where,
                 '',
-                '',
+                'uid',
                 $limit,
                 false,
                 $queryBuilder
