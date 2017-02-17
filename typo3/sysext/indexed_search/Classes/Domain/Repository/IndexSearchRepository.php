@@ -1272,7 +1272,7 @@ class IndexSearchRepository
      * or PHP-versions which has varying output from the hexdec function.
      *
      * @param string $str String to hash
-     * @return int Integer intepretation of the md5 hash of input string.
+     * @return int Integer interpretation of the md5 hash of input string.
      */
     protected function md5inthash($str)
     {

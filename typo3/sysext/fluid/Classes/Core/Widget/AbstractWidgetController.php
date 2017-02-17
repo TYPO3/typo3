@@ -53,7 +53,7 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
     }
 
     /**
-     * Allows the widget template root path to be overriden via the framework configuration,
+     * Allows the widget template root path to be overridden via the framework configuration,
      * e.g. plugin.tx_extension.view.widget.<WidgetViewHelperClassName>.templateRootPath
      *
      * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view

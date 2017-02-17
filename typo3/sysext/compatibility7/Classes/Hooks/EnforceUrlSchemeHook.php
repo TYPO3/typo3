@@ -52,7 +52,7 @@ class EnforceUrlSchemeHook implements TypolinkModifyLinkConfigForPageLinksHookIn
         // Enable forceAbsoluteUrl so the link configuration actually enters the if() clause in TypoLink
         $linkConfiguration['forceAbsoluteUrl'] = 1;
 
-        // Now explictly override the scheme
+        // Now explicitly override the scheme
         if (!isset($linkConfiguration['forceAbsoluteUrl.'])) {
             $linkConfiguration['forceAbsoluteUrl.'] = [];
         }

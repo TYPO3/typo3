@@ -349,7 +349,7 @@ class InheritancesResolverService
      * overruling similar values in the first array ($firstArray) with the
      * values of the second array ($secondArray)
      * In case of identical keys, ie. keeping the values of the second.
-     * This is basicly the Extbase arrayMergeRecursiveOverrule method.
+     * This is basically the Extbase arrayMergeRecursiveOverrule method.
      * This method act different to the core mergeRecursiveWithOverrule method.
      * This method has the possibility to overrule a array value within the
      * $firstArray with a string value within the $secondArray.

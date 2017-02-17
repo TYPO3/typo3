@@ -455,7 +455,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Possible install pathes
+     * Possible install paths
      *
      * @static
      * @return array
@@ -471,7 +471,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Allowed install pathes
+     * Allowed install paths
      *
      * @static
      * @return array

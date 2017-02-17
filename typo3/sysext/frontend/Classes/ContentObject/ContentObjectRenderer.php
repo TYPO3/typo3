@@ -2418,7 +2418,7 @@ class ContentObjectRenderer
 
     /**
      * csConv
-     * Will convert the current chracter set of the content to the one given in csConv
+     * Will convert the current character set of the content to the one given in csConv
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for csConv.
@@ -3905,7 +3905,7 @@ class ContentObjectRenderer
 
     /**
      * Function for removing malicious HTML code when you want to provide some HTML code user-editable.
-     * The purpose is to avoid XSS attacks and the code will be continously modified to remove such code.
+     * The purpose is to avoid XSS attacks and the code will be continuously modified to remove such code.
      * For a complete reference with javascript-on-events, see http://www.wdvl.com/Authoring/JavaScript/Events/events_target.html
      *
      * @param string $text Input string to be cleaned.
@@ -4751,7 +4751,7 @@ class ContentObjectRenderer
     }
 
     /**
-     * Lets you split the content by LF and proces each line independently. Used to format content made with the RTE.
+     * Lets you split the content by LF and process each line independently. Used to format content made with the RTE.
      *
      * @param string $theValue The input value
      * @param array $conf TypoScript options

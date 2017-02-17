@@ -89,7 +89,7 @@ class YouTubeRenderer implements FileRendererInterface
      */
     public function render(FileInterface $file, $width, $height, array $options = null, $usedPathsRelativeToCurrentScript = false)
     {
-        // Check for an autoplay option at the file reference itself, if not overriden yet.
+        // Check for an autoplay option at the file reference itself, if not overridden yet.
         if (!isset($options['autoplay']) && $file instanceof FileReference) {
             $autoplay = $file->getProperty('autoplay');
             if ($autoplay !== null) {

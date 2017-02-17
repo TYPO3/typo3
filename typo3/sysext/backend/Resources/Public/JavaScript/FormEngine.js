@@ -1103,7 +1103,7 @@ define(['jquery',
 		});
 	}
 
-	// make the form engine object publically visible for other objects in the TYPO3 namespace
+	// make the form engine object publicly visible for other objects in the TYPO3 namespace
 	TYPO3.FormEngine = FormEngine;
 
 	// return the object in the global space

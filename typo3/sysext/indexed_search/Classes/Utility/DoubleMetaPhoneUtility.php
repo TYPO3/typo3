@@ -590,7 +590,7 @@ class DoubleMetaPhoneUtility
                         break;
                     }
                     // german & anglicisations, e.g. 'smith' match 'schmidt', 'snider' match 'schneider'
-                    // also, -sz- in slavic language altho in hungarian it is pronounced 's'
+                    // also, -sz- in slavic language although in hungarian it is pronounced 's'
                     if ($this->current == 0 && $this->StringAt($this->original, $this->current + 1, 1, ['M', 'N', 'L', 'W']) || $this->StringAt($this->original, $this->current + 1, 1, ['Z'])) {
                         $this->primary .= 'S';
                         $this->secondary .= 'X';

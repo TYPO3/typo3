@@ -24,7 +24,7 @@ you are writing.
   dfn.
 
 - If your site is about typo3, what you need is a lot of code, var, kbd,
-  samp, dfn and and ocassionally q and cite.
+  samp, dfn and and occasionally q and cite.
 
 - On a university website you have both subjects in different parts of
   the pagetree.

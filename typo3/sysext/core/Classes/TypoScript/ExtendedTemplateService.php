@@ -61,7 +61,7 @@ class ExtendedTemplateService extends TemplateService
         'page' => [],
         // General configuration like metatags, link targets
         'advanced' => [],
-        // Advanced functions, which are used very seldomly.
+        // Advanced functions, which are used very seldom.
         'all' => []
     ];
 
@@ -539,7 +539,7 @@ class ExtendedTemplateService extends TemplateService
             // aggregatedTotalLineCount
             $c = 0;
             foreach ($this->hierarchyInfo as $templateNumber => $info) {
-                // hierarchyInfo has the number of lines in configLines, but unfortunatly this value
+                // hierarchyInfo has the number of lines in configLines, but unfortunately this value
                 // was calculated *before* processing of any INCLUDE instructions
                 // for some yet unknown reason we have to add an extra +2 offset
                 $linecountAfterIncludeProcessing = substr_count($this->config[$templateNumber], LF) + 2;
@@ -717,7 +717,7 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * Processes the flat array from TemplateService->hierarchyInfo
-     * and turns it into a hierachical array to show dependencies (used by TemplateAnalyzer)
+     * and turns it into a hierarchical array to show dependencies (used by TemplateAnalyzer)
      *
      * @param array $depthDataArr (empty array on external call)
      * @param int &$pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
@@ -1498,7 +1498,7 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Proces input
+     * Process input
      *
      * @param array $http_post_vars
      * @param array $http_post_files (not used anymore)

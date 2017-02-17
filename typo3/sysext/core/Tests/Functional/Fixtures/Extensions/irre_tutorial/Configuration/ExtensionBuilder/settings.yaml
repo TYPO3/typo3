@@ -26,7 +26,7 @@
 #
 #   for other files: You will find a Split token at the end of the file
 #   After this token you can write whatever you want and it will be appended
-#   everytime the code is generated
+#   every time the code is generated
 #
 # keep:
 #   files are never overwritten

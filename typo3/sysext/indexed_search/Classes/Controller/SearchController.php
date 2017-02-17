@@ -1302,7 +1302,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param int $pageUid Page id
      * @param string $linkText Title to link (must already be escaped for HTML output)
      * @param array $row Result row
-     * @param array $markUpSwParams Additional parameters for marking up seach words
+     * @param array $markUpSwParams Additional parameters for marking up search words
      * @return string <A> tag wrapped title string.
      * @todo make use of the UriBuilder
      */

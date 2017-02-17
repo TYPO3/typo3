@@ -1318,7 +1318,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($api) {
             $this->addJsInlineCode('TYPO3ExtDirectAPI', $api, false);
         }
-        // Note: we need to iterate thru the object, because the addProvider method
+        // Note: we need to iterate through the object, because the addProvider method
         // does this only with multiple arguments
         $this->addExtOnReadyCode('
 			(function() {
@@ -1892,7 +1892,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Remove ending slashes from static header block
-     * if the page is beeing rendered as html (not xhtml)
+     * if the page is being rendered as html (not xhtml)
      * and define property $this->endingSlash for further use
      *
      * @return void

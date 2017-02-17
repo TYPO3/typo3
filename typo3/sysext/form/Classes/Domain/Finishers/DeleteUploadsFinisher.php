@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 
 /**
  * This finisher remove the submited files.
- * Use this e.g after the email finisher if you dont want
+ * Use this e.g after the email finisher if you don't want
  * to keep the files online.
  *
  * Scope: frontend

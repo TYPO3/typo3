@@ -62,7 +62,7 @@
 			</trans-unit>
 			<trans-unit id="taskcenter-about" xml:space="preserve">
 				<source>
-&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
 &lt;ul class="withicons"&gt;
 &lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
 &lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;

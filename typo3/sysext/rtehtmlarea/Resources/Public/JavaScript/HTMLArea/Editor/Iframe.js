@@ -388,7 +388,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 			var self = this;
 			window.setTimeout(function () {
 				var styleEvent = true;
-				// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
+				// In older versions of Gecko attrName is not set and referring to it causes a non-catchable crash
 				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera || UserAgent.isIE) {
 					styleEvent = (event.originalEvent.attrName === 'style') || (event.originalEvent.attrName === 'className') || (event.originalEvent.attrName === 'class');
 				}

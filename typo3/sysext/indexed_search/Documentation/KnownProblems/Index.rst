@@ -16,7 +16,7 @@ Known problems
   heavy server load/unstability has been reported. It is not yet clear
   if THIS extension has anything to do with. So it's only under
   suspicion at this point until further data has been collected. But for
-  now it is adviced to be careful with the application of the extension
+  now it is advised to be careful with the application of the extension
   for mission critical, high-load environments.
 
 - It's still uncertain how performance is under heavy load conditions

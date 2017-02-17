@@ -36,7 +36,7 @@ EXT:rtehtmlarea/Resources/Public/Images/Plugins/PlainText/paste-behaviour.gif</s
 				<source>Select one of the three alternate paste behaviours.</source>
 			</trans-unit>
 			<trans-unit id="behaviour.details" xml:space="preserve">
-				<source>When the "Clean paste" toggle is "on" in the RTE tool bar, the content may be tranformed according to the three following behaviours before being pasted:
+				<source>When the "Clean paste" toggle is "on" in the RTE tool bar, the content may be transformed according to the three following behaviours before being pasted:
 - plain text: all HTML markup is removed;
 - structure only: only structural HTML markup is retained, all format is removed;
 - structure and basic format: structural HTML markup is preserved as well as basic format provided by inline HTML elements.

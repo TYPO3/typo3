@@ -115,7 +115,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * is set in the plugin configuration.
      *
      * @param array $frameworkConfiguration the framework configurations
-     * @return array the framework configuration with overriden storagePid
+     * @return array the framework configuration with overridden storagePid
      */
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration)
     {

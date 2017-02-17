@@ -611,7 +611,7 @@
 <rdf:Description rdf:about="http://schema.org/ItemAvailability">
 	<rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
 	<rdfs:label xml:lang="en">Item Availability</rdfs:label>
-	<rdfs:comment xml:lang="en">A list of possible product availablity options.</rdfs:comment>
+	<rdfs:comment xml:lang="en">A list of possible product availability options.</rdfs:comment>
 	<rdfs:subClassOf rdf:resource="http://schema.org/Enumeration"/>
 	<rdfs:isDefinedBy rdf:resource="http://schema.org/ItemAvailability"/>
 </rdf:Description>
@@ -6480,7 +6480,7 @@
 <rdf:Description rdf:about="http://schema.org/tickerSymbol">
 	<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
 	<rdfs:label xml:lang="en">Ticker Symbol</rdfs:label>
-	<rdfs:comment xml:lang="en">The exchange traded instrument associated with a Corporation object. The tickerSymbol is expressed as an exchange and an instrument name separated by a space character. For the exchange component of the tickerSymbol attribute, we reccommend using the controlled vocaulary of Market Identifier Codes (MIC) specified in ISO15022.</rdfs:comment>
+	<rdfs:comment xml:lang="en">The exchange traded instrument associated with a Corporation object. The tickerSymbol is expressed as an exchange and an instrument name separated by a space character. For the exchange component of the tickerSymbol attribute, we recommend using the controlled vocaulary of Market Identifier Codes (MIC) specified in ISO15022.</rdfs:comment>
 	<rdfs:domain rdf:resource="http://schema.org/Corporation"/>
 	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
 	<rdfs:isDefinedBy rdf:resource="http://schema.org/Corporation"/>

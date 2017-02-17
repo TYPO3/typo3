@@ -460,7 +460,7 @@ abstract class ImportExport
     }
 
     /**
-     * Go through ALL records (if the pages are displayed first, those will not be amoung these!)
+     * Go through ALL records (if the pages are displayed first, those will not be among these!)
      *
      * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
      * @param array $lines Output lines array (is passed by reference and modified)

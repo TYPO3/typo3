@@ -64,7 +64,7 @@ phash\_grouping
          search so you get only one hit per page when selecting with gr\_list
          in mind.
 
-         Currently a seach result does not either group or limit by this, but
+         Currently a search result does not either group or limit by this, but
          rather the result display may group the result into logical units.
 
 

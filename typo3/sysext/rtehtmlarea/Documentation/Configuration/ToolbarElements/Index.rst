@@ -28,7 +28,7 @@ space
    Type
          Control
 
-   Descripton
+   Description
          Insert a space between two toolbar elements
 
 
@@ -46,7 +46,7 @@ bar
    Type
          Control
 
-   Descripton
+   Description
          Insert a vertical bar in the toolbar, elements between bars being
          grouped
 
@@ -65,7 +65,7 @@ linebreak
    Type
          Control
 
-   Descripton
+   Description
          Insert a new line in the toolbar
 
 
@@ -83,7 +83,7 @@ blockstylelabel
    Type
          Label
 
-   Descripton
+   Description
          Label for drop-down with CSS styles for block elements
 
 
@@ -101,7 +101,7 @@ blockstyle
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection of CSS styles for block elements
 
 
@@ -119,7 +119,7 @@ textstylelabel
    Type
          Label
 
-   Descripton
+   Description
          Label for drop-down with CSS styles inline elements
 
 
@@ -137,7 +137,7 @@ textstyle
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection CSS styles for inline elements
 
 
@@ -155,7 +155,7 @@ fontstyle
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection of font family
 
 
@@ -173,7 +173,7 @@ fontsize
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection of relative font size (very small, small, normal, etc.)
 
 
@@ -191,7 +191,7 @@ formatblock
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection of block element (paragraph, heading, preformatted text,
          blockquote, etc.)
 
@@ -210,7 +210,7 @@ blockquote
    Type
          Button
 
-   Descripton
+   Description
          Insert/make current block element a blockquote
 
 
@@ -228,7 +228,7 @@ insertparagraphbefore
    Type
          Button
 
-   Descripton
+   Description
          Insert a paragraph before the current block element
 
 
@@ -246,7 +246,7 @@ Insertparagraphafter
    Type
          Button
 
-   Descripton
+   Description
          Insert a paragraph after the current block element
 
 
@@ -264,7 +264,7 @@ lefttoright
    Type
          Button
 
-   Descripton
+   Description
          Set writing direction of current block element to left to right
 
 
@@ -282,7 +282,7 @@ righttoleft
    Type
          Button
 
-   Descripton
+   Description
          Set writing direction of current block element to right to left
 
 
@@ -300,7 +300,7 @@ language
    Type
          Button
 
-   Descripton
+   Description
          Mark selected text as the selected language
 
 
@@ -318,7 +318,7 @@ showlanguagemarks
    Type
          Toggle button
 
-   Descripton
+   Description
          Show/hide language markup of elements with language attribute
 
 
@@ -336,7 +336,7 @@ left
    Type
          Button
 
-   Descripton
+   Description
          Left-justify current block element
 
 
@@ -354,7 +354,7 @@ center
    Type
          Button
 
-   Descripton
+   Description
          Center current block element
 
 
@@ -372,7 +372,7 @@ right
    Type
          Button
 
-   Descripton
+   Description
          Right-justify current block element
 
 
@@ -390,7 +390,7 @@ justifyfull
    Type
          Button
 
-   Descripton
+   Description
          Fully justify current block element
 
 
@@ -408,7 +408,7 @@ orderedlist
    Type
          Button
 
-   Descripton
+   Description
          Insert/make current block element an ordered list (ol, li)
 
 
@@ -426,7 +426,7 @@ unorderedlist
    Type
          Button
 
-   Descripton
+   Description
          Insert/make current block element an unordered list (ul, li)
 
 
@@ -444,7 +444,7 @@ definitionlist
    Type
          Button
 
-   Descripton
+   Description
          Insert/make current block element a definition list (dl)
 
 
@@ -462,9 +462,9 @@ definitionitem
    Type
          Toggle button
 
-   Descripton
+   Description
          Toggle current definition list element between definition and
-         explaination (dt, dd)
+         explanation (dt, dd)
 
 
 
@@ -481,7 +481,7 @@ outdent
    Type
          Button
 
-   Descripton
+   Description
          Decrease indentation of current block element
 
 
@@ -499,7 +499,7 @@ indent
    Type
          Button
 
-   Descripton
+   Description
          Increase indentation of current block element
 
 
@@ -517,7 +517,7 @@ formattext
    Type
          Drop-down
 
-   Descripton
+   Description
          Selection of inline element
 
 
@@ -535,7 +535,7 @@ bidioverride
    Type
          Button
 
-   Descripton
+   Description
          Change direction for marked text (bdo)
 
 
@@ -553,7 +553,7 @@ big
    Type
          Button
 
-   Descripton
+   Description
          Set font size of marked text to big (big)
 
 
@@ -571,7 +571,7 @@ bold
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to bold (b)
 
 
@@ -589,7 +589,7 @@ citation
    Type
          Button
 
-   Descripton
+   Description
          Mark text as citation (cite)
 
 
@@ -607,7 +607,7 @@ code
    Type
          Button
 
-   Descripton
+   Description
          Mark text as code (code)
 
 
@@ -625,7 +625,7 @@ definition
    Type
          Button
 
-   Descripton
+   Description
          Mark text as definition (dfn)
 
 
@@ -643,7 +643,7 @@ deletedtext
    Type
          Button
 
-   Descripton
+   Description
          Mark text as deleted (del)
 
 
@@ -661,7 +661,7 @@ emphasis
    Type
          Button
 
-   Descripton
+   Description
          Mark text as emphasized (em)
 
 
@@ -679,7 +679,7 @@ insertedtext
    Type
          Button
 
-   Descripton
+   Description
          Mark text as inserted (ins)
 
 
@@ -697,7 +697,7 @@ italic
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to italic (i)
 
 
@@ -715,7 +715,7 @@ keyboard
    Type
          Button
 
-   Descripton
+   Description
          Mark text as keyboard input (kbd)
 
 
@@ -733,7 +733,7 @@ monospaced
    Type
          Button
 
-   Descripton
+   Description
          Set font of marked text to non-proportional (tt)
 
 
@@ -751,7 +751,7 @@ quotation
    Type
          Button
 
-   Descripton
+   Description
          Mark text as small quote (q)
 
 
@@ -769,7 +769,7 @@ sample
    Type
          Button
 
-   Descripton
+   Description
          Mark text as example (samp)
 
 
@@ -787,7 +787,7 @@ small
    Type
          Button
 
-   Descripton
+   Description
          Set font size of marked text to small (small)
 
 
@@ -805,7 +805,7 @@ span
    Type
          Button
 
-   Descripton
+   Description
          Enclose marked text in generic span (span)
 
 
@@ -823,7 +823,7 @@ strikethrough
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to strike-through (strike)
 
 
@@ -841,7 +841,7 @@ strong
    Type
          Button
 
-   Descripton
+   Description
          Mark text as strongly emphasized (strong)
 
 
@@ -859,7 +859,7 @@ subscript
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to subscript (sub)
 
 
@@ -877,7 +877,7 @@ superscript
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to superscript (sup)
 
 
@@ -895,7 +895,7 @@ underline
    Type
          Button
 
-   Descripton
+   Description
          Set font style of marked text to underlined (u)
 
 
@@ -913,7 +913,7 @@ variable
    Type
          Button
 
-   Descripton
+   Description
          Mark text as variable (var)
 
 
@@ -931,7 +931,7 @@ textcolor
    Type
          Button
 
-   Descripton
+   Description
          Set font color of marked text or of element at cursor position
 
 
@@ -949,7 +949,7 @@ bgcolor
    Type
          Button
 
-   Descripton
+   Description
          Set background color of marked text or of element at cursor position
 
 
@@ -967,7 +967,7 @@ textindicator
    Type
          Indicator
 
-   Descripton
+   Description
          Show font and background color of text at cursor position
 
 
@@ -985,7 +985,7 @@ editelement
    Type
          Button
 
-   Descripton
+   Description
          Edit general attributes such as "id", "name", "lang" and other
          universal attributes on any element of the content
 
@@ -1004,7 +1004,7 @@ emoticon
    Type
          Button
 
-   Descripton
+   Description
          Insert an emoticon
 
 
@@ -1022,7 +1022,7 @@ insertcharacter
    Type
          Button
 
-   Descripton
+   Description
          Insert a special character
 
 
@@ -1040,7 +1040,7 @@ insertsofthyphen
    Type
          Button
 
-   Descripton
+   Description
          Insert a soft hyphen
 
 
@@ -1058,7 +1058,7 @@ line
    Type
          Button
 
-   Descripton
+   Description
          Insert an horizontal line (hr)
 
 
@@ -1076,7 +1076,7 @@ link
    Type
          Button
 
-   Descripton
+   Description
          Create/edit an hyperlink for the marked text (a)
 
 
@@ -1094,7 +1094,7 @@ unlink
    Type
          Button
 
-   Descripton
+   Description
          Remove the hyperlink around the cursor position
 
 
@@ -1112,7 +1112,7 @@ image
    Type
          Button
 
-   Descripton
+   Description
          Insert an image at the cursor position (img)
 
 
@@ -1130,7 +1130,7 @@ table
    Type
          Button
 
-   Descripton
+   Description
          Insert a table at the cursor position (table)
 
 
@@ -1148,7 +1148,7 @@ user
    Type
          Button
 
-   Descripton
+   Description
          Insert a customized tag at the cursor position
 
 
@@ -1166,7 +1166,7 @@ acronym
    Type
          Button
 
-   Descripton
+   Description
          Mark the text as acronym or abbreviation (acronym, abbr)
 
 
@@ -1184,7 +1184,7 @@ findreplace
    Type
          Button
 
-   Descripton
+   Description
          Open search and replace tool
 
 
@@ -1202,7 +1202,7 @@ spellcheck
    Type
          Button
 
-   Descripton
+   Description
          Open spellchecker
 
 
@@ -1220,7 +1220,7 @@ chMode
    Type
          Button
 
-   Descripton
+   Description
          Switch between WYSIWYG and HTML code view
 
 
@@ -1238,7 +1238,7 @@ inserttag
    Type
          Button
 
-   Descripton
+   Description
          Insert a tag
 
 
@@ -1256,7 +1256,7 @@ removeformat
    Type
          Button
 
-   Descripton
+   Description
          Open the text cleaning tool
 
 
@@ -1274,7 +1274,7 @@ copy
    Type
          Button
 
-   Descripton
+   Description
          Copy marked content to the clipboard
 
 
@@ -1292,7 +1292,7 @@ cut
    Type
          Button
 
-   Descripton
+   Description
          Copy marked content to the clipboard and delete marked text
 
 
@@ -1310,7 +1310,7 @@ paste
    Type
          Button
 
-   Descripton
+   Description
          Paste content of the clipboard at cursor position
 
 
@@ -1328,7 +1328,7 @@ pastetoggle
    Type
          Toggle button
 
-   Descripton
+   Description
          Toggle between normal paste behaviour and alternative paste behaviour
 
 
@@ -1346,7 +1346,7 @@ pastebehaviour
    Type
          Button
 
-   Descripton
+   Description
          Select alternative paste behaviour
 
 
@@ -1364,7 +1364,7 @@ undo
    Type
          Button
 
-   Descripton
+   Description
          Undo a change
 
 
@@ -1382,7 +1382,7 @@ redo
    Type
          Button
 
-   Descripton
+   Description
          Redo an undone change
 
 
@@ -1400,7 +1400,7 @@ about
    Type
          Button
 
-   Descripton
+   Description
          Show info about the RTE
 
 
@@ -1418,7 +1418,7 @@ toggleborders
    Type
          Toggle button
 
-   Descripton
+   Description
          Show/hide table borders
 
 
@@ -1436,7 +1436,7 @@ tableproperties
    Type
          Button
 
-   Descripton
+   Description
          Open table properties dialogue
 
 
@@ -1454,7 +1454,7 @@ tablerestyle
    Type
          Button
 
-   Descripton
+   Description
          Re-apply alternating/numbering styles to all rows, columns and cells
 
 
@@ -1472,7 +1472,7 @@ rowproperties
    Type
          Button
 
-   Descripton
+   Description
          Open table row properties dialogue
 
 
@@ -1490,7 +1490,7 @@ rowinsertabove
    Type
          Button
 
-   Descripton
+   Description
          Insert a table row above the current one
 
 
@@ -1508,7 +1508,7 @@ rowinsertunder
    Type
          Button
 
-   Descripton
+   Description
          Insert a table row below the current one
 
 
@@ -1526,7 +1526,7 @@ rowdelete
    Type
          Button
 
-   Descripton
+   Description
          Delete the current row
 
 
@@ -1544,7 +1544,7 @@ rowsplit
    Type
          Button
 
-   Descripton
+   Description
          Divide the current table row
 
 
@@ -1562,7 +1562,7 @@ columnproperties
    Type
          Button
 
-   Descripton
+   Description
          Open table column properties dialogue
 
 
@@ -1580,7 +1580,7 @@ columninsertbefore
    Type
          Button
 
-   Descripton
+   Description
          Insert a table column before the current one
 
 
@@ -1598,7 +1598,7 @@ columninsertafter
    Type
          Button
 
-   Descripton
+   Description
          Insert a table column after the current one
 
 
@@ -1616,7 +1616,7 @@ columndelete
    Type
          Button
 
-   Descripton
+   Description
          Delete the current table column
 
 
@@ -1634,7 +1634,7 @@ columnsplit
    Type
          Button
 
-   Descripton
+   Description
          Split the current table column into
 
 
@@ -1652,7 +1652,7 @@ cellproperties
    Type
          Button
 
-   Descripton
+   Description
          Open table cell properties dialog
 
 
@@ -1670,7 +1670,7 @@ cellinsertbefore
    Type
          Button
 
-   Descripton
+   Description
          Insert a table cell before the current one
 
 
@@ -1688,7 +1688,7 @@ cellinsertafter
    Type
          Button
 
-   Descripton
+   Description
          Insert a table cell after the current one
 
 
@@ -1706,7 +1706,7 @@ celldelete
    Type
          Button
 
-   Descripton
+   Description
          Delete the current table cell
 
 
@@ -1724,7 +1724,7 @@ cellsplit
    Type
          Button
 
-   Descripton
+   Description
          Split the current table cell into
 
 
@@ -1742,7 +1742,7 @@ cellmerge
    Type
          Button
 
-   Descripton
+   Description
          Merge the selected table cells
 
 

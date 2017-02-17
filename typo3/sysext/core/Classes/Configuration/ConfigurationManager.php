@@ -66,7 +66,7 @@ class ConfigurationManager
     protected $pathTypo3Conf = PATH_typo3conf;
 
     /**
-     * Writing to these configuration pathes is always allowed,
+     * Writing to these configuration paths is always allowed,
      * even if the requested sub path does not exist yet.
      *
      * @var array

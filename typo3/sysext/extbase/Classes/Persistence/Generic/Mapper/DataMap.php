@@ -146,7 +146,7 @@ class DataMap
     }
 
     /**
-     * Sets the name of the class the colum map represents
+     * Sets the name of the class the column map represents
      *
      * @param string $className
      * @return void
@@ -167,7 +167,7 @@ class DataMap
     }
 
     /**
-     * Sets the name of the table the colum map represents
+     * Sets the name of the table the column map represents
      *
      * @param string $tableName
      * @return void

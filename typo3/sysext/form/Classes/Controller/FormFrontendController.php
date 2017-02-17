@@ -95,7 +95,7 @@ class FormFrontendController extends ActionController
                     $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
                     foreach ($finisherValue['options'] as $optionKey => $optionValue) {
-                        // If a previous overriden finisher property is excluded at some time
+                        // If a previous overridden finisher property is excluded at some time
                         // it is still present in the flexform database row.
                         // To avoid a override from the time the property is excluded, this check is needed
                         if (!isset($prototypeConfiguration['finishersDefinition'][$finisherIdentifier]['FormEngine']['elements'][$optionKey])) {

@@ -240,7 +240,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * )
      *
      * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
-     * @param string $additionalHeaderData The value additonal header
+     * @param string $additionalHeaderData The value additional header
      * @throws \InvalidArgumentException
      * @return void
      * @api

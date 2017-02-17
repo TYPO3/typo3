@@ -989,11 +989,11 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_edit($cmds)
     {
-        // Example indentifier for $cmds['target'] => "4:mypath/tomyfolder/myfile.jpg"
+        // Example identifier for $cmds['target'] => "4:mypath/tomyfolder/myfile.jpg"
         // for backwards compatibility: the combined file identifier was the path+filename
         $fileIdentifier = $cmds['target'];
         $fileObject = $this->getFileObject($fileIdentifier);
-        // Example indentifier for $cmds['target'] => "2:targetpath/targetfolder/"
+        // Example identifier for $cmds['target'] => "2:targetpath/targetfolder/"
         $content = $cmds['data'];
         if (!$fileObject instanceof File) {
             $this->writeLog(9, 2, 123, 'Target "%s" was not a file!', [$fileIdentifier]);
@@ -1066,7 +1066,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->addMessageToFlashMessageQueue('FileUtility.NoFileWasUploaded');
             return false;
         }
-        // Example indentifier for $cmds['target'] => "2:targetpath/targetfolder/"
+        // Example identifier for $cmds['target'] => "2:targetpath/targetfolder/"
         $targetFolderObject = $this->getFileObject($cmds['target']);
         // Uploading with non HTML-5-style, thus, make an array out of it, so we can loop over it
         if (!is_array($uploadedFileData['name'])) {

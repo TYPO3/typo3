@@ -110,7 +110,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset
     /**
      * Get list of paths to search for image handling executables
      *
-     * @return array List of pathes to search for
+     * @return array List of paths to search for
      */
     protected function getSearchPaths()
     {

@@ -245,7 +245,7 @@ class PagePositionMap
      * Wrap $t_code in bold IF the $dat uid matches $id
      *
      * @param string $t_code Title string
-     * @param array $dat Infomation array with record array inside.
+     * @param array $dat Information array with record array inside.
      * @param int $id The current id.
      * @return string The title string.
      */
@@ -326,7 +326,7 @@ class PagePositionMap
      * Returns module configuration for a pid.
      *
      * @param int $pid Page id for which to get the module configuration.
-     * @return array The properties of teh module configuration for the page id.
+     * @return array The properties of the module configuration for the page id.
      * @see onClickEvent()
      */
     public function getModConfig($pid)
@@ -581,7 +581,7 @@ class PagePositionMap
     }
 
     /**
-     * Create record header (includes teh record icon, record title etc.)
+     * Create record header (includes the record icon, record title etc.)
      *
      * @param array $row Record row.
      * @return string HTML

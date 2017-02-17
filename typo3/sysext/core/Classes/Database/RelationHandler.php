@@ -471,7 +471,7 @@ class RelationHandler
      */
     public function sortList($sortby)
     {
-        // Sort directly without fetching addional data
+        // Sort directly without fetching additional data
         if ($sortby === 'uid') {
             usort(
                 $this->itemArray,

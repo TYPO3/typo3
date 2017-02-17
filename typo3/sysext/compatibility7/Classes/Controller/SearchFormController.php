@@ -1539,7 +1539,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
             }
         }
-        // Additonal keyword => "Add to current search words"
+        // Additional keyword => "Add to current search words"
         if ($this->conf['show.']['clearSearchBox'] && $this->conf['show.']['clearSearchBox.']['enableSubSearchCheckBox']) {
             $markerArray['###SWORD_PREV_VALUE###'] = htmlspecialchars($this->conf['show.']['clearSearchBox'] ? '' : $this->piVars['sword']);
             $markerArray['###SWORD_PREV_INCLUDE_CHECKED###'] = $this->piVars['sword_prev_include'] ? ' checked="checked"' : '';
@@ -2341,7 +2341,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param int $id Page id
      * @param string $str Title String to link
      * @param array $row Result row
-     * @param array $markUpSwParams Additional parameters for marking up seach words
+     * @param array $markUpSwParams Additional parameters for marking up search words
      * @return string <A> tag wrapped title string.
      */
     public function linkPage($id, $str, $row = [], $markUpSwParams = [])

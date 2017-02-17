@@ -92,7 +92,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function(
 			// Select the custom option
 			ViewPage.$widthSelector.find('#customOption').prop('selected', true);
 
-			// Add iframe overlay to prevent loosing the mouse focus to the iframe while resizing fast
+			// Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
 			$(this).append('<div id="iframeCover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
 		});
 

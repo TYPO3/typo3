@@ -1842,7 +1842,7 @@ buttons.abbreviation.pages
 
          Note: If not set, the list of current webmounts is used.
 
-         Note: In IE, before IE7, the abreviation tab of the abbreviation dialogue
+         Note: In IE, before IE7, the abbreviation tab of the abbreviation dialogue
          is never shown.
 
 

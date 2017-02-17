@@ -4596,7 +4596,7 @@ class GeneralUtility
      * because the context shall never be changed on runtime!
      *
      * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
-     * @throws \RuntimeException if applicationContext is overriden
+     * @throws \RuntimeException if applicationContext is overridden
      * @internal This is not a public API method, do not use in own extensions
      */
     public static function presetApplicationContext(ApplicationContext $applicationContext)

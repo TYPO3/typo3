@@ -273,7 +273,7 @@ class FormDataCompiler
             // will then use this relation to resolve for instance input placeholder relation values.
             'inlineChildChildUid' => null,
             // Inline scenario: A localized parent record is handled and localizationMode is set to "select", so inline
-            // parents can have localized childen. This value is set to TRUE if this array represents a default language
+            // parents can have localized children. This value is set to TRUE if this array represents a default language
             // child record that was not yet localized.
             'isInlineDefaultLanguageRecordInLocalizedParentContext' => false,
             // If set, inline children will be resolved. This is set to FALSE in inline ajax context where new children

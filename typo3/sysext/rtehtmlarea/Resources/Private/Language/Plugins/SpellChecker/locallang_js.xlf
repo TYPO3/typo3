@@ -16,7 +16,7 @@
 				<source>Dictionary</source>
 			</trans-unit>
 			<trans-unit id="Finished list of mispelled words">
-				<source>Finished list of mispelled words</source>
+				<source>Finished list of misspelled words</source>
 			</trans-unit>
 			<trans-unit id="I will open it in a new page.">
 				<source>I will open it in a new page.</source>
@@ -28,10 +28,10 @@
 				<source>Ignore</source>
 			</trans-unit>
 			<trans-unit id="NO_ERRORS">
-				<source>No mispelled words found with the selected dictionary.</source>
+				<source>No misspelled words found with the selected dictionary.</source>
 			</trans-unit>
 			<trans-unit id="NO_ERRORS_CLOSING">
-				<source>Spell check complete, didn't find any mispelled words.  Closing now...</source>
+				<source>Spell check complete, didn't find any misspelled words.  Closing now...</source>
 			</trans-unit>
 			<trans-unit id="OK">
 				<source>OK</source>

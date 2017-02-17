@@ -593,7 +593,7 @@ abstract class AbstractConditionMatcher
     /**
      * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
      *
-     * @param string $string The condition to match against its criterias.
+     * @param string $string The condition to match against its criteria.
      * @return bool Whether the condition matched
      * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
      */

@@ -522,7 +522,7 @@ class DataHandler
      *
      * @var array
      *
-     * @deprecated since TYPO3 v8, no refereces could be found in class will be removed in TYPO3 v9
+     * @deprecated since TYPO3 v8, no references could be found in class will be removed in TYPO3 v9
      */
     public $checkWorkspaceCache = [];
 

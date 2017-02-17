@@ -510,7 +510,7 @@ class Parser
             $isFulltext
         );
 
-        // FULLTEXT and SPATIAL indexes can not have a type definiton
+        // FULLTEXT and SPATIAL indexes can not have a type definition
         if (!$isFulltext && !$isSpatial) {
             $indexDefinition->indexType = $this->indexType();
         }

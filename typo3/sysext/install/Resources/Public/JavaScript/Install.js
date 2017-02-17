@@ -880,7 +880,7 @@ $(function() {
 
 	// trigger 'handleButtonScrolling' on page scroll
 	// if the user scroll until page bottom, we need to remove 'position: fixed'
-	// so that the copyright info (footer) is not overlayed by the 'fixed button'
+	// so that the copyright info (footer) is not overlaid by the 'fixed button'
 	var scrollTimeout;
 	$(window).on('scroll', function() {
 		clearTimeout(scrollTimeout);

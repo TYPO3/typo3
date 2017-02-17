@@ -283,7 +283,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Moves the item within the collection
      *
      * the item at $currentPosition will be moved to
-     * $newPosition. Omiting $newPosition will move to top.
+     * $newPosition. Omitting $newPosition will move to top.
      *
      * @param int $currentPosition
      * @param int $newPosition

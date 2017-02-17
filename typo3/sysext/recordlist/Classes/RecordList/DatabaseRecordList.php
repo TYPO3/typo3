@@ -853,7 +853,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
     /**
      * Check if all row listing conditions are fulfilled.
      *
-     * This function serves as a dummy method to be overriden in extending classes.
+     * This function serves as a dummy method to be overridden in extending classes.
      *
      * @param string $table Table name
      * @param string[] $row Record

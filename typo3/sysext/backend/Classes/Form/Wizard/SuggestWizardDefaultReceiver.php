@@ -90,7 +90,7 @@ class SuggestWizardDefaultReceiver
      * The constructor of this class
      *
      * @param string $table The table to query
-     * @param array $config The configuration (TCA overlayed with TSconfig) to use for this selector
+     * @param array $config The configuration (TCA overlaid with TSconfig) to use for this selector
      */
     public function __construct($table, $config)
     {

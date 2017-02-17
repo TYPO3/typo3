@@ -349,7 +349,7 @@ class HtmlParser
      * ),
      * 'protect' => '',	Boolean. If set, the tag <> is converted to &lt; and &gt;
      * 'remap' => '',		String. If set, the tagname is remapped to this tagname
-     * 'rmTagIfNoAttrib' => '',	Boolean. If set, then the tag is removed if no attributes happend to be there.
+     * 'rmTagIfNoAttrib' => '',	Boolean. If set, then the tag is removed if no attributes happened to be there.
      * 'nesting' => '',	Boolean/'global'. If set TRUE, then this tag must have starting and ending tags in the correct order. Any tags not in this order will be discarded. Thus '</B><B><I></B></I></B>' will be converted to '<B><I></B></I>'. Is the value 'global' then true nesting in relation to other tags marked for 'global' nesting control is preserved. This means that if <B> and <I> are set for global nesting then this string '</B><B><I></B></I></B>' is converted to '<B></B>'
      * )
      *
@@ -387,7 +387,7 @@ class HtmlParser
                 $skipTag = true;
             } elseif ($inCdata) {
                 if (($eocPos = strpos($tok, '/*]]>*/')) === false) {
-                    // End of comment is not found in the token. Go futher until end of comment is found in other tokens.
+                    // End of comment is not found in the token. Go further until end of comment is found in other tokens.
                     $newContent[$c++] = '<' . $tok;
                     continue;
                 }

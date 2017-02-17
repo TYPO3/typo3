@@ -28,7 +28,7 @@ Implementation in Fluid Styled Content
    </div>
 
 
-Explaination of Keys and Effects of Frame Classes
+Explanation of Keys and Effects of Frame Classes
 -------------------------------------------------
 
 ===============   ===============   =====================   ==================================================

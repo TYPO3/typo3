@@ -28,7 +28,7 @@ Implementation in Fluid Styled Content
    </table>
 
 
-Explaination of Keys and Effects of Table Classes
+Explanation of Keys and Effects of Table Classes
 -------------------------------------------------
 
 ===============   ===============   =====================   ==============================================

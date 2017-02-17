@@ -67,7 +67,7 @@ class PageRepository
 
     /**
      * If TRUE, versioning preview of other record versions is allowed. THIS MUST
-     * ONLY BE SET IF the page is not cached and truely previewed by a backend
+     * ONLY BE SET IF the page is not cached and truly previewed by a backend
      * user!!!
      *
      * @var bool
@@ -228,7 +228,7 @@ class PageRepository
      * @param int $uid The page id to look up.
      * @param bool $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
      * @throws \UnexpectedValueException
-     * @return array The page row with overlayed localized fields. Empty it no page.
+     * @return array The page row with overlaid localized fields. Empty it no page.
      * @see getPage_noCheck()
      */
     public function getPage($uid, $disableGroupAccessCheck = false)
@@ -286,7 +286,7 @@ class PageRepository
      * ->where_hid_del (start- and endtime or hidden). Only "deleted" is checked!
      *
      * @param int $uid The page id to look up
-     * @return array The page row with overlayed localized fields. Empty array if no page.
+     * @return array The page row with overlaid localized fields. Empty array if no page.
      * @see getPage()
      */
     public function getPage_noCheck($uid)
@@ -320,7 +320,7 @@ class PageRepository
      * Returns the $row of the first web-page in the tree (for the default menu...)
      *
      * @param int $uid The page id for which to fetch first subpages (PID)
-     * @return mixed If found: The page record (with overlayed localized fields, if any). If NOT found: blank value (not array!)
+     * @return mixed If found: The page record (with overlaid localized fields, if any). If NOT found: blank value (not array!)
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
      */
     public function getFirstWebPage($uid)
@@ -389,10 +389,10 @@ class PageRepository
     /**
      * Returns the relevant page overlay record fields
      *
-     * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAYED before the page record is returned.
+     * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAID before the page record is returned.
      * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
-     * @return array Page row which is overlayed with language_overlay record (or the overlay record alone)
+     * @return array Page row which is overlaid with language_overlay record (or the overlay record alone)
      */
     public function getPageOverlay($pageInput, $lUid = -1)
     {
@@ -404,10 +404,10 @@ class PageRepository
     /**
      * Returns the relevant page overlay record fields
      *
-     * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAYED before the page records are returned.
+     * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAID before the page records are returned.
      * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
-     * @return array Page rows which are overlayed with language_overlay record.
+     * @return array Page rows which are overlaid with language_overlay record.
      *               If the input was an array of integers, missing records are not
      *               included. If the input were page rows, untranslated pages
      *               are returned.
@@ -645,7 +645,7 @@ class PageRepository
      * @param string $sortField The field to sort by. Default is "sorting
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
-     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
+     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
      */
@@ -665,7 +665,7 @@ class PageRepository
      * @param string $sortField The field to sort by. Default is "sorting"
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
-     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
+     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      */
     public function getMenuForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
     {
@@ -687,7 +687,7 @@ class PageRepository
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @param bool $parentPages Whether the uid list is meant as list of parent pages or the page itself TRUE means id list is checked against pid field
-     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
+     * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
      */

@@ -88,7 +88,7 @@
 				<source>Show selected</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.groupSelectmode_DontShowSelected">
-				<source>Dont show selected</source>
+				<source>Don't show selected</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS">
 				<source>(from Typoscript)</source>

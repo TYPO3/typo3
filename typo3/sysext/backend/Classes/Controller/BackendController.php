@@ -497,7 +497,7 @@ class BackendController
 
                 $liAttributes = [];
 
-                // Merge class: Add dropdown class if hasDropDown, add classes from additonal attributes
+                // Merge class: Add dropdown class if hasDropDown, add classes from additional attributes
                 $classes = [];
                 $classes[] = 'toolbar-item';
                 $classes[] = 't3js-toolbar-item';

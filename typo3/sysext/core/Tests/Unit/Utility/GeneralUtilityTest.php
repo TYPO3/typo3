@@ -1696,10 +1696,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return [
             'hostname without port' => ['lolli.did.this', 'helmut\.did\.this'],
             'hostname with port, but port not allowed' => ['lolli.did.this:42', 'helmut\.did\.this'],
-            'two different hostnames in pattern but host header starts with differnet value #1' => ['sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header starts with differnet value #2' => ['sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header ends with differnet value #1' => ['helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
-            'two different hostnames in pattern but host header ends with differnet value #2' => ['lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header starts with different value #1' => ['sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header starts with different value #2' => ['sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header ends with different value #1' => ['helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
+            'two different hostnames in pattern but host header ends with different value #2' => ['lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'],
         ];
     }
 

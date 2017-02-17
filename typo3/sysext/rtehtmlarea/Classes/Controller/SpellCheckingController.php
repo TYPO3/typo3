@@ -255,7 +255,7 @@ class SpellCheckingController
         $this->fixPersonalDictionaryCharacterSet();
         $cmd = GeneralUtility::_POST('cmd');
         if ($cmd === 'learn') {
-            // Only availble for BE_USERS, die silently if someone has gotten here by accident
+            // Only available for BE_USERS, die silently if someone has gotten here by accident
             if (TYPO3_MODE !== 'BE' || !is_object($GLOBALS['BE_USER'])) {
                 die('');
             }

@@ -352,13 +352,13 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $overruleArguments = [
-            // Should be overriden
+            // Should be overridden
             'key2' => 'value2Overruled',
             'key3' => [
                 'key32' => [
                     // Shouldn't be set: Parameter is excluded and not forced
                     'key321' => 'value321Overruled',
-                    // Should be overriden: Parameter is not excluded
+                    // Should be overridden: Parameter is not excluded
                     'key322' => 'value322Overruled',
                     // Shouldn't be set: Parameter doesn't exist in source array and is not forced
                     'key323' => 'value323Overruled'
@@ -397,7 +397,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key322]';
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $overruleArguments = [
-            // Should be overriden
+            // Should be overridden
             'key2' => 'value2Overruled',
             'key3' => [
                 'key32' => [
@@ -5279,7 +5279,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      *
      * @test
      * @dataProvider stdWrap_expandListDataProvider
-     * @param string $expected The expeced output.
+     * @param string $expected The expected output.
      * @param string $content The given content.
      * @return void
      */

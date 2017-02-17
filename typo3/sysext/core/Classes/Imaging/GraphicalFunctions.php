@@ -2026,7 +2026,7 @@ class GraphicalFunctions
 
     /**
      * Returns a random filename prefixed with "temp_" and then 32 char md5 hash (without extension) from $this->tempPath.
-     * Used by functions in this class to create truely temporary files for the on-the-fly processing. These files will most likely be deleted right away.
+     * Used by functions in this class to create truly temporary files for the on-the-fly processing. These files will most likely be deleted right away.
      *
      * @return string
      */

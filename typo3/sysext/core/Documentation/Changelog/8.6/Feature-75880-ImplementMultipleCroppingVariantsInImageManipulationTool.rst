@@ -105,7 +105,7 @@ and centered.
 	    ],
 	]
 
-Very often images are used in a context, where there are overlayed with other DOM elements
+Very often images are used in a context, where there are overlaid with other DOM elements
 like a headline. To give editors a hint which area of the image is affected, when selecting a crop area,
 it is possible to define multiple so called cover areas. These areas are shown inside
 the crop area. The focus area cannot intersect with any of the cover areas.

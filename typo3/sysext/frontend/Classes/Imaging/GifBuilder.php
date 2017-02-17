@@ -33,7 +33,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * This class allows for advanced rendering of images with various layers of images, text and graphical primitives.
  * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well) of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
  * The name "GIFBUILDER" comes from the time where GIF was the only file format supported. PNG is just as well to create today (configured with TYPO3_CONF_VARS[GFX])
- * Not all instances of this class is truely building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class.
+ * Not all instances of this class is truly building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class.
  *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
  *

@@ -66,7 +66,7 @@ Installations that use the CSS Styled Content.
 Migration
 =========
 
-Default fames can be automaticly upgraded to the new field and values. Custom
+Default fames can be automatically upgraded to the new field and values. Custom
 values will be prefixed with `custom-<key>` and will also be transferred to the
 new field.
 

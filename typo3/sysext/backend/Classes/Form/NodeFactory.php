@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This factory gets a string "renderType" and then looks up in a list which
  * specific class should handle this renderType. This list can be extended with
- * own renderTypes by extensions, existing renderTypes can be overriden, and
+ * own renderTypes by extensions, existing renderTypes can be overridden, and
  * - for complex cases - it is possible to register own resolver classes for single
  * renderTypes that can return a node class name to override the default lookup list.
  */

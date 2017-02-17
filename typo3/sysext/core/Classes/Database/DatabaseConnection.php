@@ -663,7 +663,7 @@ class DatabaseConnection
 
     /**
      * Creates a SELECT SQL-statement to be used as subquery within another query.
-     * BEWARE: This method should not be overriden within DBAL to prevent quoting from happening.
+     * BEWARE: This method should not be overridden within DBAL to prevent quoting from happening.
      *
      * @param string $select_fields List of fields to select from the table.
      * @param string $from_table Table from which to select.

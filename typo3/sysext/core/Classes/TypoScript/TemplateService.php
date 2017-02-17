@@ -64,7 +64,7 @@ class TemplateService
 
     /**
      * This array is passed on to matchObj by generateConfig().
-     * If it holds elements, they are used for matching instead. See commment at the match-class.
+     * If it holds elements, they are used for matching instead. See comment at the match-class.
      * Used for backend modules only. Never frontend!
      *
      * @var array
@@ -1113,7 +1113,7 @@ class TemplateService
         // Final processing of the $this->setup TypoScript Template array
         // Basically: This is unsetting/setting of certain reserved keys.
         // ****************************************************************
-        // These vars are allready set after 'processTemplate', but because $config->setup overrides them (in the line above!), we set them again. They are not changed compared to the value they had in the top of the page!
+        // These vars are already set after 'processTemplate', but because $config->setup overrides them (in the line above!), we set them again. They are not changed compared to the value they had in the top of the page!
         unset($this->setup['sitetitle']);
         unset($this->setup['sitetitle.']);
         $this->setup['sitetitle'] = $this->sitetitle;

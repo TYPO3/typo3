@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * This class encapsulates bootstrap related methods.
  * It is required directly as the very first thing in entry scripts and
- * used to define all base things like constants and pathes and so on.
+ * used to define all base things like constants and paths and so on.
  *
  * Most methods in this class have dependencies to each other. They can
  * not be called in arbitrary order. The methods are ordered top down, so
@@ -179,7 +179,7 @@ class Bootstrap
     }
 
     /**
-     * Run the base setup that checks server environment, determines pathes,
+     * Run the base setup that checks server environment, determines paths,
      * populates base files and sets common configuration.
      *
      * Script execution will be aborted if something fails here.

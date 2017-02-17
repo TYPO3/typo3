@@ -62,7 +62,7 @@ from publishing with the "Only workspace owner can publish" setting
    .. figure:: ../../Images/LiveWorkspacesPermission.png
       :alt: Access to the live workspace
 
-      Giving acces to the LIVE workspace to a backend group
+      Giving access to the LIVE workspace to a backend group
 
 
 .. _custom-workspace-notifications:

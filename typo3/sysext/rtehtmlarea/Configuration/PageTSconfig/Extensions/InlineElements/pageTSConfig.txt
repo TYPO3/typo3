@@ -1,5 +1,5 @@
 # ***************************************************************************************
-# Additonal proc options in Page TSconfig for Inline Elements extension
+# Additional proc options in Page TSconfig for Inline Elements extension
 # ***************************************************************************************
 
 # Previously called "transformBoldAndItalicTags"

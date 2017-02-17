@@ -93,7 +93,7 @@ class FinisherContext
     }
 
     /**
-     * TRUE if no futher finishers should be invoked. Defaults to FALSE
+     * TRUE if no further finishers should be invoked. Defaults to FALSE
      *
      * @return bool
      * @internal

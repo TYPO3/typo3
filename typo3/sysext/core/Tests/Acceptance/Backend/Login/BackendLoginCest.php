@@ -114,7 +114,7 @@ class BackendLoginCest
         // can see bookmarks
         $I->seeElement($topBarItemSelector, ['title' => 'Bookmarks']);
 
-        // cant see clear cache
+        // can't see clear cache
         $I->cantSeeElement($topBarItemSelector, ['title' => 'Clear cache']);
 
         $this->logout($I);

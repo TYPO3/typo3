@@ -1723,7 +1723,7 @@ class TypoScriptFrontendController
                         $removeTheRestFlag = 1;
                     }
                 } else {
-                    // Dont go here, if there is no backend user logged in.
+                    // Don't go here, if there is no backend user logged in.
                     $removeTheRestFlag = 1;
                 }
             }
@@ -2108,7 +2108,7 @@ class TypoScriptFrontendController
                         }
                     }
                 }
-                // Put <base> if necesary
+                // Put <base> if necessary
                 if ($checkBaseTag) {
                     // If content already has <base> tag, we do not need to do anything
                     if (false === stristr($content, '<base ')) {
@@ -2700,7 +2700,7 @@ class TypoScriptFrontendController
             if (is_array($sys_language_row) && !empty($sys_language_row['language_isocode'])) {
                 $this->sys_language_isocode = $sys_language_row['language_isocode'];
             }
-            // the DB value is overriden by TypoScript
+            // the DB value is overridden by TypoScript
             if (!empty($this->config['config']['sys_language_isocode'])) {
                 $this->sys_language_isocode = $this->config['config']['sys_language_isocode'];
             }
@@ -4452,9 +4452,9 @@ class TypoScriptFrontendController
         $result = PHP_INT_MAX;
         // Get the configuration
         $tablesToConsider = $this->getCurrentPageCacheConfiguration();
-        // Get the time, rounded to the minute (do not polute MySQL cache!)
+        // Get the time, rounded to the minute (do not pollute MySQL cache!)
         // It is ok that we do not take seconds into account here because this
-        // value will be substracted later. So we never get the time "before"
+        // value will be subtracted later. So we never get the time "before"
         // the cache change.
         $now = $GLOBALS['ACCESS_TIME'];
         // Find timeout by checking every table

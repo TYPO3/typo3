@@ -59,7 +59,7 @@ define([
 
 	/**
 	 * All external templates along the rootline have to be loaded,
-	 * this function retrieves the JSON code by comitting a AJAX request
+	 * this function retrieves the JSON code by committing a AJAX request
 	 */
 	TsCodeCompletion.loadExtTemplatesAsync = function() {
 		var id = TsCodeCompletion.getGetVar('id');

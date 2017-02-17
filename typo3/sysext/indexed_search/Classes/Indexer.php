@@ -553,7 +553,7 @@ class Indexer
                 $this->contentParts['title'] = $this->conf['indexedDocTitle'];
             }
             $this->log_pull();
-            // Calculating a hash over what is to be the actual page content. Maybe this hash should not include title,description and keywords? The bodytext is the primary concern. (on the other hand a changed page-title would make no difference then, so dont!)
+            // Calculating a hash over what is to be the actual page content. Maybe this hash should not include title,description and keywords? The bodytext is the primary concern. (on the other hand a changed page-title would make no difference then, so don't!)
             $this->content_md5h = IndexedSearchUtility::md5inthash(implode('', $this->contentParts));
             // This function checks if there is already a page (with gr_list = 0,-1) indexed and if that page has the very same contentHash.
             // If the contentHash is the same, then we can rest assured that this page is already indexed and regardless of mtime and origContent we don't need to do anything more.
