@@ -79,7 +79,7 @@ script:
 
   - >
     if [[ "$XLF_CHECK" == "yes" ]]; then
-      ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
+      ./Build/Scripts/xlfcheck.sh
     fi
 
   - >
