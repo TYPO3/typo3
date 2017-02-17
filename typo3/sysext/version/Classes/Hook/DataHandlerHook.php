@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Version\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -917,27 +918,29 @@ class DataHandlerHook
         // Execute swapping:
         $sqlErrors = [];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $connection->update(
-            $table,
-            $swapVersion,
-            ['uid' => (int)$id]
-        );
-
-        if ($connection->errorCode()) {
-            $sqlErrors[] = $connection->errorInfo();
-        } else {
+        try {
             $connection->update(
                 $table,
-                $curVersion,
-                ['uid' => (int)$swapWith]
+                $swapVersion,
+                ['uid' => (int)$id]
             );
+        } catch (DBALException $e) {
+            $sqlErrors[] = $e->getPrevious()->getMessage();
+        }
 
-            if ($connection->errorCode()) {
-                $sqlErrors[] = $connection->errorInfo();
-            } else {
+        if (empty($sqlErrors)) {
+            try {
+                $connection->update(
+                    $table,
+                    $curVersion,
+                    ['uid' => (int)$swapWith]
+                );
                 unlink($lockFileName);
+            } catch (DBALException $e) {
+                $sqlErrors[] = $e->getPrevious()->getMessage();
             }
         }
+
         if (!empty($sqlErrors)) {
             $dataHandler->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
         } else {
