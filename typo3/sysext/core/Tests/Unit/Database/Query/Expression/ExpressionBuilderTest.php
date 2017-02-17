@@ -260,7 +260,6 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $databasePlatform->getName()->willReturn('postgresql');
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote('\'1\'', Argument::cetera())->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -270,6 +269,26 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $result = $this->subject->inSet('aField', "'1'");
 
         $this->assertSame('\'1\' = ANY(string_to_array("aField"::text, \',\'))', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function inSetForPostgreSQLWithColumn()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('postgresql');
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', '"testtable"."uid"', true);
+
+        $this->assertSame('"testtable"."uid"::text = ANY(string_to_array("aField"::text, \',\'))', $result);
     }
 
     /**

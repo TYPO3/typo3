@@ -162,12 +162,14 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(1);
 
+        $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
+
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();
 
         $this->assertCount(3, $posts);
-        $this->assertSame('B EN:Post1', $posts[0]->getTitle());
-        $this->assertSame('A EN:Post2', $posts[1]->getTitle());
+        $this->assertSame('A EN:Post2', $posts[0]->getTitle());
+        $this->assertSame('B EN:Post1', $posts[1]->getTitle());
         $this->assertSame('Post3', $posts[2]->getTitle());
     }
 
@@ -182,6 +184,8 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $querySettings->setStoragePageIds([1]);
         $querySettings->setRespectSysLanguage(true);
         $querySettings->setLanguageUid(2);
+
+        $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
 
         /** @var Post[] $posts */
         $posts = $query->execute()->toArray();

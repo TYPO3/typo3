@@ -941,7 +941,8 @@ class Typo3DbQueryParser
             } else {
                 $joinConditionExpression = $this->queryBuilder->expr()->inSet(
                     $tableName . '.' . $columnName,
-                    $childTableAlias . '.uid'
+                    $this->queryBuilder->quoteIdentifier($childTableAlias . '.uid'),
+                    true
                 );
             }
             $this->queryBuilder->leftJoin($tableName, $childTableName, $childTableAlias, $joinConditionExpression);

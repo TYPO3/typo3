@@ -272,10 +272,12 @@ class ExpressionBuilder
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
      * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
+     * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
      * @return string
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function inSet(string $fieldName, string $value): string
+    public function inSet(string $fieldName, string $value, bool $isColumn = false): string
     {
         if ($value === '') {
             throw new \InvalidArgumentException(
@@ -295,7 +297,7 @@ class ExpressionBuilder
             case 'postgresql':
             case 'pdo_postgresql':
                 return $this->comparison(
-                    $this->literal($value),
+                    $isColumn ? $value . '::text' : $value,
                     self::EQ,
                     sprintf(
                         'ANY(string_to_array(%s, %s))',

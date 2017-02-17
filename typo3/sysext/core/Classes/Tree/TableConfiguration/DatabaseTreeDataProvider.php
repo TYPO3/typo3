@@ -495,7 +495,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
         $queryBuilder->select('uid')
             ->from($this->getTableName())
-            ->where($queryBuilder->expr()->inSet($fieldName, $queryId));
+            ->where($queryBuilder->expr()->inSet($fieldName, $queryBuilder->quote($queryId)));
 
         if ($queryId === 0) {
             $queryBuilder->orWhere(

@@ -83,7 +83,7 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(1, $newBlogCount);
+        $this->assertEquals(1, $newBlogCount);
     }
 
     /**

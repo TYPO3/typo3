@@ -110,11 +110,12 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository */
         $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
         $query = $frontendUserRepository->createQuery();
-
-        $result = $query->matching(
+        $query->matching(
             $query->equals('usergroup.title', 'Group A')
-        )->execute();
-        $this->assertSame(2, count($result));
+        );
+
+        $result = $query->execute()->toArray();
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -131,7 +132,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             $query->equals('author.firstname', 'Author')
         );
         $result = $query->execute()->toArray();
-        $this->assertEquals(2, count($result));
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -149,7 +150,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             )
         );
         $result = $query->execute()->toArray();
-        $this->assertEquals(2, count($result));
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -168,7 +169,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             )
         );
         $result = $query->execute()->toArray();
-        $this->assertEquals(1, count($result));
+        $this->assertCount(1, $result);
     }
 
     /**
@@ -180,10 +181,9 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $frontendUserRepository = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
         $query = $frontendUserRepository->createQuery();
 
-        $result = $query->matching(
-                $query->contains('usergroup', 1)
-        )->execute();
-        $this->assertSame(2, count($result));
+        $result = $query->matching($query->contains('usergroup', 1))
+            ->execute();
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -194,6 +194,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
         $query = $postRepository->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
-        $this->assertSame(3, count($post->getCategories()));
+        $this->assertCount(3, $post->getCategories());
     }
 }

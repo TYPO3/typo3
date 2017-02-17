@@ -103,7 +103,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
                 )
             )->execute()
             ->fetchColumn(0);
-        $this->assertSame(($countPostsOriginal + 1), $countPosts);
+        $this->assertEquals($countPostsOriginal + 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -118,7 +118,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame($newPostTitle, $post['title']);
-        $this->assertSame((int)($countPostsOriginal + 1), $post['sorting']);
+        $this->assertEquals($countPostsOriginal + 1, $post['sorting']);
     }
 
     /**
@@ -180,7 +180,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(null, $post['uid']);
+        $this->assertNull($post['uid']);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -195,7 +195,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame('Post9', $post['title']);
-        $this->assertSame(9, $post['sorting']);
+        $this->assertEquals(9, $post['sorting']);
     }
 
     /**
@@ -223,7 +223,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $newPostTitle = 'INSERTED POST at position 6';
         foreach ($posts as $post) {
             $this->blog->addPost($post);
-            if ($counter == 5) {
+            if ($counter === 5) {
                 $newPost->setBlog($this->blog);
                 $newPost->setTitle($newPostTitle);
                 $newPost->setContent('Bla Bla Bla');
@@ -239,7 +239,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->from('tx_blogexample_domain_model_post')
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(($countPostsOriginal + 1), $countPosts);
+        $this->assertEquals($countPostsOriginal + 1, $countPosts);
 
         //last post
         $queryBuilder->resetQueryParts();
@@ -255,7 +255,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame('Post10', $post['title']);
-        $this->assertSame(11, $post['sorting']);
+        $this->assertEquals(11, $post['sorting']);
 
         // check sorting of the post added in the middle
         $queryBuilder->resetQueryParts();
@@ -271,7 +271,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame($newPostTitle, $post['title']);
-        $this->assertSame(6, $post['sorting']);
+        $this->assertEquals(6, $post['sorting']);
     }
 
     /**
@@ -293,7 +293,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $posts = clone $this->blog->getPosts();
         $counter = 1;
         foreach ($posts as $post) {
-            if ($counter == 5) {
+            if ($counter === 5) {
                 $this->blog->removePost($post);
             }
             $counter++;
@@ -306,7 +306,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->from('tx_blogexample_domain_model_post')
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(($countPostsOriginal - 1), $countPosts);
+        $this->assertEquals($countPostsOriginal - 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -321,7 +321,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame('Post10', $post['title']);
-        $this->assertSame(10, $post['sorting']);
+        $this->assertEquals(10, $post['sorting']);
     }
 
     /**
@@ -348,10 +348,10 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $counter = 0;
         $postCount = $posts->count();
         foreach ($posts as $post) {
-            if ($counter != ($postCount - 1)) {
+            if ($counter !== ($postCount - 1)) {
                 $this->blog->addPost($post);
             }
-            if ($counter == 4) {
+            if ($counter === 4) {
                 $latestPost->setTitle('MOVED POST ' . $latestPost->getTitle());
                 $this->blog->addPost($latestPost);
             }
@@ -365,7 +365,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->from('tx_blogexample_domain_model_post')
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame($countPostsOriginal, $countPosts);
+        $this->assertEquals($countPostsOriginal, $countPosts);
 
         $queryBuilder->getRestrictions()->removeAll();
         $post = $queryBuilder
@@ -380,7 +380,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame('Post9', $post['title']);
-        $this->assertSame(10, $post['sorting']);
+        $this->assertEquals(10, $post['sorting']);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -398,7 +398,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
         $this->assertSame('MOVED POST Post10', $post['title']);
-        $this->assertSame(10, $post['uid']);
+        $this->assertEquals(10, $post['uid']);
     }
 
     /**
@@ -436,7 +436,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->from('tx_blogexample_domain_model_tag')
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(($countOriginal + 1), $count);
+        $this->assertEquals($countOriginal + 1, $count);
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
         $queryBuilder->getRestrictions()
@@ -452,7 +452,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame($newTag->getUid(), $tag['uid_foreign']);
+        $this->assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
 
     /**
@@ -507,7 +507,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(9, $tag['uid_foreign']);
+        $this->assertEquals(9, $tag['uid_foreign']);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -527,7 +527,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(null, $tag['uid_foreign']);
+        $this->assertNull($tag['uid_foreign']);
     }
 
     /**
@@ -561,7 +561,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $counter = 1;
         foreach ($tags as $tag) {
             $post->addTag($tag);
-            if ($counter == 5) {
+            if ($counter === 5) {
                 $post->addTag($newTag);
             }
             $counter++;
@@ -579,7 +579,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(($countTagsOriginal + 1), $countTags);
+        $this->assertEquals($countTagsOriginal + 1, $countTags);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -593,7 +593,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(10, $tag['uid_foreign']);
+        $this->assertEquals(10, $tag['uid_foreign']);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -610,7 +610,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame($newTag->getUid(), $tag['uid_foreign']);
+        $this->assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
 
     /**
@@ -631,7 +631,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(10, $countTags);
+        $this->assertEquals(10, $countTags);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -639,7 +639,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $tags = clone $post->getTags();
         $counter = 1;
         foreach ($tags as $tag) {
-            if ($counter == 5) {
+            if ($counter === 5) {
                 $post->removeTag($tag);
             }
             $counter++;
@@ -657,7 +657,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(9, $countTags);
+        $this->assertEquals(9, $countTags);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -671,8 +671,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(10, $tag['uid_foreign']);
-        $this->assertSame(10, $tag['sorting']);
+        $this->assertEquals(10, $tag['uid_foreign']);
+        $this->assertEquals(10, $tag['sorting']);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -689,7 +689,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetch();
-        $this->assertSame(null, $tag['uid_foreign']);
+        $this->assertNull($tag['uid_foreign']);
     }
 
     /**
@@ -710,7 +710,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(10, $countTags);
+        $this->assertEquals(10, $countTags);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -724,10 +724,10 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $counter = 1;
         $tagCount = $tags->count();
         foreach ($tags as $tag) {
-            if ($counter != $tagCount) {
+            if ($counter !== $tagCount) {
                 $post->addTag($tag);
             }
-            if ($counter == 5) {
+            if ($counter === 5) {
                 $post->addTag($latestTag);
             }
             $counter++;
@@ -746,7 +746,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(10, $countTags);
+        $this->assertEquals(10, $countTags);
 
         $queryBuilder->resetQueryParts();
         $tag = $queryBuilder
@@ -760,8 +760,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetch();
-        $this->assertSame(9, $tag['uid_foreign']);
-        $this->assertSame(10, $tag['sorting']);
+        $this->assertEquals(9, $tag['uid_foreign']);
+        $this->assertEquals(10, $tag['sorting']);
 
         $sorting = '6';
         $queryBuilder->resetQueryParts();
@@ -782,7 +782,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetch();
-        $this->assertSame(10, $tag['uid_foreign']);
+        $this->assertEquals(10, $tag['uid_foreign']);
     }
 
     /**
@@ -834,7 +834,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
         $posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
-        $this->assertSame(1, count($posts));
+        $this->assertCount(1, $posts);
     }
 
     /**
@@ -863,7 +863,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(3, $countCategories);
+        $this->assertEquals(3, $countCategories);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -913,7 +913,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(3, $countCategories);
+        $this->assertEquals(3, $countCategories);
 
         /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
         $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
@@ -947,7 +947,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertSame(4, $countCategories);
+        $this->assertEquals(4, $countCategories);
     }
 
     /**
@@ -996,7 +996,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetchColumn(0);
 
-        $this->assertSame($this->blog->getCategories()->count(), $newBlogCategoryCount);
+        $this->assertEquals($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }
 
     /**
