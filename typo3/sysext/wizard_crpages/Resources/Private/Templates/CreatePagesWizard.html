@@ -49,9 +49,9 @@
         <input class="btn btn-default" type="reset" value="{f:translate(key: '{LLPrefix}wiz_newPages_lReset')}" />
     </div>
 
-    <f:format.raw>
-        <span class="btn btn-default btn-sm">{cshItem}</span>
-    </f:format.raw>
+    <f:if condition="{cshItem}">
+        <span class="btn btn-default btn-sm">{cshItem -> f:format.raw()}</span>
+    </f:if>
 </div>
 
 <script type="text/javascript">
