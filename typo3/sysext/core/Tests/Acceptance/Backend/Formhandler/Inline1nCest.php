@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
 
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Formhandler;
 use TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
@@ -73,9 +72,8 @@ class Inline1nCest
 
     /**
      * @param Admin $I
-     * @param Formhandler $formhandler
      */
-    public function createInline1nInlineElement(Admin $I, Formhandler $formhandler)
+    public function createInline1nInlineElement(Admin $I)
     {
         $I->click('span[data-identifier="actions-document-new"]', 'div.typo3-newRecordLink');
 

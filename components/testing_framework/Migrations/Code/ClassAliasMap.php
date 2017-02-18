@@ -4,8 +4,6 @@ return [
     // Acceptance
     '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Step\\Backend\\Admin' => \TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin::class,
     '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Step\\Backend\\Editor' => \TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Editor::class,
-    '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Support\\Helper\\Formhandler' => \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Formhandler::class,
-    '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Support\\Helper\\FormHandlerElementTestDataObject' => \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\FormHandlerElementTestDataObject::class,
     '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Support\\Helper\\ModalDialog' => \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\ModalDialog::class,
     '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Support\\Helper\\Topbar' => \TYPO3\TestingFramework\Core\Acceptance\Support\Helper\Topbar::class,
     '\\TYPO3\\Components\\TestingFramework\\Core\\Acceptance\\Support\\Page\\PageTree' => \TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree::class,
