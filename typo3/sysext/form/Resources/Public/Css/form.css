@@ -385,9 +385,6 @@
   margin-right: 75px;
   transition: margin 0.2s;
 }
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .ui-sortable-handle:has (.ui-sortable-handle:hover) {
-  border-color: transparent;
-}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .ui-sortable-handle span {
   color: #5a5a5a;
 }
