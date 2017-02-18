@@ -121,6 +121,33 @@ class Pbkdf2SaltTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * Tests authentication procedure with fixed password and fixed (pre-generated) hash.
+     *
+     * Checks if a "plain-text password" is every time mapped to the
+     * same "salted password hash" when using the same fixed salt.
+     *
+     * @test
+     */
+    public function authenticationWithValidAlphaCharClassPasswordAndFixedHash()
+    {
+        $password = 'password';
+        $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68FfaQ';
+        $this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword));
+    }
+
+    /**
+     * Tests that authentication procedure fails with broken hash to compare to
+     *
+     * @test
+     */
+    public function authenticationFailsWithBrokenHash()
+    {
+        $password = 'password';
+        $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68Ffa';
+        $this->assertFalse($this->objectInstance->checkPassword($password, $saltedHashPassword));
+    }
+
+    /**
      * Tests authentication procedure with alphabet characters.
      *
      * Checks if a "plain-text password" is every time mapped to the

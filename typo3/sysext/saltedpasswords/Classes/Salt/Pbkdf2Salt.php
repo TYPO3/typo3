@@ -108,7 +108,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      */
     public function checkPassword($plainPW, $saltedHashPW)
     {
-        return $this->isValidSalt($saltedHashPW) && $this->getHashedPassword($plainPW, $saltedHashPW) === $saltedHashPW;
+        return $this->isValidSalt($saltedHashPW) && \hash_equals($this->getHashedPassword($plainPW, $saltedHashPW), $saltedHashPW);
     }
 
     /**

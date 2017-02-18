@@ -82,7 +82,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
     {
         $isCorrect = false;
         if ($this->isValidSalt($saltedHashPW)) {
-            $isCorrect = crypt($plainPW, $saltedHashPW) == $saltedHashPW;
+            $isCorrect = \password_verify($plainPW, $saltedHashPW);
         }
         return $isCorrect;
     }
