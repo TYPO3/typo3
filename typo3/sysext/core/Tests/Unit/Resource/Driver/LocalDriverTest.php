@@ -1277,7 +1277,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         ]);
         $subject = $this->createDriver();
         $mappingInformation = $subject->renameFolder('/sourceFolder/', 'newFolder');
-        $this->isTrue(is_array($mappingInformation));
+        $this->assertTrue(is_array($mappingInformation));
         $this->assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
         $this->assertEquals('/newFolder/file2', $mappingInformation['/sourceFolder/file2']);
         $this->assertEquals('/newFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
@@ -1433,7 +1433,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         GeneralUtility::mkdir_deep($basePath, '/targetFolder');
 
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
-        $this->isTrue(is_dir($basePath . '/targetFolder/newFolderName/subFolder'));
+        $this->assertTrue(is_dir($basePath . '/targetFolder/newFolderName/subFolder'));
     }
 
     /**
