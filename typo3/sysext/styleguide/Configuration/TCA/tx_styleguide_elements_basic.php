@@ -1265,8 +1265,6 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;meta,
-                    disable, starttime, endtime, l10n_parent, l10n_source,
                 --div--;input,
                     input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
@@ -1291,6 +1289,8 @@ return [
                     user_1, user_2,
                 --div--;in flex,
                     flex_1,
+                --div--;meta,
+                    disable, starttime, endtime, l10n_parent, l10n_source,
             ',
         ],
     ],
