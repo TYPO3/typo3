@@ -87,6 +87,7 @@ CREATE TABLE fe_users (
 	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
 	lockToDomain varchar(50) DEFAULT '' NOT NULL,
 	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
+	description text,
 	uc blob,
 	title varchar(40) DEFAULT '' NOT NULL,
 	zip varchar(10) DEFAULT '' NOT NULL,

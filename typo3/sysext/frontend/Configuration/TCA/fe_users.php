@@ -2,6 +2,7 @@
 return [
     'ctrl' => [
         'label' => 'username',
+        'descriptionColumn' => 'description',
         'default_sortby' => 'ORDER BY username',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -17,10 +18,10 @@ return [
             'default' => 'status-user-frontend'
         ],
         'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-        'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
+        'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company,description'
     ],
     'interface' => [
-        'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,first_name,middle_name,last_name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime,lastlogin'
+        'showRecordFieldList' => 'username,password,usergroup,lockToDomain,name,first_name,middle_name,last_name,title,company,address,zip,city,country,email,www,telephone,fax,disable,starttime,endtime,lastlogin,description'
     ],
     'columns' => [
         'username' => [
@@ -248,6 +249,14 @@ return [
                 ]
             ]
         ],
+        'description' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'config' => [
+                'type' => 'text',
+                'rows' => 5,
+                'cols' => 48
+            ]
+        ],
         'TSconfig' => [
             'exclude' => true,
             'label' => 'TSconfig:',
@@ -282,6 +291,8 @@ return [
                     lockToDomain, TSconfig,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     disable,--palette--;;timeRestriction,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                    description,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
         ],
