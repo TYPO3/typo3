@@ -57,7 +57,7 @@ class AddPageInPageModuleCest
 
         $I->wait(1);
         $I->click($rootNodeContextMenuMore);
-        $I->waitForElementVisible($contextMenuNew);
+        $I->waitForElementVisible($contextMenuNew, 30);
         $I->click($contextMenuNew);
 
         // Switch to content frame
