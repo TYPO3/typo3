@@ -437,7 +437,8 @@ class QueryGenerator
             $ssArr = $this->getSubscript($POST['qG_del']);
             $workArr = &$this->queryConfig;
             $ssArrSize = count($ssArr) - 1;
-            for ($i = 0; $i < $ssArrSize; $i++) {
+            $i = 0;
+            for (; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Delete the entry and move the other entries
@@ -454,7 +455,8 @@ class QueryGenerator
             $ssArr = $this->getSubscript($POST['qG_ins']);
             $workArr = &$this->queryConfig;
             $ssArrSize = count($ssArr) - 1;
-            for ($i = 0; $i < $ssArrSize; $i++) {
+            $i = 0;
+            for (; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Move all entries above position where new entry is to be inserted
@@ -472,7 +474,8 @@ class QueryGenerator
             $ssArr = $this->getSubscript($POST['qG_up']);
             $workArr = &$this->queryConfig;
             $ssArrSize = count($ssArr) - 1;
-            for ($i = 0; $i < $ssArrSize; $i++) {
+            $i = 0;
+            for (; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Swap entries
@@ -486,7 +489,8 @@ class QueryGenerator
             $ssArr = $this->getSubscript($POST['qG_nl']);
             $workArr = &$this->queryConfig;
             $ssArraySize = count($ssArr) - 1;
-            for ($i = 0; $i < $ssArraySize; $i++) {
+            $i = 0;
+            for (; $i < $ssArraySize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Do stuff:
@@ -507,7 +511,8 @@ class QueryGenerator
             $ssArr = $this->getSubscript($POST['qG_remnl']);
             $workArr = &$this->queryConfig;
             $ssArrSize = count($ssArr) - 1;
-            for ($i = 0; $i < $ssArrSize; $i++) {
+            $i = 0;
+            for (; $i < $ssArrSize; $i++) {
                 $workArr = &$workArr[$ssArr[$i]];
             }
             // Do stuff:
@@ -879,7 +884,6 @@ class QueryGenerator
                 $from_table_Arr[0] = $fieldSetup['foreign_table'];
             }
             $counter = 0;
-            $webMountPageTree = '';
             $tablePrefix = '';
             $backendUserAuthentication = $this->getBackendUserAuthentication();
             $module = $this->getModule();
@@ -905,6 +909,7 @@ class QueryGenerator
                         }
                         $useSelectLabels = true;
                     }
+                    $altLabelFieldSelect = [];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
                             if (substr($altLabelArray[0], 0, 4) === 'LLL:') {

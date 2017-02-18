@@ -33,6 +33,18 @@ class PackageConstraint
     protected $value;
 
     /**
+     * Minimum version for the constraint
+     * @var string
+     */
+    protected $minVersion;
+
+    /**
+     * Maximum version for the constraint
+     * @var string
+     */
+    protected $maxVersion;
+
+    /**
      * Meta data constraint constructor
      *
      * @param string $constraintType

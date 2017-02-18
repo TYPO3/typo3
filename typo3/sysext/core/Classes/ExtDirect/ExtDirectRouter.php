@@ -119,21 +119,22 @@ class ExtDirectRouter
     protected function processRpc($singleRequest, $namespace)
     {
         $endpointName = $namespace . '.' . $singleRequest->action;
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
+        if (
+            !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])
+            || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])
+        ) {
             throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-            if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {
-                throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586451);
-            }
-            $callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
-            $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
-            if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
-                $GLOBALS['BE_USER']->modAccess([
-                    'name' => $configuration['moduleName'],
-                    'access' => $configuration['accessLevel']
-                ], true);
-            }
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {
+            throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586451);
+        }
+        $callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
+        $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
+        if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
+            $GLOBALS['BE_USER']->modAccess([
+                'name' => $configuration['moduleName'],
+                'access' => $configuration['accessLevel']
+            ], true);
         }
         $endpointObject = GeneralUtility::getUserObj($callbackClass);
         return call_user_func_array([$endpointObject, $singleRequest->method], is_array($singleRequest->data) ? $singleRequest->data : []);

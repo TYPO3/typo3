@@ -688,8 +688,9 @@ class CharsetConverter implements SingletonInterface
         // This verifies that it IS a multi byte string
         if (($ord & 192) === 192) {
             $binBuf = '';
+            $b = 0;
             // For each byte in multibyte string...
-            for ($b = 0; $b < 8; $b++) {
+            for (; $b < 8; $b++) {
                 // Shift it left and ...
                 $ord = $ord << 1;
                 // ... and with 8th bit - if that is set, then there are still bytes in sequence.
@@ -1432,8 +1433,9 @@ class CharsetConverter implements SingletonInterface
             if ($i <= 0) {
                 return '';
             }
+            $bc = 0;
             // Sanity check
-            for ($bc = 0, $mbs = ord($str[$i]); $mbs & 128; $mbs = $mbs << 1) {
+            for ($mbs = ord($str[$i]); $mbs & 128; $mbs = $mbs << 1) {
                 // Calculate number of bytes
                 $bc++;
             }
@@ -1536,7 +1538,8 @@ class CharsetConverter implements SingletonInterface
         GeneralUtility::logDeprecatedFunction();
         // Number of characters
         $n = 0;
-        for ($i = $pos; $i > 0; $i--) {
+        $i = $pos;
+        for (; $i > 0; $i--) {
             $c = (int)ord($str[$i]);
             // single-byte (0xxxxxx)
             if (!($c & 128)) {
@@ -1585,8 +1588,9 @@ class CharsetConverter implements SingletonInterface
             if (!($c & 128)) {
                 $mbc = $str[$i];
             } elseif (($c & 192) === 192) {
+                $bc = 0;
                 // multi-byte starting byte (11xxxxxx)
-                for ($bc = 0; $c & 128; $c = $c << 1) {
+                for (; $c & 128; $c = $c << 1) {
                     $bc++;
                 }
                 // calculate number of bytes
@@ -1627,7 +1631,8 @@ class CharsetConverter implements SingletonInterface
     {
         GeneralUtility::logDeprecatedFunction();
         $shiftJis = $charset === 'shift_jis';
-        for ($i = 0; isset($str[$i]) && $i < $len; $i++) {
+        $i = 0;
+        for (; isset($str[$i]) && $i < $len; $i++) {
             $c = ord($str[$i]);
             if ($shiftJis) {
                 if ($c >= 128 && $c < 160 || $c >= 224) {

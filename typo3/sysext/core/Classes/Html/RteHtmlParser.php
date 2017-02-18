@@ -1098,7 +1098,8 @@ class RteHtmlParser extends HtmlParser
         } else {
             $curURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             $urlLength = strlen($url);
-            for ($a = 0; $a < $urlLength; $a++) {
+            $a = 0;
+            for (; $a < $urlLength; $a++) {
                 if ($url[$a] != $curURL[$a]) {
                     break;
                 }

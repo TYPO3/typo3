@@ -1058,6 +1058,7 @@ class QueryView
                         }
                         $useSelectLabels = 1;
                     }
+                    $altLabelFieldSelect = [];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'];
                         foreach ($items as $altLabelArray) {

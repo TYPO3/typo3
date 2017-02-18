@@ -216,6 +216,7 @@ class TimeTracker implements SingletonInterface
         }
         end($this->currentHashPointer);
         $k = current($this->currentHashPointer);
+        $placeholder = '';
         // Enlarge the "details" column by adding a span
         if (strlen($content) > 30) {
             $placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';

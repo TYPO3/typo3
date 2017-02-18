@@ -110,6 +110,7 @@ class FlexFormTools
      */
     public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): string
     {
+        $dataStructureIdentifier = null;
         // Hook to inject an own logic to point to a data structure elsewhere.
         // A hook has to implement method getDataStructureIdentifierPreProcess() to be called here.
         // All hooks are called in a row, each MUST return an array, and the FIRST one that

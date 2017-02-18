@@ -272,6 +272,9 @@ abstract class AbstractConditionMatcher
                     case 'dayofyear':
                         $theTestValue = date('z', $theEvalTime);
                         break;
+                    default:
+                        $theTestValue = 0;
+                        break;
                 }
                 $theTestValue = (int)$theTestValue;
                 // comp

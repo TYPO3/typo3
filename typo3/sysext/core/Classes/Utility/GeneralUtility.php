@@ -2413,6 +2413,7 @@ class GeneralUtility
      */
     public static function get_dirs($path)
     {
+        $dirs = null;
         if ($path) {
             if (is_dir($path)) {
                 $dir = scandir($path);
@@ -2946,7 +2947,6 @@ class GeneralUtility
             case 'REMOTE_HOST':
 
             case 'QUERY_STRING':
-                $retVal = '';
                 if (isset($_SERVER[$getEnvName])) {
                     $retVal = $_SERVER[$getEnvName];
                 }
@@ -2969,9 +2969,8 @@ class GeneralUtility
                 }
                 $commonEnd = strrev(implode('/', $acc));
                 if ((string)$commonEnd !== '') {
-                    $DR = substr($SFN, 0, -(strlen($commonEnd) + 1));
+                    $retVal = substr($SFN, 0, -(strlen($commonEnd) + 1));
                 }
-                $retVal = $DR;
                 break;
             case 'TYPO3_HOST_ONLY':
                 $httpHost = self::getIndpEnv('HTTP_HOST');

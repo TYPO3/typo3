@@ -912,8 +912,8 @@ class ExtendedFileUtility extends BasicFileUtility
             return false;
         }
         $resultObject = null;
+        $folderName = $cmds['data'];
         try {
-            $folderName = $cmds['data'];
             $resultObject = $targetFolderObject->createFolder($folderName);
             $this->writeLog(6, 0, 1, 'Directory "%s" created in "%s"', [$folderName, $targetFolderObject->getIdentifier()]);
             $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', [$folderName, $targetFolderObject->getIdentifier()], FlashMessage::OK);

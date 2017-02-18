@@ -45,7 +45,7 @@ class FolderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         if ($mockedStorage === null) {
             $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         }
-        return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name, 0);
+        return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name);
     }
 
     /**

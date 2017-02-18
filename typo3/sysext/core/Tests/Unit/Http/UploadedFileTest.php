@@ -29,7 +29,7 @@ class UploadedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     protected function setUp()
     {
-        $this->tmpfile = null;
+        $this->tmpFile = null;
     }
 
     protected function tearDown()

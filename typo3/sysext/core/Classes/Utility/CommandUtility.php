@@ -437,6 +437,7 @@ class CommandUtility
     public static function escapeShellArguments(array $input)
     {
         $isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
+        $currentLocale = false;
         if ($isUTF8Filesystem) {
             $currentLocale = setlocale(LC_CTYPE, 0);
             setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
@@ -444,7 +445,7 @@ class CommandUtility
 
         $output = array_map('escapeshellarg', $input);
 
-        if ($isUTF8Filesystem) {
+        if ($isUTF8Filesystem && $currentLocale !== false) {
             setlocale(LC_CTYPE, $currentLocale);
         }
 

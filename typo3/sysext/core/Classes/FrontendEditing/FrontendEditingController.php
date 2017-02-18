@@ -80,6 +80,7 @@ class FrontendEditingController
         list($table, $uid) = explode(':', $currentRecord);
         // Page ID for new records, 0 if not specified
         $newRecordPid = (int)$conf['newRecordInPid'];
+        $newUid = null;
         if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
             if ($table === 'pages') {
                 $newUid = $uid;

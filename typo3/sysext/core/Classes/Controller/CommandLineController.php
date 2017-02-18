@@ -157,6 +157,7 @@ class CommandLineController
             $allOptions[] = $cfg[0];
             $argSplit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cfg[0], true);
             if (isset($cli_args_copy[$argSplit[0]])) {
+                $ii = 0;
                 foreach ($argSplit as $i => $v) {
                     $ii = $i;
                     if ($i > 0) {

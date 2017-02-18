@@ -2509,7 +2509,7 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'stan',
         ];
 
-        $this->assertNull(ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys));
+        ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys);
     }
 
     /**

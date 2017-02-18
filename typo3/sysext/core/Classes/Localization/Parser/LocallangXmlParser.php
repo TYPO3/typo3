@@ -42,7 +42,7 @@ class LocallangXmlParser extends AbstractXmlParser
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
-        $this->charset = $this->getCharset($languageKey, $charset);
+        $this->charset = $this->getCharset($charset);
         // Parse source
         $parsedSource = $this->parseXmlFile();
         // Parse target

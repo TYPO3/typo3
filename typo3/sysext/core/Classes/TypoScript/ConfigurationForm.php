@@ -77,7 +77,7 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         $temp = $this->flatSetup;
         $this->flatSetup = [];
-        $this->flattenSetup($valueArray, '', '');
+        $this->flattenSetup($valueArray, '');
         $this->objReg = $this->ext_realValues = $this->flatSetup;
         $this->flatSetup = $temp;
         foreach ($theConstants as $k => $p) {

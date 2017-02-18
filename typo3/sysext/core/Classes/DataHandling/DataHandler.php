@@ -5612,13 +5612,11 @@ class DataHandler
                 'label' => $label,
             ];
             return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
+        }
         // Reuse the existing record and return its uid
         // (prior to TYPO3 CMS 6.2, an error was thrown here, which
         // did not make much sense since the information is available)
-        } else {
-            return $versionRecord['uid'];
-        }
-        return null;
+        return $versionRecord['uid'];
     }
 
     /**
@@ -5903,6 +5901,7 @@ class DataHandler
 
             // If record has been versioned/copied in this process, handle invalid relations of the live record
             $liveId = BackendUtility::getLiveVersionIdOfRecord($table, $MM_localUid);
+            $originalId = 0;
             if (!empty($this->copyMappingArray_merged[$table])) {
                 $originalId = array_search($MM_localUid, $this->copyMappingArray_merged[$table]);
             }
