@@ -196,11 +196,13 @@ class RichTextElement extends AbstractFormElement
     protected function getExtraPlugins(): array
     {
         $urlParameters = [
-            'table'      => $this->data['tableName'],
-            'uid'        => $this->data['databaseRow']['uid'],
-            'fieldName'  => $this->data['fieldName'],
-            'recordType' => $this->data['recordTypeValue'],
-            'pid'        => $this->data['effectivePid'],
+            'P' => [
+                'table'      => $this->data['tableName'],
+                'uid'        => $this->data['databaseRow']['uid'],
+                'fieldName'  => $this->data['fieldName'],
+                'recordType' => $this->data['recordTypeValue'],
+                'pid'        => $this->data['effectivePid'],
+            ]
         ];
 
         $pluginConfiguration = [];

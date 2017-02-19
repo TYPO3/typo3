@@ -58,13 +58,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected $thisConfig = [];
 
     /**
-     * Used with the Rich Text Editor.
-     *
-     * @var array
-     */
-    protected $editorDetails = [];
-
-    /**
      * @var array
      */
     protected $classesAnchorDefault = [];
@@ -125,28 +118,20 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 
-        $currentLinkParts = isset($queryParameters['curUrl']) ? $queryParameters['curUrl'] : [];
-        $this->currentLinkParts = $currentLinkParts;
-        $this->editorId = GeneralUtility::_GP('editorId');
-        $this->contentsLanguage = GeneralUtility::_GP('contentsLanguage');
-        $this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
+        $this->currentLinkParts = $queryParameters['curUrl'] ?? [];
+        $this->editorId = $queryParameters['editorId'];
+        $this->contentsLanguage = $queryParameters['contentsLanguage'];
+        $this->RTEtsConfigParams = $queryParameters['RTEtsConfigParams'] ?? null;
 
         $this->contentLanguageService->init($this->contentsLanguage);
 
-        $this->editorDetails = [
-            'table' => $queryParameters['table'],
-            'uid' => $queryParameters['uid'],
-            'fieldName' => $queryParameters['fieldName'],
-            'pid' => $queryParameters['pid'],
-            'recordType' => $queryParameters['recordType'],
-        ];
-
+        /** @var Richtext $richtextConfigurationProvider */
         $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
         $this->thisConfig = $richtextConfigurationProvider->getConfiguration(
-            $queryParameters['table'],
-            $queryParameters['fieldName'],
-            (int)$queryParameters['pid'],
-            $queryParameters['recordType'],
+            $this->parameters['table'],
+            $this->parameters['fieldName'],
+            (int)$this->parameters['pid'],
+            $this->parameters['recordType'],
             ['richtext' => true]
         );
         $this->buttonConfig = $this->thisConfig['buttons.']['link.'] ?? [];
@@ -530,7 +515,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getCurrentPageId()
     {
-        return (int)$this->editorDetails['pid'];
+        return (int)$this->parameters['pid'];
     }
 
     /**
@@ -565,10 +550,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     public function getUrlParameters(array $overrides = null)
     {
-        return array_merge($this->editorDetails, [
+        return [
             'act' => isset($overrides['act']) ? $overrides['act'] : $this->displayedLinkHandlerId,
             'editorId' => $this->editorId,
             'contentsLanguage' => $this->contentsLanguage,
-        ]);
+            'P' => $this->parameters
+        ];
     }
 }
