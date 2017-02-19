@@ -25,7 +25,7 @@ lib.parseFunc {
             typolink {
                 parameter.data = parameters:href
                 title.data = parameters:title
-                aTagParams.data = parameters:allParams
+                ATagParams.data = parameters:allParams
                 target.data = parameters:target
                 extTarget = {$styles.content.links.extTarget}
                 extTarget.override.data = parameters:target
