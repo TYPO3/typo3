@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -1666,12 +1667,14 @@ class BackendUtility
                         $fileReferenceObject->getExtension()
                     )
                 ) {
+                    $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
+                    $cropArea = $cropVariantCollection->getCropArea();
                     $processedImage = $fileObject->process(
                         ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
                         [
                             'width' => $sizeParts[0],
                             'height' => $sizeParts[1] . 'c',
-                            'crop' => $fileReferenceObject->getProperty('crop')
+                            'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject)
                         ]
                     );
                     $imageUrl = $processedImage->getPublicUrl(true);
