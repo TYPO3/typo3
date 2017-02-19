@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Parser for XML locallang file.
@@ -65,10 +66,15 @@ class LocallangXmlParser extends AbstractXmlParser
      * @param \SimpleXMLElement $root XML root element
      * @param string $element Target or Source
      * @return array
+     * @throws InvalidXmlFileException
      */
     protected function doParsingFromRootForElement(\SimpleXMLElement $root, $element)
     {
         $bodyOfFileTag = $root->data->languageKey;
+        if ($bodyOfFileTag === null) {
+            throw new InvalidXmlFileException('Invalid locallang.xml language file "' . PathUtility::stripPathSitePrefix($this->sourcePath) . '"', 1487944884);
+        }
+
         // Check if the source llxml file contains localized records
         $localizedBodyOfFileTag = $root->data->xpath('languageKey[@index=\'' . $this->languageKey . '\']');
         if ($element === 'source' || $this->languageKey === 'default') {
