@@ -315,7 +315,7 @@ class L10nModeUpdater implements RowUpdaterInterface
 
         foreach ($statement as $row) {
             $translationId = $row['uid'];
-            $parentId = $row[$parentFieldName];
+            $parentId = (int)$row[$parentFieldName];
             $payload['localizations'][$translationId] = $parentId;
         }
         if (!empty($payload['localizations'])) {
