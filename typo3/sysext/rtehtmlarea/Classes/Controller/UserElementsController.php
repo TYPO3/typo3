@@ -77,8 +77,14 @@ class UserElementsController
 		<input type="hidden" name="returnUrl" value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" />
 		';
         $JScode = '
-			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("UserElements");
-			var HTMLArea = window.parent.HTMLArea;
+			var callerWindow;
+			if (typeof top.TYPO3.Backend !== "undefined" && typeof top.TYPO3.Backend.ContentContainer.get() !== "undefined") {
+				callerWindow = top.TYPO3.Backend.ContentContainer.get();
+			} else {
+				callerWindow = window.parent;
+			}
+			var plugin = callerWindow.RTEarea["' . $this->editorNo . '"].editor.getPlugin("UserElements");
+			var HTMLArea = callerWindow.HTMLArea;
 			var editor = plugin.editor;
 
 			function Init() {
