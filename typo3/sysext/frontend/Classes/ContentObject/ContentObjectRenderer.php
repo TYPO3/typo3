@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -5035,7 +5036,7 @@ class ContentObjectRenderer
             } elseif ($file instanceof FileReference) {
                 $fileObject = $file->getOriginalFile();
                 if (!isset($fileArray['crop'])) {
-                    $fileArray['crop'] = $file->getProperty('crop');
+                    $fileArray['crop'] = $this->getCropArea($file, $fileArray['cropVariant'] ?: 'default');
                 }
             } else {
                 try {
@@ -5052,7 +5053,7 @@ class ContentObjectRenderer
                             $fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
                             $fileObject = $fileReference->getOriginalFile();
                             if (!isset($fileArray['crop'])) {
-                                $fileArray['crop'] = $fileReference->getProperty('crop');
+                                $fileArray['crop'] = $this->getCropArea($fileReference, $fileArray['cropVariant'] ?: 'default');
                             }
                         } else {
                             $fileObject = $this->getResourceFactory()->getFileObject($file);
@@ -5153,6 +5154,20 @@ class ContentObjectRenderer
             }
         }
         return $imageResource;
+    }
+
+    /**
+     * @param FileReference $fileReference
+     * @param string $cropVariant
+     * @return null|\TYPO3\CMS\Core\Imaging\ImageManipulation\Area
+     */
+    protected function getCropArea(FileReference $fileReference, string $cropVariant)
+    {
+        $cropVariantCollection = CropVariantCollection::create(
+            (string)$fileReference->getProperty('crop')
+        );
+        $cropArea = $cropVariantCollection->getCropArea($cropVariant);
+        return $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReference);
     }
 
     /***********************************************
