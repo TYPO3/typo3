@@ -128,11 +128,18 @@ class Area
      */
     public function makeRelativeBasedOnFile(FileInterface $file)
     {
+        $width = $file->getProperty('width');
+        $height = $file->getProperty('height');
+
+        if (empty($width) || empty($height)) {
+            return self::createEmpty();
+        }
+
         return new self(
-            $this->x / $file->getProperty('width'),
-            $this->y / $file->getProperty('height'),
-            $this->width / $file->getProperty('width'),
-            $this->height / $file->getProperty('height')
+            $this->x / $width,
+            $this->y / $height,
+            $this->width / $width,
+            $this->height / $height
         );
     }
 
