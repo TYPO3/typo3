@@ -95,7 +95,7 @@ class LocalCropScaleMaskHelper
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $gifBuilder->imageMagickConvert(
                 $originalFileName,
-                '',
+                $configuration['fileExtension'],
                 '',
                 '',
                 sprintf('-crop %dx%d+%d+%d', $newWidth, $newHeight, $offsetLeft, $offsetTop),
