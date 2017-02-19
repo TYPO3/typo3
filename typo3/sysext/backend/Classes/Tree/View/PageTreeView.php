@@ -27,6 +27,7 @@ class PageTreeView extends AbstractTreeView
     public $fieldArray = [
         'uid',
         'pid',
+        'is_siteroot',
         'title',
         'doktype',
         'nav_title',

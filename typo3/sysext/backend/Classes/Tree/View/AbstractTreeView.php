@@ -149,7 +149,7 @@ abstract class AbstractTreeView
      * @see addField()
      * @var array
      */
-    public $fieldArray = ['uid', 'pid', 'title'];
+    public $fieldArray = ['uid', 'pid', 'title', 'is_siteroot'];
 
     /**
      * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
@@ -689,7 +689,7 @@ abstract class AbstractTreeView
         }
         $title = $this->showDefaultTitleAttribute ? htmlspecialchars('UID: ' . $row['uid']) : $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $row['pid'] === 0 ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
+        $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
         $icon = '<span title="' . $title . '">' . $icon->render() . '</span>';
         return $this->wrapIcon($icon, $row);
     }
