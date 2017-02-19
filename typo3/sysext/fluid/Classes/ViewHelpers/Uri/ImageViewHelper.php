@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ImageService;
@@ -119,6 +118,7 @@ class ImageViewHelper extends AbstractViewHelper
 
             $cropVariantCollection = CropVariantCollection::create((string)$cropString);
             $cropVariant = $arguments['cropVariant'] ?: 'default';
+            $cropArea = $cropVariantCollection->getCropArea($cropVariant);
             $processingInstructions = [
                 'width' => $arguments['width'],
                 'height' => $arguments['height'],
@@ -126,7 +126,7 @@ class ImageViewHelper extends AbstractViewHelper
                 'minHeight' => $arguments['minHeight'],
                 'maxWidth' => $arguments['maxWidth'],
                 'maxHeight' => $arguments['maxHeight'],
-                'crop' => $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image),
+                'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
 
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);

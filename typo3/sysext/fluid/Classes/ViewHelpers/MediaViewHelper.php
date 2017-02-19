@@ -122,10 +122,11 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $cropVariant = $this->arguments['cropVariant'] ?: 'default';
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
         $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+        $cropArea = $cropVariantCollection->getCropArea($cropVariant);
         $processingInstructions = [
             'width' => $width,
             'height' => $height,
-            'crop' => $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image),
+            'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
         ];
         $imageService = $this->getImageService();
         $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
