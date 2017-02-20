@@ -33,7 +33,10 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
             $this->markTestSkipped('Test not available on case insensitive filesystems.');
         }
 
-        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', 1);
+        $this->import->loadFile(
+            $this->setDatabasePlatform(static::DATABASE_PLATFORM_MYSQL)->getXmlFilePath('pages-and-ttcontent-with-image.xml'),
+            1
+        );
         $this->import->importData(0);
 
         $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
@@ -122,7 +125,10 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
      */
     public function importPagesAndRelatedTtContentWithImagesButNotIncluded()
     {
-        $this->import->loadFile(PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', 1);
+        $this->import->loadFile(
+            PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/' . $this->getDatabasePlatform() . '/pages-and-ttcontent-with-image-but-not-included.xml',
+            1
+        );
         $this->import->importData(0);
 
         $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image2.jpg';
@@ -134,9 +140,12 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 
     /**
      * @test
+     * @group mysql
      */
     public function importPagesAndRelatedTtContentWithImageWithForcedUids()
     {
+        // @todo: Fix impexp / test with postgres: Probably, force uid's is not possible with postgres or needs
+        // @todo: to be adapted in somehow.
         $this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-with-forced-uids.xml', 1);
         $this->import->force_all_UIDS = true;
         $this->import->importData(0);

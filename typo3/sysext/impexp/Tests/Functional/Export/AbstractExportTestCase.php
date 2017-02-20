@@ -25,6 +25,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractExportTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
+     * Path to a XML fixture dependent on the current database.
+     * @var string
+     */
+    protected $fixturePath = __DIR__ . '/../Fixtures/ImportExportXml/';
+
+    /**
      * @var array
      */
     protected $coreExtensionsToLoad = ['impexp'];
@@ -33,6 +39,11 @@ abstract class AbstractExportTestCase extends \TYPO3\TestingFramework\Core\Funct
      * @var \TYPO3\CMS\Impexp\Export
      */
     protected $export;
+
+    /**
+     * @var string
+     */
+    protected $databasePlatform;
 
     /**
      * Set up for set up the backend user, initialize the language object

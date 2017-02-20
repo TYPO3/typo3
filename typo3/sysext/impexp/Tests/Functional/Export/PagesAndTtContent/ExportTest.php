@@ -108,6 +108,9 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
         $out = $this->export->compileMemoryToFileContent('xml');
 
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent.xml', $out);
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('pages-and-ttcontent.xml'),
+            $out
+        );
     }
 }

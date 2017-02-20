@@ -29,7 +29,10 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
      */
     public function importIrreRecords()
     {
-        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/irre-records.xml', 1);
+        $this->import->loadFile(
+            $this->setDatabasePlatform(static::DATABASE_PLATFORM_MYSQL)->getXmlFilePath('irre-records.xml'),
+            1
+        );
         $this->import->importData(0);
 
         $this->assertAssertionDataSet('importIrreRecords');

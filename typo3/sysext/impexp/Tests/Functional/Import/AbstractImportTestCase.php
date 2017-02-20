@@ -22,6 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase
 {
     /**
+     * Path to a XML fixture dependent on the current database.
+     * @var string
+     */
+    protected $fixturePath = __DIR__ . '/../Fixtures/ImportExportXml/';
+
+    /**
      * @var array
      */
     protected $coreExtensionsToLoad = ['impexp'];

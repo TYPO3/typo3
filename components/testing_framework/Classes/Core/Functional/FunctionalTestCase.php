@@ -14,6 +14,7 @@ namespace TYPO3\TestingFramework\Core\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
@@ -55,6 +56,20 @@ use TYPO3\TestingFramework\Core\Testbase;
  */
 abstract class FunctionalTestCase extends BaseTestCase
 {
+    const DATABASE_PLATFORM_MYSQL = 'MySQL';
+    const DATABASE_PLATFORM_PDO = 'PDO';
+
+    /**
+     * Path to a XML fixture dependent on the current database.
+     * @var string
+     */
+    protected $fixturePath = '';
+
+    /**
+     * @var string
+     */
+    protected $databasePlatform;
+
     /**
      * An unique identifier for this test case. Location of the test
      * instance and database name depend on this. Calculated early in setUp()
@@ -189,6 +204,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * This method should be called with parent::setUp() in your test cases!
      *
      * @return void
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function setUp()
     {
@@ -254,6 +270,16 @@ abstract class FunctionalTestCase extends BaseTestCase
             $testbase->setUpTestDatabase($localConfiguration['DB']['Connections']['Default']['dbname'], $originalDatabaseName);
             $testbase->loadExtensionTables();
             $testbase->createDatabaseStructure();
+        }
+
+        $databasePlatform = $this->getConnectionPool()
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
+            ->getDatabasePlatform();
+
+        if ($databasePlatform instanceof MySqlPlatform) {
+            $this->setDatabasePlatform(static::DATABASE_PLATFORM_MYSQL);
+        } else {
+            $this->setDatabasePlatform(static::DATABASE_PLATFORM_PDO);
         }
     }
 
@@ -434,5 +460,66 @@ abstract class FunctionalTestCase extends BaseTestCase
 
         $response = new Response($result['status'], $result['content'], $result['error']);
         return $response;
+    }
+
+    /**
+     * Return the path to a XML fixture dependent on the current database platform that tests are run against.
+     *
+     * @param string $fileName
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getXmlFilePath(string $fileName): string
+    {
+        $baseDir = $this->fixturePath . $this->databasePlatform . '/';
+        $xmlFilePath = $baseDir . $fileName;
+
+        if (!file_exists($xmlFilePath)) {
+            throw new \Exception(
+                'XML fixture file "' . $xmlFilePath . '" not found for database platform: ' . $this->databasePlatform,
+                1487620903
+            );
+        }
+
+        return $xmlFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabasePlatform(): string
+    {
+        return $this->databasePlatform;
+    }
+
+    /**
+     * @param string $databasePlatform
+     *
+     * @return $this
+     */
+    public function setDatabasePlatform(string $databasePlatform)
+    {
+        $this->databasePlatform = $databasePlatform;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixturePath(): string
+    {
+        return $this->fixturePath;
+    }
+
+    /**
+     * @param string $fixturePath
+     *
+     * @return $this
+     */
+    public function setFixturePath(string $fixturePath)
+    {
+        $this->fixturePath = $fixturePath;
+        return $this;
     }
 }

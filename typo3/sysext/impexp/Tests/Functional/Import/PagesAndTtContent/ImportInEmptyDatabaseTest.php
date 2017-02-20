@@ -29,7 +29,10 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
      */
     public function importPagesAndRelatedTtContent()
     {
-        $this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent.xml', 1);
+        $this->import->loadFile(
+            $this->setDatabasePlatform(static::DATABASE_PLATFORM_MYSQL)->getXmlFilePath('pages-and-ttcontent.xml'),
+            1
+        );
         $this->import->importData(0);
 
         $this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image3.jpg';

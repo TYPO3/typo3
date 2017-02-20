@@ -54,7 +54,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
         $errors = $this->export->printErrorLog();
         $this->assertSame('', $errors);
 
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('pages-and-ttcontent-with-image.xml'),
+            $out
+        );
     }
 
     /**
@@ -75,7 +78,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
         $errors = $this->export->errorLog;
         $this->assertSame($expectedErrors, $errors);
 
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('pages-and-ttcontent-with-corrupt-image.xml'),
+            $out
+        );
     }
 
     /**
@@ -91,7 +97,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
         $out = $this->export->compileMemoryToFileContent('xml');
 
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', $out);
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('pages-and-ttcontent-with-image-but-not-included.xml'),
+            $out
+        );
 
         $temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');

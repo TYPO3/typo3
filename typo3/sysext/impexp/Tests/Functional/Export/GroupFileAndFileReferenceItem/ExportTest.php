@@ -54,8 +54,11 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
         $this->compileExportGroupFileAndFileReferenceItem();
 
         $out = $this->export->compileMemoryToFileContent('xml');
-
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item.xml', $out);
+        // 'impexp-group-file-and-file_reference-item-but-images-not-included.xml'
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('impexp-group-file-and-file_reference-item.xml'),
+            $out
+        );
     }
 
     /**
@@ -69,7 +72,10 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
         $out = $this->export->compileMemoryToFileContent('xml');
 
-        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', $out);
+        $this->assertXmlStringEqualsXmlFile(
+            $this->getXmlFilePath('impexp-group-file-and-file_reference-item-but-images-not-included.xml'),
+            $out
+        );
 
         $temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
         $this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', $temporaryFilesDirectory . 'e1c5c4e1e34e19e2facb438752e06c3f');
