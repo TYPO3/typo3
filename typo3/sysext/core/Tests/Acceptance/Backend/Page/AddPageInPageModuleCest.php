@@ -38,6 +38,9 @@ class AddPageInPageModuleCest
      */
     public function addAndDeletePage(Admin $I)
     {
+        // @todo: Fix in high load scenarios or throw away
+        $this->skipUnstable();
+
         // Select page module
         $I->wantToTest('Add a page with page module');
         $I->click('Page');
@@ -110,5 +113,13 @@ class AddPageInPageModuleCest
         $I->click($yesButtonInPopup);
         $I->wait(2);
         $I->cantSee('Testpage');
+    }
+
+    /**
+     * @throws \PHPUnit_Framework_SkippedTestError
+     */
+    protected function skipUnstable()
+    {
+        throw new \PHPUnit_Framework_SkippedTestError('Test unstable, skipped for now.');
     }
 }
