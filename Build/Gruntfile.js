@@ -156,11 +156,9 @@ module.exports = function(grunt) {
 					'placeholders.min.js': 'Placeholders.js/dist/placeholders.min.js',
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
-					/* disabled until autocomplete groupBy is fixed by the author
-						see https://github.com/devbridge/jQuery-Autocomplete/pull/387
+					/* disabled until autocomplete formatGroup is fixed to pass on the index too
 					'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
-					 */
-
+					*/
 					/**
 					 * copy needed parts of jquery
 					 */

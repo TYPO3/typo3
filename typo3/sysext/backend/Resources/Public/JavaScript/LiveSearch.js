@@ -23,7 +23,6 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
 	var formSelector = '.t3js-topbar-navigation-search';
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
-	var category = '';
 
 	$(function() {
 		$(searchFieldSelector).autocomplete({
@@ -52,13 +51,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 					})
 				};
 			},
-			// Format group is currently modified inside autocomplete to be allowed to be configurable
-			formatGroup: function(suggestion, value, i) {
-				var currentCategory = suggestion.data['typeLabel'];
-				if (category === currentCategory) {
-					return '';
-				}
-				category = currentCategory;
+			formatGroup: function(suggestion, category, i) {
 				var html = '';
 				// add a divider if it's not the first group
 				if (i > 0) {
@@ -67,7 +60,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 				return html + '<div class="dropdown-header">' + category + '</div>';
 			},
 			// Rendering of each item
-			formatResult: function(suggestion, value) {
+			formatResult: function(suggestion, value, i) {
 				return '<a class="dropdown-list-link" href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">' +
 						suggestion.data.iconHTML + ' ' + suggestion.data.title +
 					'</a>';
@@ -94,7 +87,7 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 			evt.preventDefault();
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 		});
-		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
+		$('.' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 		});
