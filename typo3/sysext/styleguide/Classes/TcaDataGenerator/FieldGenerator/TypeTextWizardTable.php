@@ -29,13 +29,7 @@ class TypeTextWizardTable extends AbstractFieldGenerator implements FieldGenerat
         'fieldConfig' => [
             'config' => [
                 'type' => 'text',
-                'wizards' => [
-                    'table' => [
-                        'module' => [
-                            'name' => 'wizard_table'
-                        ],
-                    ],
-                ],
+                'renderType' => 'textTable',
             ],
         ],
     ];

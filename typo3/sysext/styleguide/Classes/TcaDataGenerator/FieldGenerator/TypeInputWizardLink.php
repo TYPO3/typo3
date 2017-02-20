@@ -29,13 +29,7 @@ class TypeInputWizardLink extends AbstractFieldGenerator implements FieldGenerat
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
-                'wizards' => [
-                    'link' => [
-                        'module' => [
-                            'name' => 'wizard_link',
-                        ],
-                    ],
-                ],
+                'renderType' => 'inputLink',
             ],
         ],
     ];

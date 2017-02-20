@@ -29,11 +29,7 @@ class TypeInputWizardSelect extends AbstractFieldGenerator implements FieldGener
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
-                'wizards' => [
-                    'season_picker' => [
-                        'type' => 'select',
-                    ],
-                ],
+                'valuePicker' => [],
             ],
         ],
     ];
@@ -47,7 +43,7 @@ class TypeInputWizardSelect extends AbstractFieldGenerator implements FieldGener
     public function generate(array $data): string
     {
         // Get second value from "items" of wizard
-        $values = $data['fieldConfig']['config']['wizards']['season_picker']['items'];
+        $values = $data['fieldConfig']['config']['valuePicker']['items'];
         array_shift($values);
         $keyValue = array_shift($values);
         return $keyValue[1];

@@ -29,13 +29,7 @@ class TypeInputWizardColorPicker extends AbstractFieldGenerator implements Field
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
-                'wizards' => [
-                    'colorpicker' => [
-                        'module' => [
-                            'name' => 'wizard_colorpicker',
-                        ],
-                    ],
-                ],
+                'renderType' => 'colorpicker',
             ],
         ],
     ];

@@ -29,11 +29,7 @@ class TypeTextWizardSelect extends AbstractFieldGenerator implements FieldGenera
         'fieldConfig' => [
             'config' => [
                 'type' => 'text',
-                'wizards' => [
-                    'select' => [
-                        'type' => 'select',
-                    ],
-                ],
+                'valuePicker' => [],
             ],
         ],
     ];
@@ -47,7 +43,7 @@ class TypeTextWizardSelect extends AbstractFieldGenerator implements FieldGenera
     public function generate(array $data): string
     {
         // Get second value from "items" of wizard
-        $values = $data['fieldConfig']['config']['wizards']['select']['items'];
+        $values = $data['fieldConfig']['config']['valuePicker']['items'];
         array_shift($values);
         $keyValue = array_shift($values);
         return $keyValue[1];
