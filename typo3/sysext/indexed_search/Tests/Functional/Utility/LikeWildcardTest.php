@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -35,6 +36,11 @@ class LikeWildcardTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $subject = LikeWildcard::cast($wildcard);
+        // MySQL has support for backslash escape sequences, the expected results needs to take
+        // the additional quoting into account.
+        if ($connection->getDatabasePlatform() instanceof MySqlPlatform) {
+            $expected = addcslashes($expected, '\\');
+        }
         $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
         $this->assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
     }
@@ -86,21 +92,21 @@ class LikeWildcardTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
                 'body',
                 'search_string',
                 LikeWildcard::LEFT,
-                "LIKE '%search\\\\_string'"
+                "LIKE '%search\\_string'"
             ],
             'percent placeholder and right wildcard mode' => [
                 'tt_content',
                 'body',
                 'search%string',
                 LikeWildcard::RIGHT,
-                "LIKE 'search\\\\%string%'"
+                "LIKE 'search\\%string%'"
             ],
             'percent and underscore placeholder and both wildcards mode' => [
                 'tt_content',
                 'body',
                 '_search%string_',
                 LikeWildcard::RIGHT,
-                "LIKE '\\\\_search\\\\%string\\\\_%'"
+                "LIKE '\\_search\\%string\\_%'"
             ],
         ];
     }
