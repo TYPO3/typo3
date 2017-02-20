@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -30,6 +31,11 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     protected $subject;
 
+    /**
+     * @var string
+     */
+    protected $quoteChar;
+
     protected function setUp()
     {
         parent::setUp();
@@ -45,6 +51,10 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
 
         $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->quoteChar = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tt_content')
+            ->getDatabasePlatform()
+            ->getIdentifierQuoteCharacter();
     }
 
     /**
@@ -181,6 +191,10 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
 
         $result = $this->subject->getQuery($table, $conf, true);
         foreach ($expected as $field => $value) {
+            // Replace the MySQL backtick quote character with the actual quote character for the DBMS
+            if ($field === 'SELECT') {
+                $value = str_replace('`', $this->quoteChar, $value);
+            }
             $this->assertEquals($value, $result[$field]);
         }
     }
@@ -328,6 +342,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         $contentObjectRenderer->expects($this->any())
             ->method('checkPidArray')
             ->willReturn(explode(',', $configuration['pidInList']));
+
+        // Replace the MySQL backtick quote character with the actual quote character for the DBMS
+        $expectedResult = str_replace('`', $this->quoteChar, $expectedResult);
 
         // Embed the enable fields string into the expected result as the database
         // connection is still unconfigured when the data provider is being run.

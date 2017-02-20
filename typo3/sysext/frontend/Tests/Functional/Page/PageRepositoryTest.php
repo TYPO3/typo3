@@ -386,10 +386,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $pageRec = $this->pageRepo->getPage(11);
 
-        $this->assertSame(11, $pageRec['uid']);
-        $this->assertSame(11, $pageRec['t3ver_oid']);
-        $this->assertSame(987654321, $pageRec['t3ver_wsid']);
-        $this->assertSame(-1, $pageRec['t3ver_state']);
+        $this->assertEquals(11, $pageRec['uid']);
+        $this->assertEquals(11, $pageRec['t3ver_oid']);
+        $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
+        $this->assertEquals(-1, $pageRec['t3ver_state']);
         $this->assertSame('First draft version', $pageRec['t3ver_label']);
     }
 
@@ -408,10 +408,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $pageRec = $this->pageRepo->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
 
-        $this->assertSame(12, $pageRec['uid']);
-        $this->assertSame(11, $pageRec['t3ver_oid']);
-        $this->assertSame(987654321, $pageRec['t3ver_wsid']);
-        $this->assertSame(-1, $pageRec['t3ver_state']);
+        $this->assertEquals(12, $pageRec['uid']);
+        $this->assertEquals(11, $pageRec['t3ver_oid']);
+        $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
+        $this->assertEquals(-1, $pageRec['t3ver_state']);
         $this->assertSame('First draft version', $pageRec['t3ver_label']);
     }
 
