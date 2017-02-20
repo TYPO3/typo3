@@ -68,13 +68,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     };
 
     ContextMenuActions.deleteFile = function (table, uid) {
-        top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.FileCommit.moduleUrl + '&file[delete][0][data]=' + top.rawurlencode(uid) + '&redirect=' + ContextMenuActions.getReturnUrl()
-        );
-    };
-
-    ContextMenuActions.deleteFile = function (table, uid) {
-        var title = $anchorElement.data('title');
+        var $anchorElement = $(this);
         var performDelete = function () {
             top.TYPO3.Backend.ContentContainer.setUrl(
                 top.TYPO3.settings.FileCommit.moduleUrl + '&file[delete][0][data]=' + top.rawurlencode(uid) + '&redirect=' + ContextMenuActions.getReturnUrl()
@@ -85,7 +79,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
             return;
         }
 
-        var $anchorElement = $(this);
         var $modal = Modal.confirm(
             $anchorElement.data('title'),
             $anchorElement.data('message'),
