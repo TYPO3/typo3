@@ -29,9 +29,7 @@ define([
 	var dropdownToggle = '.t3js-toolbar-search-dropdowntoggle';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
 	var formSelector = '.t3js-topbar-navigation-search';
-	var autocompleteContainer = '.t3js-toolbar-search-autocomplete';
 	var url = TYPO3.settings.ajaxUrls['livesearch'];
-	var category = '';
 
 	Viewport.Topbar.Toolbar.registerEvent(function() {
 		$(searchFieldSelector).autocomplete({
@@ -42,7 +40,7 @@ define([
 			minChars: 2,
 			width: '100%',
 			groupBy: 'typeLabel',
-			containerClass: 'autocomplete-suggestions ' + autocompleteContainer.substr(1, autocompleteContainer.length),
+			containerClass: toolbarItem.substr(1, toolbarItem.length),
 			appendTo: containerSelector + ' .dropdown-menu',
 			forceFixPosition: false,
 			preserveInput: true,
@@ -61,13 +59,7 @@ define([
 					})
 				};
 			},
-			// Format group is currently modified inside autocomplete to be allowed to be configurable
-			formatGroup: function(suggestion, value, i) {
-				var currentCategory = suggestion.data['typeLabel'];
-				if (category === currentCategory) {
-					return '';
-				}
-				category = currentCategory;
+			formatGroup: function(suggestion, category, i) {
 				var html = '';
 				// add a divider if it's not the first group
 				if (i > 0) {
@@ -76,7 +68,7 @@ define([
 				return html + '<h3 class="dropdown-headline">' + category + '</h3>';
 			},
 			// Rendering of each item
-			formatResult: function(suggestion, value) {
+			formatResult: function(suggestion, value, i) {
 				return ''
 					+ '<div class="dropdown-table">'
 					+ '<div class="dropdown-table-row">'
@@ -121,7 +113,7 @@ define([
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 			$(searchFieldSelector).val('').trigger('change');
 		});
-		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
+		$('.' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 			$(searchFieldSelector).val('').trigger('change');

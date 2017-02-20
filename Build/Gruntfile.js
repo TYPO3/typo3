@@ -285,9 +285,8 @@ module.exports = function(grunt) {
 						see https://github.com/claviska/jquery-minicolors/issues/206
 					'jquery.minicolors.js': 'jquery-minicolors/jquery.minicolors.min.js',
 					 */
-					/* disabled until autocomplete groupBy is fixed by the author
-						see https://github.com/devbridge/jQuery-Autocomplete/pull/387
-					'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
+					/* disabled until autocomplete formatGroup is fixed to pass on the index too
+					 'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
 					 */
 					'd3/d3.js': 'd3/d3.min.js',
 					/**
