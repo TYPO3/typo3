@@ -887,8 +887,8 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
             $relationTableName = $columnMap->getRelationTableName();
             $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($sql, $relationTableName, $fullPropertyPath . '_mm');
             $sql['unions'][$relationTableAlias] = 'LEFT JOIN ' . $relationTableName . ' AS ' . $relationTableAlias . ' ON ' . $tableName . '.uid=' . $relationTableAlias . '.' . $columnMap->getParentKeyFieldName();
+            $sql['unions'][$relationTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableAlias, $realTableName);
             $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $relationTableAlias . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableAlias . '.uid';
-            $sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableAlias, $realTableName);
         } else {
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
         }
