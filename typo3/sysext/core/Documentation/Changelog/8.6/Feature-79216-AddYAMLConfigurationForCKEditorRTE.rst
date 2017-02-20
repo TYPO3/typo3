@@ -24,7 +24,7 @@ PageTSconfig on a per-field/type level:
 .. code-block:: typoscript
 
    RTE.default.preset = minimal
-   RTE.tt_content.types.textmedia.bodytext.preset = full
+   RTE.config.tt_content.bodytext.types.textmedia.preset = full
 
 
 The PageTSconfig allows to use the minimal configuration everywhere, but to use the full
