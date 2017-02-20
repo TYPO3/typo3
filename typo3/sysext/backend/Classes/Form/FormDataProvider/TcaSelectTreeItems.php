@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
@@ -91,15 +93,26 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 // "static" and "dynamic" is separated since the tree code only copes with "real" existing foreign nodes,
                 // so this "static" stuff allows defining tree items that don't really exist in the tree.
                 $itemsFromTca = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
+
                 // List of additional items defined by page ts config "addItems"
                 $itemsFromPageTsConfig = $this->addItemsFromPageTsConfig($result, $fieldName, []);
-                if (!empty($itemsFromTca) || !empty($itemsFromPageTsConfig)) {
+                // Resolve pageTsConfig item icons to markup
+                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+                $finalPageTsConfigItems = [];
+                foreach ($itemsFromPageTsConfig as $item) {
+                    if ($item[2] !== null) {
+                        $item[2] = $iconFactory->getIcon($item[2], Icon::SIZE_SMALL)->getMarkup('inline');
+                    }
+                    $finalPageTsConfigItems[] = $item;
+                }
+
+                if (!empty($itemsFromTca) || !empty($finalPageTsConfigItems)) {
                     // First apply "keepItems" to $itemsFromTca, this will restrict the tca item list to only
                     // those items that are defined in page ts "keepItems" if given
                     $itemsFromTca = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $itemsFromTca);
                     // Then, merge the items from page ts "addItems" into item list, since "addItems" should
                     // add additional items even if they are not in the "keepItems" list
-                    $staticItems = array_merge($itemsFromTca, $itemsFromPageTsConfig);
+                    $staticItems = array_merge($itemsFromTca, $finalPageTsConfigItems);
                     // Now apply page ts config "removeItems", so this is *after* addItems, so "removeItems" could
                     // possibly remove items again that were added via "addItems"
                     $staticItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $staticItems);
