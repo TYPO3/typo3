@@ -41,6 +41,11 @@ class ConfigurationManager
     protected $defaultConfigurationFile = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
 
     /**
+     * @var string Path to description file for TYPO3_CONF_VARS, relative to PATH_site
+     */
+    protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.php';
+
+    /**
      * @var string Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
      */
     protected $localConfigurationFile = 'typo3conf/LocalConfiguration.php';
@@ -98,6 +103,18 @@ class ConfigurationManager
     public function getDefaultConfigurationFileLocation()
     {
         return PATH_site . $this->defaultConfigurationFile;
+    }
+
+    /**
+     * Get the file location of the default configuration description file,
+     * currently the path and filename.
+     *
+     * @return string
+     * @access private
+     */
+    public function getDefaultConfigurationDescriptionFileLocation()
+    {
+        return PATH_site . $this->defaultConfigurationDescriptionFile;
     }
 
     /**

@@ -199,38 +199,12 @@ class AllConfiguration extends Action\AbstractAction
     }
 
     /**
-     * Make an array of the comments in the EXT:core/Configuration/DefaultConfiguration.php file
-     *
      * @return array
      */
-    protected function getDefaultConfigArrayComments()
+    protected function getDefaultConfigArrayComments() : array
     {
         /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $string = file_get_contents($configurationManager->getDefaultConfigurationFileLocation());
-
-        $commentArray = [];
-        $lines = explode(LF, $string);
-        $inConfiguration = false;
-        $mainKey = '';
-        foreach ($lines as $lc) {
-            $lc = trim($lc);
-            if ($inConfiguration) {
-                if ($lc === '];') {
-                    break;
-                }
-                if (preg_match('#["\']([\\w_-]*)["\']\\s*=>\\s*(?:(\\[).*|(?:(?!//).)*//\\s*(.*))#i', $lc, $reg)) {
-                    if ($reg[2] === '[' && $reg[1] === strtoupper($reg[1])) {
-                        $mainKey = $reg[1];
-                    } elseif ($mainKey) {
-                        $commentArray[$mainKey][$reg[1]] = $reg[3];
-                    }
-                }
-            }
-            if ($lc === 'return [') {
-                $inConfiguration = true;
-            }
-        }
-        return $commentArray;
+        return require $configurationManager->getDefaultConfigurationDescriptionFileLocation();
     }
 }
