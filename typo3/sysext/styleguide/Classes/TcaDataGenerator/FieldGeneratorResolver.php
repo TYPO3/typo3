@@ -56,6 +56,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputWizardLink::class,
         FieldGenerator\TypeInputWizardSelect::class,
         FieldGenerator\TypeInputDynamicTextWithRecordUid::class,
+        FieldGenerator\TypeInputForceL18nParent::class,
         // General type=input generator
         FieldGenerator\TypeInput::class,
 
