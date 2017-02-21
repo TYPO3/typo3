@@ -52,6 +52,11 @@ class DataMapProcessor
     protected $dataMap = [];
 
     /**
+     * @var array
+     */
+    protected $sanitizationMap = [];
+
+    /**
      * @var BackendUserAuthentication
      */
     protected $backendUser;
@@ -221,10 +226,17 @@ class DataMapProcessor
             $this->getFieldNamesForItemScope($item, DataMapItem::SCOPE_PARENT, !$item->isNew()),
             $this->getFieldNamesForItemScope($item, DataMapItem::SCOPE_SOURCE, !$item->isNew())
         );
+
+        $fieldNameMap = array_combine($fieldNames, $fieldNames);
+        // separate fields, that are submitted in data-map, but not defined as custom
+        $this->sanitizationMap[$item->getTableName()][$item->getId()] = array_intersect_key(
+            $this->dataMap[$item->getTableName()][$item->getId()],
+            $fieldNameMap
+        );
         // remove fields, that are submitted in data-map, but not defined as custom
         $this->dataMap[$item->getTableName()][$item->getId()] = array_diff_key(
             $this->dataMap[$item->getTableName()][$item->getId()],
-            array_combine($fieldNames, $fieldNames)
+            $fieldNameMap
         );
     }
 
@@ -487,6 +499,22 @@ class DataMapProcessor
                 ',',
                 array_values($desiredIdMap)
             );
+            return;
+        }
+        // In case only missing elements shall be created, re-use previously sanitized
+        // values IF child table cannot be translated, the relation parent item is new
+        // and the count of missing relations equals the count of previously sanitized
+        // relations. This is caused during copy processes, when the child relations
+        // already have been cloned in DataHandler::copyRecord_procBasedOnFieldType()
+        // without the possibility to resolve the initial connections at this point.
+        // Otherwise child relations would superfluously be duplicated again here.
+        // @todo Invalid manually injected child relations cannot be determined here
+        $sanitizedValue = $this->sanitizationMap[$item->getTableName()][$item->getId()][$fieldName] ?? null;
+        if (!empty($missingAncestorIds) && $item->isNew()
+            && $sanitizedValue !== null && !$isTranslatable
+            && count(GeneralUtility::trimExplode(',', $sanitizedValue)) === count($missingAncestorIds)
+        ) {
+            $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = $sanitizedValue;
             return;
         }
 
@@ -753,7 +781,7 @@ class DataMapProcessor
         // fetch by origin dependency ("copied from")
         } elseif (!empty($fieldNames['origin'])) {
             $predicates = [
-                $queryBuilder->expr()->eq(
+                $queryBuilder->expr()->in(
                     $fieldNames['origin'],
                     $idsParameter
                 )

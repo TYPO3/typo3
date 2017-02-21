@@ -380,12 +380,42 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/localizeNCopyPage.csv
+     */
+    public function localizeAndCopyPage()
+    {
+        parent::localizePage();
+        parent::copyPage();
+        $this->assertAssertionDataSet('localizeNCopyPage');
+
+        $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'], self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizePageWSynchronization.csv
      */
     public function localizePageWithLanguageSynchronization()
     {
         parent::localizePageWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizePageWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizeNCopyPageWSynchronization.csv
+     */
+    public function localizeAndCopyPageWithLanguageSynchronization()
+    {
+        parent::localizePageWithLanguageSynchronization();
+        parent::copyPage();
+        $this->assertAssertionDataSet('localizeNCopyPageWSynchronization');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()

@@ -606,4 +606,20 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
             ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
     }
+
+    /**
+     * @test
+     * @see DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv
+     */
+    public function localizePageAddMonoglotHotelChildAndCopyPageWithLanguageSynchronization()
+    {
+        parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
+        parent::copyPage();
+        $this->assertAssertionDataSet('localizePageAddMonoglotHotelChildNCopyPageWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #0', 'Hotel #007'));
+    }
 }
