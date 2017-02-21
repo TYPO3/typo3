@@ -148,10 +148,10 @@ class InputTextElement extends AbstractFormElement
             $fieldChangeFunc = $parameterArray['fieldChangeFunc'];
             if ($mode === 'append') {
                 $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
-                    . '.value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
+                    . '.value+=\'\'+this.options[this.selectedIndex].value';
             } elseif ($mode === 'prepend') {
                 $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
-                    . '.value+=\'\'+this.options[this.selectedIndex].value';
+                    . '.value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
             } else {
                 $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
                     . '.value=this.options[this.selectedIndex].value';
