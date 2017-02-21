@@ -2107,8 +2107,8 @@ CREATE TABLE tx_styleguide_inline_parentnosoftdelete (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

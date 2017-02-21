@@ -9,8 +9,8 @@ return [
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'versioningWS' => true,
         'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l10n_parent',
-        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'transOrigPointerField' => 'l18n_parent',
+        'transOrigDiffSourceField' => 'l18n_diffsource',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -36,7 +36,7 @@ return [
                 ],
             ],
         ],
-        'l10n_parent' => [
+        'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
             'label' => 'l18n_parent',
@@ -50,7 +50,7 @@ return [
                 'foreign_table_where' => 'AND tx_styleguide_inline_parentnosoftdelete.pid=###CURRENT_PID### AND tx_styleguide_inline_parentnosoftdelete.sys_language_uid IN (-1,0)',
             ],
         ],
-        'l10n_diffsource' => [
+        'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
             ],
