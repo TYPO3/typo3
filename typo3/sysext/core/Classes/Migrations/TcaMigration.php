@@ -1745,6 +1745,9 @@ class TcaMigration
                 foreach ($tableDefinition['types'] as $typeName => &$typeArray) {
                     if (isset($typeArray['columnsOverrides']) && is_array($typeArray['columnsOverrides'])) {
                         foreach ($typeArray['columnsOverrides'] as $fieldName => &$overrideConfig) {
+                            if (!isset($overrideConfig['defaultExtras'])) {
+                                continue;
+                            }
                             $defaultExtrasArray = GeneralUtility::trimExplode(':', $overrideConfig['defaultExtras'], true);
                             foreach ($defaultExtrasArray as $defaultExtrasSetting) {
                                 if ($defaultExtrasSetting === 'rte_only') {
