@@ -14,6 +14,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * A repository for blog posts
  *
@@ -147,5 +149,16 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $query->contains('categories', $categoryUid)
             )
             ->execute();
+    }
+
+    public function findAllSortedByCategory(array $uids)
+    {
+        $q = $this->createQuery();
+        $q->matching($q->in('uid', $uids));
+        $q->setOrderings([
+            'categories.title' => QueryInterface::ORDER_ASCENDING,
+            'uid' => QueryInterface::ORDER_ASCENDING,
+        ]);
+        return $q->execute();
     }
 }

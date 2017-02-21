@@ -954,9 +954,12 @@ class Typo3DbQueryParser
             $relationTableName = $columnMap->getRelationTableName();
             $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
 
-            $joinConditionExpression = $this->queryBuilder->expr()->eq(
-                $tableName . '.uid',
-                $relationTableAlias . '.' . $columnMap->getParentKeyFieldName()
+            $joinConditionExpression = $this->queryBuilder->expr()->andX(
+                $this->queryBuilder->expr()->eq(
+                    $tableName . '.uid',
+                    $relationTableAlias . '.' . $columnMap->getParentKeyFieldName()
+                ),
+                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $relationTableAlias, $realTableName)
             );
             $this->queryBuilder->leftJoin($tableName, $relationTableName, $relationTableAlias, $joinConditionExpression);
             $joinConditionExpression = $this->queryBuilder->expr()->eq(
@@ -964,9 +967,6 @@ class Typo3DbQueryParser
                 $childTableAlias . '.uid'
             );
             $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
-            $this->queryBuilder->andWhere(
-                $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $relationTableAlias, $realTableName)
-            );
             $this->unionTableAliasCache[] = $childTableAlias;
             $this->queryBuilder->addGroupBy($this->tableName . '.uid');
         } else {

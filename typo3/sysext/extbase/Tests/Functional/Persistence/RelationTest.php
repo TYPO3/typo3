@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1008,5 +1009,43 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
         $blogRepository->update($this->blog);
         $this->persistentManager->persistAll();
+    }
+
+    public function ensureCorrectPostOrderingByCategoryTitleDataProvider()
+    {
+        return [
+            'Post with no category and post with category' => [
+                [2, 3],
+                [3, 2]
+            ],
+            'Posts with category and Post with category and bogus category' => [
+                [2, 1],
+                [1, 2]
+            ],
+            'Posts bogus category and post with category' => [
+                [5, 2],
+                [5, 2]
+            ],
+        ];
+    }
+
+    /**
+     * This test covers the case when data is ordered by criteria that is MM related with matchFields involved
+     * on the relation table. (post <-> sys_category_mm <-> sys_category)
+     *
+     * @test
+     * @dataProvider ensureCorrectPostOrderingByCategoryTitleDataProvider
+     */
+    public function ensureCorrectPostOrderingByCategoryTitle(array $uids, array $expected)
+    {
+        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        $posts = $postRepository->findAllSortedByCategory($uids)->toArray();
+        $result = [];
+        /** @var Post $post */
+        foreach ($posts as $post) {
+            $result[] = $post->getUid();
+        }
+        $this->assertSame($expected, $result);
     }
 }
