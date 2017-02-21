@@ -403,12 +403,12 @@ class PageGenerator
                             $cssPageStyle = $tsfe->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
                         }
                         $cssPageStyle = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
-                        self::addCssToPageRenderer($cssPageStyle, true);
+                        self::addCssToPageRenderer($cssPageStyle, true, 'InlinePageCss');
                     }
                 }
             }
             if (!empty($stylesFromPlugins)) {
-                self::addCssToPageRenderer($stylesFromPlugins);
+                self::addCssToPageRenderer($stylesFromPlugins, false, 'InlineDefaultCss');
             }
         }
         if ($tsfe->pSetup['stylesheet']) {
