@@ -1228,9 +1228,10 @@ function jumpToUrl(URL) {
         GeneralUtility::logDeprecatedFunction();
         if (
                 ExtensionManagementUtility::isLoaded('version') &&
+                ExtensionManagementUtility::isLoaded('compatibility7') &&
                 !ExtensionManagementUtility::isLoaded('workspaces')
         ) {
-            $versionGuiObj = GeneralUtility::makeInstance(\TYPO3\CMS\Version\View\VersionView::class);
+            $versionGuiObj = GeneralUtility::makeInstance(\TYPO3\CMS\Compatibility7\View\VersionView::class);
             return $versionGuiObj->getVersionSelector($id, $noAction);
         }
     }

@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/Version/ContextMenuActions
+ * Module: TYPO3/CMS/Compatibility7/ContextMenuActions
  *
  * JavaScript to handle Version actions from context menu
  * @exports TYPO3/CMS/Version/ContextMenuActions
@@ -21,7 +21,7 @@ define(function () {
     'use strict';
 
     /**
-     * @exports TYPO3/CMS/Version/ContextMenuActions
+     * @exports TYPO3/CMS/Compatibility7/ContextMenuActions
      */
     var ContextMenuActions = {};
 

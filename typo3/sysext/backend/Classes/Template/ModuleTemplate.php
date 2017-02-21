@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Template;
 
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Compatibility7\View\VersionView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -27,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Version\View\VersionView;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
@@ -585,10 +585,12 @@ class ModuleTemplate
      *
      * @return string
      * @internal
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function getVersionSelector($id, $noAction = false)
     {
         if (ExtensionManagementUtility::isLoaded('version')
+            && ExtensionManagementUtility::isLoaded('compatibility7')
             && !ExtensionManagementUtility::isLoaded('workspaces')
         ) {
             /**

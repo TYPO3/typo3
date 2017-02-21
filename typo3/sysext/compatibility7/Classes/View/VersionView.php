@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\View;
+namespace TYPO3\CMS\Compatibility7\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -55,9 +55,9 @@ class VersionView
                 foreach ($versions as $vRow) {
                     if ($vRow['uid'] == $onlineId) {
                         // Live version
-                        $label = '[' . htmlspecialchars($lang->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.live')) . ']';
+                        $label = '[' . htmlspecialchars($lang->sL('LLL:EXT:compatibility7/Resources/Private/Language/locallang_version.xlf:versionSelect.live')) . ']';
                     } else {
-                        $label = $vRow['t3ver_label'] . ' (' . htmlspecialchars($lang->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionId')) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . htmlspecialchars($lang->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:workspaceId')) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
+                        $label = $vRow['t3ver_label'] . ' (' . htmlspecialchars($lang->sL('LLL:EXT:compatibility7/Resources/Private/Language/locallang_version.xlf:versionId')) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . htmlspecialchars($lang->sL('LLL:EXT:compatibility7/Resources/Private/Language/locallang_version.xlf:workspaceId')) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
                     }
                     $opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(['id' => $vRow['uid']])) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
                 }
@@ -65,7 +65,7 @@ class VersionView
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 // Add management link:
                 $management = '
-					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', ['table' => 'pages', 'uid' => $onlineId])) . '">
+					<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', ['table' => 'pages', 'uid' => $onlineId])) . '">
 						' . $iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '
 						' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:ver.mgm')) . '
 					</a>';
@@ -92,7 +92,7 @@ class VersionView
 					-->
 					<div id="typo3-version-selector" class="form-inline form-inline-spaced">
 						<div class="form-group">
-							<label for="version-selector">' . htmlspecialchars($lang->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label')) . '</label>
+							<label for="version-selector">' . htmlspecialchars($lang->sL('LLL:EXT:compatibility7/Resources/Private/Language/locallang_version.xlf:versionSelect.label')) . '</label>
 							<select id="version-selector" class="form-control" onchange="' . htmlspecialchars($onChange) . '">
 								' . implode('', $opt) . '
 							</select>

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Version\ContextMenu;
+namespace TYPO3\CMS\Compatibility7\ContextMenu;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -29,7 +29,7 @@ class ItemProvider extends AbstractProvider
     protected $itemsConfiguration = [
         'versioning' => [
             'type' => 'item',
-            'label' => 'LLL:EXT:version/Resources/Private/Language/locallang.xlf:title',
+            'label' => 'LLL:EXT:compatibility7/Resources/Private/Language/locallang_version.xlf:title',
             'iconIdentifier' => 'actions-version-page-open',
             'callbackAction' => 'openVersionModule'
         ]
@@ -64,7 +64,8 @@ class ItemProvider extends AbstractProvider
         $url = BackendUtility::getModuleUrl('web_txversionM1', ['table' => $this->table, 'uid' => $this->identifier]);
         return [
             'data-action-url' => htmlspecialchars($url),
-            'data-callback-module' => 'TYPO3/CMS/Version/ContextMenuActions'];
+            'data-callback-module' => 'TYPO3/CMS/Compatibility7/ContextMenuActions'
+        ];
     }
 
     /**

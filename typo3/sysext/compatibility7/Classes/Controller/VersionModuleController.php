@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Controller;
+namespace TYPO3\CMS\Compatibility7\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -165,7 +165,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
-        $this->getLanguageService()->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:compatibility7/Resources/Private/Language/locallang_version.xlf');
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
@@ -199,7 +199,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->REQUEST_URI = str_replace('&sendToReview=1', '', GeneralUtility::getIndpEnv('REQUEST_URI'));
         // Draw the header.
         $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:version/Resources/Private/Templates/version.html');
+        $this->doc->setModuleTemplate('EXT:compatibility7/Resources/Private/Templates/Version.html');
 
         // Setting up the context sensitive menu:
         $this->getPageRenderer()->loadJquery();

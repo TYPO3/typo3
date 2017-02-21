@@ -19,6 +19,10 @@ been marked as deprecated:
 * `getTabMenu`
 * `getVersionSelector`
 
+The following method from `TYPO3\CMS\Backend\Template\ModuleTemplate` have
+been marked as deprecated:
+
+* `getVersionSelector`
 
 Impact
 ======
@@ -36,5 +40,7 @@ Migration
 =========
 
 Some replacements are available in the `\TYPO3\CMS\Backend\Template\ModuleTemplate` class.
+
+Some other functionality is moved to separate classes when explicitly calling the version selector.
 
 .. index:: PHP-API, Backend
