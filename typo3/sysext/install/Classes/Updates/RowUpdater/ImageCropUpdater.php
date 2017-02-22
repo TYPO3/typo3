@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Install\Service\LoadTcaService;
 
 /**
  * Migrate values for database records having columns
@@ -30,34 +29,12 @@ use TYPO3\CMS\Install\Service\LoadTcaService;
 class ImageCropUpdater implements RowUpdaterInterface
 {
     /**
-     * @var array Full, migrated TCA as prepared by upgrade wizard controller
-     */
-    protected $migratedTca;
-
-    /**
-     * @var array Full, but NOT migrated TCA
-     */
-    protected $notMigratedTca;
-
-    /**
      * List of tables with information about to migrate fields.
      * Created during hasPotentialUpdateForTable(), used in updateTableRow()
      *
      * @var array
      */
     protected $payload = [];
-
-    /**
-     * Prepare non-migrated TCA to be used in 'hasPotentialUpdateForTable' step
-     */
-    public function __construct()
-    {
-        $this->migratedTca = $GLOBALS['TCA'];
-        $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
-        $loadTcaService->loadExtensionTablesWithoutMigration();
-        $this->notMigratedTca = $GLOBALS['TCA'];
-        $GLOBALS['TCA'] = $this->migratedTca;
-    }
 
     /**
      * Get title
@@ -77,14 +54,12 @@ class ImageCropUpdater implements RowUpdaterInterface
      */
     public function hasPotentialUpdateForTable(string $tableName): bool
     {
-        $GLOBALS['TCA'] = $this->notMigratedTca;
         $result = false;
         $payload = $this->getPayloadForTable($tableName);
         if (count($payload) !== 0) {
             $this->payload[$tableName] = $payload;
             $result = true;
         }
-        $GLOBALS['TCA'] = $this->migratedTca;
         return $result;
     }
 
@@ -217,7 +192,7 @@ class ImageCropUpdater implements RowUpdaterInterface
         }
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
             try {
-                $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+                $file = ResourceFactory::getInstance()->getFileObject((int)$fileUid);
             } catch (FileDoesNotExistException $e) {
             } catch (\InvalidArgumentException $e) {
             }
