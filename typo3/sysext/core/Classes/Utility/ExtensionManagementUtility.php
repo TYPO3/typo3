@@ -831,9 +831,11 @@ class ExtensionManagementUtility
      * @param string $position Passed to \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule, see reference there
      * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
      * @throws \InvalidArgumentException
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use addModule instead for a regular module, as ExtJS usage is discouraged,
      */
     public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = [])
     {
+        GeneralUtility::logDeprecatedFunction();
         if (empty($extensionName)) {
             throw new \InvalidArgumentException('The extension name must not be empty', 1325938973);
         }
@@ -969,6 +971,7 @@ class ExtensionManagementUtility
      * @param string $moduleName Optional: must be <mainmodule> or <mainmodule>_<submodule>
      * @param string $accessLevel Optional: can be 'admin' or 'user,group'
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function registerExtDirectComponent($endpointName, $callbackClass, $moduleName = null, $accessLevel = null)
     {
@@ -1096,7 +1099,7 @@ class ExtensionManagementUtility
      * @param string $componentId
      * @param string $extensionKey
      * @throws \RuntimeException
-     *@return void
+     * @return void
      */
     public static function addNavigationComponent($module, $componentId, $extensionKey = null)
     {
