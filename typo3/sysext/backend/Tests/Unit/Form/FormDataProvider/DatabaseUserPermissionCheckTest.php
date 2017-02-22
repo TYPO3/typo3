@@ -151,6 +151,32 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoDoktypePermissions()
+    {
+        $input = [
+            'tableName' => 'pages',
+            'command' => 'edit',
+            'vanillaUid' => 123,
+            'databaseRow' => [
+                'uid' => 123,
+                'pid' => 321,
+                'doktype' => 1,
+            ],
+        ];
+        $this->beUserProphecy->isAdmin()->willReturn(false);
+        $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->check('pagetypes_select', $input['databaseRow']['doktype'])->willReturn(false);
+        $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
+        $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::ALL);
+
+        $this->setExpectedException(AccessDeniedPageEditException::class, 1437679336);
+
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
     public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions()
     {
         $input = [
@@ -159,11 +185,13 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             'vanillaUid' => 123,
             'databaseRow' => [
                 'uid' => 123,
-                'pid' => 321
+                'pid' => 321,
+                'doktype' => 1,
             ],
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
+        $this->beUserProphecy->check('pagetypes_select', $input['databaseRow']['doktype'])->willReturn(true);
         $this->beUserProphecy->calcPerms($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
