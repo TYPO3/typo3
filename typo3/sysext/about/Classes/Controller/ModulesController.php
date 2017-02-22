@@ -63,7 +63,7 @@ class ModulesController extends ActionController
         parent::initializeView($view);
         // Disable Path
         $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-        $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/EqualHeight');
+        $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/About/EqualHeight');
     }
 
     /**
@@ -90,12 +90,11 @@ class ModulesController extends ActionController
             } else {
                 $securityWarnings = '<p>' . implode('', $warnings) . '</p>';
             }
-            unset($warnings);
         }
 
         $this->view->assignMultiple(
             [
-                'TYPO3Version' => TYPO3_version,
+                'currentVersion' => TYPO3_version,
                 'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
                 'warningMessages' => $securityWarnings,
                 'warningTitle' => $this->languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.header'),

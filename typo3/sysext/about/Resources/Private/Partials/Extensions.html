@@ -2,17 +2,17 @@
 	<div class="panel panel-default">
 		<div class="panel-body panel-body-highlightlinks">
 			<h2 class="h3">
-				<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_about.xlf:extension_authors" />
+				<f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:extension_authors" />
 			</h2>
 			<p>
-				<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_about.xlf:extension_list_info" />
+				<f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:extension_list_info" />
 			</p>
 		</div>
 		<table class="table panel-table">
 			<thead>
 				<tr>
-					<th width="35%"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_about.xlf:extension" /></th>
-					<th><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_mod_help_about.xlf:extension_author" /></th>
+					<th width="60%"><f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:extension" /></th>
+					<th><f:translate key="LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:extension_author" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,11 +22,23 @@
 							{loadedExtension.title} ({loadedExtension.key})
 						</td>
 						<td>
-							<f:link.email
-								email="{loadedExtension.authorEmail}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
-							>
-								{loadedExtension.author}
-							</f:link.email>
+							<f:for each="{loadedExtension.authors}" as="extensionAuthor" iteration="i">
+								<f:if condition="{extensionAuthor.email}">
+									<f:then>
+										<f:link.email
+											email="{extensionAuthor.email}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
+										>
+											{extensionAuthor.name}
+										</f:link.email>
+									</f:then>
+									<f:else>
+										{extensionAuthor.name}
+									</f:else>
+								</f:if>
+								<f:if condition="{i.isLast} == false">
+									<br>
+								</f:if>
+							</f:for>
 						</td>
 					</tr>
 				</f:for>

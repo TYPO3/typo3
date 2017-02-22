@@ -913,6 +913,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $this->setComposerManifestValueIfEmpty($composerManifest, 'name', $packageKey);
         $this->setComposerManifestValueIfEmpty($composerManifest, 'type', 'typo3-cms-extension');
         $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['title']);
+        $this->setComposerManifestValueIfEmpty($composerManifest, 'authors', [['name' => $extensionManagerConfiguration['author'], 'email' => $extensionManagerConfiguration['author_email']]]);
         $composerManifest->version = $extensionManagerConfiguration['version'];
         if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {
             $composerManifest->require = new \stdClass();

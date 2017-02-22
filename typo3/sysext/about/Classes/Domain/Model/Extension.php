@@ -14,22 +14,19 @@ namespace TYPO3\CMS\About\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * An extension helper model to be used in ext:about context
  *
  * @entity
  */
-class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Extension extends AbstractEntity
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $author = '';
-
-    /**
-     * @var string
-     */
-    protected $authorEmail = '';
+    protected $authors = [];
 
     /**
      * @var string
@@ -42,35 +39,19 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $title = '';
 
     /**
-     * @param string $author
+     * @param array $authors
      */
-    public function setAuthor($author)
+    public function setAuthors($authors)
     {
-        $this->author = $author;
+        $this->authors = $authors;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getAuthor()
+    public function getAuthors()
     {
-        return $this->author;
-    }
-
-    /**
-     * @param string $authorEmail
-     */
-    public function setAuthorEmail($authorEmail)
-    {
-        $this->authorEmail = $authorEmail;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAuthorEmail()
-    {
-        return $this->authorEmail;
+        return $this->authors;
     }
 
     /**

@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/Backend/EqualHeight
+ * Module: TYPO3/CMS/About/EqualHeight
  * matchHeight makes the height of all selected elements exactly equal.
  */
 define(['jquery', 'matchheight'], function($) {

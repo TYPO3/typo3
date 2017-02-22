@@ -94,7 +94,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
                 'lang/locallang_mod_admintools.xlf' => 'lang/Resources/Private/Language/locallang_mod_admintools.xlf',
                 'lang/locallang_mod_file_list.xlf' => 'lang/Resources/Private/Language/locallang_mod_file_list.xlf',
                 'lang/locallang_mod_file.xlf' => 'lang/Resources/Private/Language/locallang_mod_file.xlf',
-                'lang/locallang_mod_help_about.xlf' => 'lang/Resources/Private/Language/locallang_mod_help_about.xlf',
+                'lang/locallang_mod_help_about.xlf' => 'about/Resources/Private/Language/Modules/about.xlf',
                 'lang/locallang_mod_help_cshmanual.xlf' => 'lang/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
                 'lang/locallang_mod_help.xlf' => 'lang/Resources/Private/Language/locallang_mod_help.xlf',
                 'lang/locallang_mod_system.xlf' => 'lang/Resources/Private/Language/locallang_mod_system.xlf',

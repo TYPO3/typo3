@@ -14,28 +14,30 @@ namespace TYPO3\CMS\About\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\About\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number and so on.
  */
-class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AboutController extends ActionController
 {
     /**
-     * @var
+     * @var ViewInterface
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
-     * @var \TYPO3\CMS\About\Domain\Repository\ExtensionRepository
+     * @var ExtensionRepository
      */
     protected $extensionRepository;
 
     /**
-     * @param \TYPO3\CMS\About\Domain\Repository\ExtensionRepository $extensionRepository
+     * @param ExtensionRepository $extensionRepository
      */
-    public function injectExtensionRepository(\TYPO3\CMS\About\Domain\Repository\ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
@@ -60,11 +62,10 @@ class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function indexAction()
     {
-        $extensions = $this->extensionRepository->findAllLoaded();
         $this->view
-            ->assign('TYPO3Version', TYPO3_version)
-            ->assign('TYPO3CopyrightYear', TYPO3_copyright_year)
-            ->assign('TYPO3UrlDonate', TYPO3_URL_DONATE)
-            ->assign('loadedExtensions', $extensions);
+            ->assign('currentVersion', TYPO3_version)
+            ->assign('copyrightYear', TYPO3_copyright_year)
+            ->assign('donationUrl', TYPO3_URL_DONATE)
+            ->assign('loadedExtensions', $this->extensionRepository->findAllLoaded());
     }
 }
