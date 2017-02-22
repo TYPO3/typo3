@@ -268,9 +268,8 @@ class ExtensionManagementUtility
             // Candidate for array_merge() if integer-keys will some day make trouble...
             $GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
             if ($addTofeInterface) {
-                GeneralUtility::deprecationLog(
-                    'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:' . $GLOBALS['_EXTKEY'] . '.'
-                );
+                $message = 'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:%s for table "%s".';
+                GeneralUtility::deprecationLog(sprintf($message, $GLOBALS['_EXTKEY'], $table));
             }
         }
     }
