@@ -7,8 +7,9 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l18n_parent',
-        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'enablecolumns' => [
@@ -37,10 +38,10 @@ return [
                 ]
             ]
         ],
-        'l18n_parent' => [
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'Translation parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -51,7 +52,7 @@ return [
                 'foreign_table_where' => 'AND tx_styleguide_inline_mnsymmetric.pid=###CURRENT_PID### AND tx_styleguide_inline_mnsymmetric.sys_language_uid IN (-1,0)',
             ]
         ],
-        'l18n_diffsource' => [
+        'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough'
             ]

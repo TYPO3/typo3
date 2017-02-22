@@ -100,7 +100,6 @@ return [
             ]
         ],
 
-
         'group_db_1' => [
             'exclude' => 1,
             'label' => 'group_db_1 allowed=be_users,be_groups',

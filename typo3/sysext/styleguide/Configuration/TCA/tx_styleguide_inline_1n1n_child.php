@@ -32,9 +32,9 @@ return [
                 ]
             ]
         ],
-        'l18n_parent' => [
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'Translation parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -45,7 +45,7 @@ return [
                 'foreign_table_where' => 'AND tx_styleguide_inline_1n1n_child.pid=###CURRENT_PID### AND tx_styleguide_inline_1n1n_child.sys_language_uid IN (-1,0)',
             ]
         ],
-        'l18n_diffsource' => [
+        'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough'
             ]
