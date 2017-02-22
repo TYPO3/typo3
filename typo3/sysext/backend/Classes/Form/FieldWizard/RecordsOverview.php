@@ -61,18 +61,12 @@ class RecordsOverview extends AbstractNode
             $linkedIcon = BackendUtility::wrapClickMenuOnIcon(
                 $iconFactory->getIconForRecord($selectedItem['table'], $selectedItem['row'], Icon::SIZE_SMALL)->render(),
                 $selectedItem['table'],
-                $selectedItem['uid'],
-                1,
-                '',
-                '+copy,info,edit,view'
+                $selectedItem['uid']
             );
             $linkedTitle = BackendUtility::wrapClickMenuOnIcon(
                 $shortenedTitle,
                 $selectedItem['table'],
-                $selectedItem['uid'],
-                1,
-                '',
-                '+copy,info,edit,view'
+                $selectedItem['uid']
             );
             $recordsOverviewHtml[] = '<tr>';
             $recordsOverviewHtml[] =    '<td class="col-icon">';

@@ -70,13 +70,6 @@ class FileList extends AbstractRecordList
     public $fixedL = 30;
 
     /**
-     * If TRUE click menus are generated on files and folders
-     *
-     * @var bool
-     */
-    public $clickMenus = 1;
-
-    /**
      * The field to sort by
      *
      * @var string
@@ -517,7 +510,7 @@ class FileList extends AbstractRecordList
 
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
-            if (!$isLocked && $this->clickMenus) {
+            if (!$isLocked) {
                 $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
             }
 
@@ -667,9 +660,7 @@ class FileList extends AbstractRecordList
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
                 . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
-            if ($this->clickMenus) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
-            }
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
             // Preparing and getting the data-array
             $theData = [];
             foreach ($this->fieldArray as $field) {
