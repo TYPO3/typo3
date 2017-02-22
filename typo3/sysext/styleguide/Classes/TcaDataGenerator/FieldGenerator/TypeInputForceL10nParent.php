@@ -20,12 +20,12 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 /**
  * Generate data for type=input fields
  */
-class TypeInputForceL18nParent extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeInputForceL10nParent extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
 
     public function match(array $data): bool
     {
-        return $data['fieldName'] === 'l18n_parent';
+        return $data['fieldName'] === 'l10n_parent';
     }
 
     /**
