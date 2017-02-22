@@ -115,7 +115,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             if ($result['tableName'] === 'pages') {
                 // A page record is edited, check edit rights of this record directly
                 $userPermissionOnPage = $backendUser->calcPerms($result['databaseRow']);
-                if ((bool)($userPermissionOnPage & Permission::PAGE_EDIT)) {
+                if ((bool)($userPermissionOnPage & Permission::PAGE_EDIT) && $backendUser->check('pagetypes_select', $result['databaseRow']['doktype'])) {
                     $userHasAccess = true;
                 } else {
                     $exception = new AccessDeniedPageEditException(
