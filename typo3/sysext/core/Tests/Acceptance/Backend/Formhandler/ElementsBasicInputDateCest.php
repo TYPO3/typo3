@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Tests for "elements_basic" date and time related input fields of ext:styleguide
@@ -22,36 +23,30 @@ use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 {
     /**
+     * Set up selects styleguide elements basic page and opens record in FormEngine
+     *
      * @param Admin $I
+     * @param PageTree $pageTree
      */
-    public function checkThatValidationWorks_evalYear(Admin $I)
+    public function _before(Admin $I, PageTree $pageTree)
     {
-        $dataSets = [
-            'input_24 eval=year' => [
-                [
-                    'inputValue' => '2016',
-                    'expectedValue' => '2016',
-                    'expectedInternalValue' => '2016',
-                    'expectedValueAfterSave' => '2016',
-                    'comment' => '',
-                ],
-                [
-                    'inputValue' => '12',
-                    'expectedValue' => '2012',
-                    'expectedInternalValue' => '2012',
-                    'expectedValueAfterSave' => '2012',
-                    'comment' => '',
-                ],
-                [
-                    'inputValue' => 'Kasper',
-                    'expectedValue' => date('Y'),
-                    'expectedInternalValue' => date('Y'),
-                    'expectedValueAfterSave' => date('Y'),
-                    'comment' => 'Invalid character is converted to current year',
-                ],
-            ]
-        ];
-        $this->runTests($I, $dataSets);
+        $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
+
+        $I->click('List');
+        $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
+        $I->switchToIFrame('list_frame');
+
+        // Open record and wait until form is ready
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-original-title="Edit record"]';
+        $I->waitForElement($editRecordLinkCssPath, 30);
+        $I->click($editRecordLinkCssPath);
+        $I->waitForText('Edit Form', 3, 'h1');
+        $I->click('inputDateTime');
+        $I->waitForText('inputDateTime', 3);
     }
 
     /**
@@ -60,7 +55,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     public function checkThatValidationWorks_EvalDate_TypeDate(Admin $I)
     {
         $dataSets = [
-            'input_36 dbType=date eval=date' => [
+            'inputdatetime_2 dbType=date eval=date' => [
                 [
                     'inputValue' => '29-01-2016',
                     'expectedValue' => '29-01-2016',
@@ -100,7 +95,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     public function checkThatValidationWorks_EvalDateTime(Admin $I)
     {
         $dataSets = [
-            'input_7 eval=datetime' => [
+            'inputdatetime_3 eval=datetime' => [
                 [
                     'inputValue' => '05:23 29-01-2016',
                     'expectedValue' => '05:23 29-01-2016',
@@ -140,7 +135,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     public function checkThatValidationWorks_evalTime(Admin $I)
     {
         $dataSets = [
-            'input_17 eval=time' => [
+            'inputdatetime_5' => [
                 [
                     'inputValue' => '13:30',
                     'expectedValue' => '13:30',

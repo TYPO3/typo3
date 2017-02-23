@@ -48,13 +48,13 @@ class Inline1nCest
     public function checkIfExpandsAndCollapseShowInput(Admin $I)
     {
         $I->wantTo('Expands the inline Elemnet');
-        $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->click('div[data-toggle="formengine-inline"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
         $I->wantTo('check is the value in input');
         $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'lipsum');
         $I->wantTo('Collapse the inline Elemnet');
-        $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
-        $I->waitForElementNotVisible('#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_fields.panel-collapse');
+        $I->click('div[data-toggle="formengine-inline"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->waitForElementNotVisible('#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_fields.panel-collapse');
     }
 
     /**
@@ -63,11 +63,11 @@ class Inline1nCest
     public function hideAndUnhideInline1nInlineElement(Admin $I)
     {
         $I->wantTo('Can hide a Inline Element');
-        $I->click('a span[data-identifier="actions-edit-hide"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
-        $I->waitForElement('#data-12-tx_styleguide_inline_1n-1-inline_1_records .t3-form-field-container-inline-hidden');
+        $I->click('a span[data-identifier="actions-edit-hide"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->waitForElement('#data-11-tx_styleguide_inline_1n-1-inline_1_records .t3-form-field-container-inline-hidden');
         $I->wantTo('Can unhide a Inline Element');
-        $I->click('a span[data-identifier="actions-edit-unhide"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
-        $I->waitForElementNotVisible('#data-12-tx_styleguide_inline_1n-1-inline_1_records .t3-form-field-container-inline-hidden', 2);
+        $I->click('a span[data-identifier="actions-edit-unhide"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->waitForElementNotVisible('#data-11-tx_styleguide_inline_1n-1-inline_1_records .t3-form-field-container-inline-hidden', 2);
     }
 
     /**
@@ -98,7 +98,7 @@ class Inline1nCest
     public function checkIfCanSortingInlineElement(Admin $I)
     {
         $I->wantTo('Can sort an Inline Element');
-        $I->click('a span[data-identifier="actions-move-down"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->click('a span[data-identifier="actions-move-down"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->click('button[name="_savedok"]');
         $I->wait(3);
         $I->click('a[title="Close"]');
@@ -114,7 +114,7 @@ class Inline1nCest
      */
     public function changeInline1nInlineInput(Admin $I)
     {
-        $I->click('div[data-toggle="formengine-inline"]', '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
+        $I->click('div[data-toggle="formengine-inline"]', '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
         $I->fillField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'hello world');
         $I->click('button[name="_savedok"]');
@@ -130,7 +130,7 @@ class Inline1nCest
      */
     public function deleteInline1nInlineElement(Admin $I, ModalDialog $modalDialog)
     {
-        $inlineElmentToDelete = '#data-12-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
+        $inlineElmentToDelete = '#data-11-tx_styleguide_inline_1n-1-inline_1-tx_styleguide_inline_1n_child-1_div';
         $I->wantTo('Cancel the delete dialog');
         $I->click('a span[data-identifier="actions-edit-delete"]', $inlineElmentToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');

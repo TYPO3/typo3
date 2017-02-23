@@ -18,38 +18,12 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
-use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Abstract class for "elements_basic" tests of styleguide
  */
 abstract class AbstractElementsBasicCest
 {
-    /**
-     * Set up selects styleguide elements basic page and opens record in FormEngine
-     *
-     * @param Admin $I
-     * @param PageTree $pageTree
-     */
-    public function _before(Admin $I, PageTree $pageTree)
-    {
-        $I->useExistingSession();
-        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
-        $I->switchToIFrame('list_frame');
-        $I->waitForText('Web Content Management System');
-        $I->switchToIFrame();
-
-        $I->click('List');
-        $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
-        $I->switchToIFrame('list_frame');
-
-        // Open record and wait until form is ready
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
-        $I->click($editRecordLinkCssPath);
-        $I->waitForText('Edit Form', 3, 'h1');
-    }
-
     /**
      * Execute given test sets.
      * Incoming array operates on fields of ext:styleguide, each field can have multiple test tests.

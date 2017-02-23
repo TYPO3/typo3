@@ -15,12 +15,38 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  */
 
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
+use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
 /**
  * Tests for "elements_basic" simple input fields of ext:styleguide
  */
 class ElementsBasicInputCest extends AbstractElementsBasicCest
 {
+    /**
+     * Set up selects styleguide elements basic page and opens record in FormEngine
+     *
+     * @param Admin $I
+     * @param PageTree $pageTree
+     */
+    public function _before(Admin $I, PageTree $pageTree)
+    {
+        $I->useExistingSession();
+        // Ensure main content frame is fully loaded, otherwise there are load-race-conditions
+        $I->switchToIFrame('list_frame');
+        $I->waitForText('Web Content Management System');
+        $I->switchToIFrame();
+
+        $I->click('List');
+        $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
+        $I->switchToIFrame('list_frame');
+
+        // Open record and wait until form is ready
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-original-title="Edit record"]';
+        $I->waitForElement($editRecordLinkCssPath, 30);
+        $I->click($editRecordLinkCssPath);
+        $I->waitForText('Edit Form', 3, 'h1');
+    }
+
     /**
      * @param Admin $I
      */
@@ -147,6 +173,29 @@ class ElementsBasicInputCest extends AbstractElementsBasicCest
                     'comment' => '',
                 ],
             ],
+            'input_24 eval=year' => [
+                [
+                    'inputValue' => '2016',
+                    'expectedValue' => '2016',
+                    'expectedInternalValue' => '2016',
+                    'expectedValueAfterSave' => '2016',
+                    'comment' => '',
+                ],
+                [
+                    'inputValue' => '12',
+                    'expectedValue' => '2012',
+                    'expectedInternalValue' => '2012',
+                    'expectedValueAfterSave' => '2012',
+                    'comment' => '',
+                ],
+                [
+                    'inputValue' => 'Kasper',
+                    'expectedValue' => date('Y'),
+                    'expectedInternalValue' => date('Y'),
+                    'expectedValueAfterSave' => date('Y'),
+                    'comment' => 'Invalid character is converted to current year',
+                ],
+            ]
         ];
         $this->runTests($I, $dataSets);
     }
