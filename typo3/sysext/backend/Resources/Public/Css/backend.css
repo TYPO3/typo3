@@ -13538,6 +13538,10 @@ textarea.formengine-textarea {
   padding: 10px;
   word-wrap: break-word;
 }
+.t3-page-ce .t3-page-ce-body-inner img {
+  max-width: 100%;
+  height: auto;
+}
 .t3-page-ce .t3-page-ce-header {
   transition: background 0.15s ease-in;
   padding: 5px;
