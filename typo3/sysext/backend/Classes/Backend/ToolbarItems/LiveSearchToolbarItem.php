@@ -55,7 +55,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
 
         // Live search is heavily dependent on the list module and only available when that module is.
         $listModule = $backendModuleRepository->findByModuleName('web_list');
-        return $listModule !== null;
+        return $listModule !== null && $listModule !== false;
     }
 
     /**

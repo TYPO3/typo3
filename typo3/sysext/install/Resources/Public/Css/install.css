@@ -7563,6 +7563,11 @@ body {
   display: table;
   content: '';
 }
+@media (min-width: 992px) {
+  .toolbar-list li:last-child {
+    width: 300px;
+  }
+}
 .toolbar-item {
   padding: 4px;
   position: relative;
@@ -7659,11 +7664,6 @@ body {
 @media (min-width: 992px) {
   .toolbar-item-title {
     display: none;
-  }
-}
-@media (min-width: 992px) {
-  .toolbar-item-search {
-    width: 300px;
   }
 }
 .toolbar-item-search form {
