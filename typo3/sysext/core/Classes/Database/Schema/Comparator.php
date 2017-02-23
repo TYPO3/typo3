@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Core\Database\Schema;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,6 +29,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Comparator extends \Doctrine\DBAL\Schema\Comparator
 {
+    /**
+     * @var AbstractPlatform
+     */
+    protected $databasePlatform;
+
+    /**
+     * Comparator constructor.
+     *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     */
+    public function __construct(AbstractPlatform $platform = null)
+    {
+        $this->databasePlatform = $platform;
+    }
+
     /**
      * Returns the difference between the tables $fromTable and $toTable.
      *
@@ -68,5 +87,39 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
         $tableDifferences->setTableOptions($optionDiff);
 
         return $tableDifferences;
+    }
+
+    /**
+     * Returns the difference between the columns $column1 and $column2
+     * by first checking the doctrine diffColumn. Extend the Doctrine
+     * method by taking into account MySQL TINY/MEDIUM/LONG type variants.
+     *
+     * @param \Doctrine\DBAL\Schema\Column $column1
+     * @param \Doctrine\DBAL\Schema\Column $column2
+     * @return array
+     */
+    public function diffColumn(Column $column1, Column $column2)
+    {
+        $changedProperties = parent::diffColumn($column1, $column2);
+
+        // Only MySQL has variable length versions of TEXT/BLOB
+        if (!$this->databasePlatform instanceof MySqlPlatform) {
+            return $changedProperties;
+        }
+
+        $properties1 = $column1->toArray();
+        $properties2 = $column2->toArray();
+
+        if ($properties1['type'] instanceof Types\BlobType || $properties1['type'] instanceof Types\TextType) {
+            // Doctrine does not provide a length for LONGTEXT/LONGBLOB columns
+            $length1 = $properties1['length'] ?: 2147483647;
+            $length2 = $properties2['length'] ?: 2147483647;
+
+            if ($length1 !== $length2) {
+                $changedProperties[] = 'length';
+            }
+        }
+
+        return array_unique($changedProperties);
     }
 }

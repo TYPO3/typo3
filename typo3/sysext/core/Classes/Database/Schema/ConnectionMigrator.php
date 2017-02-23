@@ -224,8 +224,9 @@ class ConnectionMigrator
      * for tables that are in the database but have no direct relation to the TYPO3 instance.
      *
      * @param bool $renameUnused
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
      * @throws \Doctrine\DBAL\DBALException
+     * @return \Doctrine\DBAL\Schema\SchemaDiff
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
      */
     protected function buildSchemaDiff(bool $renameUnused = true): SchemaDiff
@@ -247,7 +248,7 @@ class ConnectionMigrator
         }
 
         // Build SchemaDiff and handle renames of tables and colums
-        $comparator = GeneralUtility::makeInstance(Comparator::class);
+        $comparator = GeneralUtility::makeInstance(Comparator::class, $this->connection->getDatabasePlatform());
         $schemaDiff = $comparator->compare($fromSchema, $toSchema);
         $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
 
