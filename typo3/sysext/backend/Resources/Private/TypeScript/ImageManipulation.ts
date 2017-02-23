@@ -837,7 +837,7 @@ class ImageManipulation {
         return;
       }
 
-      let previewWidth: number = $preview.data('preview-width');
+      let previewWidth: number = $preview.width();
       let previewHeight: number = $preview.data('preview-height');
 
       // Adjust aspect ratio of preview width/height

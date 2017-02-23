@@ -12859,6 +12859,27 @@ span.warningboxheader {
 .t3-btn {
   cursor: pointer;
 }
+.media-gallery__list .media-gallery__item {
+  display: inline-block;
+  float: none;
+  margin-bottom: 15px;
+  margin-right: -4px;
+  vertical-align: top;
+}
+.media-gallery__list .media-gallery__item .media-object {
+  max-height: 158px;
+  overflow: hidden;
+}
+.media-gallery__list .media-gallery__item img.thumbnail {
+  height: auto;
+  margin-bottom: 0;
+  max-height: 150px;
+  max-width: 100%;
+}
+.media-gallery__list .media-gallery__item span.thumbnail {
+  display: inline-block;
+  margin-bottom: 0;
+}
 .element-browser-section {
   border-bottom: 1px solid #d7d7d7;
   padding-bottom: 30px;

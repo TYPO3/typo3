@@ -683,7 +683,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 if ($preview.length === 0) {
                     return;
                 }
-                var previewWidth = $preview.data('preview-width');
+                var previewWidth = $preview.width();
                 var previewHeight = $preview.data('preview-height');
                 // Adjust aspect ratio of preview width/height
                 var aspectRatio = cropData.width / cropData.height;
