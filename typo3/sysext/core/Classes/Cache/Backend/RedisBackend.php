@@ -123,6 +123,13 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     protected $compressionLevel = -1;
 
     /**
+     * limit in seconds (default is 0 meaning unlimited)
+     *
+     * @var int
+     */
+    protected $connectionTimeout = 0;
+
+    /**
      * Construct this backend
      *
      * @param string $context FLOW3's application context
@@ -148,9 +155,9 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         $this->redis = new \Redis();
         try {
             if ($this->persistentConnection) {
-                $this->connected = $this->redis->pconnect($this->hostname, $this->port);
+                $this->connected = $this->redis->pconnect($this->hostname, $this->port, $this->connectionTimeout);
             } else {
-                $this->connected = $this->redis->connect($this->hostname, $this->port);
+                $this->connected = $this->redis->connect($this->hostname, $this->port, $this->connectionTimeout);
             }
         } catch (\Exception $e) {
             \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to redis server.', 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
@@ -274,6 +281,29 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         } else {
             throw new \InvalidArgumentException('The specified compression level must be an integer between -1 and 9.', 1289679155);
         }
+    }
+
+    /**
+     * Set connection timeout.
+     * This value in seconds is used as a maximum number
+     * of seconds to wait if a connection can be established.
+     *
+     * @param int $connectionTimeout limit in seconds, a value greater or equal than 0
+     * @return void
+     * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
+     * @api
+     */
+    public function setConnectionTimeout($connectionTimeout)
+    {
+        if (!is_int($connectionTimeout)) {
+            throw new \InvalidArgumentException('The specified connection timeout is of type "' . gettype($connectionTimeout) . '" but an integer is expected.', 1487849315);
+        }
+
+        if ($connectionTimeout < 0) {
+            throw new \InvalidArgumentException('The specified connection timeout "' . $connectionTimeout . '" must be greater or equal than zero.', 1487849326);
+        }
+
+        $this->connectionTimeout = $connectionTimeout;
     }
 
     /**

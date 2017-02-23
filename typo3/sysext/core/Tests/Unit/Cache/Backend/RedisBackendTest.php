@@ -164,6 +164,28 @@ class RedisBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test Functional
      */
+    public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNotInteger()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1487849315);
+
+        $this->setUpBackend(['connectionTimeout' => 'foo']);
+    }
+
+    /**
+     * @test Functional
+     */
+    public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNegative()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1487849326);
+
+        $this->setUpBackend(['connectionTimeout' => -1]);
+    }
+
+    /**
+     * @test Functional
+     */
     public function setThrowsExceptionIfIdentifierIsNotAString()
     {
         $this->expectException(\InvalidArgumentException::class);
