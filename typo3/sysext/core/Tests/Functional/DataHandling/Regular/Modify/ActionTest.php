@@ -44,6 +44,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/createContentForLanguageAll.csv
+     */
+    public function createContentForLanguageAll()
+    {
+        parent::createContentForLanguageAll();
+
+        $this->assertAssertionDataSet('createContentForLanguageAll');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Language set to all'));
+    }
+
+    /**
+     * @test
      * @see DataSet/modifyContentRecord.csv
      */
     public function modifyContent()

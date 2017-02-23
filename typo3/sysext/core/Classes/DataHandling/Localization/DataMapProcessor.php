@@ -192,6 +192,10 @@ class DataMapProcessor
             foreach ($this->filterItemsByType($type) as $item) {
                 foreach ($item->getApplicableScopes() as $scope) {
                     $fromId = $item->getIdForScope($scope);
+                    if (empty($fromId)) {
+                        continue;
+                    }
+
                     $fieldNames = $this->getFieldNamesForItemScope($item, $scope, !$item->isNew());
                     $this->synchronizeTranslationItem($item, $fieldNames, $fromId);
                 }

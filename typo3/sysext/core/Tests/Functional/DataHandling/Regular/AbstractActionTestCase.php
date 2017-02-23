@@ -66,6 +66,17 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * Creation of a content element with language set to all
+     *
+     * @see DataSet/createContentForLanguageAll.csv
+     */
+    public function createContentForLanguageAll()
+    {
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Language set to all', 'sys_language_uid' => -1]);
+        $this->recordIds['newContentLanguageAll'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    /**
      * @see DataSet/modifyContentRecord.csv
      */
     public function modifyContent()
