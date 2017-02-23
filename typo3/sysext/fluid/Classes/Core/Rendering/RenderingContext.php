@@ -19,17 +19,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface;
-use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
-use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionNode;
 use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\Configuration;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -51,6 +49,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * the whole syntax tree should be cacheable
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     protected $objectManager;
 
@@ -62,45 +61,16 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     protected $controllerContext;
 
     /**
-     * ViewHelper Variable Container
-     *
-     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-     */
-    protected $viewHelperVariableContainer;
-
-    /**
      * Use legacy behavior? Can be overridden using setLegacyMode().
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @var bool
      */
     protected $legacyMode = false;
 
     /**
-     * List of class names implementing ExpressionNodeInterface
-     * which will be consulted when an expression does not match
-     * any built-in parser expression types.
-     *
-     * @var string
-     */
-    protected $expressionNodeTypes = [
-        LegacyNamespaceExpressionNode::class,
-        CastingExpressionNode::class,
-        MathExpressionNode::class,
-        TernaryExpressionNode::class
-    ];
-
-    /**
-     * Alternative ExpressionNodeInterface implementers for use
-     * when put into legacy mode.
-     *
-     * @var string
-     */
-    protected $legacyExpressionNodeTypes = [
-        LegacyNamespaceExpressionNode::class
-    ];
-
-    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -132,20 +102,20 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
             $this->setTemplateCompiler(new TemplateCompiler());
             $this->setViewHelperInvoker(new ViewHelperInvoker());
             $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
+            $this->setTemplateProcessors(
+                [
+                    new EscapingModifierTemplateProcessor(),
+                    new PassthroughSourceModifierTemplateProcessor(),
+                    new NamespaceDetectionTemplateProcessor()
+                ]
+            );
         }
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
         $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
         $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
-        $this->setTemplateProcessors(
-            array_merge(
-                parent::getTemplateProcessors(),
-                [
-                    $objectManager->get(XmlnsNamespaceTemplatePreProcessor::class),
-                ]
-            )
-        );
+
         /** @var FluidTemplateCache $cache */
         $cache = $objectManager->get(CacheManager::class)->getCache('fluid_template');
         if (is_a($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend'], FluidTemplateCache::class, true)) {
@@ -180,25 +150,20 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * If set to FALSE, the ViewHelperResolver will only load a limited sub-set of ExpressionNodes,
      * making Fluid behave like the legacy version of the CMS core extension.
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @param bool $legacyMode
      * @return void
      */
     public function setLegacyMode($legacyMode)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->legacyMode = $legacyMode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExpressionNodeTypes()
-    {
-        return $this->legacyMode ? $this->legacyExpressionNodeTypes : $this->expressionNodeTypes;
     }
 
     /**
      * Returns the object manager. Only the ViewHelperNode should do this.
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     public function getObjectManager()
@@ -274,15 +239,5 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         } else {
             $this->setControllerName($controllerName);
         }
-    }
-
-    /**
-     * Get the ViewHelperVariableContainer
-     *
-     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer
-     */
-    public function getViewHelperVariableContainer()
-    {
-        return $this->viewHelperVariableContainer;
     }
 }

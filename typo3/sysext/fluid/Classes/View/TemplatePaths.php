@@ -139,23 +139,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     }
 
     /**
-     * @param string|array $path
-     * @return string
-     */
-    protected function sanitizePath($path)
-    {
-        if (is_array($path)) {
-            $paths = array_map([$this, 'sanitizePath'], $path);
-            return array_unique($paths);
-        }
-        $path = $this->ensureAbsolutePath($path);
-        if (is_dir($path)) {
-            $path = $this->ensureSuffixedPath($path);
-        }
-        return $path;
-    }
-
-    /**
      * Guarantees that $reference is turned into a
      * correct, absolute path. The input can be a
      * relative path or a FILE: or EXT: reference
