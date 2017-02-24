@@ -583,9 +583,9 @@ CREATE TABLE sys_refindex (
 	ref_string varchar(1024) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (hash),
-	KEY lookup_rec (tablename,recuid),
-	KEY lookup_uid (ref_table,ref_uid),
-	KEY lookup_string (ref_string)
+	KEY lookup_rec (tablename(240),recuid),
+	KEY lookup_uid (ref_table(240),ref_uid),
+	KEY lookup_string (ref_string(255))
 );
 
 #
