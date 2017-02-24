@@ -9715,6 +9715,9 @@ iframe,
 .cropper .cropper-view-box {
   outline: 1px dashed #ff8700;
 }
+.cropper .cropper-modal {
+  background-color: transparent;
+}
 .cropper .cropper-bg {
   background-image: url("../Images/cropper-background.png");
 }
@@ -9739,18 +9742,6 @@ iframe,
 .cropper .panel-group [aria-expanded=true] {
   border-left: 2px solid #ff8700;
   position: relative;
-}
-.cropper .panel-group [aria-expanded=true]:before {
-  position: absolute;
-  left: -10px;
-  top: 50%;
-  margin-top: -10px;
-  content: " ";
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 10px 10px 10px 0;
-  border-color: transparent #ff8700 transparent transparent;
 }
 .cropper .panel-group [aria-expanded=true][data-toggle=collapse] {
   background-color: #333;
@@ -10497,7 +10488,7 @@ div#contentMenu1 {
 .modal-image-manipulation .modal-panel {
   display: -ms-flexbox;
   display: flex;
-  max-height: 80vh;
+  height: 80vh;
   overflow: visible;
 }
 .modal-image-manipulation .modal-panel-body {
@@ -10510,17 +10501,20 @@ div#contentMenu1 {
       justify-content: center;
 }
 .modal-image-manipulation .modal-panel .modal-panel-body {
-  max-height: 100%;
-  width: 100% !important;
+  height: 100%;
+  width: 78% ;
+  float: none;
+  overflow: hidden;
 }
 .modal-image-manipulation .modal-panel .modal-panel-sidebar {
-  min-width: 300px;
+  width: 22%;
   max-height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 .modal-image-manipulation .modal-panel .modal-panel-sidebar-right {
   background-color: #212424;
+  float: none;
   position: relative;
 }
 .modal-image-manipulation .modal-panel .modal-footer {

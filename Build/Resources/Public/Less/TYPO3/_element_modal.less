@@ -105,7 +105,7 @@
 	height: 90vh;
 	.modal-panel {
 		display: flex;
-		max-height: 80vh;
+		height: 80vh;
 		overflow: visible;
 	}
 	.modal-panel-body {
@@ -115,12 +115,14 @@
 		justify-content: center;
 	}
 	.modal-panel .modal-panel-body {
-		max-height: 100%;
-		width: 100% !important;
+		height: 100%;
+		width: 78% ;
+		float: none;
+		overflow: hidden
 	}
 
 	.modal-panel .modal-panel-sidebar {
-		min-width: 300px;
+		width: 22%;
 		max-height: 100%;
 		overflow: auto;
 		-webkit-overflow-scrolling: touch;
@@ -128,6 +130,7 @@
 
 	.modal-panel .modal-panel-sidebar-right {
 		background-color: #212424;
+		float: none;
 		position: relative;
 	}
 

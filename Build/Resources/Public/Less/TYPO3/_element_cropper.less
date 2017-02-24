@@ -55,6 +55,10 @@
 		outline: 1px dashed @color-orange;
 	}
 
+	.cropper-modal {
+		background-color: transparent;
+	}
+
 	.cropper-bg {
 		background-image: data-uri("../Images/cropper-background.png");
 	}
@@ -84,20 +88,6 @@
 		[aria-expanded=true] {
 			border-left: 2px solid @color-orange;
 			position: relative;
-
-			&:before {
-				position: absolute;
-				left: -10px;
-				top: 50%;
-				margin-top: -10px;
-				content: " ";
-				width: 0;
-				height: 0;
-				border-style: solid;
-				border-width: 10px 10px 10px 0;
-				border-color: transparent @color-orange transparent transparent;
-			}
-
 			&[data-toggle=collapse] {
 				background-color: #333;
 			}
