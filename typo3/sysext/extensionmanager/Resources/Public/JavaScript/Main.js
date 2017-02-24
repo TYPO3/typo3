@@ -510,8 +510,10 @@ define([
 							text: TYPO3.lang['button.resolveDependenciesIgnore'],
 							btnClass: 'btn-danger disabled t3js-dependencies',
 							trigger: function() {
-								Repository.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
-								Modal.dismiss();
+								if (!$(this).hasClass('disabled')) {
+									Repository.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
+									Modal.dismiss();
+								}
 							}
 						}
 					]);
