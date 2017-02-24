@@ -71,6 +71,12 @@
 		min-height: @module-docheader-bar-height;
 		margin: @module-docheader-bar-margin;
 		line-height: @module-docheader-bar-height;
+
+		&.row {
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+
 		label {
 			margin-top: 0;
 			margin-bottom: 0;
@@ -101,6 +107,12 @@
 				padding: ceil(@module-docheader-padding-horizontal / 3) @module-docheader-padding-horizontal;
 			}
 		}
+
+		@media (max-width: @screen-sm) {
+			.text-right {
+				text-align: left;
+			}
+		}
 	}
 	.module-docheader-bar-search  {
 		margin-bottom: 0;
@@ -110,6 +122,15 @@
 	}
 	.module-docheader-bar-column-right {
 		float: right;
+	}
+}
+
+.module-docheader-bar-navigation {
+	.module-docheader-bar-column-left {
+		white-space: nowrap;
+	}
+	.form-group select {
+		width: 100%;
 	}
 }
 

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -96,9 +95,86 @@ class MetaInformation
      */
     public function getRecordInformation()
     {
+        $recordInformations = $this->getRecordInformations();
+        if (!empty($recordInformations)) {
+            $recordInformation = $recordInformations['icon'] .
+                ' <strong>' . htmlspecialchars($recordInformations['title']) . ($recordInformations['uid'] !== '' ? '&nbsp;[' . $recordInformations['uid'] . ']' : '') . '</strong>' .
+                (!empty($recordInformations['additionalInfo']) ? ' ' . htmlspecialchars($recordInformations['additionalInfo']) : '');
+        } else {
+            $recordInformation = '';
+        }
+        return $recordInformation;
+    }
+
+    /**
+     * Setting page icon
+     *
+     * @return string Record icon
+     */
+    public function getRecordInformationIcon()
+    {
+        $recordInformations = $this->getRecordInformations();
+        if (!empty($recordInformations)) {
+            $recordInformationIcon = $recordInformations['icon'];
+        } else {
+            $recordInformationIcon = null;
+        }
+        return $recordInformationIcon;
+    }
+
+    /**
+     * Setting page title
+     *
+     * @return string Record title
+     */
+    public function getRecordInformationTitle()
+    {
+        $recordInformations = $this->getRecordInformations();
+        if (!empty($recordInformations)) {
+            $title = htmlspecialchars($recordInformations['title']);
+        } else {
+            $title = '';
+        }
+
+        // crop the title to title limit (or 50, if not defined)
+        $beUser = $this->getBackendUser();
+        $cropLength = empty($beUser->uc['titleLen']) ? 50 : $beUser->uc['titleLen'];
+        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, $cropLength);
+        if ($croppedTitle !== $title) {
+            $recordInformationTitle = htmlspecialchars($croppedTitle);
+        } else {
+            $recordInformationTitle = htmlspecialchars($title);
+        }
+
+        return $recordInformationTitle;
+    }
+
+    /**
+     * Setting page uid
+     *
+     * @return null|int Record uid
+     */
+    public function getRecordInformationUid()
+    {
+        $recordInformations = $this->getRecordInformations();
+        if (!empty($recordInformations)) {
+            $recordInformationUid = $recordInformations['uid'];
+        } else {
+            $recordInformationUid = null;
+        }
+        return $recordInformationUid;
+    }
+
+    /**
+     * Setting page array
+     *
+     * @return array Record info
+     */
+    protected function getRecordInformations()
+    {
         $pageRecord = $this->recordArray;
         if (empty($pageRecord)) {
-            return '';
+            return [];
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -153,10 +229,13 @@ class MetaInformation
             $uid = '0';
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
-        // Setting icon with context menu + uid
-        return $theIcon .
-            ' <strong>' . htmlspecialchars($title) . ($uid !== '' ? '&nbsp;[' . $uid . ']' : '') . '</strong>' .
-            (!empty($additionalInfo) ? ' ' . htmlspecialchars($additionalInfo) : '');
+        // returns array for icon, title, uid and additional info
+        return [
+            'uid' => $uid,
+            'icon' => $theIcon,
+            'title' => htmlspecialchars($title),
+            'additionalInfo' => $additionalInfo
+        ];
     }
 
     /**
