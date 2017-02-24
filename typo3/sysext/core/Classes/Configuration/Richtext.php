@@ -54,13 +54,11 @@ class Richtext
         // together with pageTS, this way it can be overridden and understood in RteHtmlParser.
         // However, all other parts of the core will depend on the non-dotted syntax (coming from Yaml directly)
 
-        $usePreset = '';
-        $configuration = [];
-        // Check if a configuration preset file is added
-        if (isset($tcaFieldConf['richtextConfiguration'])) {
-            $usePreset = $tcaFieldConf['richtextConfiguration'];
-            $configuration = $this->loadConfigurationFromPreset($tcaFieldConf['richtextConfiguration']);
+        if (!isset($tcaFieldConf['richtextConfiguration'])) {
+            $tcaFieldConf['richtextConfiguration'] = 'default';
         }
+        $usePreset = $tcaFieldConf['richtextConfiguration'];
+        $configuration = $this->loadConfigurationFromPreset($tcaFieldConf['richtextConfiguration']);
 
         // Overload with PageTSconfig configuration
         // First use RTE.default
@@ -108,18 +106,14 @@ class Richtext
      */
     protected function loadConfigurationFromPreset(string $presetName = ''): array
     {
-        $configuration = [
-            'processing' => [
-                'mode' => 'default'
-            ]
-        ];
+        $configuration = [];
         if (!empty($presetName) && isset($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName])) {
             $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
             $configuration = $fileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
-        }
-        // For future versions, you should however rely on the "processing" key and not the "proc" key.
-        if (is_array($configuration['processing'])) {
-            $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
+            // For future versions, you should however rely on the "processing" key and not the "proc" key.
+            if (is_array($configuration['processing'])) {
+                $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
+            }
         }
         return $configuration;
     }
