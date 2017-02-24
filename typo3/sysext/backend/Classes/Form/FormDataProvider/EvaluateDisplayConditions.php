@@ -415,10 +415,10 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         1481382954
                     );
                 }
-                $namedConditionArray['function'] = $namedConditionArray[1];
-                array_shift($namedConditionArray);
-                array_shift($namedConditionArray);
-                $namedConditionArray['parameters'] = $namedConditionArray;
+                $namedConditionArray['function'] = $conditionArray[1];
+                array_shift($conditionArray);
+                array_shift($conditionArray);
+                $namedConditionArray['parameters'] = $conditionArray;
                 $namedConditionArray['record'] = $databaseRow;
                 break;
             default:

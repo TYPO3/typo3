@@ -497,6 +497,47 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
     /**
      * @test
      */
+    public function addDataEvaluatesUserCondition()
+    {
+        $input = [
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'field_1' => [
+                        'displayCond' => 'USER:' . self::class . '->addDataEvaluatesUserConditionCallback:more:arguments',
+                    ],
+                ],
+            ],
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1488130499);
+        (new EvaluateDisplayConditions())->addData($input);
+    }
+
+    /**
+     * Callback method of addDataEvaluatesUserCondition. A USER condition
+     * Throws an exception if data is correct!
+     *
+     * @throws \RuntimeException if data is ok
+     */
+    public function addDataEvaluatesUserConditionCallback(array $parameter)
+    {
+        $expected = [
+            'record' => [],
+            'flexformValueKey' => 'vDEF',
+            'conditionParameters' => [
+                0 => 'more',
+                1 => 'arguments',
+            ]
+        ];
+        if ($expected === $parameter) {
+            throw new \RuntimeException('testing', 1488130499);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function addDataThrowsExceptionIfFlexSheetNameAndFieldNameCombinationsOverlap()
     {
         $input = [
