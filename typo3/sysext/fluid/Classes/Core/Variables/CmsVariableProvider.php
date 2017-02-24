@@ -32,6 +32,23 @@ class CmsVariableProvider extends \TYPO3Fluid\Fluid\Core\Variables\StandardVaria
      */
     public function getByPath($path, array $accessors = [])
     {
+        $path = $this->resolveSubVariableReferences($path);
         return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($this->variables, $path);
+    }
+
+    /**
+     * @param string $propertyPath
+     * @return string
+     */
+    protected function resolveSubVariableReferences($propertyPath)
+    {
+        if (strpos($propertyPath, '{') !== false) {
+            preg_match_all('/(\{.*\})/', $propertyPath, $matches);
+            foreach ($matches[1] as $match) {
+                $subPropertyPath = substr($match, 1, -1);
+                $propertyPath = str_replace($match, $this->getByPath($subPropertyPath), $propertyPath);
+            }
+        }
+        return $propertyPath;
     }
 }

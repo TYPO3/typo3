@@ -29,4 +29,21 @@ class CmsVariableProviderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $instance->setSource(['foo' => 'bar']);
         $this->assertEquals('bar', $instance->getByPath('foo'));
     }
+
+    /**
+     * @test
+     */
+    public function dynamicAccessWorks()
+    {
+        $instance = new CmsVariableProvider();
+        $instance->setSource(
+            [
+                'foo' => [
+                    'hello' => 'world',
+                ],
+                'key' => 'hello'
+            ]
+        );
+        $this->assertEquals('world', $instance->getByPath('foo.{key}'));
+    }
 }
