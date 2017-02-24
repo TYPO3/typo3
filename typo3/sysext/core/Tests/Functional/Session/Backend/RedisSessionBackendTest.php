@@ -36,7 +36,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
      */
     protected $testSessionRecord = [
         'ses_id' => 'randomSessionId',
-        'ses_name' => 'session_name',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -264,11 +263,11 @@ class RedisSessionBackendTest extends FunctionalTestCase
     {
         $updatedRecord = array_merge(
             $this->testSessionRecord,
-            ['ses_name' => 'newSessionName', 'ses_tstamp' => $GLOBALS['EXEC_TIME']]
+            ['ses_tstamp' => $GLOBALS['EXEC_TIME']]
         );
         $sessionId = 'randomSessionId';
         $this->subject->set($sessionId, $this->testSessionRecord);
-        $this->subject->update($sessionId, ['ses_name' => 'newSessionName']);
+        $this->subject->update($sessionId, []);
         $this->assertArraySubset($updatedRecord, $this->subject->get($sessionId));
     }
 }

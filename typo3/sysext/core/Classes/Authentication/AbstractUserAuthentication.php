@@ -942,7 +942,6 @@ abstract class AbstractUserAuthentication
 
         return [
             'ses_id' => $this->id,
-            'ses_name' => $this->name,
             'ses_iplock' => $sessionIpLock,
             'ses_userid' => $tempuser[$this->userid_column] ?? 0,
             'ses_tstamp' => $GLOBALS['EXEC_TIME'],
@@ -998,7 +997,7 @@ abstract class AbstractUserAuthentication
                 $sessionUpdateGracePeriod = 61;
                 if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($userRecord['ses_tstamp'] + $sessionUpdateGracePeriod)) {
                     // Update the session timestamp by writing a dummy update. (Backend will update the timestamp)
-                    $updatesSession = $this->getSessionBackend()->update($this->id, ['ses_name' => $userRecord['ses_name']]);
+                    $updatesSession = $this->getSessionBackend()->update($this->id, []);
                     $userRecord = array_merge($userRecord, $updatesSession);
                 }
             } else {

@@ -37,13 +37,12 @@ CREATE TABLE be_groups (
 #
 CREATE TABLE be_sessions (
 	ses_id varchar(32) DEFAULT '' NOT NULL,
-	ses_name varchar(100) DEFAULT '' NOT NULL,
 	ses_iplock varchar(39) DEFAULT '' NOT NULL,
 	ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_data longblob,
 	ses_backuserid int(11) NOT NULL default '0',
-	PRIMARY KEY (ses_id,ses_name),
+	PRIMARY KEY (ses_id),
 	KEY ses_tstamp (ses_tstamp)
 );
 

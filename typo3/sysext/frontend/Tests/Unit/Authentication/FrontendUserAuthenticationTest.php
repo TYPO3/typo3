@@ -233,7 +233,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'newSessionId',
             [
                 'ses_id' => 'newSessionId',
-                'ses_name' => 'fe_typo_user',
                 'ses_iplock' => '',
                 'ses_userid' => 0,
                 'ses_tstamp' => $currentTime,
@@ -290,7 +289,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             [
                 'ses_id' => $uniqueSessionId,
                 'ses_userid' => 1,
-                'ses_name' => 'fe_typo_user',
                 'ses_iplock' => '[DISABLED]',
                 'ses_tstamp' => $currentTime,
                 'ses_data' => serialize(['foo' => 'bar']),
