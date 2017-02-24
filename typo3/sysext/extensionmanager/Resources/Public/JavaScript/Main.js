@@ -517,7 +517,7 @@ define([
 					]);
 					Modal.currentModal.on('shown.bs.modal', function() {
 						var $actionButton = Modal.currentModal.find('.t3js-dependencies');
-						$('input[name=unlockDependencyIgnoreButton]').on('change', function() {
+						$('input[name="unlockDependencyIgnoreButton"]', Modal.currentModal).on('change', function() {
 							$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 						});
 					});
