@@ -1035,6 +1035,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
      *
      * @test
      * @dataProvider ensureCorrectPostOrderingByCategoryTitleDataProvider
+     * @group mysql
      */
     public function ensureCorrectPostOrderingByCategoryTitle(array $uids, array $expected)
     {
