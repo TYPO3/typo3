@@ -438,6 +438,18 @@ class ExpressionBuilder
     }
 
     /**
+     * Creates a LENGTH expression for the given field/alias.
+     *
+     * @param string $fieldName
+     * @param string|null $alias
+     * @return string
+     */
+    public function length(string $fieldName, string $alias = null): string
+    {
+        return $this->calculation('LENGTH', $fieldName, $alias);
+    }
+
+    /**
      * Create a SQL aggregate function.
      *
      * @param string $aggregateName

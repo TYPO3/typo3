@@ -491,6 +491,23 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
+    public function lengthQuotesIdentifier()
+    {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $platform = new MockPlatform();
+            return $platform->quoteIdentifier($args[0]);
+        });
+
+        $this->assertSame('LENGTH("tableName"."fieldName")', $this->subject->length('tableName.fieldName'));
+        $this->assertSame(
+            'LENGTH("tableName"."fieldName") AS "anAlias"',
+            $this->subject->length('tableName.fieldName', 'anAlias')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function trimQuotesIdentifierWithDefaultValues()
     {
         $platform = new MockPlatform();

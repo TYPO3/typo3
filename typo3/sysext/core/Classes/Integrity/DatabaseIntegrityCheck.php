@@ -18,6 +18,7 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -227,7 +228,11 @@ class DatabaseIntegrityCheck
                 }
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()->removeAll();
-                $queryResult = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'])
+                $selectFields = ['uid', 'pid'];
+                if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
+                    $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['label'];
+                }
+                $queryResult = $queryBuilder->select(...$selectFields)
                     ->from($table)
                     ->where(
                         $queryBuilder->expr()->notIn(
@@ -422,7 +427,8 @@ class DatabaseIntegrityCheck
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             foreach ($fkey_arrays as $table => $field_list) {
                 if ($GLOBALS['TCA'][$table] && trim($field_list)) {
-                    $schemaManager = $connectionPool->getConnectionForTable($table)->getSchemaManager();
+                    $connection = $connectionPool->getConnectionForTable($table);
+                    $schemaManager = $connection->getSchemaManager();
                     $tableColumns = $schemaManager->listTableColumns($table);
 
                     $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
@@ -433,9 +439,13 @@ class DatabaseIntegrityCheck
                     $queryBuilder->select('uid')
                         ->from($table);
                     $whereClause = [];
+
                     foreach ($fields as $fieldName) {
                         // The array index of $tableColumns is the lowercased column name!
-                        $fieldType = $tableColumns[strtolower($fieldName)]->getType()->getName();
+                        // It is quoted for keywords
+                        $column = $tableColumns[strtolower($fieldName)]
+                            ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))];
+                        $fieldType = $column->getType()->getName();
                         if (in_array(
                             $fieldType,
                             [Type::BIGINT, Type::INTEGER, Type::SMALLINT, Type::DECIMAL, Type::FLOAT],
@@ -455,6 +465,16 @@ class DatabaseIntegrityCheck
                                     $fieldName,
                                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                                 )
+                            );
+                        } elseif (in_array($fieldType, [Type::BLOB], true)) {
+                            $whereClause[] = $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->isNotNull($fieldName),
+                                $queryBuilder->expr()
+                                    ->comparison(
+                                        $queryBuilder->expr()->length($fieldName),
+                                        ExpressionBuilder::GT,
+                                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                                    )
                             );
                         }
                     }
