@@ -170,14 +170,10 @@ class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExpor
 
     /**
      * @test
-     * @group not-postgres
      * @group not-mssql
      */
     public function importPagesAndRelatedTtContentWithImageWithForcedUids()
     {
-        // @todo: Fix impexp / test with postgres: Probably, force uid's is not possible with postgres or needs
-        // @todo: to be adapted in somehow.
-
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->init();
 
