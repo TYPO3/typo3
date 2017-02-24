@@ -141,9 +141,6 @@
 			<trans-unit id="checkScript_update_description">
 				<source>To update the reference index use</source>
 			</trans-unit>
-			<trans-unit id="checkScript_information">
-				<source>If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</source>
-			</trans-unit>
 			<trans-unit id="checkScript_moreDetails">
 				<source>For more details see</source>
 			</trans-unit>

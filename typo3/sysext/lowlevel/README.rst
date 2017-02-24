@@ -61,9 +61,6 @@ The "[base command]" is::
 	[typo3_site_directory]/typo3/cli_dispatch.phpsh lowlevel_cleaner
 
 Try this first. If it all works out you should see a help-screen. Otherwise there will be instructions about what to do.
-For instance, you will have to create a backend user, "_cli_lowlevel", with any random password since you never need
-to log in with the user. Never mind permissions, they are not important since this script will force the user to run
-as "admin" in "Live" workspace.
 
 You can use the script entirely by following the help screens. However, through this document you get some idea about
 the best order of events since they may affect each other.
