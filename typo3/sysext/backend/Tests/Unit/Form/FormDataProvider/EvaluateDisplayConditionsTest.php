@@ -3603,6 +3603,11 @@ class EvaluateDisplayConditionsTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 ['uid' => '23'],
                 false,
             ],
+            'Field value containing colons' => [
+                'FIELD:foo:=:x:y:z',
+                ['foo' => 'x:y:z'],
+                true,
+            ],
             'New is TRUE for new comparison with TRUE' => [
                 'REC:NEW:TRUE',
                 ['uid' => null],

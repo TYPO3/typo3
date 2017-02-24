@@ -258,7 +258,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
      */
     protected function parseSingleConditionString(string $conditionString, array $databaseRow, array $flexContext = []): array
     {
-        $conditionArray = GeneralUtility::trimExplode(':', $conditionString);
+        $conditionArray = GeneralUtility::trimExplode(':', $conditionString, false, 4);
         $namedConditionArray = [
             'type' => $conditionArray[0],
         ];
