@@ -403,9 +403,9 @@ abstract class AbstractFormElement extends AbstractNode
                         $options[] = '<option value="' . htmlspecialchars($selectWizardItem[1]) . '">' . htmlspecialchars($selectWizardItem[0]) . '</option>';
                     }
                     if ($wizardConfiguration['mode'] == 'append') {
-                        $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
-                    } elseif ($wizardConfiguration['mode'] == 'prepend') {
                         $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value+=\'\'+this.options[this.selectedIndex].value';
+                    } elseif ($wizardConfiguration['mode'] == 'prepend') {
+                        $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
                     } else {
                         $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value=this.options[this.selectedIndex].value';
                     }
