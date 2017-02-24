@@ -5691,26 +5691,6 @@ class ContentObjectRenderer
             return $linkText;
         }
 
-        // Check, if the target is coded as a JS open window link:
-        $JSwindowParts = [];
-        $JSwindowParams = '';
-        if ($target && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $target, $JSwindowParts)) {
-            // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
-            $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), true);
-            $JSwindow_paramsArr = [];
-            foreach ($JSwindow_tempParamsArr as $JSv) {
-                list($JSp, $JSv) = explode('=', $JSv, 2);
-                $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
-            }
-            // Add width/height:
-            $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
-            $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
-            // Imploding into string:
-            $JSwindowParams = implode(',', $JSwindow_paramsArr);
-            // Resetting the target since we will use onClick.
-            $target = '';
-        }
-
         // Detecting kind of link and resolve all necessary parameters
         /** @var LinkService $linkService */
         $linkService = GeneralUtility::makeInstance(LinkService::class);
@@ -6103,6 +6083,24 @@ class ContentObjectRenderer
             if ($conf['title.']) {
                 $title = $this->stdWrap($title, $conf['title.']);
             }
+        }
+
+        // Check, if the target is coded as a JS open window link:
+        $JSwindowParts = [];
+        $JSwindowParams = '';
+        if ($target && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $target, $JSwindowParts)) {
+            // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
+            $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), true);
+            $JSwindow_paramsArr = [];
+            foreach ($JSwindow_tempParamsArr as $JSv) {
+                list($JSp, $JSv) = explode('=', $JSv, 2);
+                $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
+            }
+            // Add width/height:
+            $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
+            $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
+            // Imploding into string:
+            $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
 
         if ($JSwindowParams) {
