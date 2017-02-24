@@ -389,7 +389,10 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
             if ($fd = fopen($sessionFile, 'rb')) {
                 $lockres = flock($fd, LOCK_SH);
                 if ($lockres) {
-                    $content = fread($fd, filesize($sessionFile));
+                    $length = filesize($sessionFile);
+                    if ($length > 0) {
+                        $content = fread($fd, $length);
+                    }
                     flock($fd, LOCK_UN);
                 }
                 fclose($fd);
