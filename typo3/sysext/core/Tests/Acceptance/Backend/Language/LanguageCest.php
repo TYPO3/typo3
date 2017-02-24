@@ -36,6 +36,9 @@ class LanguageCest
         $I->see('Languages');
         $I->click('Languages');
 
+        // Increase duration for notification viewing, avoids vanish before the message is tested
+        $I->executeJS('TYPO3.Notification.duration = 100;');
+
         // switch to content iframe
         $I->switchToIFrame('list_frame');
     }
@@ -78,10 +81,8 @@ class LanguageCest
      */
     public function activateAndDeactivateALanguage(Admin $I)
     {
-        //@todo: Fix this test
-        $this->skipUnstable();
-
         $I->wantTo('Install a language');
+
         $I->seeElement('#language-da');
         $I->seeElement('#language-da.disabled');
         $I->click('#language-da td a.activateLanguageLink');
@@ -101,9 +102,6 @@ class LanguageCest
      */
     public function downloadALanguage(Admin $I)
     {
-        //@todo: Fix this test
-        $this->skipUnstable();
-
         $I->wantTo('Download a language with no selection and see error message');
 
         $I->click('a[data-action="updateActiveLanguages"]');
@@ -171,13 +169,5 @@ class LanguageCest
 
         // switch to content iframe
         $I->switchToIFrame('list_frame');
-    }
-
-   /**
-    * @throws \PHPUnit_Framework_SkippedTestError
-    */
-    protected function skipUnstable()
-    {
-        throw new \PHPUnit_Framework_SkippedTestError('Test unstable, skipped for now.');
     }
 }

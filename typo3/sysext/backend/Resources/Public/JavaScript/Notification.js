@@ -41,7 +41,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Severity'], function ($) {
 	/**
 	 * The main Notification object
 	 *
-	 * @type {{NOTICE: number, INFO: number, OK: number, WARNING: number, ERROR: number, messageContainer: null}}
+	 * @type {{NOTICE: number, INFO: number, OK: number, WARNING: number, ERROR: number, messageContainer: null, duration: number}}
 	 * @exports TYPO3/CMS/Backend/Notification
 	 */
 	var Notification = {
@@ -50,7 +50,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Severity'], function ($) {
 		OK: 0,
 		WARNING: 1,
 		ERROR: 2,
-		messageContainer: null
+		messageContainer: null,
+		duration: 5
 	};
 
 	/**
@@ -158,7 +159,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Severity'], function ($) {
 				icon = 'info';
 		}
 
-		duration = (typeof duration === 'undefined') ? 5 : parseFloat(duration);
+		duration = (typeof duration === 'undefined') ? Notification.duration : parseFloat(duration);
 
 		if (Notification.messageContainer === null) {
 			Notification.messageContainer = $('<div id="alert-container"></div>').appendTo('body');
