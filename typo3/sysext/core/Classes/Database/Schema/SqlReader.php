@@ -102,7 +102,7 @@ class SqlReader
                 }
                 $statementArrayPointer++;
             } else {
-                $statementArray[$statementArrayPointer] .= LF;
+                $statementArray[$statementArrayPointer] .= ' ';
             }
         }
 

@@ -86,6 +86,23 @@ class SqlReaderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function getInsertStatementArrayResultWithNewline()
+    {
+        $result = $this->subject->getInsertStatementArray(
+            'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');' .
+            LF .
+            'INSERT INTO aTestTable(`aTestField`) ' .
+            LF .
+            'VALUES(1);'
+        );
+
+        $this->assertCount(1, $result);
+        $this->assertSame('INSERT INTO aTestTable(`aTestField`) VALUES(1);', array_pop($result));
+    }
+
+    /**
+     * @test
+     */
     public function getCreateTableStatementArrayResult()
     {
         $result = $this->subject->getCreateTableStatementArray(
