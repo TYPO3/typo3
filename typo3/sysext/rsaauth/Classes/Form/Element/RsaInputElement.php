@@ -53,13 +53,18 @@ class RsaInputElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
         $resultArray['requireJsModules'] = ['TYPO3/CMS/Rsaauth/RsaEncryptionModule'];
 
-        $itemValue = $parameterArray['itemFormElValue'] ? '*********' : '';
+        $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
         $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
         $width = (int)$this->formMaxWidth($size);
+        $isPasswordField = in_array('password', $evalList, true);
 
         if ($config['readOnly']) {
+            // Early return for read only fields
+            if ($isPasswordField) {
+                $itemValue = $itemValue ? '*********' : '';
+            }
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   '<div class="form-wizards-wrap">';
@@ -126,7 +131,7 @@ class RsaInputElement extends AbstractFormElement
         if (isset($config['autocomplete'])) {
             $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
         }
-        if (in_array('password', $evalList)) {
+        if ($isPasswordField) {
             $attributes['type'] = 'password';
             $attributes['value'] = $itemValue ? '*********' : '';
             $attributes['autocomplete'] = 'new-' . $fieldName;
