@@ -397,7 +397,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'max' => 20,
                 'eval' => 'date',
                 'default' => 0
             ]
