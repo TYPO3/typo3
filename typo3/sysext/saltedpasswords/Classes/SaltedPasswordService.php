@@ -135,13 +135,13 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
                     $this->authenticationFailed = true;
                 }
             } elseif (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
-                $validPasswd = md5($password) === (string)$user['password'];
+                $validPasswd = \hash_equals(md5($password), (string)$user['password']);
                 // Skip further authentication methods
                 if (!$validPasswd) {
                     $this->authenticationFailed = true;
                 }
             } else {
-                $validPasswd = (string)$password !== '' && (string)$password === (string)$user['password'];
+                $validPasswd = (string)$password !== '' && \hash_equals((string)$user['password'], (string)$password);
             }
             // Should we store the new format value in DB?
             if ($validPasswd && (int)$this->extConf['updatePasswd']) {
