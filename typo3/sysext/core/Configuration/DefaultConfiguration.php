@@ -762,9 +762,7 @@ return [
     ],
     'BE' => [
         // Backend Configuration.
-        'lang' => [
-            'debug' => false
-        ],
+        'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
         'RTE_imageStorageDir' => 'uploads/',
         'lockRootPath' => '',

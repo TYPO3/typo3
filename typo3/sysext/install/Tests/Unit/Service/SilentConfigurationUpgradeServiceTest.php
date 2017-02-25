@@ -598,4 +598,74 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
 
         $silentConfigurationUpgradeServiceInstance->_call('setImageMagickDetailSettings');
     }
+
+    /**
+     * @test
+     */
+    public function migrateNonExistingLangDebug()
+    {
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        $currentLocalConfiguration = [
+        ];
+        $this->createConfigurationManagerWithMockedMethods(
+            [
+                'getLocalConfigurationValueByPath',
+                'setLocalConfigurationValueByPath',
+            ]
+        );
+
+        $this->configurationManager->expects($this->exactly(1))
+            ->method('getLocalConfigurationValueByPath')
+            ->will($this->returnValueMap($currentLocalConfiguration));
+        $this->configurationManager->expects($this->never())
+            ->method('setLocalConfigurationValueByPath');
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+        $silentConfigurationUpgradeServiceInstance->_call('migrateLangDebug');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateExistingLangDebug()
+    {
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        $currentLocalConfiguration = [
+            ['BE/lang/debug', false]
+        ];
+        $this->createConfigurationManagerWithMockedMethods(
+            [
+                'getLocalConfigurationValueByPath',
+                'setLocalConfigurationValueByPath',
+            ]
+        );
+
+        $this->configurationManager->expects($this->exactly(1))
+            ->method('getLocalConfigurationValueByPath')
+            ->will($this->returnValueMap($currentLocalConfiguration));
+        $this->configurationManager->expects($this->once())
+            ->method('setLocalConfigurationValueByPath')
+            ->with($this->equalTo('BE/languageDebug'), false);
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+        $silentConfigurationUpgradeServiceInstance->_call('migrateLangDebug');
+    }
 }

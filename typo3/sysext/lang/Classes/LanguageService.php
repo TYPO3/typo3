@@ -109,7 +109,7 @@ class LanguageService
         $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
         // Initialize the localization factory object
         $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lang']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug']) {
             $this->debugKey = true;
         }
     }

@@ -94,6 +94,7 @@ return [
         'excludeForPackaging' => 'String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!',
     ],
     'BE' => [ // Backend Configuration.
+        'languageDebug' => 'Boolean: If set languageDebug will be enabled in LanguageService',
         'fileadminDir' => 'Path to the fileadmin dir. This is relative to PATH_site, DefaultStorage will be created with that configuration, do not access manually but ResourceFactory::getDefaultStorage()',
         'RTE_imageStorageDir' => 'Default storage directory for Rich Text Editor files',
         'lockRootPath' => 'This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required!',

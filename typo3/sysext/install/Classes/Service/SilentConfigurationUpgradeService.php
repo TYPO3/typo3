@@ -89,7 +89,9 @@ class SilentConfigurationUpgradeService
         'FE/lockHashKeyWords',
         'BE/lockHashKeyWords',
         // #78835
-        'SYS/cookieHttpOnly'
+        'SYS/cookieHttpOnly',
+        // #71095
+        'BE/lang'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
@@ -111,12 +113,15 @@ class SilentConfigurationUpgradeService
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
-        $this->removeObsoleteLocalConfigurationSettings();
         $this->migrateThumbnailsPngSetting();
         $this->migrateLockSslSetting();
         $this->migrateDatabaseConnectionSettings();
         $this->migrateDatabaseConnectionCharset();
         $this->migrateDatabaseDriverOptions();
+        $this->migrateLangDebug();
+
+        // Should run at the end to prevent that obsolete settings are removed before migration
+        $this->removeObsoleteLocalConfigurationSettings();
     }
 
     /**
@@ -732,6 +737,25 @@ class SilentConfigurationUpgradeService
             }
         } catch (\RuntimeException $e) {
             // no driver options found, nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate the configuration setting BE/lang/debug if set in the LocalConfiguration.php file
+     *
+     * @return void
+     */
+    protected function migrateLangDebug()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $currentOption = $confManager->getLocalConfigurationValueByPath('BE/lang/debug');
+            // check if the current option is set and boolean
+            if (isset($currentOption) && is_bool($currentOption)) {
+                $confManager->setLocalConfigurationValueByPath('BE/languageDebug', $currentOption);
+            }
+        } catch (\RuntimeException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
         }
     }
 }
