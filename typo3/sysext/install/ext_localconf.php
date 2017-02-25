@@ -66,3 +66,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
     = \TYPO3\CMS\Install\Updates\MigrateFscStaticTemplateUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\SysRefindexHashUpdater::class]
     = \TYPO3\CMS\Install\Updates\SysRefindexHashUpdater::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\MigrateFeSessionDataUpdate::class]
+    = \TYPO3\CMS\Install\Updates\MigrateFeSessionDataUpdate::class;
