@@ -45,6 +45,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     public function createAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+        $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         $domObjectId = $ajaxArguments[0];
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
@@ -57,7 +58,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
 
         // Parent, this table embeds the child table
@@ -77,14 +78,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $vanillaUid = (int)$inlineFirstPid;
         }
 
-        $flexDataStructureIdentifier = $this->getFlexFormDataStructureIdentifierFromAjaxContext($ajaxArguments);
-        $processedTca = [];
-        if ($flexDataStructureIdentifier) {
-            $processedTca = $GLOBALS['TCA'][$parent['table']];
+        $processedTca = $GLOBALS['TCA'][$parent['table']];
+        $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
+        if (!empty($parentConfig['dataStructureIdentifier'])) {
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexDataStructureIdentifier);
-            $processedTca['columns'][$parentFieldName]['config']['dataStructureIdentifier'] = $flexDataStructureIdentifier;
-            $processedTca['columns'][$parentFieldName]['config']['ds'] = $dataStructure;
+            $processedTca['columns'][$parentFieldName]['config']['ds'] = $flexFormTools->parseDataStructureByIdentifier($parentConfig['dataStructureIdentifier']);
         }
 
         $formDataCompilerInputForParent = [
@@ -242,12 +240,13 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $domObjectId = $ajaxArguments[0];
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
+        $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         // Parse the DOM identifier, add the levels to the structure stack
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
 
         // Parent, this table embeds the child table
         $parent = $inlineStackProcessor->getStructureLevel(-1);
@@ -258,14 +257,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'uid' => (int)$parent['uid'],
         ];
 
-        $flexDataStructureIdentifier = $this->getFlexFormDataStructureIdentifierFromAjaxContext($ajaxArguments);
-        $processedTca = [];
-        if ($flexDataStructureIdentifier) {
-            $processedTca = $GLOBALS['TCA'][$parent['table']];
+        $processedTca = $GLOBALS['TCA'][$parent['table']];
+        $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
+        if (!empty($parentConfig['dataStructureIdentifier'])) {
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexDataStructureIdentifier);
-            $processedTca['columns'][$parentFieldName]['config']['dataStructureIdentifier'] = $flexDataStructureIdentifier;
-            $processedTca['columns'][$parentFieldName]['config']['ds'] = $dataStructure;
+            $processedTca['columns'][$parentFieldName]['config']['ds'] = $flexFormTools->parseDataStructureByIdentifier($parentConfig['dataStructureIdentifier']);
         }
 
         $formDataCompilerInputForParent = [
@@ -350,12 +346,13 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
         $domObjectId = $ajaxArguments[0];
         $type = $ajaxArguments[1];
+        $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
         $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+        $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
 
         $jsonArray = false;
@@ -363,6 +360,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             // Parent, this table embeds the child table
             $parent = $inlineStackProcessor->getStructureLevel(-1);
             $parentFieldName = $parent['field'];
+
+            $processedTca = $GLOBALS['TCA'][$parent['table']];
+            $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
 
             // Child, a record from this table should be rendered
             $child = $inlineStackProcessor->getUnstableStructure();
@@ -375,6 +375,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     // TcaInlineExpandCollapseState needs this
                     'uid' => (int)$parent['uid'],
                 ],
+                'processedTca' => $processedTca,
                 'inlineFirstPid' => $inlineFirstPid,
                 'columnsToProcess' => [
                     $parentFieldName
@@ -919,25 +920,26 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * Inline fields within a flex form need the data structure identifier that
-     * specifies the specific flex form this inline element is in. Retrieve it from
-     * the context array.
+     * Validates the config that is transferred over the wire to provide the
+     * correct TCA config for the parent table
      *
-     * @param array $ajaxArguments The AJAX request arguments
-     * @return string Data structure identifier as json string
+     * @param string $contextString
+     * @return array
+     * @todo: Review this construct - Why can't the ajax call fetch these data on its own and transfers it to client instead?
      */
-    protected function getFlexFormDataStructureIdentifierFromAjaxContext(array $ajaxArguments)
+    protected function extractSignedParentConfigFromRequest(string $contextString): array
     {
-        if (!isset($ajaxArguments['context'])) {
-            return '';
+        if ($contextString === '') {
+            return [];
         }
-
-        $context = json_decode($ajaxArguments['context'], true);
-        if (GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
-            return '';
+        $context = json_decode($contextString, true);
+        if (empty($context['config'])) {
+            return [];
         }
-
-        return $context['config']['flexDataStructureIdentifier'] ?? '';
+        if (!\hash_equals(GeneralUtility::hmac(json_encode($context['config']), 'InlineContext'), $context['hmac'])) {
+            return [];
+        }
+        return $context['config'];
     }
 
     /**

@@ -134,7 +134,7 @@ class InlineControlContainer extends AbstractContainer
         if (!empty($newStructureItem['flexform'])
             && isset($this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'])
         ) {
-            $config['flexDataStructureIdentifier'] = $this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'];
+            $config['dataStructureIdentifier'] = $this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'];
         }
 
         // e.g. data[<table>][<uid>][<field>]
@@ -169,7 +169,7 @@ class InlineControlContainer extends AbstractContainer
             ],
             'context' => [
                 'config' => $config,
-                'hmac' => GeneralUtility::hmac(serialize($config)),
+                'hmac' => GeneralUtility::hmac(json_encode($config), 'InlineContext'),
             ],
         ];
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];
