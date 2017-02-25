@@ -74,7 +74,6 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_irretutorial_mnsym_hotel',
                 'maxitems' => 1,
-                'localizeReferences' => 1,
                 'default' => 0,
             ]
         ],
@@ -85,7 +84,6 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_irretutorial_mnsym_hotel',
                 'maxitems' => 1,
-                'localizeReferences' => 1,
                 'default' => 0,
             ]
         ],

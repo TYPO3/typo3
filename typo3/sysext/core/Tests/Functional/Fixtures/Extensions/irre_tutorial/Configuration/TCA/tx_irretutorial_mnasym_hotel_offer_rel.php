@@ -75,7 +75,6 @@ return [
                 'foreign_table' => 'tx_irretutorial_mnasym_hotel',
                 'foreign_table_where' => 'AND tx_irretutorial_mnasym_hotel.pid=###CURRENT_PID### AND tx_irretutorial_mnasym_hotel.sys_language_uid="###REC_FIELD_sys_language_uid###"',
                 'maxitems' => 1,
-                'localizeReferences' => 1,
                 'default' => 0,
             ]
         ],
@@ -87,7 +86,6 @@ return [
                 'foreign_table' => 'tx_irretutorial_mnasym_offer',
                 'foreign_table_where' => 'AND tx_irretutorial_mnasym_offer.pid=###CURRENT_PID### AND tx_irretutorial_mnasym_offer.sys_language_uid="###REC_FIELD_sys_language_uid###"',
                 'maxitems' => 1,
-                'localizeReferences' => 1,
                 'default' => 0,
             ]
         ],
