@@ -74,20 +74,22 @@ class LocallangXmlParser extends AbstractXmlParser
             throw new InvalidXmlFileException('Invalid locallang.xml language file "' . PathUtility::stripPathSitePrefix($this->sourcePath) . '"', 1487944884);
         }
 
-        // Check if the source llxml file contains localized records
-        $localizedBodyOfFileTag = $root->data->xpath('languageKey[@index=\'' . $this->languageKey . '\']');
         if ($element === 'source' || $this->languageKey === 'default') {
             $parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
         } else {
             $parsedData = [];
         }
-        if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
-            $parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
-            $mergedData = $parsedDataTarget + $parsedData;
-            if ($this->languageKey === 'default') {
-                $parsedData = array_intersect_key($mergedData, $parsedData, $parsedDataTarget);
-            } else {
-                $parsedData = array_intersect_key($mergedData, $parsedDataTarget);
+        if ($element === 'target') {
+            // Check if the source llxml file contains localized records
+            $localizedBodyOfFileTag = $root->data->xpath('languageKey[@index=\'' . $this->languageKey . '\']');
+            if (isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
+                $parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
+                $mergedData = $parsedDataTarget + $parsedData;
+                if ($this->languageKey === 'default') {
+                    $parsedData = array_intersect_key($mergedData, $parsedData, $parsedDataTarget);
+                } else {
+                    $parsedData = array_intersect_key($mergedData, $parsedDataTarget);
+                }
             }
         }
         return $parsedData;
