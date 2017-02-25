@@ -167,6 +167,7 @@ class RecordProvider extends AbstractProvider
     {
         parent::initialize();
         $this->record = BackendUtility::getRecordWSOL($this->table, $this->identifier);
+        $this->initPermissions();
     }
 
     /**
