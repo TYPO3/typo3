@@ -960,6 +960,11 @@ class SetupModuleController extends AbstractModule
             return;
         }
 
+        // If user is not allowed to modify avatar $fileUid is empty - so don't overwrite existing avatar
+        if (empty($fileUid)) {
+            return;
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
@@ -983,6 +988,11 @@ class SetupModuleController extends AbstractModule
                 )
             )
             ->execute();
+
+        // If Avatar is marked for delete => set it to empty string so it will be updated properly
+        if ($fileUid === 'delete') {
+            $fileUid = '';
+        }
 
         // Create new reference
         if ($fileUid) {
@@ -1035,7 +1045,7 @@ class SetupModuleController extends AbstractModule
             function clearExistingImage() {
                 $(' . GeneralUtility::quoteJSvalue('#image_' . htmlspecialchars($fieldName)) . ').hide();
                 $(' . GeneralUtility::quoteJSvalue('#clear_button_' . htmlspecialchars($fieldName)) . ').hide();
-                $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(\'\');
+                $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(\'delete\');
             }
 
             function setFileUid(field, value, fileUid) {
