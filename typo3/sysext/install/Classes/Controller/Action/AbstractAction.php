@@ -187,30 +187,6 @@ abstract class AbstractAction implements ActionInterface
     }
 
     /**
-     * Get database instance.
-     * Will be initialized if it does not exist yet.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        static $database;
-        if (!is_object($database)) {
-            /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-            $database = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
-            $database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user']);
-            $database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password']);
-            $database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host']);
-            $database->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['port']);
-            $database->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['unix_socket']);
-            $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname']);
-            $database->initialize();
-            $database->connectDB();
-        }
-        return $database;
-    }
-
-    /**
      * Some actions like the database analyzer and the upgrade wizards need additional
      * bootstrap actions performed.
      *
