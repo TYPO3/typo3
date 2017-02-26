@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
 use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,8 +62,19 @@ class DatabaseData extends AbstractStepAction
             $configurationManager->setLocalConfigurationValueByPath('SYS/sitename', $postValues['sitename']);
         }
 
-        $result = $this->importDatabaseData();
-        if (!empty($result)) {
+        try {
+            $result = $this->importDatabaseData();
+            if (!empty($result)) {
+                return $result;
+            }
+        } catch (StatementException $exception) {
+            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
+            $errorStatus->setTitle('Import of database data could not be performed');
+            $errorStatus->setMessage(
+                'Error detected in SQL statement:' . LF .
+                $exception->getMessage()
+            );
+            $result[] = $errorStatus;
             return $result;
         }
 

@@ -260,7 +260,7 @@ class SchemaMigrator
             } catch (StatementException $statementException) {
                 // Enrich the error message with the full invalid statement
                 throw new StatementException(
-                    $statementException->getMessage() . ' in statement ' . $statement,
+                    $statementException->getMessage() . ' in statement: ' . LF . $statement,
                     1476171315,
                     $statementException
                 );
