@@ -30,7 +30,7 @@ return [
         'fileinfo' => [
             'config' => [
                 'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Hook\\FileInfoHook->renderFileInfo'
+                'renderType' => 'fileInfo',
             ]
         ],
         'storage' => [

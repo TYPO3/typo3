@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Resource\Hook;
+declare(strict_types=1);
+namespace TYPO3\CMS\Backend\Form\Element;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,41 +23,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
- * Utility class to render TCEforms information about a sys_file record
+ * This renderType is used with type=user in FAL for table sys_file and
+ * sys_file_metadata, for field fileinfo and renders an informational
+ * element with image preview, filename, size and similar.
  */
-class FileInfoHook
+class FileInfoElement extends AbstractFormElement
 {
-    /**
-     * User function for sys_file (element)
-     *
-     * @param array $propertyArray the array with additional configuration options.
-     * @return string The HTML code for the TCEform field
-     */
-    public function renderFileInfo(array $propertyArray)
-    {
-        $fileRecord = $propertyArray['row'];
-        $fileObject = null;
-        if ($fileRecord['uid'] > 0) {
-            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileRecord['uid']);
-        }
-        return $this->renderFileInformationContent($fileObject);
-    }
 
     /**
-     * User function for sys_file_meta (element)
+     * Handler for single nodes
      *
-     * @param array $propertyArray the array with additional configuration options.
-     * @return string The HTML code for the TCEform field
+     * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function renderFileMetadataInfo(array $propertyArray)
+    public function render(): array
     {
-        $fileMetadataRecord = $propertyArray['row'];
-        $fileObject = null;
-        if (!empty($fileMetadataRecord['file']) && $fileMetadataRecord['file'][0] > 0) {
-            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$fileMetadataRecord['file'][0]);
+        $resultArray = $this->initializeResultArray();
+
+        $fileUid = 0;
+        if ($this->data['tableName'] === 'sys_file') {
+            $fileUid = (int)$this->data['databaseRow']['uid'];
+        } elseif ($this->data['tableName'] === 'sys_file_metadata') {
+            $fileUid = (int)$this->data['databaseRow']['file'][0];
         }
 
-        return $this->renderFileInformationContent($fileObject);
+        $fileObject = null;
+        if ($fileUid > 0) {
+            $fileObject = ResourceFactory::getInstance()->getFileObject($fileUid);
+        }
+        $resultArray['html'] = $this->renderFileInformationContent($fileObject);
+        return $resultArray;
     }
 
     /**
@@ -65,7 +60,7 @@ class FileInfoHook
      * @param File $file
      * @return string
      */
-    protected function renderFileInformationContent(File $file = null)
+    protected function renderFileInformationContent(File $file = null): string
     {
         /** @var LanguageService $lang */
         $lang = $GLOBALS['LANG'];
@@ -81,9 +76,9 @@ class FileInfoHook
             }
             if ($previewImage) {
                 $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
-                            'width="' . $processedFile->getProperty('width') . '" ' .
-                            'height="' . $processedFile->getProperty('height') . '" ' .
-                            'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+                    'width="' . $processedFile->getProperty('width') . '" ' .
+                    'height="' . $processedFile->getProperty('height') . '" ' .
+                    'alt="" class="t3-tceforms-sysfile-imagepreview" />';
             }
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';

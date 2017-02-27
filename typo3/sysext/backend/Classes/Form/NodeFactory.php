@@ -90,6 +90,7 @@ class NodeFactory
         'textTable' => Element\TextTableElement::class,
         'unknown' => Element\UnknownElement::class,
         'user' => Element\UserElement::class,
+        'fileInfo' => Element\FileInfoElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

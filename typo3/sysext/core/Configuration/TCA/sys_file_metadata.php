@@ -78,7 +78,7 @@ return [
         'fileinfo' => [
             'config' => [
                 'type' => 'user',
-                'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Hook\\FileInfoHook->renderFileMetadataInfo'
+                'renderType' => 'fileInfo',
             ]
         ],
         'file' => [
