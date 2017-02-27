@@ -20,15 +20,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	/**
 	 * The main ContextHelp object
 	 *
-	 * @type {{selectorEditor: string, selectorAddColumn: string, selectorRemoveColumn: string, selectorAddRow: string, selectorRemoveRow: string, selectorLinkEditor: string, selectorLinkExpandRight: string, selectorLinkShrinkLeft: string, selectorLinkExpandDown: string, selectorLinkShrinkUp: string, selectorDocHeaderSave: string, selectorDocHeaderSaveClose: string, selectorConfigPreview: string, selectorConfigPreviewButton: string, colCount: number, rowCount: number, field: string, data: Array, nameLabel: string, columnLabel: string, targetElement: null}}
+	 * @type {{selectorEditor: string, selectorAddColumn: string, selectorRemoveColumn: string, selectorAddRowTop: string, selectorRemoveRowTop: string, selectorAddRowBottom: string, selectorRemoveRowBottom: string, selectorLinkEditor: string, selectorLinkExpandRight: string, selectorLinkShrinkLeft: string, selectorLinkExpandDown: string, selectorLinkShrinkUp: string, selectorDocHeaderSave: string, selectorDocHeaderSaveClose: string, selectorConfigPreview: string, selectorConfigPreviewButton: string, colCount: number, rowCount: number, field: string, data: Array, nameLabel: string, columnLabel: string, targetElement: null}}
 	 * @exports TYPO3/CMS/Backend/GridEditor
 	 */
 	var GridEditor = {
 		selectorEditor: '.t3js-grideditor',
 		selectorAddColumn: '.t3js-grideditor-addcolumn',
 		selectorRemoveColumn: '.t3js-grideditor-removecolumn',
-		selectorAddRow: '.t3js-grideditor-addrow',
-		selectorRemoveRow: '.t3js-grideditor-removerow',
+		selectorAddRowTop: '.t3js-grideditor-addrow-top',
+		selectorRemoveRowTop: '.t3js-grideditor-removerow-top',
+		selectorAddRowBottom: '.t3js-grideditor-addrow-bottom',
+		selectorRemoveRowBottom: '.t3js-grideditor-removerow-bottom',
 		selectorLinkEditor: '.t3js-grideditor-link-editor',
 		selectorLinkExpandRight: '.t3js-grideditor-link-expand-right',
 		selectorLinkShrinkLeft: '.t3js-grideditor-link-shrink-left',
@@ -76,15 +78,27 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 			GridEditor.drawTable();
 			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
-		$(document).on('click', GridEditor.selectorAddRow, function(e) {
+		$(document).on('click', GridEditor.selectorAddRowTop, function (e) {
 			e.preventDefault();
-			GridEditor.addRow();
+			GridEditor.addRowTop();
 			GridEditor.drawTable();
 			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
-		$(document).on('click', GridEditor.selectorRemoveRow, function(e) {
+		$(document).on('click', GridEditor.selectorAddRowBottom, function (e) {
 			e.preventDefault();
-			GridEditor.removeRow();
+			GridEditor.addRowBottom();
+			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
+		});
+		$(document).on('click', GridEditor.selectorRemoveRowTop, function (e) {
+			e.preventDefault();
+			GridEditor.removeRowTop();
+			GridEditor.drawTable();
+			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
+		});
+		$(document).on('click', GridEditor.selectorRemoveRowBottom, function (e) {
+			e.preventDefault();
+			GridEditor.removeRowBottom();
 			GridEditor.drawTable();
 			GridEditor.writeConfig(GridEditor.export2LayoutRecord());
 		});
@@ -187,9 +201,23 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	};
 
 	/**
-	 * Add a new row
+	 * Add a new row at the top
 	 */
-	GridEditor.addRow = function() {
+	GridEditor.addRowTop = function () {
+		var newRow = [];
+		for (var i = 0; i < GridEditor.colCount; i++) {
+			var newCell = GridEditor.getNewCell();
+			newCell.name = i + 'x' + GridEditor.data.length;
+			newRow[i] = newCell;
+		}
+		GridEditor.data.unshift(newRow);
+		GridEditor.rowCount++;
+	};
+
+	/**
+	 * Add a new row at the bottom
+	 */
+	GridEditor.addRowBottom = function() {
 		var newRow = [];
 		for (var i = 0; i < GridEditor.colCount; i++) {
 			var newCell = GridEditor.getNewCell();
@@ -201,10 +229,34 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity', 'boot
 	};
 
 	/**
+	 * Removes the first row of the grid and adjusts all cells that might be effected
+	 * by that change. (Removing colspans)
+	 */
+	GridEditor.removeRowTop = function () {
+		if (GridEditor.rowCount <= 1) {
+			return false;
+		}
+		var newData = [];
+		for (var rowIndex = 1; rowIndex < GridEditor.rowCount; rowIndex++) {
+			newData.push(GridEditor.data[rowIndex]);
+		}
+
+		// fix rowspan in former last row
+		for (var colIndex = 0; colIndex < GridEditor.colCount; colIndex++) {
+			if (GridEditor.data[0][colIndex].spanned === 1) {
+				GridEditor.findUpperCellWidthRowspanAndDecreaseByOne(colIndex, 0);
+			}
+		}
+
+		GridEditor.data = newData;
+		GridEditor.rowCount--;
+	};
+
+	/**
 	 * Removes the last row of the grid and adjusts all cells that might be effected
 	 * by that change. (Removing colspans)
 	 */
-	GridEditor.removeRow = function() {
+	GridEditor.removeRowBottom = function () {
 		if (GridEditor.rowCount <= 1) {
 			return false;
 		}
