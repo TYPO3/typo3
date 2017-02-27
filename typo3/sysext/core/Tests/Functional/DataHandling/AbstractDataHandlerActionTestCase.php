@@ -14,11 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Functional test for the DataHandler
@@ -111,86 +108,14 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
     {
         $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
-
-        $dataSet = DataSet::read($fileName, true);
-
-        foreach ($dataSet->getTableNames() as $tableName) {
-            $connection = $this->getConnectionPool()->getConnectionForTable($tableName);
-            foreach ($dataSet->getElements($tableName) as $element) {
-                try {
-                    $connection->insert($tableName, $element);
-                } catch (DBALException $e) {
-                    $this->fail('SQL Error for table "' . $tableName . '": ' . LF . $e->getMessage());
-                }
-            }
-            Testbase::resetTableSequences($connection, $tableName);
-        }
+        $this->importCSVDataSet($fileName);
     }
 
     protected function assertAssertionDataSet($dataSetName)
     {
         $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
-
-        $dataSet = DataSet::read($fileName);
-        $failMessages = [];
-
-        foreach ($dataSet->getTableNames() as $tableName) {
-            $hasUidField = ($dataSet->getIdIndex($tableName) !== null);
-            $records = $this->getAllRecords($tableName, $hasUidField);
-            foreach ($dataSet->getElements($tableName) as $assertion) {
-                $result = $this->assertInRecords($assertion, $records);
-                if ($result === false) {
-                    if ($hasUidField && empty($records[$assertion['uid']])) {
-                        $failMessages[] = 'Record "' . $tableName . ':' . $assertion['uid'] . '" not found in database';
-                        continue;
-                    }
-                    $recordIdentifier = $tableName . ($hasUidField ? ':' . $assertion['uid'] : '');
-                    $additionalInformation = ($hasUidField ? $this->renderRecords($assertion, $records[$assertion['uid']]) : $this->arrayToString($assertion));
-                    $failMessages[] = 'Assertion in data-set failed for "' . $recordIdentifier . '":' . LF . $additionalInformation;
-                    // Unset failed asserted record
-                    if ($hasUidField) {
-                        unset($records[$assertion['uid']]);
-                    }
-                } else {
-                    // Unset asserted record
-                    unset($records[$result]);
-                    // Increase assertion counter
-                    $this->assertTrue($result !== false);
-                }
-            }
-            if (!empty($records)) {
-                foreach ($records as $record) {
-                    $recordIdentifier = $tableName . ':' . $record['uid'];
-                    $emptyAssertion = array_fill_keys($dataSet->getFields($tableName), '[none]');
-                    $reducedRecord = array_intersect_key($record, $emptyAssertion);
-                    $additionalInformation = ($hasUidField ? $this->renderRecords($emptyAssertion, $reducedRecord) : $this->arrayToString($reducedRecord));
-                    $failMessages[] = 'Not asserted record found for "' . $recordIdentifier . '":' . LF . $additionalInformation;
-                }
-            }
-        }
-
-        if (!empty($failMessages)) {
-            $this->fail(implode(LF, $failMessages));
-        }
-    }
-
-    /**
-     * @param array $assertion
-     * @param array $records
-     * @return bool|int|string
-     */
-    protected function assertInRecords(array $assertion, array $records)
-    {
-        foreach ($records as $index => $record) {
-            $differentFields = $this->getDifferentFields($assertion, $record);
-
-            if (empty($differentFields)) {
-                return $index;
-            }
-        }
-
-        return false;
+        $this->assertCSVDataSet($fileName);
     }
 
     /**
@@ -230,138 +155,6 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
             }
             $this->fail($failureMessage);
         }
-    }
-
-    /**
-     * @param string $tableName
-     * @param bool $hasUidField
-     * @return array
-     */
-    protected function getAllRecords($tableName, $hasUidField = false)
-    {
-        $queryBuilder = $this->getConnectionPool()
-            ->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()->removeAll();
-        $statement = $queryBuilder
-            ->select('*')
-            ->from($tableName)
-            ->execute();
-
-        if (!$hasUidField) {
-            return $statement->fetchAll();
-        }
-
-        $allRecords = [];
-        while ($record = $statement->fetch()) {
-            $index = $record['uid'];
-            $allRecords[$index] = $record;
-        }
-
-        return $allRecords;
-    }
-
-    /**
-     * @param array $array
-     * @return string
-     */
-    protected function arrayToString(array $array)
-    {
-        $elements = [];
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $value = $this->arrayToString($value);
-            }
-            $elements[] = "'" . $key . "' => '" . $value . "'";
-        }
-        return 'array(' . PHP_EOL . '   ' . implode(', ' . PHP_EOL . '   ', $elements) . PHP_EOL . ')' . PHP_EOL;
-    }
-
-    /**
-     * @param array $assertion
-     * @param array $record
-     * @return string
-     */
-    protected function renderRecords(array $assertion, array $record)
-    {
-        $differentFields = $this->getDifferentFields($assertion, $record);
-        $columns = [
-            'fields' => ['Fields'],
-            'assertion' => ['Assertion'],
-            'record' => ['Record'],
-        ];
-        $lines = [];
-        $linesFromXmlValues = [];
-        $result = '';
-
-        foreach ($differentFields as $differentField) {
-            $columns['fields'][] = $differentField;
-            $columns['assertion'][] = ($assertion[$differentField] === null ? 'NULL' : $assertion[$differentField]);
-            $columns['record'][] = ($record[$differentField] === null ? 'NULL' : $record[$differentField]);
-        }
-
-        foreach ($columns as $columnIndex => $column) {
-            $columnLength = null;
-            foreach ($column as $value) {
-                if (strpos($value, '<?xml') === 0) {
-                    $value = '[see diff]';
-                }
-                $valueLength = strlen($value);
-                if (empty($columnLength) || $valueLength > $columnLength) {
-                    $columnLength = $valueLength;
-                }
-            }
-            foreach ($column as $valueIndex => $value) {
-                if (strpos($value, '<?xml') === 0) {
-                    if ($columnIndex === 'assertion') {
-                        try {
-                            $this->assertXmlStringEqualsXmlString((string)$value, (string)$record[$columns['fields'][$valueIndex]]);
-                        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
-                            $linesFromXmlValues[] = 'Diff for field "' . $columns['fields'][$valueIndex] . '":' . PHP_EOL . $e->getComparisonFailure()->getDiff();
-                        }
-                    }
-                    $value = '[see diff]';
-                }
-                $lines[$valueIndex][$columnIndex] = str_pad($value, $columnLength, ' ');
-            }
-        }
-
-        foreach ($lines as $line) {
-            $result .= implode('|', $line) . PHP_EOL;
-        }
-
-        foreach ($linesFromXmlValues as $lineFromXmlValues) {
-            $result .= PHP_EOL . $lineFromXmlValues . PHP_EOL;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param array $assertion
-     * @param array $record
-     * @return array
-     */
-    protected function getDifferentFields(array $assertion, array $record)
-    {
-        $differentFields = [];
-
-        foreach ($assertion as $field => $value) {
-            if (strpos($value, '\\*') === 0) {
-                continue;
-            } elseif (strpos($value, '<?xml') === 0) {
-                try {
-                    $this->assertXmlStringEqualsXmlString((string)$value, (string)$record[$field]);
-                } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
-                    $differentFields[] = $field;
-                }
-            } elseif ($value === null && $record[$field] !== $value) {
-                $differentFields[] = $field;
-            } elseif ((string)$record[$field] !== (string)$value) {
-                $differentFields[] = $field;
-            }
-        }
-
-        return $differentFields;
     }
 
     /**
