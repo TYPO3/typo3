@@ -612,7 +612,7 @@ abstract class ImportExport
             }
         }
         $pInfo['type'] = 'record';
-        $pInfo['size'] = $record['size'];
+        $pInfo['size'] = (int)$record['size'];
         $lines[] = $pInfo;
         // File relations:
         if (is_array($record['filerefs'])) {
@@ -640,7 +640,7 @@ abstract class ImportExport
                     $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] === 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] === 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] === 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
                 }
                 $pInfo['ref'] = 'SOFTREF';
-                $pInfo['size'] = '';
+                $pInfo['size'] = 0;
                 $pInfo['type'] = 'softref';
                 $pInfo['_softRefInfo'] = $info;
                 $pInfo['type'] = 'softref';
