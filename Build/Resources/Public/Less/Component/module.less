@@ -128,6 +128,10 @@
 .module-docheader-bar-navigation {
 	.module-docheader-bar-column-left {
 		white-space: nowrap;
+
+		@media (max-width: @screen-sm) {
+			white-space: normal;
+		}
 	}
 	.form-group select {
 		width: 100%;

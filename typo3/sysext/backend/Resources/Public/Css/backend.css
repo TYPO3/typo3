@@ -8344,6 +8344,11 @@ div.dropdown-menu {
 .module-docheader-bar-navigation .module-docheader-bar-column-left {
   white-space: nowrap;
 }
+@media (max-width: 768px) {
+  .module-docheader-bar-navigation .module-docheader-bar-column-left {
+    white-space: normal;
+  }
+}
 .module-docheader-bar-navigation .form-group select {
   width: 100%;
 }
