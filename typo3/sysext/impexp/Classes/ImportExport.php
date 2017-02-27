@@ -548,7 +548,7 @@ abstract class ImportExport
         }
         $pInfo['class'] = $table == 'pages' ? 'bgColor4-20' : 'bgColor4';
         $pInfo['type'] = 'record';
-        $pInfo['size'] = $record['size'];
+        $pInfo['size'] = (int)$record['size'];
         $lines[] = $pInfo;
         // File relations:
         if (is_array($record['filerefs'])) {
@@ -576,7 +576,7 @@ abstract class ImportExport
                     $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $lang->getLL('impexpcore_singlereco_filename', true) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $lang->getLL('impexpcore_singlereco_value', true) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $lang->getLL('impexpcore_softrefsel_record', true) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
                 }
                 $pInfo['ref'] = 'SOFTREF';
-                $pInfo['size'] = '';
+                $pInfo['size'] = 0;
                 $pInfo['class'] = 'bgColor3';
                 $pInfo['type'] = 'softref';
                 $pInfo['_softRefInfo'] = $info;
