@@ -35,7 +35,6 @@ class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             'cachedParametersWhiteList' => [],
             'requireCacheHashPresenceParameters' => ['req1', 'req2'],
             'excludedParametersIfEmpty' => [],
-            'includePageId' => true,
             'excludeAllEmptyParameters' => false
         ]);
     }

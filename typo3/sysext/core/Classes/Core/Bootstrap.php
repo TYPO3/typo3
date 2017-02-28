@@ -572,7 +572,6 @@ class Bootstrap
             'cachedParametersWhiteList' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], true),
             'excludedParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], true),
             'requireCacheHashPresenceParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], true),
-            'includePageId' => $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashIncludePageId']
         ];
         if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty']) === '*') {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludeAllEmptyParameters'] = true;

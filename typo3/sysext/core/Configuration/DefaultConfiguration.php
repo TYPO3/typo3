@@ -924,7 +924,6 @@ return [
         'eID_include' => [], // Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for \TYPO3\CMS\Frontend\Http\RequestHandlerRequestHandler to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
         'disableNoCacheParameter' => false,
         'cacheHash' => [], // Array: Processed values of the cHash* parameters, handled by core bootstrap internally
-        'cHashIncludePageId' => false,
         'cHashExcludedParameters' => 'L, pk_campaign, pk_kwd, utm_source, utm_medium, utm_campaign, utm_term, utm_content',
         'cHashOnlyForParameters' => '',
         'cHashRequiredParameters' => '',

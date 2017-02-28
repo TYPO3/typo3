@@ -91,7 +91,9 @@ class SilentConfigurationUpgradeService
         // #78835
         'SYS/cookieHttpOnly',
         // #71095
-        'BE/lang'
+        'BE/lang',
+        // #80050
+        'FE/cHashIncludePageId',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
