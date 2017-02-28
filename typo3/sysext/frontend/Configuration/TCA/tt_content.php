@@ -58,7 +58,6 @@ return [
             'menu_section' => 'content-menu-section',
             'menu_section_pages' => 'content-menu-section',
         ],
-        'requestUpdate' => 'list_type',
         'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
     ],
     'interface' => [
