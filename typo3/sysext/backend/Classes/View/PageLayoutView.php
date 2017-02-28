@@ -1830,7 +1830,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
         if (isset($this->contentElementCache[$lP][$colPos]) && is_array($this->contentElementCache[$lP][$colPos])) {
             foreach ($this->contentElementCache[$lP][$colPos] as $record) {
-                $key = array_search($record['t3_origuid'], $defLanguageCount);
+                $key = array_search($record['l18n_parent'] ?: $record['t3_origuid'], $defLanguageCount);
                 if ($key !== false) {
                     unset($defLanguageCount[$key]);
                 }

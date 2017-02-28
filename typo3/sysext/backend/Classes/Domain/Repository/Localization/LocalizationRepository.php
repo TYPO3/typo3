@@ -38,11 +38,16 @@ class LocalizationRepository
             . ' AND tt_content.pid = ' . (int)$pageId
             . ' AND tt_content.sys_language_uid = ' . (int)$localizedLanguage
             . ' AND tt_content.t3_origuid = tt_content_orig.uid'
-            . ' AND tt_content_orig.sys_language_uid=sys_language.uid'
+            // workaround, as t3_origuid might point to the source the translation was copied from, the language is identical then
+            . ' AND tt_content_orig.sys_language_uid <> tt_content.sys_language_uid'
+            . ' AND tt_content_orig.sys_language_uid = sys_language.uid'
             . $this->getExcludeQueryPart()
             . $this->getAllowedLanguagesForBackendUser(),
             'tt_content_orig.sys_language_uid'
         );
+        if (empty($record)) {
+            return ['sys_language_uid' => 0];
+        }
 
         return $record;
     }
@@ -55,6 +60,10 @@ class LocalizationRepository
      */
     public function getLocalizedRecordCount($pageId, $colPos, $languageId)
     {
+        // records in default language are never translated
+        if (!$languageId) {
+            return 0;
+        }
         $rows = (int)$this->getDatabaseConnection()->exec_SELECTcountRows(
             'uid',
             'tt_content',
@@ -142,11 +151,13 @@ class LocalizationRepository
 
         // Get original uid of existing elements triggered language / colpos
         $originalUids = $db->exec_SELECTgetRows(
-            't3_origuid',
-            'tt_content',
-            'sys_language_uid=' . (int)$destLanguageId
+            'tt_content.t3_origuid',
+            'tt_content,tt_content as orig',
+            'tt_content.sys_language_uid = ' . (int)$destLanguageId
             . ' AND tt_content.colPos = ' . (int)$colPos
-            . ' AND tt_content.pid=' . (int)$pageId
+            . ' AND tt_content.pid = ' . (int)$pageId
+            . ' AND orig.uid = tt_content.t3_origuid'
+            . ' AND orig.pid = ' . (int)$pageId
             . $this->getExcludeQueryPart(),
             '',
             '',
@@ -174,6 +185,7 @@ class LocalizationRepository
      * Fetches the localization for a given record.
      *
      * @FIXME: This method is a clone of BackendUtility::getRecordLocalization, using origUid instead of transOrigPointerField
+     * Note: This function is unused in the core and has been removed with version 9 - Forge ticket #80700
      *
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param int $uid The uid of the record
@@ -215,6 +227,7 @@ class LocalizationRepository
      * @FIXME: This method is a clone of DataHandler::getPreviousLocalizedRecordUid which is protected there and uses
      * BackendUtility::getRecordLocalization which we also needed to clone in this class. Also, this method takes two
      * language arguments.
+     * Note: This function is unused in the core and has been removed with version 9 - Forge ticket #80700
      *
      * @param string $table Table name
      * @param int $uid Uid of default language record
