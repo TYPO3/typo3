@@ -63,7 +63,7 @@ class LocalizationRepository
                 'tt_content',
                 'tt_content_orig',
                 $queryBuilder->expr()->eq(
-                    'tt_content.t3_origuid',
+                    'tt_content.l10n_source',
                     $queryBuilder->quoteIdentifier('tt_content_orig.uid')
                 )
             )
@@ -83,6 +83,9 @@ class LocalizationRepository
     }
 
     /**
+     * Returns number of localized records in given page, colPos and language
+     * Records which were added to the language directly (not through translation) are not counted.
+     *
      * @param int $pageId
      * @param int $colPos
      * @param int $languageId
@@ -108,7 +111,7 @@ class LocalizationRepository
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
-                    'tt_content.t3_origuid',
+                    'tt_content.l10n_source',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
@@ -251,7 +254,7 @@ class LocalizationRepository
         $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
 
         $originalUidsStatement = $queryBuilder
-            ->select('t3_origuid')
+            ->select('l10n_source')
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
