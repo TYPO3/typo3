@@ -915,7 +915,37 @@ class Bootstrap
      */
     public function loadExtensionTables($allowCaching = true)
     {
+        $this->loadBaseTca($allowCaching)->loadExtTables($allowCaching);
+        return $this;
+    }
+
+    /**
+     * Load $TCA
+     *
+     * This will mainly set up $TCA through extMgm API.
+     *
+     * @param bool $allowCaching True, if loading TCA from cache is allowed
+     * @return Bootstrap
+     * @internal This is not a public API method, do not use in own extensions
+     */
+    public function loadBaseTca(bool $allowCaching = true): Bootstrap
+    {
         ExtensionManagementUtility::loadBaseTca($allowCaching);
+        return $this;
+    }
+
+    /**
+     * Load ext_tables and friends.
+     *
+     * This will mainly load and execute ext_tables.php files of loaded extensions
+     * or the according cache file if exists.
+     *
+     * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
+     * @return Bootstrap
+     * @internal This is not a public API method, do not use in own extensions
+     */
+    public function loadExtTables(bool $allowCaching = true): Bootstrap
+    {
         ExtensionManagementUtility::loadExtTables($allowCaching);
         $this->runExtTablesPostProcessingHooks();
         return $this;

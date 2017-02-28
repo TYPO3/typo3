@@ -113,6 +113,8 @@ class RequestHandler implements RequestHandlerInterface
         $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
         $this->initializeOutputCompression();
 
+        $this->bootstrap->loadBaseTca();
+
         // Initializing the Frontend User
         $this->timeTracker->push('Front End user initialized', '');
         $this->controller->initFEuser();
@@ -131,9 +133,7 @@ class RequestHandler implements RequestHandlerInterface
             $GLOBALS['BE_USER']->initializeAdminPanel();
             $this->bootstrap
                     ->initializeBackendRouter()
-                    ->loadExtensionTables();
-        } else {
-            ExtensionManagementUtility::loadBaseTca();
+                    ->loadExtTables();
         }
         $this->controller->checkAlternativeIdMethods();
         $this->controller->clear_preview();
