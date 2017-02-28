@@ -35,7 +35,7 @@
 						<f:else>
 							<li>
 								<strong>Socket:</strong>
-								{f:if(condition:connection.socket, then:connection.socket, else:'<em>PHP default</em>')}
+								{f:if(condition:connection.socket, then: '{connection.socket}', else:'<em>PHP default</em>')}
 							</li>
 						</f:else>
 					</f:if>
