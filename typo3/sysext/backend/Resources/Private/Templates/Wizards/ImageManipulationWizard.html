@@ -12,7 +12,7 @@
 					<form class="form">
 						<div class="form-group">
 							<label><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.image-title" />:</label>
-							<p>{f:if(condition:image.properties.title, then:image.properties.title, else:image.name)}</p>
+							<p>{f:if(condition:image.properties.title, then:image.properties.title, else:image.name) -> f:format.htmlspecialchars()}</p>
 						</div>
 						<div class="form-group">
 							<label><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.original-dimensions" />:</label>
