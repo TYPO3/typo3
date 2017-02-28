@@ -33,7 +33,7 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      * Main method to build expressions for given tables.
      * Iterating over all registered expressions and combine them with AND
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */

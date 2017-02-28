@@ -40,17 +40,17 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
      * Main method to build expressions for given tables
      * Evaluates the ctrl/enablecolumns/fe_group flag of the table and adds the according restriction if set
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
         $constraints = [];
-        foreach ($queriedTables as $tableName => $tableAlias) {
+        foreach ($queriedTables as $tableAlias => $tableName) {
             $groupFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['fe_group'] ?? null;
             if (!empty($groupFieldName)) {
-                $fieldName = ($tableAlias ?: $tableName) . '.' . $groupFieldName;
+                $fieldName = $tableAlias . '.' . $groupFieldName;
                 // Allow records where no group access has been configured (field values NULL, 0 or empty string)
                 $constraints = [
                     $expressionBuilder->isNull($fieldName),

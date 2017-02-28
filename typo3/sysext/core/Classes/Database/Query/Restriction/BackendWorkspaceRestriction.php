@@ -47,26 +47,25 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
     /**
      * Main method to build expressions for given tables
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
         $constraints = [];
-        foreach ($queriedTables as $tableName => $tableAlias) {
+        foreach ($queriedTables as $tableAlias => $tableName) {
             $workspaceEnabled = $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] ?? null;
             if (!empty($workspaceEnabled)) {
-                $tablePrefix = $tableAlias ?: $tableName;
                 $workspaceIdExpression = $expressionBuilder->eq(
-                    $tablePrefix . '.t3ver_wsid',
+                    $tableAlias . '.t3ver_wsid',
                     (int)$this->workspaceId
                 );
                 if ($this->includeRowsForWorkspaceOverlay) {
                     $constraints[] = $expressionBuilder->orX(
                         $workspaceIdExpression,
                         $expressionBuilder->lte(
-                            $tablePrefix . '.t3ver_state',
+                            $tableAlias . '.t3ver_state',
                             // Trigger __toString(), then cast int
                             (int)(string)new VersionState(VersionState::DEFAULT_STATE)
                         )
@@ -75,7 +74,7 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
                     $comparisonExpression = $this->workspaceId === 0 ? 'neq' : 'eq';
                     $constraints[] = $workspaceIdExpression;
                     $constraints[] = $expressionBuilder->{$comparisonExpression}(
-                        $tablePrefix . '.pid',
+                        $tableAlias . '.pid',
                         -1
                     );
                 }

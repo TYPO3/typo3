@@ -39,18 +39,17 @@ class RootLevelRestriction implements QueryRestrictionInterface
     /**
      * Main method to build expressions for given tables
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
         $constraints = [];
-        foreach ($queriedTables as $tableName => $tableAlias) {
-            $tablePrefix = $tableAlias ?: $tableName;
-            if (empty($this->tableNames) || in_array($tablePrefix, $this->tableNames, true)) {
+        foreach ($queriedTables as $tableAlias => $tableName) {
+            if (empty($this->tableNames) || in_array($tableAlias, $this->tableNames, true)) {
                 $constraints[] = $expressionBuilder->eq(
-                    $tablePrefix . '.pid',
+                    $tableAlias . '.pid',
                     0
                 );
             }

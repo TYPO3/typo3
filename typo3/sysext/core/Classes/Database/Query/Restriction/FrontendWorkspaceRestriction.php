@@ -55,35 +55,34 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
      * Main method to build expressions for given tables
      * Evaluates the ctrl/versioningWS flag of the table and adds various workspace related restrictions if set
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
         $constraints = [];
-        foreach ($queriedTables as $tableName => $tableAlias) {
+        foreach ($queriedTables as $tableAlias => $tableName) {
             $workspaceEnabled = $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] ?? null;
             if (!empty($workspaceEnabled)) {
-                $tablePrefix = $tableAlias ?: $tableName;
                 if (!$this->includeRowsForWorkspacePreview) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (That means we are online!)
                     $constraints[] = $expressionBuilder->lte(
-                        $tablePrefix . '.t3ver_state',
+                        $tableAlias . '.t3ver_state',
                         // Trigger __toString(), then cast int
                         (int)(string)new VersionState(VersionState::DEFAULT_STATE)
                     );
                 } elseif ($tableName !== 'pages') {
                     // Show only records of the live and current workspace in case we are in a versioning preview
                     $constraints[] = $expressionBuilder->orX(
-                        $expressionBuilder->eq($tablePrefix . '.t3ver_wsid', 0),
-                        $expressionBuilder->eq($tablePrefix . '.t3ver_wsid', (int)$this->workspaceId)
+                        $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0),
+                        $expressionBuilder->eq($tableAlias . '.t3ver_wsid', (int)$this->workspaceId)
                     );
                 }
                 // Filter out versioned records
                 if ($this->enforceLiveRowsOnly) {
-                    $constraints[] = $expressionBuilder->neq($tablePrefix . '.pid', -1);
+                    $constraints[] = $expressionBuilder->neq($tableAlias . '.pid', -1);
                 }
             }
         }

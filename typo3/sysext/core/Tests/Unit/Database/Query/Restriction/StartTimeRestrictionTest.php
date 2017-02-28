@@ -43,7 +43,7 @@ class StartTimeRestrictionTest extends AbstractRestrictionTestCase
         $this->expectExceptionCode(1462820645);
 
         $subject = new StartTimeRestriction();
-        $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
+        $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
     }
 
     /**
@@ -58,7 +58,7 @@ class StartTimeRestrictionTest extends AbstractRestrictionTestCase
         ];
 
         $subject = new StartTimeRestriction(42);
-        $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTable"."myStartTimeField" <= 42', (string)$expression);
     }
 }

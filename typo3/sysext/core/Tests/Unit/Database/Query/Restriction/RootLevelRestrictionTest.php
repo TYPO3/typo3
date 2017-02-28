@@ -25,7 +25,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     public function buildRestrictionsAddsPidWhereClause()
     {
         $subject = new RootLevelRestriction();
-        $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
@@ -35,7 +35,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     public function buildRestrictionsAddsAliasedPidWhereClause()
     {
         $subject = new RootLevelRestriction();
-        $expression = $subject->buildExpression(['aTable' => 'aTableAlias'], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTableAlias' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTableAlias"."pid" = 0', (string)$expression);
     }
 
@@ -45,7 +45,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     public function buildRestrictionsAddsPidWhereClauseIfTableIsSpecified()
     {
         $subject = new RootLevelRestriction(['aTable']);
-        $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
@@ -55,7 +55,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     public function buildRestrictionsAddsAliasedPidWhereClauseIfAliasIsSpecified()
     {
         $subject = new RootLevelRestriction(['aTableAlias']);
-        $expression = $subject->buildExpression(['aTable' => 'aTableAlias'], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTableAlias' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTableAlias"."pid" = 0', (string)$expression);
     }
 
@@ -65,7 +65,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     public function buildRestrictionsSkipsUnrestrictedTablesIfOtherTableIsSpecifiedThanUsedInTheQuery()
     {
         $subject = new RootLevelRestriction(['aTable']);
-        $expression = $subject->buildExpression(['anotherTable' => ''], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['anotherTable' => 'anotherTable'], $this->expressionBuilder);
         $this->assertSame('', (string)$expression);
     }
 }

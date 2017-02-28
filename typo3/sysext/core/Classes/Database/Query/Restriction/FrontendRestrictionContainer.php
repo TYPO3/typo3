@@ -52,7 +52,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
      * Main method to build expressions for given tables
      * Iterates over all registered restrictions and removes the hidden restriction if preview is requested
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */
@@ -62,7 +62,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         /** @var TypoScriptFrontendController $typoScriptFrontendController */
         $typoScriptFrontendController = $GLOBALS['TSFE'];
         foreach ($this->restrictions as $restriction) {
-            foreach ($queriedTables as $tableName => $tableAlias) {
+            foreach ($queriedTables as $tableAlias => $tableName) {
                 $disableRestriction = false;
                 if ($restriction instanceof HiddenRestriction) {
                     // If display of hidden records is requested, we must disable the hidden restriction.

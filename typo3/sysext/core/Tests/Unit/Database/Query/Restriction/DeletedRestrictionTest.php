@@ -36,7 +36,7 @@ class DeletedRestrictionTest extends AbstractRestrictionTestCase
             'delete' => 'deleted',
         ];
         $subject = new DeletedRestriction();
-        $expression = $subject->buildExpression(['aTable' => ''], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $this->assertSame('"aTable"."deleted" = 0', (string)$expression);
     }
 }
