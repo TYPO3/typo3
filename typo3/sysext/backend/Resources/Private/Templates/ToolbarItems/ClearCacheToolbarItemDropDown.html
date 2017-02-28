@@ -11,7 +11,7 @@
                 </div>
                 <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
                     {cacheAction.title}
-                    <br><small class="text-muted">{f:if(condition: cacheAction.description,then: cacheAction.description,else: cacheAction.title)} </small>
+                    <br><small class="text-muted">{f:if(condition: cacheAction.description,then: cacheAction.description,else: cacheAction.title) -> f:format.htmlspecialchars()} </small>
                 </div>
             </f:link.typolink>
         </div>

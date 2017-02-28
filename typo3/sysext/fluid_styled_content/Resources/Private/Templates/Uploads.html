@@ -23,7 +23,7 @@
 					</f:if>
 					<div>
 						<a href="{file.publicUrl}" {f:if(condition:data.target,then: ' target="{data.target}"')}>
-							<span class="ce-uploads-fileName">{f:if(condition: file.properties.title, then: file.properties.title, else: file.name)}</span>
+							<span class="ce-uploads-fileName">{f:if(condition: file.properties.title, then: file.properties.title, else: file.name) -> f:format.htmlspecialchars()}</span>
 						</a>
 						<f:if condition="{file.properties.description}">
 							<f:if condition="{data.uploads_description}">
