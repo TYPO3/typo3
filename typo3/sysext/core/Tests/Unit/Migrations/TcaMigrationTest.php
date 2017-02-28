@@ -5600,4 +5600,215 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->assertEquals($expected, (new TcaMigration())->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotDefined()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxNotDefinedAndRenderTypeNotInputDateTime()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'fooBar'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'fooBar'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxNotDefined()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'inputDateTime'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'inputDateTime'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxDefined()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'inputDateTime',
+                            'max' => 42,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'inputDateTime',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDefined()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'max' => 42,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'max' => 42,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateinputDateTimeMaxDefinedAndRenderTypeNotDateTime()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'fooBar',
+                            'max' => 42,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                            'renderType' => 'fooBar',
+                            'max' => 42,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }

@@ -83,6 +83,7 @@ class TcaMigration
         $tca = $this->migrateOptionsOfTypeGroup($tca);
         $tca = $this->migrateSelectShowIconTable($tca);
         $tca = $this->migrateImageManipulationConfig($tca);
+        $tca = $this->migrateinputDateTimeMax($tca);
         return $tca;
     }
 
@@ -2254,6 +2255,32 @@ class TcaMigration
                                 $table,
                                 $fieldName
                             );
+                        }
+                    }
+                }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrate 'max' for renderType='inputDateTime'
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateinputDateTimeMax(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
+                foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                    if (isset($fieldConfig['config']['renderType'])) {
+                        if ($fieldConfig['config']['renderType'] === 'inputDateTime') {
+                            if (isset($fieldConfig['config']['max'])) {
+                                unset($fieldConfig['config']['max']);
+                                $this->messages[] = 'The config option \'max\' has been removed from the TCA for renderType=\'inputDateTime\' in ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'max\']';
+                            }
                         }
                     }
                 }
