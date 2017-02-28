@@ -410,7 +410,9 @@ class UpgradeWizard extends Action\AbstractAction
             $cachingFrameworkDatabaseSchemaService->getCachingFrameworkRequiredDatabaseSchema()
         );
 
-        $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
-        $schemaMigrationService->install($createTableStatements);
+        if (!empty($createTableStatements)) {
+            $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
+            $schemaMigrationService->install($createTableStatements);
+        }
     }
 }
