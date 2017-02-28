@@ -209,7 +209,7 @@ require(
 					return;
 				}
 				if (this.loadedNavigationComponentId !== '') {
-					Ext.getCmp(this.loadedNavigationComponentId).hide();
+					$('#navigationComponent-' + this.loadedNavigationComponentId).hide();
 				}
 				if ($('.t3js-scaffold-content-navigation [data-component="' + navigationComponentId + '"]').length < 1) {
 					$('.t3js-scaffold-content-navigation')
@@ -217,12 +217,29 @@ require(
 				}
 				var component = Ext.getCmp(navigationComponentId);
 				if (typeof component === 'undefined') {
-					/** @todo fix hard coded pagetree **/
-					component = new TYPO3.Components.PageTree.App();
-					component.render('navigationComponent-' + navigationComponentId);
+					var self = this,
+						deferredComponentExists = $.Deferred();
+
+					function checkIfComponentIdIsAvailable(componentId) {
+						if (typeof self.availableNavigationComponents[componentId] === 'undefined') {
+							setTimeout(function (id) { checkIfComponentIdIsAvailable(id); }, 100, componentId);
+						} else {
+							deferredComponentExists.resolve();
+						}
+					}
+					checkIfComponentIdIsAvailable(navigationComponentId);
+
+					deferredComponentExists.promise().done(function() {
+						component = self.availableNavigationComponents[navigationComponentId]();
+						component.render('navigationComponent-' + navigationComponentId);
+
+						TYPO3.Backend.NavigationContainer.show(navigationComponentId);
+						self.loadedNavigationComponentId = navigationComponentId;
+					});
+				} else {
+					TYPO3.Backend.NavigationContainer.show(navigationComponentId);
+					this.loadedNavigationComponentId = navigationComponentId;
 				}
-				TYPO3.Backend.NavigationContainer.show(navigationComponentId);
-				this.loadedNavigationComponentId = navigationComponentId;
 			},
 
 			registerNavigationComponent: function (componentId, initCallback) {
