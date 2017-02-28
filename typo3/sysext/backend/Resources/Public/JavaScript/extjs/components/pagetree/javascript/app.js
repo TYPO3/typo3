@@ -381,24 +381,5 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	}
 });
 
-/**
- * Callback method for the module menu
- *
- * @return {TYPO3.Components.PageTree.App}
- */
-require(
-	[
-		'TYPO3/CMS/Backend/ModuleMenu'
-	],
-	function () {
-		// extjs loading bugfix
-		window.setTimeout(function() {
-			TYPO3.ModuleMenu.App.registerNavigationComponent('typo3-pagetree', function () {
-				return new TYPO3.Components.PageTree.App();
-			});
-		}, 5000);
-	}
-);
-
 // XTYPE Registration
 Ext.reg('TYPO3.Components.PageTree.App', TYPO3.Components.PageTree.App);
