@@ -45,6 +45,36 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = \TYPO3\CMS\
 	options.disableDelete.sys_file = 1
 ');
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+    '
+# Content selection
+styles.content.get = CONTENT
+styles.content.get {
+    table = tt_content
+    select {
+        orderBy = sorting
+        where = colPos=0
+    }
+}
+
+
+# Content element rendering
+tt_content = CASE
+tt_content {
+    key {
+        field = CType
+    }
+    default = TEXT
+    default {
+        field = CType
+        htmlSpecialChars = 1
+        wrap = <p style="background-color: yellow; padding: 0.5em 1em;"><strong>ERROR:</strong> Content Element with uid "{field:uid}" and type "|" has no rendering definition!</p>
+        wrap.insertData = 1
+    }
+}
+    '
+);
+
 // Registering hooks for the tree list cache
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Frontend\Hooks\TreelistCacheUpdateHooks::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = \TYPO3\CMS\Frontend\Hooks\TreelistCacheUpdateHooks::class;
