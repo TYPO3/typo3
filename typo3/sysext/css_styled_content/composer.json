@@ -6,7 +6,8 @@
 	"license": ["GPL-2.0+"],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": "*",
+		"typo3/cms-frontend": "*"
 	},
 	"replace": {
 		"css_styled_content": "*"
