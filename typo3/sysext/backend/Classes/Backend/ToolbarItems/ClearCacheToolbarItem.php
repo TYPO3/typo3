@@ -17,14 +17,16 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Render cache clearing toolbar item
+ * Adds a dropdown if there are more than one item to clear (usually for admins to render the flush all caches)
+ *
+ * The dropdown items can be extended via a hook named "cacheActions".
  */
 class ClearCacheToolbarItem implements ToolbarItemInterface
 {
@@ -39,31 +41,21 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     protected $optionValues = [];
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Constructor
-     *
      * @throws \UnexpectedValueException
      */
     public function __construct()
     {
-        $backendUser = $this->getBackendUser();
-        $languageService = $this->getLanguageService();
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
+        $backendUser = $this->getBackendUser();
 
         // Clear all page-related caches
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
             $this->cacheActions[] = [
                 'id' => 'pages',
-                'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle')),
-                'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription')),
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
+                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
                 'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'pages']),
-                'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-low', Icon::SIZE_SMALL)->render()
+                'iconIdentifier' => 'actions-system-cache-clear-impact-low'
             ];
             $this->optionValues[] = 'pages';
         }
@@ -74,10 +66,10 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
             $this->cacheActions[] = [
                 'id' => 'all',
-                'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2')),
-                'description' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2')),
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
+                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
                 'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'all']),
-                'icon' => $this->iconFactory->getIcon('actions-system-cache-clear-impact-high', Icon::SIZE_SMALL)->render()
+                'iconIdentifier' => 'actions-system-cache-clear-impact-high'
             ];
             $this->optionValues[] = 'all';
         }
@@ -105,41 +97,33 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->isAdmin()) {
             return true;
         }
-        if (is_array($this->optionValues)) {
-            foreach ($this->optionValues as $value) {
-                if ($backendUser->getTSConfigVal('options.clearCache.' . $value)) {
-                    return true;
-                }
+        foreach ($this->optionValues as $value) {
+            if ($backendUser->getTSConfigVal('options.clearCache.' . $value)) {
+                return true;
             }
         }
         return false;
     }
 
     /**
-     * Render clear cache icon
+     * Render clear cache icon, based on the option if there is more than one icon or just one.
      *
      * @return string Icon HTML
      */
     public function getItem()
     {
         if ($this->hasDropDown()) {
-            $templateReference = 'ClearCacheToolbarItem.html';
-            $icon = $this->iconFactory->getIcon('apps-toolbar-menu-cache', Icon::SIZE_SMALL)->render('inline');
-            $variables = [
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache',
-                'icon' => $icon
-            ];
+            return $this->getFluidTemplateObject('ClearCacheToolbarItem.html')->render();
         } else {
-            $templateReference = 'ClearCacheToolbarItemSingle.html';
+            $view = $this->getFluidTemplateObject('ClearCacheToolbarItemSingle.html');
             $cacheAction = end($this->cacheActions);
-            $variables['link'] = $cacheAction['href'];
-            $variables['title'] = $cacheAction['title'];
-            $variables['icon'] = $cacheAction['icon'];
+            $view->assignMultiple([
+                'link'  => $cacheAction['href'],
+                'title' => $cacheAction['title'],
+                'iconIdentifier'  => $cacheAction['iconIdentifier'],
+            ]);
+            return $view->render();
         }
-        $view = $this->getFluidTemplateObject($templateReference);
-        $view->assignMultiple($variables);
-
-        return $view->render();
     }
 
     /**
@@ -150,12 +134,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function getDropDown()
     {
         $view = $this->getFluidTemplateObject('ClearCacheToolbarItemDropDown.html');
-        $view->assignMultiple([
-                'title' =>  'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache',
-                'cacheActions' => $this->cacheActions,
-            ]
-        );
-
+        $view->assign('cacheActions', $this->cacheActions);
         return $view->render();
     }
 
@@ -170,7 +149,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * This item has a drop down
+     * This item has a drop down if there is more than one cache action available for the current Backend user.
      *
      * @return bool
      */
@@ -192,7 +171,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {
@@ -200,8 +179,6 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns current PageRenderer
-     *
      * @return PageRenderer
      */
     protected function getPageRenderer()
@@ -210,31 +187,19 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * Returns a new standalone view, shorthand function
      *
      * @param string $filename Which templateFile should be used.
-     *
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename):StandaloneView
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ToolbarItems')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems')]);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
 
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems/' . $filename));
+        $view->setTemplate($filename);
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;

@@ -1,0 +1,69 @@
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<span class="systeminformationtoolbaritem-container t3js-systeminformation-container" data-count="{count}"
+			data-severityclass="{severityBadgeClass}"></span>
+
+<h3 class="dropdown-headline">
+	<f:translate key="systemmessage.header"/>
+</h3>
+<p class="dropdown-text typo3-module-menu-item submodule mod-system_extinstall" data-modulename="system_extinstall">
+	<f:format.raw>
+		<f:translate key="systemmessage.intro" arguments="{0: '{installToolUrl}'}"/>
+	</f:format.raw>
+</p>
+
+<f:if condition="{systemInformation}">
+	<hr>
+	<div class="dropdown-table">
+		<f:for each="{systemInformation}" as="info">
+			<div class="dropdown-table-row">
+				<div class="dropdown-table-column dropdown-table-icon">
+					<f:if condition="{info.iconIdentifier}">
+						<f:then>
+							<core:icon identifier="{info.iconIdentifier}" size="small"/>
+						</f:then>
+						<f:else>{info.icon -> f:format.raw()}</f:else>
+					</f:if>
+				</div>
+				<div class="dropdown-table-column dropdown-table-title">
+					<f:translate key="{info.title}" default="{info.title}"/>
+					<f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
+				</div>
+				<div
+					class="dropdown-table-column dropdown-table-value {f:if(condition: info.status, then: 'text-{info.status}')}">
+					{info.value}
+				</div>
+			</div>
+		</f:for>
+	</div>
+</f:if>
+
+<hr>
+
+<f:if condition="{messages -> f:count()} > 0">
+	<f:then>
+		<f:for each="{messages}" as="message">
+			<f:if condition="{message.module}">
+				<f:then>
+					<p id="systeminformation_{message.module}"
+						 class="dropdown-text t3js-systeminformation-module typo3-module-menu-item submodule mod-{message.module}"
+						 data-modulename="{message.module}">
+						<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
+					</p>
+				</f:then>
+				<f:else>
+					<p class="dropdown-text text-{message.status}">
+						<f:format.raw>{message.text}</f:format.raw>
+					</p>
+				</f:else>
+			</f:if>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p class="dropdown-text text-success">
+			<f:format.nl2br>
+				<f:translate key="systemmessage.allgood"/>
+			</f:format.nl2br>
+		</p>
+	</f:else>
+</f:if>
+</html>

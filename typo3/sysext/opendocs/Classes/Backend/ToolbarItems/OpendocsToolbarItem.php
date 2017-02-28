@@ -18,11 +18,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Alist of all open documents
+ * Main functionality to render a list of all open documents in the top bar of the TYPO3 Backend
+ *
+ * This class also contains hooks and AJAX calls related to the toolbar item dynamic updating processing
  */
 class OpendocsToolbarItem implements ToolbarItemInterface
 {
@@ -52,7 +55,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     public function checkAccess()
     {
         $conf = $this->getBackendUser()->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
-        return $conf['value'] != 1;
+        return (int)$conf['value'] !== 1;
     }
 
     /**
@@ -69,41 +72,30 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Render toolbar icon
+     * Render toolbar icon via Fluid
      *
      * @return string HTML
      */
     public function getItem()
     {
-        // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:opendocs/Resources/Private/Templates/ToolbarItem.html'
-        ));
+        $view = $this->getFluidTemplateObject('ToolbarItem.html');
         $view->assign('numDocs', count($this->openDocs));
         return $view->render();
     }
 
     /**
-     * Render drop down
+     * Render drop down via Fluid
      *
      * @return string HTML
      */
     public function getDropDown()
     {
-        $assigns = [];
-        $openDocuments = $this->openDocs;
-        $recentDocuments = $this->recentDocs;
-        $assigns['openDocuments'] = $this->getMenuEntries($openDocuments);
-        // If there are "recent documents" in the list, add them
-        $assigns['recentDocuments'] = $this->getMenuEntries($recentDocuments);
-
-        // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:opendocs/Resources/Private/Templates/DropDown.html'
-        ));
-        $view->assignMultiple($assigns);
+        $view = $this->getFluidTemplateObject('DropDown.html');
+        $view->assignMultiple([
+            'openDocuments' => $this->getMenuEntries($this->openDocs),
+            // If there are "recent documents" in the list, add them
+            'recentDocuments' => $this->getMenuEntries($this->recentDocs)
+        ]);
         return $view->render();
     }
 
@@ -113,12 +105,12 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      * @param array $documents
      * @return array
      */
-    protected function getMenuEntries(array $documents) : array
+    protected function getMenuEntries(array $documents): array
     {
         $entries = [];
-        foreach ($documents as $md5sum => $recentDocument) {
-            $menuEntry = $this->getMenuEntry($recentDocument, $md5sum);
-            if ($menuEntry !== '') {
+        foreach ($documents as $md5sum => $document) {
+            $menuEntry = $this->getMenuEntry($document, $md5sum);
+            if (is_array($menuEntry)) {
                 $entries[] = $menuEntry;
             }
         }
@@ -130,7 +122,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      *
      * @param array $document
      * @param string $md5sum
-     * @return array The data of a recent or closed document
+     * @return array The data of a recent or closed document, or null if no record was found (e.g. deleted)
      */
     protected function getMenuEntry($document, $md5sum)
     {
@@ -139,7 +131,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $record = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($record)) {
             // Record seems to be deleted
-            return '';
+            return null;
         }
         $result = [];
         $result['table'] = $table;
@@ -181,14 +173,12 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      ***    HOOKS    ***
      *******************/
     /**
-     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal, calls a JS function to change
+     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function to change
      * the number of opened documents
      *
      * @param array $params
-     * @param unknown_type $ref
-     * @return string list item HTML attributes
      */
-    public function updateNumberOfOpenDocsHook(&$params, $ref)
+    public function updateNumberOfOpenDocsHook(&$params)
     {
         $params['JScode'] = '
 			if (top && top.TYPO3.OpendocsMenu) {
@@ -209,9 +199,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function closeDocument(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $backendUser = $this->getBackendUser();
         $md5sum = isset($request->getParsedBody()['md5sum']) ? $request->getParsedBody()['md5sum'] : $request->getQueryParams()['md5sum'];
         if ($md5sum && isset($this->openDocs[$md5sum])) {
+            $backendUser = $this->getBackendUser();
             // Add the document to be closed to the recent documents
             $this->recentDocs = array_merge([$md5sum => $this->openDocs[$md5sum]], $this->recentDocs);
             // Allow a maximum of 8 recent documents
@@ -253,10 +243,32 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:opendocs/Resources/Private/Layouts']);
+        $view->setPartialRootPaths([
+            'EXT:backend/Resources/Private/Partials/ToolbarItems',
+            'EXT:opendocs/Resources/Private/Partials/ToolbarItems'
+        ]);
+        $view->setTemplateRootPaths(['EXT:opendocs/Resources/Private/Templates/ToolbarItems']);
+
+        $view->setTemplate($filename);
+
+        $view->getRequest()->setControllerExtensionName('Opendocs');
+        return $view;
     }
 }

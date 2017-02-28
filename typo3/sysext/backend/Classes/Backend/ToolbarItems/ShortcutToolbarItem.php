@@ -952,15 +952,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      * @throws \InvalidArgumentException
      * @internal param string $templateFile
      */
-    protected function getFluidTemplateObject(string $templateFilename)
+    protected function getFluidTemplateObject(string $templateFilename): StandaloneView
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ShortcutToolbarItem']);
 
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ShortcutToolbarItem/' . $templateFilename));
+        $view->setTemplate($templateFilename);
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;

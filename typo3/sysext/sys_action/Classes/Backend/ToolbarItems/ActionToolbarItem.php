@@ -20,9 +20,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\SysAction\ActionTask;
 
 /**
@@ -31,38 +30,18 @@ use TYPO3\CMS\SysAction\ActionTask;
 class ActionToolbarItem implements ToolbarItemInterface
 {
     /**
-     * @var array List of action entries
+     * @var array
      */
-    protected $actionEntries = [];
+    protected $availableActions = [];
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->initializeActionEntries();
-    }
-
-    /**
-     * Render toolbar icon
+     * Render toolbar icon via Fluid
      *
      * @return string HTML
      */
     public function getItem()
     {
-        $title = htmlspecialchars($this->getLanguageService()->getLL('action_toolbaritem'));
-        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-        ';
+        return $this->getFluidTemplateObject('ToolbarItem.html')->render();
     }
 
     /**
@@ -72,31 +51,17 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $actionMenu = [];
-        $actionMenu[] = '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->getLL('sys_action')) . '</h3>';
-        $actionMenu[] = '<hr>';
-        $actionMenu[] = '<div class="dropdown-table">';
-        foreach ($this->actionEntries as $linkConf) {
-            $actionMenu[] = '<div class="dropdown-table-row">';
-            $actionMenu[] = '<div class="dropdown-table-column dropdown-table-icon">';
-            $actionMenu[] = $linkConf[2];
-            $actionMenu[] = '</div>';
-            $actionMenu[] = '<div class="dropdown-table-column dropdown-table-title">';
-            $actionMenu[] = '<a class="t3js-topbar-link" href="' . htmlspecialchars($linkConf[1]) . '" target="list_frame">';
-            $actionMenu[] = htmlspecialchars($linkConf[0]);
-            $actionMenu[] = '</a>';
-            $actionMenu[] = '</div>';
-            $actionMenu[] = '</div>';
-        }
-        $actionMenu[] = '</div>';
-        return implode(LF, $actionMenu);
+        $view = $this->getFluidTemplateObject('DropDown.html');
+        $view->assign('actions', $this->availableActions);
+        return $view->render();
     }
 
     /**
-     * Gets the entries for the action menu
+     * Stores the entries for the action menu in $this->availableActions
      */
-    protected function initializeActionEntries()
+    protected function setAvailableActions()
     {
+        $actionEntries = [];
         $backendUser = $this->getBackendUser();
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
@@ -115,7 +80,6 @@ class ActionToolbarItem implements ToolbarItemInterface
             $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
 
-        $actions = [];
         if (!$backendUser->isAdmin()) {
             $groupList = $backendUser->groupList ?: '0';
 
@@ -152,18 +116,16 @@ class ActionToolbarItem implements ToolbarItemInterface
 
         $result = $queryBuilder->execute();
         while ($actionRow = $result->fetch()) {
-            $actions[] = [
-                $actionRow['title'],
-                sprintf(
-                    '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
-                    BackendUtility::getModuleUrl('user_task'),
-                    ActionTask::class, // @todo: class name string is hand over as url parameter?!
-                    $actionRow['uid']
-                ),
-                $this->iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
-            ];
+            $actionRow['link'] = sprintf(
+                '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
+                BackendUtility::getModuleUrl('user_task'),
+                ActionTask::class, // @todo: class name string is hand over as url parameter?!
+                $actionRow['uid']
+            );
+            $actionEntries[] = $actionRow;
         }
-        $this->actionEntries = $actions;
+
+        $this->availableActions = $actionEntries;
     }
 
     /**
@@ -189,15 +151,12 @@ class ActionToolbarItem implements ToolbarItemInterface
     /**
      * This toolbar is rendered if there are action entries, no further user restriction
      *
-     * @return bool TRUE
+     * @return bool
      */
     public function checkAccess()
     {
-        $result = false;
-        if (!empty($this->actionEntries)) {
-            $result = true;
-        }
-        return $result;
+        $this->setAvailableActions();
+        return !empty($this->availableActions);
     }
 
     /**
@@ -221,12 +180,23 @@ class ActionToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
+     * Returns a new standalone view, shorthand function
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
      */
-    protected function getLanguageService()
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
-        return $GLOBALS['LANG'];
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:sys_action/Resources/Private/Layouts']);
+        $view->setPartialRootPaths([
+            'EXT:backend/Resources/Private/Partials/ToolbarItems',
+            'EXT:sys_action/Resources/Private/Partials'
+        ]);
+        $view->setTemplateRootPaths(['EXT:sys_action/Resources/Private/Templates/ToolbarItems']);
+        $view->setTemplate($filename);
+
+        $view->getRequest()->setControllerExtensionName('SysAction');
+        return $view;
     }
 }

@@ -20,12 +20,10 @@ use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -36,16 +34,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class SystemInformationToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $standaloneView = null;
-
-    /**
-     * Template file for the dropdown menu
-     */
-    const TOOLBAR_MENU_TEMPLATE = 'SystemInformation.html';
-
     /**
      * Number displayed as badge on the dropdown trigger
      *
@@ -83,11 +71,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected $signalSlotDispatcher = null;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * @var int
      */
     protected $maximumCountInBadge = 99;
@@ -97,18 +80,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
-        if (!$this->checkAccess()) {
-            return;
-        }
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
-        $extPath = ExtensionManagementUtility::extPath('backend');
-        /* @var $view StandaloneView */
-        $this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . static::TOOLBAR_MENU_TEMPLATE);
-
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
-
         $this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);
     }
 
@@ -142,10 +114,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     public function renderMenuAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->collectInformation();
-
         $response->getBody()->write($this->getDropDown());
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        return $response;
+        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
 
     /**
@@ -154,9 +124,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getPhpVersion()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion')),
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
-            'icon' => $this->iconFactory->getIcon('sysinfo-php-version', Icon::SIZE_SMALL)->render()
+            'iconIdentifier' => 'sysinfo-php-version'
         ];
     }
 
@@ -167,13 +137,12 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
             $this->systemInformation[] = [
-                'title' => $this->getLanguageService()
-                    ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database')
-                    . ' (' . htmlspecialchars($connectionName) . ')',
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
+                'titleAddition' => $connectionName,
                 'value' => GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
                     ->getServerVersion(),
-                'icon' => $this->iconFactory->getIcon('sysinfo-database', Icon::SIZE_SMALL)->render()
+                'iconIdentifier' => 'sysinfo-database'
             ];
         }
     }
@@ -185,10 +154,10 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     {
         $applicationContext = GeneralUtility::getApplicationContext();
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext')),
-            'value' => (string)$applicationContext,
+            'title'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
+            'value'  => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
-            'icon' => $this->iconFactory->getIcon('sysinfo-application-context', Icon::SIZE_SMALL)->render()
+            'iconIdentifier' => 'sysinfo-application-context'
         ];
     }
 
@@ -201,11 +170,10 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             return;
         }
 
-        $languageService = $this->getLanguageService();
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode')),
-            'value' => htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled')),
-            'icon' => $this->iconFactory->getIcon('sysinfo-composer-mode', Icon::SIZE_SMALL)->render()
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
+            'value' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled',
+            'iconIdentifier' => 'sysinfo-composer-mode'
         ];
     }
 
@@ -214,7 +182,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getGitRevision()
     {
-        if (!StringUtility::endsWith(TYPO3_version, '-dev') || \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
+        if (!StringUtility::endsWith(TYPO3_version, '-dev') || SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
             return;
         }
         // check if git exists
@@ -228,9 +196,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
             $this->systemInformation[] = [
-                'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision')),
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
-                'icon' => $this->iconFactory->getIcon('sysinfo-git', Icon::SIZE_SMALL)->render()
+                'iconIdentifier' => 'sysinfo-git'
             ];
         }
     }
@@ -252,9 +220,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
                 $icon = 'windows';
         }
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem')),
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
             'value' => $kernelName . ' ' . php_uname('r'),
-            'icon' => $this->iconFactory->getIcon('sysinfo-os-' . $icon, Icon::SIZE_SMALL)->render()
+            'iconIdentifier' => 'sysinfo-os-' . $icon
         ];
     }
 
@@ -264,9 +232,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getWebServer()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver')),
-            'value' => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
-            'icon' => $this->iconFactory->getIcon('sysinfo-webserver', Icon::SIZE_SMALL)->render()
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
+            'value' => $_SERVER['SERVER_SOFTWARE'],
+            'iconIdentifier' => 'sysinfo-webserver'
         ];
     }
 
@@ -276,9 +244,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getTypo3Version()
     {
         $this->systemInformation[] = [
-            'title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version')),
-            'value' => htmlspecialchars(VersionNumberUtility::getCurrentTypo3Version()),
-            'icon' => $this->iconFactory->getIcon('sysinfo-typo3-version', Icon::SIZE_SMALL)->render()
+            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
+            'value' => VersionNumberUtility::getCurrentTypo3Version(),
+            'iconIdentifier' => 'sysinfo-typo3-version'
         ];
     }
 
@@ -362,13 +330,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo'));
-        $icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-            <span class="toolbar-item-badge t3js-systeminformation-counter badge"></span>
-            ';
+        return $this->getFluidTemplateObject('SystemInformationToolbarItem.html')->render();
     }
 
     /**
@@ -382,16 +344,15 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             return '';
         }
 
-        $request = $this->standaloneView->getRequest();
-        $request->setControllerExtensionName('backend');
-        $this->standaloneView->assignMultiple([
+        $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
+        $view->assignMultiple([
             'installToolUrl' => BackendUtility::getModuleUrl('system_extinstall'),
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,
             'systemInformation' => $this->systemInformation
         ]);
-        return $this->standaloneView->render();
+        return $view->render();
     }
 
     /**
@@ -445,16 +406,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * Get the SignalSlot dispatcher
      *
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -466,5 +417,24 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
                 ->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
         }
         return $this->signalSlotDispatcher;
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
+     */
+    protected function getFluidTemplateObject(string $filename): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
+
+        $view->setTemplate($filename);
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }

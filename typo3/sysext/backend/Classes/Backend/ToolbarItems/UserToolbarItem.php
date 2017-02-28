@@ -14,12 +14,9 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -28,19 +25,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class UserToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-    }
-
     /**
      * Item is always enabled
      *
@@ -52,30 +36,18 @@ class UserToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Render username
+     * Render username and an icon
      *
      * @return string HTML
      */
     public function getItem()
     {
         $backendUser = $this->getBackendUser();
-
-        /** @var Avatar $avatar */
-        $avatar =  GeneralUtility::makeInstance(Avatar::class);
-        $icon = $avatar->render();
-
-        $realName = $backendUser->user['realName'];
-        $username = $backendUser->user['username'];
-
         $view = $this->getFluidTemplateObject('UserToolbarItem.html');
         $view->assignMultiple([
-                'username' => $username,
-                'realName' => $realName,
-                'switchUserMode' => $backendUser->user['ses_backuserid'],
-                'icon' => $icon
-            ]
-        );
-
+            'currentUser' => $backendUser->user,
+            'switchUserMode' => $backendUser->user['ses_backuserid'],
+        ]);
         return $view->render();
     }
 
@@ -86,24 +58,14 @@ class UserToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
-        $backendUser = $this->getBackendUser();
-
         /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-        /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
-        $userModuleMenu = $backendModuleRepository->findByModuleName('user');
-
-        $icon = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline');
-
         $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
         $view->assignMultiple([
-                'modules' => $userModuleMenu->getChildren(),
-                'logoutUrl' => BackendUtility::getModuleUrl('logout'),
-                'switchUserMode' => $backendUser->user['ses_backuserid'],
-                'icon' => $icon
-            ]
-        );
-
+            'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
+            'logoutUrl' => BackendUtility::getModuleUrl('logout'),
+            'switchUserMode' => $this->getBackendUser()->user['ses_backuserid'],
+        ]);
         return $view->render();
     }
 
@@ -114,8 +76,9 @@ class UserToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes()
     {
-        $result = [];
-        $result['class'] = 'toolbar-item-user';
+        $result = [
+            'class' => 'toolbar-item-user'
+        ];
         if ($this->getBackendUser()->user['ses_backuserid']) {
             $result['class'] .= ' su-user';
         }
@@ -153,16 +116,6 @@ class UserToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
      * Returns a new standalone view, shorthand function
      *
      * @param string $filename Which templateFile should be used.
@@ -171,13 +124,12 @@ class UserToolbarItem implements ToolbarItemInterface
      */
     protected function getFluidTemplateObject(string $filename):StandaloneView
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ToolbarItems')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems')]);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
 
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ToolbarItems/' . $filename));
+        $view->setTemplate($filename);
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;

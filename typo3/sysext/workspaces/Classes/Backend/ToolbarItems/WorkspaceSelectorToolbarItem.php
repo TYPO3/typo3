@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -32,20 +32,13 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
     protected $availableWorkspaces;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
-        /** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->availableWorkspaces = $wsService->getAvailableWorkspaces();
+        $this->availableWorkspaces = GeneralUtility::makeInstance(WorkspaceService::class)
+            ->getAvailableWorkspaces();
 
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $pageRenderer = $this->getPageRenderer();
         $pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
@@ -71,12 +64,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         if (empty($this->availableWorkspaces)) {
             return '';
         }
-        $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace'));
-        $icon = $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render('inline');
-        return '
-            <span class="toolbar-item-icon" title="' . $title . '">' . $icon . '</span>
-            <span class="toolbar-item-title">' . $title . '</span>
-            ';
+        return $this->getFluidTemplateObject('ToolbarItem.html')->render();
     }
 
     /**
@@ -86,77 +74,34 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
+        $topItem = null;
+        $additionalItems = [];
         $backendUser = $this->getBackendUser();
-        $languageService = $this->getLanguageService();
-
-        $index = 0;
+        $view = $this->getFluidTemplateObject('DropDown.html');
         $activeWorkspace = (int)$backendUser->workspace;
-        $stateCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-        $stateUncheckedIcon = '<span title="' . htmlspecialchars($languageService->getLL('bookmark_inactive')) . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        $workspaceSections = [
-            'top' => [],
-            'items' => [],
-        ];
-
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
-            $iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
-            $classValue = ($workspaceId === $activeWorkspace ? 'selected' : '');
-            $sectionName = ($index++ === 0 ? 'top' : 'items');
-            $workspaceSections[$sectionName][] = '
-                <div class="dropdown-table-row t3js-workspace-item ' . $classValue . '">
-                    <div class="dropdown-table-column dropdown-table-icon">
-                        ' . $iconState . '
-                    </div>
-                    <div class="dropdown-table-column">
-                        <a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('main', ['changeWorkspace' => $workspaceId])) . '" data-workspaceid="' . $workspaceId . '" class="t3js-workspaces-switchlink">
-                            ' . htmlspecialchars($label) . '
-                        </a>
-                    </div>
-                </div>
-            ';
-        }
-
-        if (!empty($workspaceSections['top'])) {
-            // Add the "Go to workspace module" link
-            // if there is at least one icon on top and if the access rights are there
-            if ($backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
-                $workspaceSections['top'][] = '
-                    <div class="dropdown-table-row">
-                        <div class="dropdown-table-column dropdown-table-icon">
-                            ' . $stateUncheckedIcon . '
-                        </div>
-                        <div class="dropdown-table-column">
-                            <a href="#" target="list_frame" data-module="web_WorkspacesWorkspaces" class="t3js-workspaces-modulelink">
-                                ' . htmlspecialchars($languageService->getLL('bookmark_workspace')) . '
-                            </a>
-                        </div>
-                    </div>
-                ';
+            $item = [
+                'isActive'    => $workspaceId === $activeWorkspace,
+                'label'       => $label,
+                'link'        => BackendUtility::getModuleUrl('main', ['changeWorkspace' => $workspaceId]),
+                'workspaceId' => $workspaceId
+            ];
+            if ($topItem === null) {
+                $topItem = $item;
+            } else {
+                $additionalItems[] = $item;
             }
-        } else {
-            // no items on top (= no workspace to work in)
-            $workspaceSections['top'][] = '
-                <div class="dropdown-table-row">
-                    <div class="dropdown-table-column dropdown-table-icon">
-                        ' . $stateUncheckedIcon . '
-                    </div>
-                    <div class="dropdown-table-column">
-                        ' . htmlspecialchars($languageService->getLL('bookmark_noWSfound')) . '
-                    </div>
-                </div>
-            ';
         }
 
-        $workspaceMenu = [
-            '<h3 class="dropdown-headline">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace')) . '</h3>',
-            '<hr>',
-            '<div class="dropdown-table">' . implode(LF, $workspaceSections['top']) . '</div>',
-            (!empty($workspaceSections['items']) ? '<hr>' : ''),
-            '<div class="dropdown-table">' . implode(LF, $workspaceSections['items']) . '</div>',
-        ];
-
-        return implode(LF, $workspaceMenu);
+        // Add the "Go to workspace module" link
+        // if there is at least one icon on top and if the access rights are there
+        if ($topItem !== null && $backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
+            $view->assign('showLinkToModule', true);
+        }
+        $view->assign('topItem', $topItem);
+        $view->assign('additionalItems', $additionalItems);
+        return $view->render();
     }
 
     /**
@@ -210,12 +155,24 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
+     * Returns a new standalone view, shorthand function
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
      */
-    protected function getLanguageService()
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
-        return $GLOBALS['LANG'];
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
+        $view->setPartialRootPaths([
+            'EXT:backend/Resources/Private/Partials/ToolbarItems',
+            'EXT:workspaces/Resources/Private/Partials/ToolbarItems'
+        ]);
+        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates/ToolbarItems']);
+
+        $view->setTemplate($filename);
+
+        $view->getRequest()->setControllerExtensionName('Workspaces');
+        return $view;
     }
 }

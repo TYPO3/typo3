@@ -1,1 +1,6 @@
-<f:render partial="ToolbarItem" arguments="{title: title, icon: icon}"/>
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:render partial="ToolbarItem" arguments="{
+	title: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.clearCache_clearCache',
+	icon: '{core:icon(identifier: \'apps-toolbar-menu-cache\', size: \'small\', alternativeMarkupIdentifier: \'inline\')}'
+}" />
+</html>

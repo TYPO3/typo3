@@ -16,44 +16,33 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Adds backend live search to the toolbar
+ * Adds backend live search to the toolbar by adding JavaScript and adding an input search field
  */
 class LiveSearchToolbarItem implements ToolbarItemInterface
 {
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Constructor
+     * Loads the needed JavaScript file, ands includes it to the page renderer
      */
     public function __construct()
     {
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LiveSearch');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
      * Checks whether the user has access to this toolbar item,
-     * only allowed when the list module is available
+     * only allowed when the list module is available.
+     * Live search is heavily dependent on the list module and only available when that module is.
      *
      * @return bool TRUE if user has access, FALSE if not
      */
     public function checkAccess()
     {
-        /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-        /** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $listModule */
-
-        // Live search is heavily dependent on the list module and only available when that module is.
         $listModule = $backendModuleRepository->findByModuleName('web_list');
         return $listModule !== null && $listModule !== false;
     }
@@ -65,20 +54,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        return '
-			<form class="t3js-topbar-navigation-search toolbar-item-search-form live-search-wrapper" role="search">
-				<div class="form-group">
-                    <div class="form-control-holder">
-                        <div class="form-control-icon">
-                            ' . $this->iconFactory->getIcon('apps-toolbar-menu-search', Icon::SIZE_SMALL)->render('inline') . '
-                        </div>
-					    <input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field" placeholder="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.search')) . '" id="live-search-box" autocomplete="off">
-                    </div>
-				</div>
-			</form>
-            <a href="#" class="dropdown-toggle t3js-toolbar-search-dropdowntoggle" data-toggle="dropdown" aria-expanded="false"></a>
-			<div class="dropdown-menu" role="menu"></div>
-		';
+        return $this->getFluidTemplateObject('LiveSearchToolbarItem.html')->render();
     }
 
     /**
@@ -132,12 +108,21 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Returns LanguageService
+     * Returns a new standalone view, shorthand function
      *
-     * @return LanguageService
+     * @param string $filename Which templateFile should be used.
+     * @return StandaloneView
      */
-    protected function getLanguageService()
+    protected function getFluidTemplateObject(string $filename): StandaloneView
     {
-        return $GLOBALS['LANG'];
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
+
+        $view->setTemplate($filename);
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 }

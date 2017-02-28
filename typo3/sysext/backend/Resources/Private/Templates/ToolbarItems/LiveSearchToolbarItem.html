@@ -1,0 +1,16 @@
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<form class="t3js-topbar-navigation-search toolbar-item-search-form live-search-wrapper" role="search">
+	<div class="form-group">
+		<div class="form-control-holder">
+			<div class="form-control-icon">
+				<core:icon identifier="apps-toolbar-menu-search" size="small" alternativeMarkupIdentifier="inline"/>
+			</div>
+			<input type="text" class="form-control toolbar-item-search-field t3js-topbar-navigation-search-field"
+						 placeholder="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.search') -> f:format.htmlspecialchars()}"
+						 id="live-search-box" autocomplete="off">
+		</div>
+	</div>
+</form>
+<a href="#" class="dropdown-toggle t3js-toolbar-search-dropdowntoggle" data-toggle="dropdown" aria-expanded="false"></a>
+<div class="dropdown-menu" role="menu"></div>
+</html>
