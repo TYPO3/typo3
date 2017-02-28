@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -20,12 +21,13 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class DefaultAvatarProvider
+ * Avatar Provider used for rendering avatars based on local files (based on FAL), stored in the be_users.avatar
+ * relation field with sys_file_reference.
  */
 class DefaultAvatarProvider implements AvatarProviderInterface
 {
     /**
-     * Get Image
+     * Return an Image object for rendering the avatar, based on a FAL-based file
      *
      * @param array $backendUser be_users record
      * @param int $size
@@ -58,15 +60,15 @@ class DefaultAvatarProvider implements AvatarProviderInterface
     }
 
     /**
-     * Get Avatar fileUid
+     * Get the sys_file UID of the avatar of the given backend user ID
      *
-     * @param int $beUserId
-     * @return int
+     * @param int $backendUserId the UID of the be_users record
+     * @return int the sys_file UID or 0 if none found
      */
-    protected function getAvatarFileUid($beUserId)
+    protected function getAvatarFileUid($backendUserId)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
-        $file = $queryBuilder
+        $fileUid = $queryBuilder
             ->select('uid_local')
             ->from('sys_file_reference')
             ->where(
@@ -84,12 +86,12 @@ class DefaultAvatarProvider implements AvatarProviderInterface
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$backendUserId, \PDO::PARAM_INT)
                 )
             )
             ->execute()
             ->fetchColumn();
 
-        return (int)$file;
+        return (int)$fileUid;
     }
 }

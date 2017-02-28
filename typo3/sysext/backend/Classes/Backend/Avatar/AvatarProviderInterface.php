@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  */
 
 /**
- * Class AvatarProviderInterface
+ * Contract for avatar providers that ensure how an avater should be rendered for a given Backend User
  */
 interface AvatarProviderInterface
 {
     /**
-     * Get Image
+     * Returns an Image object, prepared for output, based on a given be_users record
      *
      * @param array $backendUser be_users record
      * @param int $size

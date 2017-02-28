@@ -13,12 +13,12 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class Image
- *
+ * Acts as a pseudo model for holding all information of an avatar image
  * Holds url + dimensions of avatar image
  */
 class Image
@@ -41,8 +41,6 @@ class Image
     protected $height;
 
     /**
-     * Constructor
-     *
      * @param string $url url of image. Needs to be relative to the website root or an absolute URL.
      * @param int $width width of image
      * @param int $height height of image
@@ -55,7 +53,7 @@ class Image
     }
 
     /**
-     * Get url
+     * Fetches the URL to the the avatar image
      *
      * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all.
      * @return string
@@ -74,8 +72,6 @@ class Image
     }
 
     /**
-     * Get width
-     *
      * @return int
      */
     public function getWidth()
@@ -84,8 +80,6 @@ class Image
     }
 
     /**
-     * Get height
-     *
      * @return int
      */
     public function getHeight()

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Get avatar for backend user
+ * Render the avatar img tag for a given backend user
  */
 class AvatarViewHelper extends AbstractViewHelper
 {
@@ -40,13 +41,13 @@ class AvatarViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('backendUser', 'int', 'Uid of the user', false, 0);
+        $this->registerArgument('backendUser', 'int', 'uid of the backend user', false, 0);
         $this->registerArgument('size', 'int', 'width and height of the image', false, 32);
-        $this->registerArgument('showIcon', 'bool', 'show the record icon', false, false);
+        $this->registerArgument('showIcon', 'bool', 'show the record icon as well', false, false);
     }
 
     /**
-     * Resolve user avatar from backend user id.
+     * Resolve user avatar from a given backend user id.
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
@@ -76,7 +77,6 @@ class AvatarViewHelper extends AbstractViewHelper
             // no BE user can be retrieved from DB, probably deleted
             return '';
         }
-        /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
         return $avatar->render($backendUser, $arguments['size'], $arguments['showIcon']);
     }

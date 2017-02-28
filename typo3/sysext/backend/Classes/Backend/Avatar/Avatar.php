@@ -14,29 +14,32 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Avatar renderer class
+ * Main class to render an avatar image of a certain Backend user, resolving any avatar provider
+ * that takes care of fetching the image.
+ *
+ * See render() and getImgTag() as main entry points
  */
 class Avatar
 {
     /**
-     * Array of sorted and initiated avatar providers
+     * Array of sorted and initialized avatar providers
      *
      * @var AvatarProviderInterface[]
      */
     protected $avatarProviders = [];
 
     /**
-     * Render avatar tag
+     * Renders an avatar based on a Fluid template which contains some base wrapper classes and does
+     * a simple caching functionality, used in Avatar ViewHelper for instance
      *
      * @param array $backendUser be_users record
      * @param int $size width and height of the image
@@ -60,21 +63,11 @@ class Avatar
             $this->validateSortAndInitiateAvatarProviders();
             $view = $this->getFluidTemplateObject();
 
-            // Icon
-            $icon = '';
-            if ($showIcon) {
-                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-                $icon = $iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render();
-            }
-
-            $image = $this->getImgTag($backendUser, $size);
-
-            $view->assignMultiple(
-                [
-                    'image' => $image,
-                    'icon' => $icon
-                ]
-            );
+            $view->assignMultiple([
+                'image' => $this->getImgTag($backendUser, $size),
+                'showIcon' => $showIcon,
+                'backendUser' => $backendUser
+            ]);
             $avatar = $view->render();
             static::getCache()->set($cacheId, $avatar);
         }
@@ -83,7 +76,7 @@ class Avatar
     }
 
     /**
-     * Get avatar img tag
+     * Returns an HTML <img> tag for the avatar
      *
      * @param array $backendUser be_users record
      * @param int $size
@@ -159,7 +152,7 @@ class Avatar
 
         $orderedProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($providers);
 
-        // Initiate providers
+        // Initializes providers
         foreach ($orderedProviders as $configuration) {
             $this->avatarProviders[] = GeneralUtility::makeInstance($configuration['provider']);
         }
@@ -168,7 +161,7 @@ class Avatar
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {
@@ -179,18 +172,16 @@ class Avatar
      * Returns a new standalone view, shorthand function
      *
      * @param string $filename Which templateFile should be used.
-     *
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename = null):StandaloneView
+    protected function getFluidTemplateObject(string $filename = null): StandaloneView
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
         $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
 
-        if (is_null($filename)) {
+        if ($filename === null) {
             $filename = 'Main.html';
         }
 
@@ -201,12 +192,10 @@ class Avatar
     }
 
     /**
-     * @return VariableFrontend
+     * @return FrontendInterface
      */
     protected function getCache()
     {
-        /** @var CacheManager $manager */
-        $manager = GeneralUtility::makeInstance(CacheManager::class);
-        return $manager->getCache('cache_runtime');
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 }
