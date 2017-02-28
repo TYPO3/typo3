@@ -2452,10 +2452,9 @@ This is a dump of the failures:
                         ) . ':  ' . @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
                     $email_body .= LF;
                 }
-                $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
                 /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mail->setTo($email)->setFrom($from)->setSubject($subject)->setBody($email_body);
+                $mail->setTo($email)->setSubject($subject)->setBody($email_body);
                 $mail->send();
                 // Logout written to log
                 $this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$result->rowCount(), $secondsBack, $email]);
@@ -2647,19 +2646,17 @@ This is a dump of the failures:
                     $prefix = '[AdminLoginWarning]';
                 }
                 if ($warn) {
-                    $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
                     /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
                     $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                    $mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])->setFrom($from)->setSubject($prefix . ' ' . $subject)->setBody($msg);
+                    $mail->setTo($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'])->setSubject($prefix . ' ' . $subject)->setBody($msg);
                     $mail->send();
                 }
             }
             // If An email should be sent to the current user, do that:
             if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
-                $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
                 /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mail->setTo($this->user['email'])->setFrom($from)->setSubject($subject)->setBody($msg);
+                $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);
                 $mail->send();
             }
         }

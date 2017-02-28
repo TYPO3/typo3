@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MailUtility;
+
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions
  */
@@ -58,6 +60,10 @@ class MailMessage extends \Swift_Message
      */
     public function send()
     {
+        // Ensure to always have a From: header set
+        if (empty($this->getFrom())) {
+            $this->setFrom(MailUtility::getSystemFrom());
+        }
         $this->initializeMailer();
         $this->sent = true;
         $this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);

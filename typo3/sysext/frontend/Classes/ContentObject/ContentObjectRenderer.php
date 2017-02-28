@@ -6909,13 +6909,10 @@ class ContentObjectRenderer
         $senderName = trim($senderName);
         $senderAddress = trim($senderAddress);
         if ($senderName !== '' && $senderAddress !== '') {
-            $sender = [$senderAddress => $senderName];
+            $mail->setFrom([$senderAddress => $senderName]);
         } elseif ($senderAddress !== '') {
-            $sender = [$senderAddress];
-        } else {
-            $sender = MailUtility::getSystemFrom();
+            $mail->setFrom([$senderAddress]);
         }
-        $mail->setFrom($sender);
         $parsedReplyTo = MailUtility::parseAddresses($replyTo);
         if (!empty($parsedReplyTo)) {
             $mail->setReplyTo($parsedReplyTo);
@@ -6935,12 +6932,13 @@ class ContentObjectRenderer
             }
             $parsedCc = MailUtility::parseAddresses($cc);
             if (!empty($parsedCc)) {
+                $from = $mail->getFrom();
                 /** @var $mail MailMessage */
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
                 if (!empty($parsedReplyTo)) {
                     $mail->setReplyTo($parsedReplyTo);
                 }
-                $mail->setFrom($sender)
+                $mail->setFrom($from)
                     ->setTo($parsedCc)
                     ->setSubject($subject)
                     ->setBody($plainMessage);

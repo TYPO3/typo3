@@ -656,7 +656,6 @@ class DataHandlerHook
                 }
                 $mail->setTo($recipient)
                     ->setSubject($emailSubject)
-                    ->setFrom(\TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom())
                     ->setBody($emailMessage);
                 $mail->send();
             }
