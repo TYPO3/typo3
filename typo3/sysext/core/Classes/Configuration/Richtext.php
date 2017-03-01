@@ -61,27 +61,41 @@ class Richtext
         $configuration = $this->loadConfigurationFromPreset($tcaFieldConf['richtextConfiguration']);
 
         // Overload with PageTSconfig configuration
-        // First use RTE.default
+        // First use RTE.*
+        // Then overload with RTE.default
         // Then overload with RTE.config.tt_content.bodytext
         // Then overload with RTE.config.tt_content.bodytext.types.textmedia
         $fullPageTsConfig = $this->getRtePageTsConfigOfPid($pid);
-
-        if (is_array($fullPageTsConfig['properties']['default.'])) {
-            ArrayUtility::mergeRecursiveWithOverrule($configuration, $fullPageTsConfig['properties']['default.']);
+        $fullPageTsConfig = !empty($fullPageTsConfig['properties']) ? $fullPageTsConfig['properties'] : [];
+        $defaultPageTsConfigOverrides = isset($fullPageTsConfig['default.']) ? $fullPageTsConfig['default.'] : null;
+        $fieldSpecificPageTsConfigOverrides = isset($fullPageTsConfig['config.'][$table . '.'][$field . '.']) ? $fullPageTsConfig['config.'][$table . '.'][$field . '.'] : null;
+        unset($fullPageTsConfig['default.'], $fullPageTsConfig['config.']);
+        // RTE.* (used for RTE.classesAnchor or similar in RTEHtmlArea)
+        if (!empty($fullPageTsConfig)) {
+            ArrayUtility::mergeRecursiveWithOverrule($configuration, $fullPageTsConfig);
         }
-        $rtePageTsField = $fullPageTsConfig['properties']['config.'][$table . '.'][$field . '.'];
-        if (is_array($rtePageTsField)) {
-            unset($rtePageTsField['types.']);
-            ArrayUtility::mergeRecursiveWithOverrule($configuration, $rtePageTsField);
+        // RTE.default.*
+        if (is_array($defaultPageTsConfigOverrides)) {
+            ArrayUtility::mergeRecursiveWithOverrule($configuration, $defaultPageTsConfigOverrides);
         }
-        if ($recordType && is_array($fullPageTsConfig['properties']['config.'][$table . '.'][$field . '.']['types.'][$recordType . '.'])) {
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $configuration,
-                $fullPageTsConfig['properties']['config.'][$table . '.'][$field . '.']['types.'][$recordType . '.']
-            );
+        // RTE.config.tt_content.bodytext and based on type as well
+        if (is_array($fieldSpecificPageTsConfigOverrides)) {
+            $fieldSpecificPageTsConfigOverridesWithoutType = $fieldSpecificPageTsConfigOverrides;
+            unset($fieldSpecificPageTsConfigOverridesWithoutType['types.']);
+            ArrayUtility::mergeRecursiveWithOverrule($configuration, $fieldSpecificPageTsConfigOverridesWithoutType);
+            if ($recordType
+                && isset($fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.'])
+                && is_array($fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.'])) {
+                ArrayUtility::mergeRecursiveWithOverrule(
+                    $configuration,
+                    $fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.']
+                );
+            }
         }
 
         // Reload the base configuration, if overridden via PageTS "RTE.default.preset = Minimal" for instance
+        // However, if a preset is chosen via TSconfig, then it is not possible to override anything else again
+        // via TSconfig (endless loop).
         if (isset($configuration['preset']) && $usePreset !== $configuration['preset']) {
             $configuration = $this->loadConfigurationFromPreset($configuration['preset']);
         }

@@ -32,10 +32,10 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'classes.' => [
-                'aClass.' => 'aConfig',
-            ],
             'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
                 'default.' => [
                     'removeComments' => '1',
                 ],
@@ -55,6 +55,9 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
         $expected = [
+            'classes.' => [
+                'aClass.' => 'aConfig',
+            ],
             'removeComments' => '1',
             'proc.' => [
                 'overruleMode' => 'myTransformation',
@@ -78,10 +81,10 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'classes.' => [
-                'aClass.' => 'aConfig',
-            ],
             'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
                 'default.' => [
                     'removeComments' => '1',
                 ],
@@ -97,6 +100,9 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ]
         ];
         $expected = [
+            'classes.' => [
+                'aClass.' => 'aConfig',
+            ],
             'removeComments' => '1',
             'proc.' => [
                 'overruleMode' => 'myTransformation',
@@ -120,16 +126,19 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'classes.' => [
-                'aClass.' => 'aConfig',
-            ],
             'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
                 'default.' => [
                     'removeComments' => '1',
                 ],
             ]
         ];
         $expected = [
+            'classes.' => [
+                'aClass.' => 'aConfig',
+            ],
             'removeComments' => '1',
             'proc.' => [
                 'overruleMode' => 'default',
@@ -153,10 +162,10 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'enableRichtext' => true,
         ];
         $pageTsConfig = [
-            'classes.' => [
-                'aClass.' => 'aConfig',
-            ],
             'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
                 'default.' => [
                     'proc.' => [
                         'overruleMode' => 'ts_css',
@@ -165,6 +174,145 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
         $expected = [
+            'classes.' => [
+                'aClass.' => 'aConfig',
+            ],
+            'proc.' => [
+                'overruleMode' => 'default',
+            ],
+        ];
+        // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
+        // which can't be mocked in a sane way
+        $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
+        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
+        $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @test
+     */
+    public function getConfigurationOverridesByDefault()
+    {
+        $fieldConfig = [
+            'type' => 'text',
+            'enableRichtext' => true,
+        ];
+        $pageTsConfig = [
+            'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
+                'default.' => [
+                    'classes.' => [
+                        'aClass.' => 'anotherConfig',
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'classes.' => [
+                'aClass.' => 'anotherConfig',
+            ],
+            'proc.' => [
+                'overruleMode' => 'default',
+            ],
+        ];
+        // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
+        // which can't be mocked in a sane way
+        $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
+        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
+        $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @test
+     */
+    public function getConfigurationOverridesByFieldSpecificConfig()
+    {
+        $fieldConfig = [
+            'type' => 'text',
+            'enableRichtext' => true,
+        ];
+        $pageTsConfig = [
+            'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
+                'default.' => [
+                    'classes.' => [
+                        'aClass.' => 'anotherConfig',
+                    ],
+                ],
+                'config.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'classes.' => [
+                                'aClass.' => 'aThirdConfig',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'classes.' => [
+                'aClass.' => 'aThirdConfig',
+            ],
+            'proc.' => [
+                'overruleMode' => 'default',
+            ],
+        ];
+        // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
+        // which can't be mocked in a sane way
+        $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
+        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
+        $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @test
+     */
+    public function getConfigurationOverridesByFieldAndTypeSpecificConfig()
+    {
+        $fieldConfig = [
+            'type' => 'text',
+            'enableRichtext' => true,
+        ];
+        $pageTsConfig = [
+            'properties' => [
+                'classes.' => [
+                    'aClass.' => 'aConfig',
+                ],
+                'default.' => [
+                    'classes.' => [
+                        'aClass.' => 'anotherConfig',
+                    ],
+                ],
+                'config.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'classes.' => [
+                                'aClass.' => 'aThirdConfig',
+                            ],
+                            'types.' => [
+                                'textmedia.' => [
+                                    'classes.' => [
+                                        'aClass.' => 'aTypeSpecifcConfig',
+                                    ],
+                                ]
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'classes.' => [
+                'aClass.' => 'aTypeSpecifcConfig',
+            ],
             'proc.' => [
                 'overruleMode' => 'default',
             ],
