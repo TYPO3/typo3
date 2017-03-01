@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Form\FieldWizard\OtherLanguageContent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -306,11 +308,20 @@ class InputLinkElement extends AbstractFormElement
         if (empty($itemValue)) {
             return [];
         }
-        $data = [];
+        $data = ['text' => '', 'icon' => ''];
+        $linkData = [];
         $typolinkService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $linkParts = $typolinkService->decode($itemValue);
         $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $linkData = $linkService->resolve($linkParts['url']);
+
+        try {
+            $linkData = $linkService->resolve($linkParts['url']);
+        } catch (FileDoesNotExistException $e) {
+            return $data;
+        } catch (FolderDoesNotExistException $e) {
+            return $data;
+        }
+
         switch ($linkData['type']) {
             case LinkService::TYPE_PAGE:
                 $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
