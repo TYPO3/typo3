@@ -543,7 +543,9 @@ class QueryGenerator
             ksort($queryConfig);
         } else {
             // queryConfig should never be empty!
-            if (!$queryConfig[0] || !$queryConfig[0]['type']) {
+            if (!isset($queryConfig[0]) || empty($queryConfig[0]['type'])) {
+                // Make sure queryConfig is an array
+                $queryConfig = [];
                 $queryConfig[0] = ['type' => 'FIELD_'];
             }
         }
