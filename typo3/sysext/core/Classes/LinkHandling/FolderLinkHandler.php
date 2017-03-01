@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,7 +62,12 @@ class FolderLinkHandler implements LinkHandlingInterface
     public function resolveHandlerData(array $data): array
     {
         $combinedIdentifier = ($data['storage'] ?? '0') . ':' . $data['identifier'];
-        return ['folder' => $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($combinedIdentifier)];
+        try {
+            $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+        } catch (FolderDoesNotExistException $e) {
+            $folder = null;
+        }
+        return ['folder' => $folder];
     }
 
     /**
