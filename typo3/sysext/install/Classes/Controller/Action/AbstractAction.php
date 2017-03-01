@@ -203,7 +203,8 @@ abstract class AbstractAction implements ActionInterface
             ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables()
             ->initializeTypo3DbGlobal()
-            ->loadExtensionTables(false);
+            ->loadBaseTca(false)
+            ->loadExtTables(false);
     }
 
     /**

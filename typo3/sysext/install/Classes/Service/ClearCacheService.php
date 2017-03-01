@@ -76,7 +76,8 @@ class ClearCacheService
             ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables()
             ->initializeTypo3DbGlobal()
-            ->loadExtensionTables(false);
+            ->loadBaseTca(false)
+            ->loadExtTables(false);
 
         // The cache manager is already instantiated in the install tool
         // with some hacked settings to disable caching of extbase and fluid.

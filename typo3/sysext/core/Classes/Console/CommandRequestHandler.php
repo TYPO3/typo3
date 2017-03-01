@@ -62,7 +62,8 @@ class CommandRequestHandler implements RequestHandlerInterface
         $output = new ConsoleOutput();
 
         $this->bootstrap
-            ->loadExtensionTables()
+            ->loadBaseTca()
+            ->loadExtTables()
             // create the BE_USER object (not logged in yet)
             ->initializeBackendUser(CommandLineUserAuthentication::class)
             ->initializeLanguageObject()

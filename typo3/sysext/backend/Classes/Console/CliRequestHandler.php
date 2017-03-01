@@ -100,7 +100,8 @@ class CliRequestHandler implements RequestHandlerInterface
     protected function boot()
     {
         $this->bootstrap
-            ->loadExtensionTables()
+            ->loadBaseTca()
+            ->loadExtTables()
             ->initializeBackendUser(CommandLineUserAuthentication::class);
 
         // Checks for a user _CLI_, if non exists, will create one

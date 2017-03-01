@@ -911,9 +911,11 @@ class Bootstrap
      * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
      * @return Bootstrap
      * @internal This is not a public API method, do not use in own extensions
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function loadExtensionTables($allowCaching = true)
     {
+        GeneralUtility::logDeprecatedFunction();
         $this->loadBaseTca($allowCaching)->loadExtTables($allowCaching);
         return $this;
     }

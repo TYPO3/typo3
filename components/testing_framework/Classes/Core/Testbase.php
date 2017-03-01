@@ -569,7 +569,7 @@ class Testbase
      */
     public function loadExtensionTables()
     {
-        Bootstrap::getInstance()->loadExtensionTables();
+        Bootstrap::getInstance()->loadBaseTca()->loadExtTables();
     }
 
     /**
