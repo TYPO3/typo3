@@ -52,13 +52,6 @@ class RichTextElement extends AbstractFormElement
     protected $rteConfiguration = [];
 
     /**
-     * The path to EXT:rte_ckeditor/Resources/Public/ where all assets etc. are stored.
-     *
-     * @var string
-     */
-    protected $defaultResourcesPath;
-
-    /**
      * Renders the ckeditor element
      *
      * @return array
@@ -69,7 +62,6 @@ class RichTextElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
-        $this->defaultResourcesPath = $this->resolveUrlPath('EXT:rte_ckeditor/Resources/Public/');
 
         $fieldId = $this->sanitizeFieldId($parameterArray['itemFormElName']);
         $itemFormElementName = $this->data['parameterArray']['itemFormElName'];
@@ -262,14 +254,10 @@ class RichTextElement extends AbstractFormElement
      */
     protected function prepareConfigurationForEditor(): array
     {
-        // Set some good defaults
+        // Ensure custom config is empty so nothing additional is loaded
+        // Of course this can be overriden by the editor configuration below
         $configuration = [
-            'contentsCss' => $this->defaultResourcesPath . 'Css/contents.css',
-            'customConfig' => '', // do not load anything
-            'toolbar' => 'Basic',
-            'uiColor' => '#F8F8F8',
-            'stylesSet' => 'default',
-            'extraPlugins' => '',
+            'customConfig' => '',
         ];
 
         if (is_array($this->rteConfiguration['config'])) {
