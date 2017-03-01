@@ -26,7 +26,7 @@ interface QueryRestrictionInterface
     /**
      * Main method to build expressions for given tables
      *
-     * @param array $queriedTables Array of tables, where array key is table name and value potentially an alias
+     * @param array $queriedTables Array of tables, where array key is table alias and value is a table name
      * @param ExpressionBuilder $expressionBuilder Expression builder instance to add restrictions with
      * @return CompositeExpression The result of query builder expression(s)
      */

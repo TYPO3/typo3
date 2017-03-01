@@ -1437,7 +1437,7 @@ abstract class AbstractUserAuthentication
         $authInfo['db_user']['userident_column'] = $this->userident_column;
         $authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
         $authInfo['db_user']['enable_clause'] = $this->userConstraints()->buildExpression(
-            [$this->user_table => ''],
+            [$this->user_table => $this->user_table],
             $expressionBuilder
         );
         if ($this->checkPid && $this->checkPid_value !== null) {
