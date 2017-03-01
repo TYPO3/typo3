@@ -490,6 +490,13 @@ class PageGenerator
         // Stylesheets
         $style = '';
         if ($tsfe->pSetup['insertClassesFromRTE']) {
+            $tsfe->logDeprecatedTyposcript(
+                'page.insertClassesFromRTE',
+                'Loading CSS classes from the RTE directly is discouraged in TYPO3 v8, as CSS classes should be '
+                . 'defined in CSS/LESS/SASS files instead, ensuring to load only what is necessary for a page, and '
+                . 'speeding up page rendering ("above the fold"). Additionally CSS should be defined in CSS files or '
+                . 'TypoScript and not via magic of pageTSconfig, overlaid by userTSconfig.'
+            );
             $pageTSConfig = $tsfe->getPagesTSconfig();
             $RTEclasses = $pageTSConfig['RTE.']['classes.'];
             if (is_array($RTEclasses)) {
