@@ -145,8 +145,11 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
             $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
 
-            if (!$cropVariantCollection->getFocusArea($cropVariant)->isEmpty()) {
-                $this->tag->addAttribute('data-focus-area', $cropVariantCollection->getFocusArea($cropVariant)->makeAbsoluteBasedOnFile($image));
+            if (!$this->tag->hasAttribute('data-focus-area')) {
+                $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
+                if (!$focusArea->isEmpty()) {
+                    $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image));
+                }
             }
             $this->tag->addAttribute('src', $imageUri);
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
