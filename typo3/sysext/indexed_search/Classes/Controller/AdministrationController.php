@@ -95,6 +95,7 @@ class AdministrationController extends ActionController
             }
             $this->generateMenu();
             $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+            $view->assign('extensionConfiguration', $this->indexerConfig);
         }
     }
 

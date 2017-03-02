@@ -11,7 +11,9 @@
 					<th><f:translate key="field.id"/>/<f:translate key="field.type"/></th>
 					<th><f:translate key="field.title"/></th>
 					<th><f:translate key="field.fileSize"/></th>
-					<th><f:translate key="field.wordCount"/></th>
+					<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+						<th><f:translate key="field.wordCount"/></th>
+					</f:if>
 					<th><f:translate key="field.mtime"/></th>
 					<th><f:translate key="field.indexed"/></th>
 					<th><f:translate key="field.updated"/></th>
@@ -37,7 +39,9 @@
 					<td>
 						<f:format.bytes decimals="1">{data.item_size}</f:format.bytes>
 					</td>
-					<td>{data.numberOfWords}</td>
+					<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+						<td>{data.numberOfWords}</td>
+					</f:if>
 					<td>
 						<is:format.dateTime>{data.item_mtime}</is:format.dateTime>
 					</td>

@@ -33,14 +33,18 @@
 								<th>
 									<f:translate key="field.content" />
 								</th>
-								<th>
-									<f:translate key="field.words" />
-								</th>
+								<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+									<th>
+										<f:translate key="field.words" />
+									</th>
+								</f:if>
 							</f:case>
 							<f:defaultCase>
-								<th>
-									<f:translate key="field.wordCount"/>
-								</th>
+								<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+									<th>
+										<f:translate key="field.wordCount"/>
+									</th>
+								</f:if>
 								<th>
 									<f:translate key="field.fileSize"/>
 								</th>
@@ -76,16 +80,20 @@
 													<td>
 														{l.fulltextData.fulltextdata}
 													</td>
-													<td>
-														<f:for each="{l.allWords}" as="w">
-															{w}
-														</f:for>
-														<br><br>
-														<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
-													</td>
+													<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+														<td>
+															<f:for each="{l.allWords}" as="w">
+																{w}
+															</f:for>
+															<br><br>
+															<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
+														</td>
+													</f:if>
 												</f:case>
 												<f:defaultCase>
-													<td>{l.wordCount}</td>
+													<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
+														<td>{l.wordCount}</td>
+													</f:if>
 													<td>
 														<f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
 													</td>
