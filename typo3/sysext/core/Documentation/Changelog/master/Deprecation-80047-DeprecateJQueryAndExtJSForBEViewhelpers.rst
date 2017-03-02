@@ -44,6 +44,21 @@ Any installation using the mentioned attributes.
 Migration
 =========
 
-No migration available.
+Use `includeRequireJsModules` property of the :html:`<f:be.pageRenderer>` or :html:`<f:be.container>` viewhelpers to add needed RequireJS modules.
+
+Example:
+
+.. code-block:: xml
+
+ <f:be.pageRenderer
+	includeRequireJsModules="{
+		0:'TYPO3/CMS/Backend/ContextMenu'
+	}"
+/>
+
+
+See also documentation about RequireJS documentation_
+
+.. _documentation: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/JavaScript/RequireJS/Index.html 
 
 .. index:: Backend, Fluid
