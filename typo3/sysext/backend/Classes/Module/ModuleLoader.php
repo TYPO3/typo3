@@ -386,6 +386,18 @@ class ModuleLoader
                 $language = 'default';
             }
 
+            if (empty($labels)) {
+                if (isset($this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tablabel'])) {
+                    $labels[$language]['labels']['tablabel'] = $this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tablabel'];
+                }
+                if (isset($this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tabdescr'])) {
+                    $labels[$language]['labels']['tabdescr'] = $this->getLanguageService()->moduleLabels['labels'][$moduleName . '_tabdescr'];
+                }
+                if (isset($this->getLanguageService()->moduleLabels['tabs'][$moduleName . '_tab'])) {
+                    $labels[$language]['tabs']['tab'] = $this->getLanguageService()->moduleLabels['tabs'][$moduleName . '_tab'];
+                }
+            }
+
             if (isset($labels[$language]['ll_ref'])) {
                 $this->addLabelsForModule($moduleName, $labels[$language]['ll_ref']);
             } elseif (isset($labels['default']['ll_ref'])) {
