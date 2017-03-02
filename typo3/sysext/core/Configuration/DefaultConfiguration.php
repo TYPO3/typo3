@@ -546,6 +546,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaOverrideChildCroppingConfiguration::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
+                        ],
+                        'before' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,

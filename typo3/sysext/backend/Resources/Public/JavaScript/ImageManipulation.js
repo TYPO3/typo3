@@ -48,6 +48,8 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
              */
             this.cropBuiltHandler = function () {
                 var imageData = _this.cropper.cropper('getImageData');
+                var image = _this.currentModal.find(_this.cropImageSelector);
+                _this.imageOriginalSizeFactor = image.data('originalWidth') / imageData.naturalWidth;
                 // Iterate over the crop variants and set up their respective preview
                 _this.cropVariantTriggers.each(function (index, elem) {
                     var cropVariantId = $(elem).attr('data-crop-variant-id');
@@ -96,7 +98,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 });
                 _this.updatePreviewThumbnail(_this.currentCropVariant, _this.activeCropVariantTrigger);
                 _this.updateCropVariantData(_this.currentCropVariant);
-                _this.cropInfo.text(_this.currentCropVariant.cropArea.width + "\u00D7" + _this.currentCropVariant.cropArea.height + " px");
+                var naturalWidth = Math.round(_this.currentCropVariant.cropArea.width * _this.imageOriginalSizeFactor);
+                var naturalHeight = Math.round(_this.currentCropVariant.cropArea.height * _this.imageOriginalSizeFactor);
+                _this.cropInfo.text(naturalWidth + "\u00D7" + naturalHeight + " px");
             };
             /**
              * @method cropStartHandler
@@ -621,6 +625,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
          * @return {boolean}
          */
         ImageManipulation.prototype.checkFocusAndCoverAreasCollision = function (focusArea, coverAreas) {
+            if (!coverAreas) {
+                return false;
+            }
             return coverAreas
                 .some(function (coverArea) {
                 // noinspection OverlyComplexBooleanExpressionJS

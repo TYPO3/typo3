@@ -264,11 +264,11 @@
 			<trans-unit id="imwizard.supported-types-message">
 				<source>Image manipulation is only available for supported types:</source>
 			</trans-unit>
-			<trans-unit id="imwizard.no-image-found">
-				<source>No image found</source>
+			<trans-unit id="imwizard.no-image-dimensions">
+				<source>No image dimensions could be determined.</source>
 			</trans-unit>
-			<trans-unit id="imwizard.no-image-found-message">
-				<source>No image found. Could also be that image is present but that the original dimensions are unknow.</source>
+			<trans-unit id="imwizard.no-image-dimensions-message">
+				<source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
 			</trans-unit>
 			<trans-unit id="imwizard.image-manipulation">
 				<source>Image manipulation</source>

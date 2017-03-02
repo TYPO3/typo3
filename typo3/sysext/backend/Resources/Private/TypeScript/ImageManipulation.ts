@@ -151,6 +151,7 @@ class ImageManipulation {
   private cropperCanvas: JQuery;
   private cropInfo: JQuery;
   private cropImageContainerSelector: string = '#t3js-crop-image-container';
+  private imageOriginalSizeFactor: number;
   private cropImageSelector: string = '#t3js-crop-image';
   private coverAreaSelector: string = '.t3js-cropper-cover-area';
   private cropInfoSelector: string = '.t3js-cropper-info-crop';
@@ -394,6 +395,9 @@ class ImageManipulation {
    */
   private cropBuiltHandler = (): void => {
     const imageData: CropperImageData = this.cropper.cropper('getImageData');
+    const image: JQuery = this.currentModal.find(this.cropImageSelector);
+
+    this.imageOriginalSizeFactor = image.data('originalWidth') / imageData.naturalWidth;
 
     // Iterate over the crop variants and set up their respective preview
     this.cropVariantTriggers.each((index: number, elem: Element): void => {
@@ -455,7 +459,9 @@ class ImageManipulation {
     });
     this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
     this.updateCropVariantData(this.currentCropVariant);
-    this.cropInfo.text(`${this.currentCropVariant.cropArea.width}×${this.currentCropVariant.cropArea.height} px`);
+    const naturalWidth: number = Math.round(this.currentCropVariant.cropArea.width * this.imageOriginalSizeFactor);
+    const naturalHeight: number = Math.round(this.currentCropVariant.cropArea.height * this.imageOriginalSizeFactor);
+    this.cropInfo.text(`${naturalWidth}×${naturalHeight} px`);
   };
 
   /**
@@ -769,6 +775,9 @@ class ImageManipulation {
    * @return {boolean}
    */
   private checkFocusAndCoverAreasCollision(focusArea: Area, coverAreas: Area[]): boolean {
+    if (!coverAreas) {
+      return false;
+    }
     return coverAreas
       .some((coverArea: Area): boolean => {
         // noinspection OverlyComplexBooleanExpressionJS

@@ -3,7 +3,7 @@
 	<f:layout name="ImageManipulation" />
 
 	<f:section name="Main">
-		<f:if condition="{isAllowedFileExtension}">
+		<f:if condition="{isAllowedFileExtension} && {image.properties.width}">
 			<f:then>
 				<f:if condition="{config.readOnly}">
 					<f:else>
@@ -49,12 +49,24 @@
 			</f:then>
 			<f:else>
 				<div class="media-body">
-					<p>
-						<em>
-							<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message" /><br/>
-							{config.allowedExtensions -> f:format.case(mode: 'upper')}
-						</em>
-					</p>
+				<f:if condition="{image.properties.width}">
+					<f:then>
+						<p>
+							<em>
+								<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.supported-types-message" /><br/>
+								{config.allowedExtensions -> f:format.case(mode: 'upper')}
+							</em>
+						</p>
+					</f:then>
+					<f:else>
+						<h4 class="alert-title">
+							<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-dimensions"/>
+						</h4>
+						<p class="alert-message">
+							<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.no-image-dimensions-message"/>
+						</p>
+					</f:else>
+				</f:if>
 				</div>
 			</f:else>
 		</f:if>
