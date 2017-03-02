@@ -137,4 +137,28 @@ class DatabaseEditRowTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->assertSame(10, $e->getUid());
         }
     }
+
+    /**
+     * @test
+     */
+    public function addDataSkipsDatabaseLookupIfDatabaseRowIsPopulated()
+    {
+        $virtualRow = [
+            'uid' => 10,
+            'pid' => 123,
+            'title' => 'Title of the virtual record'
+        ];
+        $input = [
+            'tableName' => 'virtual_table',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+            'databaseRow' => $virtualRow
+        ];
+        $resultRow = $virtualRow;
+        $this->subject->expects($this->never())->method('getDatabaseRow');
+
+        $result = $this->subject->addData($input);
+
+        $this->assertSame($resultRow, $result['databaseRow']);
+    }
 }
