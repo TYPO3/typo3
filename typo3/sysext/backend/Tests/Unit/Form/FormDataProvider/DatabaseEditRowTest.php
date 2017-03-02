@@ -176,4 +176,28 @@ class DatabaseEditRowTest extends UnitTestCase
 
         $this->subject->addData($input);
     }
+
+    /**
+     * @test
+     */
+    public function addDataSkipsDatabaseLookupIfDatabaseRowIsPopulated()
+    {
+        $virtualRow = [
+            'uid' => 10,
+            'pid' => 123,
+            'title' => 'Title of the virtual record'
+        ];
+        $input = [
+            'tableName' => 'virtual_table',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+            'databaseRow' => $virtualRow
+        ];
+        $resultRow = $virtualRow;
+        $this->dbProphecy->exec_SELECTgetSingleRow(Argument::cetera())->shouldNotBeCalled();
+
+        $result = $this->subject->addData($input);
+
+        $this->assertSame($resultRow, $result['databaseRow']);
+    }
 }

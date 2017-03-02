@@ -31,7 +31,7 @@ class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormData
      */
     public function addData(array $result)
     {
-        if ($result['command'] !== 'edit') {
+        if ($result['command'] !== 'edit' || !empty($result['databaseRow'])) {
             return $result;
         }
 
