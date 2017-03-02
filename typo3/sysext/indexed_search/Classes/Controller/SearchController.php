@@ -943,7 +943,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Adding search field value
         $this->view->assign('sword', $this->getSword());
         // Extended search
-        if ($search['extendedSearch']) {
+        if (!empty($searchData['extendedSearch'])) {
             // "Search for"
             $allSearchTypes = $this->getAllAvailableSearchTypeOptions();
             $this->view->assign('allSearchTypes', $allSearchTypes);
