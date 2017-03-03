@@ -14033,19 +14033,22 @@ span.item-state-deleted {
 .typo3-extension-list .inactive {
   color: #aaaaaa;
 }
+.typo3-extension-list .insecure {
+  color: #ff2262;
+}
+.typo3-extension-list .insecure a {
+  color: inherit;
+}
+.typo3-extension-list .outdated {
+  color: #0c08ff;
+}
+.typo3-extension-list .outdated a {
+  color: inherit;
+}
 .typo3-extension-list .author {
   display: none;
 }
-.typo3-extension-manager .insecure {
-  color: #ff2262;
-}
-.typo3-extension-manager .outdated {
-  color: #0c08ff;
-}
-.typo3-extension-manager form#extensionUploadForm {
-  margin-bottom: 0;
-}
-.typo3-extension-manager form#extensionUploadForm div.control-group:last-child {
+#extensionUploadForm div.control-group:last-child {
   margin-bottom: 0;
 }
 .headerTooltip {

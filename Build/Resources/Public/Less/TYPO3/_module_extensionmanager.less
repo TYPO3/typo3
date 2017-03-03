@@ -209,25 +209,29 @@
 		color: rgb(170, 170, 170);
 	}
 
+	.insecure {
+		color: #ff2262;
+		a {
+			color: inherit;
+		}
+	}
+
+	.outdated {
+		color: #0c08ff;
+		a {
+			color: inherit;
+		}
+	}
+
 	// Hide author for now
 	.author {
 		display: none;
 	}
 }
 
-
-.typo3-extension-manager {
-	.insecure {
-		color: #ff2262;
-	}
-	.outdated {
-		color: #0c08ff;
-	}
-	form#extensionUploadForm {
+#extensionUploadForm {
+	div.control-group:last-child {
 		margin-bottom: 0;
-		div.control-group:last-child {
-			margin-bottom: 0;
-		}
 	}
 }
 
