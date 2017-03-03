@@ -155,6 +155,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
+                'max' => 255,
                 'eval' => 'null',
                 'placeholder' => '__row|uid_local|metadata|title',
                 'mode' => 'useOrOverridePlaceholder',
