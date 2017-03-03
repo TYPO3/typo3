@@ -500,7 +500,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
         $this->formState->setLastDisplayedPageIndex($this->currentPage->getIndex());
 
-        if ($this->formDefinition->getRendererClassName() === null) {
+        if ($this->formDefinition->getRendererClassName() === '') {
             throw new RenderingException(sprintf('The form definition "%s" does not have a rendererClassName set.', $this->formDefinition->getIdentifier()), 1326095912);
         }
         $rendererClassName = $this->formDefinition->getRendererClassName();

@@ -255,7 +255,7 @@ class FormDefinition extends AbstractCompositeRenderable
      *
      * @var string
      */
-    protected $rendererClassName = null;
+    protected $rendererClassName = '';
 
     /**
      * @var array
@@ -721,10 +721,10 @@ class FormDefinition extends AbstractCompositeRenderable
     /**
      * Get the classname of the renderer
      *
-     * @return null|string
+     * @return string
      * @api
      */
-    public function getRendererClassName()
+    public function getRendererClassName(): string
     {
         return $this->rendererClassName;
     }

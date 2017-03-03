@@ -70,10 +70,10 @@ interface RootRenderableInterface
      * Get the renderer class name to be used to display this form;
      * must implement RendererInterface
      *
-     * @return null|string the renderer class name
+     * @return string the renderer class name
      * @api
      */
-    public function getRendererClassName();
+    public function getRendererClassName(): string;
 
     /**
      * Get all rendering options

@@ -80,7 +80,7 @@ class FormRuntimeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $mockFormDefinition
             ->expects($this->any())
             ->method('getRendererClassName')
-            ->willReturn(null);
+            ->willReturn('');
 
         $mockFormDefinition
             ->expects($this->any())
