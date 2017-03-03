@@ -56,13 +56,32 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         $databaseDifferences = $this->getDatabaseDifferences();
         foreach ($databaseDifferences as $schemaDiff) {
             // A new table is required, early return
-            if (count($schemaDiff->newTables) !== 0) {
+            if (!empty($schemaDiff->newTables)) {
                 return true;
             }
 
             // A new field or index is required
             foreach ($schemaDiff->changedTables as $changedTable) {
-                if (count($changedTable->addedColumns) !== 0 || count($changedTable->addedIndexes) !== 0) {
+                if (!empty($changedTable->addedColumns)) {
+                    return true;
+                }
+
+                // Ignore new indexes that work on columns that need changes
+                foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
+                    // Strip MySQL prefix length information to get real column names
+                    $indexColumns = array_map(
+                        function ($columnName) {
+                            return preg_replace('/\(\d+\)$/', '', $columnName);
+                        },
+                        $addedIndex->getColumns()
+                    );
+                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->changedColumns));
+                    if (!empty($columnChanges)) {
+                        unset($changedTable->addedIndexes[$indexName]);
+                    }
+                }
+
+                if (!empty($changedTable->addedIndexes)) {
                     return true;
                 }
             }
@@ -134,7 +153,7 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
             )
         );
 
-        return count($result) === 0;
+        return empty($result);
     }
 
     /**

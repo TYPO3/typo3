@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Schema;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
+use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -301,6 +302,19 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      * @test
      * @group mysql
      */
+    public function installDoesNotAddIndexOnChangedColumn()
+    {
+        $statements = $this->readFixtureFile('addIndexOnChangedColumn');
+        $this->subject->install($statements, true);
+
+        $this->assertNotInstanceOf(TextType::class, $this->getTableDetails()->getColumn('title')->getType());
+        $this->assertFalse($this->getTableDetails()->hasIndex('title'));
+    }
+
+    /**
+     * @test
+     * @group mysql
+     */
     public function installCanPerformChangeOperations()
     {
         $statements = $this->readFixtureFile('addCreateChange');
@@ -360,6 +374,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         );
 
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
+        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
         $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
     }
 

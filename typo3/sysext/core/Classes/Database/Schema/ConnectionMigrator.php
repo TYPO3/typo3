@@ -197,7 +197,22 @@ class ConnectionMigrator
             }
 
             if ($createOnly) {
+                // Ignore new indexes that work on columns that need changes
+                foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
+                    // Strip MySQL prefix length information to get real column names
+                    $indexColumns = array_map(
+                        function ($columnName) {
+                            return preg_replace('/\(\d+\)$/', '', $columnName);
+                        },
+                        $addedIndex->getColumns()
+                    );
+                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->changedColumns));
+                    if (!empty($columnChanges)) {
+                        unset($schemaDiff->changedTables[$key]->addedIndexes[$indexName]);
+                    }
+                }
                 $schemaDiff->changedTables[$key]->changedColumns = [];
+                $schemaDiff->changedTables[$key]->changedIndexes = [];
                 $schemaDiff->changedTables[$key]->renamedIndexes = [];
             }
         }
