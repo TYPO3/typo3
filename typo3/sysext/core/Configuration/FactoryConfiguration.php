@@ -15,14 +15,14 @@ return [
             'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
             'saltedpasswords' => serialize([
                 'BE.' => [
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
                 ],
                 'FE.' => [
                     'enabled' => 1,
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
                     'forceSalted' => 0,
                     'onlyAuthService' => 0,
                     'updatePasswd' => 1,
