@@ -37,84 +37,103 @@ plugin.tx_felogin_pi1 {
 	newPasswordMinLength = 6
 
 	welcomeHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	welcomeMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 
 	successHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	successMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 
 	logoutHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	logoutMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 
 	errorHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	errorMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 
 	forgotHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	forgotMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	forgotErrorMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	forgotResetMessageEmailSentMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	changePasswordNotValidMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	changePasswordTooShortMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	changePasswordNotEqualMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 
 	changePasswordHeader_stdWrap {
+		required = 1
 		wrap = <h3>|</h3>
 		htmlSpecialChars = 1
 	}
 	changePasswordMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
 	}
 	changePasswordDoneMessage_stdWrap {
+		required = 1
 		wrap = <div>|</div>
 		htmlSpecialChars = 1
     }
 
 	cookieWarning_stdWrap {
+		required = 1
 		wrap = <p style="color:red; font-weight:bold;">|</p>
 		htmlSpecialChars = 1
 	}
