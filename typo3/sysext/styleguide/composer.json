@@ -1,5 +1,5 @@
 {
-  "name": "7elix/styleguide",
+  "name": "typo3/cms-styleguide",
   "authors": [
     {
       "name": "Felix Kopp",
@@ -10,14 +10,14 @@
   ],
   "type": "typo3-cms-extension",
   "description": "TYPO3 CMS Backend Styleguide",
-  "homepage": "https://github.com/7elix/TYPO3.CMS.Styleguide",
+  "homepage": "https://github.com/TYPO3/styleguide",
   "license": "GPL-2.0+",
   "keywords": [
     "typo3",
     "style guide"
   ],
   "support": {
-    "issues": "https://github.com/7elix/TYPO3.CMS.Styleguide/issues"
+    "issues": "https://github.com/TYPO3/styleguide/issues"
   },
   "autoload": {
     "psr-4": {

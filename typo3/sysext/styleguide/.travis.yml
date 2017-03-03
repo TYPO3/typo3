@@ -27,7 +27,7 @@ before_script:
   - composer install
   - mkdir -p typo3conf/ext
   - rm -rf typo3conf/ext/styleguide
-  - mv TYPO3.CMS.Styleguide typo3conf/ext/styleguide
+  - mv styleguide typo3conf/ext/styleguide
 
 script:
   - >
