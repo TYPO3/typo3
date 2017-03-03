@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'TYPO3 CMS Backend Styleguide',
+    'title' => 'TYPO3 CMS Backend Styleguide and Testing use cases',
     'description' => 'Presents most supported styles for TYPO3 backend modules. Mocks typography, tables, forms, buttons, flash messages and helpers. More at https://github.com/7elix/TYPO3.CMS.Styleguide',
     'category' => 'plugin',
     'author' => 'Felix Kopp',
@@ -10,7 +10,7 @@ $EM_CONF[$_EXTKEY] = array(
     'uploadfolder' => '1',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '8.0.0',
+    'version' => '8.0.7',
     'constraints' => array(
         'depends' => array(
             'typo3' => '8.0.0-8.99.99',

@@ -2,6 +2,11 @@
   "name": "typo3/cms-styleguide",
   "authors": [
     {
+      "name": "TYPO3 CMS Core Team",
+      "role": "Developer",
+      "homepage": "https://forge.typo3.org/projects/typo3cms-core"
+    },
+    {
       "name": "Felix Kopp",
       "email": "felix-source@phorax.com",
       "role": "Developer",
@@ -9,11 +14,12 @@
     }
   ],
   "type": "typo3-cms-extension",
-  "description": "TYPO3 CMS Backend Styleguide",
+  "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
   "homepage": "https://github.com/TYPO3/styleguide",
   "license": "GPL-2.0+",
   "keywords": [
     "typo3",
+    "typo3 backend",
     "style guide"
   ],
   "support": {
