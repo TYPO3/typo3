@@ -57,7 +57,7 @@
 		"mikey179/vfsStream": "~1.6.0",
 		"codeception/codeception": "^2.2",
 		"se/selenium-server-standalone": "~2.53",
-		"7elix/styleguide": "~8.0.0",
+		"typo3/cms-styleguide": "~8.0.8",
 		"friendsofphp/php-cs-fixer": "^2.0",
 		"fiunchinho/phpunit-randomizer": "~2.0.3"
 	},

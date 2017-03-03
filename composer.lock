@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fb40f5d3132ade2aa56de27e94b7c03",
+    "content-hash": "aa2279bf0a2d7d258d5e7ef5fa1372dc",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1402,46 +1402,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "7elix/styleguide",
-            "version": "8.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/7elix/TYPO3.CMS.Styleguide.git",
-                "reference": "b210d185103226da0ce385835a8cc07024345e41"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/7elix/TYPO3.CMS.Styleguide/zipball/b210d185103226da0ce385835a8cc07024345e41",
-                "reference": "b210d185103226da0ce385835a8cc07024345e41",
-                "shasum": ""
-            },
-            "type": "typo3-cms-extension",
-            "autoload": {
-                "psr-4": {
-                    "TYPO3\\CMS\\Styleguide\\": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "TYPO3 CMS Backend Styleguide",
-            "homepage": "https://github.com/7elix/TYPO3.CMS.Styleguide",
-            "keywords": [
-                "style guide",
-                "typo3"
-            ],
-            "time": "2017-02-22T16:37:44+00:00"
-        },
         {
             "name": "behat/gherkin",
             "version": "v4.4.5",
@@ -3418,6 +3378,55 @@
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
             "time": "2017-01-02T20:32:22+00:00"
+        },
+        {
+            "name": "typo3/cms-styleguide",
+            "version": "8.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3/styleguide.git",
+                "reference": "7f9b8f5b376e981cb59f091d460720bfbde0ce7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/7f9b8f5b376e981cb59f091d460720bfbde0ce7b",
+                "reference": "7f9b8f5b376e981cb59f091d460720bfbde0ce7b",
+                "shasum": ""
+            },
+            "replace": {
+                "styleguide": "*"
+            },
+            "type": "typo3-cms-extension",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\Styleguide\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Kopp",
+                    "email": "felix-source@phorax.com",
+                    "homepage": "http://phorax.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+            "homepage": "https://github.com/TYPO3/styleguide",
+            "keywords": [
+                "style guide",
+                "typo3",
+                "typo3 backend"
+            ],
+            "time": "2017-03-14T18:36:19+00:00"
         },
         {
             "name": "webmozart/assert",
