@@ -612,7 +612,7 @@ define(['jquery',
             if (getUtility().isUndefinedOrNull(title)) {
                 title = $('<span></span>')
                     .text((getRootFormElement().get('label') ? getRootFormElement().get('label') : getRootFormElement().get('identifier')))
-                    .html();
+                    .text();
             }
             getStructureRootElement().text(title);
         };
