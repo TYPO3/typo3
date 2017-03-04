@@ -6,6 +6,7 @@ editor:
     contentsCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
     # will be overridden by the record (if a language is set)
     defaultContentLanguage: "en"
+    defaultLanguage: "en"
     height: 300
     width: "auto"
     toolbar: "Basic"

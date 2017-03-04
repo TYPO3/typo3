@@ -17,6 +17,7 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -255,13 +256,17 @@ class RichTextElement extends AbstractFormElement
     protected function prepareConfigurationForEditor(): array
     {
         // Ensure custom config is empty so nothing additional is loaded
-        // Of course this can be overriden by the editor configuration below
+        // Of course this can be overridden by the editor configuration below
         $configuration = [
             'customConfig' => '',
         ];
 
         if (is_array($this->rteConfiguration['config'])) {
             $configuration = array_replace_recursive($configuration, $this->rteConfiguration['config']);
+        }
+        // Set the UI language of the editor if not hard-coded by the existing configuration
+        if (empty($configuration['language'])) {
+            $configuration['language'] = $this->getBackendUser()->uc['lang'] ?: ($this->getBackendUser()->user['lang'] ?: 'en');
         }
         $configuration['contentsLanguage'] = $this->getLanguageIsoCodeOfContent();
 
@@ -290,5 +295,13 @@ class RichTextElement extends AbstractFormElement
     {
         $fieldId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $itemFormElementName);
         return htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $fieldId));
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
