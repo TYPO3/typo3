@@ -129,11 +129,12 @@ class DatabaseConnect extends AbstractStepAction
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
                 ->populateLocalConfiguration()
                 ->disableCoreCache();
-            if (!$this->isConnectSuccessful()) {
+            $exceptionMessage = $this->isConnectSuccessfulWithExceptionMessage();
+            if (!empty($exceptionMessage)) {
                 /** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
                 $errorStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $errorStatus->setTitle('Database connect not successful');
-                $errorStatus->setMessage('Connecting to the database with given settings failed. Please check.');
+                $errorStatus->setMessage('Connecting to the database with given settings failed: ' . $exceptionMessage);
                 $result[] = $errorStatus;
             }
         }
@@ -206,16 +207,26 @@ class DatabaseConnect extends AbstractStepAction
     /**
      * Test connection with given credentials
      *
-     * @return bool TRUE if connect was successful
+     * @return bool true if connect was successful
      */
     protected function isConnectSuccessful()
+    {
+        return empty($this->isConnectSuccessfulWithExceptionMessage());
+    }
+
+    /**
+     * Test connection with given credentials and return exception message if exception trown
+     *
+     * @return string
+     */
+    protected function isConnectSuccessfulWithExceptionMessage(): string
     {
         try {
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName('Default')->ping();
         } catch (DBALException $e) {
-            return false;
+            return $e->getMessage();
         }
-        return true;
+        return '';
     }
 
     /**
