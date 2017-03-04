@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\Page;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
@@ -318,18 +320,21 @@ class PageRepository implements LoggerAwareInterface
             }
             $hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
         }
-        $cacheKey = md5(
+        $cacheIdentifier = 'PageRepository_getPage_' . md5(
             implode(
                 '-',
                 [
+                    $uid,
                     $disableGroupAccessCheck ? '' : $this->where_groupAccess,
                     $this->where_hid_del,
                     $this->sys_language_uid
                 ]
             )
         );
-        if (is_array($this->cache_getPage[$uid][$cacheKey])) {
-            return $this->cache_getPage[$uid][$cacheKey];
+        $cache = $this->getRuntimeCache();
+        $cacheEntry = $cache->get($cacheIdentifier);
+        if (is_array($cacheEntry)) {
+            return $cacheEntry;
         }
         $result = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -352,7 +357,7 @@ class PageRepository implements LoggerAwareInterface
                 $result = $this->getPageOverlay($row);
             }
         }
-        $this->cache_getPage[$uid][$cacheKey] = $result;
+        $cache->set($cacheIdentifier, $result);
         return $result;
     }
 
@@ -366,8 +371,11 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getPage_noCheck($uid)
     {
-        if ($this->cache_getPage_noCheck[$uid]) {
-            return $this->cache_getPage_noCheck[$uid];
+        $cache = $this->getRuntimeCache();
+        $cacheIdentifier = 'PageRepository_getPage_noCheck_' . $uid . '_' . $this->sys_language_uid . '_' . $this->versioningWorkspaceId;
+        $cacheEntry = $cache->get($cacheIdentifier);
+        if ($cacheEntry !== false) {
+            return $cacheEntry;
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -387,7 +395,7 @@ class PageRepository implements LoggerAwareInterface
                 $result = $this->getPageOverlay($row);
             }
         }
-        $this->cache_getPage_noCheck[$uid] = $result;
+        $cache->set($cacheIdentifier, $result);
         return $result;
     }
 
@@ -436,8 +444,11 @@ class PageRepository implements LoggerAwareInterface
     public function getPageIdFromAlias($alias)
     {
         $alias = strtolower($alias);
-        if ($this->cache_getPageIdFromAlias[$alias]) {
-            return $this->cache_getPageIdFromAlias[$alias];
+        $cacheIdentifier = 'PageRepository_getPageIdFromAlias_' . md5($alias);
+        $cache = $this->getRuntimeCache();
+        $cacheEntry = $cache->get($cacheIdentifier);
+        if ($cacheEntry !== false) {
+            return $cacheEntry;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -456,10 +467,10 @@ class PageRepository implements LoggerAwareInterface
             ->fetch();
 
         if ($row) {
-            $this->cache_getPageIdFromAlias[$alias] = $row['uid'];
+            $cache->set($cacheIdentifier, $row['uid']);
             return $row['uid'];
         }
-        $this->cache_getPageIdFromAlias[$alias] = 0;
+        $cache->set($cacheIdentifier, 0);
         return 0;
     }
 
@@ -1212,85 +1223,88 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = [], $firstPageUid = 0)
     {
+        if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
+            return false;
+        }
+        $cacheIdentifier = 'PageRepository_getMountPointInfo_' . $pageId;
+        $cache = $this->getRuntimeCache();
+        if ($cache->has($cacheIdentifier)) {
+            return $cache->get($cacheIdentifier);
+        }
         $result = false;
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
-            if (isset($this->cache_getMountPointInfo[$pageId])) {
-                return $this->cache_getMountPointInfo[$pageId];
-            }
-            // Get pageRec if not supplied:
-            if (!is_array($pageRec)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        // Get pageRec if not supplied:
+        if (!is_array($pageRec)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                $pageRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
-                    ->from('pages')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->neq(
-                            'doktype',
-                            $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
-                        )
+            $pageRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
                     )
-                    ->execute()
-                    ->fetch();
+                )
+                ->execute()
+                ->fetch();
 
-                // Only look for version overlay if page record is not supplied; This assumes
-                // that the input record is overlaid with preview version, if any!
-                $this->versionOL('pages', $pageRec);
-            }
-            // Set first Page uid:
-            if (!$firstPageUid) {
-                $firstPageUid = $pageRec['uid'];
-            }
-            // Look for mount pid value plus other required circumstances:
-            $mount_pid = (int)$pageRec['mount_pid'];
-            if (is_array($pageRec) && (int)$pageRec['doktype'] === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, true)) {
-                // Get the mount point record (to verify its general existence):
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            // Only look for version overlay if page record is not supplied; This assumes
+            // that the input record is overlaid with preview version, if any!
+            $this->versionOL('pages', $pageRec);
+        }
+        // Set first Page uid:
+        if (!$firstPageUid) {
+            $firstPageUid = $pageRec['uid'];
+        }
+        // Look for mount pid value plus other required circumstances:
+        $mount_pid = (int)$pageRec['mount_pid'];
+        if (is_array($pageRec) && (int)$pageRec['doktype'] === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, true)) {
+            // Get the mount point record (to verify its general existence):
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                $mountRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
-                    ->from('pages')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($mount_pid, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->neq(
-                            'doktype',
-                            $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
-                        )
+            $mountRec = $queryBuilder->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($mount_pid, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        'doktype',
+                        $queryBuilder->createNamedParameter(255, \PDO::PARAM_INT)
                     )
-                    ->execute()
-                    ->fetch();
+                )
+                ->execute()
+                ->fetch();
 
-                $this->versionOL('pages', $mountRec);
-                if (is_array($mountRec)) {
-                    // Look for recursive mount point:
-                    $prevMountPids[] = $mount_pid;
-                    $recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
-                    // Return mount point information:
-                    $result = $recursiveMountPid ?: [
-                        'mount_pid' => $mount_pid,
-                        'overlay' => $pageRec['mount_pid_ol'],
-                        'MPvar' => $mount_pid . '-' . $firstPageUid,
-                        'mount_point_rec' => $pageRec,
-                        'mount_pid_rec' => $mountRec
-                    ];
-                } else {
-                    // Means, there SHOULD have been a mount point, but there was none!
-                    $result = -1;
-                }
+            $this->versionOL('pages', $mountRec);
+            if (is_array($mountRec)) {
+                // Look for recursive mount point:
+                $prevMountPids[] = $mount_pid;
+                $recursiveMountPid = $this->getMountPointInfo($mount_pid, $mountRec, $prevMountPids, $firstPageUid);
+                // Return mount point information:
+                $result = $recursiveMountPid ?: [
+                    'mount_pid' => $mount_pid,
+                    'overlay' => $pageRec['mount_pid_ol'],
+                    'MPvar' => $mount_pid . '-' . $firstPageUid,
+                    'mount_point_rec' => $pageRec,
+                    'mount_pid_rec' => $mountRec
+                ];
+            } else {
+                // Means, there SHOULD have been a mount point, but there was none!
+                $result = -1;
             }
         }
-        $this->cache_getMountPointInfo[$pageId] = $result;
+        $cache->set($cacheIdentifier, $result);
         return $result;
     }
 
@@ -2079,5 +2093,13 @@ class PageRepository implements LoggerAwareInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return VariableFrontend
+     */
+    protected function getRuntimeCache(): VariableFrontend
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 }
