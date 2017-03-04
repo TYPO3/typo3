@@ -105,6 +105,26 @@ pre
 	tab-size: 4;
 }
 
+table {
+	border-collapse: collapse;
+	background-color: transparent;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
+	padding-left: 100px;
+}
+
+table th,
+table td {
+	padding: 0.25rem;
+	vertical-align: top;
+}
+
+table thead th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #eceeef;
+}
+
 .marker
 {
 	background-color: Yellow;
