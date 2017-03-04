@@ -24,10 +24,10 @@ editor:
       - { name: document, groups: [ mode ] }
 
     justifyClasses:
-      - align-left
-      - align-center
-      - align-right
-      - align-justify
+      - text-left
+      - text-center
+      - text-right
+      - text-justify
 
     extraPlugins:
       - justify

@@ -213,15 +213,15 @@ a > img {
 }
 
 /** justify **/
-.align-left {
+.text-left {
 	text-align: left;
 }
-.align-center {
+.text-center {
 	text-align: center;
 }
-.align-right {
+.text-right {
 	text-align: right;
 }
-.align-justify {
+.text-justify {
 	text-align: justify;
 }

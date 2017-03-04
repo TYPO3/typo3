@@ -41,10 +41,10 @@ editor:
       - { name: styles }
 
     justifyClasses:
-      - align-left
-      - align-center
-      - align-right
-      - align-justify
+      - text-left
+      - text-center
+      - text-right
+      - text-justify
 
     extraPlugins:
       - justify
