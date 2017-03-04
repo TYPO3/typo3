@@ -245,6 +245,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
+     * @see DataSet/localizeParentContentChainWAllChildrenSelectNLanguageSynchronizationSource.csv
+     */
+    public function localizeParentContentChainWithAllChildrenInSelectModeAndLanguageSynchronizationSource()
+    {
+        parent::localizeParentContentChainWithAllChildrenInSelectModeAndLanguageSynchronizationSource();
+        $this->assertAssertionDataSet('localizeParentContentChainWAllChildrenSelectNLanguageSynchronizationSource');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections('Default', 'Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Hotel #1', '[Translate to Deutsch:] [Translate to Dansk:] Hotel #2'));
+    }
+
+    /**
+     * @test
      * @see DataSet/changeParentContentRecordSorting.csv
      */
     public function changeParentContentSorting()

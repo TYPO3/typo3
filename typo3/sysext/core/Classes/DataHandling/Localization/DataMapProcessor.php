@@ -49,7 +49,12 @@ class DataMapProcessor
     /**
      * @var array
      */
-    protected $dataMap = [];
+    protected $allDataMap = [];
+
+    /**
+     * @var array
+     */
+    protected $modifiedDataMap = [];
 
     /**
      * @var array
@@ -64,7 +69,12 @@ class DataMapProcessor
     /**
      * @var DataMapItem[]
      */
-    protected $items = [];
+    protected $allItems = [];
+
+    /**
+     * @var DataMapItem[]
+     */
+    protected $nextItems = [];
 
     /**
      * Class generator
@@ -88,7 +98,8 @@ class DataMapProcessor
      */
     public function __construct(array $dataMap, BackendUserAuthentication $backendUser)
     {
-        $this->dataMap = $dataMap;
+        $this->allDataMap = $dataMap;
+        $this->modifiedDataMap = $dataMap;
         $this->backendUser = $backendUser;
     }
 
@@ -100,14 +111,26 @@ class DataMapProcessor
      */
     public function process()
     {
-        foreach ($this->dataMap as $tableName => $idValues) {
-            $this->collectItems($tableName, $idValues);
+        $iterations = 0;
+
+        while (!empty($this->modifiedDataMap)) {
+            $this->nextItems = [];
+            foreach ($this->modifiedDataMap as $tableName => $idValues) {
+                $this->collectItems($tableName, $idValues);
+            }
+
+            $this->modifiedDataMap = [];
+            if (empty($this->nextItems)) {
+                break;
+            }
+
+            if ($iterations++ === 0) {
+                $this->sanitize($this->allItems);
+            }
+            $this->enrich($this->nextItems);
         }
-        if (!empty($this->items)) {
-            $this->sanitize();
-            $this->enrich();
-        }
-        return $this->dataMap;
+
+        return $this->allDataMap;
     }
 
     /**
@@ -143,51 +166,64 @@ class DataMapProcessor
             $translationValues = $this->fetchTranslationValues(
                 $tableName,
                 $fieldNames,
-                $this->filterNumericIds(array_keys($idValues))
+                $this->filterNewItemIds(
+                    $tableName,
+                    $this->filterNumericIds(array_keys($idValues))
+                )
             );
         }
 
         $dependencies = $this->fetchDependencies(
             $forTableName,
-            $this->filterNumericIds(array_keys($idValues))
+            $this->filterNewItemIds(
+                $forTableName,
+                $this->filterNumericIds(array_keys($idValues))
+            )
         );
 
         foreach ($idValues as $id => $values) {
-            $recordValues = $translationValues[$id] ?? [];
-            $item = DataMapItem::build(
-                $tableName,
-                $id,
-                $values,
-                $recordValues,
-                $fieldNames
-            );
+            $item = $this->findItem($tableName, $id);
+            // build item if it has not been created in a previous iteration
+            if ($item === null) {
+                $recordValues = $translationValues[$id] ?? [];
+                $item = DataMapItem::build(
+                    $tableName,
+                    $id,
+                    $values,
+                    $recordValues,
+                    $fieldNames
+                );
 
-            // elements using "all language" cannot be localized
-            if ($item->getLanguage() === -1) {
-                unset($item);
-                continue;
+                // elements using "all language" cannot be localized
+                if ($item->getLanguage() === -1) {
+                    unset($item);
+                    continue;
+                }
+                // must be any kind of localization and in connected mode
+                if ($item->getLanguage() > 0 && empty($item->getParent())) {
+                    unset($item);
+                    continue;
+                }
+                // add dependencies
+                if (!empty($dependencies[$id])) {
+                    $item->setDependencies($dependencies[$id]);
+                }
             }
-            // must be any kind of localization and in connected mode
-            if ($item->getLanguage() > 0 && empty($item->getParent())) {
-                unset($item);
-                continue;
-            }
-            // add dependencies
-            if (!empty($dependencies[$id])) {
-                $item->setDependencies($dependencies[$id]);
-            }
-            $this->items[$tableName . ':' . $id] = $item;
+            // add item to $this->allItems and $this->nextItems
+            $this->addNextItem($item);
         }
     }
 
     /**
      * Sanitizes the submitted data-map and removes fields which are not
      * defined as custom and thus rely on either parent or source values.
+     *
+     * @param DataMapItem[] $items
      */
-    protected function sanitize()
+    protected function sanitize(array $items)
     {
-        foreach (['grandChild', 'directChild'] as $type) {
-            foreach ($this->filterItemsByType($type) as $item) {
+        foreach (['directChild', 'grandChild'] as $type) {
+            foreach ($this->filterItemsByType($type, $items) as $item) {
                 $this->sanitizeTranslationItem($item);
             }
         }
@@ -195,11 +231,13 @@ class DataMapProcessor
 
     /**
      * Handle synchronization of an item list
+     *
+     * @param DataMapItem[] $items
      */
-    protected function enrich()
+    protected function enrich(array $items)
     {
-        foreach (['grandChild', 'directChild'] as $type) {
-            foreach ($this->filterItemsByType($type) as $item) {
+        foreach (['directChild', 'grandChild'] as $type) {
+            foreach ($this->filterItemsByType($type, $items) as $item) {
                 foreach ($item->getApplicableScopes() as $scope) {
                     $fromId = $item->getIdForScope($scope);
                     $fieldNames = $this->getFieldNamesForItemScope($item, $scope, !$item->isNew());
@@ -209,7 +247,7 @@ class DataMapProcessor
                 $this->finishTranslationItem($item);
             }
         }
-        foreach ($this->filterItemsByType('parent') as $item) {
+        foreach ($this->filterItemsByType('parent', $items) as $item) {
             $this->populateTranslationItem($item);
         }
     }
@@ -223,20 +261,23 @@ class DataMapProcessor
      */
     protected function sanitizeTranslationItem(DataMapItem $item)
     {
-        $fieldNames = array_merge(
-            $this->getFieldNamesForItemScope($item, DataMapItem::SCOPE_PARENT, !$item->isNew()),
-            $this->getFieldNamesForItemScope($item, DataMapItem::SCOPE_SOURCE, !$item->isNew())
-        );
+        $fieldNames = [];
+        foreach ($item->getApplicableScopes() as $scope) {
+            $fieldNames = array_merge(
+                $fieldNames,
+                $this->getFieldNamesForItemScope($item, $scope, !$item->isNew())
+            );
+        }
 
         $fieldNameMap = array_combine($fieldNames, $fieldNames);
         // separate fields, that are submitted in data-map, but not defined as custom
         $this->sanitizationMap[$item->getTableName()][$item->getId()] = array_intersect_key(
-            $this->dataMap[$item->getTableName()][$item->getId()],
+            $this->allDataMap[$item->getTableName()][$item->getId()],
             $fieldNameMap
         );
         // remove fields, that are submitted in data-map, but not defined as custom
-        $this->dataMap[$item->getTableName()][$item->getId()] = array_diff_key(
-            $this->dataMap[$item->getTableName()][$item->getId()],
+        $this->allDataMap[$item->getTableName()][$item->getId()] = array_diff_key(
+            $this->allDataMap[$item->getTableName()][$item->getId()],
             $fieldNameMap
         );
     }
@@ -327,7 +368,7 @@ class DataMapProcessor
             return;
         }
 
-        $this->dataMap[$item->getTableName()][$item->getId()]['l10n_state'] = $item->getState()->export();
+        $this->allDataMap[$item->getTableName()][$item->getId()]['l10n_state'] = $item->getState()->export();
     }
 
     /**
@@ -341,16 +382,20 @@ class DataMapProcessor
     protected function synchronizeFieldValues(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
     {
         // skip if this field has been processed already, assumed that proper sanitation happened
-        if (!empty($this->dataMap[$item->getTableName()][$item->getId()][$fieldName])) {
+        if (isset($this->allDataMap[$item->getTableName()][$item->getId()][$fieldName])) {
             return;
         }
 
         $fromId = $fromRecord['uid'];
-        $fromValue = $this->dataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
+        $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
 
         // plain values
         if (!$this->isRelationField($item->getFromTableName(), $fieldName)) {
-            $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = $fromValue;
+            $this->modifyDataMap(
+                $item->getTableName(),
+                $item->getId(),
+                [$fieldName => $fromValue]
+            );
         // direct relational values
         } elseif (!$this->isInlineRelationField($item->getFromTableName(), $fieldName)) {
             $this->synchronizeDirectRelations($item, $fieldName, $fromRecord);
@@ -370,17 +415,21 @@ class DataMapProcessor
     protected function synchronizeDirectRelations(DataMapItem $item, string $fieldName, array $fromRecord)
     {
         $fromId = $fromRecord['uid'];
-        $fromValue = $this->dataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
+        $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
         $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
 
         // non-MM relations are stored as comma separated values, just use them
         // if values are available in data-map already, just use them as well
         if (
             empty($configuration['config']['MM'])
-            || isset($this->dataMap[$item->getFromTableName()][$fromId][$fieldName])
+            || isset($this->allDataMap[$item->getFromTableName()][$fromId][$fieldName])
             || ($configuration['config']['special'] ?? null) === 'languages'
         ) {
-            $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = $fromValue;
+            $this->modifyDataMap(
+                $item->getTableName(),
+                $item->getId(),
+                [$fieldName => $fromValue]
+            );
             return;
         }
 
@@ -407,14 +456,15 @@ class DataMapProcessor
 
         // provide list of relations, optionally prepended with table name
         // e.g. "13,19,23" or "tt_content_27,tx_extension_items_28"
-        $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = implode(
-            ',',
-            $relationHandler->getValueArray()
+        $this->modifyDataMap(
+            $item->getTableName(),
+            $item->getId(),
+            [$fieldName => implode(',', $relationHandler->getValueArray())]
         );
     }
 
     /**
-     * Handle synchonization of inline relations
+     * Handle synchronization of inline relations
      *
      * @param DataMapItem $item
      * @param string $fieldName
@@ -439,10 +489,10 @@ class DataMapProcessor
 
         // determine suggested elements of either translation parent or source record
         // from data-map, in case the accordant language parent/source record was modified
-        if (isset($this->dataMap[$item->getFromTableName()][$fromId][$fieldName])) {
+        if (isset($this->allDataMap[$item->getFromTableName()][$fromId][$fieldName])) {
             $suggestedAncestorIds = GeneralUtility::trimExplode(
                 ',',
-                $this->dataMap[$item->getFromTableName()][$fromId][$fieldName],
+                $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName],
                 true
             );
         // determine suggested elements of either translation parent or source record from storage
@@ -471,7 +521,7 @@ class DataMapProcessor
         $persistedIds = $this->mapRelationItemId($relationHandler->itemArray);
         // The dependent ID map points from language parent/source record to
         // localization, thus keys: parents/sources & values: localizations
-        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds);
+        $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, $item->getLanguage());
         // filter incomplete structures - this is a drawback of DataHandler's remap stack, since
         // just created IRRE translations still belong to the language parent - filter them out
         $suggestedAncestorIds = array_diff($suggestedAncestorIds, array_values($dependentIdMap));
@@ -494,11 +544,12 @@ class DataMapProcessor
                 $desiredIdMap[$ancestorId] = $translationId;
             }
         }
-        // nothing to synchronize, but element order could have been changed
+        // no children to be synchronized, but element order could have been changed
         if (empty($removeAncestorIds) && empty($missingAncestorIds)) {
-            $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = implode(
-                ',',
-                array_values($desiredIdMap)
+            $this->modifyDataMap(
+                $item->getTableName(),
+                $item->getId(),
+                [$fieldName => implode(',', array_values($desiredIdMap))]
             );
             return;
         }
@@ -515,7 +566,11 @@ class DataMapProcessor
             && $sanitizedValue !== null && !$isTranslatable
             && count(GeneralUtility::trimExplode(',', $sanitizedValue)) === count($missingAncestorIds)
         ) {
-            $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = $sanitizedValue;
+            $this->modifyDataMap(
+                $item->getTableName(),
+                $item->getId(),
+                [$fieldName => $sanitizedValue]
+            );
             return;
         }
 
@@ -551,7 +606,8 @@ class DataMapProcessor
                     }
                     throw new \RuntimeException(
                         'Child record was not processed' . $additionalInformation,
-                        1486233164);
+                        1486233164
+                    );
                 }
                 $newLocalizationId = $localDataHandler->copyMappingArray_merged[$foreignTableName][$createAncestorId];
                 $newLocalizationId = $localDataHandler->getAutoVersionId($foreignTableName, $newLocalizationId) ?? $newLocalizationId;
@@ -563,19 +619,77 @@ class DataMapProcessor
             foreach ($populateAncestorIds as $populateAncestorId) {
                 $newLocalizationId = StringUtility::getUniqueId('NEW');
                 $desiredIdMap[$populateAncestorId] = $newLocalizationId;
-                $this->dataMap[$foreignTableName][$newLocalizationId] = $this->duplicateFromDataMap(
+                $this->modifyDataMap(
                     $foreignTableName,
-                    $populateAncestorId,
-                    $item->getLanguage(),
-                    $fieldNames
+                    $newLocalizationId,
+                    $this->duplicateFromDataMap(
+                        $foreignTableName,
+                        $populateAncestorId,
+                        $item->getLanguage(),
+                        $fieldNames
+                    )
                 );
             }
         }
         // update inline parent field references - required to update pointer fields
-        $this->dataMap[$item->getTableName()][$item->getId()][$fieldName] = implode(
-            ',',
-            array_values($desiredIdMap)
+        $this->modifyDataMap(
+            $item->getTableName(),
+            $item->getId(),
+            [$fieldName => implode(',', array_values($desiredIdMap))]
         );
+    }
+
+    /**
+     * Applies modifications to the data-map, calling this method is essential
+     * to determine new data-map items to be process for synchronizing chained
+     * record localizations.
+     *
+     * @param string $tableName
+     * @param string|int $id
+     * @param array $values
+     * @throws \RuntimeException
+     */
+    protected function modifyDataMap(string $tableName, $id, array $values)
+    {
+        // avoid superfluous iterations by data-map changes with values
+        // that actually have not been changed and were available already
+        $sameValues = array_intersect_assoc(
+            $this->allDataMap[$tableName][$id] ?? [],
+            $values
+        );
+        if (!empty($sameValues)) {
+            $fieldNames = implode(', ', array_keys($sameValues));
+            throw new \RuntimeException(
+                sprintf(
+                    'Issued data-map change for table %s with same values '
+                    . 'for these fields names %s',
+                    $tableName,
+                    $fieldNames
+                ),
+                1488634845
+            );
+        }
+
+        $this->modifiedDataMap[$tableName][$id] = array_merge(
+            $this->modifiedDataMap[$tableName][$id] ?? [],
+            $values
+        );
+        $this->allDataMap[$tableName][$id] = array_merge(
+            $this->allDataMap[$tableName][$id] ?? [],
+            $values
+        );
+    }
+
+    /**
+     * @param DataMapItem $item
+     */
+    protected function addNextItem(DataMapItem $item)
+    {
+        $identifier = $item->getTableName() . ':' . $item->getId();
+        if (!isset($this->allItems[$identifier])) {
+            $this->allItems[$identifier] = $item;
+        }
+        $this->nextItems[$identifier] = $item;
     }
 
     /**
@@ -616,6 +730,16 @@ class DataMapProcessor
 
     /**
      * Fetches translation dependencies for a given parent/source record ids.
+     *
+     * Existing records in database:
+     * + [uid:5, l10n_parent=0, l10n_source=0, sys_language_uid=0]
+     * + [uid:6, l10n_parent=5, l10n_source=5, sys_language_uid=1]
+     * + [uid:7, l10n_parent=5, l10n_source=6, sys_language_uid=2]
+     *
+     * Input $ids and their results:
+     * + [5]   -> [DataMapItem(6), DataMapItem(7)] # since 5 is parent/source
+     * + [6]   -> [DataMapItem(7)]                 # since 6 is source
+     * + [7]   -> []                               # since there's nothing
      *
      * @param string $tableName
      * @param array $ids
@@ -669,16 +793,32 @@ class DataMapProcessor
      * their parent or source field for translatable tables or their origin
      * field for non-translatable tables and creates an id mapping.
      *
+     * This method expands the search criteria by expanding to ancestors.
+     *
+     * Existing records in database:
+     * + [uid:5, l10n_parent=0, l10n_source=0, sys_language_uid=0]
+     * + [uid:6, l10n_parent=5, l10n_source=5, sys_language_uid=1]
+     * + [uid:7, l10n_parent=5, l10n_source=6, sys_language_uid=2]
+     *
+     * Input $ids and $desiredLanguage and their results:
+     * + $ids=[5], $lang=1 -> [5 => 6] # since 5 is source of 6
+     * + $ids=[5], $lang=2 -> []       # since 5 is parent of 7, but different language
+     * + $ids=[6], $lang=1 -> []       # since there's nothing
+     * + $ids=[6], $lang=2 -> [6 => 7] # since 6 has source 5, which is ancestor of 7
+     * + $ids=[7], $lang=* -> []       # since there's nothing
+     *
      * @param string $tableName
      * @param array $ids
+     * @param int $desiredLanguage
      * @return array
      */
-    protected function fetchDependentIdMap(string $tableName, array $ids)
+    protected function fetchDependentIdMap(string $tableName, array $ids, int $desiredLanguage)
     {
         if ($tableName === 'pages') {
             $tableName = 'pages_language_overlay';
         }
 
+        $ids = $this->filterNumericIds($ids, true);
         $isTranslatable = BackendUtility::isTableLocalizable($tableName);
         $originFieldName = ($GLOBALS['TCA'][$tableName]['ctrl']['origUid'] ?? null);
 
@@ -703,23 +843,42 @@ class DataMapProcessor
             ];
         }
 
-        $dependentElements = $this->fetchDependentElements($tableName, $ids, $fieldNames);
+        $fetchIds = $ids;
+        if ($isTranslatable) {
+            // expand search criteria via parent and source elements
+            $translationValues = $this->fetchTranslationValues($tableName, $fieldNames, $ids);
+            $ancestorIdMap = $this->buildElementAncestorIdMap($fieldNames, $translationValues);
+            $fetchIds = array_unique(array_merge($ids, array_keys($ancestorIdMap)));
+        }
+
+        $dependentElements = $this->fetchDependentElements($tableName, $fetchIds, $fieldNames);
 
         $dependentIdMap = [];
         foreach ($dependentElements as $dependentElement) {
             $dependentId = $dependentElement['uid'];
             // implicit: use origin pointer if table cannot be translated
             if (!$isTranslatable) {
-                $dependentIdMap[$dependentElement[$fieldNames['origin']]] = $dependentId;
-            // implicit: having source value different to parent value, use source pointer
-            } elseif (
-                !empty($fieldNames['source'])
-                && $dependentElement[$fieldNames['source']] !== $dependentElement[$fieldNames['parent']]
-            ) {
-                $dependentIdMap[$dependentElement[$fieldNames['source']]] = $dependentId;
-            // implicit: otherwise, use parent pointer
+                $ancestorId = (int)$dependentElement[$fieldNames['origin']];
+            // only consider element if it reflects the desired language
+            } elseif ((int)$dependentElement[$fieldNames['language']] === $desiredLanguage) {
+                $ancestorId = $this->resolveAncestorId($fieldNames, $dependentElement);
+            // otherwise skip the element completely
             } else {
-                $dependentIdMap[$dependentElement[$fieldNames['parent']]] = $dependentId;
+                continue;
+            }
+            // only keep ancestors that were initially requested before expanding
+            if (in_array($ancestorId, $ids)) {
+                $dependentIdMap[$ancestorId] = $dependentId;
+            // resolve from previously expanded search criteria
+            } elseif (!empty($ancestorIdMap[$ancestorId])) {
+                $possibleChainedIds = array_intersect(
+                    $ids,
+                    $ancestorIdMap[$ancestorId]
+                );
+                if (!empty($possibleChainedIds)) {
+                    $ancestorId = $possibleChainedIds[0];
+                    $dependentIdMap[$ancestorId] = $dependentId;
+                }
             }
         }
         return $dependentIdMap;
@@ -812,12 +971,13 @@ class DataMapProcessor
      * Return array of data map items that are of given type
      *
      * @param string $type
+     * @param DataMapItem[] $items
      * @return DataMapItem[]
      */
-    protected function filterItemsByType(string $type)
+    protected function filterItemsByType(string $type, array $items)
     {
         return array_filter(
-            $this->items,
+            $items,
             function (DataMapItem $item) use ($type) {
                 return $item->getType() === $type;
             }
@@ -825,9 +985,9 @@ class DataMapProcessor
     }
 
     /**
-     * Return only id's that are integer - so no NEW...
+     * Return only ids that are integer - so no "NEW..." values
      *
-     * @param array $ids
+     * @param string[]|int[] $ids
      * @param bool $numeric
      * @return array
      */
@@ -842,6 +1002,23 @@ class DataMapProcessor
     }
 
     /**
+     * Return only ids that don't have an item equivalent in $this->allItems.
+     *
+     * @param string $tableName
+     * @param int[] $ids
+     * @return array
+     */
+    protected function filterNewItemIds(string $tableName, array $ids)
+    {
+        return array_filter(
+            $ids,
+            function ($id) use ($tableName) {
+                return $this->findItem($tableName, $id) === null;
+            }
+        );
+    }
+
+    /**
      * Flatten array
      *
      * @param array $relationItems
@@ -851,10 +1028,52 @@ class DataMapProcessor
     {
         return array_map(
             function (array $relationItem) {
-                return (string)$relationItem['id'];
+                return (int)$relationItem['id'];
             },
             $relationItems
         );
+    }
+
+    /**
+     * @param array $fieldNames
+     * @param array $element
+     * @return int|null
+     */
+    protected function resolveAncestorId(array $fieldNames, array $element)
+    {
+        // implicit: having source value different to parent value, use source pointer
+        if (
+            !empty($fieldNames['source'])
+            && $element[$fieldNames['source']] !== $element[$fieldNames['parent']]
+        ) {
+            return (int)$fieldNames['source'];
+        // implicit: use parent pointer if defined
+        } elseif (!empty($fieldNames['parent'])) {
+            return (int)$element[$fieldNames['parent']];
+        }
+        return null;
+    }
+
+    /**
+     * Builds a map from ancestor ids to accordant localization dependents.
+     *
+     * The result of e.g. [5 => [6, 7]] refers to ids 6 and 7 being dependents
+     * (either used in parent or source field) of the ancestor with id 5.
+     *
+     * @param array $fieldNames
+     * @param array $elements
+     * @return array
+     */
+    protected function buildElementAncestorIdMap(array $fieldNames, array $elements)
+    {
+        $ancestorIdMap = [];
+        foreach ($elements as $element) {
+            $ancestorId = $this->resolveAncestorId($fieldNames, $element);
+            if ($ancestorId !== null) {
+                $ancestorIdMap[$ancestorId][] = (int)$element['uid'];
+            }
+        }
+        return $ancestorIdMap;
     }
 
     /**
@@ -866,7 +1085,7 @@ class DataMapProcessor
      */
     protected function findItem(string $tableName, $id)
     {
-        return $this->items[$tableName . ':' . $id] ?? null;
+        return $this->allItems[$tableName . ':' . $id] ?? null;
     }
 
     /**
@@ -874,14 +1093,14 @@ class DataMapProcessor
      * if applicable for the accordant field name.
      *
      * @param string $tableName
-     * @param string|int $id
+     * @param string|int $fromId
      * @param int $language
      * @param array $fieldNames
      * @return array
      */
-    protected function duplicateFromDataMap(string $tableName, $id, int $language, array $fieldNames)
+    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames)
     {
-        $data = $this->dataMap[$tableName][$id];
+        $data = $this->allDataMap[$tableName][$fromId];
         $isTranslatable = (!empty($fieldNames['language']) && !empty($fieldNames['parent']));
 
         if (empty($language) || !$isTranslatable) {
@@ -889,11 +1108,13 @@ class DataMapProcessor
         }
 
         $data[$fieldNames['language']] = $language;
-        // @todo Only $id used in TCA type 'select' is resolved in DataHandler's remapStack
-        $data[$fieldNames['parent']] = $id;
+        if (empty($data[$fieldNames['parent']])) {
+            // @todo Only $id used in TCA type 'select' is resolved in DataHandler's remapStack
+            $data[$fieldNames['parent']] = $fromId;
+        }
         if (!empty($fieldNames['source'])) {
             // @todo Not sure, whether $id is resolved in DataHandler's remapStack
-            $data[$fieldNames['source']] = $id;
+            $data[$fieldNames['source']] = $fromId;
         }
 
         $prefixFieldNames = array_intersect(
@@ -906,7 +1127,7 @@ class DataMapProcessor
 
         $languageService = $this->getLanguageService();
         $languageRecord = BackendUtility::getRecord('sys_language', $language, 'title');
-        list($pageId) = BackendUtility::getTSCpid($tableName, $id, $data['pid'] ?? null);
+        list($pageId) = BackendUtility::getTSCpid($tableName, $fromId, $data['pid'] ?? null);
 
         $TSconfig =  $this->backendUser->getTSConfig(
             'TCEMAIN',

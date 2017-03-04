@@ -24,6 +24,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_ContentIdFirst = 297;
     const VALUE_ContentIdLast = 298;
     const VALUE_LanguageId = 1;
+    const VALUE_LanguageIdSecond = 2;
     const VALUE_ElementIdFirst = 1;
     const VALUE_ElementIdSecond = 2;
     const VALUE_ElementIdThird = 3;
@@ -219,9 +220,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function localizeContentOfRelationWithLanguageSynchronization()
     {
-        $GLOBALS['TCA']['tt_content']['columns']['tx_testdatahandler_group']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA']['tt_content']['columns'][self::FIELD_ContentElement]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->actionService->modifyReferences(
+            self::TABLE_Content, self::VALUE_ContentIdLast, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+        );
+    }
+
+    public function localizeContentChainOfRelationWithLanguageSynchronizationSource()
+    {
+        $GLOBALS['TCA']['tt_content']['columns'][self::FIELD_ContentElement]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentIdFirst'], self::VALUE_LanguageIdSecond);
+        $this->recordIds['localizedContentIdSecond'] = $newTableIds[self::TABLE_Content][$this->recordIds['localizedContentIdFirst']];
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['localizedContentIdSecond'],
+            ['l10n_state' => [self::FIELD_ContentElement => 'source']]
+        );
         $this->actionService->modifyReferences(
             self::TABLE_Content, self::VALUE_ContentIdLast, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
         );
