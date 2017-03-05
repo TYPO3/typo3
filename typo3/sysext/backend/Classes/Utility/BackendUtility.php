@@ -2365,6 +2365,7 @@ class BackendUtility
                                 $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
                                 $queryBuilder->getRestrictions()
                                     ->removeAll()
+                                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                                     ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
                                 $constraints = [
                                     $queryBuilder->expr()->eq(
