@@ -54,6 +54,7 @@ class DocumentationFile
             $this->registry = new Registry();
         }
         $this->changelogPath = $changelogDir !== '' ? $changelogDir : realpath(PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog');
+        $this->changelogPath = strtr($this->changelogPath, '\\', '/');
     }
 
     /**

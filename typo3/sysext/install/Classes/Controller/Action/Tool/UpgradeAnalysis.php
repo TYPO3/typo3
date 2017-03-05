@@ -38,7 +38,7 @@ class UpgradeAnalysis extends AbstractAction
     {
         $documentationFileService = new DocumentationFile();
         $documentationFiles = $documentationFileService->findDocumentationFiles(
-            realpath(PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog')
+            strtr(realpath(PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog'), '\\', '/')
         );
 
         /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
