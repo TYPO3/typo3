@@ -436,14 +436,9 @@ class PageRepository
         }
         // If language UID is different from zero, do overlay:
         if ($lUid) {
-            $fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'], true);
             $page_ids = [];
 
             $origPage = reset($pagesInput);
-            if (is_array($origPage)) {
-                // Make sure that only fields which exist in the first incoming record are overlaid!
-                $fieldArr = array_intersect($fieldArr, array_keys($this->purgeComputedProperties($origPage)));
-            }
             foreach ($pagesInput as $origPage) {
                 if (is_array($origPage)) {
                     // Was the whole record
@@ -453,47 +448,42 @@ class PageRepository
                     $page_ids[] = $origPage;
                 }
             }
-            if (!empty($fieldArr)) {
-                if (!in_array('pid', $fieldArr, true)) {
-                    $fieldArr[] = 'pid';
-                }
-                // NOTE regarding the query restrictions
-                // Currently the showHiddenRecords of TSFE set will allow
-                // pages_language_overlay records to be selected as they are
-                // child-records of a page.
-                // However you may argue that the showHiddenField flag should
-                // determine this. But that's not how it's done right now.
-                // Selecting overlay record:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages_language_overlay');
-                $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
-                $result = $queryBuilder->select(...$fieldArr)
-                    ->from('pages_language_overlay')
-                    ->where(
-                        $queryBuilder->expr()->in(
-                            'pid',
-                            $queryBuilder->createNamedParameter($page_ids, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            'sys_language_uid',
-                            $queryBuilder->createNamedParameter($lUid, \PDO::PARAM_INT)
-                        )
+            // NOTE regarding the query restrictions
+            // Currently the showHiddenRecords of TSFE set will allow
+            // pages_language_overlay records to be selected as they are
+            // child-records of a page.
+            // However you may argue that the showHiddenField flag should
+            // determine this. But that's not how it's done right now.
+            // Selecting overlay record:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages_language_overlay');
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+            $result = $queryBuilder->select('*')
+                ->from('pages_language_overlay')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($page_ids, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'sys_language_uid',
+                        $queryBuilder->createNamedParameter($lUid, \PDO::PARAM_INT)
                     )
-                    ->execute();
+                )
+                ->execute();
 
-                $overlays = [];
-                while ($row = $result->fetch()) {
-                    $this->versionOL('pages_language_overlay', $row);
-                    if (is_array($row)) {
-                        $row['_PAGES_OVERLAY'] = true;
-                        $row['_PAGES_OVERLAY_UID'] = $row['uid'];
-                        $row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
-                        $origUid = $row['pid'];
-                        // Unset vital fields that are NOT allowed to be overlaid:
-                        unset($row['uid']);
-                        unset($row['pid']);
-                        $overlays[$origUid] = $row;
-                    }
+            $overlays = [];
+            while ($row = $result->fetch()) {
+                $this->versionOL('pages_language_overlay', $row);
+                if (is_array($row)) {
+                    $row['_PAGES_OVERLAY'] = true;
+                    $row['_PAGES_OVERLAY_UID'] = $row['uid'];
+                    $row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
+                    $origUid = $row['pid'];
+                    // Unset vital fields that are NOT allowed to be overlaid:
+                    unset($row['uid']);
+                    unset($row['pid']);
+                    $overlays[$origUid] = $row;
                 }
             }
         }

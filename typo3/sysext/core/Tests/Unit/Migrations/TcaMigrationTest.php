@@ -2149,6 +2149,193 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @return array
      */
+    public function migratePageLocalizationDefinitionsDataProvider()
+    {
+        return [
+            'missing l10n_mode' => [
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                                'l10n_mode' => 'any-possible-value',
+                            ],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                                'l10n_mode' => 'any-possible-value',
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'missing allowLanguageSynchronization' => [
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'behaviour' => []
+                                ],
+                            ],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'superfluous l10n_mode' => [
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                                'l10n_mode' => 'any-possible-value',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'superfluous allowLanguageSynchronization' => [
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'pages' => [
+                        'columns' => [
+                            'aColumn' => [],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
+                                    'behaviour' => []
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @param array $givenConfig
+     * @param array $expectedConfig
+     * @test
+     * @dataProvider migratePageLocalizationDefinitionsDataProvider
+     */
+    public function migratePageLocalizationDefinitions(array $givenConfig, array $expectedConfig)
+    {
+        $subject = new TcaMigration();
+        $this->assertEquals($expectedConfig, $subject->migrate($givenConfig));
+    }
+
+    /**
+     * @return array
+     */
     public function migrateMovesRequestUpdateCtrlFieldToColumnsDataProvider()
     {
         return [

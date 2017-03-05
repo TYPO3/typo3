@@ -264,7 +264,7 @@ class RootlineUtility
                 if ($this->languageUid > 0) {
                     $row = $this->pageContext->getPageOverlay($row, $this->languageUid);
                 }
-                $row = $this->enrichWithRelationFields(isset($row['_PAGES_OVERLAY_UID']) ? $row['_PAGES_OVERLAY_UID'] : $uid, $row);
+                $row = $this->enrichWithRelationFields($row['_PAGES_OVERLAY_UID'] ??  $uid, $row);
                 self::$pageRecordCache[$currentCacheIdentifier] = $row;
             }
         }
@@ -277,16 +277,16 @@ class RootlineUtility
     /**
      * Resolve relations as defined in TCA and add them to the provided $pageRecord array.
      *
-     * @param int $uid Page id
-     * @param array $pageRecord Array with page data to add relation data to.
+     * @param int $uid Either pages.uid or pages_language_overlay.uid if localized
+     * @param array $pageRecord Page record (possibly overlaid) to be extended with relations
      * @throws \RuntimeException
      * @return array $pageRecord with additional relations
      */
     protected function enrichWithRelationFields($uid, array $pageRecord)
     {
-        $pageOverlayFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
+        // @todo Remove this special interpretation of relations by consequently using RelationHandler
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
             if ($this->columnHasRelationToResolve($configuration)) {
                 $configuration = $configuration['config'];
@@ -295,6 +295,7 @@ class RootlineUtility
                     $loadDBGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
                     $loadDBGroup->start(
                         $pageRecord[$column],
+                        // @todo That depends on the type (group, select, inline)
                         isset($configuration['allowed']) ? $configuration['allowed'] : $configuration['foreign_table'],
                         $configuration['MM'],
                         $uid,
@@ -305,7 +306,7 @@ class RootlineUtility
                         ? $loadDBGroup->tableArray[$configuration['foreign_table']]
                         : [];
                 } else {
-                    $columnIsOverlaid = in_array($column, $pageOverlayFields, true);
+                    // @todo The assumption is wrong, since group can be used without "MM", but having "allowed"
                     $table = $configuration['foreign_table'];
 
                     $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
@@ -318,7 +319,7 @@ class RootlineUtility
                             $queryBuilder->expr()->eq(
                                 $configuration['foreign_field'],
                                 $queryBuilder->createNamedParameter(
-                                    $columnIsOverlaid ? $uid : $pageRecord['uid'],
+                                    $uid,
                                     \PDO::PARAM_INT
                                 )
                             )
@@ -339,7 +340,7 @@ class RootlineUtility
                             $queryBuilder->expr()->eq(
                                 trim($configuration['foreign_table_field']),
                                 $queryBuilder->createNamedParameter(
-                                    (int)$this->languageUid > 0 && $columnIsOverlaid ? 'pages_language_overlay' : 'pages',
+                                    (int)$this->languageUid > 0 ? 'pages_language_overlay' : 'pages',
                                     \PDO::PARAM_STR
                                 )
                             )
