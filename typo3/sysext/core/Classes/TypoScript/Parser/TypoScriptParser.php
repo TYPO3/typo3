@@ -838,8 +838,9 @@ class TypoScriptParser
                     }
                     /** @var ConditionMatcher $conditionMatcher */
                     $conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
-                    // If it didn't match then proceed to the next include
+                    // If it didn't match then proceed to the next include, but prepend next normal (not file) part to output string
                     if (!$conditionMatcher->match($condition)) {
+                        $newString .= $tsContentsTillNextInclude . LF;
                         continue;
                     }
                 }

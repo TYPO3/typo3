@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+
 /**
  * Test case for \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
  */
@@ -293,6 +295,38 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     {
         $this->typoScriptParser->parse($typoScript);
         $this->assertEmpty($this->typoScriptParser->errors);
+    }
+
+    /**
+     * @return array
+     */
+    public function includeFileDataProvider()
+    {
+        return [
+            'TS code before not matching include' => [
+                '
+                foo = bar
+                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext = /^NotMatched/">
+                '
+            ],
+            'TS code after not matching include' => [
+                '
+                <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext = /^NotMatched/">
+                foo = bar
+                '
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider includeFileDataProvider
+     */
+    public function includeFilesWithConditions($typoScript)
+    {
+        $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
+        $this->assertContains('foo = bar', $resolvedIncludeLines);
+        $this->assertNotContains('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
     }
 
     /**
