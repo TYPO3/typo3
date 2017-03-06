@@ -162,6 +162,11 @@ class DataMapProcessor
                 $fieldNames
             );
 
+            // elements using "all language" cannot be localized
+            if ($item->getLanguage() === -1) {
+                unset($item);
+                continue;
+            }
             // must be any kind of localization and in connected mode
             if ($item->getLanguage() > 0 && empty($item->getParent())) {
                 unset($item);
@@ -197,10 +202,6 @@ class DataMapProcessor
             foreach ($this->filterItemsByType($type) as $item) {
                 foreach ($item->getApplicableScopes() as $scope) {
                     $fromId = $item->getIdForScope($scope);
-                    if (empty($fromId)) {
-                        continue;
-                    }
-
                     $fieldNames = $this->getFieldNamesForItemScope($item, $scope, !$item->isNew());
                     $this->synchronizeTranslationItem($item, $fieldNames, $fromId);
                 }
