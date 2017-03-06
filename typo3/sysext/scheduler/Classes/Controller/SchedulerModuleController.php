@@ -1343,24 +1343,31 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         if (empty($this->submittedData['start'])) {
             $this->addMessage($this->getLanguageService()->getLL('msg.noStartDate'), FlashMessage::ERROR);
             $result = false;
-        } else {
+        } elseif (is_string($this->submittedData['start']) && (!is_numeric($this->submittedData['start']))) {
             try {
-                $this->submittedData['start'] = (int)$this->submittedData['start'];
+                $this->submittedData['start'] = $this->convertToTimestamp($this->submittedData['start']);
             } catch (\Exception $e) {
                 $this->addMessage($this->getLanguageService()->getLL('msg.invalidStartDate'), FlashMessage::ERROR);
                 $result = false;
             }
+        } else {
+            $this->submittedData['start'] = (int)$this->submittedData['start'];
         }
         // Check end date, if recurring task
         if ((int)$this->submittedData['type'] === AbstractTask::TYPE_RECURRING && !empty($this->submittedData['end'])) {
-            try {
-                $this->submittedData['end'] = (int)$this->submittedData['end'];
-                if ($this->submittedData['end'] < $this->submittedData['start']) {
-                    $this->addMessage($this->getLanguageService()->getLL('msg.endDateSmallerThanStartDate'), FlashMessage::ERROR);
+            if (is_string($this->submittedData['end']) && (!is_numeric($this->submittedData['end']))) {
+                try {
+                    $this->submittedData['end'] = $this->convertToTimestamp($this->submittedData['end']);
+                } catch (\Exception $e) {
+                    $this->addMessage($this->getLanguageService()->getLL('msg.invalidStartDate'), FlashMessage::ERROR);
                     $result = false;
                 }
-            } catch (\Exception $e) {
-                $this->addMessage($this->getLanguageService()->getLL('msg.invalidEndDate'), FlashMessage::ERROR);
+            } else {
+                $this->submittedData['end'] = (int)$this->submittedData['end'];
+            }
+            if ($this->submittedData['end'] < $this->submittedData['start']) {
+                $this->addMessage($this->getLanguageService()->getLL('msg.endDateSmallerThanStartDate'),
+                    FlashMessage::ERROR);
                 $result = false;
             }
         }
@@ -1410,6 +1417,24 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             }
         }
         return $result;
+    }
+
+    /**
+     * Convert input to DateTime and retrieve timestamp
+     *
+     * @param string $input
+     * @return int
+     *
+     */
+    protected function convertToTimestamp(string $input): int
+    {
+        // Convert to ISO 8601 dates
+        $dateTime = new \DateTime($input);
+        $value = $dateTime->getTimestamp();
+        if ($value !== 0) {
+            $value -= date('Z', $value);
+        }
+        return $value;
     }
 
     /*************************
