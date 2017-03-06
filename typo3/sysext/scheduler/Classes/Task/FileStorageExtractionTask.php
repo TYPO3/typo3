@@ -50,6 +50,7 @@ class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                 $success = true;
             } catch (\Exception $e) {
                 $success = false;
+                $this->logException($e);
             }
             $storage->setEvaluatePermissions(true);
         }

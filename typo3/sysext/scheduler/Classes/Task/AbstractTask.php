@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -600,5 +601,27 @@ abstract class AbstractTask
             return self::TYPE_RECURRING;
         }
         return self::TYPE_SINGLE;
+    }
+
+    /**
+     * Log exception via GeneralUtility::sysLog
+     *
+     * @param \Exception $e
+     */
+    protected function logException(\Exception $e)
+    {
+        GeneralUtility::sysLog($e->getMessage(), 'scheduler', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+        $this->getLogger()->error('A Task Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
+    }
+
+    /**
+     * Instantiates a logger
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected function getLogger()
+    {
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
+        return $logManager->getLogger(get_class($this));
     }
 }
