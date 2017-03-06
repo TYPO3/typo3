@@ -45,7 +45,7 @@
     "typo3-icons": "^1.1.0",
     "matchHeight": "matchheight#^0.7.2",
     "jquery-minicolors": "^2.2.4",
-    "d3": "^4.5.0",
+    "d3": "^4.7.1",
     "ckeditor": "^4.6.2"
   }
 }
