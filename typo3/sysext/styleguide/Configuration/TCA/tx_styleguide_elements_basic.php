@@ -1041,23 +1041,15 @@ return [
         ],
         'none_3' => [
             'exclude' => 1,
-            'label' => 'none_3 rows=2',
-            'config' => [
-                'type' => 'none',
-                'rows' => 2,
-            ],
-        ],
-        'none_4' => [
-            'exclude' => 1,
-            'label' => 'none_4 cols=2',
+            'label' => 'none_3 cols=2',
             'config' => [
                 'type' => 'none',
                 'cols' => 2,
             ],
         ],
-        'none_5' => [
+        'none_4' => [
             'exclude' => 1,
-            'label' => 'none_5 size=6',
+            'label' => 'none_4 size=6',
             'config' => [
                 'type' => 'none',
                 'size' => 6,
@@ -1282,7 +1274,7 @@ return [
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,
-                    none_1, none_2, none_3, none_4, none_5, none_6,
+                    none_1, none_2, none_3, none_4,
                 --div--;passthrough,
                     passthrough_1,
                 --div--;user,
