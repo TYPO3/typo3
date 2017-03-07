@@ -958,8 +958,9 @@ class ExtendedTemplateService extends TemplateService
                                 $catSplit[1] = trim($catSplit[1]);
                                 if ($catSplit[1] && isset($this->subCategories[$catSplit[1]])) {
                                     $editableComments[$const]['subcat_name'] = $catSplit[1];
+                                    $orderIdentifier = isset($catSplit[2]) ? trim($catSplit[2]) : $counter;
                                     $editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1]
-                                        . '/' . $catSplit[1] . '/' . trim($catSplit[2]) . 'z';
+                                        . '/' . $catSplit[1] . '/' . $orderIdentifier . 'z';
                                 } elseif (isset($catSplit[2])) {
                                     $editableComments[$const]['subcat'] = 'x' . '/' . trim($catSplit[2]) . 'z';
                                 } else {
