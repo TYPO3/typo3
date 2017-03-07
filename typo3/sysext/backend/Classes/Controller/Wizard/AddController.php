@@ -17,8 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
-use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -174,12 +173,10 @@ class AddController extends AbstractWizardController
     {
         if ($this->returnEditConf) {
             if ($this->processDataFlag) {
-                // This data processing is done here to basically just get the current record. It can be discussed
-                // if this isn't overkill here. In case this construct does not work out well, it would be less
-                // overhead to just BackendUtility::fetchRecord the current parent here.
-                /** @var OnTheFly $formDataGroup */
-                $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
-                $formDataGroup->setProviderList([ DatabaseEditRow::class ]);
+                // Because OnTheFly can't handle MM relations with intermediate tables we use TcaDatabaseRecord here
+                // Otherwise already stored relations are overwritten with the new entry
+                /** @var TcaDatabaseRecord $formDataGroup */
+                $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
                 /** @var FormDataCompiler $formDataCompiler */
                 $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
                 $input = [
@@ -228,15 +225,22 @@ class AddController extends AbstractWizardController
                             $insertValue
                         );
                     } else {
+                        // Check the row for its datatype. If it is an array it stores the relation
+                        // to other rows. Implode it into a comma separated list to be able to restore the stored
+                        // values after the wizard falls back to the parent record
+                        $currentValue = $currentParentRow[$this->P['field']];
+                        if (is_array($currentValue)) {
+                            $currentValue = implode(',', array_column($currentValue, 'uid'));
+                        }
                         switch ((string)$this->P['params']['setValue']) {
                             case 'set':
                                 $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId;
                                 break;
                             case 'prepend':
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $currentParentRow[$this->P['field']] . ',' . $recordId;
+                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $currentValue . ',' . $recordId;
                                 break;
                             case 'append':
-                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentParentRow[$this->P['field']];
+                                $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentValue;
                                 break;
                         }
                         $data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(
