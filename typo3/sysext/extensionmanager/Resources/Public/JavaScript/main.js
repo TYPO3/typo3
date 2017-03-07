@@ -150,17 +150,19 @@
 		});
 
 		$('.t3-icon-system-extension-update').parent().each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).addClass('transformed');
-			$(this).click(function() {
-				$('.typo3-extension-manager').mask();
-				$.ajax({
-					url: $(this).data('href'),
-					dataType: 'json',
-					success: updateExtension
+			if ($(this).attr('href') !== '#') {
+				$(this).data('href', $(this).attr('href'));
+				$(this).attr('href', '#');
+				$(this).addClass('transformed');
+				$(this).click(function() {
+					$('.typo3-extension-manager').mask();
+					$.ajax({
+						url: $(this).data('href'),
+						dataType: 'json',
+						success: updateExtension
+					});
 				});
-			});
+			}
 		});
 	}
 
