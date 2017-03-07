@@ -875,25 +875,12 @@ $(function() {
 	});
 
 	// Install step database settings
-	$('#t3-install-step-type').change(function() {
-		var connectionType = $(this).val(),
-			hostField = $('#t3-install-step-host'),
-			portField = $('#t3-install-step-port'),
-			socketField = $('#t3-install-step-socket');
-
-		if (connectionType === 'socket') {
-			hostField.parents('.form-group').fadeOut();
-			hostField.val('localhost');
-			portField.parents('.form-group').fadeOut();
-			socketField.parents('.form-group').fadeIn();
-		} else {
-			hostField.parents('.form-group').fadeIn();
-			if (hostField.val() === 'localhost') {
-				hostField.val('127.0.0.1');
-			}
-			portField.parents('.form-group').fadeIn();
-			socketField.parents('.form-group').fadeOut();
-		}
+	$('#t3js-connect-database-driver').on('change', function() {
+		var driver = $(this).val();
+		$('.t3-install-driver-data').hide();
+		$('.t3-install-driver-data input').attr('disabled', 'disabled');
+		$('#' + driver + ' input').attr('disabled', false);
+		$('#' + driver).show();
 	}).trigger('change');
 
 	// Extension compatibility check
@@ -1039,7 +1026,6 @@ TYPO3.Install.upgradeAnalysis = {
 
 	showFilterManager: function () {
 		$(document).on('click', '#t3js-showFilterManager', function () {
-			console.log('click!');
 			var classOpen = 'display_open';
 			if ($('#t3js-showFilterManager').hasClass(classOpen)) {
 				$('#t3js-showFilterManager').removeClass(classOpen);

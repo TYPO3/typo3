@@ -10,6 +10,14 @@ return [
         'explicitADmode' => 'explicitAllow',
         'loginSecurityLevel' => 'rsa',
     ],
+    'DB' => [
+        'Connections' => [
+            'Default' => [
+                'charset' => 'utf8',
+                'driver' => 'mysqli',
+            ],
+        ],
+    ],
     'EXT' => [
         'extConf' => [
             'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',

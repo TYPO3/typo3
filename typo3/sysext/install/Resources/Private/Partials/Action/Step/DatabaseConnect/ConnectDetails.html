@@ -1,64 +1,166 @@
-<p>&nbsp;</p>
 <div class="row">
 	<div class="col-md-6">
 		<form method="post" class="form-horizontal">
-			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-			<input type="hidden" value="execute" name="install[set]" />
+			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}"/>
+			<input type="hidden" value="execute" name="install[set]"/>
 
-			<f:if condition="{renderConnectDetailsUsername}">
-				<div class="form-group">
-					<label for="t3-install-step-username" class="control-label col-md-2">Username</label>
-					<div class="col-md-10">
-						<input id="t3-install-step-username" class="form-control" type="text" value="{username}" name="install[values][username]" autocomplete="off" />
-					</div>
+			<div class="form-group">
+				<label for="t3js-connect-database-driver" class="control-label col-md-2">Available</label>
+				<div class="col-md-10">
+					<select id="t3js-connect-database-driver" class="form-control" name="install[values][availableSet]">
+						<f:if condition="{hasMysqliManualConfiguration}">
+							<option value="mysqliManualConfiguration" {f:if(condition:
+							'{activeAvailableOption} == mysqliManualConfiguration', then: 'selected="selected"')}>Manually configured
+							MySQL TCP/IP connection</option>
+						</f:if>
+						<f:if condition="{hasMysqliSocketManualConfiguration}">
+							<option value="mysqliSocketManualConfiguration" {f:if(condition:
+							'{activeAvailableOption} == mysqliSocketManualConfiguration', then: 'selected="selected"')}>Manually
+							configured MySQL socket connection</option>
+						</f:if>
+						<f:if condition="{hasPostgresManualConfiguration}">
+							<option value="postgresManualConfiguration" {f:if(condition:
+							'{activeAvailableOption} == postgresManualConfiguration', then: 'selected="selected"')}>Manually
+							configured PostgreSQL connection</option>
+						</f:if>
+						<f:if condition="{hasConfigurationFromDotEnv}">
+							<option value="configurationFromDotEnv" {f:if(condition:
+							'{activeAvailableOption} == configurationFromDotEnv', then: 'selected="selected"')}>Configuration from
+							.env file</option>
+						</f:if>
+					</select>
 				</div>
-			</f:if>
-			<f:if condition="{renderConnectDetailsPassword}">
-				<div class="form-group">
-					<label for="t3-install-step-password" class="control-label col-md-2">Password</label>
-					<div class="col-md-10">
-						<input id="t3-install-step-password" class="form-control" type="password" value="{password}" name="install[values][password]" autocomplete="off" />
+			</div>
+
+			<f:if condition="{hasMysqliManualConfiguration}">
+				<div id="mysqliManualConfiguration" class="t3-install-driver-data">
+					<input type="hidden" value="mysqli" name="install[values][driver]"/>
+					<div class="form-group">
+						<label for="t3-install-step-mysqliManualConfiguration-username"
+									 class="control-label col-md-2">Username</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliManualConfiguration-username" class="form-control" type="text"
+										 value="{mysqliManualConfigurationOptions.username}" name="install[values][username]"
+										 autocomplete="off"/>
+						</div>
 					</div>
-				</div>
-			</f:if>
-			<f:if condition="{renderConnectDetailsHost}">
-				<div class="form-group">
-					<label for="t3-install-step-type" class="control-label col-md-2">Type</label>
-					<div class="col-md-10">
-						<select id="t3-install-step-type" class="form-control">
-							<option value="tcp">TCP/IP based connection</option>
-							<option value="socket" {f:if(condition:'{host} == \'localhost\'',then:'selected="selected"')}>Socket based connection</option>
-						</select>
+					<div class="form-group">
+						<label for="t3-install-step-mysqliManualConfiguration-password"
+									 class="control-label col-md-2">Password</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliManualConfiguration-password" class="form-control" type="password"
+										 value="{mysqliManualConfigurationOptions.password}" name="install[values][password]"
+										 autocomplete="off"/>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="t3-install-step-host" class="control-label col-md-2">Host</label>
-					<div class="col-md-10">
-						<input id="t3-install-step-host" class="t3-install-form-input-text form-control" type="text" value="{host}" name="install[values][host]" />
+					<div class="form-group">
+						<label for="t3-install-step-mysqliManualConfiguration-host" class="control-label col-md-2">Host</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliManualConfiguration-host" class="t3-install-form-input-text form-control"
+										 type="text" value="{mysqliManualConfigurationOptions.host}" name="install[values][host]"/>
+						</div>
 					</div>
-				</div>
-			</f:if>
-			<f:if condition="{renderConnectDetailsPort}">
-				<div class="form-group">
-					<label for="t3-install-step-port" class="control-label col-md-2">Port</label>
-					<div class="col-md-10">
-						<input id="t3-install-step-port" class="t3-install-form-input-text form-control" type="text" value="{port}" name="install[values][port]" />
-					</div>
-				</div>
-			</f:if>
-			<f:if condition="{renderConnectDetailsSocket}">
-				<div class="form-group">
-					<label for="t3-install-step-socket" class="control-label col-md-2">Socket</label>
-					<div class="col-md-10">
-						<input id="t3-install-step-socket" class="t3-install-form-input-text form-control" type="text" value="{socket}" name="install[values][socket]" placeholder="Default socket or enter name" />
+					<div class="form-group">
+						<label for="t3-install-step-mysqliManualConfiguration-port" class="control-label col-md-2">Port</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliManualConfiguration-port" class="t3-install-form-input-text form-control"
+										 type="text" value="{mysqliManualConfigurationOptions.port}" name="install[values][port]"/>
+						</div>
 					</div>
 				</div>
 			</f:if>
 
+			<f:if condition="{hasMysqliSocketManualConfiguration}">
+				<div id="mysqliSocketManualConfiguration" class="t3-install-driver-data">
+					<input type="hidden" value="mysqli" name="install[values][driver]"/>
+					<div class="form-group">
+						<label for="t3-install-step-mysqliSocketManualConfiguration-username" class="control-label col-md-2">Username</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliSocketManualConfiguration-username" class="form-control" type="text"
+										 value="{mysqliSocketManualConfigurationOptions.username}" name="install[values][username]"
+										 autocomplete="off"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="t3-install-step-mysqliSocketManualConfiguration-password" class="control-label col-md-2">Password</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliSocketManualConfiguration-password" class="form-control" type="password"
+										 value="{mysqliSocketManualConfigurationOptions.password}" name="install[values][password]"
+										 autocomplete="off"/>
+						</div>
+					</div>
+					<input type="hidden" value="localhost" name="install[values][host]"/>
+					<div class="form-group">
+						<label for="t3-install-step-mysqliSocketManualConfiguration-socket"
+									 class="control-label col-md-2">Socket</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-mysqliSocketManualConfiguration-socket"
+										 class="t3-install-form-input-text form-control" type="text"
+										 value="{mysqliSocketManualConfigurationOptions.socket}" name="install[values][socket]"
+										 placeholder="Default socket or enter name"/>
+						</div>
+					</div>
+				</div>
+			</f:if>
+
+			<f:if condition="{hasPostgresManualConfiguration}">
+				<div id="postgresManualConfiguration" class="t3-install-driver-data">
+					<input type="hidden" value="pdo_pgsql" name="install[values][driver]"/>
+					<div class="form-group">
+						<label for="t3-install-step-postgresManualConfiguration-username"
+									 class="control-label col-md-2">Username</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-postgresManualConfiguration-username" class="form-control" type="text"
+										 value="{postgresManualConfigurationOptions.username}" name="install[values][username]"
+										 autocomplete="off"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="t3-install-step-postgresManualConfiguration-password"
+									 class="control-label col-md-2">Password</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-postgresManualConfiguration-password" class="form-control" type="password"
+										 value="{postgresManualConfigurationOptions.password}" name="install[values][password]"
+										 autocomplete="off"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="t3-install-step-postgresManualConfiguration-database"
+									 class="control-label col-md-2">Database</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-postgresManualConfiguration-database"
+										 class="t3-install-form-input-text form-control" type="text"
+										 value="{postgresManualConfigurationOptions.database}" name="install[values][database]"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="t3-install-step-postgresManualConfiguration-host" class="control-label col-md-2">Host</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-postgresManualConfiguration-host"
+										 class="t3-install-form-input-text form-control" type="text"
+										 value="{postgresManualConfigurationOptions.host}" name="install[values][host]"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="t3-install-step-postgresManualConfiguration-port" class="control-label col-md-2">Port</label>
+						<div class="col-md-10">
+							<input id="t3-install-step-postgresManualConfiguration-port"
+										 class="t3-install-form-input-text form-control" type="text"
+										 value="{postgresManualConfigurationOptions.port}" name="install[values][port]"/>
+						</div>
+					</div>
+				</div>
+			</f:if>
+
+			<f:if condition="{hasConfigurationFromDotEnv}">
+				<div id="configurationFromDotEnv" class="t3-install-driver-data">
+				</div>
+			</f:if>
+
+			<hr/>
 			<button class="btn btn-success" type="submit">
 				Continue
 			</button>
 		</form>
-		<hr />
 	</div>
 </div>

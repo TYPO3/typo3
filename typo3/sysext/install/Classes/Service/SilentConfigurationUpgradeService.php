@@ -603,77 +603,116 @@ class SilentConfigurationUpgradeService
      */
     protected function migrateDatabaseConnectionSettings()
     {
-        $changedSettings = [];
-        $settingsToRename = [
-            'DB/username' => 'DB/Connections/Default/user',
-            'DB/password' => 'DB/Connections/Default/password',
-            'DB/host' => 'DB/Connections/Default/host',
-            'DB/port' => 'DB/Connections/Default/port',
-            'DB/socket' => 'DB/Connections/Default/unix_socket',
-            'DB/database' => 'DB/Connections/Default/dbname',
-            'SYS/setDBinit' => 'DB/Connections/Default/initCommands',
-            'SYS/no_pconnect' => 'DB/Connections/Default/persistentConnection',
-            'SYS/dbClientCompress' => 'DB/Connections/Default/driverOptions',
-
-        ];
-
         $confManager = $this->configurationManager;
 
-        foreach ($settingsToRename as $oldPath => $newPath) {
-            try {
-                $value = $confManager->getLocalConfigurationValueByPath($oldPath);
-                $confManager->setLocalConfigurationValueByPath($newPath, $value);
-                $changedSettings[$oldPath] = true;
-            } catch (\RuntimeException $e) {
-                // If an exception is thrown, the value is not set in LocalConfiguration
-                $changedSettings[$oldPath] = false;
+        $newSettings = [];
+        $removeSettings = [];
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/username');
+            $removeSettings[] = 'DB/username';
+            $newSettings['DB/Connections/Default/user'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
+        }
+
+        try {
+            $value= $confManager->getLocalConfigurationValueByPath('DB/password');
+            $removeSettings[] = 'DB/password';
+            $newSettings['DB/Connections/Default/password'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/host');
+            $removeSettings[] = 'DB/host';
+            $newSettings['DB/Connections/Default/host'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/port');
+            $removeSettings[] = 'DB/port';
+            $newSettings['DB/Connections/Default/port'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/socket');
+            $removeSettings[] = 'DB/socket';
+            // Remove empty socket connects
+            if (!empty($value)) {
+                $newSettings['DB/Connections/Default/unix_socket'] = $value;
             }
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
         }
 
-        // Remove empty socket connects
-        if (!empty($changedSettings['DB/Connections/Default/unix_socket'])) {
-            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/unix_socket');
-            if (empty($value)) {
-                $confManager->removeLocalConfigurationKeysByPath(array_keys('DB/Connections/Default/unix_socket'));
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('DB/database');
+            $removeSettings[] = 'DB/database';
+            $newSettings['DB/Connections/Default/dbname'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
+        }
+
+        try {
+            $value = (bool)$confManager->getLocalConfigurationValueByPath('SYS/dbClientCompress');
+            $removeSettings[] = 'SYS/dbClientCompress';
+            if ($value) {
+                $newSettings['DB/Connections/Default/driverOptions'] = [
+                    'flags' => MYSQLI_CLIENT_COMPRESS,
+                ];
             }
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
         }
 
-        // Convert the dbClientCompress flag to a mysqli driver option
-        if (!empty($changedSettings['DB/Connections/Default/driverOptions'])) {
-            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/driverOptions');
-            $confManager->setLocalConfigurationValueByPath(
-                'DB/Connections/Default/driverOptions',
-                [
-                    'flags' => (bool)$value ? MYSQLI_CLIENT_COMPRESS : 0,
-                ]
-            );
+        try {
+            $value = (bool)$confManager->getLocalConfigurationValueByPath('SYS/no_pconnect');
+            $removeSettings[] = 'SYS/no_pconnect';
+            if (!$value) {
+                $newSettings['DB/Connections/Default/persistentConnection'] = true;
+            }
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
         }
 
-        // Swap value as the semantics have changed
-        if (!empty($changedSettings['DB/Connections/Default/persistentConnection'])) {
-            $value = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/persistentConnection');
-            $confManager->setLocalConfigurationValueByPath(
-                'DB/Connections/Default/persistentConnection',
-                !$value
-            );
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('SYS/setDBinit');
+            $removeSettings[] = 'SYS/setDBinit';
+            $newSettings['DB/Connections/Default/initCommands'] = $value;
+        } catch (\RuntimeException $e) {
+            // Old setting does not exist, do nothing
         }
 
-        // Set the utf-8 connection charset by default if no value has been provided yet
         try {
             $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/charset');
         } catch (\RuntimeException $e) {
-            $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf8');
+            // If there is no charset option yet, add it.
+            $newSettings['DB/Connections/Default/charset'] = 'utf8';
         }
 
-        // Use the mysqli driver by default if no value has been provided yet
         try {
             $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/driver');
         } catch (\RuntimeException $e) {
-            $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/driver', 'mysqli');
+            // Use the mysqli driver by default if no value has been provided yet
+            $newSettings['DB/Connections/Default/driver'] = 'mysqli';
         }
 
-        if (!empty(array_filter($changedSettings))) {
-            $confManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
+        // Add new settings and remove old ones
+        if (!empty($newSettings)) {
+            $confManager->setLocalConfigurationValuesByPathValuePairs($newSettings);
+        }
+        if (!empty($removeSettings)) {
+            $confManager->removeLocalConfigurationKeysByPath($removeSettings);
+        }
+
+        // Throw redirect if something was changed
+        if (!empty($newSettings) || !empty($removeSettings)) {
             $this->throwRedirectException();
         }
     }

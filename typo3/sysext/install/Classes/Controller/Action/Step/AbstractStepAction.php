@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Install\Controller\Action\AbstractAction;
+
 /**
  * General purpose Step controller action
  */
-abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\AbstractAction implements StepInterface
+abstract class AbstractStepAction extends AbstractAction implements StepInterface
 {
     /**
      * @var int Current step position
