@@ -50,6 +50,7 @@ class DummyLinkParameterProvider implements LinkParameterProviderInterface
      */
     public function getUrlParameters(array $values)
     {
+        $this->parameters['expandFolder'] = $values['identifier'];
         return $this->parameters;
     }
 
