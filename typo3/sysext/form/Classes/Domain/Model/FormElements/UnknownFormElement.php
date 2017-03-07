@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -47,6 +50,21 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     }
 
     /**
+     * @return void
+     * @api
+     */
+    public function initializeFormElement()
+    {
+        GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(Dispatcher::class)
+            ->dispatch(
+                AbstractRenderable::class,
+                'initializeFormElement',
+                [$this]
+            );
+    }
+
+    /**
      * Returns a unique identifier of this element.
      * While element identifiers are only unique within one form,
      * this includes the identifier of the form itself, making it "globally" unique
@@ -71,16 +89,6 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     public function getTemplateName(): string
     {
         return 'UnknownElement';
-    }
-
-    /**
-     * Not used in this implementation
-     *
-     * @return void
-     * @internal
-     */
-    public function initializeFormElement()
-    {
     }
 
     /**
@@ -141,8 +149,10 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 }

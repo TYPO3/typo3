@@ -200,8 +200,10 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      * @param array $requestArguments submitted raw request values
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 }

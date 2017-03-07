@@ -18,14 +18,13 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Error\Error;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * A password with confirmation form element
  *
  * Scope: frontend
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class AdvancedPassword extends AbstractFormElement
 {
@@ -40,16 +39,10 @@ class AdvancedPassword extends AbstractFormElement
      * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
     {
-        if ($elementValue['password'] !== $elementValue['confirmation']) {
-            $processingRule = $this->getRootForm()->getProcessingRule($this->getIdentifier());
-            $processingRule->getProcessingMessages()->addError(
-                GeneralUtility::makeInstance(ObjectManager::class)
-                    ->get(Error::class, 'Password doesn\'t match confirmation', 1334768052)
-            );
-        }
-        $elementValue = $elementValue['password'];
+        GeneralUtility::logDeprecatedFunction();
     }
 }

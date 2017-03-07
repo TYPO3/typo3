@@ -62,6 +62,7 @@ interface RootRenderableInterface
      * @param FormRuntime $formRuntime
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function beforeRendering(FormRuntime $formRuntime);
 

@@ -1200,7 +1200,24 @@ define(['jquery',
          * @publish view/collectionElement/removed
          */
         function removePropertyCollectionElement(collectionElementIdentifier, collectionName, formElement, disablePublishersOnSet) {
+            var collectionElementConfiguration;
+
             getFormEditorApp().removePropertyCollectionElement(collectionElementIdentifier, collectionName, formElement);
+
+            collectionElementConfiguration = getFormEditorApp().getPropertyCollectionElementConfiguration(
+                collectionElementIdentifier,
+                collectionName
+            );
+            if ('array' === $.type(collectionElementConfiguration['editors'])) {
+                for (var i = 0, len1 = collectionElementConfiguration['editors'].length; i < len1; ++i) {
+                    if ('array' === $.type(collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'])) {
+                        for (var j = 0, len2 = collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'].length; j < len2; ++j) {
+                            getCurrentlySelectedFormElement().unset(collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'][j], true);
+                        }
+                    }
+                }
+            }
+
             if (!!!disablePublishersOnSet) {
                 getPublisherSubscriber().publish('view/collectionElement/removed', [
                     collectionElementIdentifier,

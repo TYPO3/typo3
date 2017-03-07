@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Contains a preview rendering for the page module of CType="form_formframework"
  */
-class FormPagePreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
+class FormPagePreviewRenderer implements PageLayoutViewDrawItemHookInterface
 {
     /**
      * Preprocesses the preview rendering of the content element "form_formframework".

@@ -31,7 +31,8 @@ renderables:
         label: 'Name'
         type: Text
         properties:
-          placeholder: 'Name'
+          fluidAdditionalAttributes:
+            placeholder: 'Name'
         defaultValue: ''
         validators:
           -
@@ -41,7 +42,8 @@ renderables:
         label: 'Subject'
         type: Text
         properties:
-          placeholder: 'Subject'
+          fluidAdditionalAttributes:
+            placeholder: 'Subject'
         defaultValue: ''
         validators:
           -
@@ -51,7 +53,8 @@ renderables:
         label: 'Email'
         type: Text
         properties:
-          placeholder: 'Email address'
+          fluidAdditionalAttributes:
+            placeholder: 'Email address'
         defaultValue: ''
         validators:
           -
@@ -63,7 +66,8 @@ renderables:
         label: 'Message'
         type: Textarea
         properties:
-          placeholder: ''
+          fluidAdditionalAttributes:
+            placeholder: ''
         defaultValue: ''
         validators:
           -

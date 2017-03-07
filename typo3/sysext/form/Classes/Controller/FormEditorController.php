@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -142,6 +143,15 @@ class FormEditorController extends AbstractBackendController
     {
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
         $formDefinition = $this->convertJsonArrayToAssociativeArray($formDefinition);
+
+        $this->objectManager
+            ->get(Dispatcher::class)
+            ->dispatch(
+                self::class,
+                'beforeFormSave',
+                [$formPersistenceIdentifier, &$formDefinition]
+            );
+
         $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
         return '';
     }

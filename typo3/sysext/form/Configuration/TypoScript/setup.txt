@@ -7,9 +7,9 @@ plugin.tx_form {
         #
         # That means: If you want to override the formelement templates
         # then change them within the yaml settings, not here.
-        templateRootPaths.5 = EXT:form/Resources/Private/Frontend/Templates/
-        partialRootPaths.5 = EXT:form/Resources/Private/Frontend/Partials/
-        layoutRootPaths.5 = EXT:form/Resources/Private/Frontend/Layouts/
+        templateRootPaths.0 = EXT:form/Resources/Private/Frontend/Templates/
+        partialRootPaths.0 = EXT:form/Resources/Private/Frontend/Partials/
+        layoutRootPaths.0 = EXT:form/Resources/Private/Frontend/Layouts/
     }
 
     mvc {

@@ -654,6 +654,13 @@
                 <source>Text</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.Hidden.label" xml:space="preserve">
+                <source>Hidden</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" xml:space="preserve">
+                <source>Value</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.ContentElement.label" xml:space="preserve">
                 <source>Content element</source>
             </trans-unit>
@@ -661,10 +668,10 @@
                 <source>No content element selected</source>
             </trans-unit>
 
-            <trans-unit id="formEditor.elements.StaticText.editor.contentElement.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" xml:space="preserve">
                 <source>Content element uid</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.StaticText.editor.contentElement.buttonLabel" xml:space="preserve">
+            <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" xml:space="preserve">
                 <source>tt_content</source>
             </trans-unit>
 

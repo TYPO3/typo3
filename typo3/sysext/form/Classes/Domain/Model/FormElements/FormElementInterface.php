@@ -144,6 +144,7 @@ interface FormElementInterface extends RenderableInterface
      * @return void
      * @see FormRuntime::mapAndValidate()
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = []);
 }

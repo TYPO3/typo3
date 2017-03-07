@@ -153,7 +153,7 @@ TYPO3:
                 paginationTitle: 'formEditor.pagination.title'
 
                 iconIdentifier: 'content-elements-mailform'
-                predefinedDefaults:
+                predefinedDefaults: []
                 editors:
                   900:
                     identifier: 'finishers'
@@ -303,7 +303,7 @@ TYPO3:
               formEditor:
                 __inheritances:
                   10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemovableFormElementMixin'
-                predefinedDefaults:
+                predefinedDefaults: []
                 label: 'formEditor.elements.Page.label'
                 group: page
                 groupSorting: 100
@@ -316,7 +316,7 @@ TYPO3:
 
             SummaryPage:
               formEditor:
-                predefinedDefaults:
+                predefinedDefaults: []
                 label: 'formEditor.elements.SummaryPage.label'
                 group: page
                 groupSorting: 200
@@ -361,6 +361,22 @@ TYPO3:
                     propertyPath: 'properties.confirmationLabel'
                   500: null
 
+            Hidden:
+              formEditor:
+                label: 'formEditor.elements.Hidden.label'
+                group: input
+                groupSorting: 500
+                iconIdentifier: 't3-form-icon-hidden'
+                predefinedDefaults:
+                  defaultValue: ''
+                editors:
+                  300:
+                    identifier: 'defaultValue'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Hidden.editor.defaultValue.label'
+                    propertyPath: 'defaultValue'
+                  800: null
+
             Textarea:
               formEditor:
                 label: 'formEditor.elements.Textarea.label'
@@ -368,6 +384,7 @@ TYPO3:
                 groupSorting: 200
                 iconIdentifier: 't3-form-icon-textarea'
                 editors:
+                  600: null
                   900:
                     selectOptions:
                       # remove email validator
@@ -487,10 +504,10 @@ TYPO3:
                 editors:
                   200: null
                   300:
-                    identifier: 'staticText'
+                    identifier: 'contentElement'
                     templateName: 'Inspector-Typo3WinBrowserEditor'
-                    label: 'formEditor.elements.StaticText.editor.contentElement.label'
-                    buttonLabel: 'formEditor.elements.StaticText.editor.contentElement.buttonLabel'
+                    label: 'formEditor.elements.ContentElement.editor.contentElement.label'
+                    buttonLabel: 'formEditor.elements.ContentElement.editor.contentElement.buttonLabel'
                     browsableType: tt_content
                     propertyPath: 'properties.contentElementUid'
                     propertyValidatorsMode: 'OR'
@@ -718,7 +735,7 @@ TYPO3:
         formElementMixins:
           BaseFormElementMixin:
             formEditor:
-              predefinedDefaults:
+              predefinedDefaults: []
               editors:
                 100:
                   identifier: 'header'
@@ -787,19 +804,23 @@ TYPO3:
                   templateName: 'Inspector-RequiredValidatorEditor'
                   label: 'formEditor.elements.FormElement.editor.requiredValidator.label'
                   validatorIdentifier: 'NotEmpty'
+                  propertyPath: 'properties.fluidAdditionalAttributes.required'
+                  propertyValue: 'required'
 
           TextMixin:
             formEditor:
               predefinedDefaults:
                 properties:
-                  placeholder: ''
+                  fluidAdditionalAttributes:
+                    placeholder: ''
                 defaultValue: ''
               editors:
                 400:
                   identifier: 'placeholder'
                   templateName: 'Inspector-TextEditor'
                   label: 'formEditor.elements.TextMixin.editor.placeholder.label'
-                  propertyPath: 'properties.placeholder'
+                  propertyPath: 'properties.fluidAdditionalAttributes.placeholder'
+                  compatibilityPropertyPath: 'properties.placeholder'
                 500:
                   identifier: 'defaultValue'
                   templateName: 'Inspector-TextEditor'

@@ -1,17 +1,15 @@
-{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
 <formvh:renderRenderable renderable="{element}">
     <div class="form-inline">
             <f:render partial="Field/Field" arguments="{element: element}" contentAs="elementContent">
                 <formvh:form.datePicker
                     id="{element.uniqueIdentifier}"
                     property="{element.identifier}"
-                    placeholder="{formvh:translateElementProperty(element: element, property: 'placeholder')}"
                     dateFormat="{element.properties.dateFormat}"
                     initialDate="{element.properties.initialDate}"
                     enableDatePicker="{element.properties.enableDatePicker}"
                     class="{element.properties.elementClassAttribute}"
                     errorClass="{element.properties.elementErrorClassAttribute}"
-                    additionalAttributes="{f:if(condition: '{element.required}', then: '{required: \'required\'}')}"
+                    additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
                     previewMode="{element.rootForm.renderingOptions.previewMode}"
                 />
             </f:render>
@@ -34,7 +32,7 @@
                 <label class="control-label" for="{element.uniqueIdentifier}-time-minute">{formvh:translateElementProperty(element: element, property: 'timeSelectorMinuteLabel')}</label>
                 <div class="{element.properties.containerClassAttribute}">
                     <formvh:form.timePicker
-                            id="{element.uniqueIdentifier}-time"
+                            id="{element.uniqueIdentifier}-time-minute"
                             property="{element.identifier}"
                             initialDate="{element.properties.initialDate}"
                             class="{element.properties.timeSelectorClassAttribute} form-control"

@@ -27,6 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -406,14 +407,35 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         };
 
         $value = null;
+
+        GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
         $page->onSubmit($this, $value, $requestArguments);
+
+        $this->objectManager
+            ->get(Dispatcher::class)
+            ->dispatch(
+                self::class,
+                'onSubmit',
+                [$this, $page, &$value, $requestArguments]
+            );
+
         foreach ($page->getElementsRecursively() as $element) {
             try {
                 $value = ArrayUtility::getValueByPath($requestArguments, $element->getIdentifier(), '.');
             } catch (\RuntimeException $exception) {
                 $value = null;
             }
+
+            GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
             $element->onSubmit($this, $value, $requestArguments);
+
+            $this->objectManager
+                ->get(Dispatcher::class)
+                ->dispatch(
+                    self::class,
+                    'onSubmit',
+                    [$this, $element, &$value, $requestArguments]
+                );
 
             $this->formState->setFormValue($element->getIdentifier(), $value);
             $registerPropertyPaths($element->getIdentifier());
@@ -783,9 +805,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param FormRuntime $formRuntime
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function beforeRendering(FormRuntime $formRuntime)
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 
     /**

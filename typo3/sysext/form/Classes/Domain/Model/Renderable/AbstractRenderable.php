@@ -130,6 +130,12 @@ abstract class AbstractRenderable implements RenderableInterface
         }
 
         if (isset($options['properties'])) {
+            if (isset($options['properties']['placeholder'])) {
+                GeneralUtility::deprecationLog('EXT:form - "properties.placeholder" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Use "properties.fluidAdditionalAttributes.placeholder."');
+                $options['properties']['fluidAdditionalAttributes']['placeholder'] = $options['properties']['placeholder'];
+                unset($options['properties']['placeholder']);
+            }
+
             foreach ($options['properties'] as $key => $value) {
                 $this->setProperty($key, $value);
             }
@@ -400,9 +406,11 @@ abstract class AbstractRenderable implements RenderableInterface
      * @param FormRuntime $formRuntime
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function beforeRendering(FormRuntime $formRuntime)
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 
     /**
@@ -413,6 +421,7 @@ abstract class AbstractRenderable implements RenderableInterface
      *
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onBuildingFinished()
     {

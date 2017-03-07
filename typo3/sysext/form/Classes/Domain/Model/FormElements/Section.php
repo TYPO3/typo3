@@ -17,8 +17,12 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 
 /**
  * A Section, being part of a bigger Page
@@ -47,6 +51,13 @@ class Section extends AbstractSection implements FormElementInterface
      */
     public function initializeFormElement()
     {
+        GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(Dispatcher::class)
+            ->dispatch(
+                AbstractRenderable::class,
+                'initializeFormElement',
+                [$this]
+            );
     }
 
     /**

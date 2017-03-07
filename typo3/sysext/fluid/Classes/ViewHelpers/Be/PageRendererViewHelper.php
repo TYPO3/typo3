@@ -67,6 +67,7 @@ class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('addJsInlineLabels', 'array', 'Custom labels to add to JavaScript inline labels');
         $this->registerArgument('includeRequireJsModules', 'array', 'List of RequireJS modules to be loaded');
         $this->registerArgument('jQueryNamespace', 'string', 'Store the jQuery object in a specific namespace. This option will be removed in TYPO3 v9');
+        $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
 
     /**
@@ -84,6 +85,7 @@ class PageRendererViewHelper extends AbstractViewHelper
         $addJsInlineLabels = $this->arguments['addJsInlineLabels'];
         $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
         $jQueryNamespace = $this->arguments['jQueryNamespace'];
+        $addInlineSettings = $this->arguments['addInlineSettings'];
 
         if ($pageTitle) {
             $this->pageRenderer->setTitle($pageTitle);
@@ -129,6 +131,11 @@ class PageRendererViewHelper extends AbstractViewHelper
                 $this->pageRenderer->loadRequireJsModule($addRequireJsFile);
             }
         }
+
+        if (is_array($addInlineSettings) && count($addInlineSettings) > 0) {
+            $this->pageRenderer->addInlineSettingArray(null, $addInlineSettings);
+        }
+
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
             $extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();

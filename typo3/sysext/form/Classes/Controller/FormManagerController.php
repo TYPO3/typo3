@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Lang\LanguageService;
@@ -107,6 +108,15 @@ class FormManagerController extends AbstractBackendController
         $form['prototypeName'] = $prototypeName;
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath);
+
+        $this->objectManager
+            ->get(Dispatcher::class)
+            ->dispatch(
+                self::class,
+                'beforeFormCreate',
+                [$formPersistenceIdentifier, &$form]
+            );
+
         $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
 
         return $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor');
@@ -128,6 +138,15 @@ class FormManagerController extends AbstractBackendController
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath);
+
+        $this->objectManager
+            ->get(Dispatcher::class)
+            ->dispatch(
+                self::class,
+                'beforeFormDuplicate',
+                [$formPersistenceIdentifier, &$formToDuplicate]
+            );
+
         $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
 
         return $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor');
@@ -162,6 +181,14 @@ class FormManagerController extends AbstractBackendController
     public function deleteAction(string $formPersistenceIdentifier)
     {
         if (empty($this->getReferences($formPersistenceIdentifier))) {
+            $this->objectManager
+                ->get(Dispatcher::class)
+                ->dispatch(
+                    self::class,
+                    'beforeFormDelete',
+                    [$formPersistenceIdentifier]
+                );
+
             $this->formPersistenceManager->delete($formPersistenceIdentifier);
         } else {
             $this->addFlashMessage(

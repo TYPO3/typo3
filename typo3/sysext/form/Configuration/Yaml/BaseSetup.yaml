@@ -62,6 +62,9 @@ TYPO3:
             AdvancedPassword:
               __inheritances:
                 10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Password'
+              # implementationClassName 'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword'
+              # is deprecated since TYPO3 v8 and will be removed in TYPO3 v9
+              # will be 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement' in TYPO3 v9
               implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword'
               properties:
                 elementClassAttribute: 'input-medium'
@@ -82,6 +85,10 @@ TYPO3:
               properties:
                 renderAsHiddenField: false
                 styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+
+            Hidden:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
 
             ### FORM ELEMENTS: SELECT ###
             Checkbox:
@@ -130,10 +137,6 @@ TYPO3:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.ReadOnlyFormElementMixin'
               properties:
                 text: ''
-
-            Hidden:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
 
             ContentElement:
               __inheritances:

@@ -17,7 +17,11 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * Base class for custom *Form Factories*. A Form Factory is responsible for building
@@ -51,8 +55,8 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 abstract class AbstractFormFactory implements FormFactoryInterface
 {
     /**
-     * Helper to be called by every AbstractFormFactory after everything has been built to trigger the "onBuildingFinished"
-     * template method on all form elements.
+     * Helper to be called by every AbstractFormFactory after everything has been built to dispatch the "onBuildingFinished"
+     * signal on all form elements.
      *
      * @param FormDefinition $form
      * @return void
@@ -61,7 +65,16 @@ abstract class AbstractFormFactory implements FormFactoryInterface
     protected function triggerFormBuildingFinished(FormDefinition $form)
     {
         foreach ($form->getRenderablesRecursively() as $renderable) {
+            GeneralUtility::deprecationLog('EXT:form - calls for "onBuildingFinished" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
             $renderable->onBuildingFinished();
+
+            GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(Dispatcher::class)
+                ->dispatch(
+                    FormRuntime::class,
+                    'onBuildingFinished',
+                    [$renderable]
+                );
         }
     }
 }

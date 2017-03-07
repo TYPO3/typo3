@@ -315,6 +315,17 @@ class TranslationService implements SingletonInterface
                 $optionLabel = (empty($translatedValue)) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
+        } elseif ($property === 'fluidAdditionalAttributes' && is_array($defaultValue)) {
+            foreach ($defaultValue as $propertyName => &$propertyValue) {
+                $translationKeyChain = [
+                    sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $propertyName),
+                    sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $propertyName),
+                    sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $propertyName),
+                ];
+                $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
+                $propertyValue = (empty($translatedValue)) ? $propertyValue : $translatedValue;
+            }
+            $translatedValue = $defaultValue;
         } else {
             $translationKeyChain = [
                 sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property),

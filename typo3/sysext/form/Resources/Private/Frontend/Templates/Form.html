@@ -1,4 +1,3 @@
-{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
 <formvh:renderRenderable renderable="{form}">
     <formvh:form object="{form}" action="perform" method="post" id="{form.identifier}" section="{form.identifier}" enctype="multipart/form-data">
         <f:render partial="{form.currentPage.templateName}" arguments="{page: form.currentPage}" />

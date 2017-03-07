@@ -1035,7 +1035,7 @@ define(['jquery',
          * @throws 1475421056
          */
         function renderTextEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-            var propertyPath, propertyData;
+            var compatibilityPropertyData, compatibilityPropertyPath, propertyData, propertyPath;
             assert(
                 'object' === $.type(editorConfiguration),
                 'Invalid parameter "editorConfiguration"',
@@ -1077,6 +1077,22 @@ define(['jquery',
             );
             propertyData = getCurrentlySelectedFormElement().get(propertyPath);
 
+            if (
+                getUtility().isNonEmptyString(editorConfiguration['compatibilityPropertyPath'])
+                && getUtility().isUndefinedOrNull(propertyData)
+            ) {
+                compatibilityPropertyPath = getFormEditorApp().buildPropertyPath(
+                    editorConfiguration['compatibilityPropertyPath'],
+                    collectionElementIdentifier,
+                    collectionName
+                );
+                compatibilityPropertyData = getCurrentlySelectedFormElement().get(compatibilityPropertyPath);
+
+                getCurrentlySelectedFormElement().set(propertyPath, compatibilityPropertyData, true);
+                getCurrentlySelectedFormElement().unset(compatibilityPropertyPath, true);
+                propertyData = compatibilityPropertyData;
+            }
+
             _validateCollectionElement(propertyPath, editorHtml);
 
             getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(propertyData);
@@ -1084,8 +1100,30 @@ define(['jquery',
             renderFormElementSelectorEditorAddition(editorConfiguration, editorHtml, propertyPath);
 
             getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).on('keyup paste', function() {
-                getCurrentlySelectedFormElement().set(propertyPath, $(this).val());
+                if (
+                    !!editorConfiguration['doNotSetIfPropertyValueIsEmpty']
+                    && !getUtility().isNonEmptyString($(this).val())
+                ) {
+                    getCurrentlySelectedFormElement().unset(propertyPath);
+                } else {
+                    getCurrentlySelectedFormElement().set(propertyPath, $(this).val());
+                }
                 _validateCollectionElement(propertyPath, editorHtml);
+                if (
+                    !getUtility().isUndefinedOrNull(editorConfiguration['additionalElementPropertyPaths'])
+                    && 'array' === $.type(editorConfiguration['additionalElementPropertyPaths'])
+                ) {
+                    for (var i = 0, len = editorConfiguration['additionalElementPropertyPaths'].length; i < len; ++i) {
+                        if (
+                            !!editorConfiguration['doNotSetIfPropertyValueIsEmpty']
+                            && !getUtility().isNonEmptyString($(this).val())
+                        ) {
+                            getCurrentlySelectedFormElement().unset(editorConfiguration['additionalElementPropertyPaths'][i]);
+                        } else {
+                            getCurrentlySelectedFormElement().set(editorConfiguration['additionalElementPropertyPaths'][i], $(this).val());
+                        }
+                    }
+                }
             });
         };
 
@@ -1507,9 +1545,11 @@ define(['jquery',
          * @throws 1475417094
          * @throws 1475417095
          * @throws 1475417096
+         * @throws 1489319751
+         * @throws 1489319752
          */
         function renderRequiredValidatorEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-            var validatorIdentifier;
+            var propertyPath, propertyValue, validatorIdentifier;
             assert(
                 'object' === $.type(editorConfiguration),
                 'Invalid parameter "editorConfiguration"',
@@ -1530,12 +1570,27 @@ define(['jquery',
                 'Invalid configuration "label"',
                 1475417096
             );
+            assert(
+                getUtility().isNonEmptyString(editorConfiguration['propertyPath']),
+                'Invalid configuration "propertyPath"',
+                1489319751
+            );
+            assert(
+                getUtility().isNonEmptyString(editorConfiguration['propertyValue']),
+                'Invalid configuration "propertyValue"',
+                1489319752
+            );
 
             validatorIdentifier = editorConfiguration['validatorIdentifier'];
             getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration['label']);
 
+            propertyPath = getFormEditorApp()
+                .buildPropertyPath(editorConfiguration['propertyPath'], collectionElementIdentifier, collectionName);
+            propertyValue = editorConfiguration['propertyValue'];
+
             if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
                 $('input[type="checkbox"]', $(editorHtml)).prop('checked', true);
+                getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
             }
 
             $('input[type="checkbox"]', $(editorHtml)).on('change', function() {
@@ -1544,11 +1599,13 @@ define(['jquery',
                         'view/inspector/collectionElement/new/selected',
                         [validatorIdentifier, 'validators']
                     );
+                    getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
                 } else {
                     getPublisherSubscriber().publish(
                         'view/inspector/removeCollectionElement/perform',
                         [validatorIdentifier, 'validators']
-                    );                 
+                    );
+                    getCurrentlySelectedFormElement().unset(propertyPath);
                 }
             });
         };

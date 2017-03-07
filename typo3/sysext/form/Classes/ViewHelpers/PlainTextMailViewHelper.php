@@ -23,6 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Scope: frontend
  * @api
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -51,7 +52,6 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
     {
         $formValue = $arguments['formValue'];
 
-        $label = $formValue['element']->getLabel();
         $label = TranslateElementPropertyViewHelper::renderStatic(
             ['element' => $formValue['element'], 'property' => 'label'],
             $renderChildrenClosure,
@@ -61,7 +61,7 @@ class PlainTextMailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
         $isMultiValue = $formValue['isMultiValue'];
 
         $label .= ': ';
-        if ($isMultiValue) {
+        if ($isMultiValue && is_array($processedValue)) {
             $output = $label . array_shift($processedValue) . LF;
             $indent = str_repeat(chr(32), (strlen($label)));
             foreach ($processedValue as $multiValue) {

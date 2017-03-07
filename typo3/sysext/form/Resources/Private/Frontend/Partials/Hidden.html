@@ -1,4 +1,7 @@
-{namespace formvh=TYPO3\CMS\Form\ViewHelpers}
 <formvh:renderRenderable renderable="{element}">
-    <f:form.hidden property="{element.identifier}" id="{element.uniqueIdentifier}" />
+    <f:form.hidden
+        property="{element.identifier}"
+        id="{element.uniqueIdentifier}"
+        additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+    />
 </formvh:renderRenderable>

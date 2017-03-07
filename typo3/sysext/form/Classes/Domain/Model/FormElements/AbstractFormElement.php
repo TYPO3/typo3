@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
@@ -74,6 +77,13 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      */
     public function initializeFormElement()
     {
+        GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(Dispatcher::class)
+            ->dispatch(
+                AbstractRenderable::class,
+                'initializeFormElement',
+                [$this]
+            );
     }
 
     /**
@@ -163,8 +173,10 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      * @param array $requestArguments submitted raw request values
      * @return void
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
     {
+        GeneralUtility::logDeprecatedFunction();
     }
 }

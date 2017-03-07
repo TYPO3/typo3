@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper as FluidCheckboxViewHelper;
 
 /**
@@ -23,6 +24,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper as FluidCheckboxViewHelp
  *
  * Scope: frontend
  * @api
+ * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
  */
 class CheckboxViewHelper extends FluidCheckboxViewHelper
 {
@@ -32,10 +34,11 @@ class CheckboxViewHelper extends FluidCheckboxViewHelper
      *
      * @return string
      * @api
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function render()
     {
-        $this->arguments['multiple'] = (bool)$this->arguments['multiple'];
+        GeneralUtility::logDeprecatedFunction();
         return parent::render();
     }
 }

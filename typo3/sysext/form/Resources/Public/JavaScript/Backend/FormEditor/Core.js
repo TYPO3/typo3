@@ -822,6 +822,40 @@ define(['jquery'], function($) {
                  * @public
                  *
                  * @param string key
+                 * @param bool disablePublishersOnSet
+                 * @return void
+                 * @throws 1489321637
+                 * @throws 1489319753
+                 * @publish mixed
+                 */
+                function unset(key, disablePublishersOnSet) {
+                    var obj, oldValue, parentPropertyData, parentPropertyPath, propertyToRemove;
+                    utility().assert(utility().isNonEmptyString(key), 'Invalid parameter "key"', 1489321637);
+                    disablePublishersOnSet = !!disablePublishersOnSet;
+
+                    oldValue = get(key);
+
+                    if (key.indexOf('.') > 0) {
+                        parentPropertyPath = key.split('.');
+                        propertyToRemove = parentPropertyPath.pop();
+                        parentPropertyPath = parentPropertyPath.join('.');
+                        parentPropertyData = get(parentPropertyPath);
+                        delete parentPropertyData[propertyToRemove];
+                    } else {
+                        assert(false, 'remove toplevel properties is not supported', 1489319753);
+                    }
+
+                    if (!utility().isUndefinedOrNull(_publisherTopics[key]) && !disablePublishersOnSet) {
+                        for (var i = 0, len = _publisherTopics[key].length; i < len; ++i) {
+                            publisherSubscriber().publish(_publisherTopics[key][i], [key, undefined, oldValue, _objectData['__identifierPath']]);
+                        }
+                    }
+                };
+
+                /**
+                 * @public
+                 *
+                 * @param string key
                  * @param string topicName
                  * @return void
                  * @throws 1475361757
@@ -933,6 +967,7 @@ define(['jquery'], function($) {
                 return {
                     get: get,
                     set: set,
+                    unset: unset,
 
                     on: on,
                     off: off,
@@ -1677,7 +1712,7 @@ define(['jquery'], function($) {
              * @throws 1475604050
              */
             function createFormElement(configuration, identifierPathPrefix, parentFormElement, registerPropertyValidators, disablePublishersOnSet) {
-                var currentChildFormElements, collections, formElementTypeDefinition, identifierPath, rawChildFormElements, formElement;
+                var currentChildFormElements, collections, formElementTypeDefinition, identifierPath, rawChildFormElements, formElement, predefinedDefaults;
                 utility().assert('object' === $.type(configuration), 'Invalid parameter "configuration"', 1475375693);
                 utility().assert(utility().isNonEmptyString(configuration['identifier']), '"identifier" must not be empty', 1475436040);
                 utility().assert(utility().isNonEmptyString(configuration['type']), '"type" must not be empty', 1475604050);
@@ -1693,6 +1728,7 @@ define(['jquery'], function($) {
                 delete configuration['renderables'];
 
                 collections = {};
+                predefinedDefaults = formElementTypeDefinition['predefinedDefaults'] || {};
                 for (var collectionName in configuration) {
                     if (!configuration.hasOwnProperty(collectionName)) {
                         continue;
@@ -1700,7 +1736,14 @@ define(['jquery'], function($) {
                     if (utility().isUndefinedOrNull(_repositoryFormEditorDefinitions[collectionName])) {
                         continue;
                     }
-                    collections[collectionName] = configuration[collectionName];
+
+                    predefinedDefaults[collectionName] = predefinedDefaults[collectionName] || {};
+                    collections[collectionName] = $.extend(
+                        predefinedDefaults[collectionName] || {},
+                        configuration[collectionName]
+                    );
+
+                    delete predefinedDefaults[collectionName];
                     delete configuration[collectionName];
                 }
 
