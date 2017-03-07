@@ -106,7 +106,14 @@ class Indexer
         $fileIndexRecords = $this->getFileIndexRepository()->findInStorageWithIndexOutstanding($this->storage, $maximumFileCount);
         foreach ($fileIndexRecords as $indexRecord) {
             $fileObject = $this->getResourceFactory()->getFileObject($indexRecord['uid'], $indexRecord);
-            $this->extractMetaData($fileObject);
+            // Check for existence of file before extraction
+            if ($fileObject->exists()) {
+                $this->extractMetaData($fileObject);
+
+                // Mark file as missing and continue with next record
+            } else {
+                $this->getFileIndexRepository()->markFileAsMissing($indexRecord['uid']);
+            }
         }
     }
 
