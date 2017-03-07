@@ -838,9 +838,12 @@ class ImageManipulation {
       const cropVariant: CropVariant = data[cropVariantId];
       const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
 
-      let $preview: JQuery = this.trigger
+      const $preview: JQuery = this.trigger
         .closest('.form-group')
         .find(`.t3js-image-manipulation-preview[data-crop-variant-id="${cropVariantId}"]`);
+      const $previewSelectedRatio: JQuery = this.trigger
+        .closest('.form-group')
+        .find(`.t3js-image-manipulation-selected-ratio[data-crop-variant-id="${cropVariantId}"]`);
 
       if ($preview.length === 0) {
         return;
@@ -863,9 +866,12 @@ class ImageManipulation {
         previewHeight = cropData.height;
       }
 
-      let ratio: number = previewWidth / cropData.width;
-
-      let $viewBox: JQuery = $('<div />').html('<img src="' + $image.attr('src') + '">');
+      const ratio: number = previewWidth / cropData.width;
+      const $viewBox: JQuery = $('<div />').html('<img src="' + $image.attr('src') + '">');
+      const $ratioTitleText: JQuery = this.currentModal.find(
+        `.t3-js-ratio-title[data-ratio-id="${cropVariant.id}${cropVariant.selectedRatio}"]`
+      );
+      $previewSelectedRatio.text($ratioTitleText.text());
       $viewBox.addClass('cropper-preview-container');
       $preview.empty().append($viewBox);
       $viewBox.wrap('<span class="thumbnail thumbnail-status"></span>');

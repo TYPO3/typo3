@@ -32,11 +32,11 @@
 						<div class="col-xs-6 col-sm-4 col-md-3 media-gallery__item">
 							<p>
 								<b><f:translate id="{cropVariant.title}" default="{cropVariant.title}" /></b><br/>
-								<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>: <f:translate id="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" default="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" />
+								<f:translate id="LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>: <span class="t3js-image-manipulation-selected-ratio" data-crop-variant-id="{cropVariant.id}"><f:translate id="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" default="{cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}" /></span>
 							</p>
 							<div class="t3js-image-manipulation-preview media-object"
-								 data-preview-height="150"
-								 data-crop-variant-id="{cropVariant.id}">
+								data-preview-height="150"
+								data-crop-variant-id="{cropVariant.id}">
 								<f:image image="{image}" crop="{formEngine.field.value}"
 										 cropVariant="{cropVariant.id}"
 										 maxHeight="150"

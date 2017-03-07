@@ -687,6 +687,9 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 var $preview = _this.trigger
                     .closest('.form-group')
                     .find(".t3js-image-manipulation-preview[data-crop-variant-id=\"" + cropVariantId + "\"]");
+                var $previewSelectedRatio = _this.trigger
+                    .closest('.form-group')
+                    .find(".t3js-image-manipulation-selected-ratio[data-crop-variant-id=\"" + cropVariantId + "\"]");
                 if ($preview.length === 0) {
                     return;
                 }
@@ -708,6 +711,8 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 }
                 var ratio = previewWidth / cropData.width;
                 var $viewBox = $('<div />').html('<img src="' + $image.attr('src') + '">');
+                var $ratioTitleText = _this.currentModal.find(".t3-js-ratio-title[data-ratio-id=\"" + cropVariant.id + cropVariant.selectedRatio + "\"]");
+                $previewSelectedRatio.text($ratioTitleText.text());
                 $viewBox.addClass('cropper-preview-container');
                 $preview.empty().append($viewBox);
                 $viewBox.wrap('<span class="thumbnail thumbnail-status"></span>');
