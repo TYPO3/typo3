@@ -135,7 +135,7 @@ class FormResultCompiler
                 }
             }
         }
-        $this->inlineData = $resultArray['inlineData'];
+
         foreach ($resultArray['additionalHiddenFields'] as $element) {
             $this->hiddenFieldAccum[] = $element;
         }
