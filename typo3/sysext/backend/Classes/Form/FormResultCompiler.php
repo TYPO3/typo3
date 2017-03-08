@@ -142,7 +142,6 @@ class FormResultCompiler
             }
         }
         $this->extJSCODE = $this->extJSCODE . LF . $resultArray['extJSCODE'];
-        $this->inlineData = $resultArray['inlineData'];
         foreach ($resultArray['additionalHiddenFields'] as $element) {
             $this->hiddenFieldAccum[] = $element;
         }
