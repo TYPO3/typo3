@@ -408,6 +408,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
+                'size' => 10,
             ],
         ],
         'input_35' => [
