@@ -8,18 +8,20 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1480314091] = [
     'class' => \TYPO3\CMS\RteCKEditor\Form\Resolver\RichTextNodeResolver::class,
 ];
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Core\Page\PageRenderer::class
-)->addRequireJsConfiguration([
-    'shim' => [
-        'ckeditor' => ['exports' => 'CKEDITOR']
-    ],
-    'paths' => [
-        'ckeditor' => \TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
-        ) . 'ckeditor'
-    ]
-]);
+if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) === 0) {
+    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Page\PageRenderer::class
+    )->addRequireJsConfiguration([
+        'shim' => [
+            'ckeditor' => ['exports' => 'CKEDITOR']
+        ],
+        'paths' => [
+            'ckeditor' => \TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
+                ) . 'ckeditor'
+        ]
+    ]);
+}
 
 // Register the presets
 $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:rte_ckeditor/Configuration/RTE/Default.yaml';
