@@ -272,7 +272,8 @@ th {
   float: right;
 }
 .pull-left,
-#typo3-docheader .left {
+#typo3-docheader .left,
+.icon-list .item {
   float: left;
 }
 .fa.pull-left {
@@ -8470,7 +8471,8 @@ div.dropdown-menu {
   float: right !important;
 }
 .pull-left,
-#typo3-docheader .left {
+#typo3-docheader .left,
+.icon-list .item {
   float: left !important;
 }
 .hide {
@@ -11844,7 +11846,19 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .t3-form-field-label.t3-form-field-state-changed {
   color: #004fb0;
 }
-.table-icons td img {
+.icon-list {
+  background: #fff;
+  margin-top: 9px;
+  border: 1px solid #ccc;
+}
+.icon-list .row {
+  margin: 0;
+}
+.icon-list .item {
+  padding: 6px;
+  max-width: 128px;
+}
+.icon-list .item img {
   max-width: 128px;
   max-height: 128px;
 }

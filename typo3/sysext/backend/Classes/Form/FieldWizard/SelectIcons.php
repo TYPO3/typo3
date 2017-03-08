@@ -55,26 +55,18 @@ class SelectIcons extends AbstractNode
 
         $html = [];
         if (!empty($selectIcons)) {
-            $html[] = '<div class="t3js-forms-select-single-icons table-icons table-fit table-fit-inline-block">';
-            $html[] =    '<table class="table table-condensed table-white table-center">';
-            $html[] =        '<tbody>';
-            $html[] =            '<tr>';
+            $html[] = '<div class="t3js-forms-select-single-icons icon-list">';
+            $html[] =    '<div class="row">';
             foreach ($selectIcons as $i => $selectIcon) {
-                if ($i % 12 === 0 && $i !== 0) {
-                    $html[] =    '</tr>';
-                    $html[] =    '<tr>';
-                }
-                $html[] =            '<td>';
+                $html[] =   '<div class="item">';
                 if (is_array($selectIcon)) {
                     $html[] = '<a href="#" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars((string)$selectIcon['index']) . '">';
                     $html[] =   $selectIcon['icon'];
                     $html[] = '</a>';
                 }
-                $html[] =            '</td>';
+                $html[] =   '</div>';
             }
-            $html[] =            '</tr>';
-            $html[] =        '</tbody>';
-            $html[] =    '</table>';
+            $html[] =    '</div>';
             $html[] = '</div>';
         }
 

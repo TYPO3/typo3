@@ -273,9 +273,22 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 	color: #004fb0;
 }
 
-.table-icons {
-	td img {
+.icon-list {
+	background: #fff;
+	margin-top: 9px;
+	border: 1px solid @table-border-color;
+
+	.row {
+		margin:0;
+	}
+
+	.item {
+		&:extend(.pull-left);
+		padding:6px;
 		max-width: 128px;
-		max-height: 128px;
+		img {
+			max-width: 128px;
+			max-height: 128px;
+		}
 	}
 }
