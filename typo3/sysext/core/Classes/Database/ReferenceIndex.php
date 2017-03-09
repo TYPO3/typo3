@@ -213,7 +213,7 @@ class ReferenceIndex
         // No restrictions are needed, since sys_refindex is not a TCA table
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
-        $queryResult = $queryBuilder->select('*')->from('sys_refindex')->where(
+        $queryResult = $queryBuilder->select('hash')->from('sys_refindex')->where(
             $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)),
             $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
             $queryBuilder->expr()->eq(
@@ -221,9 +221,9 @@ class ReferenceIndex
                 $queryBuilder->createNamedParameter($this->getWorkspaceId(), \PDO::PARAM_INT)
             )
         )->execute();
-        $currentRelations = [];
+        $currentRelationHashes = [];
         while ($relation = $queryResult->fetch()) {
-            $currentRelations[$relation['hash']] = $currentRelations;
+            $currentRelationHashes[$relation['hash']] = true;
         }
 
         // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
@@ -260,8 +260,8 @@ class ReferenceIndex
 
                     // First, check if already indexed and if so, unset that row
                     // (so in the end we know which rows to remove!)
-                    if (isset($currentRelations[$relation['hash']])) {
-                        unset($currentRelations[$relation['hash']]);
+                    if (isset($currentRelationHashes[$relation['hash']])) {
+                        unset($currentRelationHashes[$relation['hash']]);
                         $result['keptNodes']++;
                         $relation['_ACTION'] = 'KEPT';
                     } else {
@@ -279,8 +279,8 @@ class ReferenceIndex
         }
 
         // If any old are left, remove them:
-        if (!empty($currentRelations)) {
-            $hashList = array_keys($currentRelations);
+        if (!empty($currentRelationHashes)) {
+            $hashList = array_keys($currentRelationHashes);
             if (!empty($hashList)) {
                 $result['deletedNodes'] = count($hashList);
                 $result['deletedNodes_hashList'] = implode(',', $hashList);
