@@ -110,13 +110,14 @@ class CommandUtility
             $path = self::escapeShellArgument($path . $command . $isExt);
         }
         // strip profile information for thumbnails and reduce their size
-        if ($parameters && $command !== 'identify'
-            && $gfxConf['processor_stripColorProfileByDefault']
-            && $gfxConf['processor_stripColorProfileCommand'] !== ''
-            && strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false
-        ) {
+        if ($parameters && $command !== 'identify') {
             // Determine whether the strip profile action has be disabled by TypoScript:
-            if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
+            if ($gfxConf['processor_stripColorProfileByDefault']
+                && $gfxConf['processor_stripColorProfileCommand'] !== ''
+                && strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false
+                && $parameters !== '-version'
+                && strpos($parameters, '###SkipStripProfile###') === false
+            ) {
                 $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
             } else {
                 $parameters = str_replace('###SkipStripProfile###', '', $parameters);
