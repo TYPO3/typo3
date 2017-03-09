@@ -114,14 +114,18 @@ the crop area. The focus area cannot intersect with any of the cover areas.
 
 	'config' => [
 	    'type' => 'imageManipulation',
-	     'coverAreas' => [
-	         [
-	             'x' => 0.05,
-	             'y' => 0.85,
-	             'width' => 0.9,
-	             'height' => 0.1,
-	         ]
-	     ],
+	    'cropVariants' => [
+	        'mobile' => [
+	            'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+	            'coverAreas' => [
+	                [
+	                    'x' => 0.05,
+	                    'y' => 0.85,
+	                    'width' => 0.9,
+	                    'height' => 0.1,
+	                ]
+	            ],
+	        ],
 	    ],
 	]
 
@@ -177,7 +181,7 @@ It is also possible to set the cropping configuration only for a specific tt_con
 	           ],
 	       ],
 	    ],
-   ];
+	];
 
 
 To render crop variants, the variants can be specified as argument to the image view helper:
