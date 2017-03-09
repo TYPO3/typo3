@@ -8918,7 +8918,7 @@ div.dropdown-menu {
 }
 /*!
  * Datetimepicker for Bootstrap 3
- * version : 4.17.45
+ * version : 4.17.47
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 .bootstrap-datetimepicker-widget {
@@ -12082,76 +12082,9 @@ body#typo3-pagetree {
 #typo3-pagetree #typo3-inner-docbody {
   padding: 10px 0;
 }
-ul.tree {
-  line-height: 12px;
-  list-style: none;
-  clear: both;
-  margin: 16px 0 0 10px;
-  padding: 0;
-}
-ul.tree a {
-  text-decoration: none;
-}
-ul.tree a.pm {
-  cursor: pointer;
-}
-ul.tree div.treeLinkItem {
-  display: block;
-  min-height: 16px;
-  padding-right: 2px;
-}
-ul.tree ul {
-  padding: 0 0 0 19px;
-  margin: 0;
-  list-style: none;
-}
-ul.tree ul li {
-  padding: 0;
-  margin: 0;
-  white-space: nowrap;
-  list-style: none;
-}
-ul.tree ul li.active div.treeLinkItem {
-  background-color: #fff;
-  boder: 1px solid #d7d7d7;
-  border-right: 0;
-}
-ul.tree ul li.active li div.treeLinkItem {
-  margin: 0;
-  background-color: transparent;
-  border-width: 0;
-}
-ul.tree ul li.expanded ul {
-  background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
-}
-ul.tree ul li.last > ul {
-  background: none;
-}
-ul.tree li.active span a,
-ul.tree ul li.active span a {
-  font-weight: bold;
-}
-ul.tree li.active ul span a,
-ul.tree ul li.active ul span a {
-  font-weight: normal;
-}
-ul #pages0_0 > ul {
-  padding-left: 0;
-}
-ul.tree li.active div.treeLinkItem {
-  margin: -1px 0 -1px -1px;
-}
 span.dragIcon {
   display: inline-block;
   height: 16px;
-}
-ul.tree div.treeLinkItem span.dragId,
-ul.tree div.treeLinkItem span.dragTitle,
-ul.tree div.treeLinkItem img {
-  vertical-align: middle;
-}
-ul.tree div.treeLinkItem span.dragIcon {
-  vertical-align: top;
 }
 #dragIcon {
   position: absolute;

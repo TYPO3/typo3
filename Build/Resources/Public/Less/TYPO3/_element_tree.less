@@ -294,105 +294,9 @@ body#typo3-pagetree {
 	padding: 10px 0;
 }
 
-ul.tree {
-	line-height: 12px;
-	list-style: none;
-	clear: both;
-	margin: 16px 0 0 10px;
-	padding: 0;
-
-	a {
-		text-decoration: none;
-	}
-
-	a.pm {
-		cursor: pointer;
-	}
-
-	div.treeLinkItem {
-		display: block;
-		min-height: 16px;
-		padding-right: 2px;
-	}
-
-	ul {
-		padding: 0 0 0 19px;
-		margin: 0;
-		list-style: none;
-
-		li {
-			padding: 0;
-			margin: 0;
-			white-space: nowrap;
-			list-style: none;
-		}
-
-		li.active  {
-			div.treeLinkItem {
-				background-color: #fff;
-				boder: 1px solid #d7d7d7;
-				border-right: 0;
-			}
-
-			li div.treeLinkItem {
-				margin: 0;
-				background-color: transparent;
-				border-width: 0;
-
-			}
-		}
-
-		li.expanded {
-			ul {
-				background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
-			}
-		}
-	}
-}
-
-
-
-ul.tree ul li.last > ul {
-	background: none;
-}
-
-
-ul.tree li.active span a,
-ul.tree ul li.active span a {
-	font-weight: bold;
-}
-
-ul.tree li.active ul span a,
-ul.tree ul li.active ul span a {
-	font-weight: normal;
-}
-
-ul #pages0_0 > ul {
-	padding-left: 0;
-}
-
-//
-// active tree items, we have to work against the border: 1px here,
-// otherwise tree elements would take too much space
-//
-
-ul.tree li.active div.treeLinkItem {
-	margin: -1px 0 -1px -1px;
-}
-
 span.dragIcon {
 	display: inline-block;
 	height: 16px;
-}
-
-ul.tree div.treeLinkItem span.dragId,
-ul.tree div.treeLinkItem span.dragTitle,
-ul.tree div.treeLinkItem img {
-	vertical-align: middle;
-}
-
-ul.tree div.treeLinkItem span.dragIcon {
-	vertical-align: top;
 }
 
 #dragIcon {
@@ -403,7 +307,6 @@ ul.tree div.treeLinkItem span.dragIcon {
 	opacity: 0.5;
 	white-space: nowrap;
 }
-
 
 //
 // Tree
