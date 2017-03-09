@@ -8,7 +8,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1480314091] = [
     'class' => \TYPO3\CMS\RteCKEditor\Form\Resolver\RichTextNodeResolver::class,
 ];
 
-if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) === 0) {
+if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
     \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
         \TYPO3\CMS\Core\Page\PageRenderer::class
     )->addRequireJsConfiguration([
