@@ -444,7 +444,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         if ($this->linkAttributeValues['title']) {
             $title = $this->linkAttributeValues['title'];
         } else {
-            $title = !$this->classesAnchorDefault[$this->displayedLinkHandlerId] ? '' : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
+            $title = !$this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ? '' : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
         }
         if (isset($this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'])) {
             $readOnly = (bool)$this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
