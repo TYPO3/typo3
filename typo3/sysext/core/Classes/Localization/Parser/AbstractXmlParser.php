@@ -97,7 +97,11 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         $rootXmlNode = simplexml_load_string($xmlContent, 'SimpleXMLElement', LIBXML_NOWARNING);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
         if (!isset($rootXmlNode) || $rootXmlNode === false) {
-            throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file.', 1278155988);
+            $xmlError = libxml_get_last_error();
+            throw new InvalidXmlFileException(
+                'The path provided does not point to existing and accessible well-formed XML file. Reason: ' . $xmlError->message . ' in ' . $this->sourcePath . ', line ' . $xmlError->line,
+                1278155988
+            );
         }
         return $this->doParsingFromRoot($rootXmlNode);
     }

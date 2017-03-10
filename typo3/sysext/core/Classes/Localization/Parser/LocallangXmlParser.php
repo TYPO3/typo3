@@ -180,7 +180,11 @@ class LocallangXmlParser extends AbstractXmlParser
             libxml_disable_entity_loader($previousValueOfEntityLoader);
         }
         if (!isset($rootXmlNode) || $rootXmlNode === false) {
-            throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
+            $xmlError = libxml_get_last_error();
+            throw new InvalidXmlFileException(
+                'The path provided does not point to existing and accessible well-formed XML file. Reason: ' . $xmlError->message . ' in ' . $targetPath . ', line ' . $xmlError->line,
+                1278155987
+            );
         }
         return $this->doParsingTargetFromRoot($rootXmlNode);
     }
