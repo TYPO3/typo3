@@ -33,8 +33,14 @@ class RichTextElement extends AbstractFormElement
      * @var array
      */
     protected $defaultFieldWizard = [
+        'localizationStateSelector' => [
+            'renderType' => 'localizationStateSelector',
+        ],
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
+            'after' => [
+                'localizationStateSelector'
+            ],
         ],
         'defaultLanguageDifferences' => [
             'renderType' => 'defaultLanguageDifferences',
