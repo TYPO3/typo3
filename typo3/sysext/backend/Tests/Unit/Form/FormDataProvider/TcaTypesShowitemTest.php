@@ -248,7 +248,7 @@ class TcaTypesShowitemTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                         'bitmask_value_field' => 'theSubtypeValueField',
                         'bitmask_excludelist_bits' => [
                             '-2' => 'removedBy2', // Remove if bit 2 is NOT set
-                            '+3' => 'removedBy3', // Remvoe if bit 3 is set
+                            '+3' => 'removedBy3', // Remove if bit 3 is set
                         ],
                     ],
                 ],
