@@ -47,7 +47,7 @@ class OtherLanguageContent extends AbstractNode
             || $fieldConfig['config']['type'] === 'inline'
             || $fieldConfig['config']['type'] === 'flex'
             || ($fieldConfig['config']['type'] === 'group' && isset($fieldConfig['config']['MM']))
-            || ($fieldConfig['config']['type'] === 'selecet' && isset($fieldConfig['config']['MM']))
+            || ($fieldConfig['config']['type'] === 'select' && isset($fieldConfig['config']['MM']))
         ) {
             // Early return if there is no default language row or the display is disabled
             return $result;
