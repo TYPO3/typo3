@@ -2544,13 +2544,16 @@ class GeneralUtility
                     $report['content_type'] = $curlInfo['content_type'];
                     $report['error'] = CURLE_GOT_NOTHING;
                     $report['message'] = 'Expected "Location" header but got nothing.';
-                } elseif ($content === false) {
-                    $report['error'] = curl_errno($ch);
-                    $report['message'] = curl_error($ch);
-                } elseif ($includeHeader) {
+                } else {
+                    if ($content === false) {
+                        $report['error'] = curl_errno($ch);
+                        $report['message'] = curl_error($ch);
+                    }
                     // Set only for $includeHeader to work exactly like PHP variant
-                    $report['http_code'] = $curlInfo['http_code'];
-                    $report['content_type'] = $curlInfo['content_type'];
+                    if ($includeHeader) {
+                        $report['http_code'] = $curlInfo['http_code'];
+                        $report['content_type'] = $curlInfo['content_type'];
+                    }
                 }
             }
             curl_close($ch);
