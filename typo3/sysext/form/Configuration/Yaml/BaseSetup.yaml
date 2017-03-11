@@ -27,6 +27,12 @@ TYPO3:
                   10: 'EXT:form/Resources/Private/Frontend/Partials/'
                 layoutRootPaths:
                   10: 'EXT:form/Resources/Private/Frontend/Layouts/'
+                addQueryString: false
+                argumentsToBeExcludedFromQueryString: []
+                additionalParams: []
+                controllerAction: perform
+                httpMethod: post
+                httpEnctype: 'multipart/form-data'
 
                 honeypot:
                   enable: true
