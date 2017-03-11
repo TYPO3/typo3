@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * A simple finisher that outputs a given text
@@ -47,7 +50,37 @@ class ConfirmationFinisher extends AbstractFinisher
      */
     protected $defaultOptions = [
         'message' => 'The form has been submitted.',
+        'contentElementUid' => 0,
+        'typoscriptObjectPath' => 'lib.tx_form.contentElementRendering'
     ];
+
+    /**
+     * @var array
+     */
+    protected $typoScriptSetup = [];
+
+    /**
+     * @var ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+        $this->typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+    }
+
+    /**
+     * @param ContentObjectRenderer $contentObjectRenderer
+     */
+    public function injectContentObjectRenderer(ContentObjectRenderer $contentObjectRenderer)
+    {
+        $this->contentObjectRenderer = $contentObjectRenderer;
+    }
 
     /**
      * Executes this finisher
@@ -58,7 +91,29 @@ class ConfirmationFinisher extends AbstractFinisher
     protected function executeInternal()
     {
         $formRuntime = $this->finisherContext->getFormRuntime();
-        $message = $this->parseOption('message');
+
+        $contentElementUid = (int)$this->parseOption('contentElementUid');
+        $typoscriptObjectPath = $this->parseOption('typoscriptObjectPath');
+        if ($contentElementUid > 0) {
+            $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
+            $lastSegment = array_pop($pathSegments);
+            $setup = $this->typoScriptSetup;
+            foreach ($pathSegments as $segment) {
+                if (!array_key_exists(($segment . '.'), $setup)) {
+                    throw new FinisherException(
+                        sprintf('TypoScript object path "%s" does not exist', $typoscriptObjectPath),
+                        1489238980
+                    );
+                }
+                $setup = $setup[$segment . '.'];
+            }
+            $this->contentObjectRenderer->start([$contentElementUid], '');
+            $this->contentObjectRenderer->setCurrentVal((string)$contentElementUid);
+            $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+        } else {
+            $message = $this->parseOption('message');
+        }
+
         $formRuntime->getResponse()->setContent($message);
     }
 }

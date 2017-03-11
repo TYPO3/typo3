@@ -184,6 +184,9 @@ TYPO3:
                       50:
                         value: 'DeleteUploads'
                         label: 'formEditor.elements.Form.editor.finishers.DeleteUploads.label'
+                      60:
+                        value: 'Confirmation'
+                        label: 'formEditor.elements.Form.editor.finishers.Confirmation.label'
 
                 propertyCollections:
                   finishers:
@@ -273,6 +276,23 @@ TYPO3:
                           10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                         100:
                           label: 'formEditor.elements.Form.finisher.Confirmation.editor.header.label'
+                        200:
+                          identifier: 'contentElement'
+                          templateName: 'Inspector-Typo3WinBrowserEditor'
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label'
+                          buttonLabel: 'formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel'
+                          browsableType: tt_content
+                          propertyPath: 'options.contentElementUid'
+                          propertyValidatorsMode: 'OR'
+                          propertyValidators:
+                            10: 'IntegerOrEmpty'
+                            20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                        300:
+                          identifier: 'message'
+                          templateName: 'Inspector-TextareaEditor'
+                          label: 'formEditor.elements.Form.finisher.Confirmation.editor.message.label'
+                          propertyPath: 'options.message'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText'
 
                     60:
                       identifier: 'Closure'
@@ -725,6 +745,7 @@ TYPO3:
                 predefinedDefaults:
                   options:
                     message: ''
+                    contentElementUid: ''
 
             FlashMessage:
               formEditor:

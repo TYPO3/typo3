@@ -419,7 +419,7 @@ define(['jquery',
             sortableDomElement.addClass(getHelper().getDomElementClassName('sortable')).sortable({
                 revert: 'true',
                 items: getHelper().getDomElementClassName('collectionElement', true),
-                cancel: getHelper().getDomElementClassName('jQueryUiStateDisabled', true) + ',input,select',
+                cancel: getHelper().getDomElementClassName('jQueryUiStateDisabled', true) + ',input,textarea,select',
                 delay: 200,
                 update: function(e, o) {
                     var dataAttributeName, nextCollectionElementIdentifier, movedCollectionElementIdentifier, previousCollectionElementIdentifier;

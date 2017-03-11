@@ -240,6 +240,8 @@ TYPO3:
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher'
               #options:
                 #message: ''
+                #contentElementUid: 0
+                #typoscriptObjectPath: 'lib.tx_form.contentElementRendering'
 
             EmailToSender:
               __inheritances:

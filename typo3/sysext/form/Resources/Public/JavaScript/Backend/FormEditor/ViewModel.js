@@ -209,6 +209,12 @@ define(['jquery',
                 }
             });
 
+            getFormEditorApp().addPropertyValidationValidator('IntegerOrEmpty', function(formElement, propertyPath) {
+                if (formElement.get(propertyPath).length > 0 && !$.isNumeric(formElement.get(propertyPath))) {
+                    return getFormEditorApp().getFormElementPropertyValidatorDefinition('Integer')['errorMessage'] || 'invalid value';
+                }
+            });
+
             getFormEditorApp().addPropertyValidationValidator('NaiveEmail', function(formElement, propertyPath) {
                 if (!formElement.get(propertyPath).match(/\S+@\S+\.\S+/)) {
                     return getFormEditorApp().getFormElementPropertyValidatorDefinition('NaiveEmail')['errorMessage'] || 'invalid value';

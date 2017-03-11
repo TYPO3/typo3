@@ -442,6 +442,9 @@
             <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" xml:space="preserve">
                 <source>Delete uploads</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" xml:space="preserve">
+                <source>Confirmation message</source>
+            </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" xml:space="preserve">
                 <source>Send email (to website visitor)</source>
@@ -569,9 +572,23 @@
             <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" xml:space="preserve">
                 <source>Delete uploads</source>
             </trans-unit>
+
             <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" xml:space="preserve">
                 <source>Confirmation message</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" xml:space="preserve">
+                <source>Content element uid</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" xml:space="preserve">
+                <source>tt_content</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" xml:space="preserve">
+                <source>Text</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText" xml:space="preserve">
+                <source>Will be ignored if "Content element" is set</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" xml:space="preserve">
                 <source>Execute a closure</source>
             </trans-unit>
