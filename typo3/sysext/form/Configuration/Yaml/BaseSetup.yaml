@@ -21,6 +21,8 @@ TYPO3:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
               rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
               renderingOptions:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
                 templateRootPaths:
                   10: 'EXT:form/Resources/Private/Frontend/Templates/'
                 partialRootPaths:
@@ -171,15 +173,11 @@ TYPO3:
 
           finishersDefinition:
             Closure:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher'
               options:
                 #closure:
 
             Confirmation:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher'
               #options:
                 #message: ''
@@ -196,8 +194,6 @@ TYPO3:
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher'
 
             FlashMessage:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
               implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher'
               #options:
                 #messageBody: ''
@@ -271,20 +267,11 @@ TYPO3:
         translationSettingsMixin:
           translation:
             translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
-            translatePropertyValueIfEmpty: true
-
-        finishersTranslationSettingsMixin:
-          options:
-            __inheritances:
-              10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
+            #translatePropertyValueIfEmpty: true
 
         ########### FORM ELEMENT MIXINS ###########
         formElementMixins:
-          BaseFormElementMixin:
-            renderingOptions:
-              __inheritances:
-                10: 'TYPO3.CMS.Form.mixins.translationSettingsMixin'
-
+          BaseFormElementMixin: []
               # The form element type is chosen as the template name by default.
               # If you want another name you can set it with 'templateName'
               #templateName: 'CustomTemplateName'
@@ -327,8 +314,6 @@ TYPO3:
               saveToFileMount: '1:/user_upload/'
 
         finishersEmailMixin:
-          __inheritances:
-            10: 'TYPO3.CMS.Form.mixins.finishersTranslationSettingsMixin'
           implementationClassName: 'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher'
           options:
             #subject: ''

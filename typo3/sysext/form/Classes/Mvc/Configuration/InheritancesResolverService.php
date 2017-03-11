@@ -230,6 +230,13 @@ class InheritancesResolverService
                 $inheritedConfiguration = $inheritedConfiguration[$key];
             }
 
+            if ($inheritedConfiguration === null) {
+                throw new CycleInheritancesException(
+                    $inheritancePath . ' does not exist within the configuration',
+                    1489260796
+                );
+            }
+
             $inheritedConfigurations = $this->mergeRecursiveWithOverrule(
                 $inheritedConfigurations,
                 $inheritedConfiguration

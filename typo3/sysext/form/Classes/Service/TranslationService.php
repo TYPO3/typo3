@@ -173,18 +173,35 @@ class TranslationService implements SingletonInterface
      * Recursively translate values.
      *
      * @param array $array
-     * @param string $translationFile
+     * @param array|string|null $translationFile
      * @return array the modified array
      * @internal
      */
-    public function translateValuesRecursive(array $array, string $translationFile = null): array
+    public function translateValuesRecursive(array $array, $translationFile = null): array
     {
         $result = $array;
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $result[$key] = $this->translateValuesRecursive($value, $translationFile);
             } else {
-                $result[$key] = $this->translate($value, null, $translationFile, null, $value);
+                $translationFiles = null;
+                if (is_string($translationFile)) {
+                    $translationFiles = [$translationFile];
+                } elseif (is_array($translationFile)) {
+                    $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
+                }
+
+                if ($translationFiles) {
+                    foreach ($translationFiles as $_translationFile) {
+                        $translatedValue = $this->translate($value, null, $_translationFile, null);
+                        if (!empty($translatedValue)) {
+                            $result[$key] = $translatedValue;
+                            break;
+                        }
+                    }
+                } else {
+                    $result[$key] = $this->translate($value, null, $translationFile, null, $value);
+                }
             }
         }
         return $result;
@@ -220,6 +237,12 @@ class TranslationService implements SingletonInterface
             $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
         }
 
+        if (is_string($translationFile)) {
+            $translationFiles = [$translationFile];
+        } else {
+            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
+        }
+
         if (isset($renderingOptions['translatePropertyValueIfEmpty'])) {
             $translatePropertyValueIfEmpty = (bool)$renderingOptions['translatePropertyValueIfEmpty'];
         } else {
@@ -235,10 +258,12 @@ class TranslationService implements SingletonInterface
             $language = $renderingOptions['language'];
         }
 
-        $translationKeyChain = [
-            sprintf('%s:%s.finisher.%s.%s', $translationFile, $formRuntime->getIdentifier(), $finisherIdentifier, $optionKey),
-            sprintf('%s:finisher.%s.%s', $translationFile, $finisherIdentifier, $optionKey)
-        ];
+        $translationKeyChain = [];
+        foreach ($translationFiles as $translationFile) {
+            $translationKeyChain[] = sprintf('%s:%s.finisher.%s.%s', $translationFile, $formRuntime->getIdentifier(), $finisherIdentifier, $optionKey);
+            $translationKeyChain[] = sprintf('%s:finisher.%s.%s', $translationFile, $finisherIdentifier, $optionKey);
+        }
+
         $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
         $translatedValue = (empty($translatedValue)) ? $optionValue : $translatedValue;
 
@@ -300,42 +325,111 @@ class TranslationService implements SingletonInterface
             $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
         }
 
+        if (is_string($translationFile)) {
+            $translationFiles = [$translationFile];
+        } else {
+            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
+        }
+
         $language = null;
         if (isset($renderingOptions['translation']['language'])) {
             $language = $renderingOptions['translation']['language'];
         }
-        $translationKeyChain = [];
+
         if ($property === 'options' && is_array($defaultValue)) {
             foreach ($defaultValue as $optionValue => &$optionLabel) {
-                $translationKeyChain = [
-                    sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property, $optionValue),
-                    sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property, $optionValue)
-                ];
+                $translationKeyChain = [];
+                foreach ($translationFiles as $translationFile) {
+                    $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property, $optionValue);
+                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property, $optionValue);
+                }
+
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
                 $optionLabel = (empty($translatedValue)) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } elseif ($property === 'fluidAdditionalAttributes' && is_array($defaultValue)) {
             foreach ($defaultValue as $propertyName => &$propertyValue) {
-                $translationKeyChain = [
-                    sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $propertyName),
-                    sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $propertyName),
-                    sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $propertyName),
-                ];
+                $translationKeyChain = [];
+                foreach ($translationFiles as $translationFile) {
+                    $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $propertyName);
+                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $propertyName);
+                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $propertyName);
+                }
+
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
                 $propertyValue = (empty($translatedValue)) ? $propertyValue : $translatedValue;
             }
             $translatedValue = $defaultValue;
         } else {
-            $translationKeyChain = [
-                sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property),
-                sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property),
-                sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property),
-            ];
+            $translationKeyChain = [];
+            foreach ($translationFiles as $translationFile) {
+                $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property);
+                $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property);
+                $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property);
+            }
+
             $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
             $translatedValue = (empty($translatedValue)) ? $defaultValue : $translatedValue;
         }
 
+        return $translatedValue;
+    }
+
+    /**
+     * @param RootRenderableInterface $element
+     * @param int $code
+     * @param string $defaultValue
+     * @param array $arguments
+     * @param FormRuntime $formRuntime
+     * @return string
+     * @throws \InvalidArgumentException
+     * @internal
+     */
+    public function translateFormElementError(
+        RootRenderableInterface $element,
+        int $code,
+        array $arguments,
+        string $defaultValue = '',
+        FormRuntime $formRuntime
+    ): string {
+        if (empty($code)) {
+            throw new \InvalidArgumentException('The argument "code" is empty', 1489272978);
+        }
+
+        $validationErrors = $element->getProperties()['validationErrorMessages'];
+        foreach ($validationErrors as $validationError) {
+            if ((int)$validationError['code'] === $code) {
+                return sprintf($validationError['message'], $arguments);
+            }
+        }
+
+        $renderingOptions = $element->getRenderingOptions();
+        $translationFile = $renderingOptions['translation']['translationFile'];
+        if (empty($translationFile)) {
+            $translationFile = $formRuntime->getRenderingOptions()['translation']['translationFile'];
+        }
+
+        if (is_string($translationFile)) {
+            $translationFiles = [$translationFile];
+        } else {
+            $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFile);
+        }
+
+        $language = null;
+        if (isset($renderingOptions['language'])) {
+            $language = $renderingOptions['language'];
+        }
+
+        $translationKeyChain = [];
+        foreach ($translationFiles as $translationFile) {
+            $translationKeyChain[] = sprintf('%s:%s.validation.error.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $code);
+            $translationKeyChain[] = sprintf('%s:%s.validation.error.%s', $translationFile, $formRuntime->getIdentifier(), $code);
+            $translationKeyChain[] = sprintf('%s:validation.error.%s', $translationFile, $code);
+        }
+
+        $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
+        $translatedValue = (empty($translatedValue)) ? $defaultValue : $translatedValue;
         return $translatedValue;
     }
 
@@ -360,13 +454,17 @@ class TranslationService implements SingletonInterface
     /**
      * @param array $translationKeyChain
      * @param string $language
+     * @param array $arguments
      * @return string|null
      */
-    protected function processTranslationChain(array $translationKeyChain, string $language = null)
-    {
+    protected function processTranslationChain(
+        array $translationKeyChain,
+        string $language = null,
+        array $arguments = null
+    ) {
         $translatedValue = null;
         foreach ($translationKeyChain as $translationKey) {
-            $translatedValue = $this->translate($translationKey, null, null, $language);
+            $translatedValue = $this->translate($translationKey, $arguments, null, $language);
             if (!empty($translatedValue)) {
                 break;
             }
@@ -497,6 +595,20 @@ class TranslationService implements SingletonInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * If the array contains numerical keys only, sort it in descending order
+     *
+     * @param array $array
+     * @return array
+     */
+    protected function sortArrayWithIntegerKeysDescending(array $array)
+    {
+        if (count(array_filter(array_keys($array), 'is_string')) === 0) {
+            krsort($array);
+        }
+        return $array;
     }
 
     /**

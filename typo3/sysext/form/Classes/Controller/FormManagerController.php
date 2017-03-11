@@ -210,21 +210,14 @@ class FormManagerController extends AbstractBackendController
 
             $this->formPersistenceManager->delete($formPersistenceIdentifier);
         } else {
+            $controllerConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+                $this->formSettings['formManager']['controller'],
+                $this->formSettings['formManager']['translationFile']
+            );
+
             $this->addFlashMessage(
-                TranslationService::getInstance()->translate(
-                    $this->formSettings['formManager']['controller']['deleteAction']['errorMessage'],
-                    [$formPersistenceIdentifier],
-                    $this->formSettings['formManager']['translationFile'],
-                    null,
-                    $this->formSettings['formManager']['controller']['deleteAction']['errorMessage']
-                ),
-                TranslationService::getInstance()->translate(
-                    $this->formSettings['formManager']['controller']['deleteAction']['errorTitle'],
-                    null,
-                    $this->formSettings['formManager']['translationFile'],
-                    null,
-                    $this->formSettings['formManager']['controller']['deleteAction']['errorTitle']
-                ),
+                sprintf($controllerConfiguration['deleteAction']['errorMessage'], $formPersistenceIdentifier),
+                $controllerConfiguration['deleteAction']['errorTitle'],
                 AbstractMessage::ERROR,
                 true
             );

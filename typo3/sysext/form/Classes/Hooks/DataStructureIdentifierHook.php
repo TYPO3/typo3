@@ -156,7 +156,12 @@ class DataStructureIdentifierHook
                 ])
             );
 
-            $translationFile = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'];
+            if (isset($finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'])) {
+                $translationFile = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFile'];
+            } else {
+                $translationFile = $prototypeConfiguration['formEngine']['translationFile'];
+            }
+
             $finishersDefinition[$finisherIdentifier]['FormEngine'] = TranslationService::getInstance()->translateValuesRecursive(
                 $finishersDefinition[$finisherIdentifier]['FormEngine'],
                 $translationFile

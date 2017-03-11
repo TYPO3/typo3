@@ -907,4 +907,54 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
         $this->assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
+
+    /**
+     * @test
+     */
+    public function translateFormElementValueTranslateLabelFromAdditionalTranslationForConcreteFormAndConcreteElementIfElementRenderingOptionsContainsATranslationFileAndElementLabelIsNotEmptyAndPropertyShouldBeTranslatedAndTranslationExists()
+    {
+        $formRuntimeXlfPath = 'EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf';
+        $textElementXlfPaths = [
+            10 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
+            20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf'
+         ];
+
+        $formRuntimeIdentifier = 'form-runtime-identifier';
+        $formElementIdentifier = 'form-element-identifier';
+
+        $formRuntimeRenderingOptions = [
+            'translation' => [
+                'translationFile' => $formRuntimeXlfPath,
+                'translatePropertyValueIfEmpty' => true
+            ],
+        ];
+
+        $formElementRenderingOptions = [
+            'translation' => [
+                'translationFile' => $textElementXlfPaths,
+                'translatePropertyValueIfEmpty' => true
+            ],
+        ];
+
+        $expected = 'form-element-identifier ADDITIONAL LABEL EN';
+
+        $this->store->flushData($formRuntimeXlfPath);
+
+        foreach ($textElementXlfPaths as $textElementXlfPath) {
+            $this->store->flushData($textElementXlfPath);
+        }
+
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
+
+        $mockFormElement->_set('type', 'Text');
+        $mockFormElement->_set('renderingOptions', $formElementRenderingOptions);
+        $mockFormElement->_set('identifier', $formElementIdentifier);
+        $mockFormElement->_set('label', 'some label');
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
+        $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+    }
 }

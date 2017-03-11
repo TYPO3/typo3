@@ -3,6 +3,9 @@ TYPO3:
     Form:
       prototypes:
         standard:
+          formEngine:
+            translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+
           ########### TCE Forms CONFIGURATION ###########
 
           ### FINISHERS ###
@@ -52,8 +55,6 @@ TYPO3:
 
             Redirect:
               FormEngine:
-                __inheritances:
-                  10: 'TYPO3.CMS.Form.mixins.FormEngineTranslationSettingsMixin'
                 label: 'tt_content.finishersDefinition.Redirect.label'
                 elements:
                   pageUid:
@@ -75,12 +76,7 @@ TYPO3:
 
       ########### MIXINS ###########
       mixins:
-        FormEngineTranslationSettingsMixin:
-          translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
-
         FormEngineEmailMixin:
-          __inheritances:
-            10: 'TYPO3.CMS.Form.mixins.FormEngineTranslationSettingsMixin'
           label: 'tt_content.finishersDefinition.EmailToSender.label'
           elements:
             subject:

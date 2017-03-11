@@ -208,16 +208,15 @@ class FormEditorController extends AbstractBackendController
                 $formElementsByGroup[$formElementConfiguration['group']] = [];
             }
 
+            $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+                $formElementConfiguration,
+                $this->prototypeConfiguration['formEditor']['translationFile']
+            );
+
             $formElementsByGroup[$formElementConfiguration['group']][] = [
                 'key' => $formElementName,
                 'cssKey' => preg_replace('/[^a-z0-9]/', '-', strtolower($formElementName)),
-                'label' => TranslationService::getInstance()->translate(
-                    $formElementConfiguration['label'],
-                    null,
-                    $this->prototypeConfiguration['formEditor']['translationFile'],
-                    null,
-                    $formElementConfiguration['label']
-                ),
+                'label' => $formElementConfiguration['label'],
                 'sorting' => $formElementConfiguration['groupSorting'],
                 'iconIdentifier' => $formElementConfiguration['iconIdentifier'],
             ];
@@ -234,16 +233,15 @@ class FormEditorController extends AbstractBackendController
             });
             unset($formElementsByGroup[$groupName]['sorting']);
 
+            $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+                $groupConfiguration,
+                $this->prototypeConfiguration['formEditor']['translationFile']
+            );
+
             $formGroups[] = [
                 'key' => $groupName,
                 'elements' => $formElementsByGroup[$groupName],
-                'label' => TranslationService::getInstance()->translate(
-                    $groupConfiguration['label'],
-                    null,
-                    $this->prototypeConfiguration['formEditor']['translationFile'],
-                    null,
-                    $groupConfiguration['label']
-                ),
+                'label' => $groupConfiguration['label'],
             ];
         }
 

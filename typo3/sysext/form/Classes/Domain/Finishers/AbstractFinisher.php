@@ -199,15 +199,17 @@ abstract class AbstractFinisher implements FinisherInterface
             return $value;
         }, $optionValue);
 
-        if (isset($this->options['translation']['translationFile'])) {
-            $optionValue = TranslationService::getInstance()->translateFinisherOption(
-                $formRuntime,
-                $this->finisherIdentifier,
-                $optionName,
-                $optionValue,
-                $this->options['translation']
-            );
-        }
+        $renderingOptions = is_array($this->options['translation'])
+                            ? $this->options['translation']
+                            : [];
+
+        $optionValue = TranslationService::getInstance()->translateFinisherOption(
+            $formRuntime,
+            $this->finisherIdentifier,
+            $optionName,
+            $optionValue,
+            $renderingOptions
+        );
 
         if (empty($optionValue)) {
             if ($defaultValue !== null) {

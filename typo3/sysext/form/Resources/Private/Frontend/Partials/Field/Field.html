@@ -8,7 +8,7 @@
 				<f:if condition="{validationResults.flattenedErrors}">
 					<span class="error help-block" role="alert">
 						<f:for each="{validationResults.errors}" as="error">
-							{error -> f:translate(key: 'LLL:{element.renderingOptions.translation.translationFile}:validation.error.{error.code}', arguments: error.arguments)}
+							{formvh:translateElementError(element: element, code: error.code, arguments: error.arguments, defaultValue: error.message)}
 							<br />
 						</f:for>
 					</span>
