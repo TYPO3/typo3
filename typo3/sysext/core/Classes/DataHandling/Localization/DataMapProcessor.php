@@ -417,13 +417,14 @@ class DataMapProcessor
         $fromId = $fromRecord['uid'];
         $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
         $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
+        $isSpecialLanguageField = ($configuration['config']['special'] ?? null) === 'languages';
 
         // non-MM relations are stored as comma separated values, just use them
         // if values are available in data-map already, just use them as well
         if (
             empty($configuration['config']['MM'])
             || isset($this->allDataMap[$item->getFromTableName()][$fromId][$fieldName])
-            || ($configuration['config']['special'] ?? null) === 'languages'
+            || $isSpecialLanguageField
         ) {
             $this->modifyDataMap(
                 $item->getTableName(),
@@ -432,14 +433,17 @@ class DataMapProcessor
             );
             return;
         }
-
+        // resolve the language special table name
+        if ($isSpecialLanguageField) {
+            $specialTableName = 'sys_language';
+        }
         // fetch MM relations from storage
         $type = $configuration['config']['type'];
         $manyToManyTable = $configuration['config']['MM'];
         if ($type === 'group' && $configuration['config']['internal_type'] === 'db') {
             $tableNames = trim($configuration['config']['allowed'] ?? '');
         } elseif ($configuration['config']['type'] === 'select') {
-            $tableNames = ($configuration['foreign_table'] ?? '');
+            $tableNames = ($specialTableName ?? $configuration['config']['foreign_table'] ?? '');
         } else {
             return;
         }

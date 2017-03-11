@@ -229,6 +229,51 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
+     * @see DataSet/localizeContentOfRelationWSynchronization.csv
+     */
+    public function localizeContentOfRelationWithLanguageSynchronization()
+    {
+        parent::localizeContentOfRelationWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeContentOfRelationWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
+     */
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
+    {
+        parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeContentOfRelationNAddCategoryWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
+     */
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
+    {
+        parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeContentChainOfRelationNAddCategoryWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeCategoryRecordOfCategoryRelation.csv
      */
     public function localizeCategoryOfRelation()

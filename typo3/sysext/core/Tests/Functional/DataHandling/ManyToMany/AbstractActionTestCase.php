@@ -24,13 +24,18 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_ContentIdFirst = 297;
     const VALUE_ContentIdLast = 298;
     const VALUE_LanguageId = 1;
+    const VALUE_LanguageIdSecond = 2;
     const VALUE_CategoryIdFirst = 28;
     const VALUE_CategoryIdSecond = 29;
+    const VALUE_CategoryIdThird = 30;
+    const VALUE_CategoryIdFourth = 31;
 
     const TABLE_Page = 'pages';
     const TABLE_Content = 'tt_content';
     const TABLE_Category = 'sys_category';
     const TABLE_ContentCategory_ManyToMany = 'sys_category_record_mm';
+
+    const FIELD_Categories = 'categories';
 
     /**
      * @var string
@@ -176,6 +181,42 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeContentOfRelationWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
+    {
+        self::localizeContentOfRelationWithLanguageSynchronization();
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_Categories,
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
+        );
+    }
+
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
+    {
+        self::localizeContentOfRelationWithLanguageSynchronization();
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_LanguageIdSecond);
+        $this->recordIds['localizedContentIdSecond'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['localizedContentId']];
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['localizedContentIdSecond'],
+            ['l10n_state' => [self::FIELD_Categories => 'source']]
+        );
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_Categories,
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
+        );
     }
 
     /**
