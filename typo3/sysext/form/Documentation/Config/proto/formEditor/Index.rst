@@ -469,6 +469,10 @@ formEditorPartials
              FormElement-ContentElement: Stage/ContentElement
              FormElement-FileUpload: Stage/FileUploadTemplate
              FormElement-ImageUpload: Stage/FileUploadTemplate
+             FormElement-Email: 'Stage/SimpleTemplate'
+             FormElement-Telephone: 'Stage/SimpleTemplate'
+             FormElement-Url: 'Stage/SimpleTemplate'
+             FormElement-Number: 'Stage/SimpleTemplate'
              Modal-InsertElements: Modals/InsertElements
              Modal-InsertPages: Modals/InsertPages
              Modal-ValidationErrors: Modals/ValidationErrors
@@ -623,6 +627,8 @@ formElementGroups
            formElementGroups:
              input:
                label: formEditor.formElementGroups.input.label
+             html5:
+               label: 'formEditor.formElementGroups.html5.label'
              select:
                label: formEditor.formElementGroups.select.label
              custom:

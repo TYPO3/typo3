@@ -286,6 +286,7 @@ Concrete configurations
     validators/Float
     validators/Integer
     validators/NotEmpty
+    validators/Number
     validators/NumberRange
     validators/RegularExpression
     validators/StringLength

@@ -138,10 +138,8 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                        propertyPath: options.minimum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
                        additionalElementPropertyPaths:
                          10: properties.fluidAdditionalAttributes.minlength
                      300:
@@ -149,10 +147,8 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                        propertyPath: options.maximum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
                        additionalElementPropertyPaths:
                          10: properties.fluidAdditionalAttributes.maxlength
                      9999:
@@ -200,19 +196,19 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                        propertyPath: options.minimum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.min
                      300:
                        identifier: maximum
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                        propertyPath: options.maximum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.max
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

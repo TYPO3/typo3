@@ -245,6 +245,9 @@
             <trans-unit id="formEditor.formElementGroups.input.label" xml:space="preserve">
                 <source>Basic elements</source>
             </trans-unit>
+            <trans-unit id="formEditor.formElementGroups.html5.label" xml:space="preserve">
+                <source>Special elements</source>
+            </trans-unit>
             <trans-unit id="formEditor.formElementGroups.select.label" xml:space="preserve">
                 <source>Select elements</source>
             </trans-unit>
@@ -335,6 +338,15 @@
             <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" xml:space="preserve">
                 <source>Default value</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" xml:space="preserve">
+                <source>Pattern</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.editor.pattern.fieldExplanationText" xml:space="preserve">
+                <source>Additional client-side validation as JavaScript regular expression</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.editor.step.label" xml:space="preserve">
+                <source>Step</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" xml:space="preserve">
                 <source>Validators</source>
             </trans-unit>
@@ -359,6 +371,9 @@
             <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" xml:space="preserve">
                 <source>Floating-point number</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" xml:space="preserve">
+                <source>Number</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" xml:space="preserve">
                 <source>Number range</source>
             </trans-unit>
@@ -382,6 +397,9 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" xml:space="preserve">
                 <source>Floating-point number</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" xml:space="preserve">
+                <source>Number</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" xml:space="preserve">
                 <source>Number range</source>
@@ -705,6 +723,25 @@
 
             <trans-unit id="formEditor.elements.Text.label" xml:space="preserve">
                 <source>Text</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.Email.label" xml:space="preserve">
+                <source>Email address</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.Telephone.label" xml:space="preserve">
+                <source>Telephone number</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.Url.label" xml:space="preserve">
+                <source>URL</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.Number.label" xml:space="preserve">
+                <source>Number</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" xml:space="preserve">
+                <source>Number</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Password.label" xml:space="preserve">

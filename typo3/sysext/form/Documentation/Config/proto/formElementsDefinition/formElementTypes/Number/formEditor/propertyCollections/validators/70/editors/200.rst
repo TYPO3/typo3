@@ -1,0 +1,36 @@
+formEditor.propertyCollections.validators.70.editors.200
+--------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Number.formEditor.propertyCollections.validators.70.editors.200
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Number:
+           formEditor:
+             propertyCollections:
+               validators:
+                 70:
+                   identifier: NumberRange
+                   editors:
+                     200:
+                       identifier: minimum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                       propertyPath: options.minimum
+                       propertyValidators:
+                         10: Integer
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.min

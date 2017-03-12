@@ -1,0 +1,40 @@
+formEditor.propertyCollections.validators.80
+--------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.propertyCollections.validators.80
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Telephone:
+           formEditor:
+             propertyCollections:
+               validators:
+                 80:
+                   identifier: RegularExpression
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                     200:
+                       identifier: regex
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                       fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                       propertyPath: options.regularExpression
+                       propertyValidators:
+                         10: NotEmpty
+

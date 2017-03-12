@@ -1,0 +1,35 @@
+formEditor.editors.400
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Url.formEditor.editors.400
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         Url:
+           formEditor:
+             editors:
+               400:
+                 identifier: placeholder
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.TextMixin.editor.placeholder.label
+                 propertyPath: properties.fluidAdditionalAttributes.placeholder
+                 compatibilityPropertyPath: properties.placeholder
+                 doNotSetIfPropertyValueIsEmpty: true
+
+

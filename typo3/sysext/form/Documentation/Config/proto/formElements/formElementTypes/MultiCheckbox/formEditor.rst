@@ -99,19 +99,15 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                        propertyPath: options.minimum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
                      300:
                        identifier: maximum
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                        propertyPath: options.maximum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

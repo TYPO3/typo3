@@ -23,6 +23,7 @@ call_user_func(function () {
             'content-element',
             'date-picker',
             'duplicate',
+            'email',
             'fieldset',
             'file-upload',
             'finisher',
@@ -35,14 +36,17 @@ call_user_func(function () {
             'insert-in',
             'multi-checkbox',
             'multi-select',
+            'number',
             'page',
             'password',
             'radio-button',
             'single-select',
             'static-text',
             'summary-page',
+            'telephone',
             'text',
             'textarea',
+            'url',
             'validator'
         ];
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);

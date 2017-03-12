@@ -22,7 +22,7 @@ Full default configuration
             formEditor:
               predefinedDefaults:
                 renderingOptions:
-                  submitButtonLabel: 'formEditor.elements.Form.editor.submitButtonLabel.value'
+                  submitButtonLabel: formEditor.elements.Form.editor.submitButtonLabel.value
               editors:
                 100:
                   identifier: header
@@ -33,10 +33,10 @@ Full default configuration
                   label: formEditor.elements.BaseFormElementMixin.editor.label.label
                   propertyPath: label
                 300:
-                  identifier: 'submitButtonLabel'
-                  templateName: 'Inspector-TextEditor'
-                  label: 'formEditor.elements.Form.editor.submitButtonLabel.label'
-                  propertyPath: 'renderingOptions.submitButtonLabel'
+                  identifier: submitButtonLabel
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.Form.editor.submitButtonLabel.label
+                  propertyPath: renderingOptions.submitButtonLabel
                 900:
                   identifier: finishers
                   templateName: Inspector-FinishersEditor
@@ -404,22 +404,22 @@ Full default configuration
                   label: formEditor.elements.Page.editor.label.label
                   propertyPath: label
                 300:
-                  identifier: 'previousButtonLabel'
-                  templateName: 'Inspector-TextEditor'
-                  label: 'formEditor.elements.Page.editor.previousButtonLabel.label'
-                  propertyPath: 'renderingOptions.previousButtonLabel'
+                  identifier: previousButtonLabel
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.Page.editor.previousButtonLabel.label
+                  propertyPath: renderingOptions.previousButtonLabel
                 400:
-                  identifier: 'nextButtonLabel'
-                  templateName: 'Inspector-TextEditor'
-                  label: 'formEditor.elements.Page.editor.nextButtonLabel.label'
-                  propertyPath: 'renderingOptions.nextButtonLabel'
+                  identifier: nextButtonLabel
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.Page.editor.nextButtonLabel.label
+                  propertyPath: renderingOptions.nextButtonLabel
                 9999:
                   identifier: removeButton
                   templateName: Inspector-RemoveElementEditor
               predefinedDefaults:
                 renderingOptions:
-                  previousButtonLabel: 'formEditor.elements.Page.editor.previousButtonLabel.value'
-                  nextButtonLabel: 'formEditor.elements.Page.editor.nextButtonLabel.value'
+                  previousButtonLabel: formEditor.elements.Page.editor.previousButtonLabel.value
+                  nextButtonLabel: formEditor.elements.Page.editor.nextButtonLabel.value
               label: formEditor.elements.Page.label
               group: page
               groupSorting: 100
@@ -444,22 +444,22 @@ Full default configuration
                   label: formEditor.elements.SummaryPage.editor.label.label
                   propertyPath: label
                 300:
-                  identifier: 'previousButtonLabel'
-                  templateName: 'Inspector-TextEditor'
-                  label: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.label'
-                  propertyPath: 'renderingOptions.previousButtonLabel'
+                  identifier: previousButtonLabel
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.SummaryPage.editor.previousButtonLabel.label
+                  propertyPath: renderingOptions.previousButtonLabel
                 400:
-                  identifier: 'nextButtonLabel'
-                  templateName: 'Inspector-TextEditor'
-                  label: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.label'
-                  propertyPath: 'renderingOptions.nextButtonLabel'
+                  identifier: nextButtonLabel
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.SummaryPage.editor.nextButtonLabel.label
+                  propertyPath: renderingOptions.nextButtonLabel
                 9999:
                   identifier: removeButton
                   templateName: Inspector-RemoveElementEditor
               predefinedDefaults:
                 renderingOptions:
-                  previousButtonLabel: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.value'
-                  nextButtonLabel: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.value'
+                  previousButtonLabel: formEditor.elements.SummaryPage.editor.previousButtonLabel.value
+                  nextButtonLabel: formEditor.elements.SummaryPage.editor.nextButtonLabel.value
               label: formEditor.elements.SummaryPage.label
               group: page
               groupSorting: 200
@@ -559,8 +559,6 @@ Full default configuration
                   templateName: Inspector-RemoveElementEditor
               predefinedDefaults: {  }
               label: formEditor.elements.GridContainer.label
-              group: container
-              groupSorting: 200
               _isCompositeFormElement: true
               _isGridContainerFormElement: true
               iconIdentifier: t3-form-icon-gridcontainer
@@ -661,13 +659,19 @@ Full default configuration
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.placeholder.label
                   propertyPath: properties.fluidAdditionalAttributes.placeholder
-                  compatibilityPropertyPath: properties.placeholder
                   doNotSetIfPropertyValueIsEmpty: true
                 500:
                   identifier: defaultValue
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.defaultValue.label
                   propertyPath: defaultValue
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
                 700:
                   identifier: gridColumnViewPortConfiguration
                   templateName: Inspector-GridColumnViewPortConfigurationEditor
@@ -768,10 +772,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.minlength
                       300:
@@ -779,10 +781,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.maxlength
                       9999:
@@ -830,19 +830,19 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -889,13 +889,19 @@ Full default configuration
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.placeholder.label
                   propertyPath: properties.fluidAdditionalAttributes.placeholder
-                  compatibilityPropertyPath: properties.placeholder
                   doNotSetIfPropertyValueIsEmpty: true
                 500:
                   identifier: defaultValue
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.defaultValue.label
                   propertyPath: defaultValue
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
                 700:
                   identifier: gridColumnViewPortConfiguration
                   templateName: Inspector-GridColumnViewPortConfigurationEditor
@@ -996,10 +1002,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.minlength
                       300:
@@ -1007,10 +1011,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.maxlength
                       9999:
@@ -1058,19 +1060,19 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -1122,7 +1124,13 @@ Full default configuration
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.placeholder.label
                   propertyPath: properties.fluidAdditionalAttributes.placeholder
-                  compatibilityPropertyPath: properties.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
                   doNotSetIfPropertyValueIsEmpty: true
                 700:
                   identifier: gridColumnViewPortConfiguration
@@ -1225,10 +1233,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.minlength
                       300:
@@ -1236,10 +1242,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.maxlength
                       9999:
@@ -1287,19 +1291,19 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -1325,7 +1329,7 @@ Full default configuration
               group: custom
               groupSorting: 500
               iconIdentifier: t3-form-icon-advanced-password
-            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword
+            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
               elementClassAttribute: input-medium
@@ -1348,7 +1352,6 @@ Full default configuration
                   templateName: Inspector-TextEditor
                   label: formEditor.elements.TextMixin.editor.placeholder.label
                   propertyPath: properties.fluidAdditionalAttributes.placeholder
-                  compatibilityPropertyPath: properties.placeholder
                   doNotSetIfPropertyValueIsEmpty: true
                 500:
                   identifier: defaultValue
@@ -1452,10 +1455,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.minlength
                       300:
@@ -1463,10 +1464,8 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                         additionalElementPropertyPaths:
                           10: properties.fluidAdditionalAttributes.maxlength
                       9999:
@@ -1514,19 +1513,19 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -1558,6 +1557,226 @@ Full default configuration
               elementClassAttribute: xxlarge
               elementErrorClassAttribute: error
           Honeypot:
+            formEditor:
+              editors:
+                100:
+                  identifier: header
+                  templateName: Inspector-FormElementHeaderEditor
+                200:
+                  identifier: label
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.label.label
+                  propertyPath: label
+                400:
+                  identifier: placeholder
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.placeholder.label
+                  propertyPath: properties.fluidAdditionalAttributes.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: defaultValue
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
+                700:
+                  identifier: gridColumnViewPortConfiguration
+                  templateName: Inspector-GridColumnViewPortConfigurationEditor
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: xs
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                      20:
+                        viewPortIdentifier: sm
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                      30:
+                        viewPortIdentifier: md
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                      40:
+                        viewPortIdentifier: lg
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                    numbersOfColumnsToUse:
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                800:
+                  identifier: requiredValidator
+                  templateName: Inspector-RequiredValidatorEditor
+                  label: formEditor.elements.FormElement.editor.requiredValidator.label
+                  validatorIdentifier: NotEmpty
+                  propertyPath: properties.fluidAdditionalAttributes.required
+                  propertyValue: required
+                900:
+                  identifier: validators
+                  templateName: Inspector-ValidatorsEditor
+                  label: formEditor.elements.TextMixin.editor.validators.label
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    20:
+                      value: Alphanumeric
+                      label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
+                    30:
+                      value: Text
+                      label: formEditor.elements.TextMixin.editor.validators.Text.label
+                    40:
+                      value: StringLength
+                      label: formEditor.elements.TextMixin.editor.validators.StringLength.label
+                    50:
+                      value: EmailAddress
+                      label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
+                    60:
+                      value: Integer
+                      label: formEditor.elements.TextMixin.editor.validators.Integer.label
+                    70:
+                      value: Float
+                      label: formEditor.elements.TextMixin.editor.validators.Float.label
+                    80:
+                      value: NumberRange
+                      label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                    90:
+                      value: RegularExpression
+                      label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+                9999:
+                  identifier: removeButton
+                  templateName: Inspector-RemoveElementEditor
+              predefinedDefaults:
+                defaultValue: ''
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: Alphanumeric
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  20:
+                    identifier: Text
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  30:
+                    identifier: StringLength
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.minlength
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.maxlength
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  40:
+                    identifier: EmailAddress
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  50:
+                    identifier: Integer
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  60:
+                    identifier: Float
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  70:
+                    identifier: NumberRange
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  80:
+                    identifier: RegularExpression
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                      200:
+                        identifier: regex
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                        fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                        propertyPath: options.regularExpression
+                        propertyValidators:
+                          10: NotEmpty
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
             implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
             properties:
               containerClassAttribute: input
@@ -1617,6 +1836,856 @@ Full default configuration
               containerClassAttribute: input
               elementClassAttribute: ''
               elementErrorClassAttribute: error
+          Email:
+            formEditor:
+              editors:
+                100:
+                  identifier: header
+                  templateName: Inspector-FormElementHeaderEditor
+                200:
+                  identifier: label
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.label.label
+                  propertyPath: label
+                400:
+                  identifier: placeholder
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.placeholder.label
+                  propertyPath: properties.fluidAdditionalAttributes.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: defaultValue
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                  propertyValidators:
+                    10: NaiveEmailOrEmpty
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
+                700:
+                  identifier: gridColumnViewPortConfiguration
+                  templateName: Inspector-GridColumnViewPortConfigurationEditor
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: xs
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                      20:
+                        viewPortIdentifier: sm
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                      30:
+                        viewPortIdentifier: md
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                      40:
+                        viewPortIdentifier: lg
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                    numbersOfColumnsToUse:
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                800:
+                  identifier: requiredValidator
+                  templateName: Inspector-RequiredValidatorEditor
+                  label: formEditor.elements.FormElement.editor.requiredValidator.label
+                  validatorIdentifier: NotEmpty
+                  propertyPath: properties.fluidAdditionalAttributes.required
+                  propertyValue: required
+                900:
+                  identifier: validators
+                  templateName: Inspector-ValidatorsEditor
+                  label: formEditor.elements.TextMixin.editor.validators.label
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    50:
+                      value: EmailAddress
+                      label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
+                9999:
+                  identifier: removeButton
+                  templateName: Inspector-RemoveElementEditor
+              predefinedDefaults:
+                defaultValue: ''
+                validators:
+                  -
+                    identifier: EmailAddress
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: Alphanumeric
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  20:
+                    identifier: Text
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  30:
+                    identifier: StringLength
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.minlength
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.maxlength
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  40:
+                    identifier: EmailAddress
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                  50:
+                    identifier: Integer
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  60:
+                    identifier: Float
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  70:
+                    identifier: NumberRange
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  80:
+                    identifier: RegularExpression
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                      200:
+                        identifier: regex
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                        fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                        propertyPath: options.regularExpression
+                        propertyValidators:
+                          10: NotEmpty
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+              label: formEditor.elements.Email.label
+              group: html5
+              groupSorting: 100
+              iconIdentifier: t3-form-icon-email
+            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+            properties:
+              containerClassAttribute: input
+              elementClassAttribute: ''
+              elementErrorClassAttribute: error
+            validators:
+              -
+                identifier: EmailAddress
+          Telephone:
+            formEditor:
+              editors:
+                100:
+                  identifier: header
+                  templateName: Inspector-FormElementHeaderEditor
+                200:
+                  identifier: label
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.label.label
+                  propertyPath: label
+                400:
+                  identifier: placeholder
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.placeholder.label
+                  propertyPath: properties.fluidAdditionalAttributes.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: defaultValue
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
+                700:
+                  identifier: gridColumnViewPortConfiguration
+                  templateName: Inspector-GridColumnViewPortConfigurationEditor
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: xs
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                      20:
+                        viewPortIdentifier: sm
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                      30:
+                        viewPortIdentifier: md
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                      40:
+                        viewPortIdentifier: lg
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                    numbersOfColumnsToUse:
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                800:
+                  identifier: requiredValidator
+                  templateName: Inspector-RequiredValidatorEditor
+                  label: formEditor.elements.FormElement.editor.requiredValidator.label
+                  validatorIdentifier: NotEmpty
+                  propertyPath: properties.fluidAdditionalAttributes.required
+                  propertyValue: required
+                900:
+                  identifier: validators
+                  templateName: Inspector-ValidatorsEditor
+                  label: formEditor.elements.TextMixin.editor.validators.label
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    90:
+                      value: RegularExpression
+                      label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+                9999:
+                  identifier: removeButton
+                  templateName: Inspector-RemoveElementEditor
+              predefinedDefaults:
+                defaultValue: ''
+                properties:
+                  fluidAdditionalAttributes:
+                    pattern: '.*'
+                validators:
+                  -
+                    identifier: RegularExpression
+                    options:
+                      regularExpression: '/^.*$/'
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: Alphanumeric
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  20:
+                    identifier: Text
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  30:
+                    identifier: StringLength
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.minlength
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.maxlength
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  40:
+                    identifier: EmailAddress
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  50:
+                    identifier: Integer
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  60:
+                    identifier: Float
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  70:
+                    identifier: NumberRange
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  80:
+                    identifier: RegularExpression
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                      200:
+                        identifier: regex
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                        fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                        propertyPath: options.regularExpression
+                        propertyValidators:
+                          10: NotEmpty
+              label: formEditor.elements.Telephone.label
+              group: html5
+              groupSorting: 200
+              iconIdentifier: t3-form-icon-telephone
+            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+            properties:
+              containerClassAttribute: input
+              elementClassAttribute: ''
+              elementErrorClassAttribute: error
+            validators:
+              -
+                identifier: RegularExpression
+                options:
+                  regularExpression: '/^.*$/'
+          Url:
+            formEditor:
+              editors:
+                100:
+                  identifier: header
+                  templateName: Inspector-FormElementHeaderEditor
+                200:
+                  identifier: label
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.label.label
+                  propertyPath: label
+                400:
+                  identifier: placeholder
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.placeholder.label
+                  propertyPath: properties.fluidAdditionalAttributes.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: defaultValue
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                600:
+                  identifier: pattern
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.pattern.label
+                  propertyPath: properties.fluidAdditionalAttributes.pattern
+                  fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                  doNotSetIfPropertyValueIsEmpty: true
+                700:
+                  identifier: gridColumnViewPortConfiguration
+                  templateName: Inspector-GridColumnViewPortConfigurationEditor
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: xs
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                      20:
+                        viewPortIdentifier: sm
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                      30:
+                        viewPortIdentifier: md
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                      40:
+                        viewPortIdentifier: lg
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                    numbersOfColumnsToUse:
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                800:
+                  identifier: requiredValidator
+                  templateName: Inspector-RequiredValidatorEditor
+                  label: formEditor.elements.FormElement.editor.requiredValidator.label
+                  validatorIdentifier: NotEmpty
+                  propertyPath: properties.fluidAdditionalAttributes.required
+                  propertyValue: required
+                900:
+                  identifier: validators
+                  templateName: Inspector-ValidatorsEditor
+                  label: formEditor.elements.TextMixin.editor.validators.label
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    90:
+                      value: RegularExpression
+                      label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+                9999:
+                  identifier: removeButton
+                  templateName: Inspector-RemoveElementEditor
+              predefinedDefaults:
+                defaultValue: ''
+                properties:
+                  fluidAdditionalAttributes:
+                    pattern: '.*'
+                validators:
+                  -
+                    identifier: RegularExpression
+                    options:
+                      regularExpression: '/^.*$/'
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: Alphanumeric
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  20:
+                    identifier: Text
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  30:
+                    identifier: StringLength
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.minlength
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.maxlength
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  40:
+                    identifier: EmailAddress
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  50:
+                    identifier: Integer
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  60:
+                    identifier: Float
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  70:
+                    identifier: NumberRange
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  80:
+                    identifier: RegularExpression
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                      200:
+                        identifier: regex
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                        fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                        propertyPath: options.regularExpression
+                        propertyValidators:
+                          10: NotEmpty
+              label: formEditor.elements.Url.label
+              group: html5
+              groupSorting: 300
+              iconIdentifier: t3-form-icon-url
+            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+            properties:
+              containerClassAttribute: input
+              elementClassAttribute: ''
+              elementErrorClassAttribute: error
+            validators:
+              -
+                identifier: RegularExpression
+                options:
+                  regularExpression: '/^.*$/'
+          Number:
+            formEditor:
+              editors:
+                100:
+                  identifier: header
+                  templateName: Inspector-FormElementHeaderEditor
+                200:
+                  identifier: label
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.FormElement.editor.label.label
+                  propertyPath: label
+                400:
+                  identifier: placeholder
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.placeholder.label
+                  propertyPath: properties.fluidAdditionalAttributes.placeholder
+                  doNotSetIfPropertyValueIsEmpty: true
+                500:
+                  identifier: defaultValue
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.defaultValue.label
+                  propertyPath: defaultValue
+                  propertyValidators:
+                    10: IntegerOrEmpty
+                700:
+                  identifier: step
+                  templateName: Inspector-TextEditor
+                  label: formEditor.elements.TextMixin.editor.step.label
+                  propertyPath: properties.fluidAdditionalAttributes.step
+                  propertyValidators:
+                    10: Integer
+                800:
+                  identifier: requiredValidator
+                  templateName: Inspector-RequiredValidatorEditor
+                  label: formEditor.elements.FormElement.editor.requiredValidator.label
+                  validatorIdentifier: NotEmpty
+                  propertyPath: properties.fluidAdditionalAttributes.required
+                  propertyValue: required
+                900:
+                  identifier: validators
+                  templateName: Inspector-ValidatorsEditor
+                  label: formEditor.elements.TextMixin.editor.validators.label
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    60:
+                      value: Number
+                      label: formEditor.elements.Number.editor.validators.Number.label
+                    80:
+                      value: NumberRange
+                      label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                9999:
+                  identifier: removeButton
+                  templateName: Inspector-RemoveElementEditor
+              predefinedDefaults:
+                defaultValue: ''
+                properties:
+                  fluidAdditionalAttributes:
+                    step: 1
+                validators:
+                  -
+                    identifier: Number
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: Alphanumeric
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  20:
+                    identifier: Text
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  30:
+                    identifier: StringLength
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.minlength
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.maxlength
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  40:
+                    identifier: EmailAddress
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  50:
+                    identifier: Integer
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  60:
+                    identifier: Number
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.Number.editor.header.label
+                  70:
+                    identifier: NumberRange
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                      200:
+                        identifier: minimum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                        propertyPath: options.minimum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.min
+                      300:
+                        identifier: maximum
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                        propertyPath: options.maximum
+                        propertyValidators:
+                          10: Integer
+                        additionalElementPropertyPaths:
+                          10: properties.fluidAdditionalAttributes.max
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+                  80:
+                    identifier: RegularExpression
+                    editors:
+                      100:
+                        identifier: header
+                        templateName: Inspector-CollectionElementHeaderEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                      200:
+                        identifier: regex
+                        templateName: Inspector-TextEditor
+                        label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                        fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                        propertyPath: options.regularExpression
+                        propertyValidators:
+                          10: NotEmpty
+                      9999:
+                        identifier: removeButton
+                        templateName: Inspector-RemoveElementEditor
+              label: formEditor.elements.Number.label
+              group: html5
+              groupSorting: 400
+              iconIdentifier: t3-form-icon-number
+            implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+            properties:
+              containerClassAttribute: input
+              elementClassAttribute: ''
+              elementErrorClassAttribute: error
+            validators:
+              -
+                identifier: Number
           Checkbox:
             formEditor:
               editors:
@@ -1752,19 +2821,15 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -1867,19 +2932,15 @@ Full default configuration
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                         propertyPath: options.minimum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                       300:
                         identifier: maximum
                         templateName: Inspector-TextEditor
                         label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
                         propertyPath: options.maximum
-                        propertyValidatorsMode: OR
                         propertyValidators:
                           10: Integer
-                          20: FormElementIdentifierWithinCurlyBracesExclusive
                       9999:
                         identifier: removeButton
                         templateName: Inspector-RemoveElementEditor
@@ -2652,6 +3713,11 @@ Full default configuration
             formEditor:
               iconIdentifier: t3-form-icon-validator
               label: formEditor.elements.TextMixin.editor.validators.Float.label
+          Number:
+            implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberValidator
+            formEditor:
+              iconIdentifier: t3-form-icon-validator
+              label: formEditor.elements.TextMixin.editor.validators.Number.label
           NumberRange:
             implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
             formEditor:
@@ -2717,6 +3783,10 @@ Full default configuration
             FormElement-ContentElement: Stage/ContentElement
             FormElement-FileUpload: Stage/FileUploadTemplate
             FormElement-ImageUpload: Stage/FileUploadTemplate
+            FormElement-Email: Stage/SimpleTemplate
+            FormElement-Telephone: Stage/SimpleTemplate
+            FormElement-Url: Stage/SimpleTemplate
+            FormElement-Number: Stage/SimpleTemplate
             Modal-InsertElements: Modals/InsertElements
             Modal-InsertPages: Modals/InsertPages
             Modal-ValidationErrors: Modals/ValidationErrors
@@ -2750,6 +3820,8 @@ Full default configuration
           formElementGroups:
             input:
               label: formEditor.formElementGroups.input.label
+            html5:
+              label: formEditor.formElementGroups.html5.label
             select:
               label: formEditor.formElementGroups.select.label
             custom:
@@ -2760,6 +3832,788 @@ Full default configuration
               label: formEditor.formElementGroups.page.label
         formEngine:
           translationFile: 'EXT:form/Resources/Private/Language/Database.xlf'
+    mixins:
+      translationSettingsMixin:
+        translation:
+          translationFile: 'EXT:form/Resources/Private/Language/locallang.xlf'
+      formElementMixins:
+        BaseFormElementMixin:
+          formEditor:
+            predefinedDefaults: {  }
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.BaseFormElementMixin.editor.label.label
+                propertyPath: label
+        ReadOnlyFormElementMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.ReadOnlyFormElement.editor.label.label
+                propertyPath: label
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults: {  }
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        FormElementMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults: {  }
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+        TextMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              400:
+                identifier: placeholder
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.TextMixin.editor.placeholder.label
+                propertyPath: properties.fluidAdditionalAttributes.placeholder
+                doNotSetIfPropertyValueIsEmpty: true
+              500:
+                identifier: defaultValue
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.TextMixin.editor.defaultValue.label
+                propertyPath: defaultValue
+              600:
+                identifier: pattern
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.TextMixin.editor.pattern.label
+                propertyPath: properties.fluidAdditionalAttributes.pattern
+                fieldExplanationText: formEditor.elements.TextMixin.editor.pattern.fieldExplanationText
+                doNotSetIfPropertyValueIsEmpty: true
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              900:
+                identifier: validators
+                templateName: Inspector-ValidatorsEditor
+                label: formEditor.elements.TextMixin.editor.validators.label
+                selectOptions:
+                  10:
+                    value: ''
+                    label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                  20:
+                    value: Alphanumeric
+                    label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
+                  30:
+                    value: Text
+                    label: formEditor.elements.TextMixin.editor.validators.Text.label
+                  40:
+                    value: StringLength
+                    label: formEditor.elements.TextMixin.editor.validators.StringLength.label
+                  50:
+                    value: EmailAddress
+                    label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
+                  60:
+                    value: Integer
+                    label: formEditor.elements.TextMixin.editor.validators.Integer.label
+                  70:
+                    value: Float
+                    label: formEditor.elements.TextMixin.editor.validators.Float.label
+                  80:
+                    value: NumberRange
+                    label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                  90:
+                    value: RegularExpression
+                    label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults:
+              defaultValue: ''
+            propertyCollections:
+              validators:
+                10:
+                  identifier: Alphanumeric
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                20:
+                  identifier: Text
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                30:
+                  identifier: StringLength
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                    200:
+                      identifier: minimum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                      propertyPath: options.minimum
+                      propertyValidators:
+                        10: Integer
+                      additionalElementPropertyPaths:
+                        10: properties.fluidAdditionalAttributes.minlength
+                    300:
+                      identifier: maximum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                      propertyPath: options.maximum
+                      propertyValidators:
+                        10: Integer
+                      additionalElementPropertyPaths:
+                        10: properties.fluidAdditionalAttributes.maxlength
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                40:
+                  identifier: EmailAddress
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                50:
+                  identifier: Integer
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                60:
+                  identifier: Float
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                70:
+                  identifier: NumberRange
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                    200:
+                      identifier: minimum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                      propertyPath: options.minimum
+                      propertyValidators:
+                        10: Integer
+                      additionalElementPropertyPaths:
+                        10: properties.fluidAdditionalAttributes.min
+                    300:
+                      identifier: maximum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                      propertyPath: options.maximum
+                      propertyValidators:
+                        10: Integer
+                      additionalElementPropertyPaths:
+                        10: properties.fluidAdditionalAttributes.max
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+                80:
+                  identifier: RegularExpression
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                    200:
+                      identifier: regex
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                      fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                      propertyPath: options.regularExpression
+                      propertyValidators:
+                        10: NotEmpty
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+        SelectionMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              300:
+                identifier: options
+                templateName: Inspector-PropertyGridEditor
+                label: formEditor.elements.SelectionMixin.editor.options.label
+                propertyPath: properties.options
+                isSortable: true
+                enableAddRow: true
+                enableDeleteRow: true
+                removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
+                removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults:
+              properties:
+                options: {  }
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+        SingleSelectionMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              300:
+                identifier: options
+                templateName: Inspector-PropertyGridEditor
+                label: formEditor.elements.SelectionMixin.editor.options.label
+                propertyPath: properties.options
+                isSortable: true
+                enableAddRow: true
+                enableDeleteRow: true
+                removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
+                removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
+                shouldShowPreselectedValueColumn: single
+                multiSelection: false
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults:
+              properties:
+                options: {  }
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+        MultiSelectionMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              300:
+                identifier: options
+                templateName: Inspector-PropertyGridEditor
+                label: formEditor.elements.SelectionMixin.editor.options.label
+                propertyPath: properties.options
+                isSortable: true
+                enableAddRow: true
+                enableDeleteRow: true
+                removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
+                removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
+                shouldShowPreselectedValueColumn: multiple
+                multiSelection: true
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              900:
+                identifier: validators
+                templateName: Inspector-ValidatorsEditor
+                label: formEditor.elements.MultiSelectionMixin.editor.validators.label
+                selectOptions:
+                  10:
+                    value: ''
+                    label: formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label
+                  20:
+                    value: Count
+                    label: formEditor.elements.MultiSelectionMixin.editor.validators.Count.label
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults:
+              properties:
+                options: {  }
+            propertyCollections:
+              validators:
+                10:
+                  identifier: Count
+                  editors:
+                    100:
+                      identifier: header
+                      templateName: Inspector-CollectionElementHeaderEditor
+                      label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
+                    200:
+                      identifier: minimum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                      propertyPath: options.minimum
+                      propertyValidators:
+                        10: Integer
+                    300:
+                      identifier: maximum
+                      templateName: Inspector-TextEditor
+                      label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                      propertyPath: options.maximum
+                      propertyValidators:
+                        10: Integer
+                    9999:
+                      identifier: removeButton
+                      templateName: Inspector-RemoveElementEditor
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+        FileUploadMixin:
+          formEditor:
+            editors:
+              100:
+                identifier: header
+                templateName: Inspector-FormElementHeaderEditor
+              200:
+                identifier: label
+                templateName: Inspector-TextEditor
+                label: formEditor.elements.FormElement.editor.label.label
+                propertyPath: label
+              400:
+                identifier: saveToFileMount
+                templateName: Inspector-SingleSelectEditor
+                label: formEditor.elements.FileUploadMixin.editor.saveToFileMount.label
+                propertyPath: properties.saveToFileMount
+                selectOptions:
+                  10:
+                    value: '1:/user_upload/'
+                    label: '1:/user_upload/'
+              700:
+                identifier: gridColumnViewPortConfiguration
+                templateName: Inspector-GridColumnViewPortConfigurationEditor
+                label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                configurationOptions:
+                  viewPorts:
+                    10:
+                      viewPortIdentifier: xs
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                    20:
+                      viewPortIdentifier: sm
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                    30:
+                      viewPortIdentifier: md
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                    40:
+                      viewPortIdentifier: lg
+                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  numbersOfColumnsToUse:
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                    propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                    fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+              800:
+                identifier: requiredValidator
+                templateName: Inspector-RequiredValidatorEditor
+                label: formEditor.elements.FormElement.editor.requiredValidator.label
+                validatorIdentifier: NotEmpty
+                propertyPath: properties.fluidAdditionalAttributes.required
+                propertyValue: required
+              9999:
+                identifier: removeButton
+                templateName: Inspector-RemoveElementEditor
+            predefinedDefaults:
+              properties:
+                saveToFileMount: '1:/user_upload/'
+          implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload
+          properties:
+            containerClassAttribute: input
+            elementClassAttribute: ''
+            elementErrorClassAttribute: error
+            saveToFileMount: '1:/user_upload/'
+        RemoveButtonMixin:
+          9999:
+            identifier: removeButton
+            templateName: Inspector-RemoveElementEditor
+        RemovableFormElementMixin:
+          editors:
+            9999:
+              identifier: removeButton
+              templateName: Inspector-RemoveElementEditor
+        BaseCollectionEditorsMixin:
+          100:
+            identifier: header
+            templateName: Inspector-CollectionElementHeaderEditor
+            label: ''
+          9999:
+            identifier: removeButton
+            templateName: Inspector-RemoveElementEditor
+        MinimumMaximumEditorsMixin:
+          200:
+            identifier: minimum
+            templateName: Inspector-TextEditor
+            label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+            propertyPath: options.minimum
+            propertyValidators:
+              10: Integer
+          300:
+            identifier: maximum
+            templateName: Inspector-TextEditor
+            label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+            propertyPath: options.maximum
+            propertyValidators:
+              10: Integer
+        formEmailFinisherMixin:
+          editors:
+            100:
+              identifier: header
+              templateName: Inspector-CollectionElementHeaderEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
+            200:
+              identifier: subject
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.subject.label
+              propertyPath: options.subject
+              enableFormelementSelectionButton: true
+              propertyValidators:
+                10: NotEmpty
+                20: FormElementIdentifierWithinCurlyBracesInclusive
+            300:
+              identifier: recipientAddress
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label
+              propertyPath: options.recipientAddress
+              enableFormelementSelectionButton: true
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: NaiveEmail
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            400:
+              identifier: recipientName
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label
+              propertyPath: options.recipientName
+              enableFormelementSelectionButton: true
+              propertyValidators:
+                10: FormElementIdentifierWithinCurlyBracesInclusive
+            500:
+              identifier: senderAddress
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label
+              propertyPath: options.senderAddress
+              enableFormelementSelectionButton: true
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: NaiveEmail
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            600:
+              identifier: senderName
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label
+              propertyPath: options.senderName
+              enableFormelementSelectionButton: true
+              propertyValidators:
+                10: FormElementIdentifierWithinCurlyBracesInclusive
+            700:
+              identifier: replyToAddress
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label
+              propertyPath: options.replyToAddress
+              enableFormelementSelectionButton: true
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: NaiveEmailOrEmpty
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            800:
+              identifier: carbonCopyAddress
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyAddress.label
+              propertyPath: options.carbonCopyAddress
+              enableFormelementSelectionButton: true
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: NaiveEmailOrEmpty
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            900:
+              identifier: blindCarbonCopyAddress
+              templateName: Inspector-TextEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyAddress.label
+              propertyPath: options.blindCarbonCopyAddress
+              enableFormelementSelectionButton: true
+              propertyValidatorsMode: OR
+              propertyValidators:
+                10: NaiveEmailOrEmpty
+                20: FormElementIdentifierWithinCurlyBracesExclusive
+            1000:
+              identifier: format
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.format.label
+              propertyPath: options.format
+              selectOptions:
+                10:
+                  value: plaintext
+                  label: formEditor.elements.Form.finisher.EmailToSender.editor.format.1
+                20:
+                  value: html
+                  label: formEditor.elements.Form.finisher.EmailToSender.editor.format.2
+            1100:
+              identifier: attachUploads
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label
+              propertyPath: options.attachUploads
+            9999:
+              identifier: removeButton
+              templateName: Inspector-RemoveElementEditor
+      finishersEmailMixin:
+        implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
+        options:
+          templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
+      FormEngineEmailMixin:
+        label: tt_content.finishersDefinition.EmailToSender.label
+        elements:
+          subject:
+            label: tt_content.finishersDefinition.EmailToSender.subject.label
+            config:
+              type: input
+          recipientAddress:
+            label: tt_content.finishersDefinition.EmailToSender.recipientAddress.label
+            config:
+              type: input
+              eval: required
+          recipientName:
+            label: tt_content.finishersDefinition.EmailToSender.recipientName.label
+            config:
+              type: input
+          senderAddress:
+            label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
+            config:
+              type: input
+              eval: required
+          senderName:
+            label: tt_content.finishersDefinition.EmailToSender.senderName.label
+            config:
+              type: input
+          replyToAddress:
+            label: tt_content.finishersDefinition.EmailToSender.replyToAddress.label
+            config:
+              type: input
+          carbonCopyAddress:
+            label: tt_content.finishersDefinition.EmailToSender.carbonCopyAddress.label
+            config:
+              type: input
+          blindCarbonCopyAddress:
+            label: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyAddress.label
+            config:
+              type: input
+          format:
+            label: tt_content.finishersDefinition.EmailToSender.format.label
+            config:
+              type: select
+              renderType: selectSingle
+              minitems: 1
+              maxitems: 1
+              size: 1
+              items:
+                10:
+                  - tt_content.finishersDefinition.EmailToSender.format.1
+                  - html
+                20:
+                  - tt_content.finishersDefinition.EmailToSender.format.2
+                  - plaintext
     formManager:
       dynamicRequireJsModules:
         app: TYPO3/CMS/Form/Backend/FormManager

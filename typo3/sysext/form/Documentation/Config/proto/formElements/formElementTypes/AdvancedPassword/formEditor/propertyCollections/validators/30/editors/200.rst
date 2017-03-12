@@ -30,10 +30,8 @@ formEditor.propertyCollections.validators.30.editors.200
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
                        propertyPath: options.minimum
-                       propertyValidatorsMode: OR
                        propertyValidators:
                          10: Integer
-                         20: FormElementIdentifierWithinCurlyBracesExclusive
                        additionalElementPropertyPaths:
                          10: properties.fluidAdditionalAttributes.minlength
 

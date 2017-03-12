@@ -821,9 +821,14 @@ define(['jquery',
             }
 
             if (
-                collectionElementEditorsLength === 2
-                && collectionElementConfiguration['editors'][0]['identifier'] === 'header'
-                && collectionElementConfiguration['editors'][1]['identifier'] === 'removeButton'
+                (
+                    collectionElementEditorsLength === 2
+                    && collectionElementConfiguration['editors'][0]['identifier'] === 'header'
+                    && collectionElementConfiguration['editors'][1]['identifier'] === 'removeButton'
+                ) || (
+                    collectionElementEditorsLength === 1
+                    && collectionElementConfiguration['editors'][0]['identifier'] === 'header'
+                )
             ) {
                 $(getHelper().getDomElementDataIdentifierSelector('collapse'), collectionContainerElementWrapper).remove();
             }
@@ -849,7 +854,7 @@ define(['jquery',
          * @throws 1478362968
          */
         function renderCollectionElementSelectionEditor(collectionName, editorConfiguration, editorHtml) {
-            var alreadySelectedCollectionElements, selectElement, collectionContainer;
+            var alreadySelectedCollectionElements, selectElement, collectionContainer, removeSelectElement;
             assert(
                 getUtility().isNonEmptyString(collectionName),
                 'Invalid configuration "collectionName"',
@@ -898,6 +903,7 @@ define(['jquery',
                 }
             }
 
+            removeSelectElement = true;
             for (var i = 0, len1 = editorConfiguration['selectOptions'].length; i < len1; ++i) {
                 var appendOption = true;
                 if (!getUtility().isUndefinedOrNull(alreadySelectedCollectionElements)) {
@@ -913,7 +919,14 @@ define(['jquery',
                         editorConfiguration['selectOptions'][i]['label'],
                         editorConfiguration['selectOptions'][i]['value']
                     ));
+                    if (editorConfiguration['selectOptions'][i]['value'] !== '') {
+                        removeSelectElement = false;
+                    }
                 }
+            }
+
+            if (removeSelectElement) {
+                selectElement.off().empty().remove();
             }
 
             selectElement.on('change', function() {

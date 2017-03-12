@@ -745,6 +745,7 @@ Concrete configurations
     formElementTypes/Checkbox
     formElementTypes/ContentElement
     formElementTypes/DatePicker
+    formElementTypes/Email
     formElementTypes/Fieldset
     formElementTypes/FileUpload
     formElementTypes/Form
@@ -755,11 +756,14 @@ Concrete configurations
     formElementTypes/ImageUpload
     formElementTypes/MultiCheckbox
     formElementTypes/MultiSelect
+    formElementTypes/Number
     formElementTypes/Page
     formElementTypes/Password
     formElementTypes/RadioButton
     formElementTypes/SingleSelect
     formElementTypes/StaticText
     formElementTypes/SummaryPage
+    formElementTypes/Telephone
     formElementTypes/Text
     formElementTypes/Textarea
+    formElementTypes/Url

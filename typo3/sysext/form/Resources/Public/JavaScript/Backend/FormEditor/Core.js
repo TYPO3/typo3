@@ -1808,7 +1808,7 @@ define(['jquery'], function($) {
                 identifierPath = (identifierPathPrefix === '') ? configuration['identifier'] : identifierPathPrefix + '/' + configuration['identifier'];
 
                 configuration = $.extend(
-                    formElementTypeDefinition['predefinedDefaults'] || {},
+                    predefinedDefaults,
                     configuration,
                     {
                         renderables: (rawChildFormElements) ? true : null,

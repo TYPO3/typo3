@@ -1,0 +1,38 @@
+formEditor.editors.900
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.editors.900
+
+:aspect:`Data type`
+      array/ :ref:`[ValidatorsEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         Telephone:
+           formEditor:
+             editors:
+               900:
+                 identifier: validators
+                 templateName: Inspector-ValidatorsEditor
+                 label: formEditor.elements.TextMixin.editor.validators.label
+                 selectOptions:
+                   10:
+                     value: ''
+                     label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                   90:
+                     value: RegularExpression
+                     label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+

@@ -81,6 +81,10 @@ define(['jquery',
                 'FormElement-SummaryPage': 'FormElement-SummaryPage',
                 'FormElement-Text': 'FormElement-Text',
                 'FormElement-Textarea': 'FormElement-Textarea',
+                'FormElement-Email': 'FormElement-Email',
+                'FormElement-Url': 'FormElement-Url',
+                'FormElement-Telephone': 'FormElement-Telephone',
+                'FormElement-Number': 'FormElement-Number',
                 formElementIcon: 'elementIcon',
                 iconValidator: 't3-form-icon-validator',
                 multiValueContainer: 'multiValueContainer',
@@ -255,6 +259,10 @@ define(['jquery',
                 case 'AdvancedPassword':
                 case 'Password':
                 case 'Text':
+                case 'Email':
+                case 'Url':
+                case 'Telephone':
+                case 'Number':
                 case 'DatePicker':
                     renderSimpleTemplateWithValidators(formElement, template);
                     break;
