@@ -748,28 +748,6 @@ class EditDocumentController extends AbstractModule
         );
         $t3Configuration = [];
 
-        if (ExtensionManagementUtility::isLoaded('feedit') && (int)GeneralUtility::_GP('feEdit') === 1) {
-            // We have to load some locallang strings and push them into TYPO3.LLL if this request was
-            // triggered by feedit. Originally, this object is fed by BackendController which is not
-            // called here. This block of code is intended to be removed at a later point again.
-            $lang = $this->getLanguageService();
-            $coreLabels = [
-                'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:csh_tooltip_loading')
-            ];
-            $generatedLabels = [];
-            $generatedLabels['core'] = $coreLabels;
-            $code = 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
-            $filePath = 'typo3temp/assets/js/backend-' . sha1($code) . '.js';
-            if (!file_exists(PATH_site . $filePath)) {
-                // writeFileToTypo3tempDir() returns NULL on success (please double-read!)
-                $error = GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code);
-                if ($error !== null) {
-                    throw new \RuntimeException('Locallang JS file could not be written to ' . $filePath . '. Reason: ' . $error, 1446118286);
-                }
-            }
-            $pageRenderer->addJsFile('../' . $filePath);
-        }
-
         $javascript = '
 			TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 			// Object: TS:
