@@ -227,7 +227,10 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         }
         foreach ($classInfo->getInjectMethods() as $injectMethodName => $classNameToInject) {
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
-            if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
+            if (
+                $classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface
+                && strpos($classNameToInject, 'TYPO3\CMS') === false
+            ) {
                 $this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
             }
             if (is_callable([$instance, $injectMethodName])) {
