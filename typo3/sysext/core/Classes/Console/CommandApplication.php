@@ -55,7 +55,7 @@ class CommandApplication implements ApplicationInterface
         $this->defineLegacyConstants();
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
+            ->setRequestType(TYPO3_REQUESTTYPE_CLI)
             ->baseSetup($this->entryPointLevel);
 
         foreach ($this->availableRequestHandlers as $requestHandler) {

@@ -51,7 +51,7 @@ class Application implements ApplicationInterface
 
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_INSTALL)
+            ->setRequestType(TYPO3_REQUESTTYPE_INSTALL)
             ->baseSetup($this->entryPointLevel);
 
         foreach ($this->availableRequestHandlers as $requestHandler) {
