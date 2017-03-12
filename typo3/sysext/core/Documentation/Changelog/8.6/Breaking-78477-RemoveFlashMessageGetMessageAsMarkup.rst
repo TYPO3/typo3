@@ -11,6 +11,7 @@ Description
 
 The method :php:`FlashMessage->getMessageAsMarkup()` has been removed.
 
+
 Impact
 ======
 

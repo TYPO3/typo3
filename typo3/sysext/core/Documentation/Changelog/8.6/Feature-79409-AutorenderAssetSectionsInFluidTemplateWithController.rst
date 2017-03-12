@@ -30,6 +30,7 @@ The feature only applies to ActionController (thus excluding CommandController) 
 section if the view is an instance of :php:`TYPO3Fluid\\Fluid\\View\\TemplateView` (thus including any View in TYPO3 which
 extends either TemplateView or AbstractTemplateView from TYPO3's Fluid adapter).
 
+
 Impact
 ======
 

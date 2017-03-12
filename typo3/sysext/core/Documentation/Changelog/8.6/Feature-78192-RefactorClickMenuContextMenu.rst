@@ -80,7 +80,6 @@ Example of the JSON response:
        }
     }
 
-
 Based on the JSON data ContextMenu.js is rendering a context-menu. If one of the items is clicked, the according JS `callbackAction` is executed on the :js:`TYPO3/CMS/Backend/ContextMenuActions` JS module or other modules defined in the `additionalAttributes['data-callback-module']`.
 
 For example usage of this API see:

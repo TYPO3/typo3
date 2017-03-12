@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ======================================================
-Breaking: #51442 - EXT:form - Refactor fluid rendering
+Breaking: #79464 - EXT:form - Refactor fluid rendering
 ======================================================
 
 See :issue:`79464`
@@ -13,6 +13,7 @@ EXT:form uses "fluid" as the default rendering strategy.
 Therefore, EXT:form has to work closely with the concepts of fluid to avoid current and future problems.
 Until now, EXT:form tried to reuse a fluid view instance by reconfiguring the instance on each nesting level, but fluid is not intended for such a purpose.
 This change reduces the complexity of the rendering process and works closer with the concepts of fluid.
+
 
 Impact
 ======
@@ -45,6 +46,7 @@ Affected Installations
 
 All installations since TYPO3 8.5 which use the new EXT:form extension and create or extend custom form elements through configuration and / or
 override EXT:form template files.
+
 
 Migration
 =========
@@ -122,9 +124,11 @@ All other form elements are partials and will be found through `TYPO3.CMS.Form.p
 
 
 The template/partial structure has changed. You have to adapt this to your custom templates.
-Please look at the files within EXT:form/Resources/Private/Frontend/Partials
+Please look at the files within `EXT:form/Resources/Private/Frontend/Partials`
 to see what has happened.
 The main change is that you have to wrap the markup with
+
+.. code-block:: html
 
     <formvh:renderRenderable renderable="{element}">
         some form element

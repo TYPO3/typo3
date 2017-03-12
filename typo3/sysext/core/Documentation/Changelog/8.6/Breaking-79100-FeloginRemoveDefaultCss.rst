@@ -12,6 +12,7 @@ Description
 The applied default CSS styles delivered by EXT:felogin may break the frontend output, for example
 if CSS frameworks are used. The default styles need to get overridden in such case.
 
+
 Impact
 ======
 

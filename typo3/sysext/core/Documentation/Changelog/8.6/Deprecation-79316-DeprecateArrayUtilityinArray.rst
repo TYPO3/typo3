@@ -15,7 +15,7 @@ Deprecate ArrayUtility::inArray()
 Impact
 ======
 
-Calling php:`ArrayUtility::inArray()` method will trigger a deprecation log entry. Code using this method will work until it is removed in TYPO3 v9.
+Calling :php:`ArrayUtility::inArray()` method will trigger a deprecation log entry. Code using this method will work until it is removed in TYPO3 v9.
 
 
 Affected Installations

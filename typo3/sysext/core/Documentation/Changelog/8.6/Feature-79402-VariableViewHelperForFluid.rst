@@ -10,7 +10,7 @@ See :issue:`79402`
 Description
 ===========
 
-A new ViewHelper ``f:variable`` has been added in Fluid 2.2.0 which is now minimum required dependency for TYPO3.
+A new ViewHelper `f:variable` has been added in Fluid 2.2.0 which is now minimum required dependency for TYPO3.
 The ViewHelper allows variables to be assigned in the template:
 
 .. code-block:: html
@@ -19,6 +19,7 @@ The ViewHelper allows variables to be assigned in the template:
     <f:variable name="myvariable" value="My variable's content"/>
     {f:variable(name: 'myvariable', value: 'My variable\'s content')}
     {myoriginalvariable -> f:variable.set(name: 'mynewvariable')}
+
 
 Impact
 ======

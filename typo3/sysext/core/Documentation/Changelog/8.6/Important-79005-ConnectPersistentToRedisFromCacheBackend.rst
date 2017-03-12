@@ -13,9 +13,10 @@ phpredis has support for persistent connections, but until now the Redis cache b
 the regular connect call hard-coded. For unknown reasons this is the only
 connection setting missing from the Redis cache backend but has now been implemented.
 
-The configuration setting is named ``persistentConnection``. It is an optional boolean option.
+The configuration setting is named `persistentConnection`. It is an optional boolean option.
 
 For other configuration options see https://docs.typo3.org/typo3cms/CoreApiReference/CachingFramework/FrontendsBackends/Index.html#redis-backend
+
 
 Impact
 ======

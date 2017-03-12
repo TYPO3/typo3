@@ -14,6 +14,7 @@ A new hook in TemplateService allows to add or modify existing TypoScript templa
 Register the hook via :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']`
 in the extensions' ext_localconf.php file.
 
+
 Example
 =======
 

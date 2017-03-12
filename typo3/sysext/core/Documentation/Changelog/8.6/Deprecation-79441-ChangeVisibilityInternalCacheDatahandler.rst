@@ -30,8 +30,7 @@ DataHandler since it is not referenced in the class.
 
 .. code-block:: php
 
-	public $checkWorkspaceCache = [];
-
+   public $checkWorkspaceCache = [];
 
 
 Impact

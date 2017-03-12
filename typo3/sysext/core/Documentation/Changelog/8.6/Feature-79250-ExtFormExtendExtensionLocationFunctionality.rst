@@ -17,6 +17,7 @@ This feature makes it possible to store new forms within extension locations thr
 You can also define whether forms can be deleted within extension locations through the form manager with a new setting called :code:`allowDeleteFromExtensionPaths`.
 By default both settings :code:`allowSaveToExtensionPaths` and :code:`allowDeleteFromExtensionPaths` are disabled.
 
+
 Summary
 =======
 
@@ -34,8 +35,7 @@ Example to allow edit form definitions within 'EXT:my_ext/Resources/Private/Form
 
 .. code-block:: yaml
 
-
-    TYPO3:
+ TYPO3:
       CMS:
         Form:
           persistenceManager:

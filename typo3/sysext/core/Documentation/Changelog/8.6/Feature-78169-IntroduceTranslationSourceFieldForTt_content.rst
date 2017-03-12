@@ -14,11 +14,9 @@ The `translationSource` field contains an uid of the record used as a translatio
 The new TCA configuration `translationSource` contains column name, similar to the `transOrigPointerField`.
 e.g.
 
-
 .. code-block:: php
 
     $GLOBALS['TCA']['tt_content']['ctrl']['translationSource'] = 'l10n_source';
-
 
 The new field solves few issues:
 

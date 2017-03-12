@@ -17,6 +17,7 @@ and is protected now.
 The method :php:`FrontendUserAuthentication::fetchSessionData()` has been removed and its
 logic has been integrated into :php:`AbstractUserAuthentication::fetchUserSession()`.
 
+
 Impact
 ======
 

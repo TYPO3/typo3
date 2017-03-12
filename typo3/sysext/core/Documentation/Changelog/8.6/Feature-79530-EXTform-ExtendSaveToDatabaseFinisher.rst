@@ -40,14 +40,14 @@ You can set options as an array to perform multiple database operations.
 Access the inserted uids from previous database inserts
 -------------------------------------------------------
 
-You can access the inserted uids via '{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}'.
+You can access the inserted uids via `{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}`.
 If you perform an insert operation, the value of the inserted database row will be stored within the FinisherVariableProvider.
-'<theArrayKeyNumberWithinOptions>' references to the numeric key from the 'options' array within which the insert operation is executed.
+`<theArrayKeyNumberWithinOptions>` references to the numeric key from the `options` array within which the insert operation is executed.
 
 Add a special option value '{__currentTimestamp}'
 -------------------------------------------------
 
-You can write '{__currentTimestamp}' as an option value which returns the current timestamp.
+You can write `{__currentTimestamp}` as an option value which returns the current timestamp.
 
 .. code-block:: yaml
 
@@ -65,12 +65,12 @@ You can write '{__currentTimestamp}' as an option value which returns the curren
 Add a variable container object which is passed through all finishers
 ---------------------------------------------------------------------
 
-There is a simple data storage object available within the '\TYPO3\CMS\Form\Domain\Finishers\FinisherContext'.
+There is a simple data storage object available within the `\TYPO3\CMS\Form\Domain\Finishers\FinisherContext`.
 You can access this from within a finisher with
 
 .. code-block:: php
 
-        $this->finisherContext->getFinisherVariableProvider()
+   $this->finisherContext->getFinisherVariableProvider()
 
 Each finisher can write and/or read data from this object.
 All data has to be prefixed with the finisher identifier, so you can determine what data from which finisher you want.
@@ -79,20 +79,20 @@ Prototype to add some data:
 
 .. code-block:: php
 
-    $this->finisherContext->getFinisherVariableProvider()->add(
-        $this->shortFinisherIdentifier,
-        'some.data',
-        $yourData
-    );
+   $this->finisherContext->getFinisherVariableProvider()->add(
+      $this->shortFinisherIdentifier,
+      'some.data',
+      $yourData
+   );
 
 Prototype to get some data:
 
 .. code-block:: php
 
-    $otherFinisherData = $this->finisherContext->getFinisherVariableProvider()->get(
-        'SomeFinisherIdentifier',
-        'some.data'
-    );
+   $otherFinisherData = $this->finisherContext->getFinisherVariableProvider()->get(
+      'SomeFinisherIdentifier',
+      'some.data'
+   );
 
 You can access this data within the form definition:
 

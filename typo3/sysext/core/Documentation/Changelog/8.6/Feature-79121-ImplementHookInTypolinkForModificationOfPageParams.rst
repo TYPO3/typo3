@@ -21,7 +21,7 @@ You can now register a hook via:
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'][] = \Your\Namespace\Hooks\MyBeautifulHook::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'][] = \Your\Namespace\Hooks\MyBeautifulHook::class;
 
 Your hook has to implement `TypolinkModifyLinkConfigForPageLinksHookInterface` with its method 
 :php:`modifyPageLinkConfiguration(array $linkConfiguration, array $linkDetails, array $pageRow)`.
@@ -37,11 +37,11 @@ Example implementation:
 
 .. code-block:: php
 
-	public function modifyPageLinkConfiguration(array $linkConfiguration, array $linkDetails, array $pageRow) : array
-	{
-		$linkConfiguration['additionalParams'] .= $pageRow['myAdditionalParamsField'];
-		return $linkConfiguration;
-	}
+    public function modifyPageLinkConfiguration(array $linkConfiguration, array $linkDetails, array $pageRow) : array
+    {
+        $linkConfiguration['additionalParams'] .= $pageRow['myAdditionalParamsField'];
+        return $linkConfiguration;
+    }
 
 .. _TSRef: https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Typolink/Index.html
 

@@ -26,37 +26,37 @@ The value **should** be of PHP type float, not only a string.
 
 .. code-block:: php
 
-	'config' => [
-	     'type' => 'imageManipulation',
-	     'cropVariants' => [
-	         'mobile' => [
-	             'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	             'allowedAspectRatios' => [
-	                 '4:3' => [
-	                     'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
-	                     'value' => 4 / 3
-	                 ],
-	                 'NaN' => [
-	                     'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-	                     'value' => 0.0
-	                 ],
-	             ],
-	         ],
-	         'desktop' => [
-	             'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.desktop',
-	             'allowedAspectRatios' => [
-	                 '4:3' => [
-	                     'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
-	                     'value' => 4 / 3
-	                 ],
-	                 'NaN' => [
-	                     'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-	                     'value' => 0.0
-	                 ],
-	             ],
-	         ],
-	     ]
-	 ]
+    'config' => [
+         'type' => 'imageManipulation',
+         'cropVariants' => [
+             'mobile' => [
+                 'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                 'allowedAspectRatios' => [
+                     '4:3' => [
+                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                         'value' => 4 / 3
+                     ],
+                     'NaN' => [
+                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                         'value' => 0.0
+                     ],
+                 ],
+             ],
+             'desktop' => [
+                 'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.desktop',
+                 'allowedAspectRatios' => [
+                     '4:3' => [
+                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                         'value' => 4 / 3
+                     ],
+                     'NaN' => [
+                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                         'value' => 0.0
+                     ],
+                 ],
+             ],
+         ]
+    ]
 
 
 It is now also possible to define an initial crop area. If no initial crop area is defined, the default selected crop area will cover the complete image.
@@ -65,20 +65,20 @@ The below example has an initial crop area in the size the previous image croppe
 
 .. code-block:: php
 
-	'config' => [
-	    'type' => 'imageManipulation',
-	    'cropVariants' => [
-	        'mobile' => [
-	            'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	            'cropArea' => [
-	                'x' => 0.1,
-	                'y' => 0.1,
-	                'width' => 0.8,
-	                'height' => 0.8,
-	            ],
-	        ],
-	    ],
-	]
+    'config' => [
+        'type' => 'imageManipulation',
+        'cropVariants' => [
+            'mobile' => [
+                'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                'cropArea' => [
+                    'x' => 0.1,
+                    'y' => 0.1,
+                    'width' => 0.8,
+                    'height' => 0.8,
+                ],
+            ],
+        ],
+    ]
 
 Users can also select a focus area, when configured. The focus area is always **inside**
 the crop area and mark the area in the image which must be visible for the image to transport
@@ -90,20 +90,20 @@ and centered.
 
 .. code-block:: php
 
-	'config' => [
-	    'type' => 'imageManipulation',
-	    'cropVariants' => [
-	        'mobile' => [
-	            'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	            'focusArea' => [
-	                'x' => 1 / 3,
-	                'y' => 1 / 3,
-	                'width' => 1 / 3,
-	                'height' => 1 / 3,
-	            ],
-	        ],
-	    ],
-	]
+    'config' => [
+        'type' => 'imageManipulation',
+        'cropVariants' => [
+            'mobile' => [
+                'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                'focusArea' => [
+                    'x' => 1 / 3,
+                    'y' => 1 / 3,
+                    'width' => 1 / 3,
+                    'height' => 1 / 3,
+                ],
+            ],
+        ],
+    ]
 
 Very often images are used in a context, where there are overlaid with other DOM elements
 like a headline. To give editors a hint which area of the image is affected, when selecting a crop area,
@@ -112,22 +112,22 @@ the crop area. The focus area cannot intersect with any of the cover areas.
 
 .. code-block:: php
 
-	'config' => [
-	    'type' => 'imageManipulation',
-	    'cropVariants' => [
-	        'mobile' => [
-	            'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	            'coverAreas' => [
-	                [
-	                    'x' => 0.05,
-	                    'y' => 0.85,
-	                    'width' => 0.9,
-	                    'height' => 0.1,
-	                ]
-	            ],
-	        ],
-	    ],
-	]
+    'config' => [
+        'type' => 'imageManipulation',
+        'cropVariants' => [
+            'mobile' => [
+                'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                'coverAreas' => [
+                    [
+                        'x' => 0.05,
+                        'y' => 0.85,
+                        'width' => 0.9,
+                        'height' => 0.1,
+                    ]
+                ],
+            ],
+        ],
+    ]
 
 The above configuration examples are basically meant to add one single cropping configuration
 to sys_file_reference, which will then apply in every record, which reference images.
@@ -137,21 +137,21 @@ cropping configuration for tt_content images, then you can add the following to 
 
 .. code-block:: php
 
-	'config' => [
-	     'overrideCropVariants' => [
-	        'crop' => [
-	           'mobile' => [
-	               'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	               'cropArea' => [
-	                   'x' => 0.1,
-	                   'y' => 0.1,
-	                   'width' => 0.8,
-	                   'height' => 0.8,
-	               ],
-	           ],
-	        ],
-	     ],
-	]
+    'config' => [
+         'overrideCropVariants' => [
+            'crop' => [
+               'mobile' => [
+                   'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                   'cropArea' => [
+                       'x' => 0.1,
+                       'y' => 0.1,
+                       'width' => 0.8,
+                       'height' => 0.8,
+                   ],
+               ],
+            ],
+         ],
+    ]
 
 Please note, that you need to specify the target column name as array key. Most of the time this will be `crop`
 as this is the default field name for image manipulation in `sys_file_reference`
@@ -159,36 +159,36 @@ as this is the default field name for image manipulation in `sys_file_reference`
 It is also possible to set the cropping configuration only for a specific tt_content element type by using the
 `columnOverrides` feature:
 
-	$GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideCropVariants'] = [
-	    'crop' => [
-	       'mobile' => [
-	           'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-	           'cropArea' => [
-	               'x' => 0.1,
-	               'y' => 0.1,
-	               'width' => 0.8,
-	               'height' => 0.8,
-	           ],
-	           'allowedAspectRatios' => [
-	               '4:3' => [
-	                   'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
-	                   'value' => 4 / 3
-	               ],
-	               'NaN' => [
-	                   'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-	                   'value' => 0.0
-	               ],
-	           ],
-	       ],
-	    ],
-	];
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideCropVariants'] = [
+        'crop' => [
+           'mobile' => [
+               'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+               'cropArea' => [
+                   'x' => 0.1,
+                   'y' => 0.1,
+                   'width' => 0.8,
+                   'height' => 0.8,
+               ],
+               'allowedAspectRatios' => [
+                   '4:3' => [
+                       'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                       'value' => 4 / 3
+                   ],
+                   'NaN' => [
+                       'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                       'value' => 0.0
+                   ],
+               ],
+           ],
+        ],
+    ];
 
 
 To render crop variants, the variants can be specified as argument to the image view helper:
 
 .. code-block:: html
 
-	<f:image image="{data.image}" cropVariant="mobile" width="800" />
+    <f:image image="{data.image}" cropVariant="mobile" width="800" />
 
 Impact
 ======

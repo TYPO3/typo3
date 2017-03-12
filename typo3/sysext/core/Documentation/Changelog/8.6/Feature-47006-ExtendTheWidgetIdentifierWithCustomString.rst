@@ -19,7 +19,7 @@ A good value for the `customWidgetId` is the {contentObjectData.uid} to ensure n
 Example:
 .. code-block:: html
 
-	<f:widget.paginate customWidgetId="{contentObjectData.uid}" ...></f:widget.paginate>
+   <f:widget.paginate customWidgetId="{contentObjectData.uid}" ...></f:widget.paginate>
 
 
 Impact

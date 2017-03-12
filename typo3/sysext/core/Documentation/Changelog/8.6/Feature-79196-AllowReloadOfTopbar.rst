@@ -22,15 +22,15 @@ Reloading the topbar via JavaScript requires the following code:
 
 .. code-block:: javascript
 
-	// Either: RequireJS style
-	define(['TYPO3/CMS/Backend/Viewport'], function(Viewport) {
-		Viewport.Topbar.refresh();
-	});
+   // Either: RequireJS style
+   define(['TYPO3/CMS/Backend/Viewport'], function(Viewport) {
+      Viewport.Topbar.refresh();
+   });
 
-	// Or: old-fashioned JavaScript
-	if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) {
-		top.TYPO3.Backend.Topbar.refresh();
-	}';
+   // Or: old-fashioned JavaScript
+   if (top && top.TYPO3.Backend && top.TYPO3.Backend.Topbar) {
+      top.TYPO3.Backend.Topbar.refresh();
+   }';
 
 
 In case a toolbar item registers to the `load` event of the page, the registration must be changed. Reason is that the
@@ -40,12 +40,12 @@ Example:
 
 .. code-block:: javascript
 
-	define(['jquery', 'TYPO3/CMS/Backend/Viewport'], function($, Viewport) {
-		// old registration
-		$(MyAwesomeItem.doStuff)
+   define(['jquery', 'TYPO3/CMS/Backend/Viewport'], function($, Viewport) {
+      // old registration
+      $(MyAwesomeItem.doStuff)
 
-		// new registration
-		Viewport.Topbar.Toolbar.registerEvent(MyAwesomeItem.doStuff);
-	});
+      // new registration
+      Viewport.Topbar.Toolbar.registerEvent(MyAwesomeItem.doStuff);
+   });
 
 .. index:: Backend, JavaScript, PHP-API

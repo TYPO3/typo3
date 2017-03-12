@@ -21,13 +21,13 @@ In the `ValidatorTaskAdditionalFieldProvider` two additional fields have to be a
 
 .. code-block:: php
 
-	'browser' => 'page',
+   'browser' => 'page',
 
 If the additional field `browser` is set to `page` then the `SchedulerModuleController` adds a button for calling the page browser popup to the field.
 
 .. code-block:: php
 
-	'pageTitle' => $pageTitle,
+   'pageTitle' => $pageTitle,
 
 The `pageTitle` contains the title of the page that is shown next to the browse button.
 

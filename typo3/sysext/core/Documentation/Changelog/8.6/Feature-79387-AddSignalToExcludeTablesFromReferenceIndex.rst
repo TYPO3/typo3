@@ -46,6 +46,7 @@ Your class could look like this:
 
    }
 
+
 Impact
 ======
 

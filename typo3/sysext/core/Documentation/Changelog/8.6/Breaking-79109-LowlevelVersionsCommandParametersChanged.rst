@@ -28,6 +28,7 @@ The following options can be set
 
 The PHP class of the old CLI command `TYPO3\CMS\Lowlevel\VersionsCommand` has been removed.
 
+
 Impact
 ======
 
