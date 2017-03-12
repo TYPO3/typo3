@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This file is a backport from FLOW3 by Ingo Renner.
  * @api
  */
-class MemcachedBackend extends AbstractBackend implements TaggableBackendInterface
+class MemcachedBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * Max bucket size, (1024*1024)-42 bytes
@@ -234,42 +234,26 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         if (!$this->cache instanceof FrontendInterface) {
             throw new Exception('No cache frontend has been set yet via setCache().', 1207149215);
         }
-        if (!is_string($data)) {
-            throw new Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1207149231);
-        }
         $tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
         $expiration = $lifetime !== null ? $lifetime : $this->defaultLifetime;
-        $memcacheIsUsed = $this->usedPeclModule === 'memcache';
+
         // Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
         // thus $expiration should be converted from lifetime to UNIX timestamp
         if ($expiration > 2592000) {
             $expiration += $GLOBALS['EXEC_TIME'];
         }
         try {
-            if (strlen($data) > self::MAX_BUCKET_SIZE) {
+            if (is_string($data) && strlen($data) > self::MAX_BUCKET_SIZE) {
                 $data = str_split($data, 1024 * 1000);
                 $success = true;
                 $chunkNumber = 1;
                 foreach ($data as $chunk) {
-                    if ($memcacheIsUsed) {
-                        $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $this->flags, $expiration);
-                    } else {
-                        $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $expiration);
-                    }
-
+                    $success = $success && $this->setInternal($entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $expiration);
                     $chunkNumber++;
                 }
-                if ($memcacheIsUsed) {
-                    $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $this->flags, $expiration);
-                } else {
-                    $success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $expiration);
-                }
+                $success = $success && $this->setInternal($entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $expiration);
             } else {
-                if ($memcacheIsUsed) {
-                    $success = $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
-                } else {
-                    $success = $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
-                }
+                $success = $this->setInternal($entryIdentifier, $data, $expiration);
             }
             if ($success === true) {
                 $this->removeIdentifierFromAllTags($entryIdentifier);
@@ -283,6 +267,23 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     }
 
     /**
+     * Stores the actual data inside memcache/memcached
+     *
+     * @param string $entryIdentifier
+     * @param mixed $data
+     * @param int $expiration
+     * @return bool
+     */
+    protected function setInternal($entryIdentifier, $data, $expiration)
+    {
+        if ($this->usedPeclModule === 'memcache') {
+            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
+        } else {
+            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
+        }
+    }
+
+    /**
      * Loads data from the cache.
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
@@ -292,7 +293,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     public function get($entryIdentifier)
     {
         $value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
-        if (substr($value, 0, 14) === 'TYPO3*chunked:') {
+        if (is_string($value) && substr($value, 0, 14) === 'TYPO3*chunked:') {
             list(, $chunkCount) = explode(':', $value);
             $value = '';
             for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {
