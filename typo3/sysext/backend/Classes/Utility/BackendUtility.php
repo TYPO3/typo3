@@ -2082,9 +2082,11 @@ class BackendUtility
      * @param string $table Table name
      * @param array $row Row to fill with original language values
      * @return array Row with values from the original language
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9
      */
     protected static function replaceL10nModeFields($table, array $row)
     {
+        GeneralUtility::logDeprecatedFunction();
         $originalUidField = isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
             ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
             : '';
@@ -2131,10 +2133,6 @@ class BackendUtility
                 GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
                 $recordTitle = $params['title'];
             } else {
-                if (is_array($row)) {
-                    $row = self::replaceL10nModeFields($table, $row);
-                }
-
                 // No userFunc: Build label
                 $recordTitle = self::getProcessedValue(
                     $table,
