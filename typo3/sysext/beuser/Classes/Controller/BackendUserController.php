@@ -274,6 +274,8 @@ class BackendUserController extends BackendUserActionController
                 ]
             );
 
+            $this->emitSwitchUserSignal($targetUser);
+
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
         }
@@ -304,6 +306,16 @@ class BackendUserController extends BackendUserActionController
         $latestUserUids = array_slice($latestUserUids, 0, static::RECENT_USERS_LIMIT);
 
         return $latestUserUids;
+    }
+
+    /**
+     * Emit a signal when using the "switch to user" functionality
+     *
+     * @param array $targetUser
+     */
+    protected function emitSwitchUserSignal(array $targetUser)
+    {
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'switchUser', [$targetUser]);
     }
 
     /**
