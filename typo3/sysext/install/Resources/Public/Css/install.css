@@ -7810,7 +7810,7 @@ body {
   position: absolute;
   margin: 5px 0;
   top: 100%;
-  right: 0;
+  left: 0;
   border: 1px solid #ddd;
   border-radius: 2px;
   background-color: #fff;
