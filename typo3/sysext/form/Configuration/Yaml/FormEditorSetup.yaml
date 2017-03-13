@@ -411,6 +411,14 @@ TYPO3:
                 group: select
                 groupSorting: 400
                 iconIdentifier: 't3-form-icon-multi-select'
+                editors:
+                  250:
+                    identifier: 'inactiveOption'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SelectionMixin.editor.inactiveOption.label'
+                    propertyPath: 'properties.prependOptionLabel'
+                    fieldExplanationText: 'formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText'
+                    doNotSetIfPropertyValueIsEmpty: true
 
             RadioButton:
               formEditor:
@@ -425,6 +433,14 @@ TYPO3:
                 group: select
                 groupSorting: 200
                 iconIdentifier: 't3-form-icon-single-select'
+                editors:
+                  250:
+                    identifier: 'inactiveOption'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SelectionMixin.editor.inactiveOption.label'
+                    propertyPath: 'properties.prependOptionLabel'
+                    fieldExplanationText: 'formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText'
+                    doNotSetIfPropertyValueIsEmpty: true
 
             ### FORM ELEMENTS: CUSTOM ###
             DatePicker:

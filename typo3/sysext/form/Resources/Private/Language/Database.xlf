@@ -378,6 +378,12 @@
                 <source>Enter a valid PHP PCRE regular expression here.</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" xml:space="preserve">
+                <source>Inactive option</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText" xml:space="preserve">
+                <source>If set, this label will be shown as first option.</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" xml:space="preserve">
                 <source>Choices</source>
             </trans-unit>
