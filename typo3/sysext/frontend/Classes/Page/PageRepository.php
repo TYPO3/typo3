@@ -1386,11 +1386,11 @@ class PageRepository
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
                     }
-                    if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
+                    if ($ctrl['enablecolumns']['starttime'] && !$show_hidden && !$ignore_array['starttime']) {
                         $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
                         $constraints[] = $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']);
                     }
-                    if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
+                    if ($ctrl['enablecolumns']['endtime'] && !$show_hidden && !$ignore_array['endtime']) {
                         $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                         $constraints[] = $expressionBuilder->orX(
                             $expressionBuilder->eq($field, 0),

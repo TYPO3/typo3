@@ -47,7 +47,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
-                'expectedSQL' => '("aTable"."deleted" = 0) AND (("aTable"."t3ver_state" <= 0) AND ("aTable"."pid" <> -1)) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
+                'expectedSQL' => '("aTable"."deleted" = 0) AND (("aTable"."t3ver_state" <= 0) AND ("aTable"."pid" <> -1)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Workspace, with WS preview' => [
                 'tableName' => 'aTable',
@@ -65,7 +65,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
-                'expectedSQL' => '("aTable"."deleted" = 0) AND ((("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 1)) AND ("aTable"."pid" <> -1)) AND ("aTable"."myStartTimeField" <= 42) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 42)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
+                'expectedSQL' => '("aTable"."deleted" = 0) AND ((("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 1)) AND ("aTable"."pid" <> -1)) AND (("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'-1\', "aTable"."myGroupField")))'
             ],
             'Live page, no preview' => [
                 'tableName' => 'pages',
@@ -83,7 +83,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
-                'expectedSQL' => '("pages"."deleted" = 0) AND (("pages"."t3ver_state" <= 0) AND ("pages"."pid" <> -1)) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
+                'expectedSQL' => '("pages"."deleted" = 0) AND (("pages"."t3ver_state" <= 0) AND ("pages"."pid" <> -1)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
             'Workspace page, with WS preview' => [
                 'tableName' => 'pages',
@@ -101,7 +101,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'hiddenPagePreview' => true,
                 'hiddenRecordPreview' => true,
                 'feGroupList' => '0,-1',
-                'expectedSQL' => '("pages"."deleted" = 0) AND ("pages"."pid" <> -1) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
+                'expectedSQL' => '("pages"."deleted" = 0) AND ("pages"."pid" <> -1) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
         ];
     }

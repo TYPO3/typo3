@@ -64,7 +64,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         foreach ($this->restrictions as $restriction) {
             foreach ($queriedTables as $tableAlias => $tableName) {
                 $disableRestriction = false;
-                if ($restriction instanceof HiddenRestriction) {
+                if ($restriction instanceof HiddenRestriction || $restriction instanceof StartTimeRestriction || $restriction instanceof EndTimeRestriction) {
                     // If display of hidden records is requested, we must disable the hidden restriction.
                     $disableRestriction = $tableName === 'pages' ? $typoScriptFrontendController->showHiddenPage : $typoScriptFrontendController->showHiddenRecords;
                 }
