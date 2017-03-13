@@ -2717,12 +2717,6 @@ class TypoScriptFrontendController
             }
         }
 
-        // Setting softExclude:
-        $table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softExclude'], true);
-        foreach ($table_fields as $TF) {
-            list($tN, $fN) = explode(':', $TF);
-            $GLOBALS['TCA'][$tN]['columns'][$fN]['l10n_mode'] = 'exclude';
-        }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'])) {
             $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] as $_funcRef) {

@@ -851,18 +851,6 @@ hideNonTranslated : If this keyword is used a record that has no translation wil
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="sys_language_softExclude" type="string">
-			<description><![CDATA[Setting additional "exclude" flags for l10n_mode in TCA for frontend rendering.
-
-Syntax:
- [table]:[field],  [table]:[field],  [table]:[field], ...
-
-Example:
-config.sys_language_softExclude = tt_content:image , tt_content:header
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="sys_language_uid" type="int">
 			<description><![CDATA[This value points to the uid of a record from the "sys_language" table and if set, this means that various parts of the frontend display code will select records which are assigned to this language. See ->SELECT
 

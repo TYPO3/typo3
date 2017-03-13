@@ -97,3 +97,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Backend\Controller\PageLayo
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Backend\Controller\PageLayoutController::class]['renderActionHook']['compatibility7_quickedit']
     = \TYPO3\CMS\Compatibility7\Hooks\PageLayoutActionHook::class . '->renderAction';
+
+// Enable TypoScript functionality config.sys_language_softExclude
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']['compatibility7_softExclude']
+    = \TYPO3\CMS\Compatibility7\Hooks\TcaSoftExcludeHook::class . '->setCustomExcludeFields';
