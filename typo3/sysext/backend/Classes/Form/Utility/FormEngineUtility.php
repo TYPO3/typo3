@@ -44,7 +44,7 @@ class FormEngineUtility
      */
     protected static $allowOverrideMatrix = [
         'input' => ['size', 'max', 'readOnly'],
-        'text' => ['cols', 'rows', 'wrap', 'readOnly'],
+        'text' => ['cols', 'rows', 'wrap', 'max', 'readOnly'],
         'check' => ['cols', 'readOnly'],
         'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],
         'group' => ['size', 'autoSizeMax', 'max_size', 'maxitems', 'minitems', 'readOnly'],
