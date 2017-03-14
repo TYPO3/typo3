@@ -5,7 +5,7 @@ plugin.tx_frontend._CSS_DEFAULT_STYLE (
 
     .ce-table td, .ce-table th { vertical-align: top; }
 
-    .ce-textpic, .ce-nowrap .ce-bodytext, .ce-gallery, .ce-row, .ce-uploads li, .ce-uploads div { overflow: hidden; }
+    .ce-textpic, .ce-image, .ce-nowrap .ce-bodytext, .ce-gallery, .ce-row, .ce-uploads li, .ce-uploads div { overflow: hidden; }
 
     .ce-left .ce-gallery, .ce-column { float: left; }
     .ce-center .ce-outer { position: relative; float: right; right: 50%; }

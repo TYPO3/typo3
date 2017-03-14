@@ -2,7 +2,9 @@
 <f:layout name="Default" />
 <f:section name="Main">
 
-	<f:render partial="Media/Gallery" arguments="{_all}" />
+	<div class="ce-image ce-{gallery.position.horizontal} ce-{gallery.position.vertical}">
+		<f:render partial="Media/Gallery" arguments="{_all}" />
+	</div>
 
 </f:section>
 </html>
