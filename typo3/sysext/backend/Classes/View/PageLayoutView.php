@@ -729,16 +729,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 // in language mode process the content elements, but only fill $languageColumn. output will be generated later
                 $sortedLanguageColumn = [];
                 foreach ($cList as $columnId) {
-                    $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
-                    if (!$this->defLangBinding) {
-                        $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
-                            $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
-                            $lP,
-                            $columnId
-                        );
+                    if (GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnId)) {
+                        $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
+                        if (!$this->defLangBinding) {
+                            $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
+                                $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
+                                $lP,
+                                $columnId
+                            );
+                        }
+                        // We sort $languageColumn again according to $cList as it may contain data already from above.
+                        $sortedLanguageColumn[$columnId] = $languageColumn[$columnId];
                     }
-                    // We sort $languageColumn again according to $cList as it may contain data already from above.
-                    $sortedLanguageColumn[$columnId] = $languageColumn[$columnId];
                 }
                 $languageColumn = $sortedLanguageColumn;
             } else {
