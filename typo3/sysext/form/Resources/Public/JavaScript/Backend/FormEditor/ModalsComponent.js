@@ -43,7 +43,8 @@ define(['jquery',
                 buttonWarning: 'btn-warning'
             },
             domElementDataAttributeNames: {
-                elementType: 'element-type'
+                elementType: 'element-type',
+                fullElementType: 'data-element-type'
             },
             domElementDataAttributeValues: {
                 rowItem: 'rowItem',
@@ -209,16 +210,61 @@ define(['jquery',
          *
          * @param object modalContent
          * @param string publisherTopicName
+         * @param object configuration
          * @return void
          * @publish mixed
          * @throws 1478910954
          */
-        function _insertElementsModalSetup(modalContent, publisherTopicName) {
+        function _insertElementsModalSetup(modalContent, publisherTopicName, configuration) {
+            var formElementItems;
+
             assert(
                 getUtility().isNonEmptyString(publisherTopicName),
                 'Invalid parameter "publisherTopicName"',
                 1478910954
             );
+
+            if ('object' === $.type(configuration)) {
+                for (var key in configuration) {
+                    if (!configuration.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    if (
+                        key === 'disableElementTypes'
+                        && 'array' === $.type(configuration[key])
+                    ) {
+                        for (var i = 0, len = configuration[key].length; i < len; ++i) {
+                            $(
+                                getHelper().getDomElementDataAttribute(
+                                    'fullElementType',
+                                    'bracesWithKeyValue', [configuration[key][i]]
+                                ),
+                                modalContent
+                            ).addClass(getHelper().getDomElementClassName('disabled'));
+                        }
+                    }
+
+                    if (
+                        key === 'onlyEnableElementTypes'
+                        && 'array' === $.type(configuration[key])
+                    ) {
+                        $(
+                            getHelper().getDomElementDataAttribute(
+                                'fullElementType',
+                                'bracesWithKey'
+                            ),
+                            modalContent
+                        ).each(function(i, element) {
+                            for (var i = 0, len = configuration[key].length; i < len; ++i) {
+                                var that = $(this);
+                                if (that.data(getHelper().getDomElementDataAttribute('elementType')) !== configuration[key][i]) {
+                                    that.addClass(getHelper().getDomElementClassName('disabled'));
+                                }
+                            }
+                        });
+                    }
+                }
+            }
 
             $('a', modalContent).on("click", function(e) {
                 getPublisherSubscriber().publish(publisherTopicName, [$(this).data(getHelper().getDomElementDataAttribute('elementType'))]);
@@ -387,16 +433,16 @@ define(['jquery',
          * @public
          *
          * @param string
-         * @param string
+         * @param object
          * @return void
          */
-        function showInsertElementsModal(publisherTopicName) {
+        function showInsertElementsModal(publisherTopicName, configuration) {
             var html, template;
 
             template = getHelper().getTemplate('templateInsertElements');
             if (template.length > 0) {
                 html = $(template.html());
-                _insertElementsModalSetup(html, publisherTopicName);
+                _insertElementsModalSetup(html, publisherTopicName, configuration);
 
                 Modal.show(
                     getFormElementDefinition(getRootFormElement(), 'modalInsertElementsDialogTitle'),
@@ -409,7 +455,6 @@ define(['jquery',
         /**
          * @public
          *
-         * @param string
          * @param string
          * @return void
          */

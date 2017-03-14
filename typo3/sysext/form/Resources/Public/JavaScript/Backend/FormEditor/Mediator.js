@@ -409,6 +409,7 @@ define(['jquery',
              * @param string
              * @param array
              *              args[0] = targetEvent
+             *              args[1] = configuration
              * @return void
              * @subscribe view/stage/abstract/elementToolbar/button/newElement/clicked
              */
@@ -416,7 +417,7 @@ define(['jquery',
                 if (getFormEditorApp().isRootFormElementSelected()) {
                     getViewModel().selectPageBatch(0);
                 }
-                getViewModel().showInsertElementsModal(args[0]);
+                getViewModel().showInsertElementsModal(args[0], args[1]);
             });
 
             /**
@@ -425,6 +426,7 @@ define(['jquery',
              * @param string
              * @param array
              *              args[0] = targetEvent
+             *              args[1] = configuration
              * @return void
              * @subscribe view/newElementButton/clicked
              */
@@ -432,7 +434,7 @@ define(['jquery',
                 if (getFormEditorApp().isRootFormElementSelected()) {
                     getViewModel().selectPageBatch(0);
                 }
-                getViewModel().showInsertElementsModal(args[0]);
+                getViewModel().showInsertElementsModal(args[0], args[1]);
             });
 
             /**
@@ -461,6 +463,7 @@ define(['jquery',
             getPublisherSubscriber().subscribe('view/stage/abstract/dnd/stop', function(topic, args) {
                 getFormEditorApp().setCurrentlySelectedFormElement(args[0]);
                 getViewModel().renewStructure();
+                getViewModel().renderAbstractStageArea(false, false);
                 getViewModel().refreshSelectedElementItemsBatch();
                 getViewModel().addAbstractViewValidationResults();
                 getViewModel().renderInspectorEditors();

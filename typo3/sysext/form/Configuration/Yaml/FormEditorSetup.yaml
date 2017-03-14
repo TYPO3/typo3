@@ -58,6 +58,8 @@ TYPO3:
               FormElement-Page: 'Stage/Page'
               FormElement-SummaryPage: 'Stage/SummaryPage'
               FormElement-Fieldset: 'Stage/Fieldset'
+              FormElement-GridContainer: 'Stage/Fieldset'
+              FormElement-GridRow: 'Stage/Fieldset'
               FormElement-Text: 'Stage/SimpleTemplate'
               FormElement-Password: 'Stage/SimpleTemplate'
               FormElement-AdvancedPassword: 'Stage/SimpleTemplate'
@@ -86,6 +88,7 @@ TYPO3:
               Inspector-PropertyGridEditor: 'Inspector/PropertyGridEditor'
               Inspector-SingleSelectEditor: 'Inspector/SingleSelectEditor'
               Inspector-MultiSelectEditor: 'Inspector/MultiSelectEditor'
+              Inspector-GridColumnViewPortConfigurationEditor: 'Inspector/GridColumnViewPortConfigurationEditor'
               Inspector-TextareaEditor: 'Inspector/TextareaEditor'
               Inspector-RemoveElementEditor: 'Inspector/RemoveElementEditor'
               Inspector-FinishersEditor: 'Inspector/FinishersEditor'
@@ -296,6 +299,32 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.Fieldset.editor.label.label'
+                  800: null
+
+            GridContainer:
+              formEditor:
+                label: 'formEditor.elements.GridContainer.label'
+                group: container
+                groupSorting: 200
+                _isCompositeFormElement: true
+                _isGridContainerFormElement: true
+                iconIdentifier: 't3-form-icon-gridcontainer'
+                editors:
+                  200:
+                    label: 'formEditor.elements.GridContainer.editor.label.label'
+                  800: null
+
+            GridRow:
+              formEditor:
+                label: 'formEditor.elements.GridRow.label'
+                group: container
+                groupSorting: 300
+                _isCompositeFormElement: true
+                _isGridRowFormElement: true
+                iconIdentifier: 't3-form-icon-gridrow'
+                editors:
+                  200:
+                    label: 'formEditor.elements.GridRow.editor.label.label'
                   800: null
 
             ### FORM ELEMENTS: PAGE TYPES ###
@@ -815,6 +844,30 @@ TYPO3:
               editors:
                 200:
                   label: 'formEditor.elements.FormElement.editor.label.label'
+
+                700:
+                  identifier: 'gridColumnViewPortConfiguration'
+                  templateName: 'Inspector-GridColumnViewPortConfigurationEditor'
+                  label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label'
+                  configurationOptions:
+                    viewPorts:
+                      10:
+                        viewPortIdentifier: 'xs'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label'
+                      20:
+                        viewPortIdentifier: 'sm'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label'
+                      30:
+                        viewPortIdentifier: 'md'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label'
+                      40:
+                        viewPortIdentifier: 'lg'
+                        label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label'
+                    numbersOfColumnsToUse:
+                      label: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label'
+                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                      fieldExplanationText: 'formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText'
+
                 800:
                   identifier: 'requiredValidator'
                   templateName: 'Inspector-RequiredValidatorEditor'

@@ -1053,7 +1053,7 @@ define(['jquery'], function($) {
              * @throws 1475364956
              */
             function addFormElement(formElement, referenceFormElement, registerPropertyValidators, disablePublishersOnSet) {
-                var enclosingCompositeFormElement, identifier, formElementTypeDefinition, parentFormElementsArray, referenceFormElementElements, referenceFormElementTypeDefinition;
+                var enclosingCompositeFormElement, identifier, formElementTypeDefinition, parentFormElementsArray, parentFormElementTypeDefinition, referenceFormElementElements, referenceFormElementTypeDefinition;
                 utility().assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475436224);
                 utility().assert('object' === $.type(referenceFormElement), 'Invalid parameter "referenceFormElement"', 1475364956);
 
@@ -1066,6 +1066,7 @@ define(['jquery'], function($) {
                 formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
                 referenceFormElementTypeDefinition = repository().getFormEditorDefinition('formElements', referenceFormElement.get('type'));
 
+                // formElement != Page / SummaryPage && referenceFormElement == Page / Fieldset / GridContainer / GridRow
                 if (!formElementTypeDefinition['_isTopLevelFormElement'] && referenceFormElementTypeDefinition['_isCompositeFormElement']) {
                     if ('array' !== $.type(referenceFormElement.get('renderables'))) {
                         referenceFormElement.set('renderables', [], disablePublishersOnSet);
@@ -1075,14 +1076,20 @@ define(['jquery'], function($) {
                     formElement.set('__identifierPath', referenceFormElement.get('__identifierPath') + '/' + formElement.get('identifier'), disablePublishersOnSet);
                     referenceFormElement.get('renderables').push(formElement);
                 } else {
+                    // referenceFormElement == root form element
                     if (referenceFormElement.get('__identifierPath') === getApplicationStateStack().getCurrentState('formDefinition').get('__identifierPath')) {
                         referenceFormElementElements = referenceFormElement.get('renderables');
+                        // referenceFormElement = last page
                         referenceFormElement = referenceFormElementElements[referenceFormElementElements.length - 1];
+                    // if formElement == Page / SummaryPage && referenceFormElement != Page / SummaryPage
                     } else if (formElementTypeDefinition['_isTopLevelFormElement'] && !referenceFormElementTypeDefinition['_isTopLevelFormElement']) {
+                        // referenceFormElement = parent Page
                         referenceFormElement = findEnclosingCompositeFormElementWhichIsOnTopLevel(referenceFormElement);
+                    // formElement == Page / SummaryPage / Fieldset / GridContainer / GridRow
                     } else if (formElementTypeDefinition['_isCompositeFormElement']) {
                         enclosingCompositeFormElement = findEnclosingCompositeFormElementWhichIsNotOnTopLevel(referenceFormElement);
                         if (enclosingCompositeFormElement) {
+                            // referenceFormElement = parent Fieldset / GridContainer / GridRow
                             referenceFormElement = enclosingCompositeFormElement;
                         }
                     }
@@ -1214,7 +1221,9 @@ define(['jquery'], function($) {
                  * * Drag a Element on a Section Element (tree)
                  */
                 if (position === 'inside') {
+                    // formElementToMove == Page / SummaryPage
                     utility().assert(!formElementToMoveTypeDefinition['_isTopLevelFormElement'], 'This move is not allowed', 1476993731);
+                    // referenceFormElement != Page / Fieldset / GridContainer / GridRow
                     utility().assert(referenceFormElementTypeDefinition['_isCompositeFormElement'], 'This move is not allowed', 1476993732);
 
                     formElementToMove.set('__parentRenderable', referenceFormElement, disablePublishersOnSet);
@@ -1257,8 +1266,8 @@ define(['jquery'], function($) {
                         } else {
                             /**
                              * This is true on:
-                             * * Drag a Element before an Element on another page (tree)
-                             * * Drag a Element after an Element on another page (tree)
+                             * * Drag a Element before an Element on another page (tree / stage)
+                             * * Drag a Element after an Element on another page (tree / stage)
                              */
                             formElementToMove.set('__parentRenderable', referenceFormElement.get('__parentRenderable'), disablePublishersOnSet);
                             reSetIdentifierPath(formElementToMove, referenceFormElement.get('__parentRenderable').get('__identifierPath'));
@@ -1318,6 +1327,29 @@ define(['jquery'], function($) {
                     formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
                 }
 
+                return formElement;
+            };
+
+            /**
+             * @param object formElement
+             * @return object|null
+             * @throws 1489447996
+             */
+            function findEnclosingGridContainerFormElement(formElement) {
+                var formElementTypeDefinition;
+                utility().assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1489447996);
+
+                formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
+                while (!formElementTypeDefinition['_isGridContainerFormElement']) {
+                    if (formElementTypeDefinition['_isTopLevelFormElement']) {
+                        return null;
+                    }
+                    formElement = formElement.get('__parentRenderable');
+                    formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
+                }
+                if (formElementTypeDefinition['_isTopLevelFormElement']) {
+                    return null;
+                }
                 return formElement;
             };
 
@@ -1673,6 +1705,7 @@ define(['jquery'], function($) {
                 findFormElementByIdentifierPath: findFormElementByIdentifierPath,
                 findEnclosingCompositeFormElementWhichIsNotOnTopLevel: findEnclosingCompositeFormElementWhichIsNotOnTopLevel,
                 findEnclosingCompositeFormElementWhichIsOnTopLevel: findEnclosingCompositeFormElementWhichIsOnTopLevel,
+                findEnclosingGridContainerFormElement: findEnclosingGridContainerFormElement,
                 getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement: getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement,
                 getNonCompositeNonToplevelFormElements: getNonCompositeNonToplevelFormElements,
 

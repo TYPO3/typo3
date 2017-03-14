@@ -27,6 +27,8 @@ call_user_func(function () {
             'file-upload',
             'finisher',
             'form-element-selector',
+            'gridcontainer',
+            'gridrow',
             'hidden',
             'image-upload',
             'insert-after',

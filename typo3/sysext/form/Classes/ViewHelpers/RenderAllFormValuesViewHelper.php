@@ -81,7 +81,16 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
 
         $output = '';
         foreach ($elements as $element) {
-            if (!$element instanceof FormElementInterface || $element->getType() === 'Honeypot') {
+            $renderingOptions = $element->getRenderingOptions();
+
+            if (
+                !$element instanceof FormElementInterface
+                || $element->getType() === 'Honeypot'
+                || (
+                    isset($renderingOptions['_isCompositeFormElement'])
+                    && $renderingOptions['_isCompositeFormElement'] = true
+                )
+            ) {
                 continue;
             }
             $value = $formRuntime[$element->getIdentifier()];

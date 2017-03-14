@@ -402,7 +402,14 @@ define(['jquery',
             });
 
             $(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')).on('click', function(e) {
-                getPublisherSubscriber().publish('view/stage/abstract/button/newElement/clicked', ['view/insertElements/perform/bottom']);
+                getPublisherSubscriber().publish(
+                    'view/stage/abstract/button/newElement/clicked', [
+                        'view/insertElements/perform/bottom',
+                        {
+                            disableElementTypes: ['GridRow']
+                        }
+                    ]
+                );
             });
 
             $(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')).on('click', function(e) {
@@ -717,10 +724,11 @@ define(['jquery',
          * @public
          *
          * @param string targetEvent
+         * @param object configuration
          * @return void
          */
-        function showInsertElementsModal(targetEvent) {
-            getModals().showInsertElementsModal(targetEvent);
+        function showInsertElementsModal(targetEvent, configuration) {
+            getModals().showInsertElementsModal(targetEvent, configuration);
         };
 
         /**

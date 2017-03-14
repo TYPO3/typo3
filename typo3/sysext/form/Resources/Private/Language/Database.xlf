@@ -565,6 +565,28 @@
                 <source>Required field</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" xml:space="preserve">
+                <source>Grid viewport configuration</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" xml:space="preserve">
+                <source>Extra small</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" xml:space="preserve">
+                <source>Small</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" xml:space="preserve">
+                <source>Medium</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" xml:space="preserve">
+                <source>Large</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" xml:space="preserve">
+                <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText" xml:space="preserve">
+                <source>Leave empty for auto calculation</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.Page.label" xml:space="preserve">
                 <source>Page</source>
             </trans-unit>
@@ -590,6 +612,20 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.Fieldset.editor.label.label" xml:space="preserve">
                 <source>Fieldset name</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.GridContainer.label" xml:space="preserve">
+                <source>Grid: Container</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.GridContainer.editor.label.label" xml:space="preserve">
+                <source>Container name (not visible within Frontend)</source>
+            </trans-unit>
+
+            <trans-unit id="formEditor.elements.GridRow.label" xml:space="preserve">
+                <source>Grid: Row</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.GridRow.editor.label.label" xml:space="preserve">
+                <source>Row name (not visible within Frontend)</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Text.label" xml:space="preserve">

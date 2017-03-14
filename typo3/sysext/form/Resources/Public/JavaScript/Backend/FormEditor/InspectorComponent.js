@@ -60,6 +60,7 @@ define(['jquery',
             domElementDataAttributeValues: {
                 collapse: 'actions-view-table-expand',
                 editorControlsInputGroup: 'inspectorEditorControlsGroup',
+                editorWrapper: 'editorWrapper',
                 editorControlsWrapper: 'inspectorEditorControlsWrapper',
                 formElementHeaderEditor: 'inspectorFormElementHeaderEditor',
                 formElementSelectorControlsWrapper: 'inspectorEditorFormElementSelectorControlsWrapper',
@@ -78,6 +79,7 @@ define(['jquery',
                 'Inspector-RequiredValidatorEditor': 'Inspector-RequiredValidatorEditor',
                 'Inspector-SingleSelectEditor': 'Inspector-SingleSelectEditor',
                 'Inspector-MultiSelectEditor': 'Inspector-MultiSelectEditor',
+                'Inspector-GridColumnViewPortConfigurationEditor': 'Inspector-GridColumnViewPortConfigurationEditor',
                 'Inspector-TextareaEditor': 'Inspector-TextareaEditor',
                 'Inspector-TextEditor': 'Inspector-TextEditor',
                 'Inspector-Typo3WinBrowserEditor': 'Inspector-Typo3WinBrowserEditor',
@@ -92,7 +94,8 @@ define(['jquery',
                 propertyGridEditorRowItem: 'rowItem',
                 propertyGridEditorSelectValue: 'selectValue',
                 propertyGridEditorSortRow: 'sortRow',
-                propertyGridEditorValue: 'value'
+                propertyGridEditorValue: 'value',
+                viewportButton: 'viewportButton'
             },
             domElementIdNames: {
                 finisherPrefix: 't3-form-inspector-finishers-',
@@ -310,6 +313,14 @@ define(['jquery',
                         collectionName
                     );
                     break;
+                case 'Inspector-GridColumnViewPortConfigurationEditor':
+                    renderGridColumnViewPortConfigurationEditor(
+                        editorConfiguration,
+                        editorHtml,
+                        collectionElementIdentifier,
+                        collectionName
+                    );
+                    break;
                 case 'Inspector-PropertyGridEditor':
                     renderPropertyGridEditor(
                         editorConfiguration,
@@ -509,6 +520,16 @@ define(['jquery',
             });
 
             getCurrentlySelectedFormElement().set(propertyPathPrefix + propertyPath, newPropertyData);
+        };
+
+        /**
+         * @private
+         *
+         * @param object
+         * @return object
+         */
+        function _getEditorWrapperDomElement(editorDomElement) {
+            return $(getHelper().getDomElementDataIdentifierSelector('editorWrapper'), $(editorDomElement));
         };
 
         /**
@@ -1289,6 +1310,153 @@ define(['jquery',
 
                 getCurrentlySelectedFormElement().set(propertyPath, selectValues);
             });
+        };
+
+        /**
+         * @public
+         *
+         * @param object editorConfiguration
+         * @param object editorHtml
+         * @param string collectionElementIdentifier
+         * @param string collectionName
+         * @return void
+         * @throws 1489528242
+         * @throws 1489528243
+         * @throws 1489528244
+         * @throws 1489528245
+         * @throws 1489528246
+         * @throws 1489528247
+         */
+        function renderGridColumnViewPortConfigurationEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
+            var editorControlsWrapper, initNumbersOfColumnsField, numbersOfColumnsTemplate, selectElement, viewportButtonTemplate;
+            assert(
+                'object' === $.type(editorConfiguration),
+                'Invalid parameter "editorConfiguration"',
+                1489528242
+            );
+            assert(
+                'object' === $.type(editorHtml),
+                'Invalid parameter "editorHtml"',
+                1489528243
+            );
+            assert(
+                getUtility().isNonEmptyString(editorConfiguration['label']),
+                'Invalid configuration "label"',
+                1489528244
+            );
+            assert(
+                'array' === $.type(editorConfiguration['configurationOptions']['viewPorts']),
+                'Invalid configurationOptions "viewPorts"',
+                1489528245
+            );
+            assert(
+                !getUtility().isUndefinedOrNull(editorConfiguration['configurationOptions']['numbersOfColumnsToUse']['label']),
+                'Invalid configurationOptions "numbersOfColumnsToUse"',
+                1489528246
+            );
+            assert(
+                !getUtility().isUndefinedOrNull(editorConfiguration['configurationOptions']['numbersOfColumnsToUse']['propertyPath']),
+                'Invalid configuration "selectOptions"',
+                1489528247
+            );
+
+            if (!getFormElementDefinition(getCurrentlySelectedFormElement().get('__parentRenderable'), '_isGridRowFormElement')) {
+                editorHtml.remove();
+                return;
+            }
+
+            getHelper()
+                .getTemplatePropertyDomElement('label', editorHtml)
+                .append(editorConfiguration['label']);
+
+
+            viewportButtonTemplate = $(getHelper()
+                .getDomElementDataIdentifierSelector('viewportButton'), $(editorHtml))
+                .clone();
+
+            $(getHelper()
+                .getDomElementDataIdentifierSelector('viewportButton'), $(editorHtml))
+                .remove();
+
+            numbersOfColumnsTemplate = getHelper()
+                .getTemplatePropertyDomElement('numbersOfColumnsToUse', $(editorHtml))
+                .clone();
+
+            getHelper()
+                .getTemplatePropertyDomElement('numbersOfColumnsToUse', $(editorHtml))
+                .remove();
+
+            editorControlsWrapper = _getEditorControlsWrapperDomElement(editorHtml);
+
+            initNumbersOfColumnsField = function(element) {
+                var numbersOfColumnsTemplateClone, propertyPath;
+
+                getHelper().getTemplatePropertyDomElement('numbersOfColumnsToUse', $(editorHtml))
+                    .off()
+                    .empty()
+                    .remove();
+
+                numbersOfColumnsTemplateClone = $(numbersOfColumnsTemplate).clone(true, true);
+                _getEditorWrapperDomElement(editorHtml).after(numbersOfColumnsTemplateClone);
+
+                $('input', numbersOfColumnsTemplateClone).focus();
+
+                getHelper()
+                    .getTemplatePropertyDomElement('numbersOfColumnsToUse-label', numbersOfColumnsTemplateClone)
+                    .append(
+                        editorConfiguration['configurationOptions']['numbersOfColumnsToUse']['label']
+                            .replace('{@viewPortLabel}', element.data('viewPortLabel'))
+                    );
+
+                getHelper()
+                    .getTemplatePropertyDomElement('numbersOfColumnsToUse-fieldExplanationText', numbersOfColumnsTemplateClone)
+                    .append(editorConfiguration['configurationOptions']['numbersOfColumnsToUse']['fieldExplanationText']);
+
+                propertyPath = editorConfiguration['configurationOptions']['numbersOfColumnsToUse']['propertyPath']
+                    .replace('{@viewPortIdentifier}', element.data('viewPortIdentifier'));
+
+                getHelper()
+                    .getTemplatePropertyDomElement('numbersOfColumnsToUse-propertyPath', numbersOfColumnsTemplateClone)
+                    .val(getCurrentlySelectedFormElement().get(propertyPath));
+
+                getHelper().getTemplatePropertyDomElement('numbersOfColumnsToUse-propertyPath', numbersOfColumnsTemplateClone).on('keyup paste change', function() {
+                    var that = $(this);
+                    if (!$.isNumeric(that.val())) {
+                        that.val('');
+                    } else {
+                        getCurrentlySelectedFormElement().set(propertyPath, that.val());
+                    }
+                });
+            };
+
+            for (var i = 0, len = editorConfiguration['configurationOptions']['viewPorts'].length; i < len; ++i) {
+                var numbersOfColumnsTemplateClone, viewportButtonTemplateClone, viewPortIdentifier, viewPortLabel;
+
+                viewPortIdentifier = editorConfiguration['configurationOptions']['viewPorts'][i]['viewPortIdentifier'];
+                viewPortLabel = editorConfiguration['configurationOptions']['viewPorts'][i]['label'];
+
+                viewportButtonTemplateClone = $(viewportButtonTemplate).clone(true, true);
+                viewportButtonTemplateClone.text(viewPortLabel);
+                viewportButtonTemplateClone.data('viewPortIdentifier', viewPortIdentifier);
+                viewportButtonTemplateClone.data('viewPortLabel', viewPortLabel);
+                editorControlsWrapper.append(viewportButtonTemplateClone);
+
+                if (i === (len - 1)) {
+                    numbersOfColumnsTemplateClone = $(numbersOfColumnsTemplate).clone(true, true);
+                    _getEditorWrapperDomElement(editorHtml).after(numbersOfColumnsTemplateClone);
+                    initNumbersOfColumnsField(viewportButtonTemplateClone);
+                    viewportButtonTemplateClone.addClass(getHelper().getDomElementClassName('active'));
+                }
+
+                $('button', editorControlsWrapper).on('click', function() {
+                    var that = $(this);
+
+                    $('button', editorControlsWrapper).removeClass(getHelper().getDomElementClassName('active'));
+                    that.addClass(getHelper().getDomElementClassName('active'));
+
+                    initNumbersOfColumnsField(that);
+                });
+            }
         };
 
         /**

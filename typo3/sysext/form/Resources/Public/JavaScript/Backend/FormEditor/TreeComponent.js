@@ -306,7 +306,7 @@ define(['jquery',
                 protectRoot: true,
                 isTree: true,
                 handle: 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey'),
-                helper:	'clone',
+                helper: 'clone',
                 items: 'li',
                 opacity: .6,
                 revert: 250,
@@ -314,6 +314,39 @@ define(['jquery',
                 tolerance: 'pointer',
                 toleranceElement: '> div',
 
+                isAllowed: function (placeholder, placeholderParent, currentItem) {
+                    var formElementIdentifierPath, formElementTypeDefinition, targetFormElementIdentifierPath, targetFormElementTypeDefinition;
+
+                    formElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(currentItem));
+                    targetFormElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(placeholderParent));
+
+                    formElementTypeDefinition = getFormElementDefinition(formElementIdentifierPath);
+                    targetFormElementTypeDefinition = getFormElementDefinition(targetFormElementIdentifierPath);
+
+                    if (
+                        formElementTypeDefinition['_isGridContainerFormElement']
+                        && getFormEditorApp().findEnclosingGridContainerFormElement(targetFormElementIdentifierPath)
+                    ) {
+                        return false;
+                    }
+
+                    if (
+                        formElementTypeDefinition['_isGridRowFormElement']
+                        && !targetFormElementTypeDefinition['_isGridContainerFormElement']
+                    ) {
+                        return false;
+                    }
+
+                    if (
+                        !formElementTypeDefinition['_isGridContainerFormElement']
+                        && !formElementTypeDefinition['_isGridRowFormElement']
+                        && targetFormElementTypeDefinition['_isGridContainerFormElement']
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+                },
                 stop: function(e, o) {
                     getPublisherSubscriber().publish('view/tree/dnd/stop', [getTreeNodeIdentifierPathWithinDomElement($(o.item))]);
                 },

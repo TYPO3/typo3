@@ -803,6 +803,18 @@ define(['jquery',
             /**
              * @public
              *
+             * @param object formElement
+             * @return object|null
+             */
+            function findEnclosingGridContainerFormElement(formElement) {
+                return _getRepository().findEnclosingGridContainerFormElement(
+                    _getRepository().findFormElement(formElement)
+                );
+            };
+
+            /**
+             * @public
+             *
              * @return object
              */
             function getNonCompositeNonToplevelFormElements() {
@@ -1058,6 +1070,7 @@ define(['jquery',
                 getCurrentlySelectedPage: getCurrentlySelectedPage,
                 getLastTopLevelElementOnCurrentPage: getLastTopLevelElementOnCurrentPage,
                 findEnclosingCompositeFormElementWhichIsNotOnTopLevel: findEnclosingCompositeFormElementWhichIsNotOnTopLevel,
+                findEnclosingGridContainerFormElement: findEnclosingGridContainerFormElement,
                 isRootFormElementSelected: isRootFormElementSelected,
                 getLastFormElementWithinParentFormElement: getLastFormElementWithinParentFormElement,
                 getNonCompositeNonToplevelFormElements: getNonCompositeNonToplevelFormElements,

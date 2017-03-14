@@ -670,6 +670,9 @@
 #t3-form-stage-container.t3-form-stage-viewmode-preview textarea {
   min-height: 100px;
 }
+#t3-form-stage-container.t3-form-stage-viewmode-preview .container {
+  width: auto;
+}
 #t3-form-stage-container.t3-form-stage-viewmode-preview legend.t3-form-form-element-selected {
   border-color: #c3c3c3;
 }
@@ -729,9 +732,15 @@
   outline-offset: -2px !important;
   visibility: visible !important;
 }
+
+.ui-sortable-placeholder.mjs-nestedSortable-error {
+  outline: 1px dashed #c83c3c !important;
+}
+
 .t3-form-icon {
   margin-right: 1em;
 }
+
 .t3-form-validation-child-has-error {
   color: #c83c3c;
 }
