@@ -1351,7 +1351,7 @@ class TcaMigration
                                     $this->messages[] = 'The link wizard has been migrated to a \'renderType\' => \'inputLink \'. '
                                         . 'It has been migrated from TCA table "'
                                         . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'wizards\'][\'' . $wizardName . '\']" to "'
-                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'] = \'inputLink\'".';
+                                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'renderType\'] = \'inputLink\'".';
                                 }
                             }
                         }
