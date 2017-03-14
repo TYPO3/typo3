@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -882,11 +881,14 @@ class ExtensionManagementUtility
 
         // Register the icon and move it too "iconIdentifier"
         if (!empty($moduleConfiguration['icon'])) {
-            $iconIdentifier = 'module-' . $moduleSignature;
             $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-            $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
-                'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])
-            ]);
+            $iconIdentifier = 'module-' . $moduleSignature;
+            $iconProvider = $iconRegistry->detectIconProvider($moduleConfiguration['icon']);
+            $iconRegistry->registerIcon(
+                $iconIdentifier,
+                $iconProvider,
+                [ 'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon']) ]
+            );
             $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
             unset($moduleConfiguration['icon']);
         }
@@ -950,11 +952,14 @@ class ExtensionManagementUtility
             }
 
             if (!empty($moduleConfiguration['icon'])) {
-                $iconIdentifier = 'module-' . $fullModuleSignature;
                 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-                $iconRegistry->registerIcon($iconIdentifier, BitmapIconProvider::class, [
-                    'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])
-                ]);
+                $iconIdentifier = 'module-' . $fullModuleSignature;
+                $iconProvider = $iconRegistry->detectIconProvider($moduleConfiguration['icon']);
+                $iconRegistry->registerIcon(
+                    $iconIdentifier,
+                    $iconProvider,
+                    [ 'source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon']) ]
+                );
                 $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
                 unset($moduleConfiguration['icon']);
             }
