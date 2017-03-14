@@ -548,7 +548,7 @@ class RteHtmlParser extends HtmlParser
             if ($k % 2) {
                 list($tagAttributes) = $this->get_tag_attributes($this->getFirstTag($v), true);
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
-                $linkInformation = $linkService->resolve($tagAttributes['href']);
+                $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
 
                 // Modify parameters, this hook should be deprecated
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])
