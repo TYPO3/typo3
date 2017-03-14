@@ -2067,7 +2067,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $row['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
             ];
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             // Return link
