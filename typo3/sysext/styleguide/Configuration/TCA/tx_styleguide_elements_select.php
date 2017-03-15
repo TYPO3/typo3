@@ -636,6 +636,34 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </select_tree_1>
+                                            <select_tree_2_condition>
+                                                <TCEforms>
+                                                    <label>select_tree_2_condition, display select_tree_2?</label>
+                                                    <config>
+                                                        <type>check</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_tree_2_condition>
+                                            <select_tree_2>
+                                                <TCEforms>
+                                                    <label>select_tree_2 displayCond</label>
+                                                    <displayCond>FIELD:select_tree_2_condition:REQ:TRUE</displayCond>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectTree</renderType>
+                                                        <foreign_table>pages</foreign_table>
+                                                        <size>20</size>
+                                                        <maxitems>4</maxitems>
+                                                        <treeConfig>
+                                                            <expandAll>1</expandAll>
+                                                            <parentField>pid</parentField>
+                                                            <appearance>
+                                                                <showHeader>1</showHeader>
+                                                            </appearance>
+                                                        </treeConfig>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_tree_2>
                                         </el>
                                     </ROOT>
                                 </sTree>
@@ -767,7 +795,7 @@ return [
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
                 --div--;renderType=selectTree,
-                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
+                    select_tree_1, select_tree_2_condition, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,
