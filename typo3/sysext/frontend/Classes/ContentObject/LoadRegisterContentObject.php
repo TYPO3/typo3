@@ -28,7 +28,7 @@ class LoadRegisterContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        array_push($GLOBALS['TSFE']->registerStack, $GLOBALS['TSFE']->register);
+        $GLOBALS['TSFE']->registerStack[] = $GLOBALS['TSFE']->register;
         if (is_array($conf)) {
             $isExecuted = [];
             foreach ($conf as $theKey => $theValue) {

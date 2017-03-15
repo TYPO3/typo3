@@ -303,7 +303,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 if (!empty($newOL_js[$langRow['uid']])) {
                     $onClickArray = explode('?', $onClick, 2);
                     $lastElement = array_pop($onClickArray);
-                    array_push($onClickArray, '\'' . $newOL_js[$langRow['uid']] . ' + \'&' . $lastElement);
+                    $onClickArray[] = '\'' . $newOL_js[$langRow['uid']] . ' + \'&' . $lastElement;
                     $onClick = implode('?', $onClickArray);
                 }
                 $newButton = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick)

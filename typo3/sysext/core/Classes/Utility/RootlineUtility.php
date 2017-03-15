@@ -416,7 +416,7 @@ class RootlineUtility
         } else {
             $rootline = [];
         }
-        array_push($rootline, $page);
+        $rootline[] = $page;
         krsort($rootline);
         static::$cache->set($this->cacheIdentifier, $rootline, $cacheTags);
         static::$localCache[$this->cacheIdentifier] = $rootline;

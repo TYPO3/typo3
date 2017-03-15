@@ -164,7 +164,7 @@ abstract class AbstractService
      */
     public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred')
     {
-        array_push($this->error, ['nr' => $errNum, 'msg' => $errMsg]);
+        $this->error[] = ['nr' => $errNum, 'msg' => $errMsg];
         /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
         $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         $timeTracker->setTSlogMessage($errMsg, 2);

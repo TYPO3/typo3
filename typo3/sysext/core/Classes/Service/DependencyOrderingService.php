@@ -157,7 +157,7 @@ class DependencyOrderingService
             }
             unset($rootIds[$currentId]);
 
-            array_push($sortedIds, $currentId);
+            $sortedIds[] = $currentId;
 
             // Process the dependencies of the current node
             foreach (array_filter($dependencyGraph[$currentId]) as $dependingId => $_) {

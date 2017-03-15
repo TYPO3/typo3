@@ -611,9 +611,9 @@ class HtmlParser
                                             }
                                         }
                                     } else {
-                                        array_push($tagRegister[$tagName], $c);
+                                        $tagRegister[$tagName][] = $c;
                                         if ($tags[$tagName]['nesting'] === 'global') {
-                                            array_push($tagStack, $tagName);
+                                            $tagStack[] = $tagName;
                                         }
                                     }
                                 }

@@ -592,7 +592,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
                 if ($dependency->getIdentifier() === 'typo3') {
                     try {
                         if ($this->checkTypo3Dependency($dependency)) {
-                            array_push($suitableExtensions, $extension);
+                            $suitableExtensions[] = $extension;
                         }
                     } catch (Exception\UnresolvedTypo3DependencyException $e) {
                     }

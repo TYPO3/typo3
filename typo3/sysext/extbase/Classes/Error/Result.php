@@ -422,7 +422,7 @@ class Result
             $result[implode('.', $level)] = $this->$propertyName;
         }
         foreach ($this->propertyResults as $subPropertyName => $subResult) {
-            array_push($level, $subPropertyName);
+            $level[] = $subPropertyName;
             $subResult->flattenTree($propertyName, $result, $level);
             array_pop($level);
         }

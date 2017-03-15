@@ -306,7 +306,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     {
         $configuration = $this->linkBrowser->getConfiguration();
         if (!empty($configuration['pageIdSelector.']['enabled'])) {
-            array_push($this->linkAttributes, 'pageIdSelector');
+            $this->linkAttributes[] = 'pageIdSelector';
             $fieldDefinitions['pageIdSelector'] = '
 				<tr>
 					<td>

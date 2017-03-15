@@ -163,8 +163,8 @@ class TimeTracker implements SingletonInterface
         if (!$this->isEnabled) {
             return;
         }
-        array_push($this->tsStack[$this->tsStackPointer], $tslabel);
-        array_push($this->currentHashPointer, 'timetracker_' . $this->uniqueCounter++);
+        $this->tsStack[$this->tsStackPointer][] = $tslabel;
+        $this->currentHashPointer[] = 'timetracker_' . $this->uniqueCounter++;
         $this->tsStackLevel++;
         $this->tsStackLevelMax[] = $this->tsStackLevel;
         // setTSlog

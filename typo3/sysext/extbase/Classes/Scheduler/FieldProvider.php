@@ -302,9 +302,9 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
         ];
         foreach ($options as $optionValue => $optionLabel) {
             $selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
-            array_push($html, '<option title="test" value="' . htmlspecialchars($optionValue) . '"' . $selected . '>' . htmlspecialchars($optionLabel) . '</option>');
+            $html[] = '<option title="test" value="' . htmlspecialchars($optionValue) . '"' . $selected . '>' . htmlspecialchars($optionLabel) . '</option>';
         }
-        array_push($html, '</select>');
+        $html[] = '</select>';
         return implode(LF, $html);
     }
 

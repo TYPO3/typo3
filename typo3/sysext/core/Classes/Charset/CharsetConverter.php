@@ -979,7 +979,7 @@ class CharsetConverter implements SingletonInterface
                     }
                 } elseif (!isset($mark['U+' . $code_value])) {
                     // remove mark
-                    array_push($code_decomp, $code_value);
+                    $code_decomp[] = $code_value;
                 }
             }
             if (!empty($code_decomp) || isset($omit[$from])) {
@@ -999,7 +999,7 @@ class CharsetConverter implements SingletonInterface
                     continue 2;
                 } else {
                     // Skip decompositions containing non-ASCII chars
-                    array_push($code_decomp, chr($ord));
+                    $code_decomp[] = chr($ord);
                 }
             }
             $ascii[$this->UnumberToChar(hexdec($from))] = implode('', $code_decomp);

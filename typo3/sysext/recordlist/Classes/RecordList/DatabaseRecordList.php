@@ -506,7 +506,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $rowListArray = GeneralUtility::trimExplode(',', $rowList, true);
         // if no columns have been specified, show description (if configured)
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
-            array_push($rowListArray, $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']);
+            $rowListArray[] = $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'];
         }
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
@@ -1126,7 +1126,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $onClick = BackendUtility::editOnClick('', '', -1);
                         $onClickArray = explode('?', $onClick, 2);
                         $lastElement = array_pop($onClickArray);
-                        array_push($onClickArray, $params . '&' . $lastElement);
+                        $onClickArray[] = $params . '&' . $lastElement;
                         $onClick = implode('?', $onClickArray);
                         $cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                             . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
@@ -1215,7 +1215,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             $onClick = BackendUtility::editOnClick('', '', -1);
                             $onClickArray = explode('?', $onClick, 2);
                             $lastElement = array_pop($onClickArray);
-                            array_push($onClickArray, $params . '&' . $lastElement);
+                            $onClickArray[] = $params . '&' . $lastElement;
                             $onClick = implode('?', $onClickArray);
                             $icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
                                 . '" title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
@@ -1261,7 +1261,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                             $onClick = BackendUtility::editOnClick('', '', -1);
                             $onClickArray = explode('?', $onClick, 2);
                             $lastElement = array_pop($onClickArray);
-                            array_push($onClickArray, $params . '&' . $lastElement);
+                            $onClickArray[] = $params . '&' . $lastElement;
                             $onClick = implode('?', $onClickArray);
                             $iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
                             $theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)

@@ -401,12 +401,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             }
             // Tell JS to add new HTML of one or multiple (localize all) records to DOM
             if (!empty($jsonArray['data'])) {
-                array_push(
-                    $jsonArray['scriptCall'],
-                    'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records')
-                    . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable)
-                    . ', json.data);'
-                );
+                $jsonArray['scriptCall'][] = 'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records')
+                . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable)
+                . ', json.data);';
             }
         }
 
