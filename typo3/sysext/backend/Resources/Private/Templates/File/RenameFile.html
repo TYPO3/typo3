@@ -1,14 +1,24 @@
-<h1><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.pagetitle" /></h1>
+<h1>
+    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.pagetitle"/>
+</h1>
 <div>
     <form action="{moduleUrlTceFile}" method="post" name="editform" role="form">
         <div class="form-group">
-            <input class="form-control" type="text" name="file[rename][0][target]" value="{fileName}" style="width:384px;" />
-            <input type="hidden" name="file[rename][0][data]" value="{fileIdentifier}" />
+            <input class="form-control" type="text" name="file[rename][0][target]" value="{fileName}"
+                   data-original="{fileName}" style="width:384px;"/>
+            <input type="hidden" name="file[rename][0][data]" value="{fileIdentifier}"/>
+            <f:if condition="{destination}">
+                <input type="hidden" name="file[rename][0][destination]" value="{destination}"/>
+                <input type="hidden" name="file[rename][0][conflictMode]" value="{conflictMode}"/>
+            </f:if>
         </div>
         <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.submit')}" />
-            <input class="btn btn-danger" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel')}" onclick="backToList(); return false;" />
-            <input type="hidden" name="redirect" value="{returnUrl}" />
+            <input class="btn btn-primary t3js-submit-file-rename" type="submit"
+                   value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.submit')}"/>
+            <input class="btn btn-danger" type="submit"
+                   value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
+                   onclick="backToList(); return false;"/>
+            <input type="hidden" name="redirect" value="{returnUrl}"/>
         </div>
     </form>
 </div>

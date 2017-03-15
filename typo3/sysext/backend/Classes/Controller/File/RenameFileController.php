@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -119,6 +120,7 @@ class RenameFileController extends AbstractModule
 
         // Setting up the context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/RenameFile');
 
         // Add javaScript
         $this->moduleTemplate->addJavaScriptCode(
@@ -134,16 +136,20 @@ class RenameFileController extends AbstractModule
      */
     public function main()
     {
+        $assigns = [];
+        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        $assigns['returnUrl'] = $this->returnUrl;
+
         if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
             $fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
         } else {
             $fileIdentifier = $this->fileOrFolderObject->getUid();
+            $assigns['conflictMode'] = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
+            $assigns['destination'] = substr($this->fileOrFolderObject->getCombinedIdentifier(), 0, -strlen($this->fileOrFolderObject->getName()));
         }
-        $assigns = [];
-        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+
         $assigns['fileName'] = $this->fileOrFolderObject->getName();
         $assigns['fileIdentifier'] = $fileIdentifier;
-        $assigns['returnUrl'] = $this->returnUrl;
 
         // Create buttons
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -162,6 +168,14 @@ class RenameFileController extends AbstractModule
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
+
+        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelArray([
+            'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),
+            'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.rename'),
+            'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.override'),
+            'file_rename.exists.title' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.title'),
+            'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.description'),
+        ]);
 
         // Rendering of the output via fluid
         $view = GeneralUtility::makeInstance(StandaloneView::class);

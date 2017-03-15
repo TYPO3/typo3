@@ -121,9 +121,10 @@ interface FileInterface extends ResourceInterface
      * Renames this file.
      *
      * @param string $newName The new file name
+     * @param string $conflictMode
      * @return File
      */
-    public function rename($newName);
+    public function rename($newName, $conflictMode = DuplicationBehavior::RENAME);
 
     /*****************
      * SPECIAL METHODS

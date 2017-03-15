@@ -842,12 +842,12 @@ class ExtendedFileUtility extends BasicFileUtility
         if ($sourceFileObject instanceof File) {
             try {
                 // Try to rename the File
-                $resultObject = $sourceFileObject->rename($targetFile);
+                $resultObject = $sourceFileObject->rename($targetFile, $this->existingFilesConflictMode);
                 $this->writeLog(5, 0, 1, 'File renamed from "%s" to "%s"', [$sourceFile, $targetFile]);
                 if ($sourceFile === $targetFile) {
                     $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedSameName', [$sourceFile], FlashMessage::INFO);
                 } else {
-                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $targetFile], FlashMessage::OK);
+                    $this->addMessageToFlashMessageQueue('FileUtility.FileRenamedFromTo', [$sourceFile, $resultObject->getName()], FlashMessage::OK);
                 }
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(5, 1, 102, 'You are not allowed to rename files!', []);

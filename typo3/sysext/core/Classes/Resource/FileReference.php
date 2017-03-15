@@ -423,10 +423,10 @@ class FileReference implements FileInterface
      * Renames the fileName in this particular usage.
      *
      * @param string $newName The new name
-     * @throws \BadMethodCallException
+     * @param string $conflictMode
      * @return FileReference
      */
-    public function rename($newName)
+    public function rename($newName, $conflictMode = DuplicationBehavior::RENAME)
     {
         // @todo Implement this function. This should only rename the
         // FileReference (sys_file_reference) record, not the file itself.

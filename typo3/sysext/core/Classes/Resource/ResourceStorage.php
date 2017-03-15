@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -168,7 +169,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function __construct(Driver\DriverInterface $driver, array $storageRecord)
     {
         $this->storageRecord = $storageRecord;
-        $this->configuration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+        $this->configuration = $this->getResourceFactoryInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
         $this->capabilities =
             ($this->storageRecord['is_browsable'] ? self::CAPABILITY_BROWSABLE : 0) |
             ($this->storageRecord['is_public'] ? self::CAPABILITY_PUBLIC : 0) |
@@ -457,7 +458,7 @@ class ResourceStorage implements ResourceStorageInterface
             throw new Exception\FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
         }
         $data = $this->driver->getFolderInfoByIdentifier($folderIdentifier);
-        $folderObject = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+        $folderObject = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
         // Use the canonical identifier instead of the user provided one!
         $folderIdentifier = $folderObject->getIdentifier();
         if (
@@ -1192,7 +1193,7 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName, $removeOriginal);
-        $file = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
+        $file = $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
 
         if ($this->autoExtractMetadataEnabled()) {
             $indexer = GeneralUtility::makeInstance(Indexer::class, $this);
@@ -1588,7 +1589,7 @@ class ResourceStorage implements ResourceStorageInterface
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }
-                $potentialProcessingFolder = ResourceFactory::getInstance()->getInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
+                $potentialProcessingFolder = $this->getResourceFactoryInstance()->getInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
                 if ($potentialProcessingFolder->getStorage() === $this && $potentialProcessingFolder->getIdentifier() !== $this->getProcessingFolder()->getIdentifier()) {
                     $this->processingFolders[] = $potentialProcessingFolder;
                 }
@@ -1719,7 +1720,7 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileAddPermissions($targetFolderObject, $fileName);
         $newFileIdentifier = $this->driver->createFile($fileName, $targetFolderObject->getIdentifier());
         $this->emitPostFileCreateSignal($newFileIdentifier, $targetFolderObject);
-        return ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
+        return $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
     }
 
     /**
@@ -1792,7 +1793,7 @@ class ResourceStorage implements ResourceStorageInterface
             $tempPath = $file->getForLocalProcessing();
             $newFileObjectIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
         }
-        $newFileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileObjectIdentifier);
+        $newFileObject = $this->getResourceFactoryInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileObjectIdentifier);
         $this->emitPostFileCopySignal($file, $targetFolder);
         return $newFileObject;
     }
@@ -1860,16 +1861,12 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FileInterface $file
      * @param string $targetFileName
-     *
-     * @throws Exception\InsufficientFileWritePermissionsException
-     * @throws Exception\InsufficientFileReadPermissionsException
-     * @throws Exception\InsufficientUserPermissionsException
+     * @param string $conflictMode
      * @return FileInterface
+     * @throws ExistingTargetFileNameException
      */
-    public function renameFile($file, $targetFileName)
+    public function renameFile($file, $targetFileName, $conflictMode = DuplicationBehavior::RENAME)
     {
-        // @todo add $conflictMode setting
-
         // The name should be different from the current.
         if ($file->getName() === $targetFileName) {
             return $file;
@@ -1878,6 +1875,8 @@ class ResourceStorage implements ResourceStorageInterface
         $this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
         $this->emitPreFileRenameSignal($file, $sanitizedTargetFileName);
 
+        $conflictMode = DuplicationBehavior::cast($conflictMode);
+
         // Call driver method to rename the file and update the index entry
         try {
             $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $sanitizedTargetFileName);
@@ -1885,6 +1884,17 @@ class ResourceStorage implements ResourceStorageInterface
                 $file->updateProperties(['identifier' => $newIdentifier]);
             }
             $this->getIndexer()->updateIndexEntry($file);
+        } catch (ExistingTargetFileNameException $exception) {
+            if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
+                $newName = $this->getUniqueName($file->getParentFolder(), $sanitizedTargetFileName);
+                $file = $this->renameFile($file, $newName);
+            } elseif ($conflictMode->equals(DuplicationBehavior::CANCEL)) {
+                throw $exception;
+            } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE)) {
+                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
+                $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
+                $file = $this->replaceFile($sourceFile, PATH_site . $file->getPublicUrl());
+            }
         } catch (\RuntimeException $e) {
         }
 
@@ -2341,7 +2351,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFolder($identifier, $returnInaccessibleFolderObject = false)
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
-        $folder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+        $folder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
 
         try {
             $this->assureFolderReadPermission($folder);
@@ -2415,7 +2425,7 @@ class ResourceStorage implements ResourceStorageInterface
             $mount = reset($this->fileMounts);
             return $mount['folder'];
         } else {
-            return ResourceFactory::getInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
+            return $this->getResourceFactoryInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
         }
     }
 
@@ -2739,7 +2749,7 @@ class ResourceStorage implements ResourceStorageInterface
      * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
      * This function is used by fx. DataHandler when files are attached to records and needs to be uniquely named in the uploads/* folders
      *
-     * @param Folder $folder
+     * @param FolderInterface $folder
      * @param string $theFile The input fileName to check
      * @param bool $dontCheckForUnique If set the fileName is returned with the path prepended without checking whether it already existed!
      *
@@ -2747,7 +2757,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @return string A unique fileName inside $folder, based on $theFile.
      * @see \TYPO3\CMS\Core\Utility\File\BasicFileUtility::getUniqueName()
      */
-    protected function getUniqueName(Folder $folder, $theFile, $dontCheckForUnique = false)
+    protected function getUniqueName(FolderInterface $folder, $theFile, $dontCheckForUnique = false)
     {
         static $maxNumber = 99, $uniqueNamePrefix = '';
         // Fetches info about path, name, extension of $theFile
@@ -2884,7 +2894,7 @@ class ResourceStorage implements ResourceStorageInterface
             try {
                 if (strpos($processingFolder, ':') !== false) {
                     list($storageUid, $processingFolderIdentifier) = explode(':', $processingFolder, 2);
-                    $storage = ResourceFactory::getInstance()->getStorageObject($storageUid);
+                    $storage = $this->getResourceFactoryInstance()->getStorageObject($storageUid);
                     if ($storage->hasFolder($processingFolderIdentifier)) {
                         $this->processingFolder = $storage->getFolder($processingFolderIdentifier);
                     } else {
@@ -2909,7 +2919,7 @@ class ResourceStorage implements ResourceStorageInterface
                         $this->evaluatePermissions = $currentEvaluatePermissions;
                     } else {
                         $data = $this->driver->getFolderInfoByIdentifier($processingFolder);
-                        $this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+                        $this->processingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
                     }
                 }
             } catch (Exception\InsufficientFolderWritePermissionsException $e) {
@@ -3019,6 +3029,14 @@ class ResourceStorage implements ResourceStorageInterface
     public function isDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @return ResourceFactory
+     */
+    public function getResourceFactoryInstance(): ResourceFactory
+    {
+        return ResourceFactory::getInstance();
     }
 
     /**

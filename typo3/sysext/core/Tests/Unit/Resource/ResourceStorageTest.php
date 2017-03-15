@@ -14,12 +14,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,11 +69,11 @@ class ResourceStorageTest extends BaseTestCase
      * @param bool $mockPermissionChecks
      * @param AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverObject
      * @param array $storageRecord
+     * @param array $mockedMethods
      */
-    protected function prepareSubject(array $configuration, $mockPermissionChecks = false, AbstractDriver $driverObject = null, array $storageRecord = [])
+    protected function prepareSubject(array $configuration, $mockPermissionChecks = false, AbstractDriver $driverObject = null, array $storageRecord = [], array $mockedMethods = [])
     {
-        $permissionMethods = ['assureFileAddPermissions', 'checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission', 'checkFileExtensionPermission', 'isWithinFileMountBoundaries'];
-        $mockedMethods = [];
+        $permissionMethods = ['assureFileAddPermissions', 'checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission', 'checkFileExtensionPermission', 'isWithinFileMountBoundaries', 'assureFileRenamePermissions'];
         $configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
         $overruleArray = ['configuration' => $configuration];
         ArrayUtility::mergeRecursiveWithOverrule($storageRecord, $overruleArray);
@@ -76,12 +81,12 @@ class ResourceStorageTest extends BaseTestCase
             $driverObject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
         }
         if ($mockPermissionChecks) {
-            $mockedMethods = $permissionMethods;
+            $mockedMethods = array_merge($mockedMethods, $permissionMethods);
         }
         $mockedMethods[] = 'getIndexer';
 
         $this->subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods($mockedMethods)
+            ->setMethods(array_unique($mockedMethods))
             ->setConstructorArgs([$driverObject, $storageRecord])
             ->getMock();
         $this->subject->expects($this->any())->method('getIndexer')->will($this->returnValue($this->createMock(\TYPO3\CMS\Core\Resource\Index\Indexer::class)));
@@ -704,5 +709,74 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver = $this->createDriverMock([], $this->subject);
         $mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/someFolder/'))->will($this->returnValue(false));
         $this->subject->createFolder('newFolder', $mockedParentFolder);
+    }
+
+    /**
+     * @test
+     */
+    public function renameFileRenamesFileAsRequested()
+    {
+        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver->expects($this->once())->method('renameFile')->will($this->returnValue('bar'));
+        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal']);
+        /** @var File $file */
+        $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
+        $result = $this->subject->renameFile($file, 'bar');
+        // fake what the indexer does in updateIndexEntry
+        $result->updateProperties(['name' => $result->getIdentifier()]);
+        $this->assertSame('bar', $result->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function renameFileRenamesWithUniqueNameIfConflictAndConflictModeIsRename()
+    {
+        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver->expects($this->any())->method('renameFile')->will($this->onConsecutiveCalls($this->throwException(new ExistingTargetFileNameException('foo', 1489593090)), 'bar_01'));
+        //$mockedDriver->expects($this->at(1))->method('renameFile')->will($this->returnValue('bar_01'));
+        $mockedDriver->expects($this->any())->method('sanitizeFileName')->will($this->onConsecutiveCalls('bar', 'bar_01'));
+        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'getUniqueName']);
+        /** @var File $file */
+        $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
+        $this->subject->expects($this->once())->method('getUniqueName')->will($this->returnValue('bar_01'));
+        $result = $this->subject->renameFile($file, 'bar');
+        // fake what the indexer does in updateIndexEntry
+        $result->updateProperties(['name' => $result->getIdentifier()]);
+        $this->assertSame('bar_01', $result->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function renameFileThrowsExceptionIfConflictAndConflictModeIsCancel()
+    {
+        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException('foo', 1489593099)));
+        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal']);
+        /** @var File $file */
+        $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
+        $this->expectException(ExistingTargetFileNameException::class);
+        $this->subject->renameFile($file, 'bar', DuplicationBehavior::CANCEL);
+    }
+
+     /**
+     * @test
+     */
+    public function renameFileReplacesIfConflictAndConflictModeIsReplace()
+    {
+        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver->expects($this->once())->method('renameFile')->will($this->throwException(new ExistingTargetFileNameException('foo', 1489593098)));
+        $mockedDriver->expects($this->any())->method('sanitizeFileName')->will($this->returnValue('bar'));
+        $this->prepareSubject([], true, $mockedDriver, [], ['emitPreFileRenameSignal', 'emitPostFileRenameSignal', 'replaceFile', 'getPublicUrl', 'getResourceFactoryInstance']);
+        $this->subject->expects($this->once())->method('getPublicUrl')->will($this->returnValue('somePath'));
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        $file = $this->prophesize(FileInterface::class);
+        $resourceFactory->getFileObjectFromCombinedIdentifier(Argument::any())->willReturn($file->reveal());
+        $this->subject->expects($this->once())->method('replaceFile')->will($this->returnValue($file->reveal()));
+        $this->subject->expects($this->any())->method('getResourceFactoryInstance')->will(self::returnValue($resourceFactory->reveal()));
+        /** @var File $file */
+        $file = new File(['identifier' => 'foo', 'name' => 'foo', 'missing' => false], $this->subject);
+        $this->subject->renameFile($file, 'bar', DuplicationBehavior::REPLACE);
     }
 }
