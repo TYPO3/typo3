@@ -795,7 +795,7 @@ return [
                     select_multiplesidebyside_1, select_multiplesidebyside_2, select_multiplesidebyside_3,
                     select_multiplesidebyside_4, select_multiplesidebyside_5, select_multiplesidebyside_6,
                 --div--;renderType=selectTree,
-                    select_tree_1, select_tree_2_condition, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
+                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,
