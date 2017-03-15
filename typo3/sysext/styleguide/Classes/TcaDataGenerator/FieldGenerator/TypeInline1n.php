@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
@@ -71,25 +71,16 @@ class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInter
             'parentid' => $data['fieldValues']['uid'],
             'parenttable' => $data['tableName'],
         ];
-        $database = $this->getDatabase();
-        $database->exec_INSERTquery($childTable, $childFieldValues);
-        $childFieldValues['uid'] = $database->sql_insert_id();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($childTable);
+        $connection->insert($childTable, $childFieldValues);
+        $childFieldValues['uid'] = (int)$connection->lastInsertId($childTable);
         $recordData = GeneralUtility::makeInstance(RecordData::class);
         $childFieldValues = $recordData->generate($childTable, $childFieldValues);
-        $database->exec_UPDATEquery(
+        $connection->update(
             $childTable,
-            'uid = ' . $childFieldValues['uid'],
-            $childFieldValues
+            $childFieldValues,
+            [ 'uid' => $childFieldValues['uid'] ]
         );
         return (string)1;
     }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
 }

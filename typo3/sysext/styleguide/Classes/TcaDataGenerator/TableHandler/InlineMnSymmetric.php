@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
@@ -39,7 +39,7 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
      */
     public function handle(string $tableName)
     {
-        $database = $this->getDatabase();
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
@@ -55,17 +55,18 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
             $fieldValues = [
                 'pid' => $pidOfMainTable,
             ];
-            $database->exec_INSERTquery($tableName, $fieldValues);
-            $fieldValues['uid'] = $database->sql_insert_id();
+            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection->insert($tableName, $fieldValues);
+            $fieldValues['uid'] = $connection->lastInsertId($tableName);
             if ($isFirst) {
                 $fieldValues['branches'] = $numberOfRelationsForFirstRecord;
                 $uidOfFirstRecord = $fieldValues['uid'];
             }
             $fieldValues = $recordData->generate($tableName, $fieldValues);
-            $database->exec_UPDATEquery(
+            $connection->update(
                 $tableName,
-                'uid = ' . $fieldValues['uid'],
-                $fieldValues
+                $fieldValues,
+                [ 'uid' => $fieldValues['uid'] ]
             );
 
             if (!$isFirst && count($relationUids) < $numberOfRelationsForFirstRecord) {
@@ -81,18 +82,11 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
                 'hotelid' => $uidOfFirstRecord,
                 'branchid' => $uid,
             ];
-            $database->exec_INSERTquery(
+            $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mnsymmetric_mm');
+            $connection->insert(
                 'tx_styleguide_inline_mnsymmetric_mm',
                 $mmFieldValues
             );
         }
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

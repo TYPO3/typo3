@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
@@ -61,7 +61,8 @@ class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGene
      */
     public function generate(array $data): string
     {
-        $database = $this->getDatabase();
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_expandsingle_child');
         $childRowsToCreate = 3;
         for ($i = 0; $i < $childRowsToCreate; $i++) {
             // Insert an empty row again to have the uid already. This is useful for
@@ -71,25 +72,19 @@ class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGene
                 'parentid' => $data['fieldValues']['uid'],
                 'parenttable' => $data['tableName'],
             ];
-            $database->exec_INSERTquery('tx_styleguide_inline_expandsingle_child', $childFieldValues);
-            $childFieldValues['uid'] = $database->sql_insert_id();
+            $connection->insert(
+                'tx_styleguide_inline_expandsingle_child',
+                $childFieldValues
+            );
+            $childFieldValues['uid'] = $connection->lastInsertId('tx_styleguide_inline_expandsingle_child');
             $recordData = GeneralUtility::makeInstance(RecordData::class);
             $childFieldValues = $recordData->generate('tx_styleguide_inline_expandsingle_child', $childFieldValues);
-            $database->exec_UPDATEquery(
+            $connection->update(
                 'tx_styleguide_inline_expandsingle_child',
-                'uid = ' . $childFieldValues['uid'],
-                $childFieldValues
+                $childFieldValues,
+                [ 'uid' => $childFieldValues['uid'] ]
             );
         }
         return (string)$childRowsToCreate;
     }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
 }

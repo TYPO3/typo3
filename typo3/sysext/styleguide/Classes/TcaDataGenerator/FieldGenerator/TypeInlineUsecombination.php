@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
@@ -70,13 +70,13 @@ class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGe
      */
     public function generate(array $data): string
     {
-        $database = $this->getDatabase();
         if (!isset($GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['select_child']['config']['foreign_table'])) {
             throw new \RuntimeException(
                 'mm child table name not found',
                 1459941569
             );
         }
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $childChildTableName = $GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['select_child']['config']['foreign_table'];
         $numberOfChildChildRowsToCreate = 4;
         $uidsOfChildrenToConnect = [];
@@ -86,17 +86,18 @@ class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGe
             $childFieldValues = [
                 'pid' => $data['fieldValues']['pid'],
             ];
-            $database->exec_INSERTquery($childChildTableName, $childFieldValues);
-            $childFieldValues['uid'] = $database->sql_insert_id();
+            $connection = $connectionPool->getConnectionForTable($childChildTableName);
+            $connection->insert($childChildTableName, $childFieldValues);
+            $childFieldValues['uid'] = $connection->lastInsertId($childChildTableName);
             if (count($uidsOfChildrenToConnect) < 2) {
                 $uidsOfChildrenToConnect[] = $childFieldValues['uid'];
             }
             $recordData = GeneralUtility::makeInstance(RecordData::class);
             $childFieldValues = $recordData->generate($childChildTableName, $childFieldValues);
-            $database->exec_UPDATEquery(
+            $connection->update(
                 $childChildTableName,
-                'uid = ' . $childFieldValues['uid'],
-                $childFieldValues
+                $childFieldValues,
+                [ 'uid' => (int)$childFieldValues['uid'] ]
             );
         }
         foreach ($uidsOfChildrenToConnect as $uid) {
@@ -105,20 +106,10 @@ class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGe
                 'select_parent' => $data['fieldValues']['uid'],
                 'select_child' => $uid,
             ];
-            $database->exec_INSERTquery(
-                $data['fieldConfig']['config']['foreign_table'],
-                $mmFieldValues
-            );
+            $tableName = $data['fieldConfig']['config']['foreign_table'];
+            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection->insert($tableName, $mmFieldValues);
         }
         return (string)count($uidsOfChildrenToConnect);
     }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
 }

@@ -17,12 +17,14 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
@@ -190,8 +192,6 @@ class Generator
      */
     protected function populateRowsOfThirdPartyTables()
     {
-        $database = $this->getDatabase();
-
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
@@ -204,9 +204,10 @@ class Generator
                 'tx_styleguide_isdemorecord' => 1,
                 'title' => 'styleguide demo group 1',
             ];
-            $database->exec_INSERTquery('be_groups', $fields);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_groups');
+            $connection->insert('be_groups', $fields);
             $fields['title'] = 'styleguide demo group 2';
-            $database->exec_INSERTquery('be_groups', $fields);
+            $connection->insert('be_groups', $fields);
             $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
 
             // If there were no groups, it is assumed (!) there are no users either. So they are just created.
@@ -229,12 +230,13 @@ class Generator
                 'usergroup' => implode(',', $demoGroupUids),
                 'password' => $saltedpassword->getHashedPassword($random->generateRandomBytes(10)),
             ];
-            $database->exec_INSERTquery('be_users', $fields);
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+            $connection->insert('be_users', $fields);
             $fields['admin'] = 1;
             $fields['username'] = 'styleguide demo user 2';
             $fields['usergroup'] = '';
             $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
-            $database->exec_INSERTquery('be_users', $fields);
+            $connection->insert('be_users', $fields);
         }
 
         // Add 3 files from resources directory to default storage
@@ -328,26 +330,18 @@ class Generator
      */
     protected function getUidOfLastTopLevelPage(): int
     {
-        $database = $this->getDatabase();
-        $lastPage = $database->exec_SELECTgetSingleRow(
-            'uid',
-            'pages',
-            'pid = 0' . BackendUtility::deleteClause('pages'),
-            '',
-            'sorting DESC'
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $lastPage = $queryBuilder->select('uid')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->orderBy('sorting', 'DESC')
+            ->execute()
+            ->fetchColumn(0);
         $uid = 0;
-        if (is_array($lastPage) && count($lastPage) === 1) {
-            $uid = (int)$lastPage['uid'];
+        if (MathUtility::canBeInterpretedAsInteger($lastPage) && $lastPage > 0) {
+            $uid = (int)$lastPage;
         }
         return $uid;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

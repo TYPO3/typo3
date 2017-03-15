@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
@@ -50,7 +50,8 @@ class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator impl
     {
         // Create 2 child rows in tx_styleguide_elements_select_single_12_foreign
         // and select the first one
-        $database = $this->getDatabase();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_styleguide_elements_select_single_12_foreign');
 
         // Just in case this dir does not exist yet
         GeneralUtility::mkdir(PATH_site . 'uploads/tx_styleguide');
@@ -74,18 +75,13 @@ class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator impl
                 'pid' => $data['fieldValues']['pid'],
                 'group_1' => $finalFileName,
             ];
-            $database->exec_INSERTquery('tx_styleguide_elements_select_single_12_foreign', $childFieldValues);
-            $lastUid = $database->sql_insert_id();
+            $connection->insert(
+                'tx_styleguide_elements_select_single_12_foreign',
+                $childFieldValues
+            );
+            $lastUid = $connection->lastInsertId('tx_styleguide_elements_select_single_12_foreign');
         }
 
         return (string)$lastUid;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

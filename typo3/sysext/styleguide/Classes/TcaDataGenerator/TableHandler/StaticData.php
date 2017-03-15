@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
@@ -38,31 +38,22 @@ class StaticData extends AbstractTableHandler implements TableHandlerInterface
      */
     public function handle(string $tableName)
     {
-        $database = $this->getDatabase();
-
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
         // tx_styleguide_staticdata is used in other TCA demo fields. We need some default
         // rows to later connect other fields to these rows.
         $pid = $recordFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $database->exec_INSERTmultipleRows(
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_styleguide_staticdata');
+        $connection->bulkInsert(
             'tx_styleguide_staticdata',
-            [ 'pid', 'value_1' ],
             [
                 [ $pid, 'foo' ],
                 [ $pid, 'bar' ],
                 [ $pid, 'foofoo' ],
                 [ $pid, 'foobar' ],
-            ]
+            ],
+            [ 'pid', 'value_1' ]
         );
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

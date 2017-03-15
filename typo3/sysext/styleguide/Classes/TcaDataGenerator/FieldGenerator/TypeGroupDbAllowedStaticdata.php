@@ -49,6 +49,6 @@ class TypeGroupDbAllowedStaticdata extends AbstractFieldGenerator implements Fie
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $staticdataUids = $recordFinder->findUidsOfStaticdata();
         // Return only one element
-        return current($staticdataUids);
+        return (string)current($staticdataUids);
     }
 }

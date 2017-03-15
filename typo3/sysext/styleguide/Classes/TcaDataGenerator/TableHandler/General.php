@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
@@ -45,7 +45,6 @@ class General extends AbstractTableHandler implements TableHandlerInterface
      */
     public function handle(string $tableName)
     {
-        $database = $this->getDatabase();
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         /** @var RecordData $recordData */
@@ -56,13 +55,14 @@ class General extends AbstractTableHandler implements TableHandlerInterface
         $fieldValues = [
             'pid' => $recordFinder->findPidOfMainTableRecord($tableName),
         ];
-        $database->exec_INSERTquery($tableName, $fieldValues);
-        $fieldValues['uid'] = $database->sql_insert_id();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        $connection->insert($tableName, $fieldValues);
+        $fieldValues['uid'] = $connection->lastInsertId($tableName);
         $fieldValues = $recordData->generate($tableName, $fieldValues);
-        $database->exec_UPDATEquery(
+        $connection->update(
             $tableName,
-            'uid = ' . $fieldValues['uid'],
-            $fieldValues
+            $fieldValues,
+            [ 'uid' => $fieldValues['uid'] ]
         );
     }
 }

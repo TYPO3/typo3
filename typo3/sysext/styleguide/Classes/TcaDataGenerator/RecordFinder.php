@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,14 +36,22 @@ class RecordFinder
      */
     public function findUidsOfStyleguideEntryPages(): array
     {
-        $database = $this->getDatabase();
-        $rows = $database->exec_SELECTgetRows(
-            'uid',
-            'pages',
-            'pid = 0'
-            . ' AND tx_styleguide_containsdemo=' . $database->fullQuoteStr('tx_styleguide', 'pages')
-            . BackendUtility::deleteClause('pages')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter('tx_styleguide', \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
         $uids = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -64,16 +72,20 @@ class RecordFinder
      */
     public function findPidOfMainTableRecord(string $tableName): int
     {
-        $database = $this->getDatabase();
-        $row = $database->exec_SELECTgetSingleRow(
-            'uid',
-            'pages',
-            'tx_styleguide_containsdemo=' . $database->fullQuoteStr($tableName, 'pages')
-                . BackendUtility::deleteClause('pages'),
-            '',
-            'pid DESC'
-        );
-        if (!count($row) === 1) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $row = $queryBuilder->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                )
+            )
+            ->orderBy('pid', 'DESC')
+            ->execute()
+            ->fetch();
+        if (count($row) !== 1) {
             throw new Exception(
                 'Found no page for main table ' . $tableName,
                 1457690656
@@ -89,13 +101,18 @@ class RecordFinder
      */
     public function findUidsOfDemoBeGroups(): array
     {
-        $database = $this->getDatabase();
-        $rows = $database->exec_SELECTgetRows(
-            'uid',
-            'be_groups',
-            'tx_styleguide_isdemorecord = 1'
-                . BackendUtility::deleteClause('be_groups')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('be_groups')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_isdemorecord',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchAll();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -112,13 +129,18 @@ class RecordFinder
      */
     public function findUidsOfDemoBeUsers(): array
     {
-        $database = $this->getDatabase();
-        $rows = $database->exec_SELECTgetRows(
-            'uid',
-            'be_users',
-            'tx_styleguide_isdemorecord = 1'
-                . BackendUtility::deleteClause('be_users')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_isdemorecord',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchAll();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -135,14 +157,19 @@ class RecordFinder
      */
     public function findUidsOfStaticdata(): array
     {
-        $database = $this->getDatabase();
         $pageUid = $this->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $rows = $database->exec_SELECTgetRows(
-            'uid',
-            'tx_styleguide_staticdata',
-            'pid = ' . $pageUid
-                . BackendUtility::deleteClause('tx_styleguide_staticdata')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_styleguide_staticdata');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('tx_styleguide_staticdata')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchAll();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -180,13 +207,4 @@ class RecordFinder
         $folder = $storage->getRootLevelFolder();
         return $folder->getSubfolder('styleguide');
     }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
 }

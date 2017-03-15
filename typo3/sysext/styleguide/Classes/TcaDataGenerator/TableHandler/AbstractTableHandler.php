@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-
 /**
  * Abstract table handler implements general methods
  */
@@ -36,13 +34,5 @@ class AbstractTableHandler
     public function match(string $tableName): bool
     {
         return $tableName === $this->tableName;
-    }
-
-    /**
-     * @return DatabaseConnection
-     */
-    protected function getDatabase(): DatabaseConnection
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }
