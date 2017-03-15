@@ -54,16 +54,6 @@ lib.parseFunc_RTE {
     externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
     externalBlocks {
         # The blockquote content is passed into parseFunc again...
-        blockquote {
-            stripNL = 1
-            callRecursive = 1
-            callRecursive {
-                tagStdWrap {
-                    HTMLparser = 1
-                    HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
-                }
-            }
-        }
         ol {
             stripNL = 1
             stdWrap.parseFunc = < lib.parseFunc
@@ -101,6 +91,7 @@ lib.parseFunc_RTE {
         }
         article < .div
         aside < .div
+        blockquote < .div
         footer < .div
         header < .div
         nav < .div
