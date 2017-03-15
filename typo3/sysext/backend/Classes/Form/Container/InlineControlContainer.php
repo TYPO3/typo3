@@ -109,8 +109,11 @@ class InlineControlContainer extends AbstractContainer
         $foreign_table = $config['foreign_table'];
 
         $language = 0;
-        if (BackendUtility::isTableLocalizable($table)) {
-            $language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+        $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        if (BackendUtility::isTableLocalizable($table) && isset($row[$languageFieldName][0])) {
+            $language = (int)$row[$languageFieldName][0];
+        } elseif (BackendUtility::isTableLocalizable($table)) {
+            $language = (int)$row[$languageFieldName];
         }
 
         // Add the current inline job to the structure stack

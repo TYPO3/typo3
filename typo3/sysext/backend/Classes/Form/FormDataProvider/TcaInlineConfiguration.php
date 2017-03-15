@@ -46,9 +46,11 @@ class TcaInlineConfiguration implements FormDataProviderInterface
 
             $result = $this->initializeMinMaxItems($result, $fieldName);
             $result = $this->initializeLocalizationMode($result, $fieldName);
+            $result = $this->initializeChildrenLanguage($result, $fieldName);
             $result = $this->initializeAppearance($result, $fieldName);
             $result = $this->addInlineSelectorAndUniqueConfiguration($result, $fieldName);
         }
+
         return $result;
     }
 
@@ -116,7 +118,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             'sort' => true,
             'hide' => true,
             'delete' => true,
-            'localize' => true
+            'localize' => true,
         ];
         if (isset($config['appearance']['enabledControls']) && is_array($config['appearance']['enabledControls'])) {
             $config['appearance']['enabledControls'] = array_merge($enabledControls, $config['appearance']['enabledControls']);
@@ -146,6 +148,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             // If handled record is not localized, set localizationMode to 'none' and return
             // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
             $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = 'none';
+
             return $result;
         }
 
@@ -192,6 +195,46 @@ class TcaInlineConfiguration implements FormDataProviderInterface
 
         // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
         $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = $mode;
+
+        return $result;
+    }
+
+    /**
+     * Set default value for child records 'sys_language_uid' field. This is relevant if a localized
+     * parent is edited and a child is added via the ajax call. The child should then have the same
+     * sys_language_uid as the parent.
+     * The method verifies if the parent is a localized parent, and writes the current languageField
+     * value into TCA ['config']['inline']['parentSysLanguageUid'] of the parent inline TCA field. The whole
+     * ['config'] section is transferred to the 'create new child' ajax controller, the value is then used within
+     * 'DatabaseRowInitializeNew' data provider to initialize the child languageField value with that value.
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @return array Modified item array
+     */
+    protected function initializeChildrenLanguage(array $result, $fieldName)
+    {
+        $childTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
+
+        if (empty($result['processedTca']['ctrl']['languageField'])
+            || empty($GLOBALS['TCA'][$childTableName]['ctrl']['languageField'])
+        ) {
+            return $result;
+        }
+
+        $parentConfig = $result['processedTca']['columns'][$fieldName]['config'];
+        if ($parentConfig['behaviour']['localizationMode'] === 'keep') {
+            return $result;
+        }
+
+        $parentLanguageField = $result['processedTca']['ctrl']['languageField'];
+        if (!isset($parentConfig['inline']['parentSysLanguageUid'])
+            && isset($result['databaseRow'][$parentLanguageField][0])
+        ) {
+            $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
+                = (int)$result['databaseRow'][$parentLanguageField][0];
+        }
+
         return $result;
     }
 
@@ -254,7 +297,8 @@ class TcaInlineConfiguration implements FormDataProviderInterface
 
         // Throw if field is type group, but not internal_type db
         if ($selectorOrUniqueConfiguration['config']['type'] === 'group'
-            && (!isset($selectorOrUniqueConfiguration['config']['internal_type']) ||  $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db')) {
+            && (!isset($selectorOrUniqueConfiguration['config']['internal_type']) || $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db')
+        ) {
             throw new \UnexpectedValueException(
                 'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
                 . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'

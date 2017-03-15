@@ -48,6 +48,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         $result = $this->setDefaultsFromNeighborRow($result);
         $result = $this->setDefaultsFromDevVals($result);
         $result = $this->setDefaultsFromInlineRelations($result);
+        $result = $this->setDefaultsFromInlineParentLanguage($result);
         $result = $this->setPid($result);
 
         return $result;
@@ -188,6 +189,39 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         if ($result['inlineChildChildUid']) {
             $result['databaseRow'][$selectorFieldName] = $result['inlineChildChildUid'];
         }
+
+        return $result;
+    }
+
+    /**
+     * If a new child is created in an inline relation via ajax, and if the parent is a localized record,
+     * the child should have the same sys_language_uid set in the field declared in ['ctrl']['languageField']
+     * if the child is localizable itself.
+     * A localized parent transfers its sys_language_uid via inlineParentConfig['inline']['parentSysLanguageUid'],
+     * use that value as default for the child record languageField.
+     *
+     * @param array $result Result array
+     * @return array Modified result array
+     * @throws \UnexpectedValueException
+     */
+    protected function setDefaultsFromInlineParentLanguage(array $result): array
+    {
+        if (!isset($result['inlineParentConfig']['inline']['parentSysLanguageUid'])
+            || empty($result['processedTca']['ctrl']['languageField'])
+            || empty($result['processedTca']['ctrl']['transOrigPointerField'])
+        ) {
+            return $result;
+        }
+
+        if (!MathUtility::canBeInterpretedAsInteger($result['inlineParentConfig']['inline']['parentSysLanguageUid'])) {
+            throw new \UnexpectedValueException(
+                'A sys_language_uid is set from inline parent config but the value is no integer',
+                1490360772
+            );
+        }
+        $parentSysLanguageUid = (int)$result['inlineParentConfig']['inline']['parentSysLanguageUid'];
+        $languageFieldName = $result['processedTca']['ctrl']['languageField'];
+        $result['databaseRow'][$languageFieldName] = $parentSysLanguageUid;
 
         return $result;
     }

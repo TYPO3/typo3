@@ -599,6 +599,65 @@ class DatabaseRowInitializeNewTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
+    public function addDataThrowsExceptionIfInlineParentLanguageIsNoInteger()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'inlineParentConfig' => [
+                'inline' => [
+                    'parentSysLanguageUid' => 'not-an-integer',
+                ],
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+                'columns' => [],
+            ],
+        ];
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1490360772);
+        $this->subject->addData($input);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataSetsSysLanguageUidFromParent()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 1,
+            'databaseRow' => [],
+            'inlineParentConfig' => [
+                'inline' => [
+                    'parentSysLanguageUid' => '42',
+                ],
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+                'columns' => [],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow'] = [
+            'sys_language_uid' => 42,
+            'pid' => 1,
+        ];
+        $result = $this->subject->addData($input);
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     */
     public function addDataSetsPidToVanillaUid()
     {
         $input = [
