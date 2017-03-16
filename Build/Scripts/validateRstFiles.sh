@@ -43,7 +43,7 @@ for i in `find typo3/sysext/core/Documentation/Changelog -name "*.rst" -type f`;
 # the last line in the checked file
         if ! [[ "$fileContent" =~ '.. index:: '((TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|ext:([a-z|A-Z|_|0-9]*))([,|[:space:]]{2})?)+$ ]]; then
             INDEX="no or wrong index"
-            index_message="insert '.. index:: <at least one keyword>' at last line of the file"
+            index_message="insert '.. index:: <at least one valid keyword>' at last line of the file. See Build/Scripts/validateRstFiles.sh for allowed keywords"
             outputFileToStream=1;
         else
             INDEX=""
