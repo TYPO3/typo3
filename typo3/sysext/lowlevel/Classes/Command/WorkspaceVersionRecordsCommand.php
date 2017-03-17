@@ -271,7 +271,21 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function traversePageTreeForVersionedRecords(int $rootID, int $depth, bool $isInsideVersionedPage = false, bool $rootIsVersion = false)
     {
-        $pageRecord = BackendUtility::getRecordRaw('pages', 'uid=' . $rootID, 'deleted,title,t3ver_count,t3ver_wsid');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $pageRecord = $queryBuilder
+            ->select(
+                'deleted',
+                'title',
+                't3ver_count',
+                't3ver_wsid'
+            )
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)))
+            ->execute()
+            ->fetch();
+
         // If rootIsVersion is set it means that the input rootID is that of a version of a page. See below where the recursive call is made.
         if ($rootIsVersion) {
             $workspaceId = (int)$pageRecord['t3ver_wsid'];

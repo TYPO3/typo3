@@ -5142,7 +5142,24 @@ class DataHandler
                 switch ($conf['type']) {
                     case 'flex':
                         $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-                        $flexObj->traverseFlexFormXMLData($table, $fieldName, BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid), $this, 'deleteRecord_flexFormCallBack');
+
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getQueryBuilderForTable($table);
+                        $queryBuilder->getRestrictions()->removeAll();
+
+                        $files = $queryBuilder
+                            ->select('*')
+                            ->from($table)
+                            ->where(
+                                $queryBuilder->expr()->eq(
+                                    'uid',
+                                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                                )
+                            )
+                            ->execute()
+                            ->fetch();
+
+                        $flexObj->traverseFlexFormXMLData($table, $fieldName, $files, $this, 'deleteRecord_flexFormCallBack');
                         break;
                 }
             }
@@ -6545,7 +6562,17 @@ class DataHandler
     {
         $id = (int)$id;
         if ($this->bypassAccessCheckForRecords) {
-            return is_array(BackendUtility::getRecordRaw($table, 'uid=' . $id, 'uid'));
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $record = $queryBuilder->select('uid')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
+                ->execute()
+                ->fetch();
+
+            return is_array($record);
         }
         // Processing the incoming $perms (from possible string to integer that can be AND'ed)
         if (!MathUtility::canBeInterpretedAsInteger($perms)) {

@@ -369,7 +369,16 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
     {
         // Register page:
         $this->recStats['all']['pages'][$rootID] = $rootID;
-        $pageRecord = BackendUtility::getRecordRaw('pages', 'uid=' . (int)$rootID, 'deleted,title,t3ver_count,t3ver_wsid');
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $pageRecord = $queryBuilder->select('deleted', 'title', 't3ver_count', 't3ver_wsid')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)))
+            ->execute()
+            ->fetch();
+
         $accumulatedPath .= '/' . $pageRecord['title'];
         // Register if page is deleted:
         if ($pageRecord['deleted']) {

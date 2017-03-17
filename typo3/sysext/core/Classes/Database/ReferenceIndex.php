@@ -227,7 +227,19 @@ class ReferenceIndex
         }
 
         // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
-        if ($tableRelationFields !== '' && BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid, 'uid')) {
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $exists = $queryBuilder
+            ->select('uid')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            )
+            ->execute()
+            ->fetch();
+
+        if ($tableRelationFields !== '' && $exists) {
             // Then, get relations:
             $relations = $this->generateRefIndexData($tableName, $uid);
             if (is_array($relations)) {
@@ -332,7 +344,18 @@ class ReferenceIndex
         }
 
         // Get raw record from DB
-        $record = BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid, $selectFields);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $record = $queryBuilder
+            ->select(...explode(',', $selectFields))
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            )
+            ->execute()
+            ->fetch();
+
         if (!is_array($record)) {
             return null;
         }

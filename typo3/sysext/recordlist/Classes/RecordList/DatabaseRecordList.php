@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -776,9 +777,24 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                                     // $lRow isn't always what we want - if record was moved we've to work with the
                                     // placeholder records otherwise the list is messed up a bit
                                     if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
-                                        $where = 't3ver_move_id="' . (int)$lRow['uid'] . '" AND pid="' . $row['_MOVE_PLH_pid']
-                                            . '" AND t3ver_wsid=' . $row['t3ver_wsid'] . BackendUtility::deleteClause($table);
-                                        $tmpRow = BackendUtility::getRecordRaw($table, $where, $selFieldList);
+                                        $where = 't3ver_move_id="' . (int)$lRow['uid']
+                                            . '" AND pid="' . (int)$row['_MOVE_PLH_pid']
+                                            . '" AND t3ver_wsid=' . (int)$row['t3ver_wsid'];
+
+                                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                                            ->getQueryBuilderForTable($table);
+                                        $queryBuilder->getRestrictions()
+                                            ->removeAll()
+                                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                                        ;
+
+                                        $tmpRow = $queryBuilder
+                                            ->select(...$selFieldList)
+                                            ->from($table)
+                                            ->where(QueryHelper::stripLogicalOperatorPrefix($where))
+                                            ->execute()
+                                            ->fetch();
+
                                         $lRow = is_array($tmpRow) ? $tmpRow : $lRow;
                                     }
                                     // In offline workspace, look for alternative record:

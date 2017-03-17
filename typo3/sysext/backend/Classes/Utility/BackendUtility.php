@@ -191,9 +191,11 @@ class BackendUtility
      * @param string $where WHERE clause
      * @param string $fields $fields is a list of fields to select, default is '*'
      * @return array|bool First row found, if any, FALSE otherwise
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
      */
     public static function getRecordRaw($table, $where = '', $fields = '*')
     {
+        GeneralUtility::logDeprecatedFunction();
         $queryBuilder = static::getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
 
@@ -4826,19 +4828,28 @@ class BackendUtility
      */
     public static function ADMCMD_previewCmds($pageInfo)
     {
+        $tableNameFeGroup = 'fe_groups';
         $simUser = '';
         $simTime = '';
-        if ($pageInfo['fe_group'] > 0) {
-            $simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
-        } elseif ((int)$pageInfo['fe_group'] === -2) {
+        if ($pageInfo[$tableNameFeGroup] > 0) {
+            $simUser = '&ADMCMD_simUser=' . $pageInfo[$tableNameFeGroup];
+        } elseif ((int)$pageInfo[$tableNameFeGroup] === -2) {
             // -2 means "show at any login". We simulate first available fe_group.
             /** @var PageRepository $sysPage */
             $sysPage = GeneralUtility::makeInstance(PageRepository::class);
-            $activeFeGroupRow = self::getRecordRaw(
-                'fe_groups',
-                '1=1' . $sysPage->enableFields('fe_groups'),
-                'uid'
-            );
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($tableNameFeGroup);
+            $queryBuilder->getRestrictions()->removeAll();
+
+            $activeFeGroupRow = $queryBuilder->select('uid')
+                ->from($tableNameFeGroup)
+                ->where(
+                    QueryHelper::stripLogicalOperatorPrefix('1=1' . $sysPage->enableFields('fe_groups'))
+                )
+                ->execute()
+                ->fetch();
+
             if (!empty($activeFeGroupRow)) {
                 $simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
             }

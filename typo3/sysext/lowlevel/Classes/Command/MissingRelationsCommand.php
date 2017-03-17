@@ -20,7 +20,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -236,11 +235,26 @@ If you want to get more detailed information, use the --verbose option.')
             $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
             // Get referenced record:
             if (!isset($existingRecords[$idx])) {
-                $existingRecords[$idx] = BackendUtility::getRecordRaw(
-                    $rec['ref_table'],
-                    'uid=' . (int)$rec['ref_uid'],
-                    'uid,pid' . (isset($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']) ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : '')
-                );
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($rec['ref_table']);
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $selectFields = ['uid', 'pid'];
+                if (isset($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'])) {
+                    $selectFields[] = $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'];
+                }
+
+                $existingRecords[$idx] = $queryBuilder
+                    ->select(...$selectFields)
+                    ->from($rec['ref_table'])
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($rec['ref_uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->execute()
+                    ->fetch();
             }
             // Compile info string for location of reference:
             $infoString = $this->formatReferenceIndexEntryToString($rec);
