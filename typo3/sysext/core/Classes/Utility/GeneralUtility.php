@@ -4175,7 +4175,7 @@ class GeneralUtility
      *
      * @param string $requireFile: Path of the file to be included
      * @return void
-     * @deprecated since TYPO3 CMS 8, this file will be removed in TYPO3 CMS 9
+     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
      */
     public static function requireOnce($requireFile)
     {
@@ -4192,7 +4192,7 @@ class GeneralUtility
      *
      * @param string $requireFile: Path of the file to be included
      * @return void
-     * @deprecated since TYPO3 CMS 8, this file will be removed in TYPO3 CMS 9
+     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
      */
     public static function requireFile($requireFile)
     {
