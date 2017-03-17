@@ -71,7 +71,6 @@ class PageTree
     {
         $I = $this->tester;
         $I->switchToIFrame();
-        $I->waitforelementVisible(self::$pageTreeSelector);
         return $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\WebDriverBy::cssSelector(self::$pageTreeSelector));
         });
