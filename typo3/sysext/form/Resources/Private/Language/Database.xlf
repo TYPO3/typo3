@@ -392,30 +392,81 @@
             <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" xml:space="preserve">
                 <source>Regular expression</source>
             </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" xml:space="preserve">
                 <source>Alphanumeric</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" xml:space="preserve">
                 <source>Non-XML text</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" xml:space="preserve">
                 <source>String length</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" xml:space="preserve">
                 <source>Email</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" xml:space="preserve">
                 <source>Integer number</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" xml:space="preserve">
                 <source>Floating-point number</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" xml:space="preserve">
                 <source>Number</source>
             </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" xml:space="preserve">
                 <source>Number range</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" xml:space="preserve">
                 <source>Regular expression</source>
             </trans-unit>
@@ -424,6 +475,12 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText" xml:space="preserve">
                 <source>Enter a valid PHP PCRE regular expression here.</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" xml:space="preserve">
@@ -666,6 +723,12 @@
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" xml:space="preserve">
                 <source>Required field</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
+            </trans-unit>
 
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" xml:space="preserve">
                 <source>Grid viewport configuration</source>
@@ -832,6 +895,12 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" xml:space="preserve">
                 <source>Date/time</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label" xml:space="preserve">
+                <source>Custom error message</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve">
+                <source>Error message which is shown if the validation does not succeed</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.StaticText.label" xml:space="preserve">

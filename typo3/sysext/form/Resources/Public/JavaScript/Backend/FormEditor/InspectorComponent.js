@@ -85,6 +85,8 @@ define(['jquery',
         'Inspector-TextEditor': 'Inspector-TextEditor',
         'Inspector-Typo3WinBrowserEditor': 'Inspector-Typo3WinBrowserEditor',
         'Inspector-ValidatorsEditor': 'Inspector-ValidatorsEditor',
+        'Inspector-ValidationErrorMessageEditor': 'Inspector-ValidationErrorMessageEditor',
+
         inspectorFinishers: 'inspectorFinishers',
         inspectorValidators: 'inspectorValidators',
         propertyGridEditorAddRow: 'addRow',
@@ -274,6 +276,14 @@ define(['jquery',
             collectionName
           );
           break;
+        case 'Inspector-ValidationErrorMessageEditor':
+            renderValidationErrorMessageEditor(
+                editorConfiguration,
+                editorHtml,
+                collectionElementIdentifier,
+                collectionName
+            );
+            break;
         case 'Inspector-RemoveElementEditor':
           renderRemoveElementEditor(
             editorConfiguration,
@@ -597,6 +607,97 @@ define(['jquery',
           _getEditorControlsWrapperDomElement(editorHtml).closest(getHelper().getDomElementClassName('collectionElement', true))
         );
       }
+    };
+
+    /**
+     * @private
+     *
+     * @param object
+     * @param object
+     * @return null|string
+     * @throws 1489932939
+     * @throws 1489932940
+     */
+    function _getFirstAvailableValidationErrorMessage(errorCodes, propertyData) {
+      assert(
+        'array' === $.type(errorCodes),
+        'Invalid configuration "errorCodes"',
+        1489932939
+      );
+      assert(
+        'array' === $.type(propertyData),
+        'Invalid configuration "propertyData"',
+        1489932940
+      );
+
+      for (var i = 0, len1 = errorCodes.length; i < len1; ++i) {
+        for (var j = 0, len2 = propertyData.length; j < len2; ++j) {
+          if (parseInt(errorCodes[i]) === parseInt(propertyData[j]['code'])) {
+            if (getUtility().isNonEmptyString(propertyData[j]['message'])) {
+              return propertyData[j]['message'];
+            }
+          }
+        }
+      }
+
+      return null;
+    };
+
+    /**
+     * @private
+     *
+     * @param object
+     * @param object
+     * @param string
+     * @return object
+     * @throws 1489932942
+     */
+    function _renewValidationErrorMessages(errorCodes, propertyData, value) {
+      var errorCodeSubset;
+
+      assert(
+        'array' === $.type(propertyData),
+        'Invalid configuration "propertyData"',
+        1489932942
+      );
+
+      if (
+        !getUtility().isUndefinedOrNull(errorCodes)
+        && 'array' === $.type(errorCodes)
+      ) {
+        errorCodeSubset = [];
+        for (var i = 0, len1 = errorCodes.length; i < len1; ++i) {
+          var errorCodeFound = false;
+
+          for (var j = 0, len2 = propertyData.length; j < len2; ++j) {
+            if (parseInt(errorCodes[i]) === parseInt(propertyData[j]['code'])) {
+              errorCodeFound = true;
+              if (getUtility().isNonEmptyString(value)) {
+                // error code exists and should be updated because message is not empty
+                propertyData[j]['message'] = value;
+              } else {
+                // error code exists but should be removed because message is empty
+                propertyData.splice(j, 1);
+                --len2;
+              }
+            }
+          }
+
+          if (!errorCodeFound) {
+            // add new codes because message is not empty
+            if (getUtility().isNonEmptyString(value)) {
+              errorCodeSubset.push({
+                code: errorCodes[i],
+                message: value
+              });
+            }
+          }
+        }
+
+        propertyData = propertyData.concat(errorCodeSubset);
+      }
+
+      return propertyData;
     };
 
     /* *************************************************************
@@ -1139,6 +1240,85 @@ define(['jquery',
             }
           }
         }
+      });
+    };
+
+    /**
+     * @public
+     *
+     * @param object editorConfiguration
+     * @param object editorHtml
+     * @param string collectionElementIdentifier
+     * @param string collectionName
+     * @return void
+     * @throws 1489874120
+     * @throws 1489874121
+     * @throws 1489874122
+     * @throws 1489874123
+     */
+    function renderValidationErrorMessageEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
+      var propertyData, propertyPath, validationErrorMessage;
+      assert(
+        'object' === $.type(editorConfiguration),
+        'Invalid parameter "editorConfiguration"',
+        1489874121
+      );
+      assert(
+       'object' === $.type(editorHtml),
+       'Invalid parameter "editorHtml"',
+       1489874122
+      );
+      assert(
+        getUtility().isNonEmptyString(editorConfiguration['label']),
+        'Invalid configuration "label"',
+        1489874123
+      );
+      assert(
+        getUtility().isNonEmptyString(editorConfiguration['propertyPath']),
+        'Invalid configuration "propertyPath"',
+        1489874124
+      );
+
+      getHelper()
+        .getTemplatePropertyDomElement('label', editorHtml)
+        .append(editorConfiguration['label']);
+      if (getUtility().isNonEmptyString(editorConfiguration['fieldExplanationText'])) {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .text(editorConfiguration['fieldExplanationText']);
+      } else {
+        getHelper()
+          .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
+          .remove();
+      }
+
+      propertyPath = getFormEditorApp().buildPropertyPath(
+        editorConfiguration['propertyPath']
+      );
+
+      propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+
+      if (
+        !getUtility().isUndefinedOrNull(propertyData)
+        && 'array' === $.type(propertyData)
+      ) {
+        validationErrorMessage = _getFirstAvailableValidationErrorMessage(editorConfiguration['errorCodes'], propertyData);
+
+        if (!getUtility().isUndefinedOrNull(validationErrorMessage)) {
+          getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).val(validationErrorMessage);
+        }
+      }
+
+      getHelper().getTemplatePropertyDomElement('propertyPath', editorHtml).on('keyup paste', function() {
+        propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+        if (getUtility().isUndefinedOrNull(propertyData)) {
+          propertyData = [];
+        }
+        getCurrentlySelectedFormElement().set(propertyPath, _renewValidationErrorMessages(
+          editorConfiguration['errorCodes'],
+          propertyData,
+          $(this).val()
+        ));
       });
     };
 
@@ -1712,7 +1892,7 @@ define(['jquery',
      * @throws 1475417096
      */
     function renderRequiredValidatorEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-      var propertyPath, propertyValue, validatorIdentifier;
+      var propertyData, propertyPath, propertyValue, showValidationErrorMessage, validationErrorMessage, validationErrorMessagePropertyPath, validationErrorMessageTemplate, validationErrorMessageTemplateClone, validatorIdentifier;
       assert(
         'object' === $.type(editorConfiguration),
         'Invalid parameter "editorConfiguration"',
@@ -1747,15 +1927,74 @@ define(['jquery',
         propertyValue = '';
       }
 
+      validationErrorMessagePropertyPath = getFormEditorApp()
+        .buildPropertyPath(editorConfiguration['configurationOptions']['validationErrorMessage']['propertyPath']);
+
+      validationErrorMessageTemplate = getHelper()
+        .getTemplatePropertyDomElement('validationErrorMessage', $(editorHtml))
+        .clone();
+
+      getHelper()
+        .getTemplatePropertyDomElement('validationErrorMessage', $(editorHtml))
+        .remove();
+
+      showValidationErrorMessage = function() {
+        validationErrorMessageTemplateClone = $(validationErrorMessageTemplate).clone(true, true);
+        _getEditorWrapperDomElement(editorHtml).after(validationErrorMessageTemplateClone);
+
+        getHelper()
+          .getTemplatePropertyDomElement('validationErrorMessage-label', validationErrorMessageTemplateClone)
+          .append(editorConfiguration['configurationOptions']['validationErrorMessage']['label']);
+
+        getHelper()
+          .getTemplatePropertyDomElement('validationErrorMessage-fieldExplanationText', validationErrorMessageTemplateClone)
+          .append(editorConfiguration['configurationOptions']['validationErrorMessage']['fieldExplanationText']);
+
+        propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
+        if (getUtility().isUndefinedOrNull(propertyData)) {
+          propertyData = [];
+        }
+
+        validationErrorMessage = _getFirstAvailableValidationErrorMessage(
+          editorConfiguration['configurationOptions']['validationErrorMessage']['errorCodes'],
+          propertyData
+        );
+        if (!getUtility().isUndefinedOrNull(validationErrorMessage)) {
+          getHelper()
+            .getTemplatePropertyDomElement('validationErrorMessage-propertyPath', validationErrorMessageTemplateClone)
+            .val(validationErrorMessage);
+        }
+
+        getHelper().getTemplatePropertyDomElement('validationErrorMessage-propertyPath', validationErrorMessageTemplateClone).on('keyup paste', function() {
+          propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
+          if (getUtility().isUndefinedOrNull(propertyData)) {
+            propertyData = [];
+          }
+
+          getCurrentlySelectedFormElement().set(validationErrorMessagePropertyPath, _renewValidationErrorMessages(
+            editorConfiguration['configurationOptions']['validationErrorMessage']['errorCodes'],
+            propertyData,
+            $(this).val()
+          ));
+        });
+      }
+
       if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
         $('input[type="checkbox"]', $(editorHtml)).prop('checked', true);
         if (getUtility().isNonEmptyString(propertyPath)) {
           getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
         }
+        showValidationErrorMessage();
       }
 
       $('input[type="checkbox"]', $(editorHtml)).on('change', function() {
+        getHelper().getTemplatePropertyDomElement('validationErrorMessage', $(editorHtml))
+          .off()
+          .empty()
+          .remove();
+
         if ($(this).is(":checked")) {
+          showValidationErrorMessage();
           getPublisherSubscriber().publish(
             'view/inspector/collectionElement/new/selected',
             [validatorIdentifier, 'validators']
@@ -1772,6 +2011,17 @@ define(['jquery',
           if (getUtility().isNonEmptyString(propertyPath)) {
             getCurrentlySelectedFormElement().unset(propertyPath);
           }
+
+          propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
+          if (getUtility().isUndefinedOrNull(propertyData)) {
+            propertyData = [];
+          }
+
+          getCurrentlySelectedFormElement().set(validationErrorMessagePropertyPath, _renewValidationErrorMessages(
+            editorConfiguration['configurationOptions']['validationErrorMessage']['errorCodes'],
+            propertyData,
+            ''
+          ));
         }
       });
     };

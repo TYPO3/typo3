@@ -1236,7 +1236,7 @@ define(['jquery',
      * @publish view/collectionElement/removed
      */
     function removePropertyCollectionElement(collectionElementIdentifier, collectionName, formElement, disablePublishersOnSet) {
-      var collectionElementConfiguration;
+      var collectionElementConfiguration, propertyData, propertyPath;
 
       getFormEditorApp().removePropertyCollectionElement(collectionElementIdentifier, collectionName, formElement);
 
@@ -1249,6 +1249,22 @@ define(['jquery',
           if ('array' === $.type(collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'])) {
             for (var j = 0, len2 = collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'].length; j < len2; ++j) {
               getCurrentlySelectedFormElement().unset(collectionElementConfiguration['editors'][i]['additionalElementPropertyPaths'][j], true);
+            }
+          } else if (collectionElementConfiguration['editors'][i]['identifier'] === 'validationErrorMessage') {
+            propertyPath = getFormEditorApp().buildPropertyPath(
+              collectionElementConfiguration['editors'][i]['propertyPath']
+            );
+            propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+            if (!getUtility().isUndefinedOrNull(propertyData)) {
+              for (var j = 0, len2 = collectionElementConfiguration['editors'][i]['errorCodes'].length; j < len2; ++j) {
+                for (var k = 0, len3 = propertyData.length; k < len3; ++k) {
+                  if (parseInt(collectionElementConfiguration['editors'][i]['errorCodes'][j]) === parseInt(propertyData[k]['code'])) {
+                    propertyData.splice(k, 1);
+                    --len3;
+                  }
+                }
+              }
+              getCurrentlySelectedFormElement().set(propertyPath, propertyData);
             }
           }
         }

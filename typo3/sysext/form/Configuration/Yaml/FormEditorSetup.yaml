@@ -98,6 +98,7 @@ TYPO3:
               Inspector-ValidatorsEditor: 'Inspector/ValidatorsEditor'
               Inspector-RequiredValidatorEditor: 'Inspector/RequiredValidatorEditor'
               Inspector-CheckboxEditor: 'Inspector/CheckboxEditor'
+              Inspector-ValidationErrorMessageEditor: 'Inspector/ValidationErrorMessageEditor'
               Inspector-Typo3WinBrowserEditor: 'Inspector/Typo3WinBrowserEditor'
 
             formElementPropertyValidatorsDefinition:
@@ -724,6 +725,14 @@ TYPO3:
                           10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                         100:
                           label: 'formEditor.elements.DatePicker.validators.DateTime.editor.header.label'
+                        200:
+                          identifier: 'validationErrorMessage'
+                          templateName: 'Inspector-ValidationErrorMessageEditor'
+                          label: 'formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label'
+                          fieldExplanationText: 'formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText'
+                          errorCodes:
+                            10: 1238087674
+                          propertyPath: 'properties.validationErrorMessages'
 
             StaticText:
               formEditor:
@@ -1094,6 +1103,16 @@ TYPO3:
                   validatorIdentifier: 'NotEmpty'
                   propertyPath: 'properties.fluidAdditionalAttributes.required'
                   propertyValue: 'required'
+                  configurationOptions:
+                    validationErrorMessage:
+                      label: 'formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label'
+                      propertyPath: 'properties.validationErrorMessages'
+                      fieldExplanationText: 'formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText'
+                      errorCodes:
+                        10: 1221560910
+                        20: 1221560718
+                        30: 1347992400
+                        40: 1347992453
 
           TextMixin:
             formEditor:
@@ -1153,6 +1172,15 @@ TYPO3:
                         10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label'
+                      200:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221551320
+                        propertyPath: 'properties.validationErrorMessages'
+
                   20:
                     identifier: 'Text'
                     editors:
@@ -1160,6 +1188,15 @@ TYPO3:
                         10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.Text.editor.header.label'
+                      200:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221565786
+                        propertyPath: 'properties.validationErrorMessages'
+
                   30:
                     identifier: 'StringLength'
                     editors:
@@ -1174,6 +1211,19 @@ TYPO3:
                       300:
                         additionalElementPropertyPaths:
                           10: 'properties.fluidAdditionalAttributes.maxlength'
+                      400:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1238110957
+                          20: 1269883975
+                          30: 1428504122
+                          40: 1238108068
+                          50: 1238108069
+                        propertyPath: 'properties.validationErrorMessages'
+
                   40:
                     identifier: 'EmailAddress'
                     editors:
@@ -1181,6 +1231,15 @@ TYPO3:
                         10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label'
+                      200:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221559976
+                        propertyPath: 'properties.validationErrorMessages'
+
                   50:
                     identifier: 'Integer'
                     editors:
@@ -1188,6 +1247,15 @@ TYPO3:
                         10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.Integer.editor.header.label'
+                      200:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221560494
+                        propertyPath: 'properties.validationErrorMessages'
+
                   60:
                     identifier: 'Float'
                     editors:
@@ -1195,6 +1263,15 @@ TYPO3:
                         10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.Float.editor.header.label'
+                      200:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221560288
+                        propertyPath: 'properties.validationErrorMessages'
+
                   70:
                     identifier: 'NumberRange'
                     editors:
@@ -1209,6 +1286,16 @@ TYPO3:
                       300:
                         additionalElementPropertyPaths:
                           10: 'properties.fluidAdditionalAttributes.max'
+                      400:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221563685
+                          20: 1221561046
+                        propertyPath: 'properties.validationErrorMessages'
+
                   80:
                     identifier: 'RegularExpression'
                     editors:
@@ -1224,6 +1311,14 @@ TYPO3:
                         propertyPath: 'options.regularExpression'
                         propertyValidators:
                           10: 'NotEmpty'
+                      300:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1221565130
+                        propertyPath: 'properties.validationErrorMessages'
 
           SelectionMixin:
             formEditor:
@@ -1277,6 +1372,15 @@ TYPO3:
                         20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
                       100:
                         label: 'formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label'
+                      400:
+                        identifier: 'validationErrorMessage'
+                        templateName: 'Inspector-ValidationErrorMessageEditor'
+                        label: 'formEditor.elements.TextMixin.validators.Count.editor.validationErrorMessage.label'
+                        fieldExplanationText: 'formEditor.elements.TextMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText'
+                        errorCodes:
+                          10: 1475002976
+                          20: 1475002994
+                        propertyPath: 'properties.validationErrorMessages'
 
           FileUploadMixin:
             formEditor:
