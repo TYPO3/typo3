@@ -209,6 +209,7 @@ class EditDocumentController extends AbstractModule
 
     /**
      * @var string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public $localizationMode;
 
@@ -456,7 +457,6 @@ class EditDocumentController extends AbstractModule
         $this->closeDoc = (int)GeneralUtility::_GP('closeDoc');
         $this->doSave = GeneralUtility::_GP('doSave');
         $this->returnEditConf = GeneralUtility::_GP('returnEditConf');
-        $this->localizationMode = GeneralUtility::_GP('localizationMode');
         $this->workspace = GeneralUtility::_GP('workspace');
         $this->uc = GeneralUtility::_GP('uc');
         // Setting override values as default if defVals does not exist.

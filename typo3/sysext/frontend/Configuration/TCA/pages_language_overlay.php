@@ -70,7 +70,6 @@ return [
         'title' => [
             'l10n_mode' => 'prefixLangTitle',
             'label' => $GLOBALS['TCA']['pages']['columns']['title']['label'],
-            'l10n_cat' => 'text',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -80,7 +79,6 @@ return [
         ],
         'subtitle' => [
             'exclude' => true,
-            'l10n_cat' => 'text',
             'label' => $GLOBALS['TCA']['pages']['columns']['subtitle']['label'],
             'config' => [
                 'type' => 'input',
@@ -91,7 +89,6 @@ return [
         ],
         'nav_title' => [
             'exclude' => true,
-            'l10n_cat' => 'text',
             'label' => $GLOBALS['TCA']['pages']['columns']['nav_title']['label'],
             'config' => [
                 'type' => 'input',

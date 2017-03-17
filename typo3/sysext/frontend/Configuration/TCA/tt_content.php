@@ -460,7 +460,6 @@ return [
         ],
         'header' => [
             'l10n_mode' => 'prefixLangTitle',
-            'l10n_cat' => 'text',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header',
             'config' => [
                 'type' => 'input',
@@ -574,7 +573,6 @@ return [
         ],
         'bodytext' => [
             'l10n_mode' => 'prefixLangTitle',
-            'l10n_cat' => 'text',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.text',
             'config' => [
                 'type' => 'text',
