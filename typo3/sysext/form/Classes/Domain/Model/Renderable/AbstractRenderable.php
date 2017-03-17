@@ -111,6 +111,18 @@ abstract class AbstractRenderable implements RenderableInterface
     }
 
     /**
+     * Set the identifier of the element
+     *
+     * @param string $identifier
+     * @return void
+     * @api
+     */
+    public function setIdentifier(string $identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
      * Set multiple properties of this object at once.
      * Every property which has a corresponding set* method can be set using
      * the passed $options array.
