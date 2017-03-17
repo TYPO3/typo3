@@ -41,6 +41,14 @@ class ColorPicker {
       position: 'bottom left',
       theme: 'bootstrap',
     });
+    (<any> $(document)).on('change', '.t3js-colorpicker-value-trigger', function(): void {
+      (<any> $(this))
+        .closest('.t3js-formengine-field-item')
+        .find('.t3js-color-picker')
+        .val(this.value)
+        .trigger('paste');
+      (<any> $(this)).val('');
+    });
   }
 }
 // Create an instance and return it

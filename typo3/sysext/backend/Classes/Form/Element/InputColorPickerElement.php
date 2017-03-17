@@ -139,6 +139,16 @@ class InputColorPickerElement extends AbstractFormElement
             $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
         }
 
+        $valuePickerHtml = [];
+        if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
+            $valuePickerHtml[] = '<select class="t3js-colorpicker-value-trigger form-control tceforms-select tceforms-wizardselect">';
+            $valuePickerHtml[] = '<option></option>';
+            foreach ($config['valuePicker']['items'] as $item) {
+                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
+            }
+            $valuePickerHtml[] = '</select>';
+        }
+
         $legacyWizards = $this->renderWizards();
         $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
         $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
@@ -165,6 +175,7 @@ class InputColorPickerElement extends AbstractFormElement
         $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
         $mainFieldHtml[] =          '<div class="btn-group">';
         $mainFieldHtml[] =              $fieldControlHtml;
+        $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
         $mainFieldHtml[] =      '<div class="form-wizards-items-bottom">';
