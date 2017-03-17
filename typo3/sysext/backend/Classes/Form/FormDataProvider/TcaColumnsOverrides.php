@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Merge type specific columnsOverrides into columns of processedTca
@@ -34,7 +33,7 @@ class TcaColumnsOverrides implements FormDataProviderInterface
         if (isset($result['processedTca']['types'][$type]['columnsOverrides'])
             && is_array($result['processedTca']['types'][$type]['columnsOverrides'])
         ) {
-            ArrayUtility::mergeRecursiveWithOverrule(
+            $result['processedTca']['columns'] = array_replace_recursive(
                 $result['processedTca']['columns'],
                 $result['processedTca']['types'][$type]['columnsOverrides']
             );
