@@ -25,9 +25,40 @@ class DatabaseSchemaService
     /**
      * Add l10n_state field to tables that provide localization
      *
+     * @param array $sqlString Current SQL statements to be executed
      * @return string Localization fields database schema
      */
     public function getLocalizationRequiredDatabaseSchema(array $sqlString)
+    {
+        $additionalSqlString = $this->buildLocalizationRequiredDatabaseSchema();
+        if (!empty($additionalSqlString)) {
+            $sqlString[] = $additionalSqlString;
+        }
+        return ['sqlString' => $sqlString];
+    }
+
+    /**
+     * Add l10n_state field to tables that provide localization
+     *
+     * @param array $sqlString Current SQL statements to be executed
+     * @param string $extensionKey Extension key currently processed
+     * @return string Localization fields database schema
+     */
+    public function getLocalizationRequiredDatabaseSchemaForExtension(array $sqlString, string $extensionKey)
+    {
+        $additionalSqlString = $this->buildLocalizationRequiredDatabaseSchema();
+        if (!empty($additionalSqlString)) {
+            $sqlString[] = $additionalSqlString;
+        }
+        return ['sqlString' => $sqlString, 'extensionKey' => $extensionKey];
+    }
+
+    /**
+     * Add l10n_state field to tables that provide localization
+     *
+     * @return string Localization fields database schema
+     */
+    protected function buildLocalizationRequiredDatabaseSchema()
     {
         $tableSchemas = [];
 
@@ -50,10 +81,6 @@ class DatabaseSchemaService
             );
         }
 
-        if (!empty($tableSchemas)) {
-            $sqlString[] = implode(LF, $tableSchemas);
-        }
-
-        return ['sqlString' => $sqlString];
+        return implode(LF, $tableSchemas);
     }
 }
