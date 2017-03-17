@@ -15,6 +15,11 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Abstract class for a couple of FormEngine controllers triggered by
  * ajax calls. The class containers some helpers to for instance prepare
@@ -64,5 +69,62 @@ abstract class AbstractFormEngineAjaxController
             }
         }
         return $requireJs;
+    }
+
+    /**
+     * Resolve a CSS file position, possibly prefixed with 'EXT:'
+     *
+     * @param string $stylesheetFile Given file, possibly prefixed with EXT:
+     * @return string Web root relative position to file
+     */
+    protected function getRelativePathToStylesheetFile(string $stylesheetFile): string
+    {
+        if (strpos($stylesheetFile, 'EXT:') === 0) {
+            $stylesheetFile = GeneralUtility::getFileAbsFileName($stylesheetFile);
+            $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile);
+            $stylesheetFile = rtrim($stylesheetFile, '/');
+        } else {
+            $stylesheetFile = GeneralUtility::resolveBackPath($stylesheetFile);
+        }
+        $stylesheetFile = GeneralUtility::createVersionNumberedFilename($stylesheetFile);
+        return PathUtility::getAbsoluteWebPath($stylesheetFile);
+    }
+
+    /**
+     * Parse a language file and get a label/value array from it.
+     *
+     * @param string $file EXT:path/to/file
+     * @return array Label/value array
+     */
+    protected function getLabelsFromLocalizationFile($file)
+    {
+        /** @var $languageFactory LocalizationFactory */
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        $language = $GLOBALS['LANG']->lang;
+        $localizationArray = $languageFactory->getParsedData(
+            $file,
+            $language,
+            'utf-8',
+            1
+        );
+        if (is_array($localizationArray) && !empty($localizationArray)) {
+            if (!empty($localizationArray[$language])) {
+                $xlfLabelArray = $localizationArray['default'];
+                ArrayUtility::mergeRecursiveWithOverrule($xlfLabelArray, $localizationArray[$language], true, false);
+            } else {
+                $xlfLabelArray = $localizationArray['default'];
+            }
+        } else {
+            $xlfLabelArray = [];
+        }
+        $labelArray = [];
+        foreach ($xlfLabelArray as $key => $value) {
+            if (isset($value[0]['target'])) {
+                $labelArray[$key] = $value[0]['target'];
+            } else {
+                $labelArray[$key] = '';
+            }
+        }
+        return $labelArray;
     }
 }

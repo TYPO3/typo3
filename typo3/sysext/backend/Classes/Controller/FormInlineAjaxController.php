@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -576,7 +575,10 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     protected function mergeChildResultIntoJsonResult(array $jsonResult, array $childResult)
     {
         $jsonResult['data'] .= $childResult['html'];
-        $jsonResult['stylesheetFiles'] = $childResult['stylesheetFiles'];
+        $jsonResult['stylesheetFiles'] = [];
+        foreach ($childResult['stylesheetFiles'] as $stylesheetFile) {
+            $jsonResult['stylesheetFiles'][] = $this->getRelativePathToStylesheetFile($stylesheetFile);
+        }
         if (!empty($childResult['inlineData'])) {
             $jsonResult['scriptCall'][] = 'inline.addToDataArray(' . json_encode($childResult['inlineData']) . ');';
         }
@@ -593,7 +595,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             foreach ($childResult['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
                 ArrayUtility::mergeRecursiveWithOverrule(
                     $labels,
-                    $this->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile)
+                    $this->getLabelsFromLocalizationFile($additionalInlineLanguageLabelFile)
                 );
             }
             $javaScriptCode = [];
@@ -613,43 +615,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
 
         return $jsonResult;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
-    protected function addInlineLanguageLabelFile($file)
-    {
-        /** @var $languageFactory LocalizationFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        $language = $GLOBALS['LANG']->lang;
-        $localizationArray = $languageFactory->getParsedData(
-            $file,
-            $language,
-            'utf-8',
-            1
-        );
-        if (is_array($localizationArray) && !empty($localizationArray)) {
-            if (!empty($localizationArray[$language])) {
-                $xlfLabelArray = $localizationArray['default'];
-                ArrayUtility::mergeRecursiveWithOverrule($xlfLabelArray, $localizationArray[$language], true, false);
-            } else {
-                $xlfLabelArray = $localizationArray['default'];
-            }
-        } else {
-            $xlfLabelArray = [];
-        }
-        $labelArray = [];
-        foreach ($xlfLabelArray as $key => $value) {
-            if (isset($value[0]['target'])) {
-                $labelArray[$key] = $value[0]['target'];
-            } else {
-                $labelArray[$key] = '';
-            }
-        }
-        return $labelArray;
     }
 
     /**

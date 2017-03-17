@@ -264,6 +264,15 @@ define(['jquery',
 							eval(value);
 						});
 					}
+					if (response.stylesheetFiles && response.stylesheetFiles.length > 0) {
+						$.each(response.stylesheetFiles, function (index, stylesheetFile) {
+							var element = document.createElement('link');
+							element['rel'] = 'stylesheet';
+							element['type'] = 'text/css';
+							element['href'] = stylesheetFile;
+							document.head.appendChild(element);
+						});
+					}
 					TYPO3.FormEngine.reinitialize();
 					TYPO3.FormEngine.Validation.initializeInputFields();
 					TYPO3.FormEngine.Validation.validate();

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -113,6 +114,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 
         $jsonResult = [
             'html' => $newContainerResult['html'],
+            'stylesheetFiles' => [],
             'scriptCall' => [],
         ];
 
@@ -124,7 +126,30 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         foreach ($newContainerResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
-        // @todo: handle stylesheetFiles, additionalInlineLanguageLabelFiles
+        foreach ($newContainerResult['stylesheetFiles'] as $stylesheetFile) {
+            $jsonResult['stylesheetFiles'][] = $this->getRelativePathToStylesheetFile($stylesheetFile);
+        }
+        if (!empty($newContainerResult['additionalInlineLanguageLabelFiles'])) {
+            $labels = [];
+            foreach ($newContainerResult['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
+                ArrayUtility::mergeRecursiveWithOverrule(
+                    $labels,
+                    $this->getLabelsFromLocalizationFile($additionalInlineLanguageLabelFile)
+                );
+            }
+            $javaScriptCode = [];
+            $javaScriptCode[] = 'if (typeof TYPO3 === \'undefined\' || typeof TYPO3.lang === \'undefined\') {';
+            $javaScriptCode[] = '   TYPO3.lang = {}';
+            $javaScriptCode[] = '}';
+            $javaScriptCode[] = 'var additionalInlineLanguageLabels = ' . json_encode($labels) . ';';
+            $javaScriptCode[] = 'for (var attributeName in additionalInlineLanguageLabels) {';
+            $javaScriptCode[] = '   if (typeof TYPO3.lang[attributeName] === \'undefined\') {';
+            $javaScriptCode[] = '       TYPO3.lang[attributeName] = additionalInlineLanguageLabels[attributeName]';
+            $javaScriptCode[] = '   }';
+            $javaScriptCode[] = '}';
+
+            $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
+        }
 
         $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
         $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
