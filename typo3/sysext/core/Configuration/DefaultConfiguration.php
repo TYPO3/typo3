@@ -810,41 +810,6 @@ return [
                         ],
                     ],
                 ],
-                'inlineParentRecord' => [
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        ]
-                    ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
-                        ],
-                    ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                        ],
-                    ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-                        ],
-                    ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
-                        ],
-                    ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                        ],
-                    ],
-                ],
             ],
         ],
     ],

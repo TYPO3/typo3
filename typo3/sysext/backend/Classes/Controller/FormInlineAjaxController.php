@@ -18,12 +18,10 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\InlineParentRecord;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -63,47 +61,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         // Parent, this table embeds the child table
         $parent = $inlineStackProcessor->getStructureLevel(-1);
-        $parentFieldName = $parent['field'];
-
-        if (MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
-            $command = 'edit';
-            $vanillaUid = (int)$parent['uid'];
-            $databaseRow = [
-                // TcaInlineExpandCollapseState needs the record uid
-                'uid' => (int)$parent['uid'],
-            ];
-        } else {
-            $command = 'new';
-            $databaseRow = [];
-            $vanillaUid = (int)$inlineFirstPid;
-        }
-
-        $processedTca = $GLOBALS['TCA'][$parent['table']];
-        $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
-        if (!empty($parentConfig['dataStructureIdentifier'])) {
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $processedTca['columns'][$parentFieldName]['config']['ds'] = $flexFormTools->parseDataStructureByIdentifier($parentConfig['dataStructureIdentifier']);
-        }
-
-        $formDataCompilerInputForParent = [
-            'vanillaUid' => $vanillaUid,
-            'command' => $command,
-            'tableName' => $parent['table'],
-            'databaseRow' => $databaseRow,
-            'processedTca' => $processedTca,
-            'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => [
-                $parentFieldName,
-            ],
-            // Do not resolve existing children, we don't need them now
-            'inlineResolveExistingChildren' => false,
-        ];
-        /** @var TcaDatabaseRecord $formDataGroup */
-        $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-        $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
-        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
@@ -115,9 +72,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $childVanillaUid = (int)$inlineFirstPid;
         }
 
-        if ($parentConfig['type'] === 'flex') {
-            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId);
-        }
         $childTableName = $parentConfig['foreign_table'];
 
         /** @var TcaDatabaseRecord $formDataGroup */
@@ -135,10 +89,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'inlineParentTableName' => $parent['table'],
             'inlineParentFieldName' => $parent['field'],
             'inlineParentConfig' => $parentConfig,
-            // Fallback to $parentData is probably not needed here.
-            'inlineTopMostParentUid' => $parentData['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $parentData['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $parentData['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
+            'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
+            'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],
         ];
         if ($childChildUid) {
             $formDataCompilerInput['inlineChildChildUid'] = $childChildUid;
@@ -253,48 +206,24 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $parent = $inlineStackProcessor->getStructureLevel(-1);
         $parentFieldName = $parent['field'];
 
-        $databaseRow = [
-            // TcaInlineExpandCollapseState needs this
-            'uid' => (int)$parent['uid'],
-        ];
-
-        $processedTca = $GLOBALS['TCA'][$parent['table']];
-        $processedTca['columns'][$parentFieldName]['config'] = $parentConfig;
-        if (!empty($parentConfig['dataStructureIdentifier'])) {
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $processedTca['columns'][$parentFieldName]['config']['ds'] = $flexFormTools->parseDataStructureByIdentifier($parentConfig['dataStructureIdentifier']);
-        }
-
-        $formDataCompilerInputForParent = [
-            'vanillaUid' => (int)$parent['uid'],
-            'command' => 'edit',
-            'tableName' => $parent['table'],
-            'databaseRow' => $databaseRow,
-            'processedTca' => $processedTca,
-            'inlineFirstPid' => $inlineFirstPid,
-            'columnsToProcess' => [
-                $parentFieldName
-            ],
-            // @todo: still needed?
-            'inlineStructure' => $inlineStackProcessor->getStructure(),
-            // Do not resolve existing children, we don't need them now
-            'inlineResolveExistingChildren' => false,
-        ];
-        /** @var TcaDatabaseRecord $formDataGroup */
-        $formDataGroup = GeneralUtility::makeInstance(InlineParentRecord::class);
-        /** @var FormDataCompiler $formDataCompiler */
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-        $parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
-        $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
-
-        if ($parentConfig['type'] === 'flex') {
-            $parentConfig = $this->getParentConfigFromFlexForm($parentConfig, $domObjectId);
-            $parentData['processedTca']['columns'][$parentFieldName]['config'] = $parentConfig;
-        }
-
         // Set flag in config so that only the fields are rendered
         // @todo: Solve differently / rename / whatever
-        $parentData['processedTca']['columns'][$parentFieldName]['config']['renderFieldsOnly'] = true;
+        $parentConfig['renderFieldsOnly'] = true;
+
+        $parentData = [
+            'processedTca' => [
+                'columns' => [
+                    $parentFieldName => [
+                        'config' => $parentConfig,
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'uid' => (int)$parent['uid'],
+            ],
+            'tableName' => $parent['table'],
+            'inlineFirstPid' => $inlineFirstPid,
+        ];
 
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
@@ -488,7 +417,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * Adds localizations or synchronizes the locations of all child records.
+     * Store status of inline children expand / collapse state in backend user uC.
      *
      * @param ServerRequestInterface $request the incoming request
      * @param ResponseInterface $response the empty response
@@ -585,9 +514,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'inlineParentFieldName' => $parentFieldName,
 
              // values of the top most parent element set on first level and not overridden on following levels
-            'inlineTopMostParentUid' => $parentData['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $parentData['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $parentData['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
+            'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
+            'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],
         ];
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For "normal" relations, $mainChild
@@ -744,29 +673,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * Checks if a record selector may select a certain file type
-     *
-     * @param array $selectorConfiguration
-     * @param array $fileRecord
-     * @return bool
-     * @todo: check this ...
-     */
-    protected function checkInlineFileTypeAccessForField(array $selectorConfiguration, array $fileRecord)
-    {
-        if (!empty($selectorConfiguration['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'])) {
-            $allowedFileExtensions = GeneralUtility::trimExplode(
-                ',',
-                $selectorConfiguration['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'],
-                true
-            );
-            if (!in_array(strtolower($fileRecord['extension']), $allowedFileExtensions, true)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Return expand / collapse state array for a given table / uid combination
      *
      * @param string $table Handled table
@@ -869,121 +775,33 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Extract the inline child table configuration from the flexform data structure
-     * using the the domObjectId to traverse the XML structure.
-     *
-     * domObjectId parsing has been copied from InlineStackProcessor::initializeByDomObjectId
-     *
-     * @param array $parentConfig
-     * @param string $domObjectId
-     * @return array
-     */
-    protected function getParentConfigFromFlexForm(array $parentConfig, string $domObjectId) : array
-    {
-        list($flexFormPath, $foreignTableName) = $this->splitDomObjectId($domObjectId);
-
-        $childConfig = $parentConfig['ds']['sheets'];
-        $flexFormPath = explode(':', $flexFormPath);
-        foreach ($flexFormPath as $flexFormNode) {
-            // We are dealing with configuration information from a flexform,
-            // not value storage, identifiers that reference language or
-            // value nodes must be skipped.
-            if (!isset($childConfig[$flexFormNode]) && preg_match('/^[lv][[:alpha:]]+$/', $flexFormNode)) {
-                continue;
-            }
-            $childConfig = $childConfig[$flexFormNode];
-
-            // Skip to the field configuration of a sheet
-            if (isset($childConfig['ROOT']) && $childConfig['ROOT']['type'] === 'array') {
-                $childConfig = $childConfig['ROOT']['el'];
-            }
-        }
-
-        if (!isset($childConfig['config'])
-            || !is_array($childConfig['config'])
-            || $childConfig['config']['type'] !== 'inline'
-            || $childConfig['config']['foreign_table'] !== $foreignTableName
-        ) {
-            throw new \UnexpectedValueException(
-                'Configuration retrieved from FlexForm is incomplete or not of type "inline".',
-                1446996319
-            );
-        }
-        return $childConfig['config'];
-    }
-
-    /**
      * Validates the config that is transferred over the wire to provide the
      * correct TCA config for the parent table
      *
      * @param string $contextString
+     * @throws \RuntimeException
      * @return array
-     * @todo: Review this construct - Why can't the ajax call fetch these data on its own and transfers it to client instead?
      */
     protected function extractSignedParentConfigFromRequest(string $contextString): array
     {
         if ($contextString === '') {
-            return [];
+            throw new \RuntimeException('Empty context string given', 1489751361);
         }
         $context = json_decode($contextString, true);
         if (empty($context['config'])) {
-            return [];
+            throw new \RuntimeException('Empty context config section given', 1489751362);
         }
         if (!\hash_equals(GeneralUtility::hmac(json_encode($context['config']), 'InlineContext'), $context['hmac'])) {
-            return [];
+            throw new \RuntimeException('Hash does not validate', 1489751363);
         }
         return $context['config'];
     }
 
     /**
-     * split the domObjectID and retrieve the needed parts
-     *
-     * @param string $domObjectId
-     *
-     * @return array
+     * @return BackendUserAuthentication
      */
-    protected function splitDomObjectId(string $domObjectId) : array
+    protected function getBackendUserAuthentication()
     {
-
-        // Substitute FlexForm addition and make parsing a bit easier
-        $domObjectId = str_replace('---', ':', $domObjectId);
-        $pattern = '/:data:(?<flexformPath>.*?)-(?<tableName>[^-]+)(?:-(?:NEW)?\w+)?$/';
-
-        /* EXPLANATION for the regex:
-         * according https://regex101.com/
-         *
-         * :data: matches the characters :data: literally (case sensitive)
-         * (?<flexformPath>.*?) Named capturing group flexformPath
-         * .*? matches any character (except newline)
-         * Quantifier: *? Between zero and unlimited times, as few times as possible, expanding as needed [lazy]
-         * - matches the character - literally
-         * (?<tableName>[^-]+) Named capturing group tableName
-         * [^-]+ match a single character not present in the list below
-         * Quantifier: + Between one and unlimited times, as many times as possible, giving back as needed [greedy]
-         * - the literal character -
-         * (?:-(?:NEW)?\w+)? Non-capturing group
-         * Quantifier: ? Between zero and one time, as many times as possible, giving back as needed [greedy]
-         * - matches the character - literally
-         * (?:NEW)? Non-capturing group
-         * Quantifier: ? Between zero and one time, as many times as possible, giving back as needed [greedy]
-         * NEW matches the characters NEW literally (case sensitive)
-         * \w+ match any word character [a-zA-Z0-9_]
-         * Quantifier: + Between one and unlimited times, as many times as possible, giving back as needed [greedy]
-         * $ assert position at end of a line
-         */
-
-        if (preg_match($pattern, $domObjectId, $match)) {
-            return [$match['flexformPath'], $match['tableName']];
-        }
-
-        return [];
+        return $GLOBALS['BE_USER'];
     }
 }

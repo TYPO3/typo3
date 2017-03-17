@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -23,147 +25,195 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * Checks if the given file type may be uploaded without *ANY* limit to file types being given
-     *
      * @test
      */
-    public function checkInlineFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue()
+    public function createActionThrowsExceptionIfContextIsEmpty()
     {
-        $selectorData = [];
-        $fileData['extension'] = 'png';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
-        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-        $this->assertTrue($mayUploadFile);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => '',
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751361);
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
-     * Checks if the given file type may be uploaded and the given file type is *NOT* in the list of allowed files
-     *
      * @test
      */
-    public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse()
+    public function createActionThrowsExceptionIfContextConfigSectionIsEmpty()
     {
-        $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-        $fileData['extension'] = 'php';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
-        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-        $this->assertFalse($mayUploadFile);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode([ 'config' => '' ]),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751362);
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
-     * Checks if the given file type may be uploaded and the given file type *is* in the list of allowed files
      * @test
      */
-    public function checkInlineFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue()
+    public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
     {
-        $selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-        $fileData['extension'] = 'png';
-        $mockObject = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
-        $mayUploadFile = $mockObject->_call('checkInlineFileTypeAccessForField', $selectorData, $fileData);
-        $this->assertTrue($mayUploadFile);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode(
+                        [
+                            'config' => [
+                                'type' => 'inline',
+                            ],
+                            'hmac' => 'anInvalidHash',
+                        ]
+                    ),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751363);
+        (new FormInlineAjaxController())->createAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
-     * @dataProvider splitDomObjectIdDataProviderForTableName
-     * @param string $dataStructure
-     * @param string $expectedTableName
      * @test
-     *
-     * test for the flexform domobject identifier split
      */
-    public function splitDomObjectIdResolvesTablenameCorrectly($dataStructure, $expectedTableName)
+    public function detailsActionThrowsExceptionIfContextIsEmpty()
     {
-        $mock = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
-        $result = $mock->_call('splitDomObjectId', $dataStructure);
-        $this->assertSame($expectedTableName, $result[1]);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => '',
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751361);
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
-     * @return array
-     */
-    public function splitDomObjectIdDataProviderForTableName()
-    {
-        return [
-            'news new' => [
-                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file',
-                'tx_news_domain_model_file'
-            ],
-            'load existing child' => [
-                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child-4',
-                'tx_styleguide_flex_flex_3_inline_1_child'
-            ],
-            'create new child' => [
-                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child',
-                'tx_styleguide_flex_flex_3_inline_1_child'
-            ],
-            'insert new after' => [
-                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-6',
-                'tx_news_domain_model_file'
-            ],
-            'fal simple' => [
-                'data-336-tt_content-998-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference-837',
-                'sys_file_reference'
-            ],
-            'fal down deep' => [
-                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference',
-                'sys_file_reference'
-            ],
-            'new record after others' => ['data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-NEW5757f36287214984252204', 'tx_news_domain_model_file'],
-        ];
-    }
-
-    /**
-     * @dataProvider splitDomObjectIdDataProviderForFlexFormPath
-     *
-     * @param string $dataStructure
-     * @param string $expectedFlexformPath
-     *
      * @test
-     *
-     * test for the flexform domobject identifier split
      */
-    public function splitDomObjectIdResolvesFlexformPathCorrectly($dataStructure, $expectedFlexformPath)
+    public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty()
     {
-        $mock = $this->getAccessibleMock(FormInlineAjaxController::class, ['dummy'], [], '', false);
-        $result = $mock->_call('splitDomObjectId', $dataStructure);
-        $this->assertSame($expectedFlexformPath, $result[0]);
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode([ 'config' => '' ]),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751362);
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
-     * @return array
+     * @test
      */
-    public function splitDomObjectIdDataProviderForFlexFormPath()
+    public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
     {
-        return [
-            'news new' => [
-                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file',
-                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
-            ],
-            'load existing child' => [
-                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child-4',
-                'sInline:lDEF:inline_1:vDEF'
-            ],
-            'create new child' => [
-                'data-318-tx_styleguide_flex-4-flex_3---data---sInline---lDEF---inline_1---vDEF-tx_styleguide_flex_flex_3_inline_1_child',
-                'sInline:lDEF:inline_1:vDEF'
-            ],
-            'insert new after' => [
-                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-6',
-                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
-            ],
-            'fal simple' => [
-                'data-336-tt_content-998-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference-837',
-                'sheet.tabGeneral:lDEF:settings.image:vDEF'
-            ],
-            'fal down deep' => [
-                'data-335-tx_news_domain_model_news-2-content_elements-tt_content-999-pi_flexform---data---sheet.tabGeneral---lDEF---settings.image---vDEF-sys_file_reference',
-                'sheet.tabGeneral:lDEF:settings.image:vDEF'
-            ],
-            'new record after others' => [
-                'data-336-tt_content-1000-pi_flexform---data---sheet.tabGeneral---lDEF---settings.related_files---vDEF-tx_news_domain_model_file-NEW5757f36287214984252204',
-                'sheet.tabGeneral:lDEF:settings.related_files:vDEF'
-            ],
-        ];
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode(
+                        [
+                            'config' => [
+                                'type' => 'inline',
+                            ],
+                            'hmac' => 'anInvalidHash',
+                        ]
+                    ),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751363);
+        (new FormInlineAjaxController())->detailsAction($requestProphecy->reveal(), $responseProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty()
+    {
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => '',
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751361);
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty()
+    {
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode([ 'config' => '' ]),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751362);
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate()
+    {
+        $responseProphecy = $this->prophesize(ResponseInterface::class);
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+        $requestProphecy->getParsedBody()->shouldBeCalled()->willReturn(
+            [
+                'ajax' => [
+                    'context' => json_encode(
+                        [
+                            'config' => [
+                                'type' => 'inline',
+                            ],
+                            'hmac' => 'anInvalidHash',
+                        ]
+                    ),
+                ],
+            ]
+        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1489751363);
+        (new FormInlineAjaxController())->synchronizeLocalizeAction($requestProphecy->reveal(), $responseProphecy->reveal());
     }
 
     /**
