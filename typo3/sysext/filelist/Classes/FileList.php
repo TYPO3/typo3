@@ -933,6 +933,24 @@ class FileList extends AbstractRecordList
         } else {
             $cells['edit'] = $this->spaceIcon;
         }
+
+        // Edit metadata of file
+        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+            $metaData = $fileOrFolderObject->_getMetaData();
+            $urlParameters = [
+                'edit' => [
+                    'sys_file_metadata' => [
+                        $metaData['uid'] => 'edit'
+                    ]
+                ],
+                'returnUrl' => $this->listURL()
+            ];
+            $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
+            $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+        }
+
+        // document view
         if ($fileOrFolderObject instanceof File) {
             $fileUrl = $fileOrFolderObject->getPublicUrl(true);
             if ($fileUrl) {
