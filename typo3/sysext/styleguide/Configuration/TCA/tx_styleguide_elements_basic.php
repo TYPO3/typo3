@@ -404,7 +404,7 @@ return [
         ],
         'input_34' => [
             'exclude' => 1,
-            'label' => 'input_34 renderType colorbox',
+            'label' => 'input_34 renderType=colorpicker',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker',
@@ -443,6 +443,22 @@ return [
                         [ 'summer', 'Summer', ],
                         [ 'autumn', 'Autumn', ],
                         [ 'winter', 'Winter', ],
+                    ],
+                ],
+            ],
+        ],
+        'input_37' => [
+            'exclude' => 1,
+            'label' => 'input_37 renderType=colorpicker, valuePicker',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'colorpicker',
+                'size' => 10,
+                'valuePicker' => [
+                    'items' => [
+                        [ 'blue', '#0000FF', ],
+                        [ 'red', '#FF0000', ],
+                        [ 'typo3 orange', '#FF8700', ],
                     ],
                 ],
             ],
@@ -1262,7 +1278,7 @@ return [
                     input_1, input_2, input_3, input_4, input_5, input_8, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29, input_30,
-                    input_31, input_32, input_33, input_35, input_36, input_34,
+                    input_31, input_32, input_33, input_35, input_36, input_34, input_37,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
