@@ -120,6 +120,10 @@ class FieldControl extends AbstractNode
                 $linkAttributes['href'] = '#';
             }
 
+            unset($controlResult['iconIdentifier']);
+            unset($controlResult['title']);
+            unset($controlResult['linkAttributes']);
+
             $html = [];
             $html[] = '<a ' . GeneralUtility::implodeAttributes($linkAttributes, true) . '>';
             $html[] =   '<span alt="' . htmlspecialchars($title) . '" title="' . htmlspecialchars($title) . '">';
@@ -128,9 +132,8 @@ class FieldControl extends AbstractNode
             $html[] = '</a>';
 
             $finalControlResult = $this->initializeResultArray();
+            $finalControlResult = array_merge($finalControlResult, $controlResult);
             $finalControlResult['html'] = implode(LF, $html);
-
-            // @todo: merged requireJsModules from child result?
 
             $result = $this->mergeChildReturnIntoExistingResult($result, $finalControlResult);
         }
