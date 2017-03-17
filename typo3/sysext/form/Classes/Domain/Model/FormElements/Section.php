@@ -18,11 +18,8 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
-use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 
 /**
  * A Section, being part of a bigger Page
@@ -51,13 +48,19 @@ class Section extends AbstractSection implements FormElementInterface
      */
     public function initializeFormElement()
     {
-        GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(Dispatcher::class)
-            ->dispatch(
-                AbstractRenderable::class,
-                'initializeFormElement',
-                [$this]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'initializeFormElement')) {
+                    $hookObj->initializeFormElement(
+                        $this
+                    );
+                }
+            }
+        }
     }
 
     /**

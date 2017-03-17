@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Lang\LanguageService;
@@ -109,13 +108,20 @@ class FormManagerController extends AbstractBackendController
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath);
 
-        $this->objectManager
-            ->get(Dispatcher::class)
-            ->dispatch(
-                self::class,
-                'beforeFormCreate',
-                [$formPersistenceIdentifier, &$form]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'beforeFormCreate')) {
+                    $form = $hookObj->beforeFormCreate(
+                        $formPersistenceIdentifier,
+                        $form
+                    );
+                }
+            }
+        }
 
         $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
 
@@ -139,13 +145,20 @@ class FormManagerController extends AbstractBackendController
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath);
 
-        $this->objectManager
-            ->get(Dispatcher::class)
-            ->dispatch(
-                self::class,
-                'beforeFormDuplicate',
-                [$formPersistenceIdentifier, &$formToDuplicate]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'beforeFormDuplicate')) {
+                    $formToDuplicate = $hookObj->beforeFormDuplicate(
+                        $formPersistenceIdentifier,
+                        $formToDuplicate
+                    );
+                }
+            }
+        }
 
         $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
 
@@ -181,13 +194,19 @@ class FormManagerController extends AbstractBackendController
     public function deleteAction(string $formPersistenceIdentifier)
     {
         if (empty($this->getReferences($formPersistenceIdentifier))) {
-            $this->objectManager
-                ->get(Dispatcher::class)
-                ->dispatch(
-                    self::class,
-                    'beforeFormDelete',
-                    [$formPersistenceIdentifier]
-                );
+            if (
+                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'])
+            ) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
+                    if (method_exists($hookObj, 'beforeFormDelete')) {
+                        $hookObj->beforeFormDelete(
+                            $formPersistenceIdentifier
+                        );
+                    }
+                }
+            }
 
             $this->formPersistenceManager->delete($formPersistenceIdentifier);
         } else {

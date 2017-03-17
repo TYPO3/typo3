@@ -39,7 +39,7 @@ interface RendererInterface
     public function setControllerContext(ControllerContext $controllerContext);
 
     /**
-     * Note: This method is expected to dispatch the 'beforeRendering' signal
+     * Note: This method is expected to call the 'beforeRendering' hook
      * on each $renderable
      *
      * @return string the rendered $formRuntime

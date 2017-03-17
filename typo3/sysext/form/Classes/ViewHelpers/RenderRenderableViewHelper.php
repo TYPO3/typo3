@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -74,14 +73,20 @@ class RenderRenderableViewHelper extends AbstractViewHelper
         GeneralUtility::deprecationLog('EXT:form - calls for "beforeRendering" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
         $arguments['renderable']->beforeRendering($formRuntime);
 
-        $renderingContext
-            ->getObjectManager()
-            ->get(Dispatcher::class)
-            ->dispatch(
-                FormRuntime::class,
-                'beforeRendering',
-                [$formRuntime, $arguments['renderable']]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'beforeRendering')) {
+                    $hookObj->beforeRendering(
+                        $formRuntime,
+                        $arguments['renderable']
+                    );
+                }
+            }
+        }
 
         $content = $renderChildrenClosure();
 

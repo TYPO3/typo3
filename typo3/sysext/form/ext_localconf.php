@@ -59,20 +59,12 @@ call_user_func(function () {
     }
 
     if (TYPO3_MODE === 'FE') {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-            \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::class,
-            'onSubmit',
-            \TYPO3\CMS\Form\Hooks\FormElementsOnSubmitHooks::class,
-            'onSubmit'
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699]
+            = \TYPO3\CMS\Form\Hooks\FormElementsOnSubmitHooks::class;
 
         // FE file upload processing
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-            \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::class,
-            'onBuildingFinished',
-            \TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class,
-            'setPropertyMappingConfiguration'
-        );
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1489772699]
+            = \TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class;
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
             \TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter::class

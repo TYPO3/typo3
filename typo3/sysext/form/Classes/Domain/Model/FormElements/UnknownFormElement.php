@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -55,13 +53,19 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      */
     public function initializeFormElement()
     {
-        GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(Dispatcher::class)
-            ->dispatch(
-                AbstractRenderable::class,
-                'initializeFormElement',
-                [$this]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'initializeFormElement')) {
+                    $hookObj->initializeFormElement(
+                        $this
+                    );
+                }
+            }
+        }
     }
 
     /**

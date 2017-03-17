@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Domain\Renderer;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -128,10 +127,10 @@ class FluidFormRenderer extends AbstractElementRenderer implements RendererInter
     /**
      * Renders the FormDefinition.
      *
-     * This method is expected to dispatch the 'beforeRendering' signal
+     * This method is expected to call the 'beforeRendering' hook
      * on each renderable.
-     * This method dispatch the 'beforeRendering' signal initially.
-     * Each other signals will be dispatched from the
+     * This method call the 'beforeRendering' hook initially.
+     * Each other hooks will be called from the
      * renderRenderable viewHelper.
      * {@link \TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper::renderStatic()}
      *
@@ -179,13 +178,20 @@ class FluidFormRenderer extends AbstractElementRenderer implements RendererInter
         GeneralUtility::deprecationLog('EXT:form - calls for "beforeRendering" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
         $this->formRuntime->getFormDefinition()->beforeRendering($this->formRuntime);
 
-        GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(Dispatcher::class)
-            ->dispatch(
-                FormRuntime::class,
-                'beforeRendering',
-                [$this->formRuntime, $this->formRuntime->getFormDefinition()]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'beforeRendering')) {
+                    $hookObj->beforeRendering(
+                        $this->formRuntime,
+                        $this->formRuntime->getFormDefinition()
+                    );
+                }
+            }
+        }
 
         return $view->render($this->formRuntime->getTemplateName());
     }

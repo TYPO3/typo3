@@ -48,7 +48,7 @@ class PropertyMappingConfiguration
      * @internal
      * @todo: could we find a not so ugly solution for that?
      */
-    public function setPropertyMappingConfiguration(RenderableInterface $renderable)
+    public function afterBuildingFinished(RenderableInterface $renderable)
     {
         if (get_class($renderable) === FileUpload::class) {
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */

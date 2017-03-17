@@ -12,20 +12,16 @@ Description
 The callback 'onBuildingFinished' is deprecated and will be removed in TYPO3 v9.
 --------------------------------------------------------------------------------
 
-Use the new signal slot 'onBuildingFinished' instead.
+Use the new hook 'afterBuildingFinished' instead.
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::class,
-        'onBuildingFinished',
-        \VENDOR\YourNamespace\YourClass::class,
-        'onBuildingFinished'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
@@ -33,29 +29,25 @@ Use the signal:
      * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
      * @return void
      */
-    public function onBuildingFinished(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
+    public function afterBuildingFinished(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
     {
     }
 
 
-This signal will be dispatched for each renderable.
+This hook will be called for each renderable.
 
 
 The callback 'beforeRendering' is deprecated and will be removed in TYPO3 v9.
 -----------------------------------------------------------------------------
 
-Use the new signal slot 'beforeRendering' instead.
+Use the new hook 'beforeRendering' instead.
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::class,
-        'beforeRendering',
-        \VENDOR\YourNamespace\YourClass::class,
-        'beforeRendering'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
 Use the signal:
 
@@ -71,59 +63,52 @@ Use the signal:
     }
 
 
-This signal will be dispatched for each renderable.
+This hook will be called for each renderable.
 
 
 The callback 'onSubmit' is deprecated and will be removed in TYPO3 v9.
 ----------------------------------------------------------------------
 
-Use the new signal slot 'onSubmit' instead.
+Use the new hook 'afterSubmit' instead.
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::class,
-        'onSubmit',
-        \VENDOR\YourNamespace\YourClass::class,
-        'onSubmit'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
     /**
      * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
      * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-     * @param mixed &$elementValue submitted value of the element *before post processing*
+     * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
      * @return void
      */
-    public function onSubmit(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable, &$elementValue, array $requestArguments = [])
+    public function onSubmit(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable, $elementValue, array $requestArguments = [])
     {
+        return $elementValue;
     }
 
 
-This signal will be dispatched for each renderable.
+This hook will be called for each renderable.
 
 
-The callback 'initializeFormElement' dispatches the 'initializeFormElement' signal.
------------------------------------------------------------------------------------
+The callback 'initializeFormElement' call the 'initializeFormElement' hook.
+---------------------------------------------------------------------------
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable::class,
-        'initializeFormElement',
-        \VENDOR\YourNamespace\YourClass::class,
-        'initializeFormElement'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
@@ -137,127 +122,165 @@ Use the signal:
 
 
 This enables you to override the 'initializeFormElement' method within your custom implementation class.
-If you do not call the parents 'initializeFormElement' then no signal will be thrown.
-Furthermore, you can connect to the signal and initialize the generic form elements without defining a
+If you do not call the parents 'initializeFormElement' then no hook will be thrown.
+Furthermore, you can connect to the hook and initialize the generic form elements without defining a
 custom implementaion to access the 'initializeFormElement' method.
-You only need a class which connects to this signal. Then detect the form element you wish to initialize.
+You only need a class which connects to this hook. Then detect the form element you wish to initialize.
 This saves you a lot of configuration!
 
 
-The form manager dispatches the 'beforeFormCreate' signal.
-----------------------------------------------------------
+The hook 'beforeRemoveFromParentRenderable' will be called for each renderable.
+-------------------------------------------------------------------------------
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Controller\FormManagerController::class,
-        'beforeFormCreate',
-        \VENDOR\YourNamespace\YourClass::class,
-        'beforeFormCreate'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRemoveFromParentRenderable'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
     /**
-     * @string $formPersistenceIdentifier
-     * @array $formDefinition
+     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
      * @return void
      */
-    public function beforeFormCreate(string $formPersistenceIdentifier, array &$formDefinition)
+    public function beforeRemoveFromParentRenderable(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
     {
     }
 
 
-The form manager dispatches the 'beforeFormDuplicate' signal.
--------------------------------------------------------------
+The hook 'afterInitializeCurrentPage' will be called after a page is initialized.
+---------------------------------------------------------------------------------
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Controller\FormManagerController::class,
-        'beforeFormDuplicate',
-        \VENDOR\YourNamespace\YourClass::class,
-        'beforeFormDuplicate'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
     /**
-     * @string $formPersistenceIdentifier
-     * @array $formDefinition
-     * @return void
+     * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
+     * @param \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage
+     * @param null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage
+     * @param mixed $elementValue submitted value of the element *before post processing*
+     * @return \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
      */
-    public function beforeFormDuplicate(string $formPersistenceIdentifier, array &$formDefinition)
+    public function afterInitializeCurrentPage(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage = null, array $requestArguments = []): CompositeRenderableInterface
     {
+        return $currentPage;
     }
 
 
-The form manager dispatches the 'beforeFormDelete' signal.
-----------------------------------------------------------
+The form manager call the 'beforeFormCreate' hook.
+--------------------------------------------------
 
-Connect to the signal:
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Controller\FormManagerController::class,
-        'beforeFormDelete',
-        \VENDOR\YourNamespace\YourClass::class,
-        'beforeFormDelete'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'][]
+        = \VENDOR\YourNamespace\YourClass::class;
+
+Use the hook:
+
+.. code-block:: php
+
+    /**
+     * @param string $formPersistenceIdentifier
+     * @param array $formDefinition
+     * @return array
+     */
+    public function beforeFormCreate(string $formPersistenceIdentifier, array $formDefinition): array
+    {
+        return $formDefinition;
+    }
+
+
+The form manager call the 'beforeFormDuplicate' hook.
+-----------------------------------------------------
+
+Connect to the hook:
+
+.. code-block:: php
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'][]
+        = \VENDOR\YourNamespace\YourClass::class;
+
+Use the hook:
+
+.. code-block:: php
+
+    /**
+     * @param string $formPersistenceIdentifier
+     * @param array $formDefinition
+     * @return array
+     */
+    public function beforeFormDuplicate(string $formPersistenceIdentifier, array $formDefinition): array
+    {
+        return $formDefinition;
+    }
+
+
+The form manager call the 'beforeFormDelete' hook.
+--------------------------------------------------
+
+Connect to the hook:
+
+.. code-block:: php
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
 Use the signal:
 
 .. code-block:: php
 
     /**
-     * @string $formPersistenceIdentifier
+     * @param string $formPersistenceIdentifier
      * @return void
      */
     public function beforeFormDelete(string $formPersistenceIdentifier)
     {
     }
 
-The form editor dispatches the 'beforeFormSave' signal.
--------------------------------------------------------
 
-Connect to the signal:
+The form editor call the 'beforeFormSave' hook.
+-----------------------------------------------
+
+Connect to the hook:
 
 .. code-block:: php
 
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Form\Controller\FormEditorController::class,
-        'beforeFormSave',
-        \VENDOR\YourNamespace\YourClass::class,
-        'beforeFormSave'
-    );
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'][]
+        = \VENDOR\YourNamespace\YourClass::class;
 
-Use the signal:
+Use the hook:
 
 .. code-block:: php
 
     /**
-     * @string $formPersistenceIdentifier
-     * @array $formDefinition
-     * @return void
+     * @param string $formPersistenceIdentifier
+     * @param array $formDefinition
+     * @return array
      */
-    public function beforeFormSave(string $formPersistenceIdentifier, array &$formDefinition)
+    public function beforeFormSave(string $formPersistenceIdentifier, array $formDefinition): array
     {
+        return $formDefinition;
     }
 
 
 New form element property: properties.fluidAdditionalAttributes
 ---------------------------------------------------------------
 
-To deal with fluid ViewHelpers 'additionalAttributes' it is necessary to introduce a new configuration scope "properties.fluidAdditionalAttributes" for each form element.
+In order to deal with fluid ViewHelpers 'additionalAttributes' it is necessary to introduce a new configuration scope "properties.fluidAdditionalAttributes" for each form element.
 This configuration property will be used to fill the fluid ViewHelper property "additionalAttributes".
 
 

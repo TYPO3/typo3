@@ -28,18 +28,18 @@ class FormElementsOnSubmitHooks
 {
 
     /**
-     * This signal is invoked by the FormRuntime whenever values are mapped and validated
+     * This hook is invoked by the FormRuntime whenever values are mapped and validated
      * (after a form page was submitted)
      *
      * @param FormRuntime $formRuntime
      * @param RenderableInterface $renderable
-     * @param mixed &$elementValue submitted value of the element *before post processing*
+     * @param mixed $elementValue submitted value of the element *before post processing*
      * @param array $requestArguments submitted raw request values
      * @return void
      * @see FormRuntime::mapAndValidate()
      * @internal
      */
-    public function onSubmit(FormRuntime $formRuntime, RenderableInterface $renderable, &$elementValue, array $requestArguments = [])
+    public function afterSubmit(FormRuntime $formRuntime, RenderableInterface $renderable, $elementValue, array $requestArguments = [])
     {
         if ($renderable->getType() === 'AdvancedPassword') {
             if ($elementValue['password'] !== $elementValue['confirmation']) {
@@ -51,5 +51,7 @@ class FormElementsOnSubmitHooks
             }
             $elementValue = $elementValue['password'];
         }
+
+        return $elementValue;
     }
 }

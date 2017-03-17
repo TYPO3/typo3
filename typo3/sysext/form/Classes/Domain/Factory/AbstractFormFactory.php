@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Form\Domain\Factory;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * Base class for custom *Form Factories*. A Form Factory is responsible for building
@@ -55,8 +53,8 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 abstract class AbstractFormFactory implements FormFactoryInterface
 {
     /**
-     * Helper to be called by every AbstractFormFactory after everything has been built to dispatch the "onBuildingFinished"
-     * signal on all form elements.
+     * Helper to be called by every AbstractFormFactory after everything has been built to call the "afterBuildingFinished"
+     * hook on all form elements.
      *
      * @param FormDefinition $form
      * @return void
@@ -68,13 +66,19 @@ abstract class AbstractFormFactory implements FormFactoryInterface
             GeneralUtility::deprecationLog('EXT:form - calls for "onBuildingFinished" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
             $renderable->onBuildingFinished();
 
-            GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(Dispatcher::class)
-                ->dispatch(
-                    FormRuntime::class,
-                    'onBuildingFinished',
-                    [$renderable]
-                );
+            if (
+                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])
+            ) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
+                    if (method_exists($hookObj, 'afterBuildingFinished')) {
+                        $hookObj->afterBuildingFinished(
+                            $renderable
+                        );
+                    }
+                }
+            }
         }
     }
 }

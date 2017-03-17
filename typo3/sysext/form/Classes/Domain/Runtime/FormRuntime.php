@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -208,6 +207,22 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         if (!$this->formState->isFormSubmitted()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
+            if (
+                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
+            ) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
+                    if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
+                        $this->currentPage = $hookObj->afterInitializeCurrentPage(
+                            $this,
+                            $this->currentPage,
+                            null,
+                            $this->request->getArguments()
+                        );
+                    }
+                }
+            }
             return;
         }
         $this->lastDisplayedPage = $this->formDefinition->getPageByIndex($this->formState->getLastDisplayedPageIndex());
@@ -225,6 +240,23 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->currentPage = null;
         } else {
             $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
+        }
+
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
+                    $this->currentPage = $hookObj->afterInitializeCurrentPage(
+                        $this,
+                        $this->currentPage,
+                        $this->lastDisplayedPage,
+                        $this->request->getArguments()
+                    );
+                }
+            }
         }
     }
 
@@ -411,13 +443,22 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
         $page->onSubmit($this, $value, $requestArguments);
 
-        $this->objectManager
-            ->get(Dispatcher::class)
-            ->dispatch(
-                self::class,
-                'onSubmit',
-                [$this, $page, &$value, $requestArguments]
-            );
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'afterSubmit')) {
+                    $value = $hookObj->afterSubmit(
+                        $this,
+                        $page,
+                        $value,
+                        $requestArguments
+                    );
+                }
+            }
+        }
 
         foreach ($page->getElementsRecursively() as $element) {
             try {
@@ -429,13 +470,22 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
             $element->onSubmit($this, $value, $requestArguments);
 
-            $this->objectManager
-                ->get(Dispatcher::class)
-                ->dispatch(
-                    self::class,
-                    'onSubmit',
-                    [$this, $element, &$value, $requestArguments]
-                );
+            if (
+                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
+            ) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
+                    if (method_exists($hookObj, 'afterSubmit')) {
+                        $value = $hookObj->afterSubmit(
+                            $this,
+                            $element,
+                            $value,
+                            $requestArguments
+                        );
+                    }
+                }
+            }
 
             $this->formState->setFormValue($element->getIdentifier(), $value);
             $registerPropertyPaths($element->getIdentifier());
