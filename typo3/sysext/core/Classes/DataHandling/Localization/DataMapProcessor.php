@@ -382,12 +382,16 @@ class DataMapProcessor
     protected function synchronizeFieldValues(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
     {
         // skip if this field has been processed already, assumed that proper sanitation happened
-        if (isset($this->allDataMap[$item->getTableName()][$item->getId()][$fieldName])) {
+        if ($this->isSetInDataMap($item->getTableName(), $item->getId(), $fieldName)) {
             return;
         }
 
         $fromId = $fromRecord['uid'];
-        $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
+        if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
+            $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName];
+        } else {
+            $fromValue = $fromRecord[$fieldName];
+        }
 
         // plain values
         if (!$this->isRelationField($item->getFromTableName(), $fieldName)) {
@@ -414,16 +418,21 @@ class DataMapProcessor
      */
     protected function synchronizeDirectRelations(DataMapItem $item, string $fieldName, array $fromRecord)
     {
-        $fromId = $fromRecord['uid'];
-        $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName] ?? $fromRecord[$fieldName];
         $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
         $isSpecialLanguageField = ($configuration['config']['special'] ?? null) === 'languages';
+
+        $fromId = $fromRecord['uid'];
+        if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
+            $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName];
+        } else {
+            $fromValue = $fromRecord[$fieldName];
+        }
 
         // non-MM relations are stored as comma separated values, just use them
         // if values are available in data-map already, just use them as well
         if (
             empty($configuration['config']['MM'])
-            || isset($this->allDataMap[$item->getFromTableName()][$fromId][$fieldName])
+            || $this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)
             || $isSpecialLanguageField
         ) {
             $this->modifyDataMap(
@@ -493,7 +502,7 @@ class DataMapProcessor
 
         // determine suggested elements of either translation parent or source record
         // from data-map, in case the accordant language parent/source record was modified
-        if (isset($this->allDataMap[$item->getFromTableName()][$fromId][$fieldName])) {
+        if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
             $suggestedAncestorIds = GeneralUtility::trimExplode(
                 ',',
                 $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName],
@@ -641,6 +650,27 @@ class DataMapProcessor
             $item->getId(),
             [$fieldName => implode(',', array_values($desiredIdMap))]
         );
+    }
+
+    /**
+     * Determines whether a combination of table name, id and field name is
+     * set in data-map. This method considers null values as well, that would
+     * not be considered by a plain isset() invocation.
+     *
+     * @param string $tableName
+     * @param string|int $id
+     * @param string $fieldName
+     * @return bool
+     */
+    protected function isSetInDataMap(string $tableName, $id, string $fieldName)
+    {
+        return
+            // directly look-up field name
+            isset($this->allDataMap[$tableName][$id][$fieldName])
+            // check existence of field name as key for null values
+            || isset($this->allDataMap[$tableName][$id])
+            && is_array($this->allDataMap[$tableName][$id])
+            && array_key_exists($fieldName, $this->allDataMap[$tableName][$id]);
     }
 
     /**
