@@ -69,6 +69,9 @@
 			<trans-unit id="validator.boolean.notfalse">
 				<source>The given subject was not false.</source>
 			</trans-unit>
+			<trans-unit id="validator.url.notvalid">
+				<source>The given subject is no valid URL.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
