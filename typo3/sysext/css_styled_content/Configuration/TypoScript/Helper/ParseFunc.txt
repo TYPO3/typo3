@@ -49,27 +49,27 @@ styles.content.parseFunc < lib.parseFunc
 # Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "ts_css" transformation.
 lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
-    //  makelinks >
-    # Processing <table> and <blockquote> blocks separately
+    # Processing <table> blocks separately
     externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
     externalBlocks {
-        # The blockquote content is passed into parseFunc again...
-        table.stripNL=1
-        table.stdWrap.HTMLparser = 1
-        table.stdWrap.HTMLparser.tags.table.fixAttrib.class {
-            default = contenttable
-            always = 1
-            list = contenttable
-        }
-        table.stdWrap.HTMLparser.keepNonMatchedTags = 1
-        table.HTMLtableCells=1
-        table.HTMLtableCells {
-            # Recursive call to self but without wrapping non-wrapped cell content
-            default.stdWrap {
-                parseFunc =< lib.parseFunc_RTE
-                parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
+        table {
+            stripNL = 1
+            stdWrap.HTMLparser = 1
+            stdWrap.HTMLparser.tags.table.fixAttrib.class {
+                default = contenttable
+                always = 1
+                list = contenttable
             }
-            addChr10BetweenParagraphs=1
+            stdWrap.HTMLparser.keepNonMatchedTags = 1
+            HTMLtableCells = 1
+            HTMLtableCells {
+                # Recursive call to self but without wrapping non-wrapped cell content
+                default.stdWrap {
+                    parseFunc =< lib.parseFunc_RTE
+                    parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
+                }
+                addChr10BetweenParagraphs = 1
+            }
         }
         div {
             stripNL = 1

@@ -50,10 +50,9 @@ lib.parseFunc {
 # Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "ts_css" transformation.
 lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
-    # Processing <table> and <blockquote> blocks separately
+    # Processing <ol>, <ul> and <table> blocks separately
     externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre
     externalBlocks {
-        # The blockquote content is passed into parseFunc again...
         ol {
             stripNL = 1
             stdWrap.parseFunc = < lib.parseFunc
