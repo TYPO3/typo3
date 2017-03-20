@@ -234,7 +234,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'foreign_table_where' => 'ORDER BY sys_language.sorting',
                 'items' => [], // no default language here, as the pages table is always the default language
                 'default' => 0,
                 'fieldWizard' => [
