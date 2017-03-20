@@ -1026,7 +1026,7 @@ class PageLayoutController
      *
      ***************************/
     /**
-     * This creates the buttons for die modules
+     * This creates the buttons for the modules
      *
      * @return void
      */

@@ -719,7 +719,7 @@ class EditDocumentController extends AbstractModule
         $this->viewUrl = GeneralUtility::_GP('viewUrl');
         $this->recTitle = GeneralUtility::_GP('recTitle');
         $this->noView = GeneralUtility::_GP('noView');
-        $this->perms_clause = $beUser->getPagePermsClause(1);
+        $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
         // Set other internal variables:
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
         $this->R_URI = $this->R_URL_parts['path'] . '?' . ltrim(GeneralUtility::implodeArrayForUrl(
