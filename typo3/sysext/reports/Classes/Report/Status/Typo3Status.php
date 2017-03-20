@@ -33,7 +33,7 @@ class Typo3Status implements StatusProviderInterface
     {
         $statuses = [
             'registeredXclass' => $this->getRegisteredXclassStatus(),
-            'compatibility6' => $this->getCompatibility6Status(),
+            'compatibility7' => $this->getCompatibility7Status(),
         ];
         return $statuses;
     }
@@ -83,25 +83,25 @@ class Typo3Status implements StatusProviderInterface
     }
 
     /**
-     * Check for usage of EXT:compatibility6
+     * Check for usage of EXT:compatibility7
      *
      * @return \TYPO3\CMS\Reports\Status
      */
-    protected function getCompatibility6Status()
+    protected function getCompatibility7Status()
     {
         $message = '';
         $value = $this->getLanguageService()->getLL('status_disabled');
         $severity = ReportStatus::OK;
 
-        if (ExtensionManagementUtility::isLoaded('compatibility6')) {
+        if (ExtensionManagementUtility::isLoaded('compatibility7')) {
             $value = $this->getLanguageService()->getLL('status_enabled');
-            $message = $this->getLanguageService()->getLL('status_compatibility6Usage_message');
+            $message = $this->getLanguageService()->getLL('status_compatibility7Usage_message');
             $severity = ReportStatus::WARNING;
         }
 
         return GeneralUtility::makeInstance(
             ReportStatus::class,
-            $this->getLanguageService()->getLL('status_compatibility6Usage'),
+            $this->getLanguageService()->getLL('status_compatibility7Usage'),
             $value,
             $message,
             $severity
