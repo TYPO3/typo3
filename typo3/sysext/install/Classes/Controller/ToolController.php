@@ -73,7 +73,7 @@ class ToolController extends AbstractController
     {
         $action = $this->getAction();
         if ($action === 'logout') {
-            if (!EnableFileService::isInstallToolEnableFilePermanent()) {
+            if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
                 EnableFileService::removeInstallToolEnableFile();
             }
 

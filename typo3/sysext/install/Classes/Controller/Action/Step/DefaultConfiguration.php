@@ -133,7 +133,7 @@ For each website you need a TypoScript template on the main page of your website
         );
         $formProtection->clean();
 
-        if (!EnableFileService::isInstallToolEnableFilePermanent()) {
+        if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
             EnableFileService::removeInstallToolEnableFile();
         }
 
