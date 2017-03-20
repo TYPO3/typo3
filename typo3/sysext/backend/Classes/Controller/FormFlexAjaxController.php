@@ -93,6 +93,27 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formData['flexFormContainerElementCollapsed'] = false;
 
         $formData['flexFormFormPrefix'] = '[data][' . $flexFormSheetName . '][lDEF]' . '[' . $flexFormFieldName . ']' . '[el]';
+
+        // Set initialized data of that section container from compiler to the array part used
+        // by flexFormElementContainer which prepares parameterArray. Important for initialized
+        // values of group element.
+        if (isset($formData['databaseRow'][$fieldName]
+                ['data'][$flexFormSheetName]
+                ['lDEF'][$flexFormFieldName]
+                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
+            )
+            && is_array($formData['databaseRow'][$fieldName]
+                ['data'][$flexFormSheetName]
+                ['lDEF'][$flexFormFieldName]
+                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
+            )
+        ) {
+            $formData['flexFormRowData'] = $formData['databaseRow'][$fieldName]
+                ['data'][$flexFormSheetName]
+                ['lDEF'][$flexFormFieldName]
+                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'];
+        }
+
         $formData['parameterArray']['itemFormElName'] = 'data[' . $tableName . '][' . $formData['databaseRow']['uid'] . '][' . $fieldName . ']';
 
         // JavaScript code for event handlers:
