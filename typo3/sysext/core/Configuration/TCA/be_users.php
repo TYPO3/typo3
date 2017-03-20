@@ -10,7 +10,7 @@ return [
         'delete' => 'deleted',
         'adminOnly' => true,
         'rootLevel' => 1,
-        'default_sortby' => 'ORDER BY admin, username',
+        'default_sortby' => 'admin, username',
         'enablecolumns' => [
             'disabled' => 'disable',
             'starttime' => 'starttime',

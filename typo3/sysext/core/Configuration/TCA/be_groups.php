@@ -7,7 +7,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
-        'default_sortby' => 'ORDER BY title',
+        'default_sortby' => 'title',
         'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'adminOnly' => true,
         'rootLevel' => 1,

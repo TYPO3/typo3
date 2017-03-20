@@ -3,7 +3,6 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_db.xlf:tx_rtehtmlarea_acronym',
         'label' => 'term',
-        'default_sortby' => 'ORDER BY term',
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'enablecolumns' => [

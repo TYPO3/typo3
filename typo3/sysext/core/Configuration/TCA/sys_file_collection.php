@@ -11,7 +11,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-        'default_sortby' => 'ORDER BY crdate',
+        'default_sortby' => 'crdate',
         'delete' => 'deleted',
         'type' => 'type',
         'typeicon_column' => 'type',

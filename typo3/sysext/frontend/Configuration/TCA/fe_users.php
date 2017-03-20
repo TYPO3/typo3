@@ -3,7 +3,7 @@ return [
     'ctrl' => [
         'label' => 'username',
         'descriptionColumn' => 'description',
-        'default_sortby' => 'ORDER BY username',
+        'default_sortby' => 'username',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',

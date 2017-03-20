@@ -6,7 +6,7 @@ return [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'default_sortby' => 'ORDER BY name',
+        'default_sortby' => 'name',
         'delete' => 'deleted',
         'descriptionColumn' => 'description',
         'rootLevel' => true,

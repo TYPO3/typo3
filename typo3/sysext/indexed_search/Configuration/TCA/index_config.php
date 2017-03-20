@@ -8,7 +8,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'type' => 'type',
-        'default_sortby' => 'ORDER BY crdate',
+        'default_sortby' => 'crdate',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime'

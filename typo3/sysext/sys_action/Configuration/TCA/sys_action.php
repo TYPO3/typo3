@@ -4,7 +4,6 @@ return [
         'label' => 'title',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
-        'default_sortby' => 'ORDER BY title',
         'sortby' => 'sorting',
         'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'title' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action',

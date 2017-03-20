@@ -2,7 +2,6 @@
 return [
     'ctrl' => [
         'label' => 'subject',
-        'default_sortby' => 'ORDER BY crdate',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser',

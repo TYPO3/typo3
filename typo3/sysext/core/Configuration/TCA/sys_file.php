@@ -7,7 +7,7 @@ return [
         'type' => 'type',
         'hideTable' => true,
         'rootLevel' => true,
-        'default_sortby' => 'ORDER BY name ASC',
+        'default_sortby' => 'name ASC',
         'typeicon_column' => 'type',
         'typeicon_classes' => [
             '1' => 'mimetypes-text-text',
