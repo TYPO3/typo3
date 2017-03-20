@@ -1720,7 +1720,7 @@ class ResourceStorage implements ResourceStorageInterface
             }
         }
         // Mark the file object as deleted
-        if ($fileObject instanceof File) {
+        if ($fileObject instanceof AbstractFile) {
             $fileObject->setDeleted();
         }
 

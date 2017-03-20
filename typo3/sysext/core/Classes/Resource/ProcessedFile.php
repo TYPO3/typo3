@@ -429,9 +429,8 @@ class ProcessedFile extends AbstractFile
         // Only delete file when original isn't used
         if (!$this->usesOriginalFile()) {
             return parent::delete();
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

@@ -448,6 +448,8 @@ abstract class AbstractFile implements FileInterface
      */
     public function setDeleted()
     {
+        // Unset all properties when deleting the file, as they will be stale anyway
+        $this->properties = null;
         $this->deleted = true;
     }
 
