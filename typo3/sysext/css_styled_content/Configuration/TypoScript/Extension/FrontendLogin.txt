@@ -1,0 +1,9 @@
+[userFunc = TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('felogin')]
+    # Setting "felogin" plugin TypoScript
+    tt_content.login >
+    tt_content.login = COA
+    tt_content.login {
+        10 =< lib.stdheader
+        20 =< plugin.tx_felogin_pi1
+    }
+[global]
