@@ -810,9 +810,6 @@ TYPO3:
           TextMixin:
             formEditor:
               predefinedDefaults:
-                properties:
-                  fluidAdditionalAttributes:
-                    placeholder: ''
                 defaultValue: ''
               editors:
                 400:
@@ -821,6 +818,7 @@ TYPO3:
                   label: 'formEditor.elements.TextMixin.editor.placeholder.label'
                   propertyPath: 'properties.fluidAdditionalAttributes.placeholder'
                   compatibilityPropertyPath: 'properties.placeholder'
+                  doNotSetIfPropertyValueIsEmpty: true
                 500:
                   identifier: 'defaultValue'
                   templateName: 'Inspector-TextEditor'
