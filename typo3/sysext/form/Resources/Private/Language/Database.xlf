@@ -23,6 +23,12 @@
             <trans-unit id="tt_content.preview.noPersistenceIdentifier" xml:space="preserve">
                 <source>No form selected.</source>
             </trans-unit>
+            <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" xml:space="preserve">
+                <source>Invalid form "%s".</source>
+            </trans-unit>
+            <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" xml:space="preserve">
+                <source>The form "%s" does not exists.</source>
+            </trans-unit>
 
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve">
                 <source>Email to sender</source>
