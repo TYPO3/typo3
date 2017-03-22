@@ -75,7 +75,7 @@ class LocalizationStateSelector extends AbstractNode
         );
 
         $fieldElementName = 'data[' . htmlspecialchars($this->data['tableName']) . ']'
-            . '[' . (int)($this->data['databaseRow']['uid']) . ']'
+            . '[' . htmlspecialchars((string)$this->data['databaseRow']['uid']) . ']'
             . '[' . htmlspecialchars($l10nStateFieldName) . ']'
             . '[' . htmlspecialchars($this->data['fieldName']) . ']';
 
