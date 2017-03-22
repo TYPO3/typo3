@@ -8,7 +8,6 @@ return [
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
-        'default_sortby' => 'ORDER BY crdate',
         'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'versioningWS' => true,
         'origUid' => 't3_origuid',

@@ -9,7 +9,6 @@ return [
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
-        'default_sortby' => 'ORDER BY crdate',
     ],
 
 

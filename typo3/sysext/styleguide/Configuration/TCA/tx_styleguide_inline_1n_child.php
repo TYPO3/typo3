@@ -12,7 +12,6 @@ return [
             'disabled' => 'disable',
         ],
         'sortby' => 'sorting',
-        'default_sortby' => 'ORDER BY crdate',
     ],
 
 
