@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=none fields with format='date'
+ * Generate data for type=none fields with format='datetime'
  */
 class TypeNoneFormatDateTime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
