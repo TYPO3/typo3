@@ -76,6 +76,7 @@ define(['jquery'], function($) {
 	Permissions.setPermissions = function($element) {
 		var page = $element.data('page');
 		var who = $element.data('who');
+		var elementSelector = '#' + page + '_' + who;
 
 		$.ajax({
 			url: ajaxUrl,
@@ -91,7 +92,9 @@ define(['jquery'], function($) {
 			}
 		}).done(function(data) {
 			// Replace content
-			$('#' + page + '_' + who).replaceWith(data);
+			$(elementSelector).replaceWith(data);
+			// Reinitialize tooltip
+			$(elementSelector).find('span').tooltip();
 		});
 	};
 
