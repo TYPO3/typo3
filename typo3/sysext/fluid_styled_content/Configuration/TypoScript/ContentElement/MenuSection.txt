@@ -3,7 +3,7 @@
 #
 # CType: menu_section
 
-tt_content.menu_section =< lib.fluidContent
+tt_content.menu_section =< lib.contentElement
 tt_content.menu_section {
     templateName = MenuSection
     dataProcessing {

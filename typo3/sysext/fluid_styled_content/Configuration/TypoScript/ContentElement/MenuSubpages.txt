@@ -3,7 +3,7 @@
 #
 # CType: menu_subpages
 
-tt_content.menu_subpages =< lib.fluidContent
+tt_content.menu_subpages =< lib.contentElement
 tt_content.menu_subpages {
     templateName = MenuSubpages
     dataProcessing {

@@ -3,7 +3,7 @@
 #
 # CType: table
 
-tt_content.table =< lib.fluidContent
+tt_content.table =< lib.contentElement
 tt_content.table {
     templateName = Table
     dataProcessing {

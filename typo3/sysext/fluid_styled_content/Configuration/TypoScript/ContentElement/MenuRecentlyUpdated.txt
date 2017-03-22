@@ -3,7 +3,7 @@
 #
 # CType: menu_recently_updated
 
-tt_content.menu_recently_updated =< lib.fluidContent
+tt_content.menu_recently_updated =< lib.contentElement
 tt_content.menu_recently_updated {
     templateName = MenuRecentlyUpdated
     dataProcessing {

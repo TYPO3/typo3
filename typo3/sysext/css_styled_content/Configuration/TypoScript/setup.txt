@@ -1,4 +1,5 @@
 # Include setup
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/Helper/ContentElement.txt">
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/Helper/ParseFunc.txt">
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/TypoScript/Helper/StandardHeader.txt">
 

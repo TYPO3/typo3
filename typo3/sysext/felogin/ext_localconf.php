@@ -159,7 +159,7 @@ plugin.tx_felogin_pi1 {
 }
 
 # Setting "felogin" plugin TypoScript
-tt_content.login =< lib.fluidContent
+tt_content.login =< lib.contentElement
 tt_content.login {
     templateName = Generic
     variables {

@@ -82,15 +82,15 @@ tt_content.list.20.' . $pluginSignature . ' {
                 break;
             case self::PLUGIN_TYPE_CONTENT_ELEMENT:
                 $pluginContent = trim('
-tt_content.' . $pluginSignature . ' = COA
+tt_content.' . $pluginSignature . ' =< lib.contentElement
 tt_content.' . $pluginSignature . ' {
-	10 = < lib.stdheader
-	20 = USER
-	20 {
-		userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
-		extensionName = ' . $extensionName . '
-		pluginName = ' . $pluginName . (null !== $vendorName ? ("\n\t\t" . 'vendorName = ' . $vendorName) : '') . '
-	}
+    templateName = Generic
+    20 = USER
+    20 {
+        userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
+        extensionName = ' . $extensionName . '
+        pluginName = ' . $pluginName . (null !== $vendorName ? ("\n\t\t" . 'vendorName = ' . $vendorName) : '') . '
+    }
 }');
                 break;
             default:

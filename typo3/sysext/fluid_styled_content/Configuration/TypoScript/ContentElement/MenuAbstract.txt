@@ -3,7 +3,7 @@
 #
 # CType: menu_abstract
 
-tt_content.menu_abstract =< lib.fluidContent
+tt_content.menu_abstract =< lib.contentElement
 tt_content.menu_abstract {
     templateName = MenuAbstract
     dataProcessing {

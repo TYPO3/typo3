@@ -3,7 +3,7 @@
 #
 # CType: shortcut
 
-tt_content.shortcut =< lib.fluidContent
+tt_content.shortcut =< lib.contentElement
 tt_content.shortcut {
     templateName = Shortcut
 

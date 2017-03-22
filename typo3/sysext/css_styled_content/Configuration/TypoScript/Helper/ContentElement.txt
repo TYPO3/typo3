@@ -1,0 +1,6 @@
+# Default configuration for content elements
+lib.contentElement >
+lib.contentElement = COA
+lib.contentElement {
+    10 =< lib.stdheader
+}

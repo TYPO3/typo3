@@ -3,7 +3,7 @@
 #
 # CType: list
 
-tt_content.list =< lib.fluidContent
+tt_content.list =< lib.contentElement
 tt_content.list {
     templateName = List
     stdWrap {

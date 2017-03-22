@@ -3,7 +3,7 @@
 #
 # CType: menu_sitemap
 
-tt_content.menu_sitemap =< lib.fluidContent
+tt_content.menu_sitemap =< lib.contentElement
 tt_content.menu_sitemap {
     templateName = MenuSitemap
     dataProcessing {

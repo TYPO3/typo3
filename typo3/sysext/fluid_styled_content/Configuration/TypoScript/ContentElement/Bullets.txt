@@ -3,7 +3,7 @@
 #
 # CType: bullets
 
-tt_content.bullets =< lib.fluidContent
+tt_content.bullets =< lib.contentElement
 tt_content.bullets {
     templateName = Bullets
     dataProcessing {

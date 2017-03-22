@@ -36,7 +36,7 @@ Example Usage
 
 .. code-block:: typoscript
 
-   tt_content.mycontent =< lib.fluidContent
+   tt_content.mycontent =< lib.contentElement
    tt_content.mycontent {
       templateName = Generic
       variables {

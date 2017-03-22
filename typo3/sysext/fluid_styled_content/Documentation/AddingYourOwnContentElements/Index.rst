@@ -137,9 +137,9 @@ As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the 
   .. code-block:: typoscript
 
      tt_content {
-        yourextensionkey_newcontentelement < lib.fluidContent
+        yourextensionkey_newcontentelement =< lib.contentElement
         yourextensionkey_newcontentelement {
-           templateName = NewContentElement.html
+           templateName = NewContentElement
         }
      }
 
@@ -152,9 +152,9 @@ As defined in `Configuration/TCA/Overrides/tt_content.php`, this file is in the 
 .. code-block:: typoscript
 
    tt_content {
-      yourextensionkey_newcontentelement < lib.fluidContent
+      yourextensionkey_newcontentelement =< lib.contentElement
       yourextensionkey_newcontentelement {
-         templateName = NewContentElement.html
+         templateName = NewContentElement
          dataProcessing {
             1 = Vendor\YourExtensionKey\DataProcessing\NewContentElementProcessor
             1 {
@@ -169,7 +169,7 @@ it, partialRootPaths and layoutRootPaths:
 
 .. code-block:: typoscript
 
-   lib.fluidContent {
+   lib.contentElement {
       templateRootPaths {
          200 = EXT:your_extension_key/Resources/Private/Templates/
       }

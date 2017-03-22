@@ -1,7 +1,7 @@
 # Default configuration for content elements which are using FLUIDTEMPLATE directly
-lib.fluidContent >
-lib.fluidContent = FLUIDTEMPLATE
-lib.fluidContent {
+lib.contentElement >
+lib.contentElement = FLUIDTEMPLATE
+lib.contentElement {
     templateName = Default
     templateRootPaths {
         0 = EXT:fluid_styled_content/Resources/Private/Templates/
@@ -35,3 +35,6 @@ lib.fluidContent {
         }
     }
 }
+
+# For compatability with CMS7 can be removed with CMS9
+lib.fluidContent < lib.contentElement

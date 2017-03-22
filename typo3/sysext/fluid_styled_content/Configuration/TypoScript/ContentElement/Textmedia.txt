@@ -3,7 +3,7 @@
 #
 # CType: textmedia
 
-tt_content.textmedia =< lib.fluidContent
+tt_content.textmedia =< lib.contentElement
 tt_content.textmedia {
     templateName = Textmedia
     dataProcessing {

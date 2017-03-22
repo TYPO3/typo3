@@ -3,7 +3,7 @@
 #
 # CType: textpic
 
-tt_content.textpic =< lib.fluidContent
+tt_content.textpic =< lib.contentElement
 tt_content.textpic {
     templateName = Textpic
     dataProcessing {

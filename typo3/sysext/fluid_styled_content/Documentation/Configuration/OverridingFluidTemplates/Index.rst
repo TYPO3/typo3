@@ -14,15 +14,15 @@ folder :file:`EXT:fluid_styled_content/Configuration/TypoScript/Static/`.
 
 .. _overriding-fluid-templates-using-lib-fluidcontent:
 
-Using lib.fluidContent
-======================
+Using lib.contentElement
+========================
 
 This option gives you the possibility to add another `templateRootPath` and can be defined
 the same as `partialRootPaths` and `layoutRootPaths`:
 
 .. code-block:: typoscript
 
-   lib.fluidContent {
+   lib.contentElement {
       templateRootPaths {
          200 = EXT:your_extension_key/Resources/Private/Templates/
       }

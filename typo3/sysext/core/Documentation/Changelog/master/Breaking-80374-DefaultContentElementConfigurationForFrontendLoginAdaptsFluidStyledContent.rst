@@ -27,7 +27,7 @@ Redering for css styled content
 Redering for fluid styled content
 -------------------------------
 
-   tt_content.login =< lib.fluidContent
+   tt_content.login =< lib.contentElement
    tt_content.login {
       templateName = Generic
       variables {
@@ -38,7 +38,7 @@ Redering for fluid styled content
 Impact
 ======
 
-Adjustmens made manually to the typoscript rendering definition of 
+Adjustmens made manually to the typoscript rendering definition of
 `tt_content.login` might not work in fluid styled content as expected.
 
 Affected Installations

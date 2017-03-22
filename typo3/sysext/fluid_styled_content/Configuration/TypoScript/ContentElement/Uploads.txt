@@ -3,7 +3,7 @@
 #
 # CType: uploads
 
-tt_content.uploads =< lib.fluidContent
+tt_content.uploads =< lib.contentElement
 tt_content.uploads {
     templateName = Uploads
     dataProcessing {

@@ -3,7 +3,7 @@
 #
 # CType: header
 
-tt_content.header =< lib.fluidContent
+tt_content.header =< lib.contentElement
 tt_content.header {
     templateName = Header
     stdWrap {

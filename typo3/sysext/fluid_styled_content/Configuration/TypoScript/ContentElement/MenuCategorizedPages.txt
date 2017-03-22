@@ -3,7 +3,7 @@
 #
 # CType: menu_categorized_pages
 
-tt_content.menu_categorized_pages =< lib.fluidContent
+tt_content.menu_categorized_pages =< lib.contentElement
 tt_content.menu_categorized_pages {
     templateName = MenuCategorizedPages
     dataProcessing {

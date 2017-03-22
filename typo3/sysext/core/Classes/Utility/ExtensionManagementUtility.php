@@ -1397,10 +1397,10 @@ plugin.' . $cN . $suffix . '.userFunc = ' . $cN . $suffix . '->main
                 break;
             case 'CType':
                 $addLine = trim('
-tt_content.' . $key . $suffix . ' = COA
+tt_content.' . $key . $suffix . ' =< lib.contentElement
 tt_content.' . $key . $suffix . ' {
-	10 = < lib.stdheader
-	20 = < plugin.' . $cN . $suffix . '
+    templateName = Generic
+    20 =< plugin.' . $cN . $suffix . '
 }
 ');
                 break;

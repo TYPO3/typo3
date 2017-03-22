@@ -3,7 +3,7 @@
 #
 # CType: menu_related_pages
 
-tt_content.menu_related_pages =< lib.fluidContent
+tt_content.menu_related_pages =< lib.contentElement
 tt_content.menu_related_pages {
     templateName = MenuRelatedPages
     dataProcessing {
