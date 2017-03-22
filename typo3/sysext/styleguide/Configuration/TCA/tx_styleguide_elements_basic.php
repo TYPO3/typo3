@@ -1306,7 +1306,7 @@ return [
                 --div--;in flex,
                     flex_1,
                 --div--;meta,
-                    disable, starttime, endtime, l10n_parent, l10n_source,
+                    disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
     ],
