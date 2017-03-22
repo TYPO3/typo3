@@ -1,6 +1,3 @@
-# Clear out any constants in this reserved room!
-styles.content >
-
 content {
     # cat=content/cHeader/h0; type=int[1-5]; label=Default Header type: Enter the number of the header layout to be used by default.
     defaultHeaderType = 1
