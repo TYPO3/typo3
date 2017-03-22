@@ -786,16 +786,21 @@ abstract class AbstractUserAuthentication
             if ($this->writeDevLog && !$activeLogin) {
                 GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
             }
-        } elseif ($anonymousSession) {
+        } else {
             // User was not authenticated, so we should reuse the existing anonymous session
-            $this->user = $authInfo['userSession'];
-        } elseif ($activeLogin || !empty($tempuserArr)) {
-            $this->loginFailure = true;
-            if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), self::class, 2);
+            if ($anonymousSession) {
+                $this->user = $authInfo['userSession'];
             }
-            if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), self::class, 2);
+
+            // Mark the current login attempt as failed
+            if ($activeLogin || !empty($tempuserArr)) {
+                $this->loginFailure = true;
+                if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
+                    GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), self::class, 2);
+                }
+                if ($this->writeDevLog && !empty($tempuserArr)) {
+                    GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), self::class, 2);
+                }
             }
         }
 
