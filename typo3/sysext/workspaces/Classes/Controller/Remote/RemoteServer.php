@@ -151,9 +151,9 @@ class RemoteServer extends AbstractHandler
                 // call diff class only if there is a difference
                 if ($configuration['type'] === 'inline' && $configuration['foreign_table'] === 'sys_file_reference') {
                     $useThumbnails = false;
-                    if (!empty($configuration['foreign_selector_fieldTcaOverride']['config']['appearance']['elementBrowserAllowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
+                    if (!empty($configuration['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
                         $fileExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], true);
-                        $allowedExtensions = GeneralUtility::trimExplode(',', $configuration['foreign_selector_fieldTcaOverride']['config']['appearance']['elementBrowserAllowed'], true);
+                        $allowedExtensions = GeneralUtility::trimExplode(',', $configuration['overrideChildTca']['columns']['uid_local']['config']['appearance']['elementBrowserAllowed'], true);
                         $differentExtensions = array_diff($allowedExtensions, $fileExtensions);
                         $useThumbnails = empty($differentExtensions);
                     }

@@ -34,13 +34,15 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @test
      */
-    public function addDataOverrulesShowitemByGivenInlineOverruleTypes()
+    public function addDataOverrulesShowitemByGivenOverrideChildTca()
     {
         $input = [
             'inlineParentConfig' => [
-                'foreign_types' => [
-                    'aType' => [
-                        'showitem' => 'keepMe',
+                'overrideChildTca' => [
+                    'types' => [
+                        'aType' => [
+                            'showitem' => 'keepMe',
+                        ],
                     ],
                 ],
             ],
@@ -65,16 +67,18 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @test
      */
-    public function addDataAddsTypeShowitemByGivenInlineOverruleTypes()
+    public function addDataAddsTypeShowitemByGivenOverrideChildTca()
     {
         $input = [
             'inlineParentConfig' => [
-                'foreign_types' => [
-                    'aType' => [
-                        'showitem' => 'keepMe',
-                    ],
-                    'cType' => [
-                        'showitem' => 'keepMe',
+                'overrideChildTca' => [
+                    'types' => [
+                        'aType' => [
+                            'showitem' => 'keepMe',
+                        ],
+                        'cType' => [
+                            'showitem' => 'keepMe',
+                        ],
                     ],
                 ],
             ],
@@ -105,14 +109,18 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         $input = [
             'inlineParentConfig' => [
                 'foreign_selector' => 'uid_local',
-                'foreign_selector_fieldTcaOverride' => [
-                    'label' => 'aDifferentLabel',
-                    'config' => [
-                        'aGivenSetting' => 'overrideValue',
-                        'aNewSetting' => 'anotherNewValue',
-                        'appearance' => [
-                            'elementBrowserType' => 'file',
-                            'elementBrowserAllowed' => 'jpg,png'
+                'overrideChildTca' => [
+                    'columns' => [
+                        'uid_local' => [
+                            'label' => 'aDifferentLabel',
+                            'config' => [
+                                'aGivenSetting' => 'overrideValue',
+                                'aNewSetting' => 'anotherNewValue',
+                                'appearance' => [
+                                    'elementBrowserType' => 'file',
+                                    'elementBrowserAllowed' => 'jpg,png'
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -155,12 +163,16 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
      */
     public function addDataSetsDefaultValueForChildRecordColumn()
     {
-        $GLOBALS['TCA']['aTable']['columns']['aType'] = [];
         $input = [
             'inlineParentConfig' => [
-                'foreign_table' => 'aTable',
-                'foreign_record_defaults' => [
-                    'aType' => '42',
+                'overrideChildTca' => [
+                    'columns' => [
+                        'aType' => [
+                            'config' => [
+                                'default' => '42',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'processedTca' => [
@@ -181,14 +193,18 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     /**
      * @test
      */
-    public function addDataIgnoresDefaultValueForRestrictedField()
+    public function addDataThrowsExceptionForRestrictedField()
     {
-        $GLOBALS['TCA']['aTable']['columns']['pid'] = [];
         $input = [
             'inlineParentConfig' => [
-                'foreign_table' => 'aTable',
-                'foreign_record_defaults' => [
-                    'pid' => '42',
+                'overrideChildTca' => [
+                    'columns' => [
+                        'pid' => [
+                            'config' => [
+                                'default' => '42',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'processedTca' => [
@@ -200,8 +216,8 @@ class InlineOverrrideChildTcaTest extends \TYPO3\TestingFramework\Core\Unit\Unit
             ],
         ];
 
-        $expected = $input;
-
-        $this->assertSame($expected, $this->subject->addData($input));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1490371322);
+        $this->subject->addData($input);
     }
 }

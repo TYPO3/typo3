@@ -138,19 +138,21 @@ cropping configuration for tt_content images, then you can add the following to 
 .. code-block:: php
 
     'config' => [
-         'overrideCropVariants' => [
-            'crop' => [
-               'mobile' => [
-                   'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-                   'cropArea' => [
-                       'x' => 0.1,
-                       'y' => 0.1,
-                       'width' => 0.8,
-                       'height' => 0.8,
-                   ],
-               ],
+        'overrideChildTca' => [
+            'columns' => [
+                'crop' => [
+                    'mobile' => [
+                        'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                        'cropArea' => [
+                            'x' => 0.1,
+                            'y' => 0.1,
+                            'width' => 0.8,
+                            'height' => 0.8,
+                        ],
+                    ],
+                ],
             ],
-         ],
+        ],
     ]
 
 Please note, that you need to specify the target column name as array key. Most of the time this will be `crop`
@@ -159,8 +161,11 @@ as this is the default field name for image manipulation in `sys_file_reference`
 It is also possible to set the cropping configuration only for a specific tt_content element type by using the
 `columnOverrides` feature:
 
-    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideCropVariants'] = [
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideChildTca']['columns'] = [
         'crop' => [
+           'default' => [
+               'disabled' => true,
+           ],
            'mobile' => [
                'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
                'cropArea' => [
@@ -183,6 +188,9 @@ It is also possible to set the cropping configuration only for a specific tt_con
         ],
     ];
 
+Please note, that the array for ``overrideChildTca`` is merged with the child TCA, so are the crop variants that are defined
+in the child TCA (most likely sys_file_reference). Because you cannot remove crop variants easily, it is possible to disable them
+for certain field types by setting the array key for a crop variant ``disabled`` to the value ``true``
 
 To render crop variants, the variants can be specified as argument to the image view helper:
 

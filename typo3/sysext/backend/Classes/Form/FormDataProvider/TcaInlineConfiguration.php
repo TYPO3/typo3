@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -201,7 +200,7 @@ class TcaInlineConfiguration implements FormDataProviderInterface
      * table. The InlineControlContainer may render a drop down field or an element browser later from this.
      *
      * Fetch configuration from child table configuration, sanitize and merge with
-     * foreign_selector_fieldTcaOverride that allows overriding this field definition again.
+     * overrideChildTca of foreign_selector if given that allows overriding this field definition again.
      *
      * Final configuration is written to selectorOrUniqueConfiguration of inline config section.
      *
@@ -264,12 +263,11 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             );
         }
 
-        // Merge foreign_selector_fieldTcaOverride if given
-        if (isset($config['foreign_selector'])
-            && isset($config['foreign_selector_fieldTcaOverride']['config'])
-            && is_array($config['foreign_selector_fieldTcaOverride']['config'])
+        // Merge overrideChildTca of foreign_selector if given
+        if (isset($config['foreign_selector'], $config['overrideChildTca']['columns'][$config['foreign_selector']]['config'])
+            && is_array($config['overrideChildTca']['columns'][$config['foreign_selector']]['config'])
         ) {
-            ArrayUtility::mergeRecursiveWithOverrule($selectorOrUniqueConfiguration['config'], $config['foreign_selector_fieldTcaOverride']['config']);
+            $selectorOrUniqueConfiguration['config'] = array_replace_recursive($selectorOrUniqueConfiguration['config'], $config['overrideChildTca']['columns'][$config['foreign_selector']]['config']);
         }
 
         // Add field name to config for easy access later

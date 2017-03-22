@@ -795,13 +795,17 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
                             'type' => 'inline',
                             'foreign_table' => 'aForeignTableName',
                             'foreign_selector' => 'aField',
-                            'foreign_selector_fieldTcaOverride' => [
-                                'config' => [
-                                    'aGivenSetting' => 'aOverrideValue',
-                                    'aNewSetting' => 'aNewSetting',
-                                    'appearance' => [
-                                        'elementBrowserType' => 'file',
-                                        'elementBrowserAllowed' => 'jpg,png',
+                            'overrideChildTca' => [
+                                'columns' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'aGivenSetting' => 'aOverrideValue',
+                                            'aNewSetting' => 'aNewSetting',
+                                            'appearance' => [
+                                                'elementBrowserType' => 'file',
+                                                'elementBrowserAllowed' => 'jpg,png',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -821,7 +825,7 @@ class TcaInlineConfigurationTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
         $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
-        $expected['processedTca']['columns']['aField']['config']['foreign_selector_fieldTcaOverride'] = [
+        $expected['processedTca']['columns']['aField']['config']['overrideChildTca']['columns']['aField'] = [
             'config' => [
                 'aGivenSetting' => 'aOverrideValue',
                 'aNewSetting' => 'aNewSetting',

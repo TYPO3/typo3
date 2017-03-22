@@ -6111,4 +6111,188 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function migrateForeignTypesOverride()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_types' => [
+                                '0' => [
+                                    'showitem' => 'bar'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'overrideChildTca' => [
+                                'types' => [
+                                    '0' => [
+                                        'showitem' => 'bar'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateOfChildOverrideIsSkippedWhenNewConfigIsFound()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_types' => [
+                                '0' => [
+                                    'showitem' => 'bar'
+                                ],
+                            ],
+                            'overrideChildTca' => [
+                                'types' => [
+                                    '0' => [
+                                        'showitem' => 'baz'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateForeignDefaultsOverride()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_record_defaults' => [
+                                'aField' => 'overriddenValue',
+                                'bField' => 'overriddenValue',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'overrideChildTca' => [
+                                'columns' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'default' => 'overriddenValue'
+                                        ],
+                                    ],
+                                    'bField' => [
+                                        'config' => [
+                                            'default' => 'overriddenValue'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateForeignSelectorOverrides()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_selector' => 'uid_local',
+                            'foreign_selector_fieldTcaOverride' => [
+                                'label' => 'aDifferentLabel',
+                                'config' => [
+                                    'aGivenSetting' => 'overrideValue',
+                                    'aNewSetting' => 'anotherNewValue',
+                                    'appearance' => [
+                                        'elementBrowserType' => 'file',
+                                        'elementBrowserAllowed' => 'jpg,png'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_selector' => 'uid_local',
+                            'overrideChildTca' => [
+                                'columns' => [
+                                    'uid_local' => [
+                                        'label' => 'aDifferentLabel',
+                                        'config' => [
+                                            'aGivenSetting' => 'overrideValue',
+                                            'aNewSetting' => 'anotherNewValue',
+                                            'appearance' => [
+                                                'elementBrowserType' => 'file',
+                                                'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }

@@ -257,13 +257,20 @@ class ImageManipulationElement extends AbstractFormElement
             throw new InvalidConfigurationException('Crop variants configuration must be an array', 1485377267);
         }
 
-        foreach ($config['cropVariants'] as &$cropVariant) {
+        $cropVariants = [];
+        foreach ($config['cropVariants'] as $id => $cropVariant) {
+            // Ignore disabled crop variants
+            if (!empty($cropVariant['disabled'])) {
+                continue;
+            }
             // Enforce a crop area (default is full image)
             if (empty($cropVariant['cropArea'])) {
                 $cropVariant['cropArea'] = Area::createEmpty()->asArray();
             }
+            $cropVariants[$id] = $cropVariant;
         }
-        unset($cropVariant);
+
+        $config['cropVariants'] = $cropVariants;
 
         // By default we allow all image extensions that can be handled by the GFX functionality
         if ($config['allowedExtensions'] === null) {

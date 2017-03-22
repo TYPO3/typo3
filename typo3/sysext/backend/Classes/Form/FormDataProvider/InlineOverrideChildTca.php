@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 /*
@@ -15,80 +16,126 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * Override some child TCA in an inline parent child relation.
+ * Override child TCA in an inline parent child relation.
+ *
+ * This basically merges the inline property ['overrideChildTca'] from
+ * parent TCA over given child TCA.
  */
 class InlineOverrideChildTca implements FormDataProviderInterface
 {
     /**
+     * ['columns'] section child TCA field names that can not be overridden
+     * by overrideChildTca from parent.
+     *
+     * @var array
+     */
+    protected $notSettableFields = [
+        'uid',
+        'pid',
+        't3ver_oid',
+        't3ver_id',
+        't3ver_label',
+        't3ver_wsid',
+        't3ver_state',
+        't3ver_stage',
+        't3ver_count',
+        't3ver_tstamp',
+        't3ver_move_id',
+    ];
+
+    /**
+     * Configuration fields in ctrl section. Their values are field names and if the
+     * keys are set in ['ctrl'] section, they are added to the $notSettableFields list
+     * and can not be overridden, too.
+     *
+     * @var array
+     */
+    protected $configurationKeysForNotSettableFields = [
+        'crdate',
+        'cruser_id',
+        'delete',
+        'origUid',
+        'transOrigDiffSourceField',
+        'transOrigPointerField',
+        'tstamp',
+    ];
+
+    /**
      * Inline parent TCA may override some TCA of children.
      *
-     * @param array $result
-     * @return array
+     * @param array $result Main result array
+     * @return array Modified result array
      */
-    public function addData(array $result)
+    public function addData(array $result): array
     {
-        // Replace types definition of inline child if foreign_types is defined in inlineParentConfig
-        if (isset($result['inlineParentConfig']['foreign_types'])) {
-            foreach ($result['inlineParentConfig']['foreign_types'] as $type => $config) {
-                $result['processedTca']['types'][$type] = $config;
-            }
-        }
+        $result = $this->overrideTypes($result);
+        return $this->overrideColumns($result);
+    }
 
-        // Override config section of foreign_selector field pointer if given
-        if (isset($result['inlineParentConfig']['foreign_selector'])
-            && is_string($result['inlineParentConfig']['foreign_selector'])
-            && isset($result['inlineParentConfig']['foreign_selector_fieldTcaOverride'])
-            && is_array($result['inlineParentConfig']['foreign_selector_fieldTcaOverride'])
-            && isset($result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']])
-            && is_array($result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']])
-        ) {
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $result['processedTca']['columns'][$result['inlineParentConfig']['foreign_selector']],
-                $result['inlineParentConfig']['foreign_selector_fieldTcaOverride']
-            );
+    /**
+     * Override ['types'] configuration in child TCA
+     *
+     * @param array $result Main result array
+     * @return array Modified result array
+     */
+    protected function overrideTypes(array $result): array
+    {
+        if (!isset($result['inlineParentConfig']['overrideChildTca']['types'])) {
+            return $result;
         }
-
-        // Set default values for (new) child if foreign_record_defaults is defined in inlineParentConfig
-        if (isset($result['inlineParentConfig']['foreign_record_defaults']) && is_array($result['inlineParentConfig']['foreign_record_defaults'])) {
-            $foreignTableConfig = $GLOBALS['TCA'][$result['inlineParentConfig']['foreign_table']];
-            // The following system relevant fields can't be set by foreign_record_defaults
-            $notSetableFields = [
-                'uid',
-                'pid',
-                't3ver_oid',
-                't3ver_id',
-                't3ver_label',
-                't3ver_wsid',
-                't3ver_state',
-                't3ver_stage',
-                't3ver_count',
-                't3ver_tstamp',
-                't3ver_move_id',
-            ];
-            // Optional configuration fields used in child table. If set, they must not be overridden, either
-            $configurationKeysForNotSettableFields = [
-                'crdate',
-                'cruser_id',
-                'delete',
-                'origUid',
-                'transOrigDiffSourceField',
-                'transOrigPointerField',
-                'tstamp',
-            ];
-            foreach ($configurationKeysForNotSettableFields as $configurationKey) {
-                if (isset($foreignTableConfig['ctrl'][$configurationKey])) {
-                    $notSetableFields[] = $foreignTableConfig['ctrl'][$configurationKey];
-                }
-            }
-            foreach ($result['inlineParentConfig']['foreign_record_defaults'] as $fieldName => $defaultValue) {
-                if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSetableFields, true)) {
-                    $result['processedTca']['columns'][$fieldName]['config']['default'] = $defaultValue;
-                }
-            }
-        }
+        $result['processedTca']['types'] = array_replace_recursive(
+            $result['processedTca']['types'],
+            $result['inlineParentConfig']['overrideChildTca']['types']
+        );
         return $result;
+    }
+
+    /**
+     * Override ['columns'] configuration in child TCA.
+     * Sanitizes that various hard dependencies can not be changed.
+     *
+     * @param array $result Main result array
+     * @return array Modified result array
+     * @throws \RuntimeException
+     */
+    protected function overrideColumns(array $result): array
+    {
+        if (!isset($result['inlineParentConfig']['overrideChildTca']['columns'])) {
+            return $result;
+        }
+        $fieldBlackList = $this->generateFieldBlackList($result);
+        foreach ($fieldBlackList as $notChangeableFieldName) {
+            if (isset($result['inlineParentConfig']['overrideChildTca']['columns'][$notChangeableFieldName])) {
+                throw new \RuntimeException(
+                    'System field \'' . $notChangeableFieldName . '\' can not be overridden in inline config'
+                    . ' \'overrideChildTca\' from parent TCA',
+                    1490371322
+                );
+            }
+        }
+        $result['processedTca']['columns'] = array_replace_recursive(
+            $result['processedTca']['columns'],
+            $result['inlineParentConfig']['overrideChildTca']['columns']
+        );
+        return $result;
+    }
+
+    /**
+     * Add field names defined in ctrl section of child table to black list
+     *
+     * @param array $result Main result array
+     * @return array Column field names which can not be changed by parent TCA
+     */
+    protected function generateFieldBlackList(array $result): array
+    {
+        $notSettableFields = $this->notSettableFields;
+        foreach ($this->configurationKeysForNotSettableFields as $configurationKey) {
+            if (isset($result['processedTca']['ctrl'][$configurationKey])) {
+                $notSettableFields[] = $result['processedTca']['ctrl'][$configurationKey];
+            }
+        }
+        return $notSettableFields;
     }
 }
