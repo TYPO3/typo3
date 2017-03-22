@@ -74,8 +74,11 @@ class FieldGeneratorResolver
         FieldGenerator\TypeCheck::class,
         // General type=radio generator
         FieldGenerator\TypeRadio::class,
+
         // General type=none generator
+        FieldGenerator\TypeNoneFormatDateTime::class,
         FieldGenerator\TypeNone::class,
+
         // General type=passthrough generator
         FieldGenerator\TypePassthrough::class,
         // General type=user generator

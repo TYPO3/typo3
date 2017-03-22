@@ -1072,6 +1072,14 @@ return [
                 'size' => 6,
             ],
         ],
+        'none_5' => [
+            'exculde' => 1,
+            'label' => 'none_5, format=datetime',
+            'config' => [
+                'type' => 'none',
+                'format' => 'datetime',
+            ],
+        ],
 
 
         'passthrough_1' => [
@@ -1291,7 +1299,7 @@ return [
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,
-                    none_1, none_2, none_3, none_4,
+                    none_1, none_2, none_3, none_4, none_5,
                 --div--;passthrough,
                     passthrough_1,
                 --div--;user,
