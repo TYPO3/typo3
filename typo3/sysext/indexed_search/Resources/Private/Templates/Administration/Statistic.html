@@ -1,8 +1,7 @@
-{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
-
-<f:layout name="Administration"/>
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Administration" />
 <f:section name="Content">
+
 	<f:if condition="{tree}">
 		<f:then>
 			<f:form name="statistic" action="statistic" class="form-horizontal" arguments="{id:pageUid}">
@@ -11,8 +10,8 @@
 						<f:form.select name="mode" options="{
 							overview:'{f:translate(key:\'administration.statistics.view.overview\')}',
 							content:'{f:translate(key:\'administration.statistics.view.content\')}'
-							}" value="{mode}" additionalAttributes="{onchange:'this.form.submit();'}"/>
-						<f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{onchange:'this.form.submit();'}"/>
+							}" value="{mode}" additionalAttributes="{onchange:'this.form.submit();'}" />
+						<f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{onchange:'this.form.submit();'}" />
 					</div>
 				</div>
 			</f:form>
@@ -26,7 +25,7 @@
 							</a>
 						</th>
 						<th>
-							<f:translate key="field.fileName"/>
+							<f:translate key="field.fileName" />
 						</th>
 						<f:switch expression="{mode}">
 							<f:case value="content">
@@ -42,14 +41,14 @@
 							<f:defaultCase>
 								<f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
 									<th>
-										<f:translate key="field.wordCount"/>
+										<f:translate key="field.wordCount" />
 									</th>
 								</f:if>
 								<th>
-									<f:translate key="field.fileSize"/>
+									<f:translate key="field.fileSize" />
 								</th>
 								<th>
-									<f:translate key="field.indexed"/>
+									<f:translate key="field.indexed" />
 								</th>
 							</f:defaultCase>
 						</f:switch>
@@ -72,7 +71,7 @@
 												</a>
 											</td>
 											<td>
-												<f:image src="{l.icon}"/>
+												<f:image src="{l.icon}" />
 												<f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
 											</td>
 											<f:switch expression="{mode}">
@@ -117,7 +116,7 @@
 										</f:case>
 										<f:defaultCase>
 											<td colspan="5">
-												<f:translate key="administration.notIndexed"/>
+												<f:translate key="administration.notIndexed" />
 											</td>
 										</f:defaultCase>
 									</f:switch>
@@ -129,7 +128,9 @@
 			</table>
 		</f:then>
 		<f:else>
-			<h2><f:translate key="administration.noPageSelected"/></h2>
+			<h2><f:translate key="administration.noPageSelected" /></h2>
 		</f:else>
 	</f:if>
+
 </f:section>
+</html>

@@ -1,21 +1,22 @@
-<f:layout name="Administration"/>
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Administration" />
 <f:section name="Content">
+
 	<p class="lead">
-		<f:translate key="administration.word.description"/>
+		<f:translate key="administration.word.description" />
 	</p>
 	<f:if condition="{rows}">
 		<f:then>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th><f:translate key="field.pHash"/></th>
-						<th><f:translate key="field.id"/></th>
-						<th><f:translate key="field.fileName"/></th>
-						<th><f:translate key="field.count"/></th>
-						<th><f:translate key="field.first"/></th>
-						<th><f:translate key="field.frequency"/></th>
-						<th><f:translate key="field.flag"/></th>
+						<th><f:translate key="field.pHash" /></th>
+						<th><f:translate key="field.id" /></th>
+						<th><f:translate key="field.fileName" /></th>
+						<th><f:translate key="field.count" /></th>
+						<th><f:translate key="field.first" /></th>
+						<th><f:translate key="field.frequency" /></th>
+						<th><f:translate key="field.flag" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -38,12 +39,14 @@
 		<f:else>
 			<div class="alert alert-danger">
 				<div class="message-body">
-					<f:translate key="administration.statistics.noResult"/>
+					<f:translate key="administration.statistics.noResult" />
 				</div>
 			</div>
 		</f:else>
 	</f:if>
 	<f:link.action action="statisticDetails" arguments="{pageHash:phash}">
-		<f:translate key="administration.linkBack"/>
+		<f:translate key="administration.linkBack" />
 	</f:link.action>
+
 </f:section>
+</html>

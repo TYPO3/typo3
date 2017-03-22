@@ -1,8 +1,8 @@
-<f:layout name="Administration"/>
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Administration" />
 <f:section name="Content">
-	<p class="lead"><f:translate key="administration.index.description" /></p>
 
+	<p class="lead"><f:translate key="administration.index.description" /></p>
 	<div class="row">
 		<div class="col-md-6">
 			<h4><f:translate key="administration.statistics.header" /></h4>
@@ -43,12 +43,11 @@
 			</table>
 		</div>
 	</div>
-
 	<h3>
-		<f:translate key="administration.statistics.mostSearched.title"/>
+		<f:translate key="administration.statistics.mostSearched.title" />
 	</h3>
 	<p>
-		<f:translate key="administration.statistics.mostSearched.description"/>
+		<f:translate key="administration.statistics.mostSearched.description" />
 	</p>
 	<f:if condition="{pageUid}">
 		<f:then>
@@ -56,35 +55,35 @@
 				<f:then>
 					<div class="row">
 						<div class="col-md-4">
-							<f:render section="statistic" arguments="{statistic:all,title:'all'}"/>
+							<f:render section="statistic" arguments="{statistic:all,title:'all'}" />
 						</div>
 						<div class="col-md-4">
-							<f:render section="statistic" arguments="{statistic:last24hours,title:'last24hours'}"/>
+							<f:render section="statistic" arguments="{statistic:last24hours,title:'last24hours'}" />
 						</div>
 						<div class="col-md-4">
-							<f:render section="statistic" arguments="{statistic:last30days,title:'last30days'}"/>
+							<f:render section="statistic" arguments="{statistic:last30days,title:'last30days'}" />
 						</div>
 					</div>
 				</f:then>
 				<f:else>
 					<f:be.infobox>
-						<f:translate key="administration.statistics.noResultForPage"/>
+						<f:translate key="administration.statistics.noResultForPage" />
 					</f:be.infobox>
 				</f:else>
 			</f:if>
-
 		</f:then>
 		<f:else>
 			<f:be.infobox state="-1">
-				<f:translate key="administration.statistics.selectPage"/>
+				<f:translate key="administration.statistics.selectPage" />
 			</f:be.infobox>
 		</f:else>
 	</f:if>
-</f:section>
 
+</f:section>
 <f:section name="statistic">
+
 	<h4>
-		<f:translate key="administration.statistics.mostSearched.{title}"/>
+		<f:translate key="administration.statistics.mostSearched.{title}" />
 	</h4>
 	<f:if condition="{statistic}">
 		<f:then>
@@ -92,8 +91,8 @@
 				<thead>
 					<tr>
 						<th class="nowrap">&nbsp;</th>
-						<th><f:translate key="administration.statistics.word"/></th>
-						<th><f:translate key="administration.statistics.count"/></th>
+						<th><f:translate key="administration.statistics.word" /></th>
+						<th><f:translate key="administration.statistics.count" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -109,8 +108,10 @@
 		</f:then>
 		<f:else>
 			<f:be.infobox state="2">
-				<f:translate key="administration.statistics.noResult"/>
+				<f:translate key="administration.statistics.noResult" />
 			</f:be.infobox>
 		</f:else>
 	</f:if>
+
 </f:section>
+</html>

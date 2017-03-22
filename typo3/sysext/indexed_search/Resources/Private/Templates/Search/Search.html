@@ -1,14 +1,11 @@
-{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:alias map="{sword: searchParams.sword}">
-	<f:render partial="Form" arguments="{_all}"/>
+	<f:render partial="Form" arguments="{_all}" />
 </f:alias>
-
 <f:for each="{resultsets}" as="result">
 	<f:if condition="{result.categoryTitle}">
 		<h1 class="tx-indexedsearch-category">{result.categoryTitle}</h1>
 	</f:if>
-
 	<!-- show the info what was searched for -->
 	<f:for each="{searchWords}" as="searchWord" key="key">
 		<f:if condition="{key} > 0">
@@ -20,7 +17,6 @@
 			</f:else>
 		</f:if>
 	</f:for>
-
 	<!-- show the info in which section was searched for -->
 	{result.searchedInSectionInfo}
 	<f:if condition="{result.count} > 0">
@@ -73,3 +69,4 @@
 		</f:else>
 	</f:if>
 </f:for>
+</html>

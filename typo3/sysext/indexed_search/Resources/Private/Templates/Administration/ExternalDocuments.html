@@ -1,26 +1,24 @@
-{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
-
-<f:layout name="Administration"/>
-
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Administration" />
 <f:section name="Content">
-	<h2><f:translate key="administration.external.title"/></h2>
 
+	<h2><f:translate key="administration.external.title" /></h2>
 	<f:if condition="{records}">
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th><f:translate key="field.fileName"/></th>
-					<th><f:translate key="field.fileSize"/></th>
-					<th><f:translate key="field.wordCount"/></th>
-					<th><f:translate key="field.mtime"/></th>
-					<th><f:translate key="field.indexed"/></th>
-					<th><f:translate key="field.updated"/></th>
-					<th><f:translate key="field.parseTime"/></th>
-					<th><f:translate key="field.groups"/></th>
-					<th><f:translate key="field.sub"/></th>
-					<th><f:translate key="field.cHash"/></th>
-					<th><f:translate key="field.pHash"/></th>
-					<th><f:translate key="field.path"/></th>
+					<th><f:translate key="field.fileName" /></th>
+					<th><f:translate key="field.fileSize" /></th>
+					<th><f:translate key="field.wordCount" /></th>
+					<th><f:translate key="field.mtime" /></th>
+					<th><f:translate key="field.indexed" /></th>
+					<th><f:translate key="field.updated" /></th>
+					<th><f:translate key="field.parseTime" /></th>
+					<th><f:translate key="field.groups" /></th>
+					<th><f:translate key="field.sub" /></th>
+					<th><f:translate key="field.cHash" /></th>
+					<th><f:translate key="field.pHash" /></th>
+					<th><f:translate key="field.path" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -66,4 +64,6 @@
 			</tbody>
 		</table>
 	</f:if>
+
 </f:section>
+</html>
