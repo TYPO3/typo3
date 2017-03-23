@@ -233,14 +233,18 @@ class SelectSingleElement extends AbstractFormElement
 
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
             'function(SelectSingleElement) {',
-                'SelectSingleElement.initialize(',
-                    GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
-                    '{',
-                        'onChange: function() {',
-                            implode('', $parameterArray['fieldChangeFunc']),
-                        '}',
-                    '}',
-                ');',
+                'require([\'jquery\'], function($) {',
+                    '$(function() {',
+                        'SelectSingleElement.initialize(',
+                            GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
+                            '{',
+                                'onChange: function() {',
+                                    implode('', $parameterArray['fieldChangeFunc']),
+                                '}',
+                            '}',
+                        ');',
+                    '});',
+                '});',
             '}',
         ])];
 
