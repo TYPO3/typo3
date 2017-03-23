@@ -435,7 +435,12 @@ abstract class AbstractRecordList
         $result = $queryBuilder
             ->select('*')
             ->from('pages_language_overlay')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)))
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->gt('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                )
+            )
             ->execute();
 
         $this->pageOverlays = [];
