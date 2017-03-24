@@ -173,6 +173,7 @@ define(['jquery'], function($) {
 						}
 						$hiddenField.val(value);
 					}
+					$(document).trigger('formengine.dp.change', [$(this)]);
 				});
 			});
 		}

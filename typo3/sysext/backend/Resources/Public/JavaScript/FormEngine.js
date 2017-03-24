@@ -729,6 +729,9 @@ define(['jquery',
 				$input.val($(this).attr('data-original-language-value')).trigger('change');
 				$input.data('last-l10n-state', $(this).val());
 			}
+		}).on('formengine.dp.change', function(event, $field) {
+			FormEngine.Validation.validate();
+			FormEngine.Validation.markFieldAsChanged($field);
 		});
 	};
 

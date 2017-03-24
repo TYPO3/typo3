@@ -21,14 +21,13 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 	/**
 	 * The main FormEngineValidation object
 	 *
-	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, passwordDummy: string}}
+	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, passwordDummy: string}}
 	 * @exports TYPO3/CMS/Backend/FormEngineValidation
 	 */
 	var FormEngineValidation = {
 		rulesSelector: '[data-formengine-validation-rules]',
 		inputSelector: '[data-formengine-input-params]',
 		markerSelector: '.t3js-formengine-validation-marker',
-		dateTimeSelector: '.t3js-datetimepicker',
 		groupFieldHiddenElement: '.t3js-formengine-field-group input[type=hidden]',
 		relatedFieldSelector: '[data-relatedfieldname]',
 		errorClass: 'has-error',
@@ -51,14 +50,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 			// Bind to field changes
 			$(document).on('change', FormEngineValidation.rulesSelector, function() {
 				FormEngineValidation.validate();
-				var $paletteField = $(this).closest('.t3js-formengine-palette-field');
-				$paletteField.addClass('has-change');
-			});
-
-			$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
-				FormEngineValidation.validate();
-				var $paletteField = $(this).closest('.t3js-formengine-palette-field');
-				$paletteField.addClass('has-change');
+				FormEngineValidation.markFieldAsChanged($(this));
 			});
 		});
 
@@ -537,6 +529,16 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine', 'moment'], function ($, FormEn
 			}
 		});
 		$(document).trigger('t3-formengine-postfieldvalidation');
+	};
+
+	/**
+	 * Helper function to mark a field as changed.
+	 *
+	 * @param {Object} $field
+	 */
+	FormEngineValidation.markFieldAsChanged = function($field) {
+		var $paletteField = $field.closest('.t3js-formengine-palette-field');
+		$paletteField.addClass('has-change');
 	};
 
 	/**
