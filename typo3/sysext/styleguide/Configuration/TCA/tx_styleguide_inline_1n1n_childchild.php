@@ -3,54 +3,118 @@ return [
     'ctrl' => [
         'title' => 'Form engine - inline 1:n 1:n child child',
         'label' => 'input_1',
-        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
+        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
+        'versioningWS' => true,
+        'origUid' => 't3_origuid',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+        ],
     ],
 
 
     'columns' => [
 
 
+        'hidden' => [
+            'exclude' => 1,
+            'config' => [
+                'type' => 'check',
+                'items' => [
+                    '1' => [
+                        '0' => 'Disable',
+                    ],
+                ],
+            ],
+        ],
+        'starttime' => [
+            'exclude' => 1,
+            'label' => 'Publish Date',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+                'default' => '0'
+            ],
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly'
+        ],
+        'endtime' => [
+            'exclude' => 1,
+            'label' => 'Expiration Date',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+                'default' => '0',
+                'range' => [
+                    'upper' => mktime(0, 0, 0, 12, 31, 2020)
+                ]
+            ],
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly'
+        ],
         'sys_language_uid' => [
-            'label'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'exclude' => true,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
+                'special' => 'languages',
                 'items' => [
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
-                ]
+                    [
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
+                ],
+                'default' => 0,
             ]
         ],
         'l10n_parent' => [
+            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0],
+                    [
+                        '',
+                        0
+                    ]
                 ],
                 'foreign_table' => 'tx_styleguide_inline_1n1n_childchild',
                 'foreign_table_where' => 'AND tx_styleguide_inline_1n1n_childchild.pid=###CURRENT_PID### AND tx_styleguide_inline_1n1n_childchild.sys_language_uid IN (-1,0)',
+                'default' => 0
             ]
         ],
-        'l10n_diffsource' => [
+        'l10n_source' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'Translation source',
             'config' => [
-                'type' => 'passthrough'
-            ]
-        ],
-        'hidden' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => '0'
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_inline_1n1n_childchild',
+                'foreign_table_where' => 'AND tx_styleguide_inline_1n1n_childchild.pid=###CURRENT_PID### AND tx_styleguide_inline_1n1n_childchild.uid!=###THIS_UID###',
+                'default' => 0
             ]
         ],
 
@@ -81,8 +145,9 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, input_1,
-                --div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
+                input_1,
+                --div--;meta,
+                    disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
     ],
