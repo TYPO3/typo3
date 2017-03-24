@@ -219,7 +219,9 @@ class FormResultCompiler
 		}';
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngineValidation'] = 'function(FormEngineValidation) {
 			FormEngineValidation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
-			FormEngineValidation.registerReady();
+            //ISOMode Year-Month-Day
+			FormEngineValidation.setISOMode(' . (strtoupper(substr( $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], 0, 1 ))=='Y' ? '1' : '0') . ');
+            FormEngineValidation.registerReady();
 		}';
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngineReview'] = null;
 
@@ -270,7 +272,18 @@ class FormResultCompiler
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
+        // ISO 8601:2000 Datetime format is Year-Month-Day.
+        // Not all the countries are the UK/US date format.
+        // First letter of $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']  = 'Y' or 'y'
+        // Date format will be ISO format
+        if (strtoupper(substr( $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], 0, 1 ))=='Y'){
+            //Some country use date format 'Year-Month-Day'
+            $dateFormat = ['YYYY-MM-DD', 'YYYY-MM-DD HH:mm'];
+        }elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']){
+            $dateFormat = ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'];
+        }else{
+            $dateFormat = ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY'];
+        }
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
