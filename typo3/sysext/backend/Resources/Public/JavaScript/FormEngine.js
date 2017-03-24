@@ -1007,7 +1007,7 @@ define(['jquery',
 
 		// if empty, show input field
 		$(explanationClass).filter(function () {
-			return !$.trim($(this).html());
+			return !$.trim($(this).val());
 		}).each(function () {
 			var $group = $(this).closest('.t3js-form-field-inputlink'),
 				$inputField = $group.find(inputFieldClass),

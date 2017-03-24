@@ -210,7 +210,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
         $expansionHtml[] =              '<span class="input-group-addon">' . $linkExplanation['icon'] . '</span>';
-        $expansionHtml[] =              '<div class="form-control form-field-inputlink-explanation t3js-form-field-inputlink-explanation" data-toggle="tooltip" data-title="' . $explanation . '">' . $explanation . '</div>';
+        $expansionHtml[] =              '<input class="form-control form-field-inputlink-explanation t3js-form-field-inputlink-explanation" data-toggle="tooltip" data-title="' . $explanation . '" value="' . $explanation . '" readonly>';
         $expansionHtml[] =              '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<span class="input-group-btn">';
         $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
@@ -339,7 +339,7 @@ class InputLinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_URL:
                 $data = [
-                    'text' => $linkData['url'],
+                    'text' => $this->getDomainByUrl($linkData['url']),
                     'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
 
                 ];
@@ -406,6 +406,17 @@ class InputLinkElement extends AbstractFormElement
         $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
 
         return $data;
+    }
+
+    /**
+     * @param string $uriString
+     *
+     * @return string
+     */
+    protected function getDomainByUrl(string $uriString): string
+    {
+        $data = parse_url($uriString);
+        return $data['host'] ?? '';
     }
 
     /**
