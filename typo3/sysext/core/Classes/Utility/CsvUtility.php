@@ -67,4 +67,21 @@ class CsvUtility
 
         return $multiArray;
     }
+
+    /**
+     * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
+     *
+     * @param array $row Input array of values
+     * @param string $delim Delimited, default is comma
+     * @param string $quote Quote-character to wrap around the values.
+     * @return string A single line of CSV
+     */
+    public static function csvValues(array $row, $delim = ',', $quote = '"')
+    {
+        $out = [];
+        foreach ($row as $value) {
+            $out[] = str_replace($quote, $quote . $quote, $value);
+        }
+        return $quote . implode($quote . $delim . $quote, $out) . $quote;
+    }
 }

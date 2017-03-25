@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -2219,7 +2220,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     public function setCsvRow($csvRow)
     {
-        $this->csvLines[] = GeneralUtility::csvValues($csvRow);
+        $this->csvLines[] = CsvUtility::csvValues($csvRow);
     }
 
     /**

@@ -1391,15 +1391,12 @@ class GeneralUtility
      * @param string $delim Delimited, default is comma
      * @param string $quote Quote-character to wrap around the values.
      * @return string A single line of CSV
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
      */
     public static function csvValues(array $row, $delim = ',', $quote = '"')
     {
-        $out = [];
-        foreach ($row as $value) {
-            $out[] = str_replace($quote, $quote . $quote, $value);
-        }
-        $str = $quote . implode(($quote . $delim . $quote), $out) . $quote;
-        return $str;
+        self::logDeprecatedFunction();
+        return CsvUtility::csvValues($row, $delim, $quote);
     }
 
     /**
