@@ -11,4 +11,6 @@ if (TYPO3_MODE === 'BE') {
         !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1486418676] = \TYPO3\CMS\Compatibility7\ContextMenu\ItemProvider::class;
     }
+
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = \TYPO3\CMS\Compatibility7\Report\Status\SystemStatus::class;
 }

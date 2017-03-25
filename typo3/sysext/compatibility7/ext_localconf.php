@@ -105,3 +105,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLa
 // Enable TypoScript functionality config.beLoginLinkIPList
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['compatibility7_backendloginlink']
     = \TYPO3\CMS\Compatibility7\Hooks\BackendLoginLinkHook::class . '->renderBackendLoginLink';
+
+// Call MonitorUtility peakMemoryUsage
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['compatibility7_monitorutility']
+    = \TYPO3\CMS\Compatibility7\Utility\MonitorUtility::class . '->monitorUtilityFrontendHook';

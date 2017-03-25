@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Utility;
+namespace TYPO3\CMS\Compatibility7\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to handle monitoring actions.
@@ -40,5 +42,15 @@ class MonitorUtility
                 $registry->set('core', 'reports-peakMemoryUsage', $data);
             }
         }
+    }
+
+    /**
+     * Hook called by TypoScriptFrontendController
+     *
+     * @return void
+     */
+    public function monitorUtilityFrontendHook()
+    {
+        self::peakMemoryUsage();
     }
 }

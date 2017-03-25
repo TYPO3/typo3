@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\MonitorUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
 use TYPO3\CMS\Frontend\Utility\CompressionUtility;
@@ -255,8 +254,6 @@ class RequestHandler implements RequestHandlerInterface
         $this->controller->hook_eofe();
         // Finish timetracking
         $this->timeTracker->pull();
-        // Check memory usage
-        MonitorUtility::peakMemoryUsage();
 
         // Admin panel
         if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
