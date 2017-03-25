@@ -112,9 +112,9 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $company = '';
 
     /**
-     * @var string
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
-    protected $image = '';
+    protected $image = null;
 
     /**
      * @var \DateTime|NULL
@@ -578,20 +578,19 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the image value
      *
-     * @param string $image
-     * @return void
      * @api
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $image
      */
-    public function setImage($image)
+    public function setImage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $image)
     {
         $this->image = $image;
     }
 
     /**
-     * Returns the image value
+     * Gets the image value
      *
-     * @return string
      * @api
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
     public function getImage()
     {

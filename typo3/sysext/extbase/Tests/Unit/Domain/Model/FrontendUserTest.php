@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Test case
@@ -374,7 +376,7 @@ class FrontendUserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getImageInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getImage());
+        $this->assertSame(null, $this->subject->getImage());
     }
 
     /**
@@ -382,9 +384,13 @@ class FrontendUserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function setImageSetsImage()
     {
-        $image = 'foobar.gif';
-        $this->subject->setImage($image);
-        $this->assertSame($image, $this->subject->getImage());
+        $images = new ObjectStorage();
+        $reference = new FileReference();
+        $reference->setPid(123);
+        $images->attach($reference);
+
+        $this->subject->setImage($images);
+        $this->assertSame($images, $this->subject->getImage());
     }
 
     /**
