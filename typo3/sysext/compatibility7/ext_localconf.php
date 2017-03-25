@@ -101,3 +101,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Backend\Controller\PageLayo
 // Enable TypoScript functionality config.sys_language_softExclude
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']['compatibility7_softExclude']
     = \TYPO3\CMS\Compatibility7\Hooks\TcaSoftExcludeHook::class . '->setCustomExcludeFields';
+
+// Enable TypoScript functionality config.beLoginLinkIPList
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['compatibility7_backendloginlink']
+    = \TYPO3\CMS\Compatibility7\Hooks\BackendLoginLinkHook::class . '->renderBackendLoginLink';

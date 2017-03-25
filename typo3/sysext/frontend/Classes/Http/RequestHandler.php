@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\MonitorUtility;
@@ -258,8 +257,6 @@ class RequestHandler implements RequestHandlerInterface
         $this->timeTracker->pull();
         // Check memory usage
         MonitorUtility::peakMemoryUsage();
-        // beLoginLinkIPList
-        echo $this->controller->beLoginLinkIPList();
 
         // Admin panel
         if ($this->controller->isBackendUserLoggedIn() && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {

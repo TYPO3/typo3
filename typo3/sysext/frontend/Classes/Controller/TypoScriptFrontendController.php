@@ -3891,9 +3891,11 @@ class TypoScriptFrontendController
      * Returns a link to the BE login screen with redirect to the front-end
      *
      * @return string HTML, a tag for a link to the backend.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function beLoginLinkIPList()
     {
+        GeneralUtility::logDeprecatedFunction();
         if (!empty($this->config['config']['beLoginLinkIPList'])) {
             if (GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $this->config['config']['beLoginLinkIPList'])) {
                 $label = !$this->beUserLogin ? $this->config['config']['beLoginLinkIPList_login'] : $this->config['config']['beLoginLinkIPList_logout'];
