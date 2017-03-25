@@ -187,7 +187,7 @@ class TestSetup extends Action\AbstractAction
         $textColor = imagecolorallocate($image, 233, 14, 91);
         @imagettftext(
             $image,
-            GeneralUtility::freetypeDpiComp(20),
+            20 / 96.0 * 72, // As in  compensateFontSizeiBasedOnFreetypeDpi
             0,
             10,
             20,

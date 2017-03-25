@@ -4242,9 +4242,11 @@ class GeneralUtility
      * @param float $fontSize font size for freetype function call
      *
      * @return float compensated font size based on 96 dpi
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, the functionality is now moved to GraphicalFunctions->compensateFontSizeiBasedOnFreetypeDpi()
      */
     public static function freetypeDpiComp($fontSize)
     {
+        self::logDeprecatedFunction();
         // FreeType 2 always has 96 dpi.
         $dpi = 96.0;
         return $fontSize / $dpi * 72;

@@ -996,7 +996,7 @@ class GraphicalFunctions
                  */
                 $try = 0;
                 do {
-                    $calc = imagettfbbox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+                    $calc = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
                 } while ($calc[2] < 0 && $try++ < 10);
                 // Calculate offsets:
                 if (empty($offsetInfo)) {
@@ -1054,9 +1054,9 @@ class GraphicalFunctions
             $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 // Render part:
-                imagettftext($im, GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
+                imagettftext($im, $this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
                 // Calculate offset to apply:
-                $wordInf = imagettfbbox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
+                $wordInf = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
                 $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
                 $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
             } else {
@@ -3021,5 +3021,17 @@ class GraphicalFunctions
         } else {
             imagegif($im, $filename);
         }
+    }
+
+    /**
+     * Function to compensate for DPI resolution.
+     * FreeType 2 always has 96 dpi, so it is hard-coded at this place.
+     *
+     * @param float $fontSize font size for freetype function call
+     * @return float compensated font size based on 96 dpi
+     */
+    protected function compensateFontSizeiBasedOnFreetypeDpi($fontSize)
+    {
+        return $fontSize / 96.0 * 72;
     }
 }
