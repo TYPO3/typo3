@@ -12,6 +12,7 @@
 *.css text eol=lf
 *.tmpl text eol=lf
 *.less text eol=lf
+*.scss text eol=lf
 *.js text eol=lf
 *.json text eol=lf
 *.php text eol=lf

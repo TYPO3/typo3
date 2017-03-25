@@ -1,0 +1,18 @@
+//
+// Badges
+//
+.badge-info {
+    @extend .bg-info;
+}
+
+.badge-success {
+    @extend .bg-success;
+}
+
+.badge-warning {
+    @extend .bg-warning;
+}
+
+.badge-danger {
+    @extend .bg-danger;
+}

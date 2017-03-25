@@ -1,0 +1,91 @@
+//
+// Alert notice
+//
+.alert-notice {
+    @include alert-variant($alert-notice-bg, $alert-notice-border, $alert-notice-text);
+}
+
+//
+// Alerts
+//
+.alert {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    border: 0;
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    .media {
+        margin: 0;
+
+        .fa-stack {
+            > .fa:first-child {
+                @include opacity(0.2);
+            }
+        }
+    }
+
+    .media-body {
+        vertical-align: middle;
+    }
+}
+
+.alert-title {
+    font-size: 1.12em;
+    font-weight: bold;
+    margin: 0 0 0.25em;
+}
+
+.alert-body,
+.alert-message {
+    margin: 0;
+    font-size: 0.9em;
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    > ul {
+        padding-left: 1.5em;
+    }
+}
+
+.alert-dismissible {
+    .close {
+        @include opacity(0.5);
+
+        padding: 1px;
+        top: -3px;
+        right: -22px;
+        color: inherit;
+
+        &:hover {
+            @include opacity(1);
+
+            color: inherit;
+        }
+    }
+}
+
+//
+// JavaScript Flashmessages
+//
+#alert-container {
+    width: 400px;
+    position: absolute;
+    right: 5px;
+    top: 46px;
+    z-index: 10000;
+
+    .alert {
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 0 0 rgba(0, 0, 0, 0.15);
+        position: relative;
+        margin: 5px auto;
+
+        &.fade.in {
+            @include opacity(0.95);
+        }
+    }
+}

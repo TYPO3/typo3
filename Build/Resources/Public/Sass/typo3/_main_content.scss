@@ -1,0 +1,281 @@
+//
+// Content
+//
+
+// Menu icons
+$app-icon-border-radius: $border-radius-small;
+$app-icon-height: 32px;
+$app-icon-width: 32px;
+$app-icon-font-size: 21px;
+$app-icon-bg: #484848;
+
+//
+// TYPO3 styles for basic elements
+//
+
+h1 {
+    font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+    font-variant: normal;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: ceil(($font-size-base * 1.8));
+}
+
+h2 {
+    margin: 24px 0 12px;
+}
+
+h3 {
+    margin: 24px 0 12px;
+}
+
+ul,
+ol,
+blockquote {
+    margin-bottom: ($line-height-computed / 2);
+}
+
+// Lists
+
+ul,
+ol {
+    padding-left: 3em;
+}
+
+// Preformatted text - not used so much in TYPO3
+
+pre {
+    margin: 0;
+}
+
+// horizontal ruler
+
+hr,
+div.hr {
+    background: none;
+    border: none;
+    height: 1px;
+}
+
+// .uppercase is kept for backwards-compatibility, use .divider
+
+.divider {
+    padding-bottom: 12px;
+}
+
+li.divider {
+    padding: 0;
+}
+
+a span {
+    cursor: pointer;
+}
+
+video {
+    background-color: #000;
+}
+
+//
+// Various classes
+//
+
+img.absmiddle {
+    vertical-align: middle;
+}
+
+.smallCheckboxes {
+    height: 12px;
+    margin: 0;
+    width: 12px;
+}
+
+.alignToInputText,
+.alignToInputText:hover {
+    margin-top: 5px;
+    margin-right: 2px;
+    vertical-align: top;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+//
+// TYPO3 styles for basic elements
+//
+
+tr:hover .t3-page-ce a,
+tr:hover .x-tree a {
+    text-decoration: none;
+}
+
+a.t3-link {
+    text-decoration: underline;
+}
+
+em {
+    font-style: italic;
+}
+
+//
+// Various classes
+//
+
+// Please use .typo3-app-icon in your extensions.
+// Wrap <img> in span>span for 16x16px horizontally and vertically centered icons (backwards compatibility)
+.typo3-app-icon {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    height: $app-icon-width;
+    width: $app-icon-height;
+    overflow: hidden;
+    border-radius: $app-icon-border-radius;
+    background-color: $app-icon-bg;
+    vertical-align: middle;
+    transform: translate3d(0, 0, 0);
+
+    > span {
+        display: table;
+        height: 100%;
+        width: 100%;
+
+        > span {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+
+    img {
+        max-height: $app-icon-width;
+        max-width: $app-icon-width;
+        margin: 0 auto;
+    }
+
+    .fa {
+        font-size: $app-icon-font-size;
+        vertical-align: middle;
+    }
+
+    &:after {
+        position: absolute;
+        content: '';
+        display: block;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: $app-icon-border-radius;
+    }
+}
+
+.section {
+    margin-bottom: 15px;
+}
+
+.diff-r {
+    color: red;
+}
+
+div.diff-r {
+    background-color: red;
+    color: black;
+}
+
+.diff-g {
+    color: green;
+}
+
+div.diff-g {
+    background-color: green;
+    color: black;
+}
+
+div.diff-r,
+div.diff-g {
+    padding: 3px;
+}
+
+// used in the admin tools => DB check
+.t3-overview-list dt {
+    font-weight: bold;
+}
+
+//
+// Dimmed span tag color (disabled)
+//
+
+.c-na {
+    color: #666;
+    font-style: italic;
+}
+
+.not-found a {
+    color: #ccc;
+}
+
+//
+// Red span tag color (warning, notice)
+//
+
+table.warningbox {
+    border: solid 2px black;
+    background-color: yellow;
+    margin: 20px 0;
+
+    td {
+        padding: 20px;
+        font-weight: bold;
+
+        a {
+            text-decoration: underline;
+        }
+    }
+}
+
+div.warningbox {
+    border: solid 2px black;
+    background-color: yellow;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+span.warningboxheader {
+    margin-left: 5px;
+}
+
+// all buttons have the "click" mouse cursor
+
+.t3-btn {
+    cursor: pointer;
+}
+
+.media-gallery__list {
+    .media-gallery__item {
+        display: inline-block;
+        float: none;
+        margin-bottom: 15px;
+        margin-right: -4px;
+        vertical-align: top;
+
+        .media-object {
+            max-height: 158px;
+            overflow: hidden;
+        }
+
+        img.thumbnail {
+            height: auto;
+            margin-bottom: 0;
+            max-height: 150px;
+            max-width: 100%;
+        }
+
+        span.thumbnail {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+    }
+}

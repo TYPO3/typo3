@@ -1,0 +1,99 @@
+//
+// DocHeader
+//
+$docheader-text: rgb(45, 45, 45);
+$docheader-bg: #eee;
+$docheader-border: rgb(195, 195, 195);
+
+#typo3-docheader {
+    background: $docheader-bg;
+
+    img,
+    input {
+        cursor: pointer;
+    }
+
+    .t3-icon {
+        margin-bottom: 3px;
+    }
+
+    // left col
+    .left {
+        float: left;
+
+        .t3-icon {
+            margin-right: 6px;
+        }
+    }
+    // right col
+    .right {
+        float: right;
+
+        .t3-icon {
+            margin-left: 6px;
+        }
+    }
+
+    // Extra margin 6px added to it-icon margin, doubled spacing = 12px
+    .buttongroup {
+        float: left;
+        margin-right: 6px;
+
+        .c-inputButton {
+            color: inherit;
+            padding: 0;
+        }
+
+        input.c-inputButton {
+            text-indent: -1000px;
+        }
+    }
+
+    select {
+        margin-right: 12px;
+    }
+
+    a {
+        color: $docheader-text;
+
+        &:hover {
+            color: #000;
+        }
+
+        &.active {
+            color: $docheader-border;
+        }
+
+        &.active {
+            span {
+                cursor: default;
+            }
+        }
+    }
+
+    .typo3-docheader-functions,
+    .typo3-docheader-buttons {
+        color: $docheader-text;
+        overflow: hidden;
+        padding: 0 24px;
+    }
+
+    // first row
+    .typo3-docheader-functions {
+        height: 27px;
+        line-height: 27px;
+
+        // overwrite defaults from normalize.css
+        select {
+            color: $docheader-text;
+        }
+    }
+
+    // second row
+    .typo3-docheader-buttons {
+        height: 22px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        border-bottom: 1px solid #c3c3c3;
+    }
+}

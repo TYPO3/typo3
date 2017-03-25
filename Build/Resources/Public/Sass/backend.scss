@@ -1,0 +1,95 @@
+//
+// Backend
+// =======
+// Contains all needed styles for the TYPO3 backend.
+//
+
+//
+// Load global Variables
+//
+@import "variables/main";
+
+//
+// Load minimal Setup including variables
+//
+@import "minimal";
+
+//
+// Components
+//
+@import "component/colorpicker";
+@import "component/svgtree";
+
+//
+// Components from bootstrap plugins
+//
+@import "bootstrap-datetimepicker";
+
+//
+// Image Manipulation Wizard base styles
+//
+@import "cropper/cropper";
+
+//
+// NProgress
+//
+@import "nprogress/nprogress";
+
+//
+// TYPO3 Backend Components
+//
+@import "typo3/deprecated";
+@import "typo3/main_type";
+@import "typo3/various_fixes";
+@import "typo3/element_animation";
+@import "typo3/element_cropper";
+@import "typo3/element_csh";
+@import "typo3/element_contextmenu";
+@import "typo3/element_docheader";
+@import "typo3/element_message";
+@import "typo3/element_modal";
+@import "typo3/element_pagetree";
+@import "typo3/element_rte";
+@import "typo3/element_slider";
+@import "typo3/element_spinner";
+@import "typo3/element_tab";
+@import "typo3/element_table";
+@import "typo3/element_tooltip";
+@import "typo3/element_panel";
+@import "typo3/element_popover";
+@import "typo3/element_tceforms";
+@import "typo3/element_tree";
+@import "typo3/element_pagination";
+@import "typo3/element_fieldselectbox";
+@import "typo3/element_label";
+@import "typo3/element_badges";
+@import "typo3/element_buttons";
+@import "typo3/element_draguploader";
+@import "typo3/icons";
+@import "typo3/login_screen";
+@import "typo3/main_body";
+@import "typo3/main_content";
+@import "typo3/main_elementbrowser";
+@import "typo3/main_backend_layout_wizard";
+@import "typo3/main_form";
+@import "typo3/main_linkbrowser";
+@import "typo3/main_new_content_element_wizard";
+@import "typo3/module_database";
+@import "typo3/module_recycler";
+@import "typo3/module_scheduler";
+@import "typo3/module_tstemplate";
+@import "typo3/module_web_page";
+@import "typo3/module_viewpage";
+@import "typo3/module_workspaces";
+@import "typo3/debugconsole";
+@import "typo3/module_web_list_sysnote";
+@import "typo3/module_extensionmanager";
+@import "typo3/module_lang";
+@import "typo3/module_beuser";
+@import "typo3/module_cshmanual";
+@import "typo3/wizard_localization";
+@import "typo3/structure/element_version";
+@import "typo3/structure/element_wizard";
+@import "typo3/structure/module_web_list";
+@import "typo3/visual/element_typoscript";
+@import "typo3/visual/element_version";

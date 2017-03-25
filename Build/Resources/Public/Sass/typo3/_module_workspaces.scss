@@ -1,0 +1,55 @@
+#workspace-panel {
+    tr.collapsing {
+        transition: none;
+    }
+
+    tr.collapse {
+        display: none;
+
+        &.in {
+            display: table-row;
+        }
+    }
+}
+
+span.item-state- {
+    &modified {
+        color: #f78f25;
+    }
+
+    &moved {
+        color: #457fb8;
+    }
+
+    &new {
+        color: #3c9934;
+    }
+
+    &hidden {
+        color: #abaaaa;
+    }
+
+    &deleted {
+        color: #000;
+        text-decoration: line-through;
+    }
+}
+
+.legend {
+    margin: 5px;
+    height: 18px;
+    color: #888;
+
+    dd,
+    dt {
+        display: inline;
+        overflow: hidden;
+    }
+
+    dd {
+        span {
+            display: inline-block;
+            padding: 4px;
+        }
+    }
+}

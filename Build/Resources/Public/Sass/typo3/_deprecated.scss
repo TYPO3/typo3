@@ -1,0 +1,32 @@
+//
+// Docheader
+//
+div#typo3-docbody {
+    bottom: 0;
+    overflow: auto;
+    position: absolute;
+    top: 51px;
+    width: 100%;
+}
+
+//
+// Context Sensitive Help (CSH)
+//
+.t3-help-link {
+    span.t3-help-inline {
+        display: none;
+    }
+
+    &:hover span.t3-help-inline {
+        display: block;
+    }
+}
+
+//
+// Print
+//
+@media print {
+    div#typo3-docbody {
+        overflow: visible;
+    }
+}

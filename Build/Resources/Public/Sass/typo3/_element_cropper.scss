@@ -1,0 +1,438 @@
+.cropper {
+    .cropper-line {
+        background-color: transparent;
+    }
+
+    .cropper-dashed {
+        border: 1px dashed $color-orange;
+    }
+
+    .cropper-point {
+        background-color: $color-orange;
+
+        &.point-nw {
+            left: 0; /* 3 */
+            top: 0; /* 3 */
+        }
+
+        &.point-w {
+            left: 0; /* 3 */
+        }
+
+        &.point-sw {
+            left: 0; /* 3 */
+            bottom: 0; /* 3 */
+        }
+
+        &.point-ne {
+            right: 0; /* 3 */
+            top: 0; /* 3 */
+        }
+
+        &.point-e {
+            right: 0; /* 3 */
+        }
+
+        &.point-se {
+            right: 0; /* 3 */
+            bottom: 0; /* 3 */
+
+            &:before {
+                background-color: $color-white;
+            }
+        }
+
+        &.point-n {
+            top: 0; /* 3 */
+        }
+
+        &.point-s {
+            bottom: 0; /* 3 */
+        }
+    }
+
+    .cropper-view-box {
+        outline: 1px dashed $color-orange;
+    }
+
+    .cropper-modal {
+        background-color: transparent;
+    }
+
+    .cropper-bg {
+        background-image: url("../Images/cropper-background.png");
+    }
+
+    .cropper-image-container {
+        height: 100% !important;
+        width: 100% !important;
+        max-width: 1000px !important;
+    }
+
+    // Custom styles for cropper radio buttons
+    .ratio-buttons {
+        margin-bottom: 10px;
+
+        .btn {
+            &.btn-default {
+                margin-bottom: 5px;
+            }
+
+            &:not(.active) .fa {
+                display: none;
+            }
+        }
+    }
+
+    // Cropper style tweaks for Bootstrap .panel
+    .panel-group {
+        [aria-expanded=true] {
+            border-left: 2px solid $color-orange;
+            position: relative;
+
+            &[data-toggle=collapse] {
+                background-color: #333;
+            }
+        }
+
+        [aria-expanded=false] {
+            border-left: 2px solid #444;
+            position: relative;
+        }
+
+        table,
+        label {
+            color: $color-white;
+        }
+
+        position: relative;
+        margin: -15px;
+    }
+
+    .panel-collapse.collapse {
+        background-color: #2c2c2c !important;
+        border-left: 2px solid $color-orange;
+    }
+
+    .panel-heading {
+        padding: 0;
+
+        .panel-title {
+            > [data-crop-variant] {
+                display: flex;
+                padding: 10px 15px;
+                justify-content: space-between;
+            }
+
+            > a {
+                text-decoration: none !important;
+                user-select: none;
+                font-size: 13px;
+            }
+        }
+    }
+
+    .panel-default > .panel-heading + .panel-collapse > .panel-body {
+        border-top-color: #333;
+    }
+
+    .panel-group,
+    .panel-default .panel-heading,
+    .panel {
+        background: #222;
+        border: none;
+        color: $color-white;
+    }
+
+    .btn-secondary {
+        color: $color-white;
+        background-color: #777;
+        border-color: #555;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+            color: $color-white;
+            background-color: #888;
+            border-color: #444;
+        }
+    }
+
+    .open .dropdown-toggle.btn-secondary {
+        @extend .btn-secondary;
+    }
+
+    /**
+	 * Style overrides for CropperJS CSS and additional styles to make cropper look like expected
+	 *
+	 * 1. Fixes hidden drag/resize handles for cropper
+	 * 2. Fixes containment on the jQuery UI resizeable
+	 * 3. Offset cropper lines and handles to inside of container
+	 */
+    .cropper-container.cropper-bg {
+        overflow: visible; /* 1 */
+    }
+
+    .cropper-crop-box {
+        overflow: hidden; /* 2 */
+
+        &:after {
+            background-color: $color-orange;
+            content: "Cropped area";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 10px;
+            color: black;
+            height: 16px;
+            width: 100%;
+            max-width: 80px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px;
+            pointer-events: none;
+            overflow: hidden;
+        }
+    }
+
+    .cropper-line {
+        &.line-w {
+            left: 0; /* 3 */
+        }
+
+        &.line-e {
+            right: 0; /* 3 */
+        }
+
+        &.line-n {
+            top: 0; /* 3 */
+        }
+
+        &.line-s {
+            bottom: 0; /* 3 */
+        }
+    }
+
+    // Style overrides for jQueryUI
+    .ui-resizable-handle {
+        &.ui-resizable-n,
+        &.ui-resizable-s,
+        &.ui-resizable-e,
+        &.ui-resizable-w {
+            border-color: transparent;
+            transform: none;
+        }
+
+        &.ui-resizable-e,
+        &.ui-resizable-w {
+            width: 6px;
+        }
+
+        &.ui-resizable-n,
+        &.ui-resizable-s {
+            height: 6px;
+        }
+
+        &.ui-resizable-e {
+            right: 0;
+        }
+
+        &.ui-resizable-w {
+            left: 0;
+        }
+
+        &.ui-resizable-n {
+            top: 0;
+        }
+
+        &.ui-resizable-s {
+            bottom: 0;
+        }
+
+        &.ui-resizable-sw,
+        &.ui-resizable-se,
+        &.ui-resizable-ne,
+        &.ui-resizable-nw {
+            transform: none;
+            background-color: #ccc;
+            height: 6px;
+            width: 6px;
+        }
+
+        &.ui-resizable-nw {
+            top: 0;
+            left: 0;
+        }
+
+        &.ui-resizable-ne {
+            top: 0;
+            right: 0;
+        }
+
+        &.ui-resizable-se {
+            bottom: 0;
+            right: 0;
+        }
+
+        &.ui-resizable-sw {
+            bottom: 0;
+            left: 0;
+        }
+    }
+
+    // Cropper UI-specific styles
+    .cropper-focus-area {
+        cursor: move;
+        height: 200px;
+        width: 200px;
+        background-color: rgba(215, 187, 0, 0.5);
+        position: absolute;
+        z-index: 999999;
+        opacity: 1;
+        overflow: hidden;
+        transition: background-color 300ms;
+
+        &.has-nodrop,
+        &.has-nodrop:hover {
+            background-color: rgba(211, 35, 46, 0.6) !important;
+            transition: background-color 300ms;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: rgba(215, 187, 0, 0.7);
+        }
+
+        &:after {
+            background-color: rgba(255, 255, 255, 0.95);
+            content: "Focus";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 10px;
+            color: black;
+            height: 16px;
+            width: 100%;
+            max-width: 44px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px 0 8px; /* Additional 4px on left due to resize handle on focus area */
+            pointer-events: none;
+            overflow: hidden;
+        }
+    }
+
+    .cropper-cover-area {
+        background: url("../Images/cropper-background-cover-area.svg");
+        pointer-events: none;
+        cursor: not-allowed;
+        position: absolute;
+        opacity: 1;
+        z-index: 99999;
+
+        &:after {
+            background-color: rgba(255, 255, 255, 0.95);
+            content: "Cover area";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 10px;
+            color: black;
+            height: 16px;
+            width: 100%;
+            max-width: 80px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 4px;
+            pointer-events: none;
+            overflow: hidden;
+        }
+    }
+
+    .cropper-preview-thumbnail {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: relative;
+        max-width: 100px;
+        max-height: 100px;
+        overflow: hidden;
+
+        &:after {
+            background-color: rgba(0, 0, 0, 0.5);
+            content: " ";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: 9;
+        }
+
+        &.wide {
+            width: 100px;
+            height: auto;
+        }
+
+        &.tall {
+            width: auto;
+            height: 80px;
+        }
+    }
+
+    .cropper-preview-thumbnail-image {
+        left: 0;
+        top: 0;
+    }
+
+    .wide .cropper-preview-thumbnail-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .tall .cropper-preview-thumbnail-image {
+        width: auto;
+        height: 100%;
+    }
+
+    .cropper-preview-thumbnail-crop-area {
+        border: 1px solid $color-orange;
+        position: absolute;
+        z-index: 10;
+        overflow: hidden;
+    }
+
+    .cropper-preview-thumbnail-focus-area {
+        background-color: rgba(215, 187, 0, 0.7);
+        position: absolute;
+        z-index: 11;
+    }
+}
+
+:root .cropper-preview-thumbnail-crop-image {
+    image-orientation: 0deg;
+    display: block;
+    height: 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
+    max-height: none;
+}
+
+.cropper-preview-container {
+    overflow: hidden;
+    position: relative;
+
+    img {
+        display: block;
+        position: absolute;
+        width: 100%;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
+}
