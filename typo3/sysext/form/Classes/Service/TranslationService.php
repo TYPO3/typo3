@@ -398,9 +398,11 @@ class TranslationService implements SingletonInterface
         }
 
         $validationErrors = $element->getProperties()['validationErrorMessages'];
-        foreach ($validationErrors as $validationError) {
-            if ((int)$validationError['code'] === $code) {
-                return sprintf($validationError['message'], $arguments);
+        if (is_array($validationErrors)) {
+            foreach ($validationErrors as $validationError) {
+                if ((int)$validationError['code'] === $code) {
+                    return sprintf($validationError['message'], $arguments);
+                }
             }
         }
 
