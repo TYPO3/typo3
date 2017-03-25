@@ -1013,10 +1013,12 @@ class PageLayoutController
     /**
      * Print accumulated content of module
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @return void
      */
     public function printContent()
     {
+        GeneralUtility::logDeprecatedFunction();
         echo $this->moduleTemplate->renderContent();
     }
 

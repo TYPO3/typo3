@@ -163,10 +163,12 @@ class TaskModuleController extends BaseScriptClass
     /**
      * Prints out the module's HTML
      *
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @return void
      */
     public function printContent()
     {
+        GeneralUtility::logDeprecatedFunction();
         echo $this->content;
     }
 

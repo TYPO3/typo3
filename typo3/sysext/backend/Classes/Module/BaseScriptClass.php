@@ -36,7 +36,7 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * TYPICAL SETUP OF A BACKEND MODULE:
  *
- * PrototypeController EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ * PrototypeController EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() function:
  *
  * namespace Vendor\Prototype\Controller;
  *
@@ -54,10 +54,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * 	... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
  * 	$this->content='';
  * }
- * PRINT CONTENT - DONE AS THE LAST THING
- * public function printContent() {
- * 	echo $this->content;
- * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
  * $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Prototype\Controller\PrototypeController::class);
@@ -69,8 +65,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
- * FINALLY THE printContent() FUNCTION WILL OUTPUT THE ACCUMULATED CONTENT
- * $GLOBALS['SOBE']->printContent();
  */
 class BaseScriptClass
 {
