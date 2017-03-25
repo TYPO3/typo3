@@ -50,7 +50,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
      */
     public function helpStubCommand()
     {
-        $this->outputLine('Extbase %s', [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('extbase')]);
+        $this->outputLine('Extbase %s', [TYPO3_version]);
         $this->outputLine('usage: ' . $this->request->getCallingScript() . ' <command identifier>');
         $this->outputLine();
         $this->outputLine('See \'' . $this->request->getCallingScript() . ' help\' for a list of all available commands.');
@@ -87,7 +87,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
     protected function displayHelpIndex()
     {
         $this->buildCommandsIndex();
-        $this->outputLine('Extbase %s', [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('extbase')]);
+        $this->outputLine('Extbase %s', [TYPO3_version]);
         $this->outputLine('usage: ' . $this->request->getCallingScript() . ' <command identifier>');
         $this->outputLine();
         $this->outputLine('The following commands are currently available:');
