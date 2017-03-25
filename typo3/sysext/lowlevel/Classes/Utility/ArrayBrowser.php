@@ -114,7 +114,7 @@ class ArrayBrowser
             $output .= '<span class="list-tree-group">';
             $output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
             if (!$isArray) {
-                $output .= ' = <span class="list-tree-value">' . $this->wrapValue($value) . '</span>';
+                $output .= ' = <span class="list-tree-value">' . htmlspecialchars($value) . '</span>';
             }
             $output .= '</span>';
             if ($isExpanded) {
@@ -134,9 +134,11 @@ class ArrayBrowser
      *
      * @param string $theValue The title string
      * @return string Title string, htmlspecialchars()'ed
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function wrapValue($theValue)
     {
+        GeneralUtility::logDeprecatedFunction();
         $wrappedValue = '';
         if ((string)$theValue !== '') {
             $wrappedValue = htmlspecialchars($theValue);
