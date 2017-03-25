@@ -259,7 +259,7 @@ class NewContentElementController extends AbstractModule
                 $wizardOnClick = '';
                 if ($wInfo['header']) {
                     $menuItems[] = [
-                        'label' => htmlspecialchars($wInfo['header']),
+                        'label' => $wInfo['header'],
                         'content' => ''
                     ];
                     $key = count($menuItems) - 1;
