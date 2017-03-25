@@ -156,7 +156,7 @@ class InheritancesResolverService
                     if (is_array($inheritances)) {
                         $inheritedConfigurations = $this->resolveInheritancesRecursive($inheritances);
 
-                        $configuration[$key] = $this->mergeRecursiveWithOverrule(
+                        $configuration[$key] = array_replace_recursive(
                             $inheritedConfigurations,
                             $configuration[$key]
                         );
@@ -237,7 +237,7 @@ class InheritancesResolverService
                 );
             }
 
-            $inheritedConfigurations = $this->mergeRecursiveWithOverrule(
+            $inheritedConfigurations = array_replace_recursive(
                 $inheritedConfigurations,
                 $inheritedConfiguration
             );
@@ -349,67 +349,5 @@ class InheritancesResolverService
             }
         }
         return $result;
-    }
-
-    /**
-     * Merges two arrays recursively and "binary safe" (integer keys are overridden as well),
-     * overruling similar values in the first array ($firstArray) with the
-     * values of the second array ($secondArray)
-     * In case of identical keys, ie. keeping the values of the second.
-     * This is basically the Extbase arrayMergeRecursiveOverrule method.
-     * This method act different to the core mergeRecursiveWithOverrule method.
-     * This method has the possibility to overrule a array value within the
-     * $firstArray with a string value within the $secondArray.
-     * The core method does not support such a overrule.
-     * The reason for this code duplication is that the extbase method will be
-     * deprecated in the future.
-     *
-     * @param array $firstArray First array
-     * @param array $secondArray Second array, overruling the first array
-     * @param bool $dontAddNewKeys If set, keys that are NOT found in $firstArray (first array)
-     *                             will not be set. Thus only existing value can/will be
-     *                             overruled from second array.
-     * @param bool $emptyValuesOverride If set (which is the default), values from $secondArray
-     *                                  will overrule if they are empty (according to PHP's empty() function)
-     * @return array Resulting array where $secondArray values has overruled $firstArray values
-     * @internal
-     */
-    protected function mergeRecursiveWithOverrule(
-        array $firstArray,
-        array $secondArray,
-        bool $dontAddNewKeys = false,
-        bool $emptyValuesOverride = true
-    ): array {
-        foreach ($secondArray as $key => $value) {
-            if (
-                array_key_exists($key, $firstArray)
-                && is_array($firstArray[$key])
-            ) {
-                if (is_array($secondArray[$key])) {
-                    $firstArray[$key] = $this->mergeRecursiveWithOverrule(
-                        $firstArray[$key],
-                        $secondArray[$key],
-                        $dontAddNewKeys,
-                        $emptyValuesOverride
-                    );
-                } else {
-                    $firstArray[$key] = $secondArray[$key];
-                }
-            } else {
-                if ($dontAddNewKeys) {
-                    if (array_key_exists($key, $firstArray)) {
-                        if ($emptyValuesOverride || !empty($value)) {
-                            $firstArray[$key] = $value;
-                        }
-                    }
-                } else {
-                    if ($emptyValuesOverride || !empty($value)) {
-                        $firstArray[$key] = $value;
-                    }
-                }
-            }
-        }
-        reset($firstArray);
-        return $firstArray;
     }
 }
