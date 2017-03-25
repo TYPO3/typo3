@@ -37,9 +37,6 @@ var inline = {
 			$.extend(inline.data[key], value);
 		});
 	},
-	setNoTitleString: function (value) {
-		this.noTitleString = value;
-	},
 	toggleEvent: function (event) {
 		var $triggerElement = $(event.target);
 		if ($triggerElement.parents('.t3js-formengine-irre-control').length == 1) {
@@ -206,7 +203,7 @@ var inline = {
 						inline.progress.done();
 					}
 				},
-				error: function (jqXHR, statusText, errorThrown) {
+				error: function (jqXHR) {
 					inline.isLoading = false;
 					inline.showAjaxFailure(method, jqXHR);
 					if (inline.progress) {
@@ -233,14 +230,12 @@ var inline = {
 	},
 
 	processAjaxResponse: function (method, xhr, json) {
-		var addTag = null, processedCount = 0, element = null, errorCatch = [], sourcesWaiting = [];
+		var processedCount = 0, sourcesWaiting = [];
 		if (!json && xhr) {
 			json = xhr.responseJSON;
 		}
 		// If there are elements the should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
 		if (json.stylesheetFiles) {
-			var head = inline.getDomHeadTag();
-			var headTags = inline.getDomHeadChildren(head);
 			$.each(json.stylesheetFiles, function (index, stylesheetFile) {
 				if (!stylesheetFile) {
 					return;
@@ -249,7 +244,7 @@ var inline = {
 				element['rel'] = 'stylesheet';
 				element['type'] = 'text/css';
 				element['href'] = stylesheetFile;
-				head.appendChild(element);
+				$('head').get(0).appendChild(element);
 				processedCount++;
 				delete(json.stylesheetFiles[index]);
 			});
@@ -325,7 +320,7 @@ var inline = {
 	},
 
 	// foreign_selector: used by element browser (type='group/db')
-	importElement: function (objectId, table, uid, type) {
+	importElement: function (objectId, table, uid) {
 		var context = this.getContext(objectId);
 		inline.makeAjaxCall('create', [objectId, uid], true, context);
 	},
@@ -344,7 +339,7 @@ var inline = {
 		}
 	},
 	// Check uniqueness for element browser:
-	checkUniqueElement: function (objectId, table, uid, type) {
+	checkUniqueElement: function (objectId, table, uid) {
 		if (this.checkUniqueUsed(objectId, uid, table)) {
 			return {passed: false, message: 'There is already a relation to the selected element!'};
 		} else {
@@ -382,14 +377,7 @@ var inline = {
 
 	setUniqueElement: function (objectId, table, uid, type, elName) {
 		var recordUid = this.parseFormElementName('none', elName, 1, 1);
-		// alert(objectId+'/'+table+'/'+uid+'/'+recordUid);
 		this.setUnique(objectId, recordUid, uid);
-	},
-
-	getKeysFromHashMap: function (unique) {
-		return $.map(unique, function (value, key) {
-			return key;
-		});
 	},
 
 	getValuesFromHashMap: function (hashMap) {
@@ -410,8 +398,6 @@ var inline = {
 			return;
 		}
 
-		var formName = 'data' + this.parseObjectId('parts', objectId, 3, 1, true);
-		var formObj = document.getElementsByName(formName);
 		var recordObj = document.getElementsByName('data[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
 		var values = this.getValuesFromHashMap(unique.used);
 		if (recordObj.length) {
@@ -540,50 +526,6 @@ var inline = {
 		this.expandCollapseRecord(objectId, expandSingle);
 	},
 
-	// Get script and link elements from head tag:
-	getDomHeadChildren: function (head) {
-		var headTags = [];
-		$('head script, head link').each(function () {
-			headTags.push(this);
-		});
-		return headTags;
-	},
-
-	getDomHeadTag: function () {
-		if (document && document.head) {
-			return document.head;
-		} else {
-			var $head = $('head');
-			if ($head.length) {
-				return $head.get(0);
-			}
-		}
-		return false;
-	},
-
-	// Search whether elements exist in a given haystack:
-	searchInDomTags: function (haystack, needle) {
-		var result = false;
-		$.each(haystack, function (index, element) {
-			if (element.nodeName.toUpperCase() == needle.name) {
-				var attributesCount = Object.keys(needle.attributes).length;
-				var attributesFound = 0;
-				if (element.getAttribute) {
-					for (var attribute in needle.attributes) {
-						if (needle.attributes.hasOwnProperty(attribute) && element.getAttribute(attribute.key) === attribute.value) {
-							attributesFound++;
-						}
-					}
-				}
-				if (attributesFound === attributesCount) {
-					result = true;
-					return true;
-				}
-			}
-		});
-		return result;
-	},
-
 	changeSorting: function (objectId, direction) {
 		var objectName = 'data' + this.parseObjectId('parts', objectId, 3, 2, true);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
@@ -605,7 +547,7 @@ var inline = {
 			records[current - 1] = callingUid;
 			changed = true;
 
-			// move down
+		// move down
 		} else if (direction < 0 && current < records.length - 1) {
 			records[current] = records[current + 1];
 			records[current + 1] = callingUid;
@@ -667,18 +609,16 @@ var inline = {
 				return;
 			}
 
-			$sortingContainer.sortable(
-				{
-					containment: 'parent',
-					handle: '.sortableHandle',
-					zIndex: '4000',
-					axis: 'y',
-					tolerance: 'pointer',
-					stop: function () {
-						inline.dragAndDropSorting($sortingContainer[0]);
-					}
+			$sortingContainer.sortable({
+				containment: 'parent',
+				handle: '.sortableHandle',
+				zIndex: '4000',
+				axis: 'y',
+				tolerance: 'pointer',
+				stop: function () {
+					inline.dragAndDropSorting($sortingContainer[0]);
 				}
-			);
+			});
 		});
 	},
 
@@ -754,7 +694,6 @@ var inline = {
 			this.redrawSortingButtons(objectPrefix, records);
 
 			if (this.data.unique && this.data.unique[objectPrefix]) {
-				var unique = this.data.unique[objectPrefix];
 				this.setUnique(objectPrefix, newUid, selectedValue);
 			}
 		}
@@ -879,7 +818,6 @@ var inline = {
 				}
 			}
 		} else if (unique.type == 'groupdb') {
-			// alert(objectPrefix+'/'+recordUid);
 			delete(this.data.unique[objectPrefix].used[recordUid])
 		}
 	},
@@ -991,21 +929,6 @@ var inline = {
 		return false;
 	},
 
-	parsePath: function (path) {
-		var backSlash = path.lastIndexOf('\\');
-		var normalSlash = path.lastIndexOf('/');
-
-		if (backSlash > 0) {
-			path = path.substring(0, backSlash + 1);
-		} else if (normalSlash > 0) {
-			path = path.substring(0, normalSlash + 1);
-		} else {
-			path = '';
-		}
-
-		return path;
-	},
-
 	parseFormElementName: function (wrap, formElementName, rightCount, skipRight) {
 		var idParts = this.splitFormElementName(formElementName);
 
@@ -1105,14 +1028,9 @@ var inline = {
 			elParts = idParts;
 		}
 
-		var elReturn;
-		if (returnAsFormElementName) {
-			elReturn = this.constructFormElementName(wrap, elParts);
-		} else {
-			elReturn = this.constructObjectId(wrap, elParts);
-		}
-
-		return elReturn;
+		return returnAsFormElementName
+			? this.constructFormElementName(wrap, elParts)
+			: this.constructObjectId(wrap, elParts);
 	},
 
 	handleChangedField: function (formField, objectId) {
@@ -1192,7 +1110,6 @@ var inline = {
 
 		var index = null;
 		var optionsHash = this.getOptionsHash($selectObj);
-		var possibleValues = this.getKeysFromHashMap(unique.possible);
 
 		for (var possibleValue in unique.possible) {
 			if (possibleValue == value) {
@@ -1234,9 +1151,7 @@ var inline = {
 
 	isNewRecord: function (objectId) {
 		var $selector = $('#' + this.escapeObjectId(objectId) + '_div');
-		return $selector.length && $selector.hasClass('inlineIsNewRecord')
-			? true
-			: false;
+		return $selector.length && $selector.hasClass('inlineIsNewRecord');
 	},
 
 	// Find and fix nested of inline and tab levels if a new element was created dynamically (it doesn't know about its nesting):
@@ -1245,10 +1160,8 @@ var inline = {
 			// Remove the first element from the new nested stack, it's just a hint:
 			nested.shift();
 			nested = this.data.nested[objectId].concat(nested);
-			return nested;
-		} else {
-			return nested;
 		}
+		return nested;
 	},
 
 	getObjectMD5: function (objectPrefix) {
@@ -1279,7 +1192,7 @@ var inline = {
 	/**
 	 * Escapes object identifiers to be used in jQuery.
 	 *
-	 * @param string objectId
+	 * @param {String} objectId
 	 * @return string
 	 */
 	escapeObjectId: function (objectId) {
@@ -1292,7 +1205,7 @@ var inline = {
 	/**
 	 * Escapes object identifiers to be used as jQuery selector.
 	 *
-	 * @param string objectId
+	 * @param {String} objectId
 	 * @return string
 	 * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9. Use $.escapeSelector() instead, which was added with jQuery 3.0.
 	 */
