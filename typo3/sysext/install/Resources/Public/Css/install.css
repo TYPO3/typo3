@@ -7228,8 +7228,8 @@ body {
   left: 0;
 }
 .scaffold-modulemenu {
-  background-color: #424242;
-  color: #fff;
+  background-color: #2c2c2b;
+  color: #f5f5f5;
   position: fixed;
   top: 45px;
   left: 0;
@@ -7240,18 +7240,18 @@ body {
   overflow: hidden;
 }
 .scaffold-modulemenu a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(245, 245, 245, 0.7);
 }
 .scaffold-modulemenu a:hover {
-  color: #fff;
+  color: #f5f5f5;
 }
 .scaffold-modulemenu .active > a {
-  color: #fff;
+  color: #f5f5f5;
 }
 .scaffold-toolbar {
   overflow: auto;
-  background-color: #424242;
-  color: #fff;
+  background-color: #2c2c2b;
+  color: #f5f5f5;
   z-index: 1000;
   position: fixed;
   top: 45px;
@@ -7262,16 +7262,16 @@ body {
 }
 .scaffold-toolbar .dropdown-menu a,
 .scaffold-toolbar a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(245, 245, 245, 0.7);
 }
 .scaffold-toolbar .dropdown-menu a:focus,
 .scaffold-toolbar a:focus,
 .scaffold-toolbar .dropdown-menu a:hover,
 .scaffold-toolbar a:hover {
-  color: #fff;
+  color: #f5f5f5;
 }
 .scaffold-toolbar .active > a {
-  color: #fff;
+  color: #f5f5f5;
 }
 @media (min-width: 992px) {
   .scaffold-toolbar {
@@ -7414,19 +7414,19 @@ body {
   top: 0;
   display: inline-block;
   border: 0;
-  background-color: #222;
+  background-color: #1f1f1e;
   height: 45px;
   width: 40px;
 }
 .topbar-button:hover {
-  background-color: #2a2a2a;
+  background-color: #272726;
 }
 .topbar-button.topbar-button-modulemenu {
   left: 0;
 }
 @media (min-width: 992px) {
   .topbar-button.topbar-button-modulemenu {
-    background-color: #424242;
+    background-color: #2c2c2b;
   }
 }
 .topbar-button.topbar-button-navigationcomponent {
@@ -7439,10 +7439,10 @@ body {
   right: 0;
 }
 .scaffold-modulemenu-expanded .topbar-button.topbar-button-modulemenu {
-  background-color: #424242;
+  background-color: #2c2c2b;
 }
 .scaffold-content-navigation-expanded .topbar-button-navigationcomponent {
-  background-color: #424242;
+  background-color: #2c2c2b;
 }
 @media (max-width: 991px) {
   .scaffold-toolbar-expanded .toolbar-item-search {
@@ -7450,7 +7450,7 @@ body {
   }
 }
 .scaffold-toolbar-expanded .topbar-button-toolbar {
-  background-color: #424242;
+  background-color: #2c2c2b;
 }
 @media (max-width: 991px) {
   .scaffold-search-expanded .toolbar-item {
@@ -7462,7 +7462,7 @@ body {
   }
 }
 .scaffold-search-expanded .topbar-button-search {
-  background-color: #424242;
+  background-color: #2c2c2b;
 }
 .topbar-button-toolbar,
 .topbar-button-search {
