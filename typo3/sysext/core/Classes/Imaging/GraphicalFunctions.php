@@ -144,11 +144,6 @@ class GraphicalFunctions
     /**
      * @var bool
      */
-    public $V5_EFFECTS = 0;
-
-    /**
-     * @var bool
-     */
     public $mayScaleUp = 1;
 
     /**
@@ -376,10 +371,8 @@ class GraphicalFunctions
         // ... but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
             $this->NO_IM_EFFECTS = 0;
-            $this->V5_EFFECTS = 1;
-            if ($gfxConf['processor_effects'] > 0) {
-                $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality . $this->v5_sharpen(10);
-            }
+            $this->cmds['jpg'] .= $this->v5_sharpen(10);
+            $this->cmds['jpeg'] .= $this->v5_sharpen(10);
         }
         // Secures that images are not scaled up.
         if (!$gfxConf['processor_allowUpscaling']) {
@@ -682,11 +675,7 @@ class GraphicalFunctions
                 } else {
                     $command = trim($conf['niceText.']['before'] . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . $conf['niceText.']['after'] . ' -negate');
                     if ($conf['niceText.']['sharpen']) {
-                        if ($this->V5_EFFECTS) {
-                            $command .= $this->v5_sharpen($conf['niceText.']['sharpen']);
-                        } else {
-                            $command .= ' -sharpen ' . MathUtility::forceIntegerInRange($conf['niceText.']['sharpen'], 1, 99);
-                        }
+                        $command .= $this->v5_sharpen($conf['niceText.']['sharpen']);
                     }
                 }
                 $this->imageMagickExec($fileMask, $fileMask, $command);
@@ -1491,18 +1480,7 @@ class GraphicalFunctions
             $this->ImageWrite($blurTextImg, $fileMask);
             // Destroy
             imagedestroy($blurTextImg);
-            $command = '';
-            if ($this->V5_EFFECTS) {
-                $command .= $this->v5_blur($blurRate + 1);
-            } else {
-                // Blurring of the mask
-                // How many blur-commands that is executed. Min = 1;
-                $times = ceil($blurRate / 10);
-                // Building blur-command
-                for ($a = 0; $a < $times; $a++) {
-                    $command .= ' -blur ' . $blurRate;
-                }
-            }
+            $command = $this->v5_blur($blurRate + 1);
             $this->imageMagickExec($fileMask, $fileMask, $command . ' +matte');
             // The mask is loaded again
             $blurTextImg_tmp = $this->imageCreateFromFile($fileMask);
@@ -1661,20 +1639,12 @@ class GraphicalFunctions
                     break;
                 case 'blur':
                     if (!$this->NO_IM_EFFECTS) {
-                        if ($this->V5_EFFECTS) {
-                            $commands .= $this->v5_blur($value);
-                        } else {
-                            $commands .= ' -blur ' . MathUtility::forceIntegerInRange($value, 1, 99);
-                        }
+                        $commands .= $this->v5_blur($value);
                     }
                     break;
                 case 'sharpen':
                     if (!$this->NO_IM_EFFECTS) {
-                        if ($this->V5_EFFECTS) {
-                            $commands .= $this->v5_sharpen($value);
-                        } else {
-                            $commands .= ' -sharpen ' . MathUtility::forceIntegerInRange($value, 1, 99);
-                        }
+                        $commands .= $this->v5_sharpen($value);
                     }
                     break;
                 case 'rotate':
@@ -1987,7 +1957,7 @@ class GraphicalFunctions
     }
 
     /**
-     * Returns the IM command for sharpening with ImageMagick 5 (when $this->V5_EFFECTS is set).
+     * Returns the IM command for sharpening with ImageMagick 5
      * Uses $this->im5fx_sharpenSteps for translation of the factor to an actual command.
      *
      * @param int $factor The sharpening factor, 0-100 (effectively in 10 steps)
@@ -2006,7 +1976,7 @@ class GraphicalFunctions
     }
 
     /**
-     * Returns the IM command for blurring with ImageMagick 5 (when $this->V5_EFFECTS is set).
+     * Returns the IM command for blurring with ImageMagick 5.
      * Uses $this->im5fx_blurSteps for translation of the factor to an actual command.
      *
      * @param int $factor The blurring factor, 0-100 (effectively in 10 steps)

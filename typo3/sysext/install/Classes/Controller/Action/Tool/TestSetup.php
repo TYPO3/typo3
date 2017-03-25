@@ -549,7 +549,7 @@ class TestSetup extends Action\AbstractAction
             $conf['niceText'] = 1;
             $conf['shadow.'] = [
                 'offset' => '2,2',
-                'blur' => $imageProcessor->V5_EFFECTS ? '20' : '90',
+                'blur' => $imageProcessor->NO_IM_EFFECTS ? '90' : '20',
                 'opacity' => '50',
                 'color' => 'black'
             ];
