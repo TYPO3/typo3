@@ -255,6 +255,7 @@ class GeneralUtility
      */
     public static function removeXSS($string)
     {
+        static::logDeprecatedFunction();
         return \RemoveXSS::process($string);
     }
 
