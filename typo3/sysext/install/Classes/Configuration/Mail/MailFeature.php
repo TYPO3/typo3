@@ -31,6 +31,7 @@ class MailFeature extends Configuration\AbstractFeature implements Configuration
      */
     protected $presetRegistry = [
         SendmailPreset::class,
+        SmtpPreset::class,
         CustomPreset::class,
     ];
 }

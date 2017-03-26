@@ -25,6 +25,11 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = [
+        'MAIL/transport' => '',
         'MAIL/transport_sendmail_command' => '',
+        'MAIL/transport_smtp_server' => '',
+        'MAIL/transport_smtp_encrypt' => '',
+        'MAIL/transport_smtp_username' => '',
+        'MAIL/transport_smtp_password' => '',
     ];
 }
