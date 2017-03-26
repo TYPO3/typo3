@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Form\Domain\Model\FormElements\GridContainerInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -63,23 +64,27 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
         $gridContainerElement = $gridRowElement->getParentRenderable();
         $gridRowEChildElements = $gridRowElement->getElementsRecursively();
 
-        $gridContainerViewPortConfiguration = $gridContainerElement->getProperties()['gridColumnClassAutoConfiguration'];
-        if (empty($gridContainerViewPortConfiguration)) {
-            return '';
+        if ($gridContainerElement instanceof GridContainerInterface) {
+            $gridViewPortConfiguration = $gridContainerElement->getProperties()['gridColumnClassAutoConfiguration'];
+        } else {
+            $gridViewPortConfiguration = $gridRowElement->getProperties()['gridColumnClassAutoConfiguration'];
         }
 
-        $gridSize = (int)$gridContainerViewPortConfiguration['gridSize'];
+        if (empty($gridViewPortConfiguration)) {
+            return '';
+        }
+        $gridSize = (int)$gridViewPortConfiguration['gridSize'];
 
         $columnsToCalculate = [];
         $usedColumns = [];
         foreach ($gridRowEChildElements as $childElement) {
             if (empty($childElement->getProperties()['gridColumnClassAutoConfiguration'])) {
-                foreach ($gridContainerViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
+                foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
                     $columnsToCalculate[$viewPortName]['elements']++;
                 }
             } else {
                 $gridColumnViewPortConfiguration = $childElement->getProperties()['gridColumnClassAutoConfiguration'];
-                foreach ($gridContainerViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
+                foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
                     $configuration = $gridColumnViewPortConfiguration['viewPorts'][$viewPortName];
                     if (
                         isset($configuration['numbersOfColumnsToUse'])
@@ -100,7 +105,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
         }
 
         $classes = [];
-        foreach ($gridContainerViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
+        foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
             if (isset($usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'])) {
                 $numbersOfColumnsToUse = $usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'];
             } else {

@@ -1356,6 +1356,29 @@ define(['jquery'], function($) {
             /**
              * @param object formElement
              * @return object|null
+             * @throws 1490520271
+             */
+            function findEnclosingGridRowFormElement(formElement) {
+                var formElementTypeDefinition;
+                utility().assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1490520271);
+
+                formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
+                while (!formElementTypeDefinition['_isGridRowFormElement']) {
+                    if (formElementTypeDefinition['_isTopLevelFormElement']) {
+                        return null;
+                    }
+                    formElement = formElement.get('__parentRenderable');
+                    formElementTypeDefinition = repository().getFormEditorDefinition('formElements', formElement.get('type'));
+                }
+                if (formElementTypeDefinition['_isTopLevelFormElement']) {
+                    return null;
+                }
+                return formElement;
+            };
+
+            /**
+             * @param object formElement
+             * @return object|null
              * @throws 1475364965
              */
             function findEnclosingCompositeFormElementWhichIsNotOnTopLevel(formElement) {
@@ -1706,6 +1729,7 @@ define(['jquery'], function($) {
                 findEnclosingCompositeFormElementWhichIsNotOnTopLevel: findEnclosingCompositeFormElementWhichIsNotOnTopLevel,
                 findEnclosingCompositeFormElementWhichIsOnTopLevel: findEnclosingCompositeFormElementWhichIsOnTopLevel,
                 findEnclosingGridContainerFormElement: findEnclosingGridContainerFormElement,
+                findEnclosingGridRowFormElement: findEnclosingGridRowFormElement,
                 getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement: getIndexForEnclosingCompositeFormElementWhichIsOnTopLevelForFormElement,
                 getNonCompositeNonToplevelFormElements: getNonCompositeNonToplevelFormElements,
 

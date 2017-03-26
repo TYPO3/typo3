@@ -31,24 +31,6 @@ class GridRow extends Section implements GridRowInterface
 {
 
     /**
-     * Register this element at the parent form, if there is a connection to the parent form.
-     *
-     * @return void
-     * @throws TypeDefinitionNotValidException
-     * @internal
-     */
-    public function registerInFormIfPossible()
-    {
-        if (!$this->getParentRenderable() instanceof GridContainerInterface) {
-            throw new TypeDefinitionNotValidException(
-                sprintf('Grid rows ("%s") only allowed within grid containers.', $this->getIdentifier()),
-                1489413805
-            );
-        }
-        parent::registerInFormIfPossible();
-    }
-
-    /**
      * Add a new form element at the end of the grid row
      *
      * @param FormElementInterface $formElement The form element to add
@@ -62,11 +44,6 @@ class GridRow extends Section implements GridRowInterface
             throw new TypeDefinitionNotValidException(
                 sprintf('Grid containers ("%s") within grid rows ("%s") are not allowed.', $formElement->getIdentifier(), $this->getIdentifier()),
                 1489413379
-            );
-        } elseif ($formElement instanceof GridRowInterface) {
-            throw new TypeDefinitionNotValidException(
-                sprintf('Grid rows ("%s") within grid rows ("%s") are not allowed.', $formElement->getIdentifier(), $this->getIdentifier()),
-                1489413696
             );
         }
 
@@ -90,11 +67,6 @@ class GridRow extends Section implements GridRowInterface
             throw new TypeDefinitionNotValidException(
                 sprintf('Grid containers ("%s") within grid rows ("%s") are not allowed.', $element->getIdentifier(), $this->getIdentifier()),
                 1489413538
-            );
-        } elseif ($element instanceof GridRowInterface) {
-            throw new TypeDefinitionNotValidException(
-                sprintf('Grid rows ("%s") within grid rows ("%s") are not allowed.', $element->getIdentifier(), $this->getIdentifier()),
-                1489413697
             );
         }
 

@@ -325,14 +325,10 @@ define(['jquery',
 
                     if (
                         formElementTypeDefinition['_isGridContainerFormElement']
-                        && getFormEditorApp().findEnclosingGridContainerFormElement(targetFormElementIdentifierPath)
-                    ) {
-                        return false;
-                    }
-
-                    if (
-                        formElementTypeDefinition['_isGridRowFormElement']
-                        && !targetFormElementTypeDefinition['_isGridContainerFormElement']
+                        && (
+                            getFormEditorApp().findEnclosingGridContainerFormElement(targetFormElementIdentifierPath)
+                            || getFormEditorApp().findEnclosingGridRowFormElement(targetFormElementIdentifierPath)
+                        )
                     ) {
                         return false;
                     }

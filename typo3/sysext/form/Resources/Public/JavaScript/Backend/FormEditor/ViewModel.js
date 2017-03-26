@@ -404,10 +404,7 @@ define(['jquery',
             $(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')).on('click', function(e) {
                 getPublisherSubscriber().publish(
                     'view/stage/abstract/button/newElement/clicked', [
-                        'view/insertElements/perform/bottom',
-                        {
-                            disableElementTypes: ['GridRow']
-                        }
+                        'view/insertElements/perform/bottom'
                     ]
                 );
             });

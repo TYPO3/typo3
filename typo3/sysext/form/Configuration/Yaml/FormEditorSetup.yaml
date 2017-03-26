@@ -304,8 +304,6 @@ TYPO3:
             GridContainer:
               formEditor:
                 label: 'formEditor.elements.GridContainer.label'
-                group: container
-                groupSorting: 200
                 _isCompositeFormElement: true
                 _isGridContainerFormElement: true
                 iconIdentifier: 't3-form-icon-gridcontainer'
