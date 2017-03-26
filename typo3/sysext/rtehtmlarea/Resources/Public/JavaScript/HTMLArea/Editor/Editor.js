@@ -30,7 +30,9 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 	'TYPO3/CMS/Backend/FormEngine',
-	'TYPO3/CMS/Backend/Notification'],
+	'TYPO3/CMS/Backend/Notification',
+	'TYPO3/CMS/Backend/FormEngineValidation'
+	],
 	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, TextAreaContainer, StatusBar, FormEngine, Notification) {
 
 	/**

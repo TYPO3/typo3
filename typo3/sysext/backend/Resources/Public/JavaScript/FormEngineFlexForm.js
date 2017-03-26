@@ -22,7 +22,8 @@
  */
 define(['jquery',
 		'TYPO3/CMS/Backend/Modal',
-		'TYPO3/CMS/Backend/FormEngine'
+		'TYPO3/CMS/Backend/FormEngine',
+		'TYPO3/CMS/Backend/FormEngineValidation'
 	   ], function ($, Modal) {
 
 	/**
