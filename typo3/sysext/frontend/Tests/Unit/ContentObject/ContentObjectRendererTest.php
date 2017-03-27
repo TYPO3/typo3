@@ -49,7 +49,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\PageRepositoryFixture;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -71,6 +71,11 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $frontendControllerMock = null;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|CacheFrontendInterface
+     */
+    protected $cacheFrontendMock = null;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
@@ -118,8 +123,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             $this->getMockBuilder(TemplateService::class)
             ->setMethods(['getFileName', 'linkData'])->getMock();
         $pageRepositoryMock =
-            $this->getMockBuilder(PageRepositoryFixture::class)
-            ->setMethods(['getRawRecord', 'getMountPointInfo'])->getMock();
+            $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
             $this->getAccessibleMock(TypoScriptFrontendController::class,
             ['dummy'], [], '', false);
@@ -3105,224 +3109,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $this->assertEquals('<a href="' . $expectedLink . '">' . $fileName . '</a>', $result);
 
         GeneralUtility::unlink_tempfile($fileNameAndPath);
-    }
-
-    /**
-     * @return array
-     */
-    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider()
-    {
-        return [
-            'no markers defined' => [
-                'dummy content with ###UNREPLACED### marker',
-                [],
-                [],
-                [],
-                'dummy content with ###UNREPLACED### marker',
-                false,
-                false
-            ],
-            'no markers used' => [
-                'dummy content with no marker',
-                [
-                    '###REPLACED###' => '_replaced_'
-                ],
-                [],
-                [],
-                'dummy content with no marker',
-                true,
-                false
-            ],
-            'one marker' => [
-                'dummy content with ###REPLACED### marker',
-                [
-                    '###REPLACED###' => '_replaced_'
-                ],
-                [],
-                [],
-                'dummy content with _replaced_ marker'
-            ],
-            'one marker with lots of chars' => [
-                'dummy content with ###RE.:##-=_()LACED### marker',
-                [
-                    '###RE.:##-=_()LACED###' => '_replaced_'
-                ],
-                [],
-                [],
-                'dummy content with _replaced_ marker'
-            ],
-            'markers which are special' => [
-                'dummy ###aa##.#######A### ######',
-                [
-                    '###aa##.###' => 'content ',
-                    '###A###' => 'is',
-                    '######' => '-is not considered-'
-                ],
-                [],
-                [],
-                'dummy content #is ######'
-            ],
-            'two markers in content, but more defined' => [
-                'dummy ###CONTENT### with ###REPLACED### marker',
-                [
-                    '###REPLACED###' => '_replaced_',
-                    '###CONTENT###' => 'content',
-                    '###NEVERUSED###' => 'bar'
-                ],
-                [],
-                [],
-                'dummy content with _replaced_ marker'
-            ],
-            'one subpart' => [
-                'dummy content with ###ASUBPART### around some text###ASUBPART###.',
-                [],
-                [
-                    '###ASUBPART###' => 'some other text'
-                ],
-                [],
-                'dummy content with some other text.'
-            ],
-            'one wrapped subpart' => [
-                'dummy content with ###AWRAPPEDSUBPART### around some text###AWRAPPEDSUBPART###.',
-                [],
-                [],
-                [
-                    '###AWRAPPEDSUBPART###' => [
-                        'more content',
-                        'content'
-                    ]
-                ],
-                'dummy content with more content around some textcontent.'
-            ],
-            'one subpart with markers, not replaced recursively' => [
-                'dummy ###CONTENT### with ###ASUBPART### around ###SOME### text###ASUBPART###.',
-                [
-                    '###CONTENT###' => 'content',
-                    '###SOME###' => '-this should never make it into output-',
-                    '###OTHER_NOT_REPLACED###' => '-this should never make it into output-'
-                ],
-                [
-                    '###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text'
-                ],
-                [],
-                'dummy content with some ###OTHER_NOT_REPLACED### text.'
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider substituteMarkerArrayCachedReturnsExpectedContentDataProvider
-     *
-     * @param string $content
-     * @param array $markContentArray
-     * @param array $subpartContentArray
-     * @param array $wrappedSubpartContentArray
-     * @param string $expectedContent
-     * @param bool $shouldQueryCache
-     * @param bool $shouldStoreCache
-     */
-    public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent, $shouldQueryCache = true, $shouldStoreCache = true)
-    {
-        /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->frontendControllerMock->sys_page;
-        $pageRepo->resetCallCount();
-
-        $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
-
-        $this->assertSame((int)$shouldQueryCache, $pageRepo::$getHashCallCount, 'getHash call count mismatch');
-        $this->assertSame((int)$shouldStoreCache, $pageRepo::$storeHashCallCount, 'storeHash call count mismatch');
-        $this->assertSame($expectedContent, $resultContent);
-    }
-
-    /**
-     * @test
-     */
-    public function substituteMarkerArrayCachedRetrievesCachedValueFromRuntimeCache()
-    {
-        /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->frontendControllerMock->sys_page;
-        $pageRepo->resetCallCount();
-
-        $content = 'Please tell me this ###FOO###.';
-        $markContentArray = [
-            '###FOO###' => 'foo',
-            '###NOTUSED###' => 'blub'
-        ];
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, array_keys($markContentArray)]));
-        $this->subject->substMarkerCache[$storeKey] = [
-            'c' => [
-                'Please tell me this ',
-                '.'
-            ],
-            'k' => [
-                '###FOO###'
-            ],
-        ];
-        $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
-        $this->assertSame(0, $pageRepo::$getHashCallCount);
-        $this->assertSame('Please tell me this foo.', $resultContent);
-    }
-
-    /**
-     * @test
-     */
-    public function substituteMarkerArrayCachedRetrievesCachedValueFromDbCache()
-    {
-        /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->frontendControllerMock->sys_page;
-        $pageRepo->resetCallCount();
-
-        $content = 'Please tell me this ###FOO###.';
-        $markContentArray = [
-            '###FOO###' => 'foo',
-            '###NOTUSED###' => 'blub'
-        ];
-        $pageRepo::$dbCacheContent = [
-            'c' => [
-                'Please tell me this ',
-                '.'
-            ],
-            'k' => [
-                '###FOO###'
-            ],
-        ];
-        $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
-        $this->assertSame(1, $pageRepo::$getHashCallCount, 'getHash call count mismatch');
-        $this->assertSame(0, $pageRepo::$storeHashCallCount, 'storeHash call count mismatch');
-        $this->assertSame('Please tell me this foo.', $resultContent);
-    }
-
-    /**
-     * @test
-     */
-    public function substituteMarkerArrayCachedStoresResultInCaches()
-    {
-        /** @var PageRepositoryFixture|\PHPUnit_Framework_MockObject_MockObject $pageRepo */
-        $pageRepo = $this->frontendControllerMock->sys_page;
-        $pageRepo->resetCallCount();
-
-        $content = 'Please tell me this ###FOO###.';
-        $markContentArray = [
-            '###FOO###' => 'foo',
-            '###NOTUSED###' => 'blub'
-        ];
-        $resultContent = $this->subject->substituteMarkerArrayCached($content, $markContentArray);
-
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, array_keys($markContentArray)]));
-        $storeArr = [
-            'c' => [
-                'Please tell me this ',
-                '.'
-            ],
-            'k' => [
-                '###FOO###'
-            ],
-        ];
-        $this->assertSame(1, $pageRepo::$getHashCallCount);
-        $this->assertSame('Please tell me this foo.', $resultContent);
-        $this->assertSame($storeArr, $this->subject->substMarkerCache[$storeKey]);
-        $this->assertSame(1, $pageRepo::$storeHashCallCount);
     }
 
     /**

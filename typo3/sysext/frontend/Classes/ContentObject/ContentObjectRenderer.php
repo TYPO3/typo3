@@ -1664,7 +1664,8 @@ class ContentObjectRenderer
             $storeArr = $this->substMarkerCache[$storeKey];
             $timeTracker->setTSlogMessage('Cached', 0);
         } else {
-            $storeArrDat = $this->getTypoScriptFrontendController()->sys_page->getHash($storeKey);
+            $cache = $this->getCache();
+            $storeArrDat = $cache->get($storeKey);
             if (is_array($storeArrDat)) {
                 $storeArr = $storeArrDat;
                 // Setting cache:
@@ -1702,8 +1703,8 @@ class ContentObjectRenderer
                     $storeArr['k'] = $wrappedKeys; // contains all markers incl. ###
                     // Setting cache:
                     $this->substMarkerCache[$storeKey] = $storeArr;
-                    // Storing the cached data:
-                    $this->getTypoScriptFrontendController()->sys_page->storeHash($storeKey, $storeArr, 'substMarkArrayCached');
+                    // Storing the cached data
+                    $cache->set($storeKey, $storeArr, ['substMarkArrayCached'], 0);
                 }
                 $timeTracker->setTSlogMessage('Parsing', 0);
             }
@@ -8371,5 +8372,13 @@ class ContentObjectRenderer
     protected function getTypoScriptFrontendController()
     {
         return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    protected function getCache()
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
     }
 }
