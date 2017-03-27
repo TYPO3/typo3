@@ -116,6 +116,18 @@ class Menu
     }
 
     /**
+     * Get identifier for data attribute
+     *
+     * @return string
+     */
+    public function getDataIdentifier(): string
+    {
+        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($this->identifier);
+        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
+        return $dataMenuIdentifier;
+    }
+
+    /**
      * MenuItem Factory Method
      *
      * @return MenuItem

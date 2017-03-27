@@ -3315,12 +3315,15 @@ class BackendUtility
                 . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>'
                 . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
         }
+        $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
+        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
+        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
             $onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value,this);';
             return '
 
 				<!-- Function Menu of module -->
-				<select class="form-control" name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '">
+				<select class="form-control" name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '" data-menu-identifier="' . htmlspecialchars($dataMenuIdentifier) . '">
 					' . implode('
 					', $options) . '
 				</select>
@@ -3362,12 +3365,15 @@ class BackendUtility
                 . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>'
                 . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false) . '</option>';
         }
+        $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
+        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
+        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         if (!empty($options)) {
             $onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value,this);';
             return '
 			<div class="form-group">
 				<!-- Function Menu of module -->
-				<select class="form-control input-sm" name="' . htmlspecialchars($elementName) . '" onchange="' . htmlspecialchars($onChange) . '">
+				<select class="form-control input-sm" name="' . htmlspecialchars($elementName) . '" onchange="' . htmlspecialchars($onChange) . '" data-menu-identifier="' . htmlspecialchars($dataMenuIdentifier) . '">
 					' . implode(LF, $options) . '
 				</select>
 			</div>
