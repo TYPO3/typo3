@@ -79,30 +79,4 @@ class CommandControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->commandController->_set('response', $mockResponse);
         $this->commandController->_call('quit', 123);
     }
-
-    /**
-     * @test
-     */
-    public function settingRequestAdminPropertySetsAdminRoleInUserAuthentication()
-    {
-        $mockedUserAuthentication = $this->createMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
-        $mockedUserAuthentication->user['admin'] = 42;
-        $this->commandController->expects($this->once())
-            ->method('dummyCommand')
-            ->will(
-                $this->returnCallback(
-                    function () use ($mockedUserAuthentication) {
-                        if ($mockedUserAuthentication->user['admin'] !== 1) {
-                            throw new \Exception('User role is not admin', 1476050222);
-                        }
-                    }
-                ));
-        $GLOBALS['BE_USER'] = $mockedUserAuthentication;
-        $this->commandController->_set('arguments', []);
-        $this->commandController->_set('commandMethodName', 'dummyCommand');
-        $this->commandController->_set('requestAdminPermissions', true);
-        $this->commandController->_call('callCommandMethod');
-
-        $this->assertSame(42, $mockedUserAuthentication->user['admin']);
-    }
 }
