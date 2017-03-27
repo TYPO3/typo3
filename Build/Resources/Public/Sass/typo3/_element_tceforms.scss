@@ -174,7 +174,7 @@ table.typo3-TCEforms-select-checkbox {
 }
 
 .t3-form-original-language-diffheader {
-    @extend .bg-danger;
+    @include label-variant($label-danger-bg);
 
     font-weight: bold;
     padding: 2px;

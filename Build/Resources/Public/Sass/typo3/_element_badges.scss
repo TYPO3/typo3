@@ -2,17 +2,17 @@
 // Badges
 //
 .badge-info {
-    @extend .bg-info;
+    @include label-variant($label-info-bg);
 }
 
 .badge-success {
-    @extend .bg-success;
+    @include label-variant($label-success-bg);
 }
 
 .badge-warning {
-    @extend .bg-warning;
+    @include label-variant($label-warning-bg);
 }
 
 .badge-danger {
-    @extend .bg-danger;
+    @include label-variant($label-danger-bg);
 }
