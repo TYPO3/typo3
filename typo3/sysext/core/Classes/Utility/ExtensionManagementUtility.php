@@ -591,10 +591,6 @@ class ExtensionManagementUtility
                     'width' => '45',
                     'height' => '45c',
                 ],
-                'showPossibleLocalizationRecords' => false,
-                'showRemovedLocalizationRecords' => false,
-                'showSynchronizationLink' => false,
-                'showAllLocalizationLink' => false,
 
                 'enabledControls' => [
                     'info' => true,
@@ -603,12 +599,9 @@ class ExtensionManagementUtility
                     'sort' => false,
                     'hide' => true,
                     'delete' => true,
-                    'localize' => true,
                 ],
             ],
             'behaviour' => [
-                // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
-                'localizationMode' => 'select',
                 'localizeChildrenAtParentLocalization' => true,
             ],
         ];
