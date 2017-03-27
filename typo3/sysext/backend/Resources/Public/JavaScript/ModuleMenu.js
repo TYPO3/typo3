@@ -121,6 +121,9 @@ require(
 				);
 
 			},
+			/**
+			 * @param {bool} collapse
+			 */
 			toggleMenu: function (collapse) {
 				TYPO3.Backend.NavigationContainer.cleanup();
 
@@ -128,14 +131,13 @@ require(
 				var expandedClass = 'scaffold-modulemenu-expanded';
 
 				if (typeof collapse === 'undefined') {
-					collapse = $mainContainer.hasClass(expandedClass) ? 'true' : '';
+					collapse = $mainContainer.hasClass(expandedClass);
 				}
-				if (collapse === 'true') {
-					$mainContainer.removeClass(expandedClass);
-				} else {
-					$mainContainer.addClass(expandedClass);
-					$('.scaffold').removeClass('scaffold-search-expanded');
-					$('.scaffold').removeClass('scaffold-toolbar-expanded');
+				$mainContainer.toggleClass(expandedClass, !collapse);
+				if (!collapse) {
+					$('.scaffold')
+						.removeClass('scaffold-search-expanded')
+						.removeClass('scaffold-toolbar-expanded');
 				}
 
 				// Persist collapsed state in the UC of the current user
