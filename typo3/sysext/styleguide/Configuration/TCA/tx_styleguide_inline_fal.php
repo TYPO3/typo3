@@ -119,14 +119,6 @@ return [
                                                     </foreign_match_fields>
                                                     <foreign_label>uid_local</foreign_label>
                                                     <foreign_selector>uid_local</foreign_selector>
-                                                    <foreign_selector_fieldTcaOverride>
-                                                        <config>
-                                                            <appearance>
-                                                                <elementBrowserType>file</elementBrowserType>
-                                                                <elementBrowserAllowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</elementBrowserAllowed>
-                                                            </appearance>
-                                                        </config>
-                                                    </foreign_selector_fieldTcaOverride>
                                                     <filter>
                                                         <userFunc>TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren</userFunc>
                                                         <parameters type="array">
@@ -159,38 +151,50 @@ return [
                                                     <behaviour type="array">
                                                         <localizeChildrenAtParentLocalization>1</localizeChildrenAtParentLocalization>
                                                     </behaviour>
-                                                    <foreign_types type="array">
-                                                        <numIndex index="0">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="1">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="2">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="3">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="4">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="5">
-                                                            <showitem>
-                                                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                    </foreign_types>
+                                                    <overrideChildTca>
+                                                        <types type="array">
+                                                            <numIndex index="0">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                            <numIndex index="1">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                            <numIndex index="2">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                            <numIndex index="3">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                            <numIndex index="4">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                            <numIndex index="5">
+                                                                <showitem>
+                                                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette
+                                                                </showitem>
+                                                            </numIndex>
+                                                        </types>
+                                                        <columns type="array">
+                                                            <uid_local type="array">
+                                                                <config type="array">
+                                                                    <appearance type="array">
+                                                                        <elementBrowserType>file</elementBrowserType>
+                                                                        <elementBrowserAllowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</elementBrowserAllowed>
+                                                                    </appearance>
+                                                                </config>
+                                                            </uid_local>
+                                                        </columns>
+                                                    </overrideChildTca>
                                                 </config>
                                             </TCEforms>
                                         </fal>

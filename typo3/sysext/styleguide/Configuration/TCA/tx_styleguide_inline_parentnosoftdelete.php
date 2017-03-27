@@ -129,11 +129,15 @@ return [
                 ],
                 'foreign_label' => 'uid_local',
                 'foreign_selector' => 'uid_local',
-                'foreign_selector_fieldTcaOverride' => [
-                    'config' => [
-                        'appearance' => [
-                            'elementBrowserType' => 'file',
-                            'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                'overrideChildTca' => [
+                    'columns' => [
+                        'uid_local' => [
+                            'config' => [
+                                'appearance' => [
+                                    'elementBrowserType' => 'file',
+                                    'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                                ],
+                            ],
                         ],
                     ],
                 ],

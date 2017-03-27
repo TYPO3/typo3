@@ -74,8 +74,14 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_foreignrecorddefaults_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
-                'foreign_record_defaults' => [
-                    'input_1' => 'default text'
+                'overrideChildTca' => [
+                    'columns' => [
+                        'input_1' => [
+                            'config' => [
+                                'default' => 'default text from parent',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],

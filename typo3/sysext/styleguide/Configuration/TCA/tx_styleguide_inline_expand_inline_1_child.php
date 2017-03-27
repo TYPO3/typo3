@@ -91,14 +91,6 @@ return [
                 ],
                 'foreign_label' => "uid_local",
                 'foreign_selector' => "uid_local",
-                'foreign_selector_fieldTcaOverride' => [
-                    'config' => [
-                        'appearance' => [
-                            'elementBrowserType' => 'file',
-                            'elementBrowserAllowed' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
-                        ],
-                    ],
-                ],
                 'filter' => [
                     'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren',
                     'parameters' => [
@@ -131,24 +123,36 @@ return [
                 'behaviour' => [
                     'localizeChildrenAtParentLocalization' => true,
                 ],
-                'foreign_types' => [
-                    0 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                'overrideChildTca' => [
+                    'columns' => [
+                        'uid_local' => [
+                            'config' => [
+                                'appearance' => [
+                                    'elementBrowserType' => 'file',
+                                    'elementBrowserAllowed' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',
+                                ],
+                            ],
+                        ],
                     ],
-                    1 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ],
-                    2 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ],
-                    3 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ],
-                    4 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
-                    ],
-                    5 => [
-                        'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                    'types' => [
+                        0 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
+                        1 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
+                        2 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
+                        3 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
+                        4 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
+                        5 => [
+                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                        ],
                     ],
                 ],
             ],
