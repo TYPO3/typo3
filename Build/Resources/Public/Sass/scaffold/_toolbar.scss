@@ -116,7 +116,8 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 // Toolbar Item
 .toolbar-item-avatar {
-    width: 32px;
+    width: 28px;
+    margin-right: 2px;
     display: inline-block;
 
     .avatar {
@@ -124,6 +125,12 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         top: 50%;
         left: 10px;
         transform: translate(0, -50%);
+    }
+
+    .avatar,
+    .avatar-image {
+        height: 28px;
+        width: 28px;
     }
 }
 

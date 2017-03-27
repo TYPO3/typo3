@@ -75,6 +75,7 @@ $avatar-dropdown-correction: (($avatar-dropdown-size - $line-height-computed) / 
     }
 
     > img {
+        display: block;
         width: 100% !important;
         height: auto !important;
     }
