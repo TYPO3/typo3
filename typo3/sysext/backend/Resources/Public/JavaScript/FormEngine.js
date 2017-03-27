@@ -50,14 +50,6 @@ define(['jquery',
 		browserUrl: ''
 	};
 
-	/**
-	 *
-	 * @param {String} browserUrl
-	 */
-	FormEngine.setBrowserUrl = function(browserUrl) {
-		FormEngine.browserUrl = browserUrl;
-	};
-
 	// functions to connect the db/file browser with this document and the formfields on it!
 
 	/**
@@ -590,10 +582,6 @@ define(['jquery',
 	 * as it using deferrer methods only
 	 */
 	FormEngine.initializeEvents = function() {
-
-		FormEngine.initializeRemainingCharacterViews();
-		FormEngine.initializeSelectCheckboxes();
-
 		// track the arrows "Up", "Down", "Clear" etc in multi-select boxes
 		$(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
 			evt.preventDefault();
@@ -952,7 +940,7 @@ define(['jquery',
 				}
 			});
 		} else {
-			FormEngine.closeDocument()
+			FormEngine.closeDocument();
 		}
 	};
 
@@ -989,13 +977,33 @@ define(['jquery',
 	};
 
 	/**
+	 * Main init function called from outside
+	 *
+	 * Sets some options and registers the DOMready handler to initialize further things
+	 *
+	 * @param {String} browserUrl
+	 * @param {Number} mode
+	 */
+	FormEngine.initialize = function(browserUrl, mode) {
+		FormEngine.browserUrl = browserUrl;
+		FormEngine.Validation.setUsMode(mode);
+
+		$(function() {
+			FormEngine.initializeRemainingCharacterViews();
+			FormEngine.initializeSelectCheckboxes();
+			FormEngine.Validation.initialize();
+			FormEngine.reinitialize();
+		});
+	};
+
+	/**
 	 * initialize function, always require possible post-render hooks return the main object
 	 */
 
-	// the functions are both using delegates, thus no need to be called again
+	// the events are only bound to the document, which is already present for sure.
+	// no need to have it in DOMready handler
 	FormEngine.initializeEvents();
 	FormEngine.SelectBoxFilter.initializeEvents();
-	FormEngine.reinitialize();
 
 	// load required modules to hook in the post initialize function
 	if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {

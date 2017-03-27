@@ -213,9 +213,10 @@ class FormResultCompiler
         $this->loadJavascriptLib($backendRelPath . 'Resources/Public/JavaScript/md5.js');
         // load the main module for FormEngine with all important JS functions
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
-			FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
-			FormEngine.Validation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
-			FormEngine.Validation.registerReady();
+			FormEngine.initialize(
+				' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ',
+				' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . '
+			);
 		}';
 
         $pageRenderer = $this->getPageRenderer();

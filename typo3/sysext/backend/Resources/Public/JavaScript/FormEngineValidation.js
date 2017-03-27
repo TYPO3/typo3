@@ -1054,15 +1054,5 @@ define(['jquery'], function ($) {
 		return result;
 	};
 
-	FormEngineValidation.registerReady = function() {
-		$(function() {
-			FormEngineValidation.initialize();
-			// Start first validation after one second, because all fields are initial empty (typo3form.fieldSet)
-			window.setTimeout(function() {
-				FormEngineValidation.validate();
-			}, 1000);
-		});
-	};
-
 	return FormEngineValidation;
 });
