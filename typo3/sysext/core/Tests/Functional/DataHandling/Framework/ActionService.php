@@ -138,8 +138,10 @@ class ActionService
             $recordData = $this->resolvePreviousUid($recordData, $currentUid);
             $currentUid = $recordData['uid'];
             if ($recordData['uid'] === '__NEW') {
-                $recordData['pid'] = $pageId;
                 $currentUid = StringUtility::getUniqueId('NEW');
+            }
+            if (strpos($currentUid, 'NEW') === 0) {
+                $recordData['pid'] = $pageId;
             }
             unset($recordData['uid']);
             $dataMap[$tableName][$currentUid] = $recordData;
