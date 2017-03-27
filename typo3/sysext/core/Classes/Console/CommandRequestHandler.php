@@ -74,8 +74,10 @@ class CommandRequestHandler implements RequestHandlerInterface
         $command = $this->getCommandToRun($input);
 
         if (!$command) {
+            // Using old "cliKeys" is marked as deprecated and will be removed in TYPO3 v9
             $cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
 
+            $output->writeln('Using old "cliKeys" ($GLOBALS[TYPO3_CONF_VARS][SC_OPTIONS][GLOBAL][cliKeys]) is marked as deprecated and will be removed in TYPO3 v9:');
             $output->writeln('Old entrypoint keys available:');
             asort($cliKeys);
             foreach ($cliKeys as $key => $value) {

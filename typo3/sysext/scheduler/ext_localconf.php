@@ -2,6 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // Register the Scheduler as a possible key for CLI calls
+// Using cliKeys is deprecated as of TYPO3 v8 and will be removed in TYPO3 v9, use Configuration/Commands.php instead
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'] = [
     function ($input, $output) {
         $app = new \Symfony\Component\Console\Application('TYPO3 Scheduler', TYPO3_version);

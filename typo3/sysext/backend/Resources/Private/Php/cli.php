@@ -18,6 +18,10 @@ if (version_compare(PHP_VERSION, '7.0.0', '<')) {
 }
 
 /**
+ * --------------------------------------------------------------------------------
+ * NOTE: This entry-point is deprecated since TYPO3 v8 and will be removed in
+ * TYPO3 v9. Use the binary located typo3/sysext/core/bin/typo3 instead.
+ * --------------------------------------------------------------------------------
  * Command Line Interface module dispatcher
  *
  * This script takes a "cliKey" as first argument and uses that to dispatch
