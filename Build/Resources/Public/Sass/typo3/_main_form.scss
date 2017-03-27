@@ -243,14 +243,14 @@ select {
 
     .close {
         position: absolute;
+        height: 16px;
         z-index: 3;
-        font-size: 1.2em;
         top: 50%;
         right: 0.5em;
-        margin-top: -0.55em;
+        transform: translate(0, -50%);
 
-        &:before {
-            line-height: 1.5em;
+        .icon {
+            vertical-align: 0;
         }
     }
 }
