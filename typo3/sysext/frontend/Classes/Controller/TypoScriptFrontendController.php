@@ -4215,15 +4215,14 @@ class TypoScriptFrontendController
             // Parsing the user TS (or getting from cache)
             $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
             $userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-            $hash = md5('pageTS:' . $userTS);
-            $cachedContent = $this->sys_page->getHash($hash);
-            if (is_array($cachedContent)) {
-                $this->pagesTSconfig = $cachedContent;
-            } else {
+            $identifier = md5('pageTS:' . $userTS);
+            $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+            $this->pagesTSconfig = $contentHashCache->get($identifier);
+            if (!is_array($this->pagesTSconfig)) {
                 $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
                 $parseObj->parse($userTS);
                 $this->pagesTSconfig = $parseObj->setup;
-                $this->sys_page->storeHash($hash, $this->pagesTSconfig, 'PAGES_TSconfig');
+                $contentHashCache->set($identifier, $this->pagesTSconfig, ['PAGES_TSconfig'], 0);
             }
         }
         return $this->pagesTSconfig;
