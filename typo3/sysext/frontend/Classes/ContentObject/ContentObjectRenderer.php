@@ -5903,7 +5903,7 @@ class ContentObjectRenderer
                         if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
                             $targetDomain =  GeneralUtility::idnaEncode($targetDomain);
                         }
-                        $this->lastTypoLinkUrl = $this->URLqMark($absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'], $addQueryParams) . $sectionMark;
+                        $this->lastTypoLinkUrl = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $addQueryParams . $sectionMark;
                     } else {
                         // Internal link or current domain's linking scheme should be used
                         // Internal target:
@@ -6947,9 +6947,11 @@ class ContentObjectRenderer
      * @param string $url Input URL
      * @param string $params URL parameters
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use this functionality by yourself instead of using cObj for that
      */
     public function URLqMark($url, $params)
     {
+        GeneralUtility::logDeprecatedFunction();
         if ($params && !strstr($url, '?')) {
             return $url . '?' . $params;
         } else {
