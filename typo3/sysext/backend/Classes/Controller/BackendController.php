@@ -179,12 +179,15 @@ class BackendController
     /**
      * Add hooks from the additional backend items to load certain things for the main backend.
      * This was previously called from the global scope from backend.php.
+     *
+     * Please note that this method will be removed in TYPO3 v9. it does not throw a deprecation warning as it is protected and still called on every main backend request.
      */
     protected function includeLegacyBackendItems()
     {
         $TYPO3backend = $this;
         // Include extensions which may add css, javascript or toolbar items
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
+            GeneralUtility::deprecationLog('The hook $TYPO3_CONF_VARS["typo3/backend.php"]["additionalBackendItems"] is deprecated in TYPO3 v8, and will be removed in TYPO3 v9. Use the "constructPostProcess" hook within BackendController instead.');
             foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
                 include_once $additionalBackendItem;
             }
@@ -192,7 +195,7 @@ class BackendController
 
         // Process ExtJS module js and css
         if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
-            foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
+            foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleName => $moduleConfig) {
                 if (is_array($moduleConfig['cssFiles'])) {
                     foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
                         $cssFile = GeneralUtility::getFileAbsFileName($cssFile);
@@ -836,9 +839,11 @@ class BackendController
      * @param string $javascript Javascript snippet
      * @return void
      * @throws \InvalidArgumentException
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Use the "constructPostProcess" hook within BackendController instead.
      */
     public function addJavascript($javascript)
     {
+        GeneralUtility::logDeprecatedFunction();
         // @todo do we need more checks?
         if (!is_string($javascript)) {
             throw new \InvalidArgumentException('parameter $javascript must be of type string', 1195129553);
@@ -851,9 +856,11 @@ class BackendController
      *
      * @param string $javascriptFile Javascript file reference
      * @return bool TRUE if the javascript file was successfully added, FALSE otherwise
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Use the "constructPostProcess" hook within BackendController instead.
      */
     public function addJavascriptFile($javascriptFile)
     {
+        GeneralUtility::logDeprecatedFunction();
         $jsFileAdded = false;
         // @todo add more checks if necessary
         if (file_exists(GeneralUtility::resolveBackPath(PATH_typo3 . $javascriptFile))) {
@@ -884,9 +891,11 @@ class BackendController
      * @param string $cssFileName The css file's name with out the .css ending
      * @param string $cssFile Css file reference
      * @return bool TRUE if the css file was added, FALSE otherwise
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the according PageRenderer methods directly
      */
     public function addCssFile($cssFileName, $cssFile)
     {
+        GeneralUtility::logDeprecatedFunction();
         $cssFileAdded = false;
         if (empty($this->cssFiles[$cssFileName])) {
             $this->cssFiles[$cssFileName] = $cssFile;
