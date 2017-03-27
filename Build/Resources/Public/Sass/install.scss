@@ -14,12 +14,11 @@ $grid-float-breakpoint: $screen-md-min;
 // Load minimal Setup including variables
 //
 @import "minimal";
-@import "bootstrap/navbar";
 
 //
-// Include tagsort CSS file
+// Include chosen CSS file
 //
-@import "tagsort";
+@import "libs/chosen";
 
 .content-area {
     padding-bottom: 35px;
@@ -71,18 +70,6 @@ img.logo {
         max-width: 300px;
     }
 }
-$alert-success-text: $gray-darker;
-$alert-success-border: #79a548;
-$alert-success-bg: lighten(#79a548, 20%);
-$alert-info-text: $gray-darker;
-$alert-info-border: #6daae0;
-$alert-info-bg: lighten(#6daae0, 20%);
-$alert-warning-text: $gray-darker;
-$alert-warning-border: #e8a33d;
-$alert-warning-bg: lighten(#e8a33d, 20%);
-$alert-danger-text: $gray-darker;
-$alert-danger-border: #c83c3c;
-$alert-danger-bg: lighten(#c83c3c, 30%);
 
 .alert-notice {
     @include alert-variant($btn-default-bg, $btn-default-border, $btn-default-color);
@@ -225,12 +212,24 @@ hr {
 }
 
 #install-menu-button {
+    float: right;
+    margin-bottom: 20px;
     .navbar-toggle {
+        border: 0;
+        background: #fff;
         .icon-bar {
+            display: block;
+            width: 22px;
+            height: 2px;
+            border-radius: 1px;
             background-color: black;
+            & + .icon-bar {
+                margin-top: 4px;
+            }
         }
     }
 }
+
 
 //
 // Styles for the "clearable" jquery plugin.
@@ -264,4 +263,68 @@ hr {
             display: block;
         }
     }
+}
+
+@mixin panel-risk-levels($high-color, $medium-color) {
+    &.risk-high > .panel-heading {
+        background: $high-color;
+        color: $gray-lighter;
+    }
+    &.risk-medium > .panel-heading {
+        background: $medium-color;
+        color: $gray-darker;
+    }
+    &.risk-low > .panel-heading {
+        background: white;
+        color: $gray-darker;
+    }
+}
+
+
+a[data-toggle="collapse"] {
+    text-decoration: none;
+}
+
+.panel-rst {
+    .panel-heading .panel-title a {
+        cursor: pointer;
+        strong {
+            line-height: 1.5em;
+        }
+    }
+
+    pre {
+        margin: 0;
+        border-radius: 0;
+        border: 0;
+        border-top: 1px solid $gray-light;
+        white-space: pre-wrap;
+        word-break: normal;
+        word-wrap: normal;
+    }
+
+}
+
+.panel-breaking {
+    @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
+    @include panel-risk-levels($brand-danger, lighten($brand-danger,40) );
+}
+
+.panel-deprecation {
+    @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
+    @include panel-risk-levels($brand-warning, lighten($brand-warning,30));
+}
+
+.panel-feature {
+    @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
+    @include panel-risk-levels($brand-success, lighten($brand-success,40));
+}
+
+.panel-important {
+    @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
+    @include panel-risk-levels($brand-info, lighten($brand-info,30));
+}
+
+.upgrade_analysis_item_to_filter pre a {
+    text-decoration: underline;
 }

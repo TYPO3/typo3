@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ============================================================
-TASK: #80236 - EXT:form Configuration for form VH attributes
+Important: #80236 - EXT:form Configuration for form VH attributes
 ============================================================
 
 See :issue:`80236`

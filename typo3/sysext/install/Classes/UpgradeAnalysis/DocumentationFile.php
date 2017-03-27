@@ -100,8 +100,16 @@ class DocumentationFile
         $entry['headline'] = $headline;
         $entry['filepath'] = $file;
         $entry['tags'] = $this->extractTags($lines);
+        $entry['class'] = 'default';
+        foreach ($entry['tags'] as $tag) {
+            if (strpos($tag, 'cat:') !== false) {
+                $entry['class'] = strtolower(substr($tag, 4));
+            }
+        }
         $entry['tagList'] = implode(',', $entry['tags']);
         $entry['content'] = file_get_contents($file);
+        $entry['parsedContent'] = $this->parseContent($entry['content']);
+        $entry['file_hash'] = md5($entry['content']);
         $issueNumber = $this->extractIssueNumber($headline);
 
         return [$issueNumber => $entry];
@@ -292,5 +300,22 @@ class DocumentationFile
             }
         }
         return $isFileIgnoredByUsersChoice;
+    }
+
+    /**
+     * @param string $rstContent
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    protected function parseContent(string $rstContent): string
+    {
+        $content = htmlspecialchars($rstContent);
+        $content = preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank">\\1</a>', $content);
+        $content = preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank">\\1</a>', $content);
+        $content = preg_replace('/(\n([=]*)\n(.*)\n([=]*)\n)/', '', $content, 1);
+        $content = preg_replace('/.. index::(.*)/', '', $content);
+        $content = preg_replace('/.. include::(.*)/', '', $content);
+        return trim($content);
     }
 }

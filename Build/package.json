@@ -15,6 +15,7 @@
     "@types/nprogress": "*",
     "@types/requirejs": "*",
     "autoprefixer": "^6.3.7",
+    "chosen-js": "^1.7.0",
     "grunt": "~1.0.1",
     "grunt-bower-just-install": "0.0.3",
     "grunt-bowercopy": "^1.2.0",

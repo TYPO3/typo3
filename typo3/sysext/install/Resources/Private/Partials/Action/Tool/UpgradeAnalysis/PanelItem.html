@@ -1,18 +1,32 @@
 <f:section name="Main">
-    <div class="panel panel-default upgrade_analysis_item_to_filter"
-         data-item-tags="{fileArray.tagList}" id="heading{issueNumber}">
+    <div class="panel panel-rst panel-{fileArray.class} risk-medium upgrade_analysis_item_to_filter item"
+         data-item-tags="{fileArray.tagList}" data-item-version="{version}" id="heading{issueNumber}">
         <div class="panel-heading" role="tab">
-            <input type="checkbox" class="t3js-upgradeanalysis-ignore panel-checkbox" data-filepath="{fileArray.filepath}" title="ignore this document"/>
             <h3 class="panel-title">
+                <f:if condition="{read}">
+                    <f:then>
+                        <a class="t3js-upgradeanalysis-restore pull-right" data-filepath="{fileArray.filepath}"
+                           data-toggle="tooltip" data-placement="top" title="restore this document">
+                            <i class="fa fa-lg fa-eye"></i>
+                            <span class="sr-only">restore this document</span>
+                        </a>
+                    </f:then>
+                    <f:else>
+                        <a class="t3js-upgradeanalysis-ignore pull-right" data-filepath="{fileArray.filepath}"
+                           data-toggle="tooltip" data-placement="top" title="ignore this document">
+                            <i class="fa fa-lg fa-eye-slash"></i>
+                            <span class="sr-only">ignore this document</span>
+                        </a>
+                    </f:else>
+                </f:if>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{issueNumber}" aria-expanded="true" aria-controls="collapse{issueNumber}" class="collapsed">
                     <span class="caret"></span>
-                    <strong >
-                        {fileArray.headline}</strong>
+                    <strong>{fileArray.headline}</strong>
                 </a>
             </h3>
         </div>
         <div id="collapse{issueNumber}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{issueNumber}">
-            <pre>{fileArray.content}</pre>
+            <pre><f:format.raw>{fileArray.parsedContent}</f:format.raw></pre>
         </div>
     </div>
 </f:section>

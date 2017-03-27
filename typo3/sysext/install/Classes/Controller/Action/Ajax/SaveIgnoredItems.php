@@ -27,18 +27,14 @@ class SaveIgnoredItems extends AbstractAjaxAction
      * Executes the action
      *
      * @return string content
+     * @throws \InvalidArgumentException
      */
     protected function executeAction(): string
     {
         $registry = new Registry();
-        $file = $this->postValues['ignoreFile'];
-
-        $ignoredFiles = $registry->get('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles');
-        if ($file !== null && strlen($file) > 0) {
-            $ignoredFiles[] = $file;
-
-            $registry->set('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles', $ignoredFiles);
-        }
+        $filePath = $this->postValues['ignoreFile'];
+        $fileHash = md5_file($filePath);
+        $registry->set('upgradeAnalysisIgnoredFiles', $fileHash, $filePath);
         return json_encode('');
     }
 }

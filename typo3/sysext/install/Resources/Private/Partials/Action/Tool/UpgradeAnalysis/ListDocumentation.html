@@ -1,15 +1,53 @@
 <f:section name="Main">
-    <f:for each="{files}" as="versionArray" key="version">
-        <f:if condition="{versionArray -> f:count()} > 0">
-            <h2>{version}</h2>
-            <div class="panel-group" role="tablist" aria-multiselectable="false">
-                <f:for each="{versionArray}" as="fileArray" key="issueNumber">
+	<div class="panel-group" role="tablist" aria-multiselectable="true">
+		<f:for each="{files}" as="versionArray" key="version" iteration="iterator">
+			<f:if condition="{versionArray -> f:count()} > 0">
+				<div class="panel panel-default panel-version">
+					<div class="panel-heading" role="tab" id="heading-{iterator.index}">
+						<h2 class="panel-title">
+							<a href="#version-{iterator.index}"
+								 class="{f:if(condition: '{iterator.isFirst}', then: '', else: 'collapsed')}" data-toggle="collapse"
+								 aria-expanded="{f:if(condition: '{iterator.isFirst}', then: 'true', else: 'false')}"
+								 aria-controls="#version-{iterator.index}">
+								<span class="caret"></span>
+								Version: <strong>{version}</strong>
+							</a>
+						</h2>
+					</div>
+					<div class="panel-collapse collapse {f:if(condition: '{iterator.isFirst}', then: 'in')}"
+							 id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
+						<div class="panel-body" role="tablist" aria-multiselectable="false">
+							<f:for each="{versionArray}" as="fileArray" key="issueNumber">
 
-                    <f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
-                              arguments="{issueNumber:issueNumber, fileArray:fileArray}"/>
+								<f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
+													arguments="{issueNumber:issueNumber, fileArray:fileArray, version:version}"/>
 
-                </f:for>
-            </div>
-        </f:if>
-    </f:for>
+							</f:for>
+						</div>
+					</div>
+				</div>
+			</f:if>
+		</f:for>
+
+		<div class="panel panel-default panel-version">
+			<div class="panel-heading" role="tab" id="heading-read">
+				<h2 class="panel-title">
+					<a href="#collapseRead" class="collapsed" data-toggle="collapse" aria-expanded="false"
+						 aria-controls="collapseRead}">
+						<span class="caret"></span>
+						Files marked as read
+					</a>
+				</h2>
+			</div>
+			<div class="collapse" id="collapseRead" role="tabpanel">
+				<div class="panel-body panel-body-read" role="tablist" aria-multiselectable="false">
+					<f:for each="{shownFiles}" as="fileArray" key="issueNumber">
+						<f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
+											arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"/>
+					</f:for>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </f:section>

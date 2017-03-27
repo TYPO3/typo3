@@ -2,14 +2,30 @@
 
 <f:section name="Content">
 	<h1>Upgrade Analysis</h1>
-
-	<div class="btn-toolbar" role="toolbar" aria-label="Button Bar">
-		<div class="btn-group mr-2" role="group">
-			<button type="button" id="t3js-showFilterManager" class="btn btn-default">Show Filter Manager</button>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon">Search:</span>
+					<input type="text" class="form-control t3js-fulltext-search" placeholder="search setting">
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon">Filter by:</span>
+					<select class="chosen-select t3js-chosen-select" data-placeholder="" style="width:100%;" multiple tabindex="" id="tagsort_tags_container">
+
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="t3js-filterManager"></div>
-	<div id="tagsort_tags_container"></div>
 	<div id="upgradeAnalysis_output">
 		<f:render partial="Action/Tool/UpgradeAnalysis/ListDocumentation" section="Main" arguments="{_all}"/>
 	</div>
