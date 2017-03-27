@@ -66,6 +66,7 @@ class PaginateController extends AbstractWidgetController
     protected $displayRangeEnd = null;
 
     /**
+     * Initializes the current information on which page the visitor is.
      * @return void
      */
     public function initializeAction()

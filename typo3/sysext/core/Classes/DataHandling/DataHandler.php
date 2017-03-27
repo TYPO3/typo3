@@ -705,7 +705,7 @@ class DataHandler
     protected $cachePrefixNestedElementCalls = 'core-datahandler-nestedElementCalls-';
 
     /**
-     *
+     * Sets up the data handler cache and some additional options, the main logic is done in the start() method.
      */
     public function __construct()
     {

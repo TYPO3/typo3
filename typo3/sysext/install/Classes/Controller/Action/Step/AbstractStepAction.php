@@ -63,6 +63,8 @@ abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\A
     }
 
     /**
+     * Define the steps to the view.
+     *
      * @return void
      */
     protected function assignSteps()

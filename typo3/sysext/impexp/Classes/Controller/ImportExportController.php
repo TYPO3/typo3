@@ -156,6 +156,8 @@ class ImportExportController extends BaseScriptClass
     }
 
     /**
+     * Initializes the module and defining necessary variables for this module to run.
+     *
      * @return void
      */
     public function init()

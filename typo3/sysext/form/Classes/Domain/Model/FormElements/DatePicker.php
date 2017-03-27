@@ -26,6 +26,7 @@ class DatePicker extends AbstractFormElement
 {
 
     /**
+     * Initializes the Form Element by setting the data type to "DateTime"
      * @return void
      * @internal
      */

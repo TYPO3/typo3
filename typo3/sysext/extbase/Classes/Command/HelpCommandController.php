@@ -82,6 +82,8 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
     }
 
     /**
+     * Builds an index of all commands that are available
+     *
      * @return void
      */
     protected function displayHelpIndex()

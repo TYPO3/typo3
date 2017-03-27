@@ -74,6 +74,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\TestingFramework\Core\Unit\
     protected $mvcPropertyMapperConfigurationService;
 
     /**
+     * Sets up all properties of a viewhelper needed to test a viewhelper
      * @return void
      */
     protected function setUp()

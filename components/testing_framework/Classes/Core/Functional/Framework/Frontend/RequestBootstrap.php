@@ -20,6 +20,10 @@ namespace TYPO3\TestingFramework\Core\Functional\Framework\Frontend;
 class RequestBootstrap
 {
     /**
+     * This method is necessary to set any superglobals like $_SERVER, $_POST, $_COOKIE, $_GET
+     * to start clean for a functional test.
+     *
+     * @param array $requestArguments usually JSON encoded arguments, should include "documentRoot" and "requestUrl"
      * @return void
      */
     public static function setGlobalVariables(array $requestArguments = null)
@@ -84,7 +88,7 @@ class RequestBootstrap
     }
 
     /**
-     * @return void
+     * Calls the set SCRIPT_FILENAME and outputs the contents as JSON
      */
     public static function executeAndOutput()
     {

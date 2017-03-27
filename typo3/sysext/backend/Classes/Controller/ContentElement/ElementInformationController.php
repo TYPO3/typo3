@@ -200,7 +200,8 @@ class ElementInformationController
     }
 
     /**
-     * @return void
+     * Compiles the whole content to be outputted, which is then set as content to the moduleTemplate
+     * There is a hook to do a custom rendering of a record.
      */
     public function main()
     {

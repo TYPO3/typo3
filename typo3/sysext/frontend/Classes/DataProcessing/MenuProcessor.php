@@ -292,6 +292,7 @@ class MenuProcessor implements DataProcessorInterface
     }
 
     /**
+     * Prepare configuration for a certain menu level in the hierarchy
      * @return void
      */
     public function prepareLevelConfiguration()
@@ -307,6 +308,7 @@ class MenuProcessor implements DataProcessorInterface
     }
 
     /**
+     * Prepare the configuration when rendering a language menu
      * @return void
      */
     public function prepareLevelLanguageConfiguration()
@@ -338,6 +340,8 @@ class MenuProcessor implements DataProcessorInterface
     }
 
     /**
+     * Build the menu configuration so it can be treated by HMENU cObject
+     *
      * @return void
      */
     public function buildConfiguration()

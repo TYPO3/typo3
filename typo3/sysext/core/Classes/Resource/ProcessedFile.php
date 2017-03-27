@@ -388,6 +388,8 @@ class ProcessedFile extends AbstractFile
     }
 
     /**
+     * Defines that the original file should be used.
+     *
      * @return void
      */
     public function setUsesOriginalFile()

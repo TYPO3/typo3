@@ -63,6 +63,7 @@ class UserElementsController
     }
 
     /**
+     * Initializes necessary parameters before calling the actual main action.
      * @return void
      */
     public function init()

@@ -102,7 +102,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // @todo: of children are only created with the "synchronize" button that will trigger a different ajax action.
         // @todo: The edge case of new page overlay together with localized media field, this code won't kick in either.
         // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
-        /**
+        /*
         if ($parent['localizationMode'] === 'select' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
             $parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
             $parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];

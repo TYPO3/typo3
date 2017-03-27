@@ -113,6 +113,7 @@ abstract class AbstractLinkHandler
     }
 
     /**
+     * Sets a DB mount and stores it in the currently defined backend user in her/his uc
      * @return void
      */
     protected function setTemporaryDbMounts()

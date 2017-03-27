@@ -187,6 +187,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Initializes the current state of the form, based on the request
      * @return void
      */
     protected function initializeFormStateFromRequest()
@@ -201,6 +202,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Initializes the current page data based on the current request, also modifiable by a hook
      * @return void
      */
     protected function initializeCurrentPageFromRequest()
@@ -261,6 +263,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Checks if the honey pot is active, and adds a validator if so.
+     *
      * @return void
      */
     protected function initializeHoneypotFromRequest()
@@ -288,6 +292,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Renders a hidden field if the honey pot is active.
+     *
      * @return void
      */
     protected function renderHoneypot()
@@ -396,6 +402,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Runs throuh all validations
      * @return void
      */
     protected function processSubmittedFormValues()

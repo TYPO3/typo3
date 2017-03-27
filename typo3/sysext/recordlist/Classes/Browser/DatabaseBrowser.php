@@ -158,6 +158,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     }
 
     /**
+     * If the current Backend User has set a temporary DB mount, it is stored to her/his UC.
      * @return void
      */
     protected function setTemporaryDbMounts()

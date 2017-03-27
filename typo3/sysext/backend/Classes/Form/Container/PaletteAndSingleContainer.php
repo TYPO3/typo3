@@ -45,7 +45,7 @@ class PaletteAndSingleContainer extends AbstractContainer
     {
         $languageService = $this->getLanguageService();
 
-        /**
+        /*
          * The first code block creates a target structure array to later create the final
          * HTML string. The single fields and sub containers are rendered here already and
          * other parts of the return array from children except html are accumulated in

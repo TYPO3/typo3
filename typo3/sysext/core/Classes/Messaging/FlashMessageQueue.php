@@ -79,6 +79,7 @@ class FlashMessageQueue extends \SplQueue
     }
 
     /**
+     * This method is empty, as it will not move any flash message (e.g. from the session)
      * @return void
      */
     public function dequeue()

@@ -25,6 +25,7 @@ class ClickMenuOnIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
     protected $tagName = 'a';
 
     /**
+     * Defines additional arguments that are allowed for this view helper.
      * @return void
      */
     public function initializeArguments()

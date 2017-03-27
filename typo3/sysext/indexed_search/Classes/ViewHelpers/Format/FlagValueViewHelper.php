@@ -26,6 +26,7 @@ class FlagValueViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
+     * Sets up the needed arguments for this View Helper.
      * @return void
      */
     public function initializeArguments()

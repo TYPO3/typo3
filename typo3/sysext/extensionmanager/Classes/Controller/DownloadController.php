@@ -112,7 +112,7 @@ class DownloadController extends AbstractController
     }
 
     /**
-     *
+     * Defines which view object should be used for the installFromTer action
      */
     protected function initializeInstallFromTerAction()
     {

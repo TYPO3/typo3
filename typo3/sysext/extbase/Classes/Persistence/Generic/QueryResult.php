@@ -254,6 +254,8 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
+     * Ensures that the objectManager, persistenceManager and dataMapper are back when loading the QueryResult
+     * from the cache
      * @return void
      */
     public function __wakeup()
