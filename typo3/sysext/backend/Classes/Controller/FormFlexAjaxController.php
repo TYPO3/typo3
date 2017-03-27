@@ -42,7 +42,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $queryParameters = $request->getParsedBody();
 
         $vanillaUid = (int)$queryParameters['vanillaUid'];
-        $databaseRowUid = $queryParameters['databaseRowUid'];
         $command = $queryParameters['command'];
         $tableName = $queryParameters['tableName'];
         $fieldName = $queryParameters['fieldName'];
@@ -72,9 +71,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formDataCompilerInput = [
             'tableName' => $tableName,
             'vanillaUid' => (int)$vanillaUid,
-            'databaseRow' => [
-                'uid' => $databaseRowUid,
-            ],
             'command' => $command,
             'recordTypeValue' => $recordTypeValue,
             'processedTca' => $processedTca,
