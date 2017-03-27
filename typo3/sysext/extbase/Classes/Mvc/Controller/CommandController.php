@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
 use TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput;
 use TYPO3\CMS\Extbase\Mvc\Cli\Request;
@@ -263,9 +264,11 @@ class CommandController implements CommandControllerInterface
      * and returns the original state or NULL
      *
      * @return NULL|int
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, because admin role is always used in CLI mode
      */
     protected function ensureAdminRoleIfRequested()
     {
+        GeneralUtility::logDeprecatedFunction();
         $userAuthentication = $this->getBackendUserAuthentication();
 
         if (!$this->requestAdminPermissions || $userAuthentication === null || !isset($userAuthentication->user['admin'])) {
@@ -281,9 +284,11 @@ class CommandController implements CommandControllerInterface
      * Restores the original user role
      *
      * @param NULL|int $originalRole
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, because admin role is always used in CLI mode
      */
     protected function restoreUserRole($originalRole)
     {
+        GeneralUtility::logDeprecatedFunction();
         $userAuthentication = $this->getBackendUserAuthentication();
 
         if ($originalRole !== null && $userAuthentication !== null) {
