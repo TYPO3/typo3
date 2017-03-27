@@ -350,11 +350,17 @@ class BackendController
                 }
 
                 // Create a unique id from class name
-                $className = get_class($toolbarItem);
-                $className = GeneralUtility::underscoredToLowerCamelCase($className);
+                $fullyQualifiedClassName = get_class($toolbarItem);
+                $className = GeneralUtility::underscoredToLowerCamelCase($fullyQualifiedClassName);
                 $className = GeneralUtility::camelCaseToLowerCaseUnderscored($className);
                 $className = str_replace(['_', '\\'], '-', $className);
                 $liAttributes[] = 'id="' . $className . '"';
+
+                // Create data attribute identifier
+                $shortName = substr($fullyQualifiedClassName, strrpos($fullyQualifiedClassName, '\\') + 1);
+                $dataToolbarIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($shortName);
+                $dataToolbarIdentifier = str_replace('_', '-', $dataToolbarIdentifier);
+                $liAttributes[] = 'data-toolbar-identifier="' . htmlspecialchars($dataToolbarIdentifier) . '"';
 
                 $toolbar[] = '<li ' . implode(' ', $liAttributes) . '>';
 
