@@ -184,7 +184,7 @@ class RichTextElement extends AbstractFormElement
         return 'function(CKEDITOR) {
                 ' . $externalPlugins . '
                 CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
-                require([\'TYPO3/CMS/Backend/FormEngine\',\'TYPO3/CMS/Backend/FormEngineValidation\'], function(FormEngine) {
+                require([\'TYPO3/CMS/Backend/FormEngine\'], function(FormEngine) {
                     CKEDITOR.instances.' . $fieldId . '.on(\'change\', function() {
                         CKEDITOR.instances.' . $fieldId . '.updateElement();
                         FormEngine.Validation.validate();
