@@ -26,7 +26,7 @@ class ItemProvider extends PageProvider
         'permissions' => [
             'type' => 'item',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_perms',
-            'iconIdentifier' => 'status-status-locked',
+            'iconIdentifier' => 'actions-lock',
             'callbackAction' => 'openPermissionsModule'
         ],
     ];

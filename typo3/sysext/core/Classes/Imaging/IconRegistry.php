@@ -2576,12 +2576,6 @@ class IconRegistry implements SingletonInterface
                 'name' => 'caret-right',
             ]
         ],
-        'status-status-locked' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'lock',
-            ]
-        ],
         'status-status-reference-hard' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
