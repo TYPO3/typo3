@@ -129,7 +129,6 @@ return [
                     'createNewRelationLinkTitle' => "LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference",
                 ],
                 'behaviour' => [
-                    'localizationMode' => "select",
                     'localizeChildrenAtParentLocalization' => true,
                 ],
                 'foreign_types' => [

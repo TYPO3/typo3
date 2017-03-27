@@ -157,7 +157,6 @@ return [
                                                         <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
                                                     </appearance>
                                                     <behaviour type="array">
-                                                        <localizationMode>select</localizationMode>
                                                         <localizeChildrenAtParentLocalization>1</localizeChildrenAtParentLocalization>
                                                     </behaviour>
                                                     <foreign_types type="array">
