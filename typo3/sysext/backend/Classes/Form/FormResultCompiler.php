@@ -216,10 +216,8 @@ class FormResultCompiler
         // load the main module for FormEngine with all important JS functions
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 			FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
-		}';
-        $this->requireJsModules['TYPO3/CMS/Backend/FormEngineValidation'] = 'function(FormEngineValidation) {
-			FormEngineValidation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
-			FormEngineValidation.registerReady();
+			FormEngine.Validation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
+			FormEngine.Validation.registerReady();
 		}';
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngineReview'] = null;
 

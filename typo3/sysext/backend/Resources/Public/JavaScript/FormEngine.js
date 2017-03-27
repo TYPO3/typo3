@@ -21,30 +21,32 @@
  */
 
 // add legacy functions to be accessible in the global scope
-var setFormValueOpenBrowser
-	,setFormValueFromBrowseWin
-	,setHiddenFromList
-	,setFormValueManipulate
-	,setFormValue_getFObj;
+var setFormValueOpenBrowser,
+	setFormValueFromBrowseWin,
+	setHiddenFromList,
+	setFormValueManipulate,
+	setFormValue_getFObj;
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngine
  */
 define(['jquery',
+		'TYPO3/CMS/Backend/FormEngineValidation',
 		'TYPO3/CMS/Backend/Modal',
 		'TYPO3/CMS/Backend/Severity'
-	   ], function ($, Modal, Severity) {
+	   ], function ($, FormEngineValidation, Modal, Severity) {
 
 	/**
 	 *
-	 * @type {{formName: *, openedPopupWindow: null, legacyFieldChangedCb: Function, browserUrl: string}}
+	 * @type {{formName: *, openedPopupWindow: window, legacyFieldChangedCb: Function, browserUrl: string}}
 	 * @exports TYPO3/CMS/Backend/FormEngine
 	 */
 	var FormEngine = {
-		formName: TYPO3.settings.FormEngine.formName
-		,openedPopupWindow: null
-		,legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); }
-		,browserUrl: ''
+		Validation: FormEngineValidation,
+		formName: TYPO3.settings.FormEngine.formName,
+		openedPopupWindow: null,
+		legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); },
+		browserUrl: ''
 	};
 
 	/**
@@ -90,9 +92,11 @@ define(['jquery',
 		exclusiveValues = String(exclusiveValues);
 
 		var $fieldEl,
-			$originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName),
+			$originalFieldEl,
 			isMultiple = false,
 			isList = false;
+
+		$originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName);
 
 		if ($originalFieldEl.length === 0 || value === '--div--') {
 			return;
