@@ -2425,6 +2425,51 @@ class TcaMigration
     protected function migrateInlineOverrideChildTca(array $tca): array
     {
         foreach ($tca as $table => &$tableDefinition) {
+            if (isset($tableDefinition['types']) && is_array($tableDefinition['types'])) {
+                foreach ($tableDefinition['types'] as $typeName => &$typeConfig) {
+                    if (!isset($typeConfig['columnsOverrides']) || !is_array($typeConfig['columnsOverrides'])) {
+                        continue;
+                    }
+                    foreach ($typeConfig['columnsOverrides'] as $fieldName => &$fieldConfig) {
+                        if (isset($fieldConfig['config']['overrideChildTca'])
+                            || (isset($fieldConfig['config']['type']) && $fieldConfig['config']['type'] !== 'inline')
+                            || (!isset($fieldConfig['config']['type']) && $tca[$table]['columns'][$fieldName]['config']['type'] !== 'inline')
+                        ) {
+                            // The new config is either set intentionally for compatibility
+                            // or accidentally. In any case we keep the new config and skip the migration.
+                            continue;
+                        }
+                        if (isset($fieldConfig['config']['foreign_types']) && is_array($fieldConfig['config']['foreign_types'])) {
+                            $fieldConfig['config']['overrideChildTca']['types'] = $fieldConfig['config']['foreign_types'];
+                            unset($fieldConfig['config']['foreign_types']);
+                            $this->messages[] = 'The \'foreign_types\' property from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'types\']';
+                        }
+                        if (isset($fieldConfig['config']['foreign_selector_fieldTcaOverride']) && is_array($fieldConfig['config']['foreign_selector_fieldTcaOverride'])) {
+
+                            if (isset($fieldConfig['config']['foreign_selector']) && is_string($fieldConfig['config']['foreign_selector'])) {
+                                $foreignSelectorFieldName = $fieldConfig['config']['foreign_selector'];
+                            } elseif (isset($tca[$table]['columns'][$fieldName]['config']['foreign_selector']) && is_string($tca[$table]['columns'][$fieldName]['config']['foreign_selector'])) {
+                                $foreignSelectorFieldName = $tca[$table]['columns'][$fieldName]['config']['foreign_selector'];
+                            }
+
+                            if ($foreignSelectorFieldName) {
+                                $fieldConfig['config']['overrideChildTca']['columns'][$foreignSelectorFieldName] = $fieldConfig['config']['foreign_selector_fieldTcaOverride'];
+                                unset($fieldConfig['config']['foreign_selector_fieldTcaOverride']);
+                                $this->messages[] = 'The \'foreign_selector_fieldTcaOverride\' property from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $foreignSelectorFieldName . '\']';
+                            }
+                        }
+                        if (isset($fieldConfig['config']['foreign_record_defaults']) && is_array($fieldConfig['config']['foreign_record_defaults'])) {
+                            foreach ($fieldConfig['config']['foreign_record_defaults'] as $childFieldName => $defaultValue) {
+                                $fieldConfig['config']['overrideChildTca']['columns'][$childFieldName]['config']['default'] = $defaultValue;
+                                $this->messages[] = 'The \'foreign_record_defaults\' property from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\'][\'' . $childFieldName . '\']  and has been migrated to ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $childFieldName . '\'][\'config\'][\'default\']';
+                            }
+                            unset($fieldConfig['config']['foreign_record_defaults']);
+                        }
+                    }
+                    unset($fieldConfig);
+                }
+                unset($typeConfig);
+            }
             if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
                 foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
                     if (isset($fieldConfig['config']['overrideChildTca'])
@@ -2437,32 +2482,23 @@ class TcaMigration
                     if (isset($fieldConfig['config']['foreign_types']) && is_array($fieldConfig['config']['foreign_types'])) {
                         $fieldConfig['config']['overrideChildTca']['types'] = $fieldConfig['config']['foreign_types'];
                         unset($fieldConfig['config']['foreign_types']);
-                        $this->messages[] = 'The \'foreign_types\' property from TCA ' . $table
-                            . '[\'columns\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to '
-                            . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'types\']';
+                        $this->messages[] = 'The \'foreign_types\' property from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'types\']';
                     }
-                    if (isset($fieldConfig['config']['foreign_selector'], $fieldConfig['config']['foreign_selector_fieldTcaOverride'])
-                        && is_string($fieldConfig['config']['foreign_selector'])
-                        && is_array($fieldConfig['config']['foreign_selector_fieldTcaOverride'])
-                    ) {
+                    if (isset($fieldConfig['config']['foreign_selector'], $fieldConfig['config']['foreign_selector_fieldTcaOverride']) && is_string($fieldConfig['config']['foreign_selector']) && is_array($fieldConfig['config']['foreign_selector_fieldTcaOverride'])) {
                         $foreignSelectorFieldName = $fieldConfig['config']['foreign_selector'];
-                        $fieldConfig['config']['overrideChildTca']['columns'][$foreignSelectorFieldName]
-                            = $fieldConfig['config']['foreign_selector_fieldTcaOverride'];
+                        $fieldConfig['config']['overrideChildTca']['columns'][$foreignSelectorFieldName] = $fieldConfig['config']['foreign_selector_fieldTcaOverride'];
                         unset($fieldConfig['config']['foreign_selector_fieldTcaOverride']);
-                        $this->messages[] = 'The \'foreign_selector_fieldTcaOverride\' property from TCA ' . $table
-                            . '[\'columns\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table
-                            . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $foreignSelectorFieldName . '\']';
+                        $this->messages[] = 'The \'foreign_selector_fieldTcaOverride\' property from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $foreignSelectorFieldName . '\']';
                     }
                     if (isset($fieldConfig['config']['foreign_record_defaults']) && is_array($fieldConfig['config']['foreign_record_defaults'])) {
                         foreach ($fieldConfig['config']['foreign_record_defaults'] as $childFieldName => $defaultValue) {
                             $fieldConfig['config']['overrideChildTca']['columns'][$childFieldName]['config']['default'] = $defaultValue;
-                            $this->messages[] = 'The \'foreign_record_defaults\' property from TCA ' . $table
-                                . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'' . $childFieldName . '\']  and has been migrated to ' . $table
-                                . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $childFieldName . '\'][\'config\'][\'default\']';
+                            $this->messages[] = 'The \'foreign_record_defaults\' property from TCA ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'' . $childFieldName . '\']  and has been migrated to ' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'columns\'][\'' . $childFieldName . '\'][\'config\'][\'default\']';
                         }
                         unset($fieldConfig['config']['foreign_record_defaults']);
                     }
                 }
+                unset($fieldConfig);
             }
         }
 

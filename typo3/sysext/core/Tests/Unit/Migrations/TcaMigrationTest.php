@@ -5153,7 +5153,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function migrateSuggestWizardDataProvider()
     {
         return [
-            'no suggest wizard in main field but configured in columnOverrides' => [
+            'no suggest wizard in main field but configured in columnsOverrides' => [
                 [
                     'aTable' => [
                         'columns' => [
@@ -5208,7 +5208,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                 ],
             ],
-            'no suggest wizard in main field but configured in columnOverrides with options' => [
+            'no suggest wizard in main field but configured in columnsOverrides with options' => [
                 [
                     'aTable' => [
                         'columns' => [
@@ -6282,6 +6282,214 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                             'appearance' => [
                                                 'elementBrowserType' => 'file',
                                                 'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migrateAllOverridesFromColumnOverride()
+    {
+        $input = [
+            'aTable' => [
+                'types' => [
+                    'textmedia' => [
+                        'columnsOverrides' => [
+                            'assets' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'foreign_selector' => 'uid_local',
+                                    'foreign_types' => [
+                                        '0' => [
+                                            'showitem' => 'bar'
+                                        ],
+                                    ],
+                                    'foreign_selector_fieldTcaOverride' => [
+                                        'label' => 'aDifferentLabel',
+                                        'config' => [
+                                            'aGivenSetting' => 'overrideValue',
+                                            'aNewSetting' => 'anotherNewValue',
+                                            'appearance' => [
+                                                'elementBrowserType' => 'file',
+                                                'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                    'foreign_record_defaults' => [
+                                        'aField' => 'overriddenValue',
+                                        'bField' => 'overriddenValue',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'types' => [
+                    'textmedia' => [
+                        'columnsOverrides' => [
+                            'assets' => [
+                                'config' => [
+                                    'type' => 'inline',
+                                    'foreign_selector' => 'uid_local',
+                                    'overrideChildTca' => [
+                                        'types' => [
+                                            '0' => [
+                                                'showitem' => 'bar'
+                                            ],
+                                        ],
+                                        'columns' => [
+                                            'uid_local' => [
+                                                'label' => 'aDifferentLabel',
+                                                'config' => [
+                                                    'aGivenSetting' => 'overrideValue',
+                                                    'aNewSetting' => 'anotherNewValue',
+                                                    'appearance' => [
+                                                        'elementBrowserType' => 'file',
+                                                        'elementBrowserAllowed' => 'jpg,png'
+                                                    ],
+                                                ],
+                                            ],
+                                            'aField' => [
+                                                'config' => [
+                                                    'default' => 'overriddenValue'
+                                                ],
+                                            ],
+                                            'bField' => [
+                                                'config' => [
+                                                    'default' => 'overriddenValue'
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function migratePartlyOverridesFromColumnOverride()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'assets' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_selector' => 'uid_local',
+                            'overrideChildTca' => [
+                                'types' => [
+                                    '0' => [
+                                        'showitem' => 'foo'
+                                    ],
+                                ],
+                                'columns' => [
+                                    'uid_local' => [
+                                        'label' => 'Label',
+                                        'config' => [
+                                            'appearance' => [
+                                                'elementBrowserType' => 'file',
+                                                'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'textmedia' => [
+                        'columnsOverrides' => [
+                            'assets' => [
+                                'config' => [
+                                    'foreign_types' => [
+                                        '0' => [
+                                            'showitem' => 'bar'
+                                        ],
+                                    ],
+                                    'foreign_selector_fieldTcaOverride' => [
+                                        'config' => [
+                                            'appearance' => [
+                                                'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'assets' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_selector' => 'uid_local',
+                            'overrideChildTca' => [
+                                'types' => [
+                                    '0' => [
+                                        'showitem' => 'foo'
+                                    ],
+                                ],
+                                'columns' => [
+                                    'uid_local' => [
+                                        'label' => 'Label',
+                                        'config' => [
+                                            'appearance' => [
+                                                'elementBrowserType' => 'file',
+                                                'elementBrowserAllowed' => 'jpg,png'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'textmedia' => [
+                        'columnsOverrides' => [
+                            'assets' => [
+                                'config' => [
+                                    'overrideChildTca' => [
+                                        'types' => [
+                                            '0' => [
+                                                'showitem' => 'bar'
+                                            ],
+                                        ],
+                                        'columns' => [
+                                            'uid_local' => [
+                                                'config' => [
+                                                    'appearance' => [
+                                                        'elementBrowserAllowed' => 'jpg,png'
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],

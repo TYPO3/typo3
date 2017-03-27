@@ -141,13 +141,17 @@ cropping configuration for tt_content images, then you can add the following to 
         'overrideChildTca' => [
             'columns' => [
                 'crop' => [
-                    'mobile' => [
-                        'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
-                        'cropArea' => [
-                            'x' => 0.1,
-                            'y' => 0.1,
-                            'width' => 0.8,
-                            'height' => 0.8,
+                    'config' => [
+                        'cropVariants' => [
+                            'mobile' => [
+                                'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
+                                'cropArea' => [
+                                    'x' => 0.1,
+                                    'y' => 0.1,
+                                    'width' => 0.8,
+                                    'height' => 0.8,
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -161,8 +165,8 @@ as this is the default field name for image manipulation in `sys_file_reference`
 It is also possible to set the cropping configuration only for a specific tt_content element type by using the
 `columnOverrides` feature:
 
-    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideChildTca']['columns'] = [
-        'crop' => [
+    $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideChildTca']['columns']['crop']['config'] = [
+        'cropVariants' => [
            'default' => [
                'disabled' => true,
            ],
