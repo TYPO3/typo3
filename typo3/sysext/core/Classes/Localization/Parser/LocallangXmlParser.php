@@ -36,14 +36,13 @@ class LocallangXmlParser extends AbstractXmlParser
      *
      * @param string $sourcePath Source file path
      * @param string $languageKey Language key
-     * @param string $charset Charset
+     * @param string $charset File charset, not in use anymore and deprecated since TYPO3 v8, will be removed in TYPO3 v9 as UTF-8 is expected for all language files
      * @return array
      */
     public function getParsedData($sourcePath, $languageKey, $charset = '')
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
-        $this->charset = $this->getCharset($charset);
         // Parse source
         $parsedSource = $this->parseXmlFile();
         // Parse target

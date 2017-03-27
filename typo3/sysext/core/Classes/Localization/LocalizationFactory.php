@@ -43,16 +43,6 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function __construct()
     {
-        $this->initialize();
-    }
-
-    /**
-     * Initialize
-     *
-     * @return void
-     */
-    protected function initialize()
-    {
         $this->store = GeneralUtility::makeInstance(LanguageStore::class);
         $this->initializeCache();
     }
@@ -142,7 +132,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
             /** @var $parser \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface */
             $parser = $this->store->getParserInstance($fileReference);
             // Get parsed data
-            $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey, $charset);
+            $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
         } catch (Exception\FileNotFoundException $exception) {
             // Source localization file not found, set empty data as there could be an override
             $this->store->setData($fileReference, $languageKey, []);

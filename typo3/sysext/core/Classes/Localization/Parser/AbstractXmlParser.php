@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,16 +34,11 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     protected $languageKey;
 
     /**
-     * @var string
-     */
-    protected $charset;
-
-    /**
      * Returns parsed representation of XML file.
      *
      * @param string $sourcePath Source file path
      * @param string $languageKey Language key
-     * @param string $charset File charset
+     * @param string $charset File charset, not in use anymore and deprecated since TYPO3 v8, will be removed in TYPO3 v9 as UTF-8 is expected for all language files
      * @return array
      * @throws \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException
      */
@@ -52,7 +46,6 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
-        $this->charset = $this->getCharset($charset);
         if ($this->languageKey !== 'default') {
             $this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
             if (!@is_file($this->sourcePath)) {
@@ -66,21 +59,6 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         $LOCAL_LANG = [];
         $LOCAL_LANG[$languageKey] = $this->parseXmlFile();
         return $LOCAL_LANG;
-    }
-
-    /**
-     * Gets the character set to use.
-     *
-     * @param string $charset
-     * @return string
-     */
-    protected function getCharset($charset = '')
-    {
-        if ($charset !== '') {
-            return GeneralUtility::makeInstance(CharsetConverter::class)->parse_charset($charset);
-        } else {
-            return 'utf-8';
-        }
     }
 
     /**
