@@ -32,7 +32,7 @@ class Ratio
 
     public function __construct(string $id, string $title, float $value)
     {
-        $this->id = $id;
+        $this->id = str_replace('.', '_', $id);
         $this->title = $title;
         $this->value = $value;
     }
