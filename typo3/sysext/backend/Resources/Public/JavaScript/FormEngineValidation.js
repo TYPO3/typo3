@@ -16,7 +16,7 @@
  * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
-define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
+define(['jquery'], function ($) {
 
 	/**
 	 * The main FormEngineValidation object
@@ -1064,7 +1064,5 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngine'], function ($, FormEngine) {
 		});
 	};
 
-	FormEngine.Validation = FormEngineValidation;
-
-	return FormEngine.Validation;
+	return FormEngineValidation;
 });
