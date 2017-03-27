@@ -289,11 +289,11 @@ class ImageManipulationElement extends AbstractFormElement
     protected function processConfiguration(array $config, string &$elementValue, File $file)
     {
         $cropVariantCollection = CropVariantCollection::create($elementValue, $config['cropVariants']);
-        if (empty($config['readOnly'])) {
+        if (empty($config['readOnly']) && !empty($file->getProperty('width'))) {
             $cropVariantCollection = $cropVariantCollection->applyRatioRestrictionToSelectedCropArea($file);
+            $elementValue = (string)$cropVariantCollection;
         }
         $config['cropVariants'] = $cropVariantCollection->asArray();
-        $elementValue = (string)$cropVariantCollection;
         $config['allowedExtensions'] = implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'], true));
         return $config;
     }
