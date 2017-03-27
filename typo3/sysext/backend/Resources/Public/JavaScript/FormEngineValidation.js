@@ -1036,9 +1036,5 @@ define(['jquery', 'moment'], function ($, moment) {
 		return result;
 	};
 
-	FormEngineValidation.registerReady = function() {
-		FormEngineValidation.initialize();
-	};
-
 	return FormEngineValidation;
 });

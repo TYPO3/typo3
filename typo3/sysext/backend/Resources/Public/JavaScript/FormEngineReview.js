@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Backend/FormEngineValidation", "jquery", "bootstrap"], function (require, exports, FormEngineValidation, $) {
+define(["require", "exports", "TYPO3/CMS/Backend/FormEngine", "jquery", "bootstrap"], function (require, exports, FormEngine, $) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/FormEngineReview
@@ -85,7 +85,7 @@ define(["require", "exports", "TYPO3/CMS/Backend/FormEngineValidation", "jquery"
          * @return {$}
          */
         FormEngineReview.findInvalidField = function () {
-            return $(document).find('.tab-content .' + FormEngineValidation.errorClass);
+            return $(document).find('.tab-content .' + FormEngine.Validation.errorClass);
         };
         /**
          * Renders an invisible button to toggle the review panel into the least possible toolbar

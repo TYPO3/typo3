@@ -13,10 +13,10 @@
 
 /// <amd-dependency path="bootstrap">
 
-// todo: once FormEngineValidation is a native TypeScript class, we can use require() instead
+// todo: once FormEngine is a native TypeScript class, we can use require() instead
 // and drop amd-dependency and declare
-/// <amd-dependency path="TYPO3/CMS/Backend/FormEngineValidation" name="FormEngineValidation">
-declare let FormEngineValidation: any;
+/// <amd-dependency path="TYPO3/CMS/Backend/FormEngine" name="FormEngine">
+declare let FormEngine: any;
 declare let TYPO3: any;
 
 import $ = require('jquery');
@@ -33,7 +33,7 @@ class FormEngineReview {
      * @return {$}
      */
     public static findInvalidField(): any {
-        return $(document).find('.tab-content .' + FormEngineValidation.errorClass);
+        return $(document).find('.tab-content .' + FormEngine.Validation.errorClass);
     }
 
     /**
