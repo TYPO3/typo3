@@ -84,7 +84,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0'
             ],
@@ -97,7 +96,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'max' => '20',
                 'eval' => 'datetime',
                 'default' => '0',
                 'range' => [
