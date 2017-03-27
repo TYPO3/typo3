@@ -233,8 +233,8 @@ class FormResultCompiler
         $beUserAuth = $this->getBackendUserAuthentication();
 
         // define the window size of the element browser etc.
-        $popupWindowWidth  = 700;
-        $popupWindowHeight = 750;
+        $popupWindowWidth  = 800;
+        $popupWindowHeight = 600;
         $popupWindowSize = trim($beUserAuth->getTSConfigVal('options.popupWindowSize'));
         if (!empty($popupWindowSize)) {
             list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
@@ -245,8 +245,8 @@ class FormResultCompiler
         if (!empty($rtePopupWindowSize)) {
             list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
         }
-        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-100);
-        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-150);
+        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth);
+        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight);
 
         // Make textareas resizable and flexible ("autogrow" in height)
         $textareaSettings = [

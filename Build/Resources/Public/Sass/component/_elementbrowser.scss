@@ -1,0 +1,147 @@
+//
+// Element Browser
+//
+
+//
+// Usage
+// --------------
+//
+// <div class="element-browser">
+//     <div class="element-browser-panel element-browser-title">
+//         ...
+//     </div>
+//     <div class="element-browser-panel element-browser-tabs">
+//         <ul class="nav nav-tabs" role="tablist">
+//             <li class="active"><a href="#">Page 1</a></li>
+//             <li class="active"><a href="#">Page 2</a></li>
+//             <li class="active"><a href="#">Page 3</a></li>
+//         </ul>
+//     </div>
+//     <div class="element-browser-panel element-browser-attributes">
+//         ...
+//     </div>
+//     <div class="element-browser-panel element-browser-main">
+//         <div class="element-browser-main-sidebar">
+//             <div class="element-browser-body">
+//                 ...
+//             </div>
+//         </div>
+//         <div class="element-browser-main-content">
+//             <div class="element-browser-body">
+//                 ...
+//             </div>
+//         </div>
+//     </div>
+// </div>
+//
+
+//
+// Variables
+//
+$elementbrowser-breakpoint: 600px;
+
+//
+// Component
+//
+.element-browser {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    width: 100%;
+
+    @media (min-width: $elementbrowser-breakpoint) {
+        height: 100vh;
+    }
+
+    h3 {
+        font-size: 1.2em;
+    }
+}
+
+.element-browser-body {
+    overflow: auto;
+    height: 100%;
+    padding: ($grid-gutter-width / 2);
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.element-browser-title {
+    padding: ($grid-gutter-width / 2);
+    color: #fff;
+    background-color: #292929;
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+}
+
+.element-browser-tabs {
+    .nav-tabs {
+        padding: ($grid-gutter-width / 2);
+        padding-bottom: 0;
+    }
+}
+
+.element-browser-attributes {
+    padding: ($grid-gutter-width / 2);
+    border-bottom: 1px solid #ddd;
+
+    > .form-horizontal:last-child .form-group {
+        margin-bottom: 0;
+    }
+}
+
+.element-browser-main {
+    @media (min-width: $elementbrowser-breakpoint) {
+        display: flex;
+        flex-wrap: nowrap;
+        flex: 1 auto;
+    }
+}
+
+.element-browser-main-sidebar {
+    background-color: #f2f2f2;
+
+    @media (min-width: $elementbrowser-breakpoint) {
+        flex-shrink: 0;
+        width: 260px;
+        border-right: 1px solid #ddd;
+    }
+
+    @media (min-width: $elementbrowser-breakpoint * 1.2) {
+        width: 280px;
+    }
+
+    @media (min-width: $elementbrowser-breakpoint * 1.4) {
+        width: 300px;
+    }
+
+    @media (min-width: $elementbrowser-breakpoint * 1.6) {
+        width: 320px;
+    }
+
+    .list-tree {
+        li:last-child:before {
+            background-color: #f2f2f2;
+        }
+    }
+
+    .list-tree-control > .fa:before {
+        background-color: #f2f2f2;
+    }
+}
+
+.element-browser-main-content {
+    @media (min-width: $elementbrowser-breakpoint) {
+        overflow: auto;
+        flex: 1 auto;
+    }
+}

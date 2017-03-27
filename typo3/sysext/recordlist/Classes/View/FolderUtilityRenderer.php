@@ -65,7 +65,6 @@ class FolderUtilityRenderer
 
         $formAction = BackendUtility::getModuleUrl('tce_file');
         $markup = [];
-        $markup[] = '<div class="element-browser-section element-browser-createfolder">';
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:create_folder.title')) . ':</h3>';
@@ -73,8 +72,14 @@ class FolderUtilityRenderer
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
         $a = 1;
-        $markup[] = '<div class="row form-group"><div class="col-xs-8">';
+        $markup[] = '<div class="form-group">';
+        $markup[] = '<div class="input-group">';
         $markup[] = '<input class="form-control" type="text" name="file[newfolder][' . $a . '][data]" />';
+        $markup[] = '<span class="input-group-btn">';
+        $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
+            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:create_folder.submit')) . '" />';
+        $markup[] = '</span>';
+        $markup[] = '</div>';
         $markup[] = '<input type="hidden" name="file[newfolder][' . $a . '][target]" value="'
             . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 
@@ -86,12 +91,8 @@ class FolderUtilityRenderer
             )
         );
         $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
-        $markup[] = '</div><div class="col-xs-4">';
-        $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:create_folder.submit')) . '" />';
 
-        $markup[] = '</div></div></form>';
-        $markup[] = '</div>';
+        $markup[] = '</div></form>';
 
         return implode(LF, $markup);
     }
@@ -132,8 +133,7 @@ class FolderUtilityRenderer
         $formAction = BackendUtility::getModuleUrl('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $markup = [];
-        $markup[] = '<div class="element-browser-section element-browser-upload">';
-        $markup[] = '   <form action="' . htmlspecialchars($formAction)
+        $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '   <h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle')) . ':</h3>';
         $markup[] = '   <p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
@@ -159,7 +159,7 @@ class FolderUtilityRenderer
             $markup[] = '    <label>';
             $markup[] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions')) . '<br/>';
             $markup[] = '    </label>';
-            $markup[] = '    <div class="form-control">';
+            $markup[] = '    <div>';
             $markup[] = implode(' ', $fileExtList);
             $markup[] = '    </div>';
             $markup[] = '</div>';
@@ -174,8 +174,7 @@ class FolderUtilityRenderer
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
             . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />';
 
-        $markup[] = '   </form>';
-        $markup[] = '</div>';
+        $markup[] = '</form>';
 
         $code = implode(LF, $markup);
 
@@ -195,34 +194,33 @@ class FolderUtilityRenderer
             $formAction = BackendUtility::getModuleUrl('online_media');
 
             $markup = [];
-            $markup[] = '<div class="element-browser-section element-browser-mediaurls">';
-            $markup[] = '   <form action="' . htmlspecialchars($formAction)
+            $markup[] = '<form action="' . htmlspecialchars($formAction)
                 . '" method="post" name="editform1" id="typo3-addMediaForm" enctype="multipart/form-data">';
             $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . ':</h3>';
             $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>' . htmlspecialchars($header) . '</p>';
-            $markup[] = '<div class="row form-group"><div class="col-xs-8">';
+            $markup[] = '<div class="form-group">';
             $markup[] = '<input type="hidden" name="file[newMedia][0][target]" value="'
                 . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
             $markup[] = '<input type="hidden" name="file[newMedia][0][allowed]" value="'
                 . htmlspecialchars(implode(',', $allowedExtensions)) . '" />';
+            $markup[] = '<div class="input-group">';
             $markup[] = '<input type="text" name="file[newMedia][0][url]" class="form-control" placeholder="'
                 . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')) . '" />';
-            $markup[] = '</div><div class="col-xs-4">';
+            $markup[] = '<div class="input-group-btn">';
             $markup[] = '<button class="btn btn-default">'
                 . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')) . '</button>';
-
-            $markup[] = '</div></div>';
+            $markup[] = '</div>';
+            $markup[] = '</div>';
             $markup[] = '<div class="form-group">';
-            $markup[] = '    <label>';
+            $markup[] = '<label>';
             $markup[] = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders') . '<br/>';
-            $markup[] = '    </label>';
-            $markup[] = '    <div class="form-control">';
+            $markup[] = '</label>';
+            $markup[] = '<div>';
             $markup[] = implode(' ', $fileExtList);
-            $markup[] = '    </div>';
+            $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
             $markup[] = '</form>';
-            $markup[] = '</div>';
 
             $code .= implode(LF, $markup);
         }

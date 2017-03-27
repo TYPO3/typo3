@@ -124,7 +124,7 @@
 			var $iframe = $('<iframe />', {
 					src: url,
 					'class': 'content-iframe',
-					style: 'border: 0; width: 100%; height: ' + height * 1 + 'px;'
+					style: 'display: block; border: 0; width: 100%; max-height: 100%; height: ' + height * 1 + 'px;'
 				}),
 				$content = $('<div />', {'class': 'rte-ckeditor-window', id: editor.id}).append($iframe);
 

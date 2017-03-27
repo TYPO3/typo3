@@ -248,21 +248,17 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
         if ($backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
             $content .= $uploadForm;
         }
+
         // Putting the parts together, side by side:
         $content .= '
+            <!-- Wrapper table for folder tree / filelist: -->
+            <div class="element-browser-section element-browser-filetree">
+                <h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>
+                ' . $tree . '
+                ' . $files . '
+            </div>
+            ';
 
-			<!--
-				Wrapper table for folder tree / filelist:
-			-->
-			<div class="element-browser-section element-browser-filetree">
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
-				<tr>
-					<td class="c-wCell" valign="top"><h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>' . $tree . '</td>
-					<td class="c-wCell" valign="top">' . $files . '</td>
-				</tr>
-			</table>
-			</div>
-			';
         // Add help message
         switch ($this->mode) {
             case 'plain':
@@ -277,8 +273,6 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
             $content .= $uploadForm;
         }
         $content .= $createFolder;
-        // Add some space
-        $content .= '<br /><br />';
 
         return $content;
     }
@@ -414,13 +408,13 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
 
         // Wrap all the rows in table tags:
         $out .= '
+            <!-- Filelisting -->
+            <div class="table-fit">
+                <table class="table table-striped table-hover" id="typo3-filelist">
+                    ' . implode('', $lines) . '
+                </table>
+            </div>';
 
-	<!--
-		Filelisting
-	-->
-			<table class="table table-striped table-hover" id="typo3-filelist">
-				' . implode('', $lines) . '
-			</table>';
         // Return accumulated content for filelisting:
         $out .= '</div>';
         return $out;

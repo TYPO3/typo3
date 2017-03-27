@@ -108,8 +108,11 @@ $tree-control-icon-size: 12px;
 }
 
 .list-tree-show {
-    float: right;
-    margin-left: $tree-intendation-space;
+    position: relative;
+    display: inline-block;
+    width: $tree-control-size;
+    text-align: center;
+    margin-left: -2px;
 }
 
 .list-tree-control {
@@ -208,13 +211,6 @@ $tree-control-icon-size: 12px;
     .list-tree li:last-child:before,
     .list-tree-control > .fa:before {
         background-color: #f1f1f1;
-    }
-}
-
-[id=typo3-browse-links-php] {
-    .list-tree li:last-child:before,
-    .list-tree-control > .fa:before {
-        background-color: #ececec;
     }
 }
 

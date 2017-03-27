@@ -19,6 +19,7 @@
 //
 @import "component/colorpicker";
 @import "component/svgtree";
+@import "component/elementbrowser";
 
 //
 // Components from bootstrap plugins
@@ -49,7 +50,6 @@
 @import "typo3/element_message";
 @import "typo3/element_modal";
 @import "typo3/element_pagetree";
-@import "typo3/element_rte";
 @import "typo3/element_slider";
 @import "typo3/element_spinner";
 @import "typo3/element_tab";
@@ -69,10 +69,8 @@
 @import "typo3/login_screen";
 @import "typo3/main_body";
 @import "typo3/main_content";
-@import "typo3/main_elementbrowser";
 @import "typo3/main_backend_layout_wizard";
 @import "typo3/main_form";
-@import "typo3/main_linkbrowser";
 @import "typo3/main_new_content_element_wizard";
 @import "typo3/module_database";
 @import "typo3/module_recycler";

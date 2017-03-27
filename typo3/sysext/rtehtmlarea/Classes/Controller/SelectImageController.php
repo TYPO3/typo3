@@ -230,12 +230,10 @@ class SelectImageController extends AbstractLinkBrowserController
     protected function renderCurrentUrl()
     {
         return '<!-- Print current URL -->
-            <div class="link-browser-section link-browser-current-link">
-                <strong>' .
-                    htmlspecialchars($this->getLanguageService()->getLL('currentImage')) .
-                    ': ' .
-                    htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
-                '</strong>' .
+            <div class="element-browser-panel element-browser-title">' .
+                htmlspecialchars($this->getLanguageService()->getLL('currentImage')) .
+                ': ' .
+                htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
             '</div>';
     }
 

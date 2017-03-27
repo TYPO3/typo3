@@ -100,29 +100,30 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
 
         $this->initDocumentTemplate();
         $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('folderSelector')));
-        $content .= $this->doc->getFlashMessages();
 
         // Putting the parts together, side by side:
-        $content .= '
-
-			<!--
-				Wrapper table for folder tree / folder list:
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
-				<tr>
-					<td class="c-wCell" valign="top"><h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>' . $tree . '</td>
-					<td class="c-wCell" valign="top">' . $folders . '</td>
-				</tr>
-			</table>
-			';
-
-        // Adding create folder if applicable:
+        $markup = [];
+        $markup[] = '<!-- Wrapper table for folder tree / filelist: -->';
+        $markup[] = '<div class="element-browser">';
+        $markup[] = '   <div class="element-browser-panel element-browser-main">';
+        $markup[] = '       <div class="element-browser-main-sidebar">';
+        $markup[] = '           <div class="element-browser-body">';
+        $markup[] = '               <h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>';
+        $markup[] = '               ' . $tree;
+        $markup[] = '           </div>';
+        $markup[] = '       </div>';
+        $markup[] = '       <div class="element-browser-main-content">';
+        $markup[] = '           <div class="element-browser-body">';
+        $markup[] = '               ' . $this->doc->getFlashMessages();
+        $markup[] = '               ' . $folders;
         if ($selectedFolder) {
-            $content .= GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->createFolder($selectedFolder);
+            $markup[] = '           ' . GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->createFolder($selectedFolder);
         }
-
-        // Add some space
-        $content .= '<br /><br />';
+        $markup[] = '           </div>';
+        $markup[] = '       </div>';
+        $markup[] = '   </div>';
+        $markup[] = '</div>';
+        $content .= implode('', $markup);
 
         // Ending page, returning content:
         $content .= $this->doc->endPage();

@@ -187,34 +187,30 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $this->initDocumentTemplate();
         // Starting content:
         $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('fileSelector')));
-        $content .= $this->doc->getFlashMessages();
 
-        // Insert the upload form on top, if so configured
-        if ($backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-            $content .= $uploadForm;
-        }
         // Putting the parts together, side by side:
-        $content .= '
+        $markup = [];
+        $markup[] = '<!-- Wrapper table for folder tree / filelist: -->';
+        $markup[] = '<div class="element-browser">';
+        $markup[] = '   <div class="element-browser-panel element-browser-main">';
+        $markup[] = '       <div class="element-browser-main-sidebar">';
+        $markup[] = '           <div class="element-browser-body">';
+        $markup[] = '               <h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>';
+        $markup[] = '               ' . $tree;
+        $markup[] = '           </div>';
+        $markup[] = '       </div>';
+        $markup[] = '       <div class="element-browser-main-content">';
+        $markup[] = '           <div class="element-browser-body">';
+        $markup[] = '               ' . $this->doc->getFlashMessages();
+        $markup[] = '               ' . $files;
+        $markup[] = '               ' . $uploadForm;
+        $markup[] = '               ' . $createFolder;
+        $markup[] = '           </div>';
+        $markup[] = '       </div>';
+        $markup[] = '   </div>';
+        $markup[] = '</div>';
+        $content .= implode('', $markup);
 
-			<!--
-				Wrapper table for folder tree / filelist:
-			-->
-			<div class="element-browser-section element-browser-filetree">
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
-				<tr>
-					<td class="c-wCell" valign="top"><h3>' . htmlspecialchars($this->getLanguageService()->getLL('folderTree')) . ':</h3>' . $tree . '</td>
-					<td class="c-wCell" valign="top">' . $files . '</td>
-				</tr>
-			</table>
-			</div>
-			';
-        // Adding create folder + upload forms if applicable:
-        if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-            $content .= $uploadForm;
-        }
-        $content .= $createFolder;
-        // Add some space
-        $content .= '<br /><br />';
         // Ending page, returning content:
         $content .= $this->doc->endPage();
         return $this->doc->insertStylesAndJS($content);
@@ -345,23 +341,21 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             }
         }
 
-        $out = '<h3>' . htmlspecialchars($lang->getLL('files')) . ' ' . $filesCount . ':</h3>';
-        $out .= GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->getFileSearchField($this->searchWord);
-        $out .= '<div id="filelist">';
-        $out .= $this->getBulkSelector($filesCount);
+        $markup = [];
+        $markup[] = '<h3>' . htmlspecialchars($lang->getLL('files')) . ' ' . $filesCount . ':</h3>';
+        $markup[] = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->getFileSearchField($this->searchWord);
+        $markup[] = '<div id="filelist">';
+        $markup[] = '   ' . $this->getBulkSelector($filesCount);
+        $markup[] = '   <!-- Filelisting -->';
+        $markup[] = '   <div class="table-fit">';
+        $markup[] = '       <table class="table table-striped table-hover" id="typo3-filelist">';
+        $markup[] = '           ' . implode('', $lines);
+        $markup[] = '       </table>';
+        $markup[] = '   </div>';
+        $markup[] = ' </div>';
+        $content = implode('', $markup);
 
-        // Wrap all the rows in table tags:
-        $out .= '
-
-	<!--
-		Filelisting
-	-->
-			<table class="table table-striped table-hover" id="typo3-filelist">
-				' . implode('', $lines) . '
-			</table>';
-        // Return accumulated content for filelisting:
-        $out .= '</div>';
-        return $out;
+        return $content;
     }
 
     /**

@@ -292,14 +292,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function renderCurrentUrl()
     {
-        $removeLink = ' <a href="#" class="btn btn-default t3js-removeCurrentLink">' . htmlspecialchars($this->getLanguageService()->getLL('removeLink')) . '</a>';
+        $removeLink = ' <a href="#" class="t3js-removeCurrentLink">' . htmlspecialchars($this->getLanguageService()->getLL('removeLink')) . '</a>';
         return '
-            <div class="link-browser-section link-browser-current-link">
-                <strong>' .
-                    htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
-                    ': ' .
-                    htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
-                '</strong>' .
+            <div class="element-browser-panel element-browser-title">' .
+                htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
+                ': ' .
+                htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
                 '<span class="pull-right">' . $removeLink . '</span>' .
             '</div>';
     }

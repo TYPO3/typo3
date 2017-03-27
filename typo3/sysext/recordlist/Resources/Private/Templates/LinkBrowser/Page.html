@@ -1,40 +1,44 @@
-<div class="link-browser-section link-browser-pagetree">
-	<div class="col-xs-6">
-		<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:pageTree" /></h3>
-		<f:if condition="{temporaryTreeMountCancelLink}">
-			<p>
-				<a href="{temporaryTreeMountCancelLink}" class="btn btn-primary">
-					<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount" />
-				</a>
-			</p>
-		</f:if>
-		{tree -> f:format.raw()}
+<div class="element-browser-panel element-browser-main">
+	<div class="element-browser-main-sidebar">
+		<div class="element-browser-body">
+			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:pageTree" /></h3>
+			<f:if condition="{temporaryTreeMountCancelLink}">
+				<p>
+					<a href="{temporaryTreeMountCancelLink}" class="btn btn-primary">
+						<f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount" />
+					</a>
+				</p>
+			</f:if>
+			{tree -> f:format.raw()}
+		</div>
 	</div>
-	<div class="col-xs-6">
-		<f:if condition="{expandActivePage}">
-			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h3>
-			<ul class="list-tree list-tree-root list-tree-root-clean">
-				<li class="list-tree-control-open">
-					<span class="list-tree-group">
-						<span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
-						<span class="list-tree-title">{activePageTitle -> f:format.raw()}</span>
-					</span>
-					<ul>
-						<f:for each="{contentElements}" as="content">
-							<li{f:if(condition: content.isSelected, then: ' class="active"')}>
-								<span class="list-tree-group">
-									<span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
-									<span class="list-tree-title">
-										<a href="{content.url}" class="t3js-pageLink">
-											{content.title -> f:format.raw()}
-										</a>
+	<div class="element-browser-main-content">
+		<div class="element-browser-body">
+			<f:if condition="{expandActivePage}">
+				<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h3>
+				<ul class="list-tree list-tree-root list-tree-root-clean">
+					<li class="list-tree-control-open">
+						<span class="list-tree-group">
+							<span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
+							<span class="list-tree-title">{activePageTitle -> f:format.raw()}</span>
+						</span>
+						<ul>
+							<f:for each="{contentElements}" as="content">
+								<li{f:if(condition: content.isSelected, then: ' class="active"')}>
+									<span class="list-tree-group">
+										<span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
+										<span class="list-tree-title">
+											<a href="{content.url}" class="t3js-pageLink">
+												{content.title -> f:format.raw()}
+											</a>
+										</span>
 									</span>
-								</span>
-							</li>
-						</f:for>
-					</ul>
-				</li>
-			</ul>
-		</f:if>
+								</li>
+							</f:for>
+						</ul>
+					</li>
+				</ul>
+			</f:if>
+		</div>
 	</div>
 </div>

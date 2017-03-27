@@ -58,8 +58,6 @@ class ElementBrowserController
         // Creating backend template object:
         // this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        // Apply the same styles as those of the base script
-        $this->doc->bodyTagId = 'typo3-browse-links-php';
 
         $this->init();
     }

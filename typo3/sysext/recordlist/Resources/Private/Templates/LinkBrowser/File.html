@@ -1,40 +1,36 @@
-<f:if condition="{positionOfUploadFields} === 'top'">
-	{createFolderForm -> f:format.raw()}
-</f:if>
-
-<div class="row link-browser-section link-browser-filetree">
-	<div class="col-xs-6">
-		<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:folderTree" /></h3>
-		{tree -> f:format.raw()}
+<div class="element-browser-panel element-browser-main">
+	<div class="element-browser-main-sidebar">
+		<div class="element-browser-body">
+			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:folderTree" /></h3>
+			{tree -> f:format.raw()}
+		</div>
 	</div>
-	<div class="col-xs-6">
-		<f:if condition="{selectedFolder}">
-			<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
-			<span title="{selectedFolder.identifier}">
-				{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
-			</span>
-
-			<f:if condition="{itemsInSelectedFolder}">
-				<ul class="list-tree">
-					<f:for each="{itemsInSelectedFolder}" as="file">
-						<li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
-							 <span class="list-tree-group">
-									<a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
-										<span class="list-tree-icon">
-											<span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
-										</span>
-										<span class="list-tree-title">{file.title}</span>
-									</a>
-								</span>
-						</li>
-					</f:for>
-				</ul>
+	<div class="element-browser-main-content">
+		<div class="element-browser-body">
+			<f:if condition="{selectedFolder}">
+				<h3><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
+				<span title="{selectedFolder.identifier}">
+					{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+				</span>
+				<f:if condition="{itemsInSelectedFolder}">
+					<ul class="list-tree">
+						<f:for each="{itemsInSelectedFolder}" as="file">
+							<li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
+								<span class="list-tree-group">
+										<a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
+											<span class="list-tree-icon">
+												<span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
+											</span>
+											<span class="list-tree-title">{file.title}</span>
+										</a>
+									</span>
+							</li>
+						</f:for>
+					</ul>
+				</f:if>
 			</f:if>
-		</f:if>
+			{uploadFileForm -> f:format.raw()}
+			{createFolderForm -> f:format.raw()}
+		</div>
 	</div>
 </div>
-
-<f:if condition="{positionOfUploadFields} === 'bottom'">
-	{uploadFileForm -> f:format.raw()}
-</f:if>
-{createFolderForm -> f:format.raw()}

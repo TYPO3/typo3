@@ -132,8 +132,6 @@ abstract class AbstractElementBrowser
      */
     protected function initDocumentTemplate()
     {
-        $this->doc->bodyTagId = 'typo3-browse-links-php';
-
         $bodyDataAttributes = array_merge(
             $this->getBParamDataAttributes(),
             $this->getBodyTagAttributes()

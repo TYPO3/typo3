@@ -113,28 +113,32 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
         $this->initDocumentTemplate();
         $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('recordSelector')));
-        $content .= $this->doc->getFlashMessages();
 
-        $content .= '
-
-			<!--
-				Wrapper table for page tree / record list:
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
-				<tr>';
+        // Putting the parts together, side by side:
+        $markup = [];
+        $markup[] = '<!-- Wrapper table for folder tree / filelist: -->';
+        $markup[] = '<div class="element-browser">';
+        $markup[] = '   <div class="element-browser-panel element-browser-main">';
         if ($withTree) {
-            $content .= '<td class="c-wCell" valign="top">'
-                . '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('pageTree')) . ':</h3>'
-                . $this->getTemporaryTreeMountCancelNotice() . $tree . '</td>';
+            $markup[] = '   <div class="element-browser-main-sidebar">';
+            $markup[] = '       <div class="element-browser-body">';
+            $markup[] = '           <h3>' . htmlspecialchars($this->getLanguageService()->getLL('pageTree')) . ':</h3>';
+            $markup[] = '           ' . $this->getTemporaryTreeMountCancelNotice();
+            $markup[] = '           ' . $tree;
+            $markup[] = '       </div>';
+            $markup[] = '   </div>';
         }
-        $content .= '<td class="c-wCell" valign="top">' . $renderedRecordList . '</td>
-				</tr>
-			</table>
-			';
+        $markup[] = '       <div class="element-browser-main-content">';
+        $markup[] = '           <div class="element-browser-body">';
+        $markup[] = '               ' . $this->doc->getFlashMessages();
+        $markup[] = '               ' . $renderedRecordList;
+        $markup[] = '           </div>';
+        $markup[] = '       </div>';
+        $markup[] = '   </div>';
+        $markup[] = '</div>';
+        $content .= implode('', $markup);
 
-        // Add some space
-        $content .= '<br /><br />';
-
+        // Ending page, returning content:
         $content .= $this->doc->endPage();
         return $this->doc->insertStylesAndJS($content);
     }
