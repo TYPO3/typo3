@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class contains the configuration of the database fields used plus some
  * functions for the authentication process of backend users.
  */
-class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+class BackendUserAuthentication extends AbstractUserAuthentication
 {
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
@@ -589,12 +589,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      */
     public function check($type, $value)
     {
-        if (isset($this->groupData[$type])) {
-            if ($this->isAdmin() || GeneralUtility::inList($this->groupData[$type], $value)) {
-                return true;
-            }
-        }
-        return false;
+        return isset($this->groupData[$type])
+            && ($this->isAdmin() || GeneralUtility::inList($this->groupData[$type], $value));
     }
 
     /**
@@ -2480,21 +2476,20 @@ This is a dump of the failures:
     /**
      * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and
      * an IP-list is found in the User TSconfig objString "options.lockToIP",
-     * then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
+     * then make an IP comparison with REMOTE_ADDR and check if the IP address matches
      *
-     * @return bool TRUE, if IP address validates OK (or no check is done at all)
+     * @return bool TRUE, if IP address validates OK (or no check is done at all because no restriction is set)
      */
     public function checkLockToIP()
     {
-        $out = 1;
+        $isValid = true;
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['enabledBeUserIPLock']) {
             $IPList = $this->getTSConfigVal('options.lockToIP');
             if (trim($IPList)) {
-                $baseIP = GeneralUtility::getIndpEnv('REMOTE_ADDR');
-                $out = GeneralUtility::cmpIP($baseIP, $IPList);
+                $isValid = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $IPList);
             }
         }
-        return $out;
+        return $isValid;
     }
 
     /**

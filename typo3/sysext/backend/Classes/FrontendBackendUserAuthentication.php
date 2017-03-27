@@ -14,11 +14,13 @@ namespace TYPO3\CMS\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -26,7 +28,7 @@ use TYPO3\CMS\Lang\LanguageService;
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
  */
-class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+class FrontendBackendUserAuthentication extends BackendUserAuthentication
 {
     /**
      * Form field with login name.
@@ -41,6 +43,14 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      * @var string
      */
     public $formfield_uident = '';
+
+    /**
+     * Formfield_status should be set to "". The value this->formfield_status is set to empty in order to
+     * disable login-attempts to the backend account through this script
+     *
+     * @var string
+     */
+    public $formfield_status = '';
 
     /**
      * Decides if the writelog() function is called at login and logout.
@@ -142,8 +152,8 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
     {
         return $this->extAdmEnabled && (
             $this->adminPanel->isAdminModuleEnabled('edit') ||
-            $GLOBALS['TSFE']->displayEditIcons == 1 ||
-            $GLOBALS['TSFE']->displayFieldEditIcons == 1
+            (int)$GLOBALS['TSFE']->displayEditIcons === 1 ||
+            (int)$GLOBALS['TSFE']->displayFieldEditIcons === 1
         );
     }
 
@@ -160,7 +170,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
     /**
      * Determines whether the admin panel is enabled and visible.
      *
-     * @return bool Whether the admin panel is enabled and visible
+     * @return bool true if the admin panel is enabled and visible
      */
     public function isAdminPanelVisible()
     {
@@ -186,28 +196,29 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
         }
         // Check IP
         if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-            $remoteAddress = GeneralUtility::getIndpEnv('REMOTE_ADDR');
-            if (!GeneralUtility::cmpIP($remoteAddress, $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+            if (!GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
                 return false;
             }
+        }
+        // Check IP mask based on TSconfig
+        if (!$this->checkLockToIP()) {
+            return false;
         }
         // Check SSL (https)
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
             return false;
         }
-        // Finally a check from \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::backendCheckLogin()
-        if ($this->isUserAllowedToLogin()) {
-            return true;
-        } else {
-            return false;
-        }
+        // Finally a check as in BackendUserAuthentication::backendCheckLogin()
+        return $this->isUserAllowedToLogin();
     }
 
     /**
      * Evaluates if the Backend User has read access to the input page record.
      * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts.
-     * Only if both conditions are TRUE will the function return TRUE.
+     * Only if both conditions match, will the function return TRUE.
+     *
      * Read access means that previewing is allowed etc.
+     *
      * Used in \TYPO3\CMS\Frontend\Http\RequestHandler
      *
      * @param array $pageRec The page record to evaluate for
@@ -215,7 +226,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      */
     public function extPageReadAccess($pageRec)
     {
-        return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, 1);
+        return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, Permission::PAGE_SHOW);
     }
 
     /*****************************************************
@@ -280,7 +291,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      * Returns the number of cached pages for a page id.
      *
      * @param int $pageId The page id.
-     * @return int The number of pages for this page in the table "cache_pages
+     * @return int The number of pages for this page in the "cache_pages" cache
      */
     public function extGetNumberOfCachedPages($pageId)
     {
@@ -299,10 +310,10 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
      * Returns the label for key. If a translation for the language set in $this->uc['lang']
      * is found that is returned, otherwise the default value.
      * If the global variable $LOCAL_LANG is NOT an array (yet) then this function loads
-     * the global $LOCAL_LANG array with the content of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf"
+     * the global $LOCAL_LANG array with the content of "EXT:lang/Resources/Private/Language/locallang_tsfe.xlf"
      * such that the values therein can be used for labels in the Admin Panel
      *
-     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/Resources/Private/Language/locallang_tsfe.xlf
+     * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "EXT:lang/Resources/Private/Language/locallang_tsfe.xlf
      * @return string The value for the $key
      */
     public function extGetLL($key)
@@ -313,7 +324,6 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
                 $GLOBALS['LOCAL_LANG'] = [];
             }
         }
-        // Return the label string in the default backend output charset.
         return htmlspecialchars($this->getLanguageService()->getLL($key));
     }
 

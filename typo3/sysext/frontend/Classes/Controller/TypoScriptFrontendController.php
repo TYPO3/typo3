@@ -1163,32 +1163,28 @@ class TypoScriptFrontendController
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
-        /** @var $BE_USER FrontendBackendUserAuthentication */
-        $BE_USER = null;
+        $backendUserObject = null;
         // If the backend cookie is set,
         // we proceed and check if a backend user is logged in.
         if ($_COOKIE[BackendUserAuthentication::getCookieName()]) {
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(true);
             $this->getTimeTracker()->push('Back End user initialized', '');
-            // @todo validate the comment below: is this necessary? if so,
-            //   formfield_status should be set to "" in \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
-            //   which is a subclass of \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            // ----
-            // the value this->formfield_status is set to empty in order to
-            // disable login-attempts to the backend account through this script
+            $this->beUserLogin = false;
             // New backend user object
-            $BE_USER = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
-            // Object is initialized
-            $BE_USER->start();
-            $BE_USER->unpack_uc();
-            if (!empty($BE_USER->user['uid'])) {
-                $BE_USER->fetchGroupData();
-                $this->beUserLogin = true;
+            $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
+            $backendUserObject->start();
+            $backendUserObject->unpack_uc();
+            if (!empty($backendUserObject->user['uid'])) {
+                $backendUserObject->fetchGroupData();
             }
-            // Unset the user initialization.
-            if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || empty($BE_USER->user['uid'])) {
-                $BE_USER = null;
-                $this->beUserLogin = false;
+            // Unset the user initialization if any setting / restriction applies
+            if (!$backendUserObject->checkBackendAccessSettingsFromInitPhp()) {
+                $backendUserObject = null;
+            } elseif (!empty($backendUserObject->user['uid'])) {
+                // If the user is active now, let the controller know
+                $this->beUserLogin = true;
+            } else {
+                $backendUserObject = null;
             }
             $this->getTimeTracker()->pull();
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(true);
@@ -1196,13 +1192,13 @@ class TypoScriptFrontendController
         // POST BE_USER HOOK
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
             $_params = [
-                'BE_USER' => &$BE_USER
+                'BE_USER' => &$backendUserObject
             ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
-        return $BE_USER;
+        return $backendUserObject;
     }
 
     /**
