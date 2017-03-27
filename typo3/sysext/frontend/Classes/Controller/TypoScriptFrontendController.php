@@ -4124,7 +4124,7 @@ class TypoScriptFrontendController
     /**
      * Returns the name of the workspace
      *
-     * @param bool $returnTitle If set, returns title of current workspace being previewed
+     * @param bool $returnTitle If set, returns title of current workspace being previewed, please be aware that this parameter is deprecated as of TYPO3 v8, and will be removed in TYPO3 v9
      * @return string|int|NULL If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. NULL if none.
      */
     public function whichWorkspace($returnTitle = false)
@@ -4136,6 +4136,7 @@ class TypoScriptFrontendController
             $ws = $this->getBackendUser()->workspace;
         }
         if ($ws && $returnTitle) {
+            GeneralUtility::deprecationLog('The parameter $returnTitle of $TSFE->whichWorkspace() is marked as deprecated and has no effect anymore. It will be removed in TYPO3 v9.');
             if (ExtensionManagementUtility::isLoaded('workspaces')) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('sys_workspace');
