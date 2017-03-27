@@ -51,7 +51,7 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');

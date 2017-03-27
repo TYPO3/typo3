@@ -40,7 +40,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
      */
     public function getNestedProcessingFolderTest()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(false);
@@ -76,7 +76,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
      */
     public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $fileName = 'bar.txt';
         $this->setUpBackendUserFromFixture(1);
         GeneralUtility::mkdir_deep(PATH_site . 'fileadmin/_processed_');
@@ -152,7 +152,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
      */
     public function getProcessingRootFolderTest()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
 
         $subject = (new StorageRepository())->findByUid(1);
@@ -167,7 +167,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
     public function getRoleReturnsDefaultForRegularFolders()
     {
         $folderIdentifier = $this->getUniqueId();
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
 
         $subject = (new StorageRepository())->findByUid(1);
@@ -183,7 +183,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
      */
     public function replaceFileFailsIfLocalFileDoesNotExist()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
 
@@ -202,7 +202,7 @@ class ResourceStorageTest extends \TYPO3\TestingFramework\Core\Functional\Functi
      */
     public function createFolderThrowsExceptionIfParentFolderDoesNotExist()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
         $subject = (new StorageRepository())->findByUid(1);
 

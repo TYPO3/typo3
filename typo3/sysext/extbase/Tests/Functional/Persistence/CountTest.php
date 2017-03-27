@@ -60,7 +60,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-post-mm.xml');

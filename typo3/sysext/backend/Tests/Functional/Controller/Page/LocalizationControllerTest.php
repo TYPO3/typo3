@@ -40,7 +40,7 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         Bootstrap::getInstance()->initializeLanguageObject();
 
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/sys_language.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
 
         $this->subject = new LocalizationController();

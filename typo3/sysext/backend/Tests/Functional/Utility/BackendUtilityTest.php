@@ -30,7 +30,7 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Utility/Fixtures/sys_domain.xml');
     }
 

@@ -52,7 +52,7 @@ class WorkspaceServiceTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     public function versionsFromSpecificWorkspaceCanBeFound()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, 0, -99, 2);
@@ -67,7 +67,7 @@ class WorkspaceServiceTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     public function versionsFromAllWorkspaceCanBeFound()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         $result = $service->selectVersionsInWorkspace(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES, 0, -99, 2);
@@ -80,7 +80,7 @@ class WorkspaceServiceTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     public function versionsCanBeFoundRecursive()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
@@ -93,7 +93,7 @@ class WorkspaceServiceTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     public function versionsCanBeFilteredToSpecificStage()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         // testing stage 1
@@ -115,7 +115,7 @@ class WorkspaceServiceTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     public function versionsCanBeFilteredToSpecificLifecycleStep()
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'components/testing_framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
         $service = new \TYPO3\CMS\Workspaces\Service\WorkspaceService();
         // testing all "draft" records

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "027d9b4728d85519493ad8f083a4a639",
+    "content-hash": "0a93bff6ece95bdbe45d883432719012",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -3427,6 +3427,69 @@
                 "typo3 backend"
             ],
             "time": "2017-03-14T18:36:19+00:00"
+        },
+        {
+            "name": "typo3/testing-framework",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3/testing-framework.git",
+                "reference": "6142661e9ae04ad8fdfd5128b48548af0c89d66d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6142661e9ae04ad8fdfd5128b48548af0c89d66d",
+                "reference": "6142661e9ae04ad8fdfd5128b48548af0c89d66d",
+                "shasum": ""
+            },
+            "require": {
+                "mikey179/vfsstream": "~1.6.0",
+                "phpunit/phpunit": "^5.6",
+                "typo3/cms-backend": "^8.5",
+                "typo3/cms-core": "^8.5",
+                "typo3/cms-extbase": "^8.5",
+                "typo3/cms-fluid": "^8.5",
+                "typo3/cms-frontend": "^8.5",
+                "typo3fluid/fluid": "^2.2"
+            },
+            "suggest": {
+                "codeception/codeception": "^2.2",
+                "se/selenium-server-standalone": "~2.53",
+                "typo3/cms-saltedpasswords": "^8.5",
+                "typo3/cms-styleguide": "~8.0.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\TestingFramework\\": "Classes/",
+                    "TYPO3\\CMS\\Core\\Tests\\": "compat/core/",
+                    "TYPO3\\CMS\\Fluid\\Tests\\": "compat/fluid/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
+            "homepage": "https://typo3.org/",
+            "keywords": [
+                "testing",
+                "tests",
+                "typo3"
+            ],
+            "time": "2017-03-31T14:08:16+00:00"
         },
         {
             "name": "webmozart/assert",
