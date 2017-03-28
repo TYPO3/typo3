@@ -53,7 +53,7 @@ styles.content.get {
     table = tt_content
     select {
         orderBy = sorting
-        where = colPos=0
+        where = {#colPos}=0
     }
 }
 

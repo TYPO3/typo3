@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -180,5 +181,28 @@ class QueryHelper
                 'format' => 'Y-m-d H:i:s'
             ]
         ];
+    }
+
+    /**
+     * Quote database table/column names indicated by {#identifier} markup in a SQL fragment string.
+     * This is an intermediate step to make SQL fragments in Typoscript and TCA database agnostic.
+     *
+     * @param \TYPO3\CMS\Core\Database\Connection $connection
+     * @param string $sql
+     * @return string
+     */
+    public static function quoteDatabaseIdentifiers(Connection $connection, string $sql): string
+    {
+        if (strpos($sql, '{#') !== false) {
+            $sql = preg_replace_callback(
+                '/{#(?P<identifier>[^}]+)}/',
+                function (array $matches) use ($connection) {
+                    return $connection->quoteIdentifier($matches['identifier']);
+                },
+                $sql
+            );
+        }
+
+        return $sql;
     }
 }

@@ -29,7 +29,7 @@ Based on the TEMPLATE content object (cObj)
                table = tt_content
                select {
                   orderBy = sorting
-                  where = colPos=0
+                  where = {#colPos}=0
                   languageField = sys_language_uid
                }
             }
@@ -56,7 +56,7 @@ Based on the FLUIDTEMPLATE content object (cObj)
                table = tt_content
                select {
                   orderBy = sorting
-                  where = colPos=0
+                  where = {#colPos}=0
                   languageField = sys_language_uid
                }
             }

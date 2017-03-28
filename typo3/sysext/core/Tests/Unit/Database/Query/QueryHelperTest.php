@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 
 /**
@@ -346,5 +348,55 @@ class QueryHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function parseJoinSplitsStatement(string $input, array $expected)
     {
         $this->assertSame($expected, QueryHelper::parseJoin($input));
+    }
+
+    /**
+     * Test cases for quoting column/table name identifiers in SQL fragments
+     *
+     * @return array
+     */
+    public function quoteDatabaseIdentifierDataProvider(): array
+    {
+        return [
+            'no marked identifiers' => [
+                'colPos=0',
+                'colPos=0',
+            ],
+            'single fieldname' => [
+                '{#colPos}=0',
+                '"colPos"=0',
+            ],
+            'tablename and fieldname' => [
+                '{#tt_content.colPos}=0',
+                '"tt_content"."colPos"=0',
+            ],
+            'multiple fieldnames' => [
+                '{#colPos}={#aField}',
+                '"colPos"="aField"',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider quoteDatabaseIdentifierDataProvider
+     * @param string $input
+     * @param string $expected
+     */
+    public function quoteDatabaseIdentifiers(string $input, string $expected)
+    {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $parts = array_map(
+                function ($identifier) {
+                    return '"' . $identifier . '"';
+                },
+                explode('.', $args[0])
+            );
+
+            return implode('.', $parts);
+        });
+
+        $this->assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionProphet->reveal(), $input));
     }
 }

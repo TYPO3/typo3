@@ -14,7 +14,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 use Doctrine\DBAL\Driver\Statement;
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 
 /**
@@ -23,7 +29,12 @@ use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
+     * @var array
+     */
+    protected $singletonInstances = [];
+
+    /**
+     * @var AbstractMenuContentObject
      */
     protected $subject = null;
 
@@ -32,13 +43,24 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
      */
     protected function setUp()
     {
-        $proxyClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
+        $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
             ->setConstructorArgs([$GLOBALS['TYPO3_CONF_VARS'], 1, 1])
             ->getMock();
-        $GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
+        $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
         $GLOBALS['TSFE']->page = [];
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+    }
+
+    /**
+     * Reset singleton instances
+     */
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     ////////////////////////////////
@@ -49,8 +71,16 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
      */
     protected function prepareSectionIndexTest()
     {
+        $connectionProphet = $this->prophesize(Connection::class);
+        $connectionProphet->getExpressionBuilder()->willReturn(new ExpressionBuilder($connectionProphet->reveal()));
+        $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+
+        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
+        $connectionPoolProphet->getConnectionForTable('tt_content')->willReturn($connectionProphet->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+
         $this->subject->sys_page = $this->getMockBuilder(\TYPO3\CMS\Frontend\Page\PageRepository::class)->getMock();
-        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)->getMock();
+        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
     }
 
     /**
@@ -176,11 +206,11 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
         return [
             'no configuration' => [
                 [],
-                'colPos=0'
+                'colPos = 0'
             ],
             'with useColPos 2' => [
                 ['useColPos' => 2],
-                'colPos=2'
+                'colPos = 2'
             ],
             'with useColPos -1' => [
                 ['useColPos' => -1],
@@ -192,7 +222,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
                         'wrap' => '2|'
                     ]
                 ],
-                'colPos=2'
+                'colPos = 2'
             ]
         ];
     }
@@ -279,7 +309,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
         $this->subject = $this->getMockBuilder(AbstractMenuContentObject::class)->setMethods(['getRuntimeCache'])->getMockForAbstractClass();
         $this->subject->expects($this->once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
         $this->prepareSectionIndexTest();
-        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)->getMock();
+        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
 
         $this->subject->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
         $this->subject->menuArr = [
@@ -530,7 +560,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\Un
      */
     public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash = true, array $page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '')
     {
-        $this->subject->parent_cObj = $this->getMockBuilder(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class)
+        $this->subject->parent_cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typoLink'])
             ->getMock();
         $this->subject->mconf = $mconf;

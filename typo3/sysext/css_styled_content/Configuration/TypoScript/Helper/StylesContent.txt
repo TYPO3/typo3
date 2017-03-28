@@ -1,14 +1,14 @@
 # get content, left
 styles.content.getLeft < styles.content.get
-styles.content.getLeft.select.where = colPos=1
+styles.content.getLeft.select.where = {#colPos}=1
 
 # get content, right
 styles.content.getRight < styles.content.get
-styles.content.getRight.select.where = colPos=2
+styles.content.getRight.select.where = {#colPos}=2
 
 # get content, margin
 styles.content.getBorder < styles.content.get
-styles.content.getBorder.select.where = colPos=3
+styles.content.getBorder.select.where = {#colPos}=3
 
 # get news
 styles.content.getNews < styles.content.get

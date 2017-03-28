@@ -7398,6 +7398,7 @@ class ContentObjectRenderer
     public function getQuery($table, $conf, $returnQueryArray = false)
     {
         // Resolve stdWrap in these properties first
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $properties = [
             'pidInList',
             'uidInList',
@@ -7420,6 +7421,8 @@ class ContentObjectRenderer
             );
             if ($conf[$property] === '') {
                 unset($conf[$property]);
+            } elseif (in_array($property, ['languageField', 'selectFields', 'join', 'leftJoin', 'rightJoin', 'where'], true)) {
+                $conf[$property] = QueryHelper::quoteDatabaseIdentifiers($connection, $conf[$property]);
             }
             if (isset($conf[$property . '.'])) {
                 // stdWrapping already done, so remove the sub-array
@@ -7481,7 +7484,7 @@ class ContentObjectRenderer
 
         $queryParts = $this->getQueryConstraints($table, $conf);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
         // @todo Check against getQueryConstraints, can probably use FrontendRestrictions
         // @todo here and remove enableFields there.
         $queryBuilder->getRestrictions()->removeAll();

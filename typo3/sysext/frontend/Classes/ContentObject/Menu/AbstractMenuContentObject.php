@@ -2190,8 +2190,16 @@ abstract class AbstractMenuContentObject
             'pidInList' => $pid,
             'orderBy' => $altSortField,
             'languageField' => 'sys_language_uid',
-            'where' => $useColPos >= 0 ? 'colPos=' . $useColPos : ''
+            'where' => ''
         ];
+
+        if ($useColPos >= 0) {
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tt_content')
+                ->getExpressionBuilder();
+            $selectSetup['where'] = $expressionBuilder->eq('colPos', $useColPos);
+        }
+
         if ($basePageRow['content_from_pid']) {
             // If the page is configured to show content from a referenced page the sectionIndex contains only contents of
             // the referenced page

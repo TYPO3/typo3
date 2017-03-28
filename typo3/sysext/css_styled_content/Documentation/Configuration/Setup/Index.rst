@@ -164,7 +164,7 @@ Here is some example setup code for :code:`styles.content`. Note that all proper
    styles.content.get {
            table = tt_content
            select.orderBy = sorting
-           select.where = colPos=0
+           select.where = {#colPos}=0
            select.languageField = sys_language_uid
    }
 
