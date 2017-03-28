@@ -1258,9 +1258,11 @@ class PageRepository
      * @param string $hash The hash-string which was used to store the data value
      * @return mixed The "data" from the cache
      * @see tslib_TStemplate::start(), storeHash()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the Cache Manager directly to fetch cache entries
      */
     public static function getHash($hash)
     {
+        GeneralUtility::logDeprecatedFunction();
         $hashContent = null;
         /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $contentHashCache */
         $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
@@ -1283,9 +1285,11 @@ class PageRepository
      * @param string $ident Is just a textual identification in order to inform about the content!
      * @param int $lifetime The lifetime for the cache entry in seconds
      * @see tslib_TStemplate::start(), getHash()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the Cache Manager directly to store cache entries
      */
     public static function storeHash($hash, $data, $ident, $lifetime = 0)
     {
+        GeneralUtility::logDeprecatedFunction();
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], (int)$lifetime);
     }
 
