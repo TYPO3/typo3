@@ -7829,6 +7829,7 @@ class ContentObjectRenderer
      */
     public function getWhere($table, $conf, $returnQueryArray = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Init:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryConstraints = $this->getQueryConstraints($table, $conf);
