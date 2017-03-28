@@ -112,9 +112,17 @@ class PageGenerator
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($tsfe->config['config']['noScaleUp']) ? !$tsfe->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
         $tsfe->ATagParams = trim($tsfe->config['config']['ATagParams']) ? ' ' . trim($tsfe->config['config']['ATagParams']) : '';
         if ($tsfe->config['config']['setJS_mouseOver']) {
+            $tsfe->logDeprecatedTyposcript(
+                'config.setJS_mouseOver',
+                'The TypoScript property "config.setJS_mouseOver" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
+            );
             $tsfe->setJS('mouseOver');
         }
         if ($tsfe->config['config']['setJS_openPic']) {
+            $tsfe->logDeprecatedTyposcript(
+                'config.setJS_openPic',
+                'The TypoScript property "config.setJS_openPic" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
+            );
             $tsfe->setJS('openPic');
         }
         static::initializeSearchWordDataInTsfe();

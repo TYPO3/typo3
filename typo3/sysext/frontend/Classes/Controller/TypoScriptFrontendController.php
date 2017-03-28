@@ -3238,9 +3238,17 @@ class TypoScriptFrontendController
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($this->config['config']['noScaleUp']) ? !$this->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
         $this->ATagParams = trim($this->config['config']['ATagParams']) ? ' ' . trim($this->config['config']['ATagParams']) : '';
         if ($this->config['config']['setJS_mouseOver']) {
+            $this->logDeprecatedTyposcript(
+                'config.setJS_mouseOver',
+                'The TypoScript property "config.setJS_mouseOver" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
+            );
             $this->setJS('mouseOver');
         }
         if ($this->config['config']['setJS_openPic']) {
+            $this->logDeprecatedTyposcript(
+                'config.setJS_openPic',
+                'The TypoScript property "config.setJS_openPic" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
+            );
             $this->setJS('openPic');
         }
         $this->initializeSearchWordDataInTsfe();

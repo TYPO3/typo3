@@ -781,8 +781,6 @@ var typoscriptWords = {
 	'setContentToCurrent': 'reserved',
 	'setCurrent': 'reserved',
 	'setfixed': 'reserved',
-	'setJS_mouseOver': 'reserved',
-	'setJS_openPic': 'reserved',
 	'setOnly': 'reserved',
 	'setup': 'keyword2',
 	'shadow': 'reserved',

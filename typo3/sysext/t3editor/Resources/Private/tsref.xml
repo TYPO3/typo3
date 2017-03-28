@@ -771,16 +771,6 @@ Another way to solve the problem is using this option in combination with disabl
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="setJS_mouseOver" type="boolean">
-			<description><![CDATA[If set, the over() and out() JavaScript functions are forced to be included]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="setJS_openPic" type="boolean">
-			<description><![CDATA[If set, the openPic JavaScript function is forced to be included]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="spamProtectEmailAddresses" type="string">
 			<description><![CDATA["ascii" / -10 to 10
 			If set, then all email addresses in typolinks will be encrypted so spam bots cannot detect them.
