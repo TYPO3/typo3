@@ -213,6 +213,7 @@ class GraphicalFunctions
      * The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
      *
      * @var string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public $tempPath = 'typo3temp/';
 
@@ -1971,15 +1972,15 @@ class GraphicalFunctions
     }
 
     /**
-     * Returns a random filename prefixed with "temp_" and then 32 char md5 hash (without extension) from $this->tempPath.
+     * Returns a random filename prefixed with "temp_" and then 32 char md5 hash (without extension).
      * Used by functions in this class to create truly temporary files for the on-the-fly processing. These files will most likely be deleted right away.
      *
      * @return string
      */
     public function randomName()
     {
-        $this->createTempSubDir('var/transient/');
-        return $this->tempPath . 'var/transient/' . md5(uniqid('', true));
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/transient/');
+        return 'typo3temp/var/transient/' . md5(uniqid('', true));
     }
 
     /**
@@ -2192,8 +2193,8 @@ class GraphicalFunctions
             $this->imageMagickConvert_forceFileNameBody = '';
         }
         // Making the temporary filename:
-        $this->createTempSubDir('assets/images/');
-        $output = $this->absPrefix . $this->tempPath . 'assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
+        $output = $this->absPrefix . 'typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
@@ -2655,9 +2656,11 @@ class GraphicalFunctions
      *
      * @param string $dirName Name of sub directory
      * @return bool Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use GeneralUtility::mkdir_deep() directly.
      */
     public function createTempSubDir($dirName)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
         if (GeneralUtility::isFirstPartOfStr($this->tempPath, PATH_site)) {
             $tmpPath = $this->tempPath;

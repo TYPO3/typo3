@@ -343,11 +343,11 @@ class GifBuilder extends GraphicalFunctions
     {
         if ($this->setup) {
             // Relative to PATH_site
-            $gifFileName = $this->fileName('images/');
+            $gifFileName = $this->fileName('assets/images/');
             // File exists
             if (!file_exists($gifFileName)) {
                 // Create temporary directory if not done:
-                $this->createTempSubDir('images/');
+                GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
                 // Create file:
                 $this->make();
                 $this->output($gifFileName);
@@ -705,7 +705,7 @@ class GifBuilder extends GraphicalFunctions
         // shorten prefix to avoid overly long file names
         $filePrefix = substr($filePrefix, 0, 100);
 
-        return $this->tempPath . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
+        return 'typo3temp/' . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
     }
 
     /**

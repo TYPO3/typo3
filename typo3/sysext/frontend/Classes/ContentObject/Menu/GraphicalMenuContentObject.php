@@ -234,8 +234,8 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject
             }
             // If an alternative name was NOT given, find the GIFBUILDER name.
             if (!$gifFileName && $isGD) {
-                $gifCreator->createTempSubDir('menu/');
-                $gifFileName = $gifCreator->fileName('menu/');
+                GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/menu/');
+                $gifFileName = $gifCreator->fileName('assets/menu/');
             }
             $this->result[$resKey][$key] = $conf[$key];
             // Generation of image file:

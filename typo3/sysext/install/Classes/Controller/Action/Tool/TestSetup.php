@@ -656,7 +656,7 @@ class TestSetup extends Action\AbstractAction
         /** @var GraphicalFunctions $imageProcessor */
         $imageProcessor = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $imageProcessor->init();
-        $imageProcessor->tempPath = PATH_site . 'typo3temp/';
+        $imageProcessor->absPrefix = PATH_site;
         $imageProcessor->dontCheckForExistingTempFile = 1;
         $imageProcessor->filenamePrefix = 'installTool-';
         $imageProcessor->dontCompress = 1;

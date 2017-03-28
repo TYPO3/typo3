@@ -137,7 +137,7 @@ class LocalCropScaleMaskHelper
             }
         } else {
             $targetFileName = $this->getFilenameForImageCropScaleMask($task);
-            $temporaryFileName = $gifBuilder->tempPath . $targetFileName;
+            $temporaryFileName = PATH_site . 'typo3temp/' . $targetFileName;
             $maskImage = $configuration['maskImages']['maskImage'];
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof Resource\FileInterface && $maskBackgroundImage instanceof Resource\FileInterface) {

@@ -191,8 +191,8 @@ class ImageMenuContentObject extends AbstractMenuContentObject
                     echo '<h3>Renumbered GIFBUILDER object:</h3>';
                     debug($gifCreator->setup);
                 }
-                $gifCreator->createTempSubDir('menu/');
-                $gifFileName = $gifCreator->fileName('menu/');
+                GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/menu/');
+                $gifFileName = $gifCreator->fileName('assets/menu/');
                 // Gets the ImageMap from the cache...
                 $cache = $this->getCache();
                 $imgHash = md5($gifFileName);
