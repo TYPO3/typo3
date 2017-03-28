@@ -2089,7 +2089,7 @@ class DataHandler
                 // For logging..
                 $propArr = $this->getRecordProperties($table, $id);
                 // Get destrination path:
-                $dest = $this->destPathFromUploadFolder($tcaFieldConf['uploadfolder']);
+                $dest = PATH_site . $tcaFieldConf['uploadfolder'];
                 // If we are updating:
                 if ($status === 'update') {
                     // Traverse the input values and convert to absolute filenames in case the update happens to an autoVersionized record.
@@ -3998,7 +3998,7 @@ class DataHandler
         }
         // Traverse this array of files:
         $uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
-        $dest = $this->destPathFromUploadFolder($uploadFolder);
+        $dest = PATH_site . $uploadFolder;
         $newValue = [];
         foreach ($theFileValues as $file) {
             if (trim($file)) {
@@ -5156,7 +5156,7 @@ class DataHandler
                     // MISSING: Support for MM file relations!
                     foreach ($fArray as $theField) {
                         // This deletes files that belonged to this record.
-                        $this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll');
+                        $this->extFileFunctions($table, $theField, $row[$theField]);
                     }
                 } elseif ($this->enableLogging) {
                     $this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
@@ -7670,9 +7670,11 @@ class DataHandler
      *
      * @param string $folder Upload folder name, relative to PATH_site
      * @return string Input string prefixed with PATH_site
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, can be simplified by just prepending the PATH_site constant
      */
     public function destPathFromUploadFolder($folder)
     {
+        GeneralUtility::logDeprecatedFunction();
         return PATH_site . $folder;
     }
 
@@ -8136,28 +8138,26 @@ class DataHandler
      * @param string $table Table name
      * @param string $field Field name
      * @param string $filelist List of files to work on from field
-     * @param string $func Function, eg. "deleteAll" which will delete all files listed.
+     * @param string $func, previously "deleteAll" was possible, this argument is now removed, as deleteAll is the only option
      */
-    public function extFileFunctions($table, $field, $filelist, $func)
+    public function extFileFunctions($table, $field, $filelist, $func = null)
     {
+        if ($func !== null) {
+            GeneralUtility::deprecationLog('Parameter 4 of DataHandler::extFileFunctions() has been removed in TYPO3 v8, and will be removed in TYPO3 v9.');
+            if ($func !== 'deleteAll') {
+                return;
+            }
+        }
         $uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
         if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] === 'file') {
-            $uploadPath = $this->destPathFromUploadFolder($uploadFolder);
-            $fileArray = explode(',', $filelist);
+            $uploadPath = PATH_site . $uploadFolder;
+            $fileArray = GeneralUtility::trimExplode(',', $filelist, true);
             foreach ($fileArray as $theFile) {
-                $theFile = trim($theFile);
-                if ($theFile) {
-                    switch ($func) {
-                        case 'deleteAll':
-                            $theFileFullPath = $uploadPath . '/' . $theFile;
-                            if (@is_file($theFileFullPath)) {
-                                $file = $this->getResourceFactory()->retrieveFileOrFolderObject($theFileFullPath);
-                                $file->delete();
-                            } elseif ($this->enableLogging) {
-                                $this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
-                            }
-                            break;
-                    }
+                $theFileFullPath = $uploadPath . '/' . $theFile;
+                if (@is_file($theFileFullPath)) {
+                    $this->getResourceFactory()->retrieveFileOrFolderObject($theFileFullPath)->delete();
+                } elseif ($this->enableLogging) {
+                    $this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
                 }
             }
         }
