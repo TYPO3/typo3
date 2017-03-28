@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\ExtDirect;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -159,14 +160,16 @@ class ExtDirectApi
     {
         $noCache = (bool)GeneralUtility::_GET('no_cache');
         // Look up into the cache
-        $cacheIdentifier = 'ExtDirectApi';
-        $cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . GeneralUtility::getIndpEnv('HTTP_HOST'));
+        $cacheTag = 'ExtDirectApi';
+        $cacheIdentifier = md5($cacheTag . implode(',', $filterNamespaces) . GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . GeneralUtility::getIndpEnv('HTTP_HOST'));
         // With no_cache always generate the javascript content
         // Generate the javascript content if it wasn't found inside the cache and cache it!
-        if ($noCache || !is_array(($javascriptNamespaces = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash)))) {
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+        if ($noCache || !is_array(($javascriptNamespaces = $cache->get($cacheIdentifier)))) {
             $javascriptNamespaces = $this->generateAPI($filterNamespaces);
             if (!empty($javascriptNamespaces)) {
-                \TYPO3\CMS\Frontend\Page\PageRepository::storeHash($cacheHash, $javascriptNamespaces, $cacheIdentifier);
+                $cache->set($cacheIdentifier, $javascriptNamespaces, [$cacheTag]);
             }
         }
         return $javascriptNamespaces;
