@@ -60,6 +60,7 @@ class DocumentTemplate
      * Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
      *
      * @var string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use PageRenderers's JS methods to inject JavaScript on a backend page.
      */
     public $extJScode = '';
 
@@ -604,6 +605,7 @@ function jumpToUrl(URL) {
         }
 
         if ($this->extJScode) {
+            GeneralUtility::deprecationLog('The property DocumentTemplate->extJScode to add ExtJS-based onReadyCode is deprecated since TYPO3 v8, and will be removed in TYPO3 v9. Use the page renderer directly instead to add JavaScript code.');
             $this->pageRenderer->addExtOnReadyCode($this->extJScode);
         }
 
