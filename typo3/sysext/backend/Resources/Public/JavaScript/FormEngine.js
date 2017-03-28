@@ -590,7 +590,6 @@ define(['jquery',
 	 */
 	FormEngine.initializeEvents = function() {
 
-		FormEngine.initializeRemainingCharacterViews();
 		FormEngine.initializeSelectCheckboxes();
 
 		$(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
@@ -744,7 +743,7 @@ define(['jquery',
 	 */
 	FormEngine.initializeRemainingCharacterViews = function() {
 		// all fields with a "maxlength" attribute
-		var $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker');
+		var $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker').not('.t3js-charcounter-initialized');
 		$maxlengthElements.on('focus', function(e) {
 			var $field = $(this),
 				$parent = $field.parents('.t3js-formengine-field-item:first'),
@@ -766,6 +765,7 @@ define(['jquery',
 			// change class and value
 			$parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
 		});
+		$maxlengthElements.addClass('t3js-charcounter-initialized');
 		$(':password').on('focus', function() {
 			$(this).attr('type', 'text').select();
 		}).on('blur', function() {
@@ -992,6 +992,7 @@ define(['jquery',
 		FormEngine.initializeNullWithPlaceholderCheckboxes();
 		FormEngine.initializeInputLinkToggle();
 		FormEngine.initializeLocalizationStateSelector();
+		FormEngine.initializeRemainingCharacterViews();
 	};
 
 	/**
