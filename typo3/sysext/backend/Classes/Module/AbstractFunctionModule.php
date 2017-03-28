@@ -126,16 +126,18 @@ abstract class AbstractFunctionModule
      *
      * @see init()
      * @var string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public $thisPath = '';
 
     /**
      * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
+     * and is included / added to $GLOBALS['LOCAL_LANG']
      *
-     * @see incLocalLang()
+     * @see init()
      * @var string
      */
-    public $localLangFile = 'locallang.xlf';
+    public $localLangFile = '';
 
     /**
      * Contains module configuration parts from TBE_MODULES_EXT if found
@@ -178,7 +180,9 @@ abstract class AbstractFunctionModule
             throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
         }
         // Local lang:
-        $this->incLocalLang();
+        if (!empty($this->localLangFile)) {
+            $this->getLanguageService()->includeLLFile($this->localLangFile);
+        }
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
@@ -201,9 +205,11 @@ abstract class AbstractFunctionModule
     /**
      * Including any locallang file configured and merging its content over
      * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function incLocalLang()
     {
+        GeneralUtility::logDeprecatedFunction();
         if (
             $this->localLangFile
             && (
