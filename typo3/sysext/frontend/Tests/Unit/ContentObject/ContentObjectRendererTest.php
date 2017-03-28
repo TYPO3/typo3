@@ -3445,6 +3445,65 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             $subject->HTMLcaseshift($content, $case));
     }
 
+    /**
+     * Data provider for prefixComment.
+     *
+     * @return array [$expect, $comment, $content]
+     */
+    public function prefixCommentDataProvider()
+    {
+        $comment = $this->getUniqueId();
+        $content = $this->getUniqueId();
+        $format = '%s';
+        $format .= '%%s<!-- %%s [begin] -->%s';
+        $format .= '%%s%s%%s%s';
+        $format .= '%%s<!-- %%s [end] -->%s';
+        $format .= '%%s%s';
+        $format = sprintf($format, LF, LF, TAB, LF, LF, TAB);
+        $indent1 = TAB;
+        $indent2 = TAB . TAB;
+        return [
+            'indent one tab' => [
+                sprintf($format,
+                    $indent1, $comment,
+                    $indent1, $content,
+                    $indent1, $comment,
+                    $indent1),
+                '1|' . $comment, $content ],
+            'indent two tabs' => [
+                sprintf($format,
+                    $indent2, $comment,
+                    $indent2, $content,
+                    $indent2, $comment,
+                    $indent2),
+                '2|' . $comment, $content ],
+            'htmlspecialchars applies for comment only' => [
+                sprintf($format,
+                    $indent1, '&lt;' . $comment . '&gt;',
+                    $indent1, '<' . $content . '>',
+                    $indent1, '&lt;' . $comment . '&gt;',
+                    $indent1),
+                '1|' . '<' . $comment . '>', '<' . $content . '>' ],
+        ];
+    }
+
+    /**
+     * Check if prefixComment works properly.
+     *
+     * @test
+     * @dataProvider prefixCommentDataProvider
+     * @param string $expect The expected output.
+     * @param string $comment The parameter $comment.
+     * @param string $content The parameter $content.
+     */
+    public function prefixComment($expect, $comment, $content)
+    {
+        // The parameter $conf is never used. Just provide null.
+        // Consider to improve the signature and deprecate the old one.
+        $result = $this->subject->prefixComment($comment, null, $content);
+        $this->assertEquals($expect, $result);
+    }
+
     /***************************************************************************
     * General tests for stdWrap_
     ***************************************************************************/
