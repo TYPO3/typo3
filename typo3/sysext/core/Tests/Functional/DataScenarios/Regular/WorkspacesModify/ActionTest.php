@@ -1367,4 +1367,18 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyContentAndCreateNewVersion();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentAndCreateNewVersion.csv');
     }
+
+    #[Test]
+    public function localizeContentAndEditVersionedContentWithLanguageSynchronization(): void
+    {
+        parent::localizeContentAndEditVersionedContentWithLanguageSynchronization();
+        // Assert translation was synced by checking the Danish language frontend output
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #2'));
+    }
 }
