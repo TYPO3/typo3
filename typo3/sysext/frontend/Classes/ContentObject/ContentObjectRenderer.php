@@ -6861,9 +6861,11 @@ class ContentObjectRenderer
      * @param string $propList List of properties to clear both value/properties for. Eg. "myprop,another_property
      * @return array The TypoScript array
      * @see gifBuilderTextBox()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
      */
     public function clearTSProperties($TSArr, $propList)
     {
+        GeneralUtility::logDeprecatedFunction();
         $list = explode(',', $propList);
         foreach ($list as $prop) {
             $prop = trim($prop);
@@ -6904,9 +6906,11 @@ class ContentObjectRenderer
      * @param array $conf TypoScript properties for this function
      * @param string $text The text string to write onto the GIFBUILDER file
      * @return array The modified $gifbuilderConf array
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
      */
     public function gifBuilderTextBox($gifbuilderConf, $conf, $text)
     {
+        GeneralUtility::logDeprecatedFunction();
         $chars = (int)$conf['chars'] ?: 20;
         $lineDist = (int)$conf['lineDist'] ?: 20;
         $Valign = strtolower(trim($conf['Valign']));
@@ -6955,9 +6959,11 @@ class ContentObjectRenderer
      * @return array array with lines.
      * @access private
      * @see gifBuilderTextBox()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
      */
     public function linebreaks($string, $chars, $maxLines = 0)
     {
+        GeneralUtility::logDeprecatedFunction();
         $lines = explode(LF, $string);
         $lineArr = [];
         $c = 0;
