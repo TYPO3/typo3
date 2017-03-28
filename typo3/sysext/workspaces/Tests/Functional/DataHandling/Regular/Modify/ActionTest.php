@@ -177,7 +177,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
     /**
@@ -192,7 +192,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
     }
 
     /**
@@ -348,7 +348,6 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
      */
     public function copyPageFreeMode()
     {
-        $this->importScenarioDataSet('LivePageFreeModeElements');
         parent::copyPageFreeMode();
         $this->assertAssertionDataSet('copyPageFreeMode');
 
@@ -585,6 +584,8 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     /**
      * @test
      * @see DataSet/changeContentSortingAndCopyDraftPage.csv
+     * @group mysql
+     * @todo Analyse PostgreSQL issues further, which is a generic issue
      */
     public function changeContentSortingAndCopyDraftPage()
     {

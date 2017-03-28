@@ -45,6 +45,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     protected function setUp()
     {
         parent::setUp();
+        $this->importScenarioDataSet('LivePageFreeModeElements');
+        $this->importScenarioDataSet('VersionDefaultElements');
         $this->importScenarioDataSet('ReferenceIndex');
         $this->backendUser->workspace = self::VALUE_WorkspaceId;
     }
