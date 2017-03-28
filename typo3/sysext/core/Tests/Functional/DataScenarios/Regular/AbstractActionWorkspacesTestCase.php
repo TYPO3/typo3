@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+
 abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 {
     protected const VALUE_ParentPageId = 88;
@@ -27,6 +29,25 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
 
     protected array $coreExtensionsToLoad = ['workspaces'];
+
+    /**
+     * Reproduces bug #107262: language synchronization stops working after the
+     * first workspace edit, because subsequent edits address the version UID
+     * (as the backend does) instead of the live UID.
+     */
+    public function localizeContentAndEditVersionedContentWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        // Step 1: Localize content to create a translation
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        // Step 2: First edit via live UID - creates workspace version, sync works
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
+        $this->recordIds['versionedContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        // Step 3: Second edit via VERSION UID (as the backend would submit)
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['versionedContentId'], ['header' => 'Testing #2']);
+    }
 
     public function createContentAndCopyContent(): void
     {

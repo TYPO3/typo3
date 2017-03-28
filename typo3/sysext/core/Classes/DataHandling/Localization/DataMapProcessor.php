@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\Localization;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -127,6 +129,8 @@ class DataMapProcessor
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly SiteFinder $siteFinder,
+        #[Autowire(service: 'cache.runtime')]
+        private readonly FrontendInterface $runtimeCache,
     ) {}
 
     /**
@@ -207,6 +211,19 @@ class DataMapProcessor
         if ($schema === null) {
             throw new \RuntimeException('TCA schema for table "' . $tableName . '" not found, but table was considered applicable for language synchronization', 1744454610);
         }
+
+        // filter real numeric ids
+        $realIds = $this->filterNumericIds(array_keys($idValues));
+        $versionToLiveIdMap = $this->getVersionToLiveIdMap($tableName, $backendUser);
+        $liveIds = $versionToLiveIdMap->update($realIds)->getLiveIds($realIds);
+        // @todo This is superfluous if l10n_source would store live(!) ids...
+        $liveAndVersionIds = array_unique(
+            array_merge(
+                $liveIds,
+                array_keys($idValues)
+            )
+        );
+
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $fieldNames = [
             'uid' => 'uid',
@@ -217,17 +234,20 @@ class DataMapProcessor
         if ($languageCapability->hasTranslationSourceField()) {
             $fieldNames['source'] = $languageCapability->getTranslationSourceField()->getName();
         }
+        if ($schema->isWorkspaceAware()) {
+            $fieldNames['versionSource'] = 't3ver_oid';
+        }
 
         $translationValues = $this->fetchTranslationValues(
             $tableName,
             $fieldNames,
-            $this->filterNewItemIds($tableName, $this->filterNumericIds(array_keys($idValues)), $this->allItems),
+            $this->filterNewItemIds($tableName, $realIds, $this->allItems),
             $backendUser,
         );
 
         $dependencies = $this->fetchDependencies(
             $tableName,
-            $this->filterNewItemIds($tableName, array_keys($idValues), $this->allItems),
+            $this->filterNewItemIds($tableName, $liveAndVersionIds, $this->allItems),
             $backendUser,
             $this->allDataMap,
         );
@@ -250,8 +270,11 @@ class DataMapProcessor
                     continue;
                 }
                 // add dependencies
-                if (!empty($dependencies[$id])) {
-                    $item->setDependencies($dependencies[$id]);
+                if (!empty($dependencies[$item->getLiveId()])) {
+                    $item->setDependencies($dependencies[$item->getLiveId()]);
+                    // @todo This is superfluous if l10n_source would store live(!) ids...
+                } elseif (!empty($dependencies[$item->getId()])) {
+                    $item->setDependencies($dependencies[$item->getId()]);
                 }
             }
             // add item to $this->allItems and $this->nextItems
@@ -508,6 +531,8 @@ class DataMapProcessor
 
         $suggestedAncestorIds = $this->resolveSuggestedInlineRelations($item, $fieldName, $fromRecord, $backendUser, $this->allDataMap);
         $persistedIds = $this->resolvePersistedInlineRelations($item, $fieldName, $forRecord, $backendUser);
+        // Resolve suggested live-ids if available and applicable
+        $suggestedAncestorIds = $this->mapToLiveIds($foreignTableName, $suggestedAncestorIds, $backendUser);
 
         // The dependent ID map points from language parent/source record to
         // localization, thus keys: parents/sources & values: localizations
@@ -700,7 +725,7 @@ class DataMapProcessor
                 $forRecord[$fieldName] ?? '',
                 $foreignTableName,
                 $manyToManyTable,
-                $item->getId(),
+                $item->getLiveId(),
                 $item->getTableName(),
                 $configuration
             );
@@ -963,6 +988,9 @@ class DataMapProcessor
                 'origin' => $originFieldName,
             ];
         }
+        if ($schema->isWorkspaceAware()) {
+            $fieldNames['versionSource'] = 't3ver_oid';
+        }
         $ancestorIdMap = [];
 
         $fetchIds = $ids;
@@ -978,6 +1006,10 @@ class DataMapProcessor
         $dependentIdMap = [];
         foreach ($dependentElements as $dependentElement) {
             $dependentId = $dependentElement['uid'];
+            // always use live id
+            if (!empty($dependentElement['t3ver_oid'])) {
+                $dependentId = $dependentElement['t3ver_oid'];
+            }
             // implicit: use origin pointer if table cannot be translated
             if (!$isTranslatable) {
                 $ancestorId = (int)$dependentElement[$fieldNames['origin']];
@@ -1146,6 +1178,31 @@ class DataMapProcessor
     }
 
     /**
+     * Maps id values to live-id values (if available and applicable).
+     *
+     * @param string[]|int[] $ids
+     * @return string[]|int[]
+     */
+    protected function mapToLiveIds(string $tableName, array $ids, BackendUserAuthentication $backendUser): array
+    {
+        if ($backendUser->workspace === 0) {
+            return $ids;
+        }
+
+        $versionToLiveIdMap = $this->getVersionToLiveIdMap($tableName, $backendUser);
+        $versionToLiveIdMap->update($this->filterNumericIds($ids));
+        return array_map(
+            function ($id) use ($versionToLiveIdMap) {
+                if (!MathUtility::canBeInterpretedAsInteger($id)) {
+                    return $id;
+                }
+                return $versionToLiveIdMap->getLiveId((int)$id);
+            },
+            $ids
+        );
+    }
+
+    /**
      * @param array<string, string> $fieldNames
      * @param array<string, mixed> $element
      * @return int|null either a (non-empty) ancestor uid, or `null` if unresolved
@@ -1196,12 +1253,10 @@ class DataMapProcessor
         $data[$fieldNames['language']] = $language;
         // apply `transOrigPointerField`, e.g. `l10n_parent`
         if (empty($data[$fieldNames['parent']])) {
-            // @todo Only $id used in TCA type 'select' is resolved in DataHandler's remapStack
             $data[$fieldNames['parent']] = $fromId;
         }
         // apply `translationSource`, e.g. `l10n_source`
         if (!empty($fieldNames['source'])) {
-            // @todo Not sure, whether $id is resolved in DataHandler's remapStack
             $data[$fieldNames['source']] = $fromId;
         }
         // unset field names that are expected to be handled in this processor
@@ -1390,6 +1445,17 @@ class DataMapProcessor
             || $this->getSchema($tableName)?->isLanguageAware()
                 && count($this->getLocalizationModeExcludeFieldNames($tableName)) > 0
         ;
+    }
+
+    protected function getVersionToLiveIdMap(string $tableName, BackendUserAuthentication $backendUser): VersionToLiveIdMap
+    {
+        $cacheIdentifier = 'datamapprocessor-version-to-live-id-map-' . $backendUser->workspace . '-' . $tableName;
+        $map = $this->runtimeCache->get($cacheIdentifier);
+        if (!$map instanceof VersionToLiveIdMap) {
+            $map = new VersionToLiveIdMap($tableName, $backendUser->workspace);
+            $this->runtimeCache->set($cacheIdentifier, $map);
+        }
+        return $map;
     }
 
     protected function createRelationHandler(BackendUserAuthentication $backendUser): RelationHandler

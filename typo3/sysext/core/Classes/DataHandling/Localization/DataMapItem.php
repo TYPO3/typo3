@@ -38,6 +38,7 @@ class DataMapItem
 
     protected string $tableName;
     protected string|int $id;
+    protected int $liveId;
     protected array $suggestedValues;
     protected array $persistedValues;
     protected array $configurationFieldNames;
@@ -70,12 +71,17 @@ class DataMapItem
             $configurationFieldNames
         );
 
+        // assign language specific settings of item
         $item->language = (int)($suggestedValues[$item->getLanguageFieldName()] ?? $persistedValues[$item->getLanguageFieldName()] ?? 0);
         $item->setParent($suggestedValues[$item->getParentFieldName()] ?? $persistedValues[$item->getParentFieldName()] ?? '');
         if ($item->getSourceFieldName() !== null) {
             $item->setSource($suggestedValues[$item->getSourceFieldName()] ?? $persistedValues[$item->getSourceFieldName()] ?? '');
         }
-
+        // assign live-id of item if available
+        $versionSourceFieldName = $item->getVersionSourceFieldName();
+        if ($versionSourceFieldName !== null && !empty($persistedValues[$versionSourceFieldName])) {
+            $item->liveId = $persistedValues[$versionSourceFieldName];
+        }
         return $item;
     }
 
@@ -110,6 +116,11 @@ class DataMapItem
     public function getId(): string|int
     {
         return $this->id;
+    }
+
+    public function getLiveId(): int|string
+    {
+        return $this->liveId ?? $this->id;
     }
 
     /**
@@ -149,6 +160,11 @@ class DataMapItem
     public function getSourceFieldName(): ?string
     {
         return $this->configurationFieldNames['source'] ?? null;
+    }
+
+    protected function getVersionSourceFieldName(): ?string
+    {
+        return $this->configurationFieldNames['versionSource'] ?? null;
     }
 
     public function isNew(): bool
