@@ -33,6 +33,7 @@ class AjaxController extends AbstractController
         'extensionCompatibilityTester',
         'uninstallExtension',
         'clearCache',
+        'clearAllCache',
         'coreUpdateUpdateVersionMatrix',
         'coreUpdateIsUpdateAvailable',
         'coreUpdateCheckPreConditions',

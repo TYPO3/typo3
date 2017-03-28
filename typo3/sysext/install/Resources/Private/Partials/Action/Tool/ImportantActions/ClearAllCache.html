@@ -24,5 +24,7 @@
 
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<f:render partial="Action/Common/SubmitButton" arguments="{name:'clearAllCache', text:'Clear all caches including PHP opcode cache'}"/>
+	<div id="clearAllCache">
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'clearAllCache', text:'Clear all caches including PHP opcode cache'}"/>
+	</div>
 </form>

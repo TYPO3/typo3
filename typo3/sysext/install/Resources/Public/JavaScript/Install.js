@@ -74,6 +74,53 @@ TYPO3.Install.FlashMessage = {
 
 TYPO3.Install.Cache = {
 	/**
+	 * output DOM Container
+	 */
+	outputContainer: {},
+
+	/**
+	 * Clone of the DOM object that contains the submit button
+	 */
+	submitButton: {},
+
+	/**
+	 * Default output messages
+	 */
+	outputMessages: {
+		clearAllCache: {
+			fatalTitle: 'Something went wrong',
+			fatalMessage: '',
+			loadingTitle: 'Loading…',
+			loadingMessage: ''
+		}
+	},
+
+	/**
+	* Fetching the templates out of the DOM
+	*
+	* @param cacheCheckContainer DOM element id with all needed HTML in it
+	* @return boolean DOM container could be found and initialization finished
+	*/
+	initialize: function(cacheCheckContainer) {
+		var success = false;
+		this.outputContainer[cacheCheckContainer] = $('#' + cacheCheckContainer);
+
+		if (this.outputContainer[cacheCheckContainer]) {
+			// submit button: save and delete
+			if(!this.submitButton[cacheCheckContainer]) {
+				var submitButton = this.outputContainer[cacheCheckContainer].find('button[type="submit"]');
+				this.submitButton[cacheCheckContainer] = submitButton.clone();
+			}
+
+			// clear all messages from the run before
+			this.outputContainer[cacheCheckContainer].find('.typo3-message:visible ').remove();
+
+			success = true;
+		}
+		return success;
+	},
+
+	/**
 	 * Ajax call to clear all caches.
 	 */
 	clearCache: function() {
@@ -81,6 +128,74 @@ TYPO3.Install.Cache = {
 			url: location.href + '&install[controller]=ajax&install[action]=clearCache',
 			cache: false
 		});
+	},
+	clearAllCache: function(actionName) {
+		var self = this;
+		var url = location.href + '&install[controller]=ajax&install[action]=' + actionName;
+		var isInitialized = self.initialize(actionName);
+		if (isInitialized) {
+			self.addMessage(
+				TYPO3.Install.Severity.loading,
+				self.outputMessages[actionName].loadingTitle,
+				self.outputMessages[actionName].loadingMessage,
+				actionName
+			);
+			$.ajax({
+				url: url,
+				cache: false,
+				success: function(data) {
+					if (data.success === true && Array.isArray(data.status)) {
+						if (data.status.length > 0) {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							data.status.forEach((function (element) {
+								//noinspection JSUnresolvedVariable
+								self.addMessage(
+									element.severity,
+									element.title,
+									element.message,
+									actionName
+								);
+							}));
+						} else {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							self.addMessage(
+								TYPO3.Install.Severity.ok,
+								self.outputMessages[actionName].successTitle,
+								self.outputMessages[actionName].successMessage,
+								actionName
+							);
+						}
+					} else if (data === 'unauthorized') {
+						location.reload();
+					}
+				}
+			});
+		}
+	},
+	/**
+	 * Move the submit button to the end of the box
+	 *
+	 * @param cacheCheckContainer DOM container name
+	 */
+	moveSubmitButtonFurtherDown: function(cacheCheckContainer) {
+		// first remove the currently visible button
+		this.outputContainer[cacheCheckContainer].find('button[type="submit"]').remove();
+		// then append the cloned template to the end
+		this.outputContainer[cacheCheckContainer].append(this.submitButton[cacheCheckContainer]);
+	},
+
+	/**
+	 * Show a status message
+	 *
+	 * @param severity
+	 * @param title
+	 * @param message
+	 * @param cacheCheckContainer DOM container name
+	 */
+	addMessage: function(severity, title, message, cacheCheckContainer) {
+		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
+		this.outputContainer[cacheCheckContainer].append(domMessage);
+		this.moveSubmitButtonFurtherDown(cacheCheckContainer);
 	}
 };
 
@@ -805,6 +920,15 @@ $(function() {
 		}));
 	}
 
+	// Handle clearAllCache
+	var $clearAllCacheSection = $('#clearAllCache');
+	if ($clearAllCacheSection) {
+		$clearAllCacheSection.on('click', 'button', (function(e) {
+			TYPO3.Install.Cache.clearAllCache('clearAllCache');
+			e.preventDefault();
+			return false;
+		}));
+	}
 	// Handle TCA ext_tables check
 	var $tcaExtTablesCheckSection = $('#tcaExtTablesCheck');
 	if ($tcaExtTablesCheckSection) {

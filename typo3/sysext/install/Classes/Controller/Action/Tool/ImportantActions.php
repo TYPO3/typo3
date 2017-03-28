@@ -50,10 +50,6 @@ class ImportantActions extends Action\AbstractAction
         if (isset($this->postValues['set']['createAdministrator'])) {
             $actionMessages[] = $this->createAdministrator();
         }
-        if (isset($this->postValues['set']['clearAllCache'])) {
-            $actionMessages[] = $this->clearAllCache();
-            $actionMessages[] = $this->clearOpcodeCache();
-        }
         if (isset($this->postValues['set']['dumpAutoload'])) {
             $actionMessages[] = $this->dumpAutoload();
         }
@@ -183,34 +179,6 @@ class ImportantActions extends Action\AbstractAction
             $message->setTitle('Site name not changed');
             $message->setMessage('Site name must be at least one character long.');
         }
-        return $message;
-    }
-
-    /**
-     * Clear all caches
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function clearAllCache()
-    {
-        /** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
-        $clearCacheService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ClearCacheService::class);
-        $clearCacheService->clearAll();
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
-        $message->setTitle('Successfully cleared all caches');
-        return $message;
-    }
-
-    /**
-     * Clear PHP opcode cache
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function clearOpcodeCache()
-    {
-        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
-        $message->setTitle('Successfully cleared all available opcode caches');
         return $message;
     }
 
