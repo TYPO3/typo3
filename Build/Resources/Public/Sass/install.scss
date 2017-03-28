@@ -129,9 +129,40 @@ h1:first-child {
     }
 }
 
+.caret {
+    border: 0;
+    padding-left: 10px;
+
+    &:after {
+        position: relative;
+        top: -8px;
+        left: -10px;
+        content: $fa-var-caret-down;
+        font-family: FontAwesome;
+    }
+}
+
 .collapsed .caret {
-    transition: all 0.25s ease-in-out;
-    transform: rotate(-90deg);
+    &:after {
+        content: $fa-var-caret-right;
+        font-family: FontAwesome;
+    }
+}
+
+.panel-heading {
+    position: relative;
+
+    .panel-checkbox {
+        margin: 0;
+        position: absolute;
+        left: 1em;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+
+    .panel-checkbox + .panel-title {
+        padding-left: 18px;
+    }
 }
 
 a[data-toggle="collapse"] {
