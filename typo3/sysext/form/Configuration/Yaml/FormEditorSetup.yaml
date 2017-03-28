@@ -947,6 +947,12 @@ TYPO3:
                         20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
                       100:
                         label: 'formEditor.elements.TextMixin.validators.StringLength.editor.header.label'
+                      200:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.minlength'
+                      300:
+                        additionalElementPropertyPaths:
+                          10: 'properties.fluidAdditionalAttributes.maxlength'
                   40:
                     identifier: 'EmailAddress'
                     editors:
