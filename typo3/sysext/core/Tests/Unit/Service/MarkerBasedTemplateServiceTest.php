@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,9 +31,29 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     protected $templateService;
 
+    /**
+     * @var array A backup of registered singleton instances
+     */
+    protected $singletonInstances = [];
+
     protected function setUp()
     {
-        $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+
+        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
+
+        $this->templateService = new MarkerBasedTemplateService();
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     /**
@@ -604,5 +628,122 @@ Value 2.2
     public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected)
     {
         $this->assertSame($expected, $this->templateService->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
+    }
+
+    /**
+     * @return array
+     */
+    public function substituteMarkerArrayCachedReturnsExpectedContentDataProvider()
+    {
+        return [
+            'no markers defined' => [
+                'dummy content with ###UNREPLACED### marker',
+                [],
+                [],
+                [],
+                'dummy content with ###UNREPLACED### marker',
+            ],
+            'no markers used' => [
+                'dummy content with no marker',
+                [
+                    '###REPLACED###' => '_replaced_'
+                ],
+                [],
+                [],
+                'dummy content with no marker',
+            ],
+            'one marker' => [
+                'dummy content with ###REPLACED### marker',
+                [
+                    '###REPLACED###' => '_replaced_'
+                ],
+                [],
+                [],
+                'dummy content with _replaced_ marker'
+            ],
+            'one marker with lots of chars' => [
+                'dummy content with ###RE.:##-=_()LACED### marker',
+                [
+                    '###RE.:##-=_()LACED###' => '_replaced_'
+                ],
+                [],
+                [],
+                'dummy content with _replaced_ marker'
+            ],
+            'markers which are special' => [
+                'dummy ###aa##.#######A### ######',
+                [
+                    '###aa##.###' => 'content ',
+                    '###A###' => 'is',
+                    '######' => '-is not considered-'
+                ],
+                [],
+                [],
+                'dummy content #is ######'
+            ],
+            'two markers in content, but more defined' => [
+                'dummy ###CONTENT### with ###REPLACED### marker',
+                [
+                    '###REPLACED###' => '_replaced_',
+                    '###CONTENT###' => 'content',
+                    '###NEVERUSED###' => 'bar'
+                ],
+                [],
+                [],
+                'dummy content with _replaced_ marker'
+            ],
+            'one subpart' => [
+                'dummy content with ###ASUBPART### around some text###ASUBPART###.',
+                [],
+                [
+                    '###ASUBPART###' => 'some other text'
+                ],
+                [],
+                'dummy content with some other text.'
+            ],
+            'one wrapped subpart' => [
+                'dummy content with ###AWRAPPEDSUBPART### around some text###AWRAPPEDSUBPART###.',
+                [],
+                [],
+                [
+                    '###AWRAPPEDSUBPART###' => [
+                        'more content',
+                        'content'
+                    ]
+                ],
+                'dummy content with more content around some textcontent.'
+            ],
+            'one subpart with markers, not replaced recursively' => [
+                'dummy ###CONTENT### with ###ASUBPART### around ###SOME### text###ASUBPART###.',
+                [
+                    '###CONTENT###' => 'content',
+                    '###SOME###' => '-this should never make it into output-',
+                    '###OTHER_NOT_REPLACED###' => '-this should never make it into output-'
+                ],
+                [
+                    '###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text'
+                ],
+                [],
+                'dummy content with some ###OTHER_NOT_REPLACED### text.'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider substituteMarkerArrayCachedReturnsExpectedContentDataProvider
+     *
+     * @param string $content
+     * @param array $markContentArray
+     * @param array $subpartContentArray
+     * @param array $wrappedSubpartContentArray
+     * @param string $expectedContent
+     * @param bool $shouldQueryCache
+     * @param bool $shouldStoreCache
+     */
+    public function substituteMarkerArrayCachedReturnsExpectedContent($content, array $markContentArray, array $subpartContentArray, array $wrappedSubpartContentArray, $expectedContent)
+    {
+        $resultContent = $this->templateService->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+        $this->assertSame($expectedContent, $resultContent);
     }
 }

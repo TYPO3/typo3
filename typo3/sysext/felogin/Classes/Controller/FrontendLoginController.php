@@ -215,7 +215,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function showForgot()
     {
-        $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
+        $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_FORGOT###');
         $subpartArray = ($linkpartArray = []);
         $postData = GeneralUtility::_POST($this->prefixId);
         if ($postData['forgot_email']) {
@@ -292,7 +292,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $markerArray['###FORGOTHASH###'] = $hash;
         // Set hash in feuser session
         $this->frontendController->fe_user->setKey('ses', 'forgot_hash', ['forgot_hash' => $hash]);
-        return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
+        return $this->templateService->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
     }
 
     /**
@@ -306,7 +306,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $subpartArray = ($linkpartArray = []);
         $done = false;
         $minLength = (int)$this->conf['newPasswordMinLength'] ?: 6;
-        $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
+        $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);
         $markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
             'change_password_message',
@@ -410,7 +410,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
+        return $this->templateService->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
     }
 
     /**
@@ -501,7 +501,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function showLogout()
     {
-        $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
+        $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
         $subpartArray = ($linkpartArray = []);
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header', $this->conf['logoutHeader_stdWrap.']);
         $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('status_message', $this->conf['logoutMessage_stdWrap.']);
@@ -521,7 +521,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $markerArray['###ACTION_URI###'] = htmlspecialchars($this->redirectUrl);
             $this->redirectUrl = '';
         }
-        return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
+        return $this->templateService->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
     }
 
     /**
@@ -531,7 +531,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function showLogin()
     {
-        $subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
+        $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_LOGIN###');
         $subpartArray = ($linkpartArray = ($markerArray = []));
         $gpRedirectUrl = '';
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('oLabel_header_welcome'));
@@ -659,7 +659,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         } else {
             $subpartArray['###PERMALOGIN_VALID###'] = '';
         }
-        return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
+        return $this->templateService->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
     }
 
     /**

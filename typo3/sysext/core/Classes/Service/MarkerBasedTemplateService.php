@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Core\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Helper functionality for subparts and marker substitution
@@ -306,5 +308,211 @@ class MarkerBasedTemplateService
         $result = $this->substituteMarkerArray($result, $singleItems, $wrap, $uppercase, $deleteUnused);
 
         return $result;
+    }
+
+    /**
+     * Multi substitution function with caching.
+     *
+     * This function should be a one-stop substitution function for working
+     * with HTML-template. It does not substitute by str_replace but by
+     * splitting. This secures that the value inserted does not themselves
+     * contain markers or subparts.
+     *
+     * Note that the "caching" won't cache the content of the substition,
+     * but only the splitting of the template in various parts. So if you
+     * want only one cache-entry per template, make sure you always pass the
+     * exact same set of marker/subpart keys. Else you will be flooding the
+     * user's cache table.
+     *
+     * This function takes three kinds of substitutions in one:
+     * $markContentArray is a regular marker-array where the 'keys' are
+     * substituted in $content with their values
+     *
+     * $subpartContentArray works exactly like markContentArray only is whole
+     * subparts substituted and not only a single marker.
+     *
+     * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where
+     * the subparts pointed to by the main key is wrapped with the 0/1 value
+     * alternating.
+     *
+     * @param string $content The content stream, typically HTML template content.
+     * @param array $markContentArray Regular marker-array where the 'keys' are substituted in $content with their values
+     * @param array $subpartContentArray Exactly like markContentArray only is whole subparts substituted and not only a single marker.
+     * @param array $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
+     * @return string The output content stream
+     * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+     */
+    public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
+    {
+        $runtimeCache = $this->getRuntimeCache();
+        // If not arrays then set them
+        if (is_null($markContentArray)) {
+            // Plain markers
+            $markContentArray = [];
+        }
+        if (is_null($subpartContentArray)) {
+            // Subparts being directly substituted
+            $subpartContentArray = [];
+        }
+        if (is_null($wrappedSubpartContentArray)) {
+            // Subparts being wrapped
+            $wrappedSubpartContentArray = [];
+        }
+        // Finding keys and check hash:
+        $sPkeys = array_keys($subpartContentArray);
+        $wPkeys = array_keys($wrappedSubpartContentArray);
+        $keysToReplace = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
+        if (empty($keysToReplace)) {
+            return $content;
+        }
+        asort($keysToReplace);
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $keysToReplace]));
+        if ($runtimeCache->get($storeKey)) {
+            $storeArr = $runtimeCache->get($storeKey);
+        } else {
+            $cache = $this->getCache();
+            $storeArrDat = $cache->get($storeKey);
+            if (is_array($storeArrDat)) {
+                $storeArr = $storeArrDat;
+                // Setting the data in the first level cache
+                $runtimeCache->set($storeKey, $storeArr);
+            } else {
+                // Finding subparts and substituting them with the subpart as a marker
+                foreach ($sPkeys as $sPK) {
+                    $content = $this->substituteSubpart($content, $sPK, $sPK);
+                }
+                // Finding subparts and wrapping them with markers
+                foreach ($wPkeys as $wPK) {
+                    $content = $this->substituteSubpart($content, $wPK, [
+                        $wPK,
+                        $wPK
+                    ]);
+                }
+
+                $storeArr = [];
+                // search all markers in the content
+                $result = preg_match_all('/###([^#](?:[^#]*+|#{1,2}[^#])+)###/', $content, $markersInContent);
+                if ($result !== false && !empty($markersInContent[1])) {
+                    $keysToReplaceFlipped = array_flip($keysToReplace);
+                    $regexKeys = [];
+                    $wrappedKeys = [];
+                    // Traverse keys and quote them for reg ex.
+                    foreach ($markersInContent[1] as $key) {
+                        if (isset($keysToReplaceFlipped['###' . $key . '###'])) {
+                            $regexKeys[] = preg_quote($key, '/');
+                            $wrappedKeys[] = '###' . $key . '###';
+                        }
+                    }
+                    $regex = '/###(?:' . implode('|', $regexKeys) . ')###/';
+                    $storeArr['c'] = preg_split($regex, $content); // contains all content parts around markers
+                    $storeArr['k'] = $wrappedKeys; // contains all markers incl. ###
+                    // Setting the data inside the second-level cache
+                    $runtimeCache->set($storeKey, $storeArr);
+                    // Storing the cached data permanently
+                    $cache->set($storeKey, $storeArr, ['substMarkArrayCached'], 0);
+                }
+            }
+        }
+        if (!empty($storeArr['k']) && is_array($storeArr['k'])) {
+            // Substitution/Merging:
+            // Merging content types together, resetting
+            $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+            $wSCA_reg = [];
+            $content = '';
+            // Traversing the keyList array and merging the static and dynamic content
+            foreach ($storeArr['k'] as $n => $keyN) {
+                // add content before marker
+                $content .= $storeArr['c'][$n];
+                if (!is_array($valueArr[$keyN])) {
+                    // fetch marker replacement from $markContentArray or $subpartContentArray
+                    $content .= $valueArr[$keyN];
+                } else {
+                    if (!isset($wSCA_reg[$keyN])) {
+                        $wSCA_reg[$keyN] = 0;
+                    }
+                    // fetch marker replacement from $wrappedSubpartContentArray
+                    $content .= $valueArr[$keyN][$wSCA_reg[$keyN] % 2];
+                    $wSCA_reg[$keyN]++;
+                }
+            }
+            // add remaining content
+            $content .= $storeArr['c'][count($storeArr['k'])];
+        }
+        return $content;
+    }
+
+    /**
+     * Substitute marker array in an array of values
+     *
+     * @param mixed $tree If string, then it just calls substituteMarkerArray. If array(and even multi-dim) then for each key/value pair the marker array will be substituted (by calling this function recursively)
+     * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content string/array values.
+     * @return mixed The processed input variable.
+     * @see substituteMarker()
+     */
+    public function substituteMarkerInObject(&$tree, array $markContentArray)
+    {
+        if (is_array($tree)) {
+            foreach ($tree as $key => $value) {
+                $this->substituteMarkerInObject($tree[$key], $markContentArray);
+            }
+        } else {
+            $tree = $this->substituteMarkerArray($tree, $markContentArray);
+        }
+        return $tree;
+    }
+
+    /**
+     * Adds elements to the input $markContentArray based on the values from
+     * the fields from $fieldList found in $row
+     *
+     * @param array $markContentArray Array with key/values being marker-strings/substitution values.
+     * @param array $row An array with keys found in the $fieldList (typically a record) which values should be moved to the $markContentArray
+     * @param string $fieldList A list of fields from the $row array to add to the $markContentArray array. If empty all fields from $row will be added (unless they are integers)
+     * @param bool $nl2br If set, all values added to $markContentArray will be nl2br()'ed
+     * @param string $prefix Prefix string to the fieldname before it is added as a key in the $markContentArray. Notice that the keys added to the $markContentArray always start and end with "###
+     * @param bool $htmlSpecialCharsValue If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
+     * @param bool $respectXhtml if set, and $nl2br is set, then the new lines are added with <br /> instead of <br>
+     * @return array The modified $markContentArray
+     */
+    public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = true, $prefix = 'FIELD_', $htmlSpecialCharsValue = false, $respectXhtml = false)
+    {
+        if ($fieldList) {
+            $fArr = GeneralUtility::trimExplode(',', $fieldList, true);
+            foreach ($fArr as $field) {
+                $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field], $respectXhtml) : $row[$field];
+            }
+        } else {
+            if (is_array($row)) {
+                foreach ($row as $field => $value) {
+                    if (!MathUtility::canBeInterpretedAsInteger($field)) {
+                        if ($htmlSpecialCharsValue) {
+                            $value = htmlspecialchars($value);
+                        }
+                        $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value, $respectXhtml) : $value;
+                    }
+                }
+            }
+        }
+        return $markContentArray;
+    }
+
+    /**
+     * Second-level cache
+     *
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    protected function getCache()
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+    }
+
+    /**
+     * First-level cache (runtime cache)
+     *
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    protected function getRuntimeCache()
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 }

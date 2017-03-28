@@ -614,13 +614,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                             // Get the caption
                             if (!$renderGlobalCaption) {
                                 $imageMarkers['caption'] = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
-                                $imageMarkers['caption'] = $this->cObj->substituteMarkerArray($imageMarkers['caption'], $captionMarkers, '###|###', 1, 1);
+                                $imageMarkers['caption'] = $this->templateService->substituteMarkerArray($imageMarkers['caption'], $captionMarkers, '###|###', 1, 1);
                             }
                             if ($addClassesImageConf[$imagesCounter - 1]['addClassesImage']) {
                                 $imageMarkers['classes'] = ' ' . $addClassesImageConf[$imagesCounter - 1]['addClassesImage'];
                             }
                         }
-                        $columnImages[] = $this->cObj->substituteMarkerArray($single, $imageMarkers, '###|###', 1, 1);
+                        $columnImages[] = $this->templateService->substituteMarkerArray($single, $imageMarkers, '###|###', 1, 1);
                         $currentImage++;
                     }
                     $rowColumn = $this->cObj->stdWrap(implode(LF, $columnImages), $conf['columnStdWrap.']);
@@ -629,7 +629,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                     if ($addClassesColConf[$columnCounter - 1]['addClassesCol']) {
                         $columnMarkers['classes'] = ' ' . $addClassesColConf[$columnCounter - 1]['addClassesCol'];
                     }
-                    $rowColumns[] = $this->cObj->substituteMarkerArray($rowColumn, $columnMarkers, '###|###', 1, 1);
+                    $rowColumns[] = $this->templateService->substituteMarkerArray($rowColumn, $columnMarkers, '###|###', 1, 1);
                 }
                 if ($rowCounter == $rowCount) {
                     $rowConfiguration = $conf['lastRowStdWrap.'];
@@ -639,7 +639,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                 $row = $this->cObj->stdWrap(implode(LF, $rowColumns), $rowConfiguration);
                 // Start filling the markers for columnStdWrap
                 $rowMarkers = [];
-                $rows[] = $this->cObj->substituteMarkerArray($row, $rowMarkers, '###|###', 1, 1);
+                $rows[] = $this->templateService->substituteMarkerArray($row, $rowMarkers, '###|###', 1, 1);
             }
             $images = $this->cObj->stdWrap(implode(LF, $rows), $conf['allStdWrap.']);
             // Start filling the markers for allStdWrap
@@ -681,7 +681,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                 $class = ' ' . implode(' ', $classes);
             }
             // Fill the markers for the allStdWrap
-            $images = $this->cObj->substituteMarkerArray($images, $allMarkers, '###|###', 1, 1);
+            $images = $this->templateService->substituteMarkerArray($images, $allMarkers, '###|###', 1, 1);
         } else {
             // Apply optionSplit to the list of classes that we want to add to each image
             $addClassesImage = $conf['addClassesImage'];

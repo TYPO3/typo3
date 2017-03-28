@@ -373,13 +373,6 @@ class ContentObjectRenderer
     public $lastTypoLinkLD = [];
 
     /**
-     * Caching substituteMarkerArrayCached function
-     *
-     * @var array
-     */
-    public $substMarkerCache = [];
-
-    /**
      * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
      *
      * @var array
@@ -1088,7 +1081,7 @@ class ContentObjectRenderer
             'selfClosingTagSlash' => (!empty($tsfe->xhtmlDoctype) ? ' /' : ''),
         ];
 
-        $theValue = $this->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
+        $theValue = $this->templateService->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
         $linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
         if ($linkWrap) {
@@ -1227,7 +1220,7 @@ class ContentObjectRenderer
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
                     $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
 
-                    $oneSourceCollection = $this->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
+                    $oneSourceCollection = $this->templateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'])) {
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] as $classData) {
@@ -1551,9 +1544,11 @@ class ContentObjectRenderer
      * @param string $content The content stream, typically HTML template content.
      * @param string $marker The marker string, typically on the form "###[the marker string]###
      * @return string The subpart found, if found.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function getSubpart($content, $marker)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->getSubpart($content, $marker);
     }
 
@@ -1568,9 +1563,11 @@ class ContentObjectRenderer
      * @param mixed $subpartContent The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the EXISTING content of the subpart (fetched by getSubpart()) thereby not removing the original content.
      * @param bool|int $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
      * @return string The processed HTML content string.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive);
     }
 
@@ -1580,9 +1577,11 @@ class ContentObjectRenderer
      * @param string $content The content stream, typically HTML template content.
      * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
      * @return string The processed HTML content string.
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteSubpartArray($content, array $subpartsContent)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->substituteSubpartArray($content, $subpartsContent);
     }
 
@@ -1595,9 +1594,11 @@ class ContentObjectRenderer
      * @param mixed $markContent The content to insert instead of the marker string found.
      * @return string The processed HTML content string.
      * @see substituteSubpart()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteMarker($content, $marker, $markContent)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->substituteMarker($content, $marker, $markContent);
     }
 
@@ -1632,110 +1633,12 @@ class ContentObjectRenderer
      * @param array $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
      * @return string The output content stream
      * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
     {
-        $timeTracker = $this->getTimeTracker();
-        $timeTracker->push('substituteMarkerArrayCached');
-        // If not arrays then set them
-        if (is_null($markContentArray)) {
-            // Plain markers
-            $markContentArray = [];
-        }
-        if (is_null($subpartContentArray)) {
-            // Subparts being directly substituted
-            $subpartContentArray = [];
-        }
-        if (is_null($wrappedSubpartContentArray)) {
-            // Subparts being wrapped
-            $wrappedSubpartContentArray = [];
-        }
-        // Finding keys and check hash:
-        $sPkeys = array_keys($subpartContentArray);
-        $wPkeys = array_keys($wrappedSubpartContentArray);
-        $keysToReplace = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
-        if (empty($keysToReplace)) {
-            $timeTracker->pull();
-            return $content;
-        }
-        asort($keysToReplace);
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $keysToReplace]));
-        if ($this->substMarkerCache[$storeKey]) {
-            $storeArr = $this->substMarkerCache[$storeKey];
-            $timeTracker->setTSlogMessage('Cached', 0);
-        } else {
-            $cache = $this->getCache();
-            $storeArrDat = $cache->get($storeKey);
-            if (is_array($storeArrDat)) {
-                $storeArr = $storeArrDat;
-                // Setting cache:
-                $this->substMarkerCache[$storeKey] = $storeArr;
-                $timeTracker->setTSlogMessage('Cached from DB', 0);
-            } else {
-                // Finding subparts and substituting them with the subpart as a marker
-                foreach ($sPkeys as $sPK) {
-                    $content = $this->substituteSubpart($content, $sPK, $sPK);
-                }
-                // Finding subparts and wrapping them with markers
-                foreach ($wPkeys as $wPK) {
-                    $content = $this->substituteSubpart($content, $wPK, [
-                        $wPK,
-                        $wPK
-                    ]);
-                }
-
-                $storeArr = [];
-                // search all markers in the content
-                $result = preg_match_all('/###([^#](?:[^#]*+|#{1,2}[^#])+)###/', $content, $markersInContent);
-                if ($result !== false && !empty($markersInContent[1])) {
-                    $keysToReplaceFlipped = array_flip($keysToReplace);
-                    $regexKeys = [];
-                    $wrappedKeys = [];
-                    // Traverse keys and quote them for reg ex.
-                    foreach ($markersInContent[1] as $key) {
-                        if (isset($keysToReplaceFlipped['###' . $key . '###'])) {
-                            $regexKeys[] = preg_quote($key, '/');
-                            $wrappedKeys[] = '###' . $key . '###';
-                        }
-                    }
-                    $regex = '/###(?:' . implode('|', $regexKeys) . ')###/';
-                    $storeArr['c'] = preg_split($regex, $content); // contains all content parts around markers
-                    $storeArr['k'] = $wrappedKeys; // contains all markers incl. ###
-                    // Setting cache:
-                    $this->substMarkerCache[$storeKey] = $storeArr;
-                    // Storing the cached data
-                    $cache->set($storeKey, $storeArr, ['substMarkArrayCached'], 0);
-                }
-                $timeTracker->setTSlogMessage('Parsing', 0);
-            }
-        }
-        if (!empty($storeArr['k']) && is_array($storeArr['k'])) {
-            // Substitution/Merging:
-            // Merging content types together, resetting
-            $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
-            $wSCA_reg = [];
-            $content = '';
-            // Traversing the keyList array and merging the static and dynamic content
-            foreach ($storeArr['k'] as $n => $keyN) {
-                // add content before marker
-                $content .= $storeArr['c'][$n];
-                if (!is_array($valueArr[$keyN])) {
-                    // fetch marker replacement from $markContentArray or $subpartContentArray
-                    $content .= $valueArr[$keyN];
-                } else {
-                    if (!isset($wSCA_reg[$keyN])) {
-                        $wSCA_reg[$keyN] = 0;
-                    }
-                    // fetch marker replacement from $wrappedSubpartContentArray
-                    $content .= $valueArr[$keyN][$wSCA_reg[$keyN] % 2];
-                    $wSCA_reg[$keyN]++;
-                }
-            }
-            // add remaining content
-            $content .= $storeArr['c'][count($storeArr['k'])];
-        }
-        $timeTracker->pull();
-        return $content;
+        GeneralUtility::logDeprecatedFunction();
+        return $this->templateService->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
     }
 
     /**
@@ -1756,9 +1659,11 @@ class ContentObjectRenderer
      * @param bool $deleteUnused If set, all unused marker are deleted.
      * @return string The processed output stream
      * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = false, $deleteUnused = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
     }
 
@@ -1769,15 +1674,17 @@ class ContentObjectRenderer
      * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content string/array values.
      * @return mixed The processed input variable.
      * @see substituteMarker()
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteMarkerInObject(&$tree, array $markContentArray)
     {
+        GeneralUtility::logDeprecatedFunction();
         if (is_array($tree)) {
             foreach ($tree as $key => $value) {
-                $this->substituteMarkerInObject($tree[$key], $markContentArray);
+                $this->templateService->substituteMarkerInObject($tree[$key], $markContentArray);
             }
         } else {
-            $tree = $this->substituteMarkerArray($tree, $markContentArray);
+            $tree = $this->templateService->substituteMarkerArray($tree, $markContentArray);
         }
         return $tree;
     }
@@ -1791,9 +1698,11 @@ class ContentObjectRenderer
      * @param bool $uppercase
      * @param bool $deleteUnused
      * @return string
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = false, $deleteUnused = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         return $this->templateService->substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
     }
 
@@ -1808,28 +1717,13 @@ class ContentObjectRenderer
      * @param string $prefix Prefix string to the fieldname before it is added as a key in the $markContentArray. Notice that the keys added to the $markContentArray always start and end with "###
      * @param bool $HSC If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
      * @return array The modified $markContentArray
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
      */
     public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = true, $prefix = 'FIELD_', $HSC = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($fieldList) {
-            $fArr = GeneralUtility::trimExplode(',', $fieldList, true);
-            foreach ($fArr as $field) {
-                $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field], !empty($tsfe->xhtmlDoctype)) : $row[$field];
-            }
-        } else {
-            if (is_array($row)) {
-                foreach ($row as $field => $value) {
-                    if (!MathUtility::canBeInterpretedAsInteger($field)) {
-                        if ($HSC) {
-                            $value = htmlspecialchars($value);
-                        }
-                        $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value, !empty($tsfe->xhtmlDoctype)) : $value;
-                    }
-                }
-            }
-        }
-        return $markContentArray;
+        return $this->templateService->fillInMarkerArray($markContentArray, $row, $fieldList, $nl2br, $prefix, $HSC, !empty($tsfe->xhtmlDoctype));
     }
 
     /**
@@ -8372,13 +8266,5 @@ class ContentObjectRenderer
     protected function getTypoScriptFrontendController()
     {
         return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    protected function getCache()
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
     }
 }
