@@ -1,4 +1,4 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 <h3 class="dropdown-headline">
 	{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.user')}
 </h3>
@@ -17,6 +17,31 @@
 				<div class="dropdown-table-column dropdown-table-title">
 					<a href="{module.link}" title="{module.description}">
 						{module.title}
+					</a>
+				</div>
+			</div>
+		</f:for>
+	</div>
+	<hr>
+</f:if>
+<f:if condition="{f:count(subject: recentUsers)} > 0">
+	<h3 class="dropdown-headline"><f:translate key="usermodule.su.list" /></h3>
+	<div class="dropdown-table">
+		<f:for each="{recentUsers}" as="user">
+			<div class="dropdown-table-row">
+				<div class="dropdown-table-column dropdown-table-icon">
+					<be:avatar backendUser="{user.uid}" size="32" />
+				</div>
+				<div class="dropdown-table-column dropdown-table-title">
+					<a href="{user.switchUserLink}" title="{f:translate(key: 'usermodule.su.tooltip', arguments: {0: user.username})}">
+						<f:if condition="{user.realName}">
+							<f:then>
+								{user.realName}
+							</f:then>
+							<f:else>
+								{user.username}
+							</f:else>
+						</f:if>
 					</a>
 				</div>
 			</div>

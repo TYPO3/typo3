@@ -19,6 +19,12 @@
 				<source>Your system is fully operational.
 Have a nice day.</source>
 			</trans-unit>
+			<trans-unit id="usermodule.su.list">
+				<source>Recently 'switched to' users</source>
+			</trans-unit>
+			<trans-unit id="usermodule.su.tooltip">
+				<source>Switch to user %s</source>
+			</trans-unit>
 			<trans-unit id="config.loginLogo">
 				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</source>
 			</trans-unit>

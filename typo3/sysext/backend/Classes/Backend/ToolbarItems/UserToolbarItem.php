@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -58,13 +59,36 @@ class UserToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown()
     {
+        $backendUser = $this->getBackendUser();
+
         /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+
+        $mostRecentUsers = [];
+        if (ExtensionManagementUtility::isLoaded('beuser')
+            && $backendUser->isAdmin()
+            && (int)$backendUser->user['ses_backuserid'] === 0
+            && isset($backendUser->uc['recentSwitchedToUsers'])
+            && is_array($backendUser->uc['recentSwitchedToUsers'])
+        ) {
+            foreach ($backendUser->uc['recentSwitchedToUsers'] as $userUid) {
+                $backendUserRecord = BackendUtility::getRecord('be_users', $userUid);
+                $backendUserRecord['switchUserLink'] = BackendUtility::getModuleUrl(
+                    'system_BeuserTxBeuser',
+                        [
+                            'SwitchUser' => $backendUserRecord['uid']
+                        ]
+                );
+                $mostRecentUsers[] = $backendUserRecord;
+            }
+        }
+
         $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
         $view->assignMultiple([
             'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
             'logoutUrl' => BackendUtility::getModuleUrl('logout'),
             'switchUserMode' => $this->getBackendUser()->user['ses_backuserid'],
+            'recentUsers' => $mostRecentUsers,
         ]);
         return $view->render();
     }

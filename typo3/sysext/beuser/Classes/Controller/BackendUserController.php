@@ -28,6 +28,11 @@ use TYPO3\CMS\Lang\LanguageService;
 class BackendUserController extends BackendUserActionController
 {
     /**
+     * @var int
+     */
+    const RECENT_USERS_LIMIT = 3;
+
+    /**
      * @var \TYPO3\CMS\Beuser\Domain\Model\ModuleData
      */
     protected $moduleData;
@@ -243,6 +248,7 @@ class BackendUserController extends BackendUserActionController
         if (is_array($targetUser) && $this->getBackendUserAuthentication()->isAdmin()) {
             // Set backend user listing module as starting module for switchback
             $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+            $this->getBackendUserAuthentication()->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
             $this->getBackendUserAuthentication()->writeUC();
 
             $sessionBackend = $this->getSessionBackend();
@@ -257,6 +263,33 @@ class BackendUserController extends BackendUserActionController
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
         }
+    }
+
+    /**
+     * Generates a list of users to whom where switched in the past. This is limited by RECENT_USERS_LIMIT.
+     *
+     * @param int $targetUserUid
+     * @return int[]
+     */
+    protected function generateListOfMostRecentSwitchedUsers(int $targetUserUid): array
+    {
+        $latestUserUids = [];
+        $backendUser = $this->getBackendUserAuthentication();
+
+        if (isset($backendUser->uc['recentSwitchedToUsers']) && is_array($backendUser->uc['recentSwitchedToUsers'])) {
+            $latestUserUids = $backendUser->uc['recentSwitchedToUsers'];
+        }
+
+        // Remove potentially existing user in that list
+        $index = array_search($targetUserUid, $latestUserUids, true);
+        if ($index !== false) {
+            unset($latestUserUids[$index]);
+        }
+
+        array_unshift($latestUserUids, $targetUserUid);
+        $latestUserUids = array_slice($latestUserUids, 0, static::RECENT_USERS_LIMIT);
+
+        return $latestUserUids;
     }
 
     /**
