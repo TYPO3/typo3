@@ -41,7 +41,6 @@ TYPO3:
             maximumUndoSteps: 10
 
             stylesheets:
-              # @toDo: move form.less to the TYPO3 Build folder
               200: 'EXT:form/Resources/Public/Css/form.css'
 
             formEditorFluidConfiguration:

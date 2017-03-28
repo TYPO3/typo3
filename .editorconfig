@@ -25,11 +25,6 @@ indent_size = 2
 indent_style = tab
 indent_size = 4
 
-# LESS-Files
-[*.less]
-indent_style = tab
-indent_size = 4
-
 # SCSS-Files
 [*.scss]
 indent_style = space
