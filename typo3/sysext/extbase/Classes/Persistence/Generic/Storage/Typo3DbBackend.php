@@ -146,9 +146,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470230766);
         }
 
-        $uid = $connection->lastInsertId($tableName);
-
+        $uid = 0;
         if (!$isRelation) {
+            // Relation tables have no auto_increment column, so no retrieval must be tried.
+            $uid = $connection->lastInsertId($tableName);
             $this->clearPageCache($tableName, $uid);
         }
         return (int)$uid;
