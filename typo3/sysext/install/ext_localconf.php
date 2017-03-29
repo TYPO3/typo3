@@ -70,3 +70,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
     = \TYPO3\CMS\Install\Updates\MigrateFeSessionDataUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['compatibility7Extension']
     = \TYPO3\CMS\Install\Updates\Compatibility7ExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['formLegacyExtractionUpdate']
+    = \TYPO3\CMS\Install\Updates\FormLegacyExtractionUpdate::class;

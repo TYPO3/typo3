@@ -24,7 +24,7 @@ class Compatibility7ExtractionUpdate extends AbstractDownloadExtensionUpdate
     /**
      * @var string
      */
-    protected $title = 'Installs extension "compatibility7" from TER';
+    protected $title = 'Install extension "compatibility7" from TER';
 
     /**
      * @var string
@@ -36,8 +36,8 @@ class Compatibility7ExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     protected $extensionDetails = [
         'compatibility7' => [
-            'title' => 'Compatibility Mode for TYPO3 CMS 7.x',
-            'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 CMS 8 yet.',
+            'title' => 'Compatibility Mode for TYPO3 v7',
+            'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 v8 yet.',
             'versionString' => '8.7.0',
         ]
     ];
@@ -50,7 +50,7 @@ class Compatibility7ExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $description = 'The extension "compatibility7" (Compatibility Mode for TYPO3 CMS 7.x) was extracted into '
+        $description = 'The extension "compatibility7" (Compatibility Mode for TYPO3 v7) was extracted into '
             . 'the TYPO3 Extension Repository. This update downloads the TYPO3 Extension from the TER.';
 
         $updateNeeded = false;

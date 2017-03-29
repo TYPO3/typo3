@@ -14,31 +14,34 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Installs and downloads EXT:compatibility6 if needed
+ * Installs and downloads EXT:form_legacy if needed
  */
-class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
+class FormLegacyExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     /**
      * @var string
      */
-    protected $title = 'Install extension "compatibility6" from TER';
+    protected $title = 'Install extension "form_legacy" from TER';
 
     /**
      * @var string
      */
-    protected $extensionKey = 'compatibility6';
+    protected $extensionKey = 'form_legacy';
 
     /**
      * @var array
      */
     protected $extensionDetails = [
-        'compatibility6' => [
-            'title' => 'Compatibility Mode for TYPO3 CMS 6.x',
-            'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 v7 yet.',
-            'versionString' => '7.6.4',
+        'form_legacy' => [
+            'title' => 'Legacy form extension for TYPO3 v7 compatibility',
+            'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that used the form extension in TYPO3 v7.',
+            'versionString' => '8.7.0',
         ]
     ];
 
@@ -50,13 +53,23 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $description = 'The extension "compatibility6" (Compatibility Mode for TYPO3 CMS 6.x) was extracted into '
-            . 'the TYPO3 Extension Repository. This update downloads the TYPO3 Extension from the TER.';
+        $description = 'The extension "form" was rewritten in TYPO3 v8 and follows a new approach.'
+            . 'This update downloads the old implementation of the form extension as known from TYPO3 v7 from the TER.';
 
         $updateNeeded = false;
 
-        if (!$this->isWizardDone()) {
-            $updateNeeded = true;
+        if (!$this->isWizardDone() && !ExtensionManagementUtility::isLoaded('form_legacy')) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $count = $queryBuilder
+                ->count('*')
+                ->from('tt_content')
+                ->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('mailform')))
+                ->execute()
+                ->fetchColumn(0);
+            if ($count > 0) {
+                $updateNeeded = true;
+            }
         }
 
         return $updateNeeded;
@@ -74,9 +87,11 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
             <div class="panel panel-danger">
                 <div class="panel-heading">Are you really sure?</div>
                 <div class="panel-body">
-                    <p>You should install EXT:compatibility6 only if you really need it.</p>
-                    <p>This update wizard cannot check if the extension was installed before the update.</p>
-                    <p>Are you really sure, you want to install EXT:compatibility6?</p>
+                    <p>You should install EXT:form_legacy only if you really need it.</p>
+                    <p>This update wizard checked all content elements and found at least one not deleted element based
+                    on the old form module. It is advised to manually convert those elements from the old form implementation
+                    to the new implementation of EXT:form. EXT:form_legacy should be unloaded and removed afterwards.</p>
+                    <p>Are you really sure, you want to install EXT:form_legacy?</p>
                     <div class="btn-group clearfix" data-toggle="buttons">
                         <label class="btn btn-default active">
                             <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
@@ -91,7 +106,7 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
     }
 
     /**
-     * Performs the update if EXT:compatibility6 should be installed.
+     * Performs the update if EXT:form_legacy should be installed.
      *
      * @param array $databaseQueries Queries done in this update
      * @param string $customMessage Custom message
@@ -100,10 +115,10 @@ class Compatibility6ExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['compatibility6Extension']['install'])) {
+        if (!isset($requestParams['values']['formLegacyExtractionUpdate']['install'])) {
             return false;
         }
-        $install = (int)$requestParams['values']['compatibility6Extension']['install'];
+        $install = (int)$requestParams['values']['formLegacyExtractionUpdate']['install'];
 
         if ($install === 1) {
             // user decided to install extension, install and mark wizard as done
