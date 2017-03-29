@@ -233,7 +233,7 @@ TYPO3.Install.Cache = {
 	* @return boolean DOM container could be found and initialization finished
 	*/
 	initialize: function(cacheCheckContainer) {
-		this.outputContainer[cacheCheckContainer] = $('#' + cacheCheckContainer);
+		this.outputContainer[cacheCheckContainer] = $('.t3js-' + cacheCheckContainer)
 
 		if (this.outputContainer[cacheCheckContainer]) {
 			// submit button: save and delete
@@ -371,7 +371,7 @@ TYPO3.Install.ExtensionChecker = {
 		var self = this;
 		var url = location.href + '&install[controller]=ajax&install[action]=uninstallExtension' +
 			'&install[uninstallExtension][extensions]=' + extension;
-		var $container = $('#checkExtensions');
+		var $container = $('.t3js-checkExtensions');
 		$.ajax({
 			url: url,
 			cache: false,
@@ -407,7 +407,7 @@ TYPO3.Install.ExtensionChecker = {
 	 */
 	handleCheckExtensionsSuccess: function () {
 		var self = this;
-		var $checkExtensions = $('#checkExtensions');
+		var $checkExtensions = $('.t3js-checkExtensions');
 
 		$.ajax({
 			url: $checkExtensions.data('protocolurl'),
@@ -558,7 +558,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 	 */
 	initialize: function (tcaIntegrityCheckContainer) {
 		var success = false;
-		this.outputContainer[tcaIntegrityCheckContainer] = $('#' + tcaIntegrityCheckContainer);
+		this.outputContainer[tcaIntegrityCheckContainer] = $('.t3js-' + tcaIntegrityCheckContainer);
 
 		if (this.outputContainer[tcaIntegrityCheckContainer]) {
 			// submit button: save and delete
@@ -872,14 +872,14 @@ TYPO3.Install.coreUpdate = {
 	 */
 	addLoadingMessage: function (messageTitle) {
 		var domMessage = TYPO3.Install.FlashMessage.render(TYPO3.Install.Severity.loading, messageTitle);
-		$('#coreUpdate').append(domMessage);
+		$('.t3js-coreUpdate').append(domMessage);
 	},
 
 	/**
 	 * Remove an enabled loading message
 	 */
 	removeLoadingMessage: function () {
-		$('#coreUpdate').find('.alert-loading').remove();
+		$('.t3js-coreUpdate').find('.alert-loading').remove();
 	},
 
 	/**
@@ -924,7 +924,7 @@ TYPO3.Install.coreUpdate = {
 		if (title) {
 			domButton.find('button').html(title);
 		}
-		$('#coreUpdate').append(domButton);
+		$('.t3js-coreUpdate').append(domButton);
 	},
 
 	/**
@@ -936,7 +936,7 @@ TYPO3.Install.coreUpdate = {
 	 */
 	addMessage: function (severity, title, message) {
 		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
-		$('#coreUpdate').append(domMessage);
+		$('.t3js-coreUpdate').append(domMessage);
 	}
 };
 
@@ -1014,7 +1014,7 @@ $(function () {
 	}).trigger('change');
 
 	// Extension compatibility check
-	var $container = $('#checkExtensions');
+	var $container = $('.t3js-checkExtensions');
 	$('.t3js-message', $container).hide();
 	$('button', $container).click(function (e) {
 		$('button', $container).hide();
@@ -1026,7 +1026,7 @@ $(function () {
 	});
 
 	// Handle core update
-	var $coreUpdateSection = $('#coreUpdate');
+	var $coreUpdateSection = $('.t3js-coreUpdate');
 	if ($coreUpdateSection) {
 		TYPO3.Install.coreUpdate.initialize();
 		$coreUpdateSection.on('click', 'button', (function (e) {
@@ -1038,7 +1038,7 @@ $(function () {
 	}
 
 	// Handle clearAllCache
-	var $clearAllCacheSection = $('#clearAllCache');
+	var $clearAllCacheSection = $('.t3js-clearAllCache');
 	if ($clearAllCacheSection) {
 		$clearAllCacheSection.on('click', 'button', (function(e) {
 			TYPO3.Install.Cache.clearAllCache('clearAllCache');
@@ -1058,7 +1058,7 @@ $(function () {
 	}
 
 	// Handle TCA ext_tables check
-	var $tcaExtTablesCheckSection = $('#tcaExtTablesCheck');
+	var $tcaExtTablesCheckSection = $('.t3js-tcaExtTablesCheck');
 	if ($tcaExtTablesCheckSection) {
 		$tcaExtTablesCheckSection.on('click', 'button', (function (e) {
 			TYPO3.Install.TcaIntegrityChecker.checkTcaIntegrity('tcaExtTablesCheck');
@@ -1068,7 +1068,7 @@ $(function () {
 	}
 
 	// Handle TCA Migrations check
-	var $tcaMigrationsCheckSection = $('#tcaMigrationsCheck');
+	var $tcaMigrationsCheckSection = $('.t3js-tcaMigrationsCheck');
 	if ($tcaMigrationsCheckSection) {
 		$tcaMigrationsCheckSection.on('click', 'button', (function (e) {
 			TYPO3.Install.TcaIntegrityChecker.checkTcaIntegrity('tcaMigrationsCheck');

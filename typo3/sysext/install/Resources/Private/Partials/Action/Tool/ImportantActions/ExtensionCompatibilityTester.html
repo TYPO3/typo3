@@ -5,7 +5,7 @@
 </p>
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<div id="checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}" data-errorprotocolurl="{extensionCompatibilityTesterErrorProtocolFile}">
+	<div class="t3js-checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}" data-errorprotocolurl="{extensionCompatibilityTesterErrorProtocolFile}">
 		<f:for each="{extensionCompatibilityTesterMessages}" as="statusMessage">
 			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
 		</f:for>
