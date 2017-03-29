@@ -778,21 +778,30 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                                     // $lRow isn't always what we want - if record was moved we've to work with the
                                     // placeholder records otherwise the list is messed up a bit
                                     if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
-                                        $where = 't3ver_move_id="' . (int)$lRow['uid']
-                                            . '" AND pid="' . (int)$row['_MOVE_PLH_pid']
-                                            . '" AND t3ver_wsid=' . (int)$row['t3ver_wsid'];
-
                                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                             ->getQueryBuilderForTable($table);
                                         $queryBuilder->getRestrictions()
                                             ->removeAll()
-                                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                                        ;
+                                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                                        $predicates = [
+                                            $queryBuilder->expr()->eq(
+                                                't3ver_move_id',
+                                                $queryBuilder->createNamedParameter((int)$lRow['uid'], \PDO::PARAM_INT)
+                                            ),
+                                            $queryBuilder->expr()->eq(
+                                                'pid',
+                                                $queryBuilder->createNamedParameter((int)$row['_MOVE_PLH_pid'], \PDO::PARAM_INT)
+                                            ),
+                                            $queryBuilder->expr()->eq(
+                                                't3ver_wsid',
+                                                $queryBuilder->createNamedParameter((int)$row['t3ver_wsid'], \PDO::PARAM_INT)
+                                            ),
+                                        ];
 
                                         $tmpRow = $queryBuilder
                                             ->select(...$selFieldList)
                                             ->from($table)
-                                            ->where(QueryHelper::stripLogicalOperatorPrefix($where))
+                                            ->andWhere(...$predicates)
                                             ->execute()
                                             ->fetch();
 
