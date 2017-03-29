@@ -19,7 +19,7 @@ Using these 'container' form elements will enable you to define multiple form el
 
 Example:
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     type: Form
     identifier: example-form-gridcontainer
@@ -93,7 +93,7 @@ Per default, the resulting markup is compatible to Twitter Bootstrap.
 
 The following options are available now:
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     GridContainer:
       ...
@@ -112,7 +112,7 @@ The following options are available now:
 
 and
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     <formElementIdentifier>:
       ...

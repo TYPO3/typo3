@@ -15,7 +15,7 @@ This patch makes it possible to define multiple translation files.
 
 Before this patch:
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     TYPO3:
       CMS:
@@ -30,7 +30,7 @@ Before this patch:
 
 After this patch:
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     TYPO3:
       CMS:
@@ -70,7 +70,7 @@ as a prototype wide frontend translation setting.
 This patch adds a fallback for the form engine translation if there is no
 "translationFile" setting within the "FormEngine" option.
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     TYPO3:
       CMS:
@@ -93,7 +93,7 @@ for the 4 aspects of the form framework. Furthermore, the integrator is
 able to define multiple translation files to avoid copying the whole
 default translation files or using locallangXMLOverride.
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     TYPO3:
       CMS:
@@ -133,6 +133,6 @@ default translation files or using locallangXMLOverride.
 Impact
 ======
 
-Easier to use, less maintenance. 
+Easier to use, less maintenance.
 
 .. index:: Backend, Frontend, ext:form

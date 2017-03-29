@@ -21,7 +21,7 @@ form settings
 
 within the EXT:Form configuration.
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     TYPO3:
         CMS:
