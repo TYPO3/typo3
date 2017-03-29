@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -36,16 +35,9 @@ class ImportantActions extends Action\AbstractAction
      */
     protected function executeAction()
     {
-        if (isset($this->postValues['set']['changeEncryptionKey'])) {
-            $this->setNewEncryptionKeyAndLogOut();
-        }
-
         $actionMessages = [];
         if (isset($this->postValues['set']['changeInstallToolPassword'])) {
             $actionMessages[] = $this->changeInstallToolPassword();
-        }
-        if (isset($this->postValues['set']['changeSiteName'])) {
-            $actionMessages[] = $this->changeSiteName();
         }
         if (isset($this->postValues['set']['createAdministrator'])) {
             $actionMessages[] = $this->createAdministrator();
@@ -158,31 +150,6 @@ class ImportantActions extends Action\AbstractAction
     }
 
     /**
-     * Set new site name
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function changeSiteName()
-    {
-        $values = $this->postValues['values'];
-        if (isset($values['newSiteName']) && $values['newSiteName'] !== '') {
-            /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-            $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-            $configurationManager->setLocalConfigurationValueByPath('SYS/sitename', $values['newSiteName']);
-            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
-            $message->setTitle('Site name changed');
-            $this->view->assign('siteName', $values['newSiteName']);
-        } else {
-            /** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-            $message->setTitle('Site name not changed');
-            $message->setMessage('Site name must be at least one character long.');
-        }
-        return $message;
-    }
-
-    /**
      * Dumps Extension Autoload Information
      *
      * @return \TYPO3\CMS\Install\Status\StatusInterface
@@ -198,26 +165,6 @@ class ImportantActions extends Action\AbstractAction
             $message->setTitle('Successfully dumped class loading information for extensions.');
         }
         return $message;
-    }
-
-    /**
-     * Set new encryption key
-     */
-    protected function setNewEncryptionKeyAndLogOut()
-    {
-        $newKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
-        /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $newKey);
-        /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
-        $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-            \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
-        );
-        $formProtection->clean();
-        /** @var \TYPO3\CMS\Install\Service\SessionService $session */
-        $session = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SessionService::class);
-        $session->destroySession();
-        \TYPO3\CMS\Core\Utility\HttpUtility::redirect('Install.php?install[context]=' . $this->getContext());
     }
 
     /**
