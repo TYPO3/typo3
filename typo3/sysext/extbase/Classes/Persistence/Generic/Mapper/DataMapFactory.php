@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
  */
@@ -364,9 +366,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (!empty($columnConfiguration['eval'])) {
             $fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
-            $dateTimeEvaluations = ['date', 'datetime'];
+            $dateTimeTypes = QueryHelper::getDateTimeTypes();
 
-            if (!empty(array_intersect($dateTimeEvaluations, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
+            if (!empty(array_intersect($dateTimeTypes, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
                 $columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);
             }
         }

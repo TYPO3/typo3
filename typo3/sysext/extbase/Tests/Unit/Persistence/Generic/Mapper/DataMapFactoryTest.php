@@ -393,7 +393,8 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         return [
             'date field' => ['date', 'date'],
             'datetime field' => ['datetime', 'datetime'],
-            'no date/datetime field' => ['', null],
+            'time field' => ['time', 'time'],
+            'no date/datetime/time field' => ['', null],
         ];
     }
 

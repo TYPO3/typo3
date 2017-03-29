@@ -151,7 +151,7 @@ class ColumnMap
     /**
      * Alternative format for storing DataTime formats
      * (instead of using unix-time stamps). Allowed values
-     * are 'date' and 'datetime'
+     * are 'date', 'datetime' and 'time'
      *
      * @var string
      */

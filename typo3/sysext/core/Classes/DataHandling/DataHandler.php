@@ -1297,6 +1297,28 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
+     * @param $table
+     * @param $row
+     * @param $key
+     *
+     * @return string
+     */
+    protected function normalizeTimeFormat(string $table, string $value, string $dbType): string
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $platform = $connection->getDatabasePlatform();
+        if ($platform instanceof SQLServerPlatform) {
+            $defaultLength = QueryHelper::getDateTimeFormats()[$dbType]['empty'];
+            $value = substr(
+                $value,
+                0,
+                strlen($defaultLength)
+            );
+        }
+        return $value;
+    }
+
+    /**
      * Sets the "sorting" DB field and the "pid" field of an incoming record that should be added (NEW1234)
      * depending on the record that should be added or where it should be added.
      *
@@ -1806,8 +1828,9 @@ class DataHandler implements LoggerAwareInterface
         $isDateOrDateTimeField = false;
         $format = '';
         $emptyValue = '';
+        $dateTimeTypes = QueryHelper::getDateTimeTypes();
         // normal integer "date" fields (timestamps) are handled in checkValue_input_Eval
-        if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
+        if (isset($tcaFieldConf['dbType']) && in_array($tcaFieldConf['dbType'], $dateTimeTypes, true)) {
             if (empty($value)) {
                 $value = null;
             } else {
@@ -7207,6 +7230,10 @@ class DataHandler implements LoggerAwareInterface
                                 $errors[] = $key;
                             }
                         } else {
+                            $dbType = $GLOBALS['TCA'][$table]['columns'][$key]['config']['dbType'] ?? false;
+                            if ($dbType === 'datetime' || $dbType === 'time') {
+                                $row[$key] = $this->normalizeTimeFormat($table, $row[$key], $dbType);
+                            }
                             if ((string)$value !== (string)$row[$key]) {
                                 // The is_numeric check catches cases where we want to store a float/double value
                                 // and database returns the field as a string with the least required amount of

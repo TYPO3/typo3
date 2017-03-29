@@ -179,7 +179,27 @@ class QueryHelper
             'datetime' => [
                 'empty' => '0000-00-00 00:00:00',
                 'format' => 'Y-m-d H:i:s'
+            ],
+            'time' => [
+                'empty' => '00:00:00',
+                'format' => 'H:i:s'
             ]
+        ];
+    }
+
+    /**
+     * Returns the date and time types compatible with the given database.
+     *
+     * This simple method should probably be deprecated and removed later.
+     *
+     * @return array
+     */
+    public static function getDateTimeTypes()
+    {
+        return [
+            'date',
+            'datetime',
+            'time'
         ];
     }
 

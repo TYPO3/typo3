@@ -68,6 +68,28 @@ class DatabaseRowDateTimeFieldsTest extends \TYPO3\TestingFramework\Core\Unit\Un
     /**
      * @test
      */
+    public function addDataSetsTimestampZeroForDefaultTimeField()
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'dbType' => 'time',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = 0;
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataConvertsDateStringToTimestamp()
     {
         $oldTimezone = date_default_timezone_get();
@@ -117,6 +139,34 @@ class DatabaseRowDateTimeFieldsTest extends \TYPO3\TestingFramework\Core\Unit\Un
         ];
         $expected = $input;
         $expected['databaseRow']['aField'] = '2015-07-27T15:25:32+00:00';
+        $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        date_default_timezone_set($oldTimezone);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataConvertsTimeStringToTimestamp()
+    {
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+        $input = [
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'dbType' => 'time',
+                        ],
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'aField' => '15:25:32',
+            ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T15:25:32+00:00';
         $this->assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }

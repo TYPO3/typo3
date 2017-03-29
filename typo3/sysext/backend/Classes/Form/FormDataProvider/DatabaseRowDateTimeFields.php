@@ -30,13 +30,15 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
+        $dateTimeTypes = QueryHelper::getDateTimeTypes();
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
+
         foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
             if (isset($columnConfig['config']['dbType'])
-                && ($columnConfig['config']['dbType'] === 'date' || $columnConfig['config']['dbType'] === 'datetime')
+                && in_array($columnConfig['config']['dbType'], $dateTimeTypes, true)
             ) {
                 if (!empty($result['databaseRow'][$column])
-                    &&  $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
+                    && $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
                 ) {
                     // Create an ISO-8601 date from current field data; the database always contains UTC
                     // The field value is something like "2016-01-01" or "2016-01-01 10:11:12", so appending "UTC"

@@ -305,6 +305,15 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 '44100',
                 '12:15',
             ],
+            'time input (dbType: time)' => [
+                [
+                    'type' => 'input',
+                    'eval' => 'time',
+                    'dbType' => 'time'
+                ],
+                '23:59:00',
+                '23:59',
+            ],
             'timesec input' => [
                 [
                     'type' => 'input',
@@ -312,6 +321,15 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
                 '44130',
                 '12:15:30',
+            ],
+            'timesec input (dbType: time)' => [
+                [
+                    'type' => 'input',
+                    'eval' => 'timesec',
+                    'dbType' => 'time'
+                ],
+                '23:59:59',
+                '23:59:59',
             ],
             'datetime input' => [
                 [

@@ -95,9 +95,9 @@ class BackendUtility
             ->getQueryBuilderForTable($table)
             ->expr();
         return ' AND ' . $expressionBuilder->eq(
-            ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
-            0
-        );
+                ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
+                0
+            );
     }
 
     /**
@@ -2155,12 +2155,14 @@ class BackendUtility
             case 'input':
                 // Hide value 0 for dates, but show it for everything else
                 if (isset($value)) {
+                    $dateTimeFormats = QueryHelper::getDateTimeFormats();
+
                     if (GeneralUtility::inList($theColConf['eval'], 'date')) {
                         // Handle native date field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-                            $dateTimeFormats = QueryHelper::getDateTimeFormats();
-                            $emptyValue = $dateTimeFormats['date']['empty'];
-                            $value = $value !== $emptyValue ? strtotime($value) : 0;
+                            $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
+                        } else {
+                            $value = (int)$value;
                         }
                         if (!empty($value)) {
                             $ageSuffix = '';
@@ -2183,19 +2185,31 @@ class BackendUtility
                             $l = self::date($value) . $ageSuffix;
                         }
                     } elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
+                        // Handle native time field
+                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
+                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
+                        } else {
+                            $value = (int)$value;
+                        }
                         if (!empty($value)) {
                             $l = gmdate('H:i', (int)$value);
                         }
                     } elseif (GeneralUtility::inList($theColConf['eval'], 'timesec')) {
+                        // Handle native time field
+                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
+                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value);
+                        } else {
+                            $value = (int)$value;
+                        }
                         if (!empty($value)) {
                             $l = gmdate('H:i:s', (int)$value);
                         }
                     } elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
-                        // Handle native date/time field
+                        // Handle native datetime field
                         if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
-                            $dateTimeFormats = QueryHelper::getDateTimeFormats();
-                            $emptyValue = $dateTimeFormats['datetime']['empty'];
-                            $value = $value !== $emptyValue ? strtotime($value) : 0;
+                            $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
+                        } else {
+                            $value = (int)$value;
                         }
                         if (!empty($value)) {
                             $l = self::datetime($value);

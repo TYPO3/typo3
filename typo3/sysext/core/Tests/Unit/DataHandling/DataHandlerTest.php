@@ -246,7 +246,7 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'input' => []
                 ]
             ],
-            'tca with dbType != date/datetime' => [
+            'tca with dbType != date/datetime/time' => [
                 [
                     'input' => [],
                     'dbType' => 'foo'

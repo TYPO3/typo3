@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
@@ -312,22 +313,24 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Creates a DateTime from an unix timestamp or date/datetime value.
+     * Creates a DateTime from an unix timestamp or date/datetime/time value.
      * If the input is empty, NULL is returned.
      *
-     * @param int|string $value Unix timestamp or date/datetime value
-     * @param string|null $storageFormat Storage format for native date/datetime fields
+     * @param int|string $value Unix timestamp or date/datetime/time value
+     * @param string|null $storageFormat Storage format for native date/datetime/time fields
      * @param string|null $targetType The object class name to be created
      * @return \DateTime
      */
     protected function mapDateTime($value, $storageFormat = null, $targetType = 'DateTime')
     {
-        if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
+        $dateTimeTypes = QueryHelper::getDateTimeTypes();
+
+        if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00' || $value === '00:00:00') {
             // 0 -> NULL !!!
             return null;
         }
-        if ($storageFormat === 'date' || $storageFormat === 'datetime') {
-            // native date/datetime values are stored in UTC
+        if (in_array($storageFormat, $dateTimeTypes, true)) {
+            // native date/datetime/time values are stored in UTC
             $utcTimeZone = new \DateTimeZone('UTC');
             $utcDateTime = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
             $currentTimeZone = new \DateTimeZone(date_default_timezone_get());
@@ -710,8 +713,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
                     case 'date':
                         $parameter = $timeZoneToStore->format('Y-m-d');
                         break;
+                    case 'time':
+                        $parameter = $timeZoneToStore->format('H:i');
+                        break;
                     default:
-                        throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are datetime or date.', 1395353470);
+                        throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are date, datetime or time.', 1395353470);
                 }
             } else {
                 $parameter = $input->format('U');
