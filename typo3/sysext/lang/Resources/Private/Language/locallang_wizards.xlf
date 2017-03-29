@@ -288,6 +288,9 @@
 			<trans-unit id="imwizard.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="imwizard.preview">
+				<source>Preview</source>
+			</trans-unit>
 			<trans-unit id="imwizard.aspect-ratio">
 				<source>Aspect ratio</source>
 			</trans-unit>

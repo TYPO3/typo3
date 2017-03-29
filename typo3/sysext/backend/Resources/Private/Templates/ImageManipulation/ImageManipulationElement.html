@@ -19,6 +19,9 @@
 									data-modal-title="{f:render(partial: 'ModalTitle', section:'Main', arguments: _all)}"
 									data-image-uid="{image.uid}"
 									data-crop-variants="{config.cropVariants -> f:format.json()}"
+									data-button-preview-text="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.preview')}"
+									data-button-dismiss-text="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.cancel')}"
+									data-button-save-text="{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.accept')}"
 									data-file-field="{config.file_field}"
 									data-field="{formEngine.field.id}">
 								<span class="t3-icon fa fa-crop"></span>

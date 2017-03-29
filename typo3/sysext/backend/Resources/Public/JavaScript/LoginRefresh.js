@@ -26,9 +26,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 */
 	var LoginRefresh = {
 		identifier: {
-			loginrefresh: 't3-modal-loginrefresh',
-			lockedModal: 't3-modal-backendlocked',
-			loginFormModal: 't3-modal-backendloginform'
+			loginrefresh: 't3js-modal-loginrefresh',
+			lockedModal: 't3js-modal-backendlocked',
+			loginFormModal: 't3js-modal-backendloginform'
 		},
 		options: {
 			modalConfig: {
@@ -75,7 +75,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 * @returns {Object}
 	 */
 	LoginRefresh.generateModal = function(identifier) {
-		return $('<div />', {id: identifier, class: 't3-modal t3-blr-modal ' + identifier + ' modal fade'}).append(
+		return $('<div />', {id: identifier, class: 't3js-modal ' + identifier + ' modal modal-type-default modal-severity-notice modal-style-light modal-size-small fade'}).append(
 			$('<div />', {class: 'modal-dialog'}).append(
 				$('<div />', {class: 'modal-content'}).append(
 					$('<div />', {class: 'modal-header'}).append(
@@ -112,7 +112,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 */
 	LoginRefresh.initializeTimeoutModal = function() {
 		LoginRefresh.$timeoutModal = LoginRefresh.generateModal(LoginRefresh.identifier.loginrefresh);
-		LoginRefresh.$timeoutModal.addClass('t3-modal-notice');
+		LoginRefresh.$timeoutModal.addClass('modal-severity-notice');
 		LoginRefresh.$timeoutModal.find('.modal-header h4').text(TYPO3.LLL.core.login_about_to_expire_title);
 		LoginRefresh.$timeoutModal.find('.modal-body').append(
 			$('<p />').text(TYPO3.LLL.core.login_about_to_expire),
@@ -216,7 +216,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 		}
 
 		LoginRefresh.$loginForm = LoginRefresh.generateModal(LoginRefresh.identifier.loginFormModal);
-		LoginRefresh.$loginForm.addClass('t3-modal-notice');
+		LoginRefresh.$loginForm.addClass('modal-notice');
 		var refresh_login_title = String(TYPO3.LLL.core.refresh_login_title).replace('%s', TYPO3.configuration.username);
 		LoginRefresh.$loginForm.find('.modal-header h4').text(refresh_login_title);
 		LoginRefresh.$loginForm.find('.modal-body').append(

@@ -33,14 +33,14 @@ class ModalDialog
      *
      * @var string
      */
-    public static $openedModalSelector = '.t3-modal.in';
+    public static $openedModalSelector = '.modal.in';
 
     /**
      * Selector for the container in the modal where the buttons are located
      *
      * @var string
      */
-    public static $openedModalButtonContainerSelector = '.t3-modal.in .modal-footer';
+    public static $openedModalButtonContainerSelector = '.modal.in .modal-footer';
 
     /**
      * @var AcceptanceTester

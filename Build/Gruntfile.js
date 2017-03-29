@@ -479,6 +479,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('scripts', ['tslint', 'tsclean', 'ts', 'copy:ts_files']);
 
 	grunt.task.registerTask('tsclean', function() {
+		grunt.option('force');
 		grunt.file.delete("JavaScript");
 	});
 

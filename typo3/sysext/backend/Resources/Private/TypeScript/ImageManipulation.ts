@@ -13,13 +13,11 @@
 
 /// <amd-dependency path='TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' name='ImagesLoaded'>
 /// <amd-dependency path='TYPO3/CMS/Backend/Modal' name='Modal'>
-/// <amd-dependency path='TYPO3/CMS/Backend/Severity' name='Severity'>
 
 import $ = require('jquery');
 import 'jquery-ui/draggable';
 import 'jquery-ui/resizable';
 declare const Modal: any;
-declare const Severity: any;
 declare const ImagesLoaded: any;
 
 declare global {
@@ -215,10 +213,6 @@ class ImageManipulation {
   private initializeCropperModal(): void {
     const image: JQuery = this.currentModal.find(this.cropImageSelector);
     ImagesLoaded(image, (): void => {
-      const modal: JQuery = this.currentModal.find('.modal-dialog');
-      modal.css({marginLeft: 'auto', marginRight: 'auto'});
-      modal.addClass('modal-image-manipulation modal-resize');
-      Modal.center();
       setTimeout((): void => {
         this.init();
       }, 100);
@@ -232,21 +226,54 @@ class ImageManipulation {
    */
   private show(): void {
     const modalTitle: string = this.trigger.data('modalTitle');
+    const buttonPreviewText: string = this.trigger.data('buttonPreviewText');
+    const buttonDismissText: string = this.trigger.data('buttonDismissText');
+    const buttonSaveText: string = this.trigger.data('buttonSaveText');
     const imageUri: string = this.trigger.data('url');
     const initCropperModal: Function = this.initializeCropperModal.bind(this);
 
     /**
      * Open modal with image to crop
      */
-    this.currentModal = Modal.loadUrl(
-      modalTitle,
-      Severity.notice,
-      [],
-      imageUri,
-      initCropperModal,
-      '.modal-content'
-    );
-    this.currentModal.addClass('modal-dark');
+    this.currentModal = Modal.advanced({
+      additionalCssClasses: ['modal-image-manipulation'],
+      ajaxCallback: initCropperModal,
+      buttons: [
+        {
+          btnClass: 'btn-default pull-left',
+          dataAttributes: {
+              method: 'preview',
+          },
+          icon: 'actions-view',
+          text: buttonPreviewText,
+        },
+        {
+          btnClass: 'btn-default',
+          dataAttributes: {
+              method: 'dismiss',
+          },
+          icon: 'actions-close',
+          text: buttonDismissText,
+        },
+        {
+          btnClass: 'btn-primary',
+          dataAttributes: {
+              method: 'save',
+          },
+          icon: 'actions-document-save',
+          text: buttonSaveText,
+        },
+      ],
+      callback: (currentModal: JQuery): void => {
+        currentModal.find('.t3js-modal-body')
+          .addClass('cropper');
+      },
+      content: imageUri,
+      size: Modal.sizes.full,
+      style: Modal.styles.dark,
+      title: modalTitle,
+      type: 'ajax',
+    });
     this.currentModal.on('hide.bs.modal', (e: JQueryEventObject): void => {
       this.destroy();
     });

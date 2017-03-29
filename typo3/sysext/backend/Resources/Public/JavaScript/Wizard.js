@@ -95,8 +95,8 @@ define(['jquery',
 				.addClass('btn-' + Severity.getCssClass(Wizard.setup.slides[currentIndex].severity));
 
 			$modal
-				.removeClass('t3-modal-' + Severity.getCssClass(Wizard.setup.slides[currentIndex -1].severity))
-				.addClass('t3-modal-' + Severity.getCssClass(Wizard.setup.slides[currentIndex].severity));
+				.removeClass('modal-severity-' + Severity.getCssClass(Wizard.setup.slides[currentIndex -1].severity))
+				.addClass('modal-severity-' + Severity.getCssClass(Wizard.setup.slides[currentIndex].severity));
 		}).on('slid.bs.carousel', function(e) {
 			var currentIndex = Wizard.setup.$carousel.data('currentIndex'),
 				slide = Wizard.setup.slides[currentIndex];

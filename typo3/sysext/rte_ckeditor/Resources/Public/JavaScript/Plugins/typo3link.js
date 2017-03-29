@@ -117,22 +117,20 @@
 	function openElementBrowser(editor, title, height, url) {
 		require([
 			'jquery',
-			'TYPO3/CMS/Backend/Modal',
-			'TYPO3/CMS/Backend/Severity'
-			], function ($, Modal, Severity) {
+			'TYPO3/CMS/Backend/Modal'
+			], function ($, Modal) {
 
-			var $iframe = $('<iframe />', {
-					src: url,
-					'class': 'content-iframe',
-					style: 'display: block; border: 0; width: 100%; max-height: 100%; height: ' + height * 1 + 'px;'
-				}),
-				$content = $('<div />', {'class': 'rte-ckeditor-window', id: editor.id}).append($iframe);
-
-			var elementBrowser = Modal.show(title, $content, Severity.notice);
-
-			// TODO: add this to less/css (.rte-ckeditor-window .modal-body)
-			// 		 further, make modal wider and maybe resize-able
-			elementBrowser.find('.modal-body').css('padding', 0);
+			Modal.advanced({
+				type: Modal.types.iframe,
+				title: title,
+				content: url,
+				size: Modal.sizes.large,
+				callback: function(currentModal) {
+					currentModal.find('.t3js-modal-body')
+						.addClass('rte-ckeditor-window')
+						.attr('id', editor.id);
+				}
+			});
 		});
 	}
 
