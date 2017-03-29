@@ -72,6 +72,137 @@ TYPO3.Install.FlashMessage = {
 	}
 };
 
+TYPO3.Install.DumpAutoload = {
+	/**
+	 * output DOM Container
+	 */
+	outputContainer: {},
+
+	/**
+	 * Clone of the DOM object that contains the submit button
+	 */
+	submitButton: {},
+
+	/**
+	 * Default output messages
+	 */
+	outputMessages: {
+		dumpAutoload: {
+			fatalTitle: 'Something went wrong',
+			fatalMessage: '',
+			loadingTitle: 'Loading...',
+			loadingMessage: ''
+		}
+	},
+
+	/**
+	 * Fetching the templates out of the DOM
+	 *
+	 * @param dumpAutoloadContainer DOM element id with all needed HTML in it
+	 * @return boolean DOM container could be found and initialization finished
+	 */
+	initialize: function(dumpAutoloadContainer) {
+		this.outputContainer[dumpAutoloadContainer] = $('.t3js-' + dumpAutoloadContainer);
+
+		if (this.outputContainer[dumpAutoloadContainer]) {
+			// submit button: save and delete
+			if(!this.submitButton[dumpAutoloadContainer]) {
+				var submitButton = this.outputContainer[dumpAutoloadContainer].find('button[type="submit"]');
+				this.submitButton[dumpAutoloadContainer] = submitButton.clone();
+			}
+
+			// clear all messages from the run before
+			this.outputContainer[dumpAutoloadContainer].find('.typo3-message:visible ').remove();
+
+			return true;
+		}
+		return false;
+	},
+
+	/**
+	 * Ajax call to dump Autoload Information
+	 * @param actionName
+	 */
+	dumpAutoload: function(actionName) {
+		var self = this;
+		var url = location.href + '&install[controller]=ajax&install[action]=' + actionName;
+		var isInitialized = self.initialize(actionName);
+		if (isInitialized) {
+			self.addMessage(
+				TYPO3.Install.Severity.loading,
+				self.outputMessages[actionName].loadingTitle,
+				self.outputMessages[actionName].loadingMessage,
+				actionName
+			);
+			$.ajax({
+				url: url,
+				cache: false,
+				success: function(data) {
+					if (data.success === true && Array.isArray(data.status)) {
+						if (data.status.length > 0) {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							data.status.forEach((function (element) {
+								//noinspection JSUnresolvedVariable
+								self.addMessage(
+									element.severity,
+									element.title,
+									element.message,
+									actionName
+								);
+							}));
+						} else {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							self.addMessage(
+								TYPO3.Install.Severity.ok,
+								self.outputMessages[actionName].successTitle,
+								self.outputMessages[actionName].successMessage,
+								actionName
+							);
+						}
+					} else if (data === 'unauthorized') {
+						location.reload();
+					}
+				},
+				error: function() {
+					self.outputContainer[actionName].find('.alert-loading').hide();
+					self.addMessage(
+						TYPO3.Install.Severity.error,
+						self.outputMessages[actionName].fatalTitle,
+						self.outputMessages[actionName].fatalMessage,
+						actionName
+					);
+				}
+			});
+		}
+	},
+
+	/**
+	 * Move the submit button to the end of the box
+	 *
+	 * @param dumpAutoloadContainer DOM container name
+	 */
+	moveSubmitButtonFurtherDown: function(dumpAutoloadContainer) {
+		// first remove the currently visible button
+		this.outputContainer[dumpAutoloadContainer].find('button[type="submit"]').remove();
+		// then append the cloned template to the end
+		this.outputContainer[dumpAutoloadContainer].append(this.submitButton[dumpAutoloadContainer]);
+	},
+
+	/**
+	 * Show a status message
+	 *
+	 * @param severity
+	 * @param title
+	 * @param message
+	 * @param dumpAutoloadContainer DOM container name
+	 */
+	addMessage: function(severity, title, message, dumpAutoloadContainer) {
+		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
+		this.outputContainer[dumpAutoloadContainer].append(domMessage);
+		this.moveSubmitButtonFurtherDown(dumpAutoloadContainer);
+	}
+};
+
 TYPO3.Install.Cache = {
 	/**
 	 * output DOM Container
@@ -90,7 +221,7 @@ TYPO3.Install.Cache = {
 		clearAllCache: {
 			fatalTitle: 'Something went wrong',
 			fatalMessage: '',
-			loadingTitle: 'Loading…',
+			loadingTitle: 'Loading...',
 			loadingMessage: ''
 		}
 	},
@@ -102,7 +233,6 @@ TYPO3.Install.Cache = {
 	* @return boolean DOM container could be found and initialization finished
 	*/
 	initialize: function(cacheCheckContainer) {
-		var success = false;
 		this.outputContainer[cacheCheckContainer] = $('#' + cacheCheckContainer);
 
 		if (this.outputContainer[cacheCheckContainer]) {
@@ -115,9 +245,9 @@ TYPO3.Install.Cache = {
 			// clear all messages from the run before
 			this.outputContainer[cacheCheckContainer].find('.typo3-message:visible ').remove();
 
-			success = true;
+			return true;
 		}
-		return success;
+		return false;
 	},
 
 	/**
@@ -391,7 +521,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 		tcaMigrationsCheck: {
 			fatalTitle: 'Something went wrong',
 			fatalMessage: 'Use "Check for broken extensions!"',
-			loadingTitle: 'Loading…',
+			loadingTitle: 'Loading...',
 			loadingMessage: '',
 			successTitle: 'No TCA migrations need to be applied',
 			successMessage: 'Your TCA looks good.',
@@ -401,7 +531,7 @@ TYPO3.Install.TcaIntegrityChecker = {
 		tcaExtTablesCheck: {
 			fatalTitle: 'Something went wrong',
 			fatalMessage: 'Use "Check for broken extensions!"',
-			loadingTitle: 'Loading…',
+			loadingTitle: 'Loading...',
 			loadingMessage: '',
 			successTitle: 'No TCA changes in ext_tables.php files. Good job!',
 			successMessage: '',
@@ -916,6 +1046,17 @@ $(function () {
 			return false;
 		}));
 	}
+
+	// Handle dumpAutoload
+	var $clearAllCacheSection = $('.t3js-dumpAutoload');
+	if ($clearAllCacheSection) {
+		$clearAllCacheSection.on('click', 'button', (function(e) {
+			TYPO3.Install.DumpAutoload.dumpAutoload('dumpAutoload');
+			e.preventDefault();
+			return false;
+		}));
+	}
+
 	// Handle TCA ext_tables check
 	var $tcaExtTablesCheckSection = $('#tcaExtTablesCheck');
 	if ($tcaExtTablesCheckSection) {

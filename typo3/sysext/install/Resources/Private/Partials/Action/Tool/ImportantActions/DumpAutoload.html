@@ -5,5 +5,7 @@
 
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<f:render partial="Action/Common/SubmitButton" arguments="{name:'dumpAutoload', text:'Create autoload information for extensions'}"/>
+	<div class="t3js-dumpAutoload">
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'dumpAutoload', text:'Create autoload information for extensions'}"/>
+	</div>
 </form>
