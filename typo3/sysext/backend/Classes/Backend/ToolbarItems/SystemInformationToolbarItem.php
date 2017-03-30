@@ -172,7 +172,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
-            'value' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled',
+            'value' => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
             'iconIdentifier' => 'sysinfo-composer-mode'
         ];
     }
