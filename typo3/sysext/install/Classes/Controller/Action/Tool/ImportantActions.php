@@ -74,9 +74,13 @@ class ImportantActions extends Action\AbstractAction
 
         /** @var \TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService */
         $coreUpdateService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
+        /** @var  $coreVersionService \TYPO3\CMS\Install\Service\CoreVersionService */
+        $coreVersionService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreVersionService::class);
         $this->view
             ->assign('enableCoreUpdate', $coreUpdateService->isCoreUpdateEnabled())
             ->assign('composerMode', Bootstrap::usesComposerClassLoading())
+            ->assign('isInstalledVersionAReleasedVersion', $coreVersionService->isInstalledVersionAReleasedVersion())
+            ->assign('isSymLinkedCore', is_link(PATH_site . 'typo3_src'))
             ->assign('operatingSystem', $operatingSystem)
             ->assign('cgiDetected', GeneralUtility::isRunningOnCgiServerApi())
             ->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/assets/ExtensionCompatibilityTester.txt')

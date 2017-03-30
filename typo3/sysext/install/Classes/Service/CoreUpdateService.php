@@ -171,7 +171,7 @@ class CoreUpdateService
         $folderStructureFacade = GeneralUtility::makeInstance(DefaultFactory::class)->getStructure();
         $folderStructureErrors = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'error');
         $folderStructureWarnings = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'warning');
-        if (!empty($folderStructureErrors) || !empty($folderStructureWarnings)) {
+        if (!empty($folderStructureErrors) || !empty($folderStructureWarnings) || !is_link(PATH_site . 'typo3_src')) {
             $success = false;
             /** @var $message StatusInterface */
             $message = GeneralUtility::makeInstance(ErrorStatus::class);

@@ -60,10 +60,6 @@ class DefaultFactory
                     'type' => LinkNode::class,
                     'target' => 'typo3_src/typo3',
                 ],
-                [
-                    'name' => 'typo3_src',
-                    'type' => LinkNode::class,
-                ],
             ];
         }
         $structureBase = [
