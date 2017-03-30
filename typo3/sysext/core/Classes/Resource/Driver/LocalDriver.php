@@ -354,7 +354,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         if ($iterator->count() === 0) {
             return [];
         }
-        $iterator->seek($start);
 
         // $c is the counter for how many items we still have to fetch (-1 is unlimited)
         $c = $numberOfItems > 0 ? $numberOfItems : - 1;
@@ -376,12 +375,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                 ) {
                     continue;
                 }
-
-                $items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
-                // Decrement item counter to make sure we only return $numberOfItems
-                // we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
-                // item here
-                --$c;
+                if ($start > 0) {
+                    $start--;
+                } else {
+                    $items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
+                    // Decrement item counter to make sure we only return $numberOfItems
+                    // we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
+                    // item here
+                    --$c;
+                }
             } catch (Exception\InvalidPathException $e) {
             }
         }
