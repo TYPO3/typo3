@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -7501,6 +7502,16 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      ***************************************************************************/
 
     /**
+     * Check if getCurrentTable works properly.
+     *
+     * @test
+     */
+    public function getCurrentTable()
+    {
+        $this->assertEquals('tt_content', $this->subject->getCurrentTable());
+    }
+
+    /**
      * Data provider for linkWrap
      *
      * @return array [[$expected, $content, $wrap],]
@@ -7625,6 +7636,50 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         // Consider to improve the signature and deprecate the old one.
         $result = $this->subject->prefixComment($comment, null, $content);
         $this->assertEquals($expect, $result);
+    }
+
+    /**
+     * Check setter and getter of currentFile work properly.
+     *
+     * @test
+     */
+    public function setCurrentFile_getCurrentFile()
+    {
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $file = new File(['testfile'], $storageMock);
+        $this->subject->setCurrentFile($file);
+        $this->assertSame($file, $this->subject->getCurrentFile());
+    }
+
+    /**
+     * Check setter and getter of currentVal work properly.
+     *
+     * Show it stored to $this->data[$this->currentValKey].
+     * (The default value of currentValKey is tested elsewhere.)
+     *
+     * @test
+     * @see $this->stdWrap_current()
+     */
+    public function setCurrentVal_getCurrentVal()
+    {
+        $key = $this->getUniqueId();
+        $value = $this->getUniqueId();
+        $this->subject->currentValKey = $key;
+        $this->subject->setCurrentVal($value);
+        $this->assertEquals($value, $this->subject->getCurrentVal());
+        $this->assertEquals($value, $this->subject->data[$key]);
+    }
+
+    /**
+     * Check setter and getter of userObjectType work properly.
+     *
+     * @test
+     */
+    public function setUserObjectType_getUserObjectType()
+    {
+        $value = $this->getUniqueId();
+        $this->subject->setUserObjectType($value);
+        $this->assertEquals($value, $this->subject->getUserObjectType());
     }
 
     /***************************************************************************
