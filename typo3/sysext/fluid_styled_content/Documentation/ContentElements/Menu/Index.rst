@@ -2,15 +2,15 @@
 
 .. _content-element-menu:
 
-=============
-Special menus
-=============
+=====
+Menus
+=====
 
 In websites menus are often created outside the content element scope, because they have
 to reappear within every page. These could be the main menu, a sub menu, a bread crumb or
 a language menu. However, there are situations where you would like to create a menu
-specifically on one page. This content element will give you some options to render a
-menu. These options are:
+specifically on one page. The following content elements will give you some options to render
+a menu. These available content elements are:
 
 Menu of selected pages
    The menu consists of links to the selected pages in the TYPO3 CMS backend.

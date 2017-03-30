@@ -55,5 +55,4 @@ a GNU/GPL CMS/Framework available from http://typo3.org
    Configuration/Index
    ContentElements/Index
    AddingYourOwnContentElements/Index
-   FrequentlyAskedQuestions/Index
    Targets

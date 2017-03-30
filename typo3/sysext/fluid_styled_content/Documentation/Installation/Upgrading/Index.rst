@@ -7,18 +7,13 @@ Upgrading
 =========
 
 If you upgrade your TYPO3 CMS installation from one major version to another (for example
-6.2 to 7.6), it is advised to run the Upgrade Wizards. They guide you through the
+7.6 to 8.7), it is advised to run the Upgrade Wizards. They guide you through the
 necessary steps to upgrade your database records or explicitly install extensions that
 ship with the latest TYPO3 CMS version.
 
-Coming from an older version it might be that the basic content elements, provided by
-the core of TYPO3 CMS were rendered by the extension "CSS Styled Content
-(css_styled_content)". Some changes have been made since moving the rendering to the
-extension "fluid_styled_content". Some database fields of the table tt_content are no longer
-used, the fields of FlexForms have been moved to proper database fields and the content
-elements "Text" and "Text & Images" have been merged into a new content element "textmedia".
-To make sure you do not lose any information or the content elements look differently on
-your upgraded website run these Upgrade Wizards.
+Some database fields of the table tt_content are no longer used, the fields of FlexForms
+have been moved to proper database fields. To make sure you do not lose any information
+or the content elements look differently on your upgraded website run these Upgrade Wizards.
 
 The upgrade wizards can be found in the Install tool.
 

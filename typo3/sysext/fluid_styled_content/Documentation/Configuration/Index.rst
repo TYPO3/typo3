@@ -27,6 +27,5 @@ the fields an editor is allowed to use. Configuration like this is done using
 
    ConstantEditor/Index
    TypoScript/Index
-   PageTs/Index
    OverridingFluidTemplates/Index
 
