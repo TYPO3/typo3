@@ -2054,113 +2054,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     }
 
     /**
-     * @param string $expected The expected URL
-     * @param string $url The URL to parse and manipulate
-     * @param array $configuration The configuration array
-     * @test
-     * @dataProvider forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider
-     */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration)
-    {
-        // Force hostname
-        $this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
-            [
-                ['HTTP_HOST', 'localhost'],
-                ['TYPO3_SITE_PATH', '/'],
-            ]
-        ));
-        $GLOBALS['TSFE']->absRefPrefix = '';
-
-        $this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
-    }
-
-    /**
-     * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
-     */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider()
-    {
-        return [
-            'Missing forceAbsoluteUrl leaves URL untouched' => [
-                'foo',
-                'foo',
-                []
-            ],
-            'Absolute URL stays unchanged' => [
-                'http://example.org/',
-                'http://example.org/',
-                [
-                    'forceAbsoluteUrl' => '1'
-                ]
-            ],
-            'Absolute URL stays unchanged 2' => [
-                'http://example.org/resource.html',
-                'http://example.org/resource.html',
-                [
-                    'forceAbsoluteUrl' => '1'
-                ]
-            ],
-            'Scheme and host w/o ending slash stays unchanged' => [
-                'http://example.org',
-                'http://example.org',
-                [
-                    'forceAbsoluteUrl' => '1'
-                ]
-            ],
-            'Scheme can be forced' => [
-                'typo3://example.org',
-                'http://example.org',
-                [
-                    'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
-            ],
-            'Relative path old-style' => [
-                'http://localhost/fileadmin/dummy.txt',
-                '/fileadmin/dummy.txt',
-                [
-                    'forceAbsoluteUrl' => '1',
-                ]
-            ],
-            'Relative path' => [
-                'http://localhost/fileadmin/dummy.txt',
-                'fileadmin/dummy.txt',
-                [
-                    'forceAbsoluteUrl' => '1',
-                ]
-            ],
-            'Scheme can be forced with pseudo-relative path' => [
-                'typo3://localhost/fileadmin/dummy.txt',
-                '/fileadmin/dummy.txt',
-                [
-                    'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
-            ],
-            'Hostname only is not treated as valid absolute URL' => [
-                'http://localhost/example.org',
-                'example.org',
-                [
-                    'forceAbsoluteUrl' => '1'
-                ]
-            ],
-            'Scheme and host is added to local file path' => [
-                'typo3://localhost/fileadmin/my.pdf',
-                'fileadmin/my.pdf',
-                [
-                    'forceAbsoluteUrl' => '1',
-                    'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    /**
      * @test
      */
     public function renderingContentObjectThrowsException()
@@ -2294,28 +2187,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
         return $contentObjectFixture;
-    }
-
-    /**
-     * @test
-     */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder()
-    {
-        // Force hostname and subfolder
-        $this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
-            [
-                ['HTTP_HOST', 'localhost'],
-                ['TYPO3_SITE_PATH', '/subfolder/'],
-            ]
-        ));
-
-        $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
-        $url = 'fileadmin/my.pdf';
-        $configuration = [
-            'forceAbsoluteUrl' => '1'
-        ];
-
-        $this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
     /**
@@ -2917,6 +2788,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));

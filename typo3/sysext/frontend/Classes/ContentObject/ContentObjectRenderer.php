@@ -58,9 +58,10 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
+use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
 /**
  * This class contains all main TypoScript features.
@@ -5485,7 +5486,8 @@ class ContentObjectRenderer
      * @param array $configuration TypoScript configuration
      * @return array|string
      * @see typoLink()
-     * @todo the whole thing does not work like this anymore. remove the whole function. forge #79647
+     *
+     * @todo the functionality of the "file:" syntax + the hook should be marked as deprecated, an upgrade wizard should handle existing links
      */
     protected function resolveMixedLinkParameter($linkText, $mixedLinkParameter, &$configuration = [])
     {
@@ -5494,7 +5496,7 @@ class ContentObjectRenderer
         // Link parameter value = first part
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($mixedLinkParameter);
 
-        // Check for link-handler keyword:
+        // Check for link-handler keyword
         list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameterParts['url'], 2);
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
             $linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
@@ -5561,9 +5563,6 @@ class ContentObjectRenderer
         $linkText = (string)$linkText;
         $tsfe = $this->getTypoScriptFrontendController();
 
-        $LD = [];
-        $finalTagParts = [];
-        $finalTagParts['aTagParams'] = $this->getATagParams($conf);
         $linkParameter = trim(isset($conf['parameter.']) ? $this->stdWrap($conf['parameter'], $conf['parameter.']) : $conf['parameter']);
         $this->lastTypoLinkUrl = '';
         $this->lastTypoLinkTarget = '';
@@ -5573,7 +5572,6 @@ class ContentObjectRenderer
         if (!is_array($resolvedLinkParameters)) {
             return $resolvedLinkParameters;
         }
-
         $linkParameter = $resolvedLinkParameters['href'];
         $target = $resolvedLinkParameters['target'];
         $title = $resolvedLinkParameters['title'];
@@ -5583,333 +5581,30 @@ class ContentObjectRenderer
         }
 
         // Detecting kind of link and resolve all necessary parameters
-        /** @var LinkService $linkService */
         $linkService = GeneralUtility::makeInstance(LinkService::class);
         $linkDetails = $linkService->resolve($linkParameter);
-        switch ($linkDetails['type']) {
-            // If it's a mail address
-            case LinkService::TYPE_EMAIL:
-                list($this->lastTypoLinkUrl, $linkText) = $this->getMailTo($linkDetails['email'], $linkText);
-            break;
-
-            // URL (external)
-            case LinkService::TYPE_URL:
-                $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
-                $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
-                $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
-            break;
-
-            // File (internal)
-            case LinkService::TYPE_FILE:
-            case LinkService::TYPE_FOLDER:
-                $fileOrFolderObject = $linkDetails['file'] ? $linkDetails['file'] : $linkDetails['folder'];
-                // check if the file exists or if a / is contained (same check as in detectLinkType)
-                if ($fileOrFolderObject instanceof FileInterface || $fileOrFolderObject instanceof Folder) {
-                    $linkLocation = $fileOrFolderObject->getPublicUrl();
-                    // Setting title if blank value to link
-                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-                    $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
-                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
-                    $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
-
-                    $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);
-                } else {
-                    $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $linkParameter . '" did not exist, so "' . $linkText . '" was not linked.', 1);
-                    return $linkText;
-                }
-            break;
-
-            // Link to a page
-            case LinkService::TYPE_PAGE:
-                // Checking if the id-parameter is an alias.
-                if (!empty($linkDetails['pagealias'])) {
-                    $linkDetails['pageuid'] = $tsfe->sys_page->getPageIdFromAlias($linkDetails['pagealias']);
-                } elseif (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
-                    // If no id or alias is given
-                    $linkDetails['pageuid'] = $tsfe->id;
-                }
-
-                // Link to page even if access is missing?
-                if (isset($conf['linkAccessRestrictedPages'])) {
-                    $disableGroupAccessCheck = (bool)$conf['linkAccessRestrictedPages'];
-                } else {
-                    $disableGroupAccessCheck = (bool)$tsfe->config['config']['typolinkLinkAccessRestrictedPages'];
-                }
-
-                // Looking up the page record to verify its existence:
-                $page = $tsfe->sys_page->getPage($linkDetails['pageuid'], $disableGroupAccessCheck);
-
-                if (!empty($page)) {
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] as $classData) {
-                            $hookObject = GeneralUtility::makeInstance($classData);
-                            if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
-                                throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
-                            }
-                            /** @var $hookObject TypolinkModifyLinkConfigForPageLinksHookInterface */
-                            $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
-                        }
-                    }
-                    $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
-                    if ($conf['no_cache.']) {
-                        $conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
-                    }
-
-                    $sectionMark = trim(isset($conf['section.']) ? $this->stdWrap($conf['section'], $conf['section.']) : $conf['section']);
-                    if ($sectionMark === '' && isset($linkDetails['fragment'])) {
-                        $sectionMark = $linkDetails['fragment'];
-                    }
-                    if ($sectionMark !== '') {
-                        $sectionMark = '#' . (MathUtility::canBeInterpretedAsInteger($sectionMark) ? 'c' : '') . $sectionMark;
-                    }
-                    // Overruling 'type'
-                    $pageType = $linkDetails['pagetype'] ?? 0;
-
-                    if (isset($linkDetails['parameters'])) {
-                        $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
-                    }
-                    // MointPoints, look for closest MPvar:
-                    $MPvarAcc = [];
-                    if (!$tsfe->config['config']['MP_disableTypolinkClosestMPvalue']) {
-                        $temp_MP = $this->getClosestMPvalueForPage($page['uid'], true);
-                        if ($temp_MP) {
-                            $MPvarAcc['closest'] = $temp_MP;
-                        }
-                    }
-                    // Look for overlay Mount Point:
-                    $mount_info = $tsfe->sys_page->getMountPointInfo($page['uid'], $page);
-                    if (is_array($mount_info) && $mount_info['overlay']) {
-                        $page = $tsfe->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
-                        if (empty($page)) {
-                            $this->getTimeTracker()->setTSlogMessage('typolink(): Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1);
-                            return $linkText;
-                        }
-                        $MPvarAcc['re-map'] = $mount_info['MPvar'];
-                    }
-                    // Setting title if blank value to link
-                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
-                    // Query Params:
-                    $addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
-                    $addQueryParams .= isset($conf['additionalParams.']) ? trim($this->stdWrap($conf['additionalParams'], $conf['additionalParams.'])) : trim($conf['additionalParams']);
-                    if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
-                        $addQueryParams = '';
-                    }
-                    $targetDomain = '';
-                    $currentDomain = (string)$this->getEnvironmentVariable('HTTP_HOST');
-                    // Mount pages are always local and never link to another domain
-                    if (!empty($MPvarAcc)) {
-                        // Add "&MP" var:
-                        $addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
-                    } elseif (strpos($addQueryParams, '&MP=') === false && $tsfe->config['config']['typolinkCheckRootline']) {
-                        // We do not come here if additionalParams had '&MP='. This happens when typoLink is called from
-                        // menu. Mount points always work in the content of the current domain and we must not change
-                        // domain if MP variables exist.
-                        // If we link across domains and page is free type shortcut, we must resolve the shortcut first!
-                        // If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
-                        // they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-                        if ($enableLinksAcrossDomains
-                            && (int)$page['doktype'] === PageRepository::DOKTYPE_SHORTCUT
-                            && (int)$page['shortcut_mode'] === PageRepository::SHORTCUT_MODE_NONE
-                        ) {
-                            // Save in case of broken destination or endless loop
-                            $page2 = $page;
-                            // Same as in RealURL, seems enough
-                            $maxLoopCount = 20;
-                            while ($maxLoopCount
-                                && is_array($page)
-                                && (int)$page['doktype'] === PageRepository::DOKTYPE_SHORTCUT
-                                && (int)$page['shortcut_mode'] === PageRepository::SHORTCUT_MODE_NONE
-                            ) {
-                                $page = $tsfe->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
-                                $maxLoopCount--;
-                            }
-                            if (empty($page) || $maxLoopCount === 0) {
-                                // We revert if shortcut is broken or maximum number of loops is exceeded (indicates endless loop)
-                                $page = $page2;
-                            }
-                        }
-
-                        $targetDomain = $tsfe->getDomainNameForPid($page['uid']);
-                        // Do not prepend the domain if it is the current hostname
-                        if (!$targetDomain || $tsfe->domainNameMatchesCurrentRequest($targetDomain)) {
-                            $targetDomain = '';
-                        }
-                    }
-                    if ($conf['useCacheHash']) {
-                        $params = $tsfe->linkVars . $addQueryParams . '&id=' . $page['uid'];
-                        if (trim($params, '& ') != '') {
-                            /** @var $cacheHash CacheHashCalculator */
-                            $cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
-                            $cHash = $cacheHash->generateForParameters($params);
-                            $addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
-                        }
-                        unset($params);
-                    }
-                    $absoluteUrlScheme = 'http';
-                    // URL shall be absolute:
-                    if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
-                        // Override scheme:
-                        if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
-                            $absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
-                        } elseif ($this->getEnvironmentVariable('TYPO3_SSL')) {
-                            $absoluteUrlScheme = 'https';
-                        }
-                        // If no domain records are defined, use current domain:
-                        $currentUrlScheme = parse_url($this->getEnvironmentVariable('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-                        if ($targetDomain === '' && ($conf['forceAbsoluteUrl'] || $absoluteUrlScheme !== $currentUrlScheme)) {
-                            $targetDomain = $currentDomain;
-                        }
-                        // If go for an absolute link, add site path if it's not taken care about by absRefPrefix
-                        if (!$tsfe->config['config']['absRefPrefix'] && $targetDomain === $currentDomain) {
-                            $targetDomain = $currentDomain . rtrim($this->getEnvironmentVariable('TYPO3_SITE_PATH'), '/');
-                        }
-                    }
-                    // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
-                    if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
-                        $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
-                        $LD['target'] = $target;
-                        // Convert IDNA-like domain (if any)
-                        if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
-                            $targetDomain =  GeneralUtility::idnaEncode($targetDomain);
-                        }
-                        $this->lastTypoLinkUrl = $absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid'] . $addQueryParams . $sectionMark;
-                    } else {
-                        // Internal link or current domain's linking scheme should be used
-                        // Internal target:
-                        if (empty($target)) {
-                            $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
-                        }
-                        $LD = $tsfe->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $pageType, $targetDomain);
-                        if ($targetDomain !== '') {
-                            // We will add domain only if URL does not have it already.
-                            if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain) {
-                                // Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
-                                // to the current web site. If we have domain here it means we link across
-                                // domains. absRefPrefix can contain domain name, which will screw up
-                                // the link to the external domain.
-                                $prefixLength = strlen($tsfe->config['config']['absRefPrefix']);
-                                if (substr($LD['totalURL'], 0, $prefixLength) === $tsfe->config['config']['absRefPrefix']) {
-                                    $LD['totalURL'] = substr($LD['totalURL'], $prefixLength);
-                                }
-                            }
-                            $urlParts = parse_url($LD['totalURL']);
-                            if (empty($urlParts['host'])) {
-                                $LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain . ($LD['totalURL'][0] === '/' ? '' : '/') . $LD['totalURL'];
-                            }
-                        }
-                        $this->lastTypoLinkUrl = $LD['totalURL'] . $sectionMark;
-                    }
-                    $target = $LD['target'];
-                    // If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
-                    if ($sectionMark
-                        && !$tsfe->config['config']['baseURL']
-                        && (int)$page['uid'] === (int)$tsfe->id
-                        && !trim($addQueryParams)
-                        && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
-                    ) {
-                        $currentQueryParams = $this->getQueryArguments([]);
-                        if (!trim($currentQueryParams)) {
-                            list(, $URLparams) = explode('?', $this->lastTypoLinkUrl);
-                            list($URLparams) = explode('#', $URLparams);
-                            parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
-                            // Type nums must match as well as page ids
-                            if ((int)$URLparamsArray['type'] === (int)$tsfe->type) {
-                                unset($URLparamsArray['id']);
-                                unset($URLparamsArray['type']);
-                                // If there are no parameters left.... set the new url.
-                                if (empty($URLparamsArray)) {
-                                    $this->lastTypoLinkUrl = $sectionMark;
-                                }
-                            }
-                        }
-                    }
-                    // If link is to an access restricted page which should be redirected, then find new URL:
-                    if (empty($conf['linkAccessRestrictedPages'])
-                        && $tsfe->config['config']['typolinkLinkAccessRestrictedPages']
-                        && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
-                        && !$tsfe->checkPageGroupAccess($page)
-                    ) {
-                        $thePage = $tsfe->sys_page->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
-                        $addParams = str_replace(
-                            [
-                                '###RETURN_URL###',
-                                '###PAGE_ID###'
-                            ],
-                            [
-                                rawurlencode($this->lastTypoLinkUrl),
-                                $page['uid']
-                            ],
-                            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams']
-                        );
-                        $this->lastTypoLinkUrl = $this->getTypoLink_URL($thePage['uid'] . ($pageType ? ',' . $pageType : ''), $addParams, $target);
-                        $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
-                        $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
-                        $LD = $this->lastTypoLinkLD;
-                    }
-                } else {
-                    $this->getTimeTracker()->setTSlogMessage('typolink(): Page id "' . $linkParameter . '" was not found, so "' . $linkText . '" was not linked.', 1);
-                    return $linkText;
-                }
-            break;
-            case LinkService::TYPE_RECORD:
-                $tsfe = $this->getTypoScriptFrontendController();
-                $configurationKey = $linkDetails['identifier'] . '.';
-                $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'];
-                $linkHandlerConfiguration = $tsfe->pagesTSconfig['TCEMAIN.']['linkHandler.'];
-
-                if (!isset($configuration[$configurationKey]) || !isset($linkHandlerConfiguration[$configurationKey])) {
-                    return $linkText;
-                }
-                $typoScriptConfiguration = $configuration[$configurationKey]['typolink.'];
-                $linkHandlerConfiguration = $linkHandlerConfiguration[$configurationKey]['configuration.'];
-
-                if ($configuration[$configurationKey]['forceLink']) {
-                    $record = $tsfe->sys_page->getRawRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
-                } else {
-                    $record = $tsfe->sys_page->checkRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
-                }
-                if ($record === 0) {
-                    return $linkText;
-                }
-
-                // Build the full link to the record
-                $localContentObjectRenderer = GeneralUtility::makeInstance(self::class);
-                $localContentObjectRenderer->start($record, $linkHandlerConfiguration['table']);
-                $localContentObjectRenderer->parameters = $this->parameters;
-                $link = $localContentObjectRenderer->typoLink($linkText, $typoScriptConfiguration);
-
-                $this->lastTypoLinkLD = $localContentObjectRenderer->lastTypoLinkLD;
-                $this->lastTypoLinkUrl = $localContentObjectRenderer->lastTypoLinkUrl;
-                $this->lastTypoLinkTarget = $localContentObjectRenderer->lastTypoLinkTarget;
-
-                return $link;
-                break;
-
-            // Legacy files or something else
-            case LinkService::TYPE_UNKNOWN:
-                if ($linkDetails['file']) {
-                    $linkDetails['type'] = LinkService::TYPE_FILE;
-                    $linkLocation = $linkDetails['file'];
-                    // Setting title if blank value to link
-                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-                    $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
-                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
-                    $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
-                    $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);
-                } elseif ($linkDetails['url']) {
-                    $linkDetails['type'] = LinkService::TYPE_URL;
-                    $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
-                    $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
-                    $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
-                }
-                break;
+        $linkDetails['typoLinkParameter'] = $linkParameter;
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
+            /** @var AbstractTypolinkBuilder $linkBuilder */
+            $linkBuilder = GeneralUtility::makeInstance(
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
+                $this
+            );
+            try {
+                list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
+            } catch (UnableToLinkException $e) {
+                // Only return the link text directly
+                return $e->getLinkText();
+            }
+        } else {
+            return $linkText;
         }
 
-        $this->lastTypoLinkTarget = $target;
-        $finalTagParts['url'] = $this->lastTypoLinkUrl;
-        $finalTagParts['TYPE'] = $linkDetails['type'];
-        $finalTagParts['aTagParams'] .= $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']);
-        $this->lastTypoLinkLD = $LD;
+        $finalTagParts = [
+            'aTagParams' => $this->getATagParams($conf) . $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']),
+            'url'        => $this->lastTypoLinkUrl,
+            'TYPE'       => $linkDetails['type']
+        ];
 
         // Building the final <a href=".."> tag
         $tagAttributes = [];
@@ -5949,8 +5644,8 @@ class ContentObjectRenderer
         }
 
         // Target attribute
-        if (!empty($this->lastTypoLinkTarget)) {
-            $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkTarget);
+        if (!empty($target)) {
+            $tagAttributes['target'] = htmlspecialchars($target);
         // Create TARGET-attribute only if the right doctype is used
         } elseif ($JSwindowParams && !in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
             $tagAttributes['target'] = 'FEopenLink';
@@ -5972,6 +5667,7 @@ class ContentObjectRenderer
         }
         // kept for backwards-compatibility in hooks
         $finalTagParts['targetParams'] = !empty($tagAttributes['target']) ? ' target="' . $tagAttributes['target'] . '"' : '';
+        $this->lastTypoLinkTarget = $target;
 
         // Call user function:
         if ($conf['userFunc']) {
@@ -6012,93 +5708,6 @@ class ContentObjectRenderer
             return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
         }
         return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
-    }
-
-    /**
-     * Helper method to a fallback method parsing HTML out of it
-     *
-     * @param string $originalLinkText the original string, if empty, the fallback link text
-     * @param string $fallbackLinkText the string to be used.
-     * @return string the final text
-     */
-    protected function parseFallbackLinkTextIfLinkTextIsEmpty($originalLinkText, $fallbackLinkText)
-    {
-        if ($originalLinkText === '') {
-            return $this->parseFunc($fallbackLinkText, ['makelinks' => 0], '< lib.parseFunc');
-        } else {
-            return $originalLinkText;
-        }
-    }
-
-    /**
-     * Creates the value for target="..." in a typolink configuration
-     *
-     * @param array $conf the typolink configuration
-     * @param string $name the key, usually "target", "extTarget" or "fileTarget"
-     * @param bool $respectFrameSetOption if set, then
-     * @param string $fallbackTarget
-     * @return string the value of the target attribute, if there is one
-     */
-    protected function resolveTargetAttribute(array $conf, string $name, bool $respectFrameSetOption = false, string $fallbackTarget = null): string
-    {
-        $tsfe = $this->getTypoScriptFrontendController();
-        $targetAttributeAllowed = (!$respectFrameSetOption || !$tsfe->config['config']['doctype'] ||
-            in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'], true));
-
-        $target = '';
-        if (isset($conf[$name])) {
-            $target = $conf[$name];
-        } elseif ($targetAttributeAllowed) {
-            $target = $fallbackTarget;
-        }
-        if ($conf[$name . '.']) {
-            $target = $this->stdWrap($target, $conf[$name . '.']);
-        }
-        return $target;
-    }
-
-    /**
-     * Forces a given URL to be absolute.
-     *
-     * @param string $url The URL to be forced to be absolute
-     * @param array $configuration TypoScript configuration of typolink
-     * @return string The absolute URL
-     */
-    protected function forceAbsoluteUrl($url, array $configuration)
-    {
-        if (!empty($url) && !empty($configuration['forceAbsoluteUrl']) &&  preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
-            $urlParts = [
-                'scheme' => $matches[1],
-                'delimiter' => '://',
-                'host' => $matches[3],
-                'path' => $matches[4]
-            ];
-            $isUrlModified = false;
-            // Set scheme and host if not yet part of the URL:
-            if (empty($urlParts['host'])) {
-                $urlParts['scheme'] = $this->getEnvironmentVariable('TYPO3_SSL') ? 'https' : 'http';
-                $urlParts['host'] = $this->getEnvironmentVariable('HTTP_HOST');
-                $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
-                // absRefPrefix has been prepended to $url beforehand
-                // so we only modify the path if no absRefPrefix has been set
-                // otherwise we would destroy the path
-                if ($this->getTypoScriptFrontendController()->absRefPrefix === '') {
-                    $urlParts['path'] = $this->getEnvironmentVariable('TYPO3_SITE_PATH') . ltrim($urlParts['path'], '/');
-                }
-                $isUrlModified = true;
-            }
-            // Override scheme:
-            $forceAbsoluteUrl = &$configuration['forceAbsoluteUrl.']['scheme'];
-            if (!empty($forceAbsoluteUrl) && $urlParts['scheme'] !== $forceAbsoluteUrl) {
-                $urlParts['scheme'] = $forceAbsoluteUrl;
-                $isUrlModified = true;
-            }
-            // Recreate the absolute URL:
-            if ($isUrlModified) {
-                $url = implode('', $urlParts);
-            }
-        }
-        return $url;
     }
 
     /**

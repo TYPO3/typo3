@@ -307,7 +307,6 @@ class InputLinkElement extends AbstractFormElement
             return [];
         }
         $data = ['text' => '', 'icon' => ''];
-        $linkData = [];
         $typolinkService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $linkParts = $typolinkService->decode($itemValue);
         $linkService = GeneralUtility::makeInstance(LinkService::class);
@@ -320,6 +319,32 @@ class InputLinkElement extends AbstractFormElement
             return $data;
         }
 
+        // Resolving the TypoLink parts (class, title, params)
+        $additionalAttributes = [];
+        foreach ($linkParts as $key => $value) {
+            if ($key === 'url') {
+                continue;
+            }
+            if ($value) {
+                switch ($key) {
+                    case 'class':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:class');
+                        break;
+                    case 'title':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:title');
+                        break;
+                    case 'additionalParams':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:params');
+                        break;
+                    default:
+                        $label = $key;
+                }
+
+                $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';
+            }
+        }
+
+        // Resolve the actual link
         switch ($linkData['type']) {
             case LinkService::TYPE_PAGE:
                 $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
@@ -375,36 +400,20 @@ class InputLinkElement extends AbstractFormElement
                 ];
                 break;
             default:
-                $data = [
-                    'text' => 'not implemented type ' . $linkData['type'],
-                    'icon' => ''
-                ];
-                // @todo this needs a hook for being extensible for other link types. forge #79647
-        }
-
-        $additionalAttributes = [];
-        unset($linkParts['url']);
-        foreach ($linkParts as $key => $value) {
-            if ($value) {
-                switch ($key) {
-                    case 'class':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:class');
-                        break;
-                    case 'title':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:title');
-                        break;
-                    case 'additionalParams':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:params');
-                        break;
-                    default:
-                        $label = $key;
+                // Please note that this hook is preliminary and might change, as this element could become its own
+                // TCA type in the future
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']])) {
+                    $linkBuilder = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']]);
+                    $data = $linkBuilder->getFormData($linkData, $linkParts, $this->data, $this);
+                } else {
+                    $data = [
+                        'text' => 'not implemented type ' . $linkData['type'],
+                        'icon' => ''
+                    ];
                 }
-
-                $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';
-            }
         }
-        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
 
+        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
         return $data;
     }
 
