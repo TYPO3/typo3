@@ -88,6 +88,7 @@ class AllConfiguration extends Action\AbstractAction
             $data[$sectionName] = [];
 
             foreach ($GLOBALS['TYPO3_CONF_VARS'][$sectionName] as $key => $value) {
+                // @deprecated since TYPO3 v8, will be removed in TYPO3 v9. The array TYPO3_CONF_VARS_extensionAdded will be removed in v9.
                 if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key])) {
                     // Don't allow editing stuff which is added by extensions
                     // Make sure we fix potentially duplicated entries from older setups

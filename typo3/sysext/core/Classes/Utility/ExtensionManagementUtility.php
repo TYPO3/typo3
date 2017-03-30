@@ -1023,9 +1023,11 @@ class ExtensionManagementUtility
      * @param string $group The group ('FE', 'BE', 'SYS' ...)
      * @param string $key The key of this setting within the group
      * @param string $content The text to add (include leading "\n" in case of multi-line entries)
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public static function appendToTypoConfVars($group, $key, $content)
     {
+        GeneralUtility::logDeprecatedFunction();
         $GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$group][$key] .= $content;
         $GLOBALS['TYPO3_CONF_VARS'][$group][$key] .= $content;
     }
@@ -1039,9 +1041,9 @@ class ExtensionManagementUtility
      */
     public static function addPageTSConfig($content)
     {
-        self::appendToTypoConfVars('BE', 'defaultPageTSconfig', '
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= '
 [GLOBAL]
-' . $content);
+' . $content;
     }
 
     /**
@@ -1053,9 +1055,9 @@ class ExtensionManagementUtility
      */
     public static function addUserTSConfig($content)
     {
-        self::appendToTypoConfVars('BE', 'defaultUserTSconfig', '
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 [GLOBAL]
-' . $content);
+' . $content;
     }
 
     /**
@@ -1473,9 +1475,9 @@ tt_content.' . $key . $suffix . ' {
      */
     public static function addTypoScriptSetup($content)
     {
-        self::appendToTypoConfVars('FE', 'defaultTypoScript_setup', '
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= '
 [GLOBAL]
-' . $content);
+' . $content;
     }
 
     /**
@@ -1487,9 +1489,9 @@ tt_content.' . $key . $suffix . ' {
      */
     public static function addTypoScriptConstants($content)
     {
-        self::appendToTypoConfVars('FE', 'defaultTypoScript_constants', '
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= '
 [GLOBAL]
-' . $content);
+' . $content;
     }
 
     /**
