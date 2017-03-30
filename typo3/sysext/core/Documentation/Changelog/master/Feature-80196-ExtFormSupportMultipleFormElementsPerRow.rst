@@ -1,6 +1,6 @@
 .. include:: ../../Includes.txt
 
-====================================================================
+===================================================================
 Feature: #80196 - EXT:form - support multiple form elements per row
 ===================================================================
 
@@ -126,8 +126,7 @@ and
               numbersOfColumnsToUse: 2
 
 
-GridContainer.properties.columnClassAutoConfiguration
------------------------------------------------------
+**GridContainer.properties.columnClassAutoConfiguration**
 
 The example form definition shown above generates the following HTML markup
 
@@ -148,14 +147,12 @@ The example form definition shown above generates the following HTML markup
     </div>
 
 
-GridContainer.properties.columnClassAutoConfiguration.gridSize
---------------------------------------------------------------
+**GridContainer.properties.columnClassAutoConfiguration.gridSize**
 
 Total amount of grid columns (default: 12).
 
 
-GridContainer.properties.columnClassAutoConfiguration.viewPorts.<viewPortName>.classPattern
--------------------------------------------------------------------------------------------
+**GridContainer.properties.columnClassAutoConfiguration.viewPorts.<viewPortName>.classPattern**
 
 This pattern will be used to generate the HTML class atrribute values for each viewport.
 The wildcard '{@numbersOfColumnsToUse}' will be replaced with the calculated grid column numbers.
@@ -167,22 +164,19 @@ The calculation depends on the option 'gridSize', the amount of the form element
 form element configurations.
 
 
-<formElementIdentifier>.properties.gridColumnClassAutoConfiguration (otional)
------------------------------------------------------------------------------
+**<formElementIdentifier>.properties.gridColumnClassAutoConfiguration (otional)**
 
 Each form elements within a 'GridRow' element can define the number of grid columns
 to use on a 'per viewport' base.
 
 
-<formElementIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts.<viewPortName>
---------------------------------------------------------------------------------------------
+**<formElementIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts.<viewPortName>**
 
 The array keys '<viewPortName>' must match with the array keys '<viewPortName>'
 from the configuration 'GridContainer.properties.columnClassAutoConfiguration.viewPorts.<viewPortName>'
 
 
-<formElementIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts.<viewPortName>.numbersOfColumnsToUse
-------------------------------------------------------------------------------------------------------------------
+**<formElementIdentifier>.properties.gridColumnClassAutoConfiguration.viewPorts.<viewPortName>.numbersOfColumnsToUse**
 
 The number of grid columns to be used by this element for the viewport '<viewPortName>'.
 

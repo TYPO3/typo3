@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-================================================================
-Bug: #80126 maximum field length not set as attribute "maxlength"
-================================================================
+=====================================================================
+Feature: #80126 maximum field length not set as attribute "maxlength"
+=====================================================================
 
 See :issue:`80126`
 See :issue:`80128`
@@ -10,12 +10,12 @@ See :issue:`80128`
 Description
 ===========
 
-If a form element is set to be use the 'String length' server side validation through the form editor, the client side validation properties 'minlength' and 'maxlength' will be rendered
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+If a form element is set to be use the 'String length' server side validation through the form editor, the client side
+validation properties ``minlength`` and ``maxlength`` will be rendered.
 
 Result:
 
-.. code-block:: typoscript
+.. code-block:: yaml
 
     renderables:
       -
@@ -34,4 +34,3 @@ Result:
               maximum: 3
 
 .. index:: Frontend, Backend, ext:form
-
