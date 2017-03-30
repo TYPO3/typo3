@@ -5594,19 +5594,9 @@ class ContentObjectRenderer
 
             // URL (external)
             case LinkService::TYPE_URL:
-                if (empty($target)) {
-                    if (isset($conf['extTarget'])) {
-                        $target = $conf['extTarget'];
-                    } elseif ($tsfe->dtdAllowsFrames) {
-                        $target = $tsfe->extTarget;
-                    }
-                    if ($conf['extTarget.']) {
-                        $target = $this->stdWrap($target, $conf['extTarget.']);
-                    }
-                }
+                $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
                 $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
                 $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
-                $this->lastTypoLinkTarget = $target;
             break;
 
             // File (internal)
@@ -5622,13 +5612,7 @@ class ContentObjectRenderer
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 
-                    if (empty($target)) {
-                        $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
-                        if ($conf['fileTarget.']) {
-                            $target = $this->stdWrap($target, $conf['fileTarget.']);
-                        }
-                    }
-                    $this->lastTypoLinkTarget = $target;
+                    $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $linkParameter . '" did not exist, so "' . $linkText . '" was not linked.', 1);
                     return $linkText;
@@ -5782,12 +5766,7 @@ class ContentObjectRenderer
                     }
                     // If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
                     if ($targetDomain !== '' && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
-                        if (empty($target)) {
-                            $target = isset($conf['extTarget']) ? $conf['extTarget'] : $tsfe->extTarget;
-                            if ($conf['extTarget.']) {
-                                $target = $this->stdWrap($target, $conf['extTarget.']);
-                            }
-                        }
+                        $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
                         $LD['target'] = $target;
                         // Convert IDNA-like domain (if any)
                         if (!preg_match('/^[a-z0-9.\\-]*$/i', $targetDomain)) {
@@ -5798,14 +5777,7 @@ class ContentObjectRenderer
                         // Internal link or current domain's linking scheme should be used
                         // Internal target:
                         if (empty($target)) {
-                            if (isset($conf['target'])) {
-                                $target = $conf['target'];
-                            } elseif ($tsfe->dtdAllowsFrames) {
-                                $target = $tsfe->intTarget;
-                            }
-                            if ($conf['target.']) {
-                                $target = $this->stdWrap($target, $conf['target.']);
-                            }
+                            $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
                         }
                         $LD = $tsfe->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $pageType, $targetDomain);
                         if ($targetDomain !== '') {
@@ -5827,7 +5799,7 @@ class ContentObjectRenderer
                         }
                         $this->lastTypoLinkUrl = $LD['totalURL'] . $sectionMark;
                     }
-                    $this->lastTypoLinkTarget = $LD['target'];
+                    $target = $LD['target'];
                     // If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
                     if ($sectionMark
                         && !$tsfe->config['config']['baseURL']
@@ -5923,33 +5895,17 @@ class ContentObjectRenderer
                     $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
-                    if (empty($target)) {
-                        $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
-                        if ($conf['fileTarget.']) {
-                            $target = $this->stdWrap($target, $conf['fileTarget.']);
-                        }
-                    }
-                    $this->lastTypoLinkTarget = $target;
+                    $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);
                 } elseif ($linkDetails['url']) {
                     $linkDetails['type'] = LinkService::TYPE_URL;
-                    if (empty($target)) {
-                        if (isset($conf['extTarget'])) {
-                            $target = $conf['extTarget'];
-                        } elseif ($tsfe->dtdAllowsFrames) {
-                            $target = $tsfe->extTarget;
-                        }
-                        if ($conf['extTarget.']) {
-                            $target = $this->stdWrap($target, $conf['extTarget.']);
-                        }
-                    }
+                    $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
                     $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
-
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
-                    $this->lastTypoLinkTarget = $target;
                 }
                 break;
         }
 
+        $this->lastTypoLinkTarget = $target;
         $finalTagParts['url'] = $this->lastTypoLinkUrl;
         $finalTagParts['TYPE'] = $linkDetails['type'];
         $finalTagParts['aTagParams'] .= $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']);
@@ -6072,6 +6028,33 @@ class ContentObjectRenderer
         } else {
             return $originalLinkText;
         }
+    }
+
+    /**
+     * Creates the value for target="..." in a typolink configuration
+     *
+     * @param array $conf the typolink configuration
+     * @param string $name the key, usually "target", "extTarget" or "fileTarget"
+     * @param bool $respectFrameSetOption if set, then
+     * @param string $fallbackTarget
+     * @return string the value of the target attribute, if there is one
+     */
+    protected function resolveTargetAttribute(array $conf, string $name, bool $respectFrameSetOption = false, string $fallbackTarget = null): string
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
+        $targetAttributeAllowed = (!$respectFrameSetOption || !$tsfe->config['config']['doctype'] ||
+            in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'], true));
+
+        $target = '';
+        if (isset($conf[$name])) {
+            $target = $conf[$name];
+        } elseif ($targetAttributeAllowed) {
+            $target = $fallbackTarget;
+        }
+        if ($conf[$name . '.']) {
+            $target = $this->stdWrap($target, $conf[$name . '.']);
+        }
+        return $target;
     }
 
     /**
