@@ -5,16 +5,16 @@
             <h3 class="panel-title">
                 <f:if condition="{read}">
                     <f:then>
-                        <a class="t3js-upgradeanalysis-restore pull-right" data-filepath="{fileArray.filepath}"
+                        <a class="link-action t3js-upgradeanalysis-restore pull-right" data-filepath="{fileArray.filepath}"
                            data-toggle="tooltip" data-placement="top" title="restore this document">
-                            <i class="fa fa-lg fa-eye"></i>
+                            <i class="fa fa-lg fa-ban"></i>
                             <span class="sr-only">restore this document</span>
                         </a>
                     </f:then>
                     <f:else>
-                        <a class="t3js-upgradeanalysis-ignore pull-right" data-filepath="{fileArray.filepath}"
+                        <a class="link-action t3js-upgradeanalysis-ignore pull-right" data-filepath="{fileArray.filepath}"
                            data-toggle="tooltip" data-placement="top" title="ignore this document">
-                            <i class="fa fa-lg fa-eye-slash"></i>
+                            <i class="fa fa-lg fa-check"></i>
                             <span class="sr-only">ignore this document</span>
                         </a>
                     </f:else>

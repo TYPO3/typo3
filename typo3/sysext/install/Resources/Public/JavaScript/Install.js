@@ -1252,6 +1252,7 @@ TYPO3.Install.upgradeAnalysis = {
 	},
 
 	initialize: function () {
+		$('[data-toggle="tooltip"]').tooltip();
 		this.chosenField = $('.t3js-chosen-select');
 		this.fulltextSearchField = $('.t3js-fulltext-search');
 		TYPO3.Install.upgradeAnalysis.provideTags();
@@ -1265,7 +1266,7 @@ TYPO3.Install.upgradeAnalysis = {
 			$button
 				.toggleClass('t3js-upgradeanalysis-restore t3js-upgradeanalysis-ignore')
 				.find('i')
-					.toggleClass('fa-eye fa-eye-slash');
+					.toggleClass('fa-check fa-ban');
 			$button
 				.closest('.panel')
 				.appendTo('.panel-body-read');
@@ -1295,7 +1296,7 @@ TYPO3.Install.upgradeAnalysis = {
 			$button
 				.toggleClass('t3js-upgradeanalysis-restore t3js-upgradeanalysis-ignore')
 				.find('i')
-					.toggleClass('fa-eye fa-eye-slash');
+					.toggleClass('fa-check fa-ban');
 			$button
 				.closest('.panel')
 				.appendTo('*[data-group-version="' + version + '"] .panel-body');

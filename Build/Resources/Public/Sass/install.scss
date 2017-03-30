@@ -285,45 +285,68 @@ a[data-toggle="collapse"] {
     text-decoration: none;
 }
 
-.panel-rst {
-    .panel-heading .panel-title a {
-        cursor: pointer;
-        strong {
-            line-height: 1.5em;
+
+.panel-group-rst {
+
+    .panel-body {
+        padding-right: 0;
+    }
+
+    .panel-rst,
+    .panel-version {
+        border: 0;
+        border-left: 2px solid $gray-light;
+        border-radius: 0;
+        margin: 0;
+
+        &.panel-default .panel-heading {
+            background: $gray-lighter;
+        }
+
+        &.panel-breaking {
+            @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
+            @include panel-risk-levels($brand-danger, lighten($brand-danger,40) );
+        }
+
+        &.panel-deprecation {
+            @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
+            @include panel-risk-levels($brand-warning, lighten($brand-warning,30));
+        }
+
+        &.panel-feature {
+            @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
+            @include panel-risk-levels($brand-success, lighten($brand-success,40));
+        }
+
+        &.panel-important {
+            @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
+            @include panel-risk-levels($brand-info, lighten($brand-info,30));
+        }
+
+        .panel-heading {
+            position: relative;
+
+            a.link-action {
+                cursor: pointer;
+            }
+
+            strong {
+                line-height: 1.5em;
+            }
+        }
+
+        pre {
+            margin: 0;
+            border-radius: 0;
+            border: 0;
+            border-top: 1px solid $gray-light;
+            white-space: pre-wrap;
+            word-break: normal;
+            word-wrap: normal;
         }
     }
-
-    pre {
-        margin: 0;
-        border-radius: 0;
-        border: 0;
-        border-top: 1px solid $gray-light;
-        white-space: pre-wrap;
-        word-break: normal;
-        word-wrap: normal;
-    }
-
 }
 
-.panel-breaking {
-    @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
-    @include panel-risk-levels($brand-danger, lighten($brand-danger,40) );
-}
-
-.panel-deprecation {
-    @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
-    @include panel-risk-levels($brand-warning, lighten($brand-warning,30));
-}
-
-.panel-feature {
-    @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
-    @include panel-risk-levels($brand-success, lighten($brand-success,40));
-}
-
-.panel-important {
-    @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
-    @include panel-risk-levels($brand-info, lighten($brand-info,30));
-}
 
 .upgrade_analysis_item_to_filter pre a {
     text-decoration: underline;
