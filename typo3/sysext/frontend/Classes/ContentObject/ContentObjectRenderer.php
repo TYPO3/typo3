@@ -5590,7 +5590,6 @@ class ContentObjectRenderer
             // If it's a mail address
             case LinkService::TYPE_EMAIL:
                 list($this->lastTypoLinkUrl, $linkText) = $this->getMailTo($linkDetails['email'], $linkText);
-                $finalTagParts['url'] = $this->lastTypoLinkUrl;
             break;
 
             // URL (external)
@@ -5606,11 +5605,8 @@ class ContentObjectRenderer
                     }
                 }
                 $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
-
                 $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
                 $this->lastTypoLinkTarget = $target;
-                $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_URL);
             break;
 
             // File (internal)
@@ -5633,8 +5629,6 @@ class ContentObjectRenderer
                         }
                     }
                     $this->lastTypoLinkTarget = $target;
-                    $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_FILE);
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): File "' . $linkParameter . '" did not exist, so "' . $linkText . '" was not linked.', 1);
                     return $linkText;
@@ -5880,8 +5874,6 @@ class ContentObjectRenderer
                         $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
                         $LD = $this->lastTypoLinkLD;
                     }
-                    // Rendering the tag.
-                    $finalTagParts['url'] = $this->lastTypoLinkUrl;
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('typolink(): Page id "' . $linkParameter . '" was not found, so "' . $linkText . '" was not linked.', 1);
                     return $linkText;
@@ -5924,6 +5916,7 @@ class ContentObjectRenderer
             // Legacy files or something else
             case LinkService::TYPE_UNKNOWN:
                 if ($linkDetails['file']) {
+                    $linkDetails['type'] = LinkService::TYPE_FILE;
                     $linkLocation = $linkDetails['file'];
                     // Setting title if blank value to link
                     $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
@@ -5937,9 +5930,8 @@ class ContentObjectRenderer
                         }
                     }
                     $this->lastTypoLinkTarget = $target;
-                    $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_FILE);
                 } elseif ($linkDetails['url']) {
+                    $linkDetails['type'] = LinkService::TYPE_URL;
                     if (empty($target)) {
                         if (isset($conf['extTarget'])) {
                             $target = $conf['extTarget'];
@@ -5954,22 +5946,17 @@ class ContentObjectRenderer
 
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
                     $this->lastTypoLinkTarget = $target;
-                    $finalTagParts['url'] = $this->lastTypoLinkUrl;
-                    $finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], LinkService::TYPE_URL);
                 }
                 break;
         }
 
+        $finalTagParts['url'] = $this->lastTypoLinkUrl;
         $finalTagParts['TYPE'] = $linkDetails['type'];
+        $finalTagParts['aTagParams'] .= $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']);
         $this->lastTypoLinkLD = $LD;
 
         // Building the final <a href=".."> tag
         $tagAttributes = [];
-        if (!$JSwindowParams && $linkDetails['type'] === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
-            $tagAttributes['href'] = $finalTagParts['url'];
-        } else {
-            $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
-        }
 
         // Title attribute
         if (empty($title)) {
@@ -5995,6 +5982,11 @@ class ContentObjectRenderer
             $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
             // Imploding into string:
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
+        }
+        if (!$JSwindowParams && $linkDetails['type'] === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
+            $tagAttributes['href'] = $finalTagParts['url'];
+        } else {
+            $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
         }
         if (!empty($title)) {
             $tagAttributes['title'] = htmlspecialchars($title);
