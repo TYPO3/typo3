@@ -940,6 +940,134 @@ TYPO3.Install.coreUpdate = {
 	}
 };
 
+TYPO3.Install.ResetBackendUserUc = {
+	/**
+	 * output DOM Container
+	 */
+	outputContainer: {},
+
+	/**
+	 * Clone of the DOM object that contains the submit button
+	 */
+	submitButton: {},
+
+	/**
+	 * Default output messages
+	 */
+	outputMessages: {
+		resetBackendUserUc: {
+			fatalTitle: 'Something went wrong',
+			fatalMessage: '',
+			loadingTitle: 'Loading…',
+			loadingMessage: ''
+		}
+	},
+
+	/**
+	 * Fetching the templates out of the DOM
+	 *
+	 * @param resetBackendUserUcContainer DOM element id with all needed HTML in it
+	 * @return boolean DOM container could be found and initialization finished
+	 */
+	initialize: function (resetBackendUserUcContainer) {
+		var success = false;
+		this.outputContainer[resetBackendUserUcContainer] = $('.t3js-' + resetBackendUserUcContainer);
+
+		if (this.outputContainer[resetBackendUserUcContainer]) {
+			// submit button: save and delete
+			if (!this.submitButton[resetBackendUserUcContainer]) {
+				var submitButton = this.outputContainer[resetBackendUserUcContainer].find('button[type="submit"]');
+				this.submitButton[resetBackendUserUcContainer] = submitButton.clone();
+			}
+
+			// clear all messages from the run before
+			this.outputContainer[resetBackendUserUcContainer].find('.typo3-message:visible ').remove();
+
+			success = true;
+		}
+		return success;
+	},
+
+	resetBackendUserUc: function (actionName) {
+		var self = this;
+		var url = location.href + '&install[controller]=ajax&install[action]=' + actionName;
+		var isInitialized = self.initialize(actionName);
+		if (isInitialized) {
+			self.addMessage(
+				TYPO3.Install.Severity.loading,
+				self.outputMessages[actionName].loadingTitle,
+				self.outputMessages[actionName].loadingMessage,
+				actionName
+			);
+			$.ajax({
+				url: url,
+				cache: false,
+				success: function(data) {
+					if (data.success === true && Array.isArray(data.status)) {
+						if (data.status.length > 0) {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							data.status.forEach((function (element) {
+								//noinspection JSUnresolvedVariable
+								self.addMessage(
+									element.severity,
+									element.title,
+									element.message,
+									actionName
+								);
+							}));
+						} else {
+							self.outputContainer[actionName].find('.alert-loading').hide();
+							self.addMessage(
+								TYPO3.Install.Severity.ok,
+								self.outputMessages[actionName].successTitle,
+								self.outputMessages[actionName].successMessage,
+								actionName
+							);
+						}
+					} else if (data === 'unauthorized') {
+						location.reload();
+					}
+				},
+				error: function() {
+					self.outputContainer[actionName].find('.alert-loading').hide();
+					self.addMessage(
+						TYPO3.Install.Severity.error,
+						self.outputMessages[actionName].fatalTitle,
+						self.outputMessages[actionName].fatalMessage,
+						actionName
+					);
+				}
+			});
+		}
+	},
+
+	/**
+	 * Move the submit button to the end of the box
+	 *
+	 * @param resetBackendUserUcContainer DOM container name
+	 */
+	moveSubmitButtonFurtherDown: function (resetBackendUserUcContainer) {
+		// first remove the currently visible button
+		this.outputContainer[resetBackendUserUcContainer].find('button[type="submit"]').remove();
+		// then append the cloned template to the end
+		this.outputContainer[resetBackendUserUcContainer].append(this.submitButton[resetBackendUserUcContainer]);
+	},
+
+	/**
+	 * Show a status message
+	 *
+	 * @param severity
+	 * @param title
+	 * @param message
+	 * @param resetBackendUserUcContainer DOM container name
+	 */
+	addMessage: function (severity, title, message, resetBackendUserUcContainer) {
+		var domMessage = TYPO3.Install.FlashMessage.render(severity, title, message);
+		this.outputContainer[resetBackendUserUcContainer].append(domMessage);
+		this.moveSubmitButtonFurtherDown(resetBackendUserUcContainer);
+	}
+};
+
 $(function () {
 	// Used in database compare section to select/deselect checkboxes
 	$('.checkall').on('click', function () {
@@ -1072,6 +1200,16 @@ $(function () {
 	if ($tcaMigrationsCheckSection) {
 		$tcaMigrationsCheckSection.on('click', 'button', (function (e) {
 			TYPO3.Install.TcaIntegrityChecker.checkTcaIntegrity('tcaMigrationsCheck');
+			e.preventDefault();
+			return false;
+		}));
+	}
+
+	// Handle Reset backend user preferences
+	var $resetBackendUserUcSection = $('.t3js-resetBackendUserUc');
+	if ($resetBackendUserUcSection) {
+		$resetBackendUserUcSection.on('click', 'button', (function(e) {
+			TYPO3.Install.ResetBackendUserUc.resetBackendUserUc('resetBackendUserUc');
 			e.preventDefault();
 			return false;
 		}));

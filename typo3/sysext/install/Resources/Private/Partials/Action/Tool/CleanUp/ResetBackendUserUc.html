@@ -10,9 +10,10 @@
 
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-
-	<f:render
-		partial="Action/Common/SubmitButton"
-		arguments="{name:'resetBackendUserUc', text:'Reset backend user preferences'}"
-	/>
+	<div class="t3js-resetBackendUserUc">
+		<f:render
+			partial="Action/Common/SubmitButton"
+			arguments="{name:'resetBackendUserUc', text:'Reset backend user preferences'}"
+		/>
+	</div>
 </form>

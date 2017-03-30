@@ -46,10 +46,6 @@ class CleanUp extends Action\AbstractAction
             $this->actionMessages[] = $this->clearSelectedTables();
             $this->view->assign('postAction', 'clearTables');
         }
-        if (isset($this->postValues['set']['resetBackendUserUc'])) {
-            $this->actionMessages[] = $this->resetBackendUserUc();
-            $this->view->assign('postAction', 'resetBackendUserUc');
-        }
         if (isset($this->postValues['set']['clearProcessedFiles'])) {
             $this->actionMessages[] = $this->clearProcessedFiles();
             $this->view->assign('postAction', 'clearProcessedFiles');
@@ -157,24 +153,6 @@ class CleanUp extends Action\AbstractAction
             $message = GeneralUtility::makeInstance(InfoStatus::class);
             $message->setTitle('No tables selected to clear');
         }
-        return $message;
-    }
-
-    /**
-     * Reset uc field of all be_users to empty string
-     *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
-     */
-    protected function resetBackendUserUc()
-    {
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_users')
-            ->update('be_users')
-            ->set('uc', '')
-            ->execute();
-        /** @var OkStatus $message */
-        $message = GeneralUtility::makeInstance(OkStatus::class);
-        $message->setTitle('Reset all backend users preferences');
         return $message;
     }
 
