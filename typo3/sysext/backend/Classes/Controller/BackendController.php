@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
 /**
  * Class for rendering the TYPO3 backend
@@ -162,10 +161,6 @@ class BackendController
 
         // load debug console
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
-
-        // Load RSA encryption
-        $rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
-        $rsaEncryptionEncoder->enableRsaEncryption(true);
 
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
 

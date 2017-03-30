@@ -37,6 +37,14 @@ class RsaEncryptionEncoder implements SingletonInterface
     protected $pageRenderer = null;
 
     /**
+     * This method is called by the hook constructPostProcess
+     */
+    public function enableEncryptionFromBackendControllerPostConstructor()
+    {
+        $this->enableRsaEncryption(true);
+    }
+
+    /**
      * Load all necessary Javascript files
      *
      * @param bool $useRequireJsModule
