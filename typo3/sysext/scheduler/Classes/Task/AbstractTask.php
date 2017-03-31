@@ -490,8 +490,9 @@ abstract class AbstractTask
             }
             if ($failure instanceof \Exception) {
                 // Log failed execution
-                $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
-                $this->scheduler->log($logMessage, 1, $failure->getCode());
+                $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this)
+                    . ', UID: ' . $this->taskUid . ', Code: ' . $failure->getCode() . ', ' . $failure->getMessage();
+                $this->scheduler->log($logMessage, 1);
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
                 $failureString = serialize([
                     'code' => $failure->getCode(),
