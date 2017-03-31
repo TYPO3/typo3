@@ -73,6 +73,20 @@
 									</f:else>
 								</f:if>
 
+								<f:if condition="{file.IsMetadataEditable}">
+									<f:then>
+										<a href="#" class="btn btn-default filelist-file-edit"
+										   title="{f:translate( key:'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata' )}"
+										   data-url="{fl:uri.editSysFileMetadataRecord(uid:file.metadataUid, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+										>
+											<core:icon identifier="actions-open" />
+										</a>
+									</f:then>
+									<f:else>
+										<span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+									</f:else>
+								</f:if>
+
 								<f:if condition="{file.publicUrl}">
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-view"
