@@ -69,16 +69,28 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-add.svg'
             ]
         ],
+        'actions-check' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-check.svg'
+            ]
+        ],
         'actions-close' => [
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-close.svg'
             ]
         ],
-        'actions-database' => [
+        'actions-cloud' => [
             'provider' => SvgIconProvider::class,
             'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-database.svg'
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-cloud.svg'
+            ]
+        ],
+        'actions-database-export' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-database-export.svg'
             ]
         ],
         'actions-database-import' => [
@@ -91,6 +103,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-database-reload.svg'
+            ]
+        ],
+        'actions-database' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-database.svg'
             ]
         ],
         'actions-delete' => [
@@ -267,6 +285,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-download.svg'
             ]
         ],
+        'actions-duplicates' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-duplicates.svg'
+            ]
+        ],
         'actions-edit-add' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -423,6 +447,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-filter.svg'
             ]
         ],
+        'actions-folder' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-folder.svg'
+            ]
+        ],
         'actions-input-clear' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -463,6 +493,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-markstate.svg'
+            ]
+        ],
+        'actions-menu' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-menu.svg'
             ]
         ],
         'actions-merge' => [
@@ -597,6 +633,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-pagetree-mountroot.svg'
             ]
         ],
+        'actions-pagetree' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-pagetree.svg'
+            ]
+        ],
         'actions-preview' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -613,6 +655,24 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-remove.svg'
+            ]
+        ],
+        'actions-rename' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-rename.svg'
+            ]
+        ],
+        'actions-replace' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-replace.svg'
+            ]
+        ],
+        'actions-save' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-save.svg'
             ]
         ],
         'actions-search' => [
@@ -1533,12 +1593,6 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-audio.svg'
             ]
         ],
-        'content-briefcase' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-briefcase.svg'
-            ]
-        ],
         'content-beside-text-img-above-center' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -1585,6 +1639,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-beside-text-img-right.svg'
+            ]
+        ],
+        'content-briefcase' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-briefcase.svg'
             ]
         ],
         'content-bullets' => [
@@ -1654,10 +1714,10 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-idea' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-idea.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-idea.svg'
+            ]
         ],
         'content-image' => [
             'provider' => SvgIconProvider::class,
@@ -1666,10 +1726,10 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-info' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-info.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-info.svg'
+            ]
         ],
         'content-inside-text-img-left' => [
             'provider' => SvgIconProvider::class,
@@ -1681,6 +1741,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-inside-text-img-right.svg'
+            ]
+        ],
+        'content-media' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-media.svg'
             ]
         ],
         'content-menu-abstract' => [
@@ -1732,22 +1798,22 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-menu-thumbnail' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-thumbnail.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-thumbnail.svg'
+            ]
         ],
         'content-news' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-news.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-news.svg'
+            ]
         ],
         'content-panel' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-panel.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-panel.svg'
+            ]
         ],
         'content-plugin' => [
             'provider' => SvgIconProvider::class,
@@ -1756,10 +1822,10 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-quote' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-quote.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-quote.svg'
+            ]
         ],
         'content-special-div' => [
             'provider' => SvgIconProvider::class,
@@ -1785,54 +1851,6 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-special-menu.svg'
             ]
         ],
-        'content-menu-abstract' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-abstract.svg'
-            ]
-        ],
-        'content-menu-categorized' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-categorized.svg'
-            ]
-        ],
-        'content-menu-pages' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-pages.svg'
-            ]
-        ],
-        'content-menu-section' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-section.svg'
-            ]
-        ],
-        'content-menu-sitemap' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-sitemap.svg'
-            ]
-        ],
-        'content-menu-sitemap-pages' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-sitemap-pages.svg'
-            ]
-        ],
-        'content-menu-recently-updated' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-recently-updated.svg'
-            ]
-        ],
-        'content-menu-related' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-menu-related.svg'
-            ]
-        ],
         'content-special-shortcut' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -1846,16 +1864,16 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-tab-item' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-tab-item.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-tab-item.svg'
+            ]
         ],
         'content-tab' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-tab.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-tab.svg'
+            ]
         ],
         'content-table' => [
             'provider' => SvgIconProvider::class,
@@ -1864,16 +1882,16 @@ class IconRegistry implements SingletonInterface
             ]
         ],
         'content-text-columns' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-text-columns.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-text-columns.svg'
+            ]
         ],
         'content-text-teaser' => [
-              'provider' => SvgIconProvider::class,
-              'options' => [
-                  'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-text-teaser.svg'
-              ]
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-text-teaser.svg'
+            ]
         ],
         'content-text' => [
             'provider' => SvgIconProvider::class,
@@ -2307,6 +2325,210 @@ class IconRegistry implements SingletonInterface
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'question-circle'
+            ]
+        ],
+        'module-about' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-about.svg'
+            ]
+        ],
+        'module-aboutmodules' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-aboutmodules.svg'
+            ]
+        ],
+        'module-belog' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-belog.svg'
+            ]
+        ],
+        'module-beuser' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-beuser.svg'
+            ]
+        ],
+        'module-config' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-config.svg'
+            ]
+        ],
+        'module-cshmanual' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-cshmanual.svg'
+            ]
+        ],
+        'module-dbal' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-dbal.svg'
+            ]
+        ],
+        'module-dbint' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-dbint.svg'
+            ]
+        ],
+        'module-documentation' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-documentation.svg'
+            ]
+        ],
+        'module-extensionmanager' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-extensionmanager.svg'
+            ]
+        ],
+        'module-filelist' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-filelist.svg'
+            ]
+        ],
+        'module-form' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-form.svg'
+            ]
+        ],
+        'module-func' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-func.svg'
+            ]
+        ],
+        'module-help' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-help.svg'
+            ]
+        ],
+        'module-indexed_search' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-indexed_search.svg'
+            ]
+        ],
+        'module-info' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-info.svg'
+            ]
+        ],
+        'module-install-environment' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-install-environment.svg'
+            ]
+        ],
+        'module-install-maintenance' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-install-maintenance.svg'
+            ]
+        ],
+        'module-install-settings' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-install-settings.svg'
+            ]
+        ],
+        'module-install-upgrade' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-install-upgrade.svg'
+            ]
+        ],
+        'module-install' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-install.svg'
+            ]
+        ],
+        'module-lang' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-lang.svg'
+            ]
+        ],
+        'module-list' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-list.svg'
+            ]
+        ],
+        'module-page' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-page.svg'
+            ]
+        ],
+        'module-permission' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-permission.svg'
+            ]
+        ],
+        'module-recycler' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-recycler.svg'
+            ]
+        ],
+        'module-reports' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-reports.svg'
+            ]
+        ],
+        'module-scheduler' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-scheduler.svg'
+            ]
+        ],
+        'module-setup' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-setup.svg'
+            ]
+        ],
+        'module-taskcenter' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-taskcenter.svg'
+            ]
+        ],
+        'module-tstemplate' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-tstemplate.svg'
+            ]
+        ],
+        'module-version' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-version.svg'
+            ]
+        ],
+        'module-viewpage' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-viewpage.svg'
+            ]
+        ],
+        'module-workspaces' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/module/module-workspaces.svg'
             ]
         ],
 

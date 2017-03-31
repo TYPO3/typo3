@@ -261,6 +261,7 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg', src: '<%= paths.t3icons %>module/module-documentation.svg' },
 					{ dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg', src: '<%= paths.t3icons %>module/module-extensionmanager.svg' },
 					{ dest: '<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg', src: '<%= paths.t3icons %>module/module-filelist.svg' },
+					{ dest: '<%= paths.sysext %>form/Resources/Public/Icons/module-form.svg', src: '<%= paths.t3icons %>module/module-form.svg' },
 					{ dest: '<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg', src: '<%= paths.t3icons %>module/module-func.svg' },
 					{ dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg', src: '<%= paths.t3icons %>module/module-indexed_search.svg' },
 					{ dest: '<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg', src: '<%= paths.t3icons %>module/module-info.svg' },
@@ -278,6 +279,11 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg', src: '<%= paths.t3icons %>module/module-version.svg' },
 					{ dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg', src: '<%= paths.t3icons %>module/module-viewpage.svg' },
 					{ dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg', src: '<%= paths.t3icons %>module/module-workspaces.svg' }
+				]
+			},
+			extension_icons: {
+				files: [
+					{ dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg', src: '<%= paths.t3icons %>module/module-form.svg' }
 				]
 			},
 			fonts: {
