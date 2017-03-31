@@ -185,6 +185,7 @@ class SelectSingleBoxElement extends AbstractFormElement
             $attributes['disabled'] = 'disabled';
         }
         if (isset($config['itemListStyle'])) {
+            GeneralUtility::deprecationLog('TCA property itemListStyle is deprecated since TYPO3 v8 and will be removed in v9');
             $attributes['style'] = $config['itemListStyle'];
         }
 

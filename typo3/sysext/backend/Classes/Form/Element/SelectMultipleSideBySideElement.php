@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -194,10 +195,12 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         $selectedListStyle = '';
         if (isset($config['selectedListStyle'])) {
+            GeneralUtility::deprecationLog('TCA property selectedListStyle is deprecated since TYPO3 v8 and will be removed in v9');
             $selectedListStyle = ' style="' . htmlspecialchars($config['selectedListStyle']) . '"';
         }
         $selectableListStyle = '';
         if (isset($config['itemListStyle'])) {
+            GeneralUtility::deprecationLog('TCA property itemListStyle is deprecated since TYPO3 v8 and will be removed in v9');
             $selectableListStyle = ' style="' . htmlspecialchars($config['itemListStyle']) . '"';
         }
 
