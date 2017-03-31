@@ -1,14 +1,14 @@
 <div class="element-browser-panel element-browser-main">
 	<f:if condition="{tree}">
 		<div class="element-browser-main-sidebar">
-			<div class="element-panel-body">
+			<div class="element-browser-body">
 				<h3>{f:translate(key:'LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:pageTree')}</h3>
 				{tree -> f:format.raw()}
 			</div>
 		</div>
 	</f:if>
 	<div class="element-browser-main-content">
-		<div class="element-panel-body">
+		<div class="element-browser-body">
 			{recordList -> f:format.raw()}
 		</div>
 	</div>
