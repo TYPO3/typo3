@@ -7501,6 +7501,74 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      ***************************************************************************/
 
     /**
+     * Data provider for linkWrap
+     *
+     * @return array [[$expected, $content, $wrap],]
+     */
+    public function linkWrapDataProvider()
+    {
+        $content = $this->getUniqueId();
+        return [
+            'Handles a tag as wrap.' => [
+                '<tag>' . $content . '</tag>',
+                $content,
+                '<tag>|</tag>'
+            ],
+            'Handles simple text as wrap.' => [
+                'alpha' . $content . 'omega',
+                $content,
+                'alpha|omega'
+            ],
+            'Trims whitespace around tags.' => [
+                '<tag>' . $content . '</tag>',
+                $content,
+                "\t <tag>\t |\t </tag>\t "
+            ],
+            'A wrap without pipe is placed before the content.' => [
+                '<tag>' . $content,
+                $content,
+                '<tag>'
+            ],
+            'For an empty string as wrap the content is returned as is.' => [
+                $content,
+                $content,
+                ''
+            ],
+            'For null as wrap the content is returned as is.' => [
+                $content,
+                $content,
+                null
+            ],
+            'For a valid rootline level the uid will be inserted.' => [
+                '<a href="?id=55">' . $content . '</a>',
+                $content,
+                '<a href="?id={3}"> | </a>'
+            ],
+            'For an invalid rootline level there is no replacement.' => [
+                '<a href="?id={4}">' . $content . '</a>',
+                $content,
+                '<a href="?id={4}"> | </a>'
+            ],
+        ];
+    }
+
+    /**
+     * Check if linkWrap works properly.
+     *
+     * @test
+     * @dataProvider  linkWrapDataProvider
+     * @param string $expected The expected output.
+     * @param string $content The parameter $content.
+     * @param string $wrap The parameter $wrap.
+     */
+    public function linkWrap($expected, $content, $wrap)
+    {
+        $this->templateServiceMock->rootLine = [3 => ['uid' => 55]];
+        $actual = $this->subject->linkWrap($content, $wrap);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * Data provider for prefixComment.
      *
      * @return array [$expect, $comment, $content]
