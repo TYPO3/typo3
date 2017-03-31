@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class to encapsulate base setup of bootstrap.
@@ -147,27 +148,40 @@ class SystemEnvironmentBuilder
      */
     protected static function definePaths($entryPointLevel = 0)
     {
+        // Absolute path of the entry script that was called
+        $scriptPath = GeneralUtility::fixWindowsFilePath(self::getPathThisScript());
+        $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
+        // Check if the root path has been set in the environment (e.g. by the composer installer)
+        if (getenv('TYPO3_PATH_ROOT')) {
+            if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)
+                && Bootstrap::usesComposerClassLoading()
+                && StringUtility::endsWith($scriptPath, 'typo3')
+            ) {
+                // PATH_thisScript is used for various path calculations based on the document root
+                // Therefore we assume it is always a subdirectory of the document root, which is not the case
+                // in composer mode on cli, as the binary is in the composer bin directory.
+                // Because of that, we enforce the document root path of this binary to be set
+                $scriptName = '/typo3/sysext/core/bin/typo3';
+            } else {
+                // Base the script path on the path taken from the environment
+                // to make relative path calculations work in case only one of both is symlinked
+                // or has the real path
+                $scriptName =  substr($scriptPath, strlen($rootPath));
+            }
+            $rootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT'));
+            $scriptPath = $rootPath . $scriptName;
+        }
+
+        if (!defined('PATH_thisScript')) {
+            define('PATH_thisScript', $scriptPath);
+        }
+        // Absolute path of the document root of the instance with trailing slash
+        if (!defined('PATH_site')) {
+            define('PATH_site', $rootPath . '/');
+        }
         // Relative path from document root to typo3/ directory
         // Hardcoded to "typo3/"
         define('TYPO3_mainDir', 'typo3/');
-        // Absolute path of the entry script that was called
-        // All paths are unified between Windows and Unix, so the \ of Windows is substituted to a /
-        // Example "/var/www/instance-name/htdocs/typo3conf/ext/wec_map/mod1/index.php"
-        // Example "c:/var/www/instance-name/htdocs/typo3/index.php?M=main" for a path in Windows
-        if (!defined('PATH_thisScript')) {
-            define('PATH_thisScript', self::getPathThisScript());
-        }
-        // Absolute path of the document root of the instance with trailing slash
-        // Example "/var/www/instance-name/htdocs/"
-        if (!defined('PATH_site')) {
-            // Check if the site path has been set by the outside (e.g. dotenv or the composer installer)
-            if (getenv('TYPO3_PATH_ROOT')) {
-                $rootPath = getenv('TYPO3_PATH_ROOT');
-                define('PATH_site', $rootPath . '/');
-            } else {
-                define('PATH_site', self::getPathSite($entryPointLevel));
-            }
-        }
         // Absolute path of the typo3 directory of the instance with trailing slash
         // Example "/var/www/instance-name/htdocs/typo3/"
         define('PATH_typo3', PATH_site . TYPO3_mainDir);
@@ -272,9 +286,8 @@ class SystemEnvironmentBuilder
     {
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             return self::getPathThisScriptCli();
-        } else {
-            return self::getPathThisScriptNonCli();
         }
+        return self::getPathThisScriptNonCli();
     }
 
     /**
@@ -301,10 +314,6 @@ class SystemEnvironmentBuilder
                 $scriptPath = $_SERVER['SCRIPT_FILENAME'];
             }
         }
-        // Replace \ to / for Windows
-        $scriptPath = str_replace('\\', '/', $scriptPath);
-        // Replace double // to /
-        $scriptPath = str_replace('//', '/', $scriptPath);
         return $scriptPath;
     }
 
@@ -360,33 +369,19 @@ class SystemEnvironmentBuilder
      * - A Backend script: This is the case for the typo3/index.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
      * or 'typo3/index.php' that are located inside typo3/ directly.
      *
+     * @param string $scriptPath Calculated path to the entry script
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
      * @return string Absolute path to document root of installation
      */
-    protected static function getPathSite($entryPointLevel)
+    protected static function getRootPathFromScriptPath($scriptPath, $entryPointLevel)
     {
-        $entryScriptDirectory = self::getUnifiedDirectoryName(PATH_thisScript);
+        $entryScriptDirectory = dirname($scriptPath);
         if ($entryPointLevel > 0) {
-            list($pathSite) = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel+1);
+            list($rootPath) = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel + 1);
         } else {
-            $pathSite = $entryScriptDirectory;
+            $rootPath = $entryScriptDirectory;
         }
-        return $pathSite . '/';
-    }
-
-    /**
-     * Remove file name from script path and unify for Windows and Unix
-     *
-     * @param string $absolutePath Absolute path to script
-     * @return string Directory name of script file location, unified for Windows and Unix without the trailing slash
-     */
-    protected static function getUnifiedDirectoryName($absolutePath)
-    {
-        $directory = dirname($absolutePath);
-        if (TYPO3_OS === 'WIN') {
-            $directory = str_replace('\\', '/', $directory);
-        }
-        return $directory;
+        return $rootPath;
     }
 
     /**

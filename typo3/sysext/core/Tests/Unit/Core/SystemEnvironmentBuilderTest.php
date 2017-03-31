@@ -108,17 +108,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function getUnifiedDirectoryNameReturnsCorrectPathOnUnix()
-    {
-        $input = '/foo/bar/test.php';
-        $expected = '/foo/bar';
-        $actual = $this->subject->_call('getUnifiedDirectoryName', $input);
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function initializeGlobalVariablesUnsetsGlobalErrorArray()
     {
         $GLOBALS['error'] = 'foo';
