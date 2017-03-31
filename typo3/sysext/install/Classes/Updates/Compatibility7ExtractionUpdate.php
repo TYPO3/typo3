@@ -38,7 +38,7 @@ class Compatibility7ExtractionUpdate extends AbstractDownloadExtensionUpdate
         'compatibility7' => [
             'title' => 'Compatibility Mode for TYPO3 v7',
             'description' => 'Provides an additional backwards-compatibility layer with legacy functionality for sites that haven\'t fully migrated to TYPO3 v8 yet.',
-            'versionString' => '8.7.0',
+            'versionString' => '8.7.1',
         ]
     ];
 
