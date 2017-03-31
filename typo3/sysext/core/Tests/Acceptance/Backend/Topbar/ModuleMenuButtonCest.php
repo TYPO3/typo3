@@ -42,7 +42,7 @@ class ModuleMenuButtonCest
         $I->seeElement('.modulemenu-group-icon');
 
         $I->amGoingTo('collapse the module menu');
-        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-move-move"]');
+        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-menu"]');
 
         $I->expectTo('see only the module menu icon');
         $I->cantSeeElement('.scaffold-modulemenu-expanded');
@@ -55,7 +55,7 @@ class ModuleMenuButtonCest
         $I->cantSeeElement('.modulemenu-group-icon');
 
         $I->amGoingTo('expand the module menu');
-        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-move-move"]');
+        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-menu"]');
         $I->expectTo('see the expanded module menu');
         $I->see('Web', 'span.modulemenu-group-title');
         $I->seeElement('.modulemenu-group-icon');
@@ -76,7 +76,7 @@ class ModuleMenuButtonCest
         $I->seeElement('.modulemenu-group-icon');
 
         $I->amGoingTo('collapse the module menu');
-        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-move-move"]');
+        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-menu"]');
 
         $I->expectTo('see no module menu');
         $I->cantSeeElement('.scaffold-modulemenu-expanded');
@@ -89,7 +89,7 @@ class ModuleMenuButtonCest
         $I->seeElement('.modulemenu-group-icon');
 
         $I->amGoingTo('expand the module menu');
-        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-move-move"]');
+        $I->click('button.t3js-topbar-button-modulemenu span[data-identifier="actions-menu"]');
 
         $I->expectTo('see the full module menu');
         $I->seeElement('.scaffold-modulemenu-expanded');

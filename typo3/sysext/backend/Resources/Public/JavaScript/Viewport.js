@@ -19,9 +19,10 @@
 define(
 	'TYPO3/CMS/Backend/Viewport',
 	[
-		'jquery'
+		'jquery',
+		'TYPO3/CMS/Backend/Icons',
 	],
-	function ($) {
+	function ($, Icons) {
 		'use strict';
 
 		TYPO3.Backend = {
@@ -69,12 +70,18 @@ define(
 					$('t3js-scaffold-content').removeAttr('style');
 				},
 				hide: function () {
-					$('.t3js-topbar-button-navigationcomponent').css('visibility', 'hidden');
+					$('.t3js-topbar-button-navigationcomponent').attr('disabled', true);
+					Icons.getIcon('actions-pagetree', Icons.sizes.small, 'overlay-readonly', null, Icons.markupIdentifiers.inline).done(function(icon) {
+						$('.t3js-topbar-button-navigationcomponent').html(icon);
+					});
 					$('.t3js-scaffold').removeClass('scaffold-content-navigation-expanded');
 					$('.t3js-scaffold-content-module').removeAttr('style');
 				},
 				show: function (component) {
-					$('.t3js-topbar-button-navigationcomponent').css('visibility', 'visible');
+					$('.t3js-topbar-button-navigationcomponent').attr('disabled', false);
+					Icons.getIcon('actions-pagetree', Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
+						$('.t3js-topbar-button-navigationcomponent').html(icon);
+					});
 					if(component !== undefined) {
 						$('.t3js-scaffold').addClass('scaffold-content-navigation-expanded');
 					}

@@ -46,8 +46,17 @@ $toolbar-item-padding-horizontal: 15px;
     height: $topbar-height;
     width: $topbar-button-width;
 
+    &:focus,
     &:hover {
         background-color: $topbar-button-hover-bg;
+    }
+
+    &[disabled],
+    &[disabled]:focus,
+    &[disabled]:hover {
+        background-color: $topbar-button-active-bg;
+        cursor: not-allowed;
+        opacity: 0.5;
     }
 
     &.topbar-button-modulemenu {
