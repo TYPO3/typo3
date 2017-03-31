@@ -218,7 +218,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getPreferredClientLanguage($languageCodesList)
     {
-        $allLanguageCodesFromLocales = [];
+        $allLanguageCodesFromLocales = ['en' => 'default'];
         foreach ($this->getIsoMapping() as $typo3Lang => $isoLang) {
             $isoLang = str_replace('_', '-', $isoLang);
             $allLanguageCodesFromLocales[$isoLang] = $typo3Lang;

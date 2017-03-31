@@ -42,4 +42,14 @@ class LocalesTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $detectedLanguage = $this->subject->getPreferredClientLanguage($browserPreferredLanguageHeader);
         $this->assertSame('de', $detectedLanguage);
     }
+
+    /**
+     * @test
+     */
+    public function englishMayBeDefaultLanguage()
+    {
+        $browserPreferredLanguageHeader = 'en-US;q=0.8,en;q=0.6;de-DE,de;q=0.4';
+        $detectedLanguage = $this->subject->getPreferredClientLanguage($browserPreferredLanguageHeader);
+        $this->assertSame('default', $detectedLanguage);
+    }
 }
