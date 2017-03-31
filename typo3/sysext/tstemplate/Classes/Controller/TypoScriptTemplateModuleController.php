@@ -358,7 +358,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                         ->setHref(BackendUtility::getModuleUrl('web_ts', ['id' => $this->id]))
                         ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-close',
+                            'actions-close',
                             Icon::SIZE_SMALL
                         ));
                     $buttonBar->addButton($closeButton);

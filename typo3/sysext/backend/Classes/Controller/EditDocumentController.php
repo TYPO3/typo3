@@ -1271,7 +1271,7 @@ class EditDocumentController extends AbstractModule
             ->setClasses('t3js-editform-close')
             ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                'actions-document-close',
+                'actions-close',
                 Icon::SIZE_SMALL
             ));
         $buttonBar->addButton($closeButton);

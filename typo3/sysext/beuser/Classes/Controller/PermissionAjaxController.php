@@ -197,7 +197,7 @@ class PermissionAjaxController
         $options = '<option value="0"></option>' . $options;
         $selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
         $saveButton = '<a class="saveowner btn btn-default" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '" title="Change owner">' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</a>';
-        $cancelButton = '<a class="restoreowner btn btn-default" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
+        $cancelButton = '<a class="restoreowner btn btn-default" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render() . '</a>';
         return '<span id="' . $elementId . '">'
             . $selector
             . '<span class="btn-group">'
@@ -246,7 +246,7 @@ class PermissionAjaxController
         $options = '<option value="0"></option>' . $options;
         $selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
         $saveButton = '<a class="savegroup btn btn-default" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '" title="Change group">' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</a>';
-        $cancelButton = '<a class="restoregroup btn btn-default" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
+        $cancelButton = '<a class="restoregroup btn btn-default" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render() . '</a>';
         return '<span id="' . $elementId . '">'
             . $selector
             . '<span class="btn-group">'

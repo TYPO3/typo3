@@ -38,7 +38,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @var string
      */
-    protected $registeredIconIdentifier = 'actions-document-close';
+    protected $registeredIconIdentifier = 'actions-close';
 
     /**
      * @var string
@@ -128,7 +128,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-document-close" data-identifier="actions-document-close">',
+        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-close" data-identifier="actions-close">',
             $this->subject->getIcon($this->registeredIconIdentifier)->render());
     }
 
@@ -138,7 +138,7 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size)
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-document-close" data-identifier="actions-document-close">',
+        $this->assertContains('<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close">',
             $this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render());
     }
 

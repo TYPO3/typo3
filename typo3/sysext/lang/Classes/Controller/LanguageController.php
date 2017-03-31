@@ -336,7 +336,7 @@ class LanguageController extends ActionController
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->addButton($downloadAllButton, ButtonBar::BUTTON_POSITION_LEFT);
 
         $cancelButton = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar()->makeLinkButton()
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL))
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang.xlf:button.cancel'))
             ->setClasses('menuItem cancelItem disabled t3js-button-cancel')
             ->setDataAttributes(['action' => 'cancelLanguageUpdate'])

@@ -184,7 +184,7 @@ class TableController extends AbstractWizardController
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($this->P['returnUrl'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-close', Icon::SIZE_SMALL));
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($closeButton);
             // Save
             $saveButton = $buttonBar->makeInputButton()
