@@ -234,4 +234,124 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
 
         $this->assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
+
+    /**
+     * Data provider for resolveTargetAttribute
+     *
+     * @return array [[$expected, $conf, $name, $respectFrameSetOption, $fallbackTarget],]
+     */
+    public function resolveTargetAttributeDataProvider() : array
+    {
+        $targetName = $this->getUniqueId('name_');
+        $target = $this->getUniqueId('target_');
+        $fallback = $this->getUniqueId('fallback_');
+        return [
+            'Take target from $conf, if $conf[$targetName] is set.' =>
+                [
+                    $target,
+                    [$targetName => $target], // $targetName is set
+                    $targetName,
+                    true,
+                    $fallback,
+                    'other doctype'
+                ],
+            'Else from fallback, if not $respectFrameSetOption ...' =>
+                [
+                    $fallback,
+                    [],
+                    $targetName,
+                    false, // $respectFrameSetOption false
+                    $fallback,
+                    'other doctype'
+                ],
+            ' ... or no doctype ... ' =>
+                [
+                    $fallback,
+                    [],
+                    $targetName,
+                    true,
+                    $fallback,
+                    null                       // no $doctype
+                ],
+            ' ... or doctype xhtml_trans... ' =>
+                [
+                    $fallback,
+                    [],
+                    $targetName,
+                    true,
+                    $fallback,
+                    'xhtml_trans'
+                ],
+            ' ... or doctype xhtml_basic... ' =>
+                [
+                    $fallback,
+                    [],
+                    $targetName,
+                    true,
+                    $fallback,
+                    'xhtml_basic'
+                ],
+            ' ... or doctype html5... ' =>
+                [
+                    $fallback,
+                    [],
+                    $targetName,
+                    true,
+                    $fallback,
+                    'html5'
+                ],
+            ' If all hopes fail, an empty string is returned. ' =>
+                [
+                    '',
+                    [],
+                    $targetName,
+                    true,
+                    $fallback,
+                    'other doctype'
+                ],
+            'It finally applies stdWrap' =>
+                [
+                    'wrap_target',
+                    [$targetName . '.' =>
+                        [ 'ifEmpty' => 'wrap_target' ]
+                    ],
+                    $targetName,
+                    true,
+                    $fallback,
+                    'other doctype'
+                ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider resolveTargetAttributeDataProvider
+     * @param string $expected
+     * @param array $conf
+     * @param string $name
+     * @param bool $respectFrameSetOption
+     * @param string $fallbackTarget
+     * @param string|null $doctype
+     */
+    public function canResolveTheTargetAttribute(
+        string $expected,
+        array $conf,
+        string $name,
+        bool $respectFrameSetOption,
+        string $fallbackTarget,
+        $doctype
+    ) {
+        $this->frontendControllerMock->config =
+            ['config' => [ 'doctype' => $doctype]];
+        $renderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = $this->getMockBuilder(AbstractTypolinkBuilder::class)
+            ->setConstructorArgs([$renderer])
+            ->setMethods(['build'])
+            ->getMock();
+        $actual = $this->callInaccessibleMethod(
+            $subject, 'resolveTargetAttribute',
+            $conf, $name, $respectFrameSetOption, $fallbackTarget
+        );
+        $this->assertEquals($expected, $actual);
+    }
 }
