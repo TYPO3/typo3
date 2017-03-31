@@ -3152,6 +3152,10 @@ class IconRegistry implements SingletonInterface
         'actions-document-close' => [
             'message' => '%s is deprecated since TYPO3 CMS 8, this icon will be removed in TYPO3 CMS 9',
             'replacement' => 'actions-close'
+        ],
+        'actions-edit-add' => [
+            'message' => '%s is deprecated since TYPO3 CMS 8, this icon will be removed in TYPO3 CMS 9',
+            'replacement' => 'actions-add'
         ]
     ];
 

@@ -387,7 +387,7 @@ class AddImageHandler implements LinkParameterProviderInterface, LinkHandlerInte
 					<tr class="file_list_normal">
 						<td class="col-title" nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td class="col-control">
-							<div class="btn-group">' . $ATag . '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '
+							<div class="btn-group">' . $ATag . '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '
 							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
 						<td class="col-clipboard" valign="top">' . $bulkCheckBox . '</td>

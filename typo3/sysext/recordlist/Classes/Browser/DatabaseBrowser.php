@@ -218,7 +218,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             if (in_array('pages', $tablesArr, true)) {
                 $out .= '<span data-uid="' . htmlspecialchars($mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '" data-icon="">';
                 $out .= '<a href="#" data-close="0">'
-                    . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                     . '</a>'
                     . '<a href="#" data-close="1">'
                     . $pText
