@@ -103,36 +103,36 @@ class FrontendEditPanel
             $panel .= $this->backendUser->adminPanel->ext_makeToolBar();
         }
         if (isset($allow['edit'])) {
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_editRecord') . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
         }
         // Hiding in workspaces because implementation is incomplete
         if (isset($allow['move']) && $sortField && $this->backendUser->workspace === 0) {
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveUp') . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveUp') . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'up');
-            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveDown') . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->backendUser->extGetLL('p_moveDown') . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'down');
         }
         // Hiding in workspaces because implementation is incomplete
         // Hiding for localizations because it is unknown what should be the function in that case
         if (isset($allow['hide']) && $hideField && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
             if ($dataArr[$hideField]) {
-                $icon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render('inline');
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'unhide');
             } else {
-                $icon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render();
+                $icon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render('inline');
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'hide', '', $this->backendUser->extGetLL('p_hideConfirm'));
             }
         }
         if (isset($allow['new'])) {
             if ($table === 'pages') {
                 $icon = '<span title="' . $this->backendUser->extGetLL('p_newSubpage') . '">'
-                    . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render('inline')
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '');
             } else {
                 $icon = '<span title="' . $this->backendUser->extGetLL('p_newRecordAfter') . '">'
-                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render('inline')
                     . '</span>';
                 $panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '', $newUID);
             }
@@ -141,7 +141,7 @@ class FrontendEditPanel
         // Hiding for localizations because it is unknown what should be the function in that case
         if (isset($allow['delete']) && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
             $icon = '<span title="' . $this->backendUser->extGetLL('p_delete') . '">'
-                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render('inline')
                 . '</span>';
             $panel .= $this->editPanelLinkWrap($icon, $formName, 'delete', '', $this->backendUser->extGetLL('p_deleteConfirm'));
         }
@@ -155,8 +155,8 @@ class FrontendEditPanel
 								' . $formTag . $hiddenFieldString . '
 									<input type="hidden" name="TSFE_EDIT[cmd]" value="" />
 									<input type="hidden" name="TSFE_EDIT[record]" value="' . $currentRecord . '" />
-									<div class="typo3-editPanel">'
-                                        . '<div class="btn-group">'
+									<div class="typo3-editPanel" style="display: none;">'
+                                        . '<div class="typo3-editPanel-btn-group">'
                                         . $panel
                                         . '</div>' .
             ($labelTxt ? '<div class="typo3-editPanel-label">' . sprintf($labelTxt, htmlspecialchars(GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '</div>' : '') . '
@@ -213,8 +213,8 @@ class FrontendEditPanel
         // Special content is about to be shown, so the cache must be disabled.
         $this->frontendController->set_no_cache('Display frontend edit icons', true);
         $iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
-        $iconImg = '<span title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', false) . '" class="frontEndEditIcons" style="' . ($conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : '') . '">'
-            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+        $iconImg = '<span title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', false) . '" style="' . ($conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : '') . '">'
+            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline')
             . '</span>';
         $nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 
@@ -280,7 +280,7 @@ class FrontendEditPanel
             } else {
                 $cf1 = ($cf2 = '');
             }
-            $out = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars(($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;')) . '">' . $string . '</a>';
+            $out = '<a href="#" class="typo3-editPanel-btn typo3-editPanel-btn-default" onclick="' . htmlspecialchars(($cf1 . 'document.' . $formName . '[\'TSFE_EDIT[cmd]\'].value=\'' . $cmd . '\'; document.' . $formName . '.submit();' . $cf2 . ' return false;')) . '">' . $string . '</a>';
         }
         return $out;
     }
@@ -299,7 +299,7 @@ class FrontendEditPanel
         $width = MathUtility::forceIntegerInRange($this->backendUser->getTSConfigVal('options.feedit.popupWidth'), 690, 5000, 690);
         $height = MathUtility::forceIntegerInRange($this->backendUser->getTSConfigVal('options.feedit.popupHeight'), 500, 5000, 500);
         $onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=' . rawurlencode(PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html'))) . ',\'FEquickEditWindow\',\'width=' . $width . ',height=' . $height . ',status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
-        return '<a href="#" class="btn btn-default btn-sm ' . htmlspecialchars($additionalClasses) . '" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
+        return '<a href="#" class="typo3-editPanel-btn typo3-editPanel-btn-default frontEndEditIconLinks ' . htmlspecialchars($additionalClasses) . '" onclick="' . htmlspecialchars($onclick) . '" style="display: none;">' . $string . '</a>';
     }
 
     /**

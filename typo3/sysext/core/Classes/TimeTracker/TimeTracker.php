@@ -342,10 +342,9 @@ class TimeTracker implements SingletonInterface
         $outputArr[] = $this->fw('Details');
         $out = '';
         foreach ($outputArr as $row) {
-            $out .= '
-				<th><strong>' . $row . '</strong></th>';
+            $out .= '<th>' . $row . '</th>';
         }
-        $out = '<tr class="typo3-adminPanel-itemRow">' . $out . '</tr>';
+        $out = '<thead><tr>' . $out . '</tr></thead>';
         $flag_tree = $this->printConf['flag_tree'];
         $flag_messages = $this->printConf['flag_messages'];
         $flag_content = $this->printConf['flag_content'];
@@ -357,7 +356,6 @@ class TimeTracker implements SingletonInterface
             } else {
                 $logRowClass = $c % 2 ? 'line-odd' : 'line-even';
             }
-            $logRowClass .= ' typo3-adminPanel-section-content-title';
             $item = '';
             // If first...
             if (!$c) {
@@ -388,7 +386,7 @@ class TimeTracker implements SingletonInterface
             $theLabel = GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
             $theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
             $keyLabel = $theLabel . $keyLabel;
-            $item .= '<td class="' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
+            $item .= '<td class="typo3-adminPanel-table-cell-nowrap ' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
             // Key value:
             $keyValue = $data['value'];
             $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
@@ -417,16 +415,16 @@ class TimeTracker implements SingletonInterface
                         $data['content'] = str_replace($reg[0][$key], $match, $data['content']);
                     }
                 }
-                $msgArr[] = '<span style="color:#000066;">' . nl2br($data['content']) . '</span>';
+                $msgArr[] = nl2br($data['content']);
             }
             if (!empty($msgArr)) {
                 $msg = implode($msgArr, '<hr />');
             }
-            $item .= '<td valign="top" class="' . $logRowClass . '" style="text-align:left;">' . $this->fw($msg) . '</td>';
-            $out .= '<tr class="typo3-adminPanel-itemRow">' . $item . '</tr>';
+            $item .= '<td class="typo3-adminPanel-table-cell-content">' . $this->fw($msg) . '</td>';
+            $out .= '<tr>' . $item . '</tr>';
             $c++;
         }
-        $out = '<table class="typo3-adminPanel-table typo3-adminPanel-tsLog">' . $out . '</table>';
+        $out = '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table">' . $out . '</table></div>';
         return $out;
     }
 

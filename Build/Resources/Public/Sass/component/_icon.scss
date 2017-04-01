@@ -41,8 +41,7 @@ $icon-opacity-disabled: 0.5;
         display: block;
         height: 100%;
         width: 100%;
-
-        @include translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 
     * {

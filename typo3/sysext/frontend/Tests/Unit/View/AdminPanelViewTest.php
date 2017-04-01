@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
@@ -25,7 +27,8 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['LANG'] = $this->createMock(\TYPO3\CMS\Lang\LanguageService::class);
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['TSFE'] = new TypoScriptFrontendController([], 1, 1);
     }
 
     /**
@@ -89,6 +92,7 @@ class AdminPanelViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->setMethods(['extGetLL'])
             ->disableOriginalConstructor()
             ->getMock();
+        $adminPanelMock->initialize();
         $hookMock->expects($this->once())->method('extendAdminPanel')->with($this->isType('string'), $this->isInstanceOf(\TYPO3\CMS\Frontend\View\AdminPanelView::class));
         $adminPanelMock->display();
     }
