@@ -23,10 +23,9 @@
 							'{activeAvailableOption} == postgresManualConfiguration', then: 'selected="selected"')}>Manually
 							configured PostgreSQL connection</option>
 						</f:if>
-						<f:if condition="{hasConfigurationFromDotEnv}">
-							<option value="configurationFromDotEnv" {f:if(condition:
-							'{activeAvailableOption} == configurationFromDotEnv', then: 'selected="selected"')}>Configuration from
-							.env file</option>
+						<f:if condition="{hasConfigurationFromEnvironment}">
+							<option value="configurationFromEnvironment" {f:if(condition:
+							'{activeAvailableOption} == configurationFromEnvironment', then: 'selected="selected"')}>Configuration from environment variables</option>
 						</f:if>
 					</select>
 				</div>
@@ -152,8 +151,8 @@
 				</div>
 			</f:if>
 
-			<f:if condition="{hasConfigurationFromDotEnv}">
-				<div id="configurationFromDotEnv" class="t3-install-driver-data">
+			<f:if condition="{hasConfigurationFromEnvironment}">
+				<div id="configurationFromEnvironment" class="t3-install-driver-data">
 				</div>
 			</f:if>
 

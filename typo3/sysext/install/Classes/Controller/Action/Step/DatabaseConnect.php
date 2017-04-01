@@ -42,8 +42,8 @@ class DatabaseConnect extends AbstractStepAction
         $postValues = $this->postValues['values'];
         $defaultConnectionSettings = [];
 
-        if ($postValues['availableSet'] === 'configurationFromDotEnv') {
-            $defaultConnectionSettings = $this->getConfigurationFromDotEnv();
+        if ($postValues['availableSet'] === 'configurationFromEnvironment') {
+            $defaultConnectionSettings = $this->getConfigurationFromEnvironment();
         } else {
             if (isset($postValues['driver'])) {
                 $validDrivers = [
@@ -226,10 +226,10 @@ class DatabaseConnect extends AbstractStepAction
             }
         }
 
-        if (!empty($this->getConfigurationFromDotEnv())) {
+        if (!empty($this->getConfigurationFromEnvironment())) {
             $hasAtLeastOneOption = true;
-            $activeAvailableOption = 'configurationFromDotEnv';
-            $this->view->assign('hasConfigurationFromDotEnv', true);
+            $activeAvailableOption = 'configurationFromEnvironment';
+            $this->view->assign('hasConfigurationFromEnvironment', true);
         }
 
         $this->view->assign('hasAtLeastOneOption', $hasAtLeastOneOption);
@@ -306,45 +306,15 @@ class DatabaseConnect extends AbstractStepAction
      *
      * @return array Empty array if no file is found or connect is not successful, else working credentials
      */
-    protected function getConfigurationFromDotEnv(): array
+    protected function getConfigurationFromEnvironment(): array
     {
         $envCredentials = [];
-        if (file_exists(PATH_site . '/../.env')) {
-            $env = file_get_contents(PATH_site . '/../.env');
-            $envArray = explode("\n", $env);
-            foreach ($envArray as $val) {
-                if (strpos($val, 'TYPO3_DB_DRIVER') !== false) {
-                    $driver = substr($val, strpos($val, '=') + 1);
-                    $driver = trim($driver, " \t\n\r\0\x0B\"");
-                    $envCredentials['driver'] = $driver;
-                } elseif (strpos($val, 'TYPO3_DB_NAME') !== false) {
-                    $database = substr($val, strpos($val, '=') + 1);
-                    $database = trim($database, " \t\n\r\0\x0B\"");
-                    $envCredentials['database'] = $database;
-                } elseif (strpos($val, 'TYPO3_DB_HOST') !== false) {
-                    $host = substr($val, strpos($val, '=') + 1);
-                    $host = trim($host, " \t\n\r\0\x0B\"");
-                    $envCredentials['host'] = $host;
-                } elseif (strpos($val, 'TYPO3_DB_USER') !== false) {
-                    $user = substr($val, strpos($val, '=') + 1);
-                    $user = trim($user, " \t\n\r\0\x0B\"");
-                    $envCredentials['user'] = $user;
-                } elseif (strpos($val, 'TYPO3_DB_PASSWORD') !== false) {
-                    $password = substr($val, strpos($val, '=') + 1);
-                    $password = trim($password, " \t\n\r\0\x0B\"");
-                    $envCredentials['password'] = $password;
-                } elseif (strpos($val, 'TYPO3_DB_PORT') !== false) {
-                    $port = substr($val, strpos($val, '=') + 1);
-                    $port = trim($port, " \t\n\r\0\x0B\"");
-                    $envCredentials['port'] = $port;
-                } elseif (strpos($val, 'TYPO3_DB_SOCKET') !== false) {
-                    $port = substr($val, strpos($val, '=') + 1);
-                    $port = trim($port, " \t\n\r\0\x0B\"");
-                    $envCredentials['unix_socket'] = $port;
-                }
+        foreach (['driver', 'host', 'user', 'password', 'port', 'dbname', 'unix_socket'] as $value) {
+            $envVar = 'TYPO3_INSTALL_DB_' . strtoupper($value);
+            if (getenv($envVar) !== false) {
+                $envCredentials[$value] = getenv($envVar);
             }
         }
-
         if (!empty($envCredentials)) {
             $connectionParams = $envCredentials;
             $connectionParams['wrapperClass'] = Connection::class;
