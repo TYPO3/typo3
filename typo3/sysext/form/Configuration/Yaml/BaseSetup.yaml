@@ -219,7 +219,7 @@ TYPO3:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FileUploadMixin'
               properties:
-                allowedMimeTypes: ['application/doc', 'application/docx', 'application/odt', 'application/pdf']
+                allowedMimeTypes: ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.oasis.opendocument.text', 'application/pdf']
 
             ImageUpload:
               __inheritances:
