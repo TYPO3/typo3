@@ -38,7 +38,7 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
     protected $itemsConfiguration = [
         'edit' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.edit',
-            'iconIdentifier' => 'actions-open',
+            'iconIdentifier' => 'actions-page-open',
             'callbackAction' => 'editFile'
         ],
         'rename' => [
