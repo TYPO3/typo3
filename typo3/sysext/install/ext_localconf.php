@@ -72,3 +72,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['compatibilit
     = \TYPO3\CMS\Install\Updates\Compatibility7ExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['formLegacyExtractionUpdate']
     = \TYPO3\CMS\Install\Updates\FormLegacyExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rtehtmlareaExtension']
+    = \TYPO3\CMS\Install\Updates\RteHtmlAreaExtractionUpdate::class;
