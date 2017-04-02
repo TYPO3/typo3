@@ -98,7 +98,7 @@ page {
 						pidInList = root,-1
 						selectFields = sys_category.*
 						join = sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid
-						where.data = field:_ORIG_uid // field:uid
+						where.data = field:_ORIG_uid // field:_LOCALIZED_UID // field:uid
 						where.intval = 1
 						where.wrap = sys_category_record_mm.uid_foreign=|
 						orderBy = sys_category_record_mm.sorting_foreign
