@@ -45,7 +45,7 @@ The :php:`DatabaseSessionBackend` requires a `table` as option. If the backend i
 sessions (default for `FE`), the `has_anonymous` option must be set to true.
 
 The :php:`RedisSessionBackend` requires a running PHP redis module (PHP extension "redis") and a running redis service.
-By default, a connection will be made to `hostname` 127.0.0.1 and `port` 3679. You may also specify a `database`
+By default, a connection will be made to `hostname` 127.0.0.1 and `port` 6379. You may also specify a `database`
 number which to store the sessions in (default database is 0) and a `password` for the connection.
 
 A developer may implement a custom session backend. To achieve this, the interface
