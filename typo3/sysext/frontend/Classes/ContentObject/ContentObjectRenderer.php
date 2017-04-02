@@ -5271,6 +5271,24 @@ class ContentObjectRenderer
                             }
                         }
                         break;
+                    case 'session':
+                        $keyParts = GeneralUtility::trimExplode('|', $key, true);
+                        $sessionKey = array_shift($keyParts);
+                        $retVal = $this->getTypoScriptFrontendController()->fe_user->getSessionData($sessionKey);
+                        foreach ($keyParts as $keyPart) {
+                            if (is_object($retVal)) {
+                                $retVal = $retVal->{$keyPart};
+                            } elseif (is_array($retVal)) {
+                                $retVal = $retVal[$keyPart];
+                            } else {
+                                $retVal = '';
+                                break;
+                            }
+                        }
+                        if (!is_scalar($retVal)) {
+                            $retVal = '';
+                        }
+                        break;
                 }
             }
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'])) {

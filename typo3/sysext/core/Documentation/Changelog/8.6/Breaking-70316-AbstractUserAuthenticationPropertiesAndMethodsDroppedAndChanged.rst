@@ -24,6 +24,8 @@ Impact
 Accessing one of these properties will raise a PHP warning.
 Calling the method :php:`fetchSessionData()` will cause a PHP fatal error.
 
+Moreover it is not possible anymore to use the getData function from within TypoScript
+to access session data. This functionality is replaced by a new API. (see :issue:`80154`)
 
 Affected Installations
 ======================

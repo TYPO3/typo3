@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
@@ -1260,6 +1261,26 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $GLOBALS['TSFE']->register[$key] = $value;
 
         $this->assertEquals($value, $this->subject->getData('register:' . $key));
+    }
+
+    /**
+     * Checks if getData() works with type "session"
+     *
+     * @test
+     */
+    public function getDataWithTypeSession()
+    {
+        $frontendUser = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->setMethods(['getSessionData'])
+            ->getMock();
+        $frontendUser->expects($this->once())->method('getSessionData')->with('myext')->willReturn([
+            'mydata' => [
+                'someValue' => 42,
+            ],
+        ]);
+        $GLOBALS['TSFE']->fe_user = $frontendUser;
+
+        $this->assertEquals(42, $this->subject->getData('session:myext|mydata|someValue'));
     }
 
     /**
