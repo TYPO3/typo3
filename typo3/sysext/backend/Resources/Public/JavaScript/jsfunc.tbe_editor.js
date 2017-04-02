@@ -188,7 +188,7 @@ var TBE_EDITOR = {
 		// TODO: This should be solved in a better way when this script is refactored.
 		window.setTimeout(function() {
 			document.getElementsByName(TBE_EDITOR.formname).item(0).submit();
-		}, 10);
+		}, 100);
 	},
 	split: function(theStr1, delim, index) {
 		var theStr = ""+theStr1;
