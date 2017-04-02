@@ -88,6 +88,9 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 		linkElement.setAttribute('href', link + params);
 
 		var selection = RteLinkBrowser.CKEditor.getSelection();
+		if (selection && selection.getSelectedText() === '') {
+			selection.selectElement(selection.getStartElement());
+		}
 		if (selection && selection.getSelectedText()) {
 			linkElement.setText(selection.getSelectedText());
 		} else {
