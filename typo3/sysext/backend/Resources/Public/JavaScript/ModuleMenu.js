@@ -51,7 +51,7 @@ require(
 				// check if module menu should be collapsed or not
 				var state = Storage.Persistent.get('BackendComponents.States.typo3-module-menu');
 				if (state && state.collapsed) {
-					TYPO3.ModuleMenu.App.toggleMenu(state.collapsed);
+					TYPO3.ModuleMenu.App.toggleMenu(state.collapsed === 'true');
 				}
 
 				// check if there are collapsed items in the users' configuration
@@ -122,7 +122,7 @@ require(
 
 			},
 			/**
-			 * @param {bool} collapse
+			 * @param {Boolean} collapse
 			 */
 			toggleMenu: function (collapse) {
 				TYPO3.Backend.NavigationContainer.cleanup();
