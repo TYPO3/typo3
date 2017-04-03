@@ -158,7 +158,7 @@ class TranslationService implements SingletonInterface
             $value = $this->LOCAL_LANG['default'][$key][0]['target'];
         }
 
-        if (is_array($arguments) && $value !== null) {
+        if (is_array($arguments) && !empty($arguments) && $value !== null) {
             $value = vsprintf($value, $arguments);
         } else {
             if (empty($value)) {

@@ -63,7 +63,7 @@ class CountValidator extends AbstractValidator
                     'form',
                     [$minimum, $maximum]
                 ),
-                1475002994
+                1475002994, [$this->options['minimum'], $this->options['maximum']]
             );
         }
     }
