@@ -1424,7 +1424,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         ($table === 'tt_content' ? $this->id : $row['uid']),
                         '',
                         '',
-                        ($table === 'tt_content' ? '#' . $row['uid'] : '')
+                        ($table === 'tt_content' ? '#c' . $row['uid'] : '')
                     )
                 ) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">'
                 . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
