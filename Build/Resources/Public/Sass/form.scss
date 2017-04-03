@@ -131,6 +131,7 @@ $collection-element-background: $page-ce-header-hover-bg;
 }
 
 .t3-form-x-component-inner-wrapper {
+    position: relative;
     padding: 1.5em;
 }
 
@@ -311,7 +312,7 @@ $collection-element-background: $page-ce-header-hover-bg;
 
     .t3-form-remove-element-button {
         position: absolute;
-        top: 90px;
+        top: 25px;
         right: 2.5em;
     }
 
