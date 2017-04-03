@@ -5606,6 +5606,15 @@ class ContentObjectRenderer
             'TYPE'       => $linkDetails['type']
         ];
 
+        // Ensure "href" is not in the list of aTagParams to avoid double tags, usually happens within buggy parseFunc settings
+        if (!empty($finalTagParts['aTagParams'])) {
+            $aTagParams = GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']);
+            if (isset($aTagParams['href'])) {
+                unset($aTagParams['href']);
+                $finalTagParts['aTagParams'] = GeneralUtility::implodeAttributes($aTagParams);
+            }
+        }
+
         // Building the final <a href=".."> tag
         $tagAttributes = [];
 
@@ -5660,7 +5669,9 @@ class ContentObjectRenderer
             $tagAttributes['class'] = htmlspecialchars($resolvedLinkParameters['class']);
         }
 
-        $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($tagAttributes) . $finalTagParts['aTagParams'] . '>';
+        // Prevent trouble with double and missing spaces between attributes and merge params before implode
+        $finalTagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));
+        $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($finalTagAttributes) . '>';
 
         if (!empty($finalTagParts['aTagParams'])) {
             $tagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));

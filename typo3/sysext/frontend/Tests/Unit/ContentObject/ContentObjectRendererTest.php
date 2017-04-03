@@ -2747,6 +2747,56 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                 ],
                 '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
             ],
+            'Link to file with attributes and additional href' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'href="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank">My file</a>',
+            ],
+            'Link to file with attributes and additional href and class' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'href="foo-bar" class="file-class"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ],
+            'Link to file with attributes and additional class and href' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class" href="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+            ],
+            'Link to file with attributes and additional class and href and title' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'class="file-class" href="foo-bar" title="foo-bar"',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" title="foo-bar" target="_blank" class="file-class">My file</a>',
+            ],
+            'Link to file with attributes and empty ATagParams' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => '',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank">My file</a>',
+            ],
             'Link to file with attributes in parameter' => [
                 'My file',
                 [
