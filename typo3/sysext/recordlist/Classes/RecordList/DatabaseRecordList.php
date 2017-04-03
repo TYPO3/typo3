@@ -1298,17 +1298,29 @@ class DatabaseRecordList
     protected function getOnClickForRow(string $table, array $row): string
     {
         if ($table === 'tt_content') {
-            // Link to a content element
-            $onClick = BackendUtility::viewOnClick($this->id, '', null, '#' . $row['uid']);
+            // Link to a content element, possibly translated and with anchor
+            $additionalParams = '';
+            $language = (int)$row[$GLOBALS['TCA']['tt_content']['ctrl']['languageField']];
+            if ($language > 0) {
+                $additionalParams = '&L=' . $language;
+            }
+            $onClick = BackendUtility::viewOnClick(
+                $this->id,
+                '',
+                null,
+                '#c' . $row['uid'],
+                '',
+                $additionalParams
+            );
         } elseif ($table === 'pages' && $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
-            // Link to a page translation
+            // Link to a page translation needs uid of default language page as id
             $onClick = BackendUtility::viewOnClick(
                 $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']],
                 '',
                 null,
                 '',
                 '',
-                '&L=' . $row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]
+                '&L=' . (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]
             );
         } else {
             // Link to a page in the default language

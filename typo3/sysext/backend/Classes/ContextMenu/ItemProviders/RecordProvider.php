@@ -416,12 +416,22 @@ class RecordProvider extends AbstractProvider
      */
     protected function getViewLink(): string
     {
-        $anchorSection = $this->table === 'tt_content' ? '#c' . $this->record['uid'] : '';
+        $anchorSection = '';
+        $additionalParams = '';
+        if ($this->table === 'tt_content') {
+            $anchorSection = '#c' . $this->record['uid'];
+            $language = (int)$this->record[$GLOBALS['TCA']['tt_content']['ctrl']['languageField']];
+            if ($language > 0) {
+                $additionalParams = '&L=' . $language;
+            }
+        }
         $javascriptLink = BackendUtility::viewOnClick(
             $this->getPreviewPid(),
             '',
             null,
-            $anchorSection
+            $anchorSection,
+            '',
+            $additionalParams
         );
         $extractedLink = '';
         if (preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match)) {
