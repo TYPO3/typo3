@@ -13,9 +13,8 @@ The TYPO3 core base testing classes were moved to a separate composer package an
 from the TYPO3 core. If you want to continue using the testing framework classes please use
 composer and require the package typo3/testing-framework.
 
-To make sure you don't run into path issues, you can set the following environment variables:
-TYPO3_PATH_WEB = The path to your web root
-TYPO3_PATH_PACKAGES = The path to your vendor folder
+To make sure you don't run into path issues, you can set the following environment variable:
+TYPO3_PATH_ROOT = The path to your TYPO3 root directory
 
 Find the new package on github_
 
