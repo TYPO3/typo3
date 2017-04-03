@@ -330,7 +330,7 @@ class DataMapProcessor
             return;
         }
 
-        foreach ([State::STATE_PARENT, State::STATE_SOURCE] as $scope) {
+        foreach ([DataMapItem::SCOPE_PARENT, DataMapItem::SCOPE_SOURCE] as $scope) {
             foreach ($item->findDependencies($scope) as $dependentItem) {
                 // use suggested item, if it was submitted in data-map
                 $suggestedDependentItem = $this->findItem(
@@ -340,16 +340,18 @@ class DataMapProcessor
                 if ($suggestedDependentItem !== null) {
                     $dependentItem = $suggestedDependentItem;
                 }
-                $fieldNames = $this->getFieldNamesForItemScope(
-                    $dependentItem,
-                    $scope,
-                    false
-                );
-                $this->synchronizeTranslationItem(
-                    $dependentItem,
-                    $fieldNames,
-                    $item->getId()
-                );
+                foreach ([$scope, DataMapItem::SCOPE_EXCLUDE] as $dependentScope) {
+                    $fieldNames = $this->getFieldNamesForItemScope(
+                        $dependentItem,
+                        $dependentScope,
+                        false
+                    );
+                    $this->synchronizeTranslationItem(
+                        $dependentItem,
+                        $fieldNames,
+                        $item->getId()
+                    );
+                }
             }
         }
     }
@@ -575,8 +577,8 @@ class DataMapProcessor
         // Otherwise child relations would superfluously be duplicated again here.
         // @todo Invalid manually injected child relations cannot be determined here
         $sanitizedValue = $this->sanitizationMap[$item->getTableName()][$item->getId()][$fieldName] ?? null;
-        if (!empty($missingAncestorIds) && $item->isNew()
-            && $sanitizedValue !== null && !$isTranslatable
+        if (
+            !empty($missingAncestorIds) && $item->isNew() && $sanitizedValue !== null
             && count(GeneralUtility::trimExplode(',', $sanitizedValue)) === count($missingAncestorIds)
         ) {
             $this->modifyDataMap(
@@ -639,7 +641,8 @@ class DataMapProcessor
                         $foreignTableName,
                         $populateAncestorId,
                         $item->getLanguage(),
-                        $fieldNames
+                        $fieldNames,
+                        !$isLocalizationModeExclude && $isTranslatable
                     )
                 );
             }
@@ -1130,14 +1133,14 @@ class DataMapProcessor
      * @param string|int $fromId
      * @param int $language
      * @param array $fieldNames
+     * @param bool $localize
      * @return array
      */
-    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames)
+    protected function duplicateFromDataMap(string $tableName, $fromId, int $language, array $fieldNames, bool $localize)
     {
         $data = $this->allDataMap[$tableName][$fromId];
-        $isTranslatable = (!empty($fieldNames['language']) && !empty($fieldNames['parent']));
-
-        if (empty($language) || !$isTranslatable) {
+        // just return duplicated item if localization cannot be applied
+        if (empty($language) || !$localize) {
             return $data;
         }
 

@@ -4780,12 +4780,12 @@ class DataHandler
             }
         } else {
             // Create new record:
-            /** @var $copyTCE DataHandler */
+            $temporaryId = StringUtility::getUniqueId('NEW');
             $copyTCE = $this->getLocalTCE();
-            $copyTCE->start([$Ttable => ['NEW' => $overrideValues]], '', $this->BE_USER);
+            $copyTCE->start([$Ttable => [$temporaryId => $overrideValues]], [], $this->BE_USER);
             $copyTCE->process_datamap();
             // Getting the new UID as if it had been copied:
-            $theNewSQLID = $copyTCE->substNEWwithIDs['NEW'];
+            $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId];
             if ($theNewSQLID) {
                 // If is by design that $Ttable is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
                 $this->copyMappingArray[$Ttable][$uid] = $theNewSQLID;
