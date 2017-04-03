@@ -430,6 +430,10 @@ TYPO3:
                 group: select
                 groupSorting: 500
                 iconIdentifier: 't3-form-icon-multi-checkbox'
+                editors:
+                  800:
+                    propertyPath: null
+                    propertyValue: null
 
             MultiSelect:
               formEditor:

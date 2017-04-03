@@ -1713,8 +1713,6 @@ define(['jquery',
          * @throws 1475417094
          * @throws 1475417095
          * @throws 1475417096
-         * @throws 1489319751
-         * @throws 1489319752
          */
         function renderRequiredValidatorEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
             var propertyPath, propertyValue, validatorIdentifier;
@@ -1738,27 +1736,25 @@ define(['jquery',
                 'Invalid configuration "label"',
                 1475417096
             );
-            assert(
-                getUtility().isNonEmptyString(editorConfiguration['propertyPath']),
-                'Invalid configuration "propertyPath"',
-                1489319751
-            );
-            assert(
-                getUtility().isNonEmptyString(editorConfiguration['propertyValue']),
-                'Invalid configuration "propertyValue"',
-                1489319752
-            );
 
             validatorIdentifier = editorConfiguration['validatorIdentifier'];
             getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration['label']);
 
-            propertyPath = getFormEditorApp()
-                .buildPropertyPath(editorConfiguration['propertyPath'], collectionElementIdentifier, collectionName);
-            propertyValue = editorConfiguration['propertyValue'];
+            if (getUtility().isNonEmptyString(editorConfiguration['propertyPath'])) {
+                propertyPath = getFormEditorApp()
+                    .buildPropertyPath(editorConfiguration['propertyPath'], collectionElementIdentifier, collectionName);
+            }
+            if (getUtility().isNonEmptyString(editorConfiguration['propertyValue'])) {
+                propertyValue = editorConfiguration['propertyValue'];
+            } else {
+                propertyValue = '';
+            }
 
             if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
                 $('input[type="checkbox"]', $(editorHtml)).prop('checked', true);
-                getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
+                if (getUtility().isNonEmptyString(propertyPath)) {
+                    getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
+                }
             }
 
             $('input[type="checkbox"]', $(editorHtml)).on('change', function() {
@@ -1767,13 +1763,18 @@ define(['jquery',
                         'view/inspector/collectionElement/new/selected',
                         [validatorIdentifier, 'validators']
                     );
-                    getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
+
+                    if (getUtility().isNonEmptyString(propertyPath)) {
+                        getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
+                    }
                 } else {
                     getPublisherSubscriber().publish(
                         'view/inspector/removeCollectionElement/perform',
                         [validatorIdentifier, 'validators']
                     );
-                    getCurrentlySelectedFormElement().unset(propertyPath);
+                    if (getUtility().isNonEmptyString(propertyPath)) {
+                        getCurrentlySelectedFormElement().unset(propertyPath);
+                    }
                 }
             });
         };

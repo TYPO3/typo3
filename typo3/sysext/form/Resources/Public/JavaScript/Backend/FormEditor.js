@@ -454,11 +454,14 @@ define(['jquery',
                 assert(getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475378556);
 
                 formElementDefinition = getFormElementDefinitionByType(formElement.get('type'));
-                collection = formElementDefinition['propertyCollections'][collectionName];
-                assert(!getUtility().isUndefinedOrNull(collection), 'Invalid collection name "' + collectionName + '"', 1475446108);
-                collectionElement = _getRepository().findCollectionElementByIdentifierPath(collectionElementIdentifier, collection);
-
-                return $.extend(true, {}, collectionElement);
+                if (!getUtility().isUndefinedOrNull(formElementDefinition['propertyCollections'])) {
+                    collection = formElementDefinition['propertyCollections'][collectionName];
+                    assert(!getUtility().isUndefinedOrNull(collection), 'Invalid collection name "' + collectionName + '"', 1475446108);
+                    collectionElement = _getRepository().findCollectionElementByIdentifierPath(collectionElementIdentifier, collection);
+                    return $.extend(true, {}, collectionElement);
+                } else {
+                    return {};
+                }
             };
 
             /**
