@@ -1758,7 +1758,10 @@ class CharsetConverter
             $allLanguageCodes[$typo3Lang] = $isoLang;
         }
         // Move the iso codes to the (because we're comparing the keys with "isset" later on)
-        return array_flip($allLanguageCodes);
+        $allLanguageCodes = array_flip($allLanguageCodes);
+        // We need to add the default language (English)
+        $allLanguageCodes['en'] = 'default';
+        return $allLanguageCodes;
     }
 
     /********************************************
