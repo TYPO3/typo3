@@ -551,6 +551,38 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     }
 
     /**
+     * Get viewOnClick link for pages or tt_content records
+     *
+     * @param string $table
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getOnClickForRow(string $table, array $row): string
+    {
+        if ($table === 'tt_content') {
+            // Link to a content element, possibly translated and with anchor
+            $additionalParams = '';
+            $language = (int)$row[$GLOBALS['TCA']['tt_content']['ctrl']['languageField']];
+            if ($language > 0) {
+                $additionalParams = '&L=' . $language;
+            }
+            $onClick = BackendUtility::viewOnClick(
+                $this->id,
+                '',
+                null,
+                '',
+                '',
+                $additionalParams
+            );
+        } else {
+            // Link to a page in the default language
+            $onClick = BackendUtility::viewOnClick($row['uid']);
+        }
+        return $onClick;
+    }
+
+    /**
      * Creates the search box
      *
      * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
@@ -1083,9 +1115,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             case 'show':
                 // "Show" link (only pages and tt_content elements)
                 if ($table === 'pages' || $table === 'tt_content') {
-                    $code = '<a href="#" onclick="' . htmlspecialchars(
-                        BackendUtility::viewOnClick(($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))
-                    ) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $code . '</a>';
+                    $onClick = $this->getOnClickForRow($table, $row);
+                    $code = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $code . '</a>';
                 }
                 break;
             case 'info':

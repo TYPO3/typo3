@@ -1464,15 +1464,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
         if ($table === 'pages' || $table === 'tt_content') {
+            $onClick = $this->getOnClickForRow($table, $row);
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
-                . htmlspecialchars(
-                    BackendUtility::viewOnClick(
-                        ($table === 'tt_content' ? $this->id : $row['uid']),
-                        '',
-                        null,
-                        ($table === 'tt_content' ? '#c' . $row['uid'] : '')
-                    )
-                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
+                . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
                 . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
