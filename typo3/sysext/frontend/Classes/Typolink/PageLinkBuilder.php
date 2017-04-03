@@ -224,7 +224,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
             if (!trim($currentQueryParams)) {
                 list(, $URLparams) = explode('?', $url);
-                list($URLparams) = explode('#', $URLparams);
+                list($URLparams) = explode('#', (string)$URLparams);
                 parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
                 // Type nums must match as well as page ids
                 if ((int)$URLparamsArray['type'] === (int)$tsfe->type) {

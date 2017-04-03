@@ -470,6 +470,61 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
     }
 
     /**
+     * @test
+     */
+    public function typolinkReturnsCorrectLinkForSectionToHomePageWithUrlRewriting()
+    {
+        $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
+            ->setMethods(['getPage'])
+            ->getMock();
+        $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn([
+            'uid' => 1,
+            'title' => 'Page title',
+        ]);
+
+        $templateServiceMockObject = $this->getMockBuilder(TemplateService::class)
+            ->setMethods(['linkData'])
+            ->getMock();
+        $templateServiceMockObject->setup = [
+            'lib.' => [
+                'parseFunc.' => $this->getLibParseFunc(),
+            ],
+        ];
+        $templateServiceMockObject->expects($this->once())->method('linkData')->willReturn([
+            'url' => '/index.php?id=1',
+            'target' => '',
+            'type' => '',
+            'orig_type' => '',
+            'no_cache' => '',
+            'linkVars' => '',
+            'sectionIndex' => '',
+            'totalURL' => '/',
+        ]);
+
+        $typoScriptFrontendController = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            null,
+            1,
+            0
+        );
+        $typoScriptFrontendController->config = [
+            'config' => [],
+            'mainScript' => 'index.php',
+        ];
+        $typoScriptFrontendController->sys_page = $pageRepositoryMockObject;
+        $typoScriptFrontendController->tmpl = $templateServiceMockObject;
+        $GLOBALS['TSFE'] = $typoScriptFrontendController;
+
+        $configuration = [
+            'parameter' => 1,
+            'section' => 'content',
+        ];
+
+        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->assertEquals('<a href="#content">Page title</a>', $subject->typoLink('', $configuration));
+    }
+
+    /**
      * @return array
      */
     protected function getLibParseTarget()
