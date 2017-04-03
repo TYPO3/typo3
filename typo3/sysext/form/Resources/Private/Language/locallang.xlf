@@ -71,7 +71,7 @@
                 <source>The given subject is not countable.</source>
             </trans-unit>
             <trans-unit id="validation.error.1475002994" xml:space="preserve">
-                <source>Please enter a valid number between %s and %s</source>
+                <source>Please select %s to %s elements.</source>
             </trans-unit>
             <trans-unit id="validation.error.1471708997" xml:space="preserve">
                 <source>The given value was not an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
