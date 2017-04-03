@@ -1316,7 +1316,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function isInFullScreenMode()
     {
-        return GeneralUtility::_GP('M') === 'wizard_rte';
+        return GeneralUtility::_GP('route') === '/wizard/rte';
     }
 
     /**
