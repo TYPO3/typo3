@@ -160,11 +160,11 @@ div.CodeMirror-line-numbers {
 
 .t3e_statusbar_wrap {
     position: absolute;
-    left: -1px;
-    bottom: -1px;
-    padding: 5px;
-    height: auto;
-    width: calc('100% + 2px');
+    left: 0;
+    bottom: 0;
+    padding: 2px 5px;
+    height: 20px;
+    width: 100%;
     font-size: 11px;
     background-color: $color-t3-gray;
 }
