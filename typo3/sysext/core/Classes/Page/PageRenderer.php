@@ -1467,7 +1467,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
-        $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : ''));
+        $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
         /** @var VariableFrontend $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $this->requireJsConfig = $cache->get($cacheIdentifier);
