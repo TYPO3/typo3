@@ -420,6 +420,10 @@
             <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" xml:space="preserve">
                 <source>Submit label</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" xml:space="preserve">
+                <source>Submit</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.elements.Form.editor.finishers.label" xml:space="preserve">
                 <source>Finishers</source>
             </trans-unit>
@@ -555,11 +559,11 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" xml:space="preserve">
-                <source>Element name</source>
+                <source>Label</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.FormElement.editor.label.label" xml:space="preserve">
-                <source>Element name</source>
+                <source>Label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" xml:space="preserve">
                 <source>Required field</source>
@@ -594,10 +598,16 @@
                 <source>Page name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" xml:space="preserve">
-                <source>Previous label</source>
+                <source>Previous button label</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" xml:space="preserve">
+                <source>previous Page</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" xml:space="preserve">
-                <source>Next label</source>
+                <source>Next button label</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" xml:space="preserve">
+                <source>next Page</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.SummaryPage.label" xml:space="preserve">
@@ -605,6 +615,18 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" xml:space="preserve">
                 <source>Page name</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" xml:space="preserve">
+                <source>Previous button label</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" xml:space="preserve">
+                <source>previous Page</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" xml:space="preserve">
+                <source>Next button label</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" xml:space="preserve">
+                <source>next Page</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Fieldset.label" xml:space="preserve">

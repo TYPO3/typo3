@@ -42,6 +42,8 @@ TYPO3:
                   enable: true
                   formElementToUse: 'Honeypot'
 
+                submitButtonLabel: 'Submit'
+
                 # set this to TRUE if you want to avoid exceptions for FormElements without definitions
                 skipUnknownElements: true
 
@@ -53,6 +55,8 @@ TYPO3:
               renderingOptions:
                 _isTopLevelFormElement: true
                 _isCompositeFormElement: true
+                nextButtonLabel: 'next Page'
+                previousButtonLabel: 'previous Page'
 
             SummaryPage:
               __inheritances:
@@ -60,6 +64,8 @@ TYPO3:
               renderingOptions:
                 _isTopLevelFormElement: true
                 _isCompositeFormElement: false
+                nextButtonLabel: 'next Page'
+                previousButtonLabel: 'previous Page'
 
             Fieldset:
               __inheritances:

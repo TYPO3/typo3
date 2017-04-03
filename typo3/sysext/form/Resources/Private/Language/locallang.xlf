@@ -3,21 +3,6 @@
     <file t3:id="1475977066" source-language="en" datatype="plaintext" original="messages" date="2016-10-09T03:38:32Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="element.Form.renderingOptions.submitButtonLabel" xml:space="preserve">
-                <source>Submit</source>
-            </trans-unit>
-            <trans-unit id="element.Page.renderingOptions.previousButtonLabel" xml:space="preserve">
-                <source>previous Page</source>
-            </trans-unit>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
-                <source>next Page</source>
-            </trans-unit>
-            <trans-unit id="element.SummaryPage.renderingOptions.previousButtonLabel" xml:space="preserve">
-                <source>previous Page</source>
-            </trans-unit>
-            <trans-unit id="element.SummaryPage.renderingOptions.nextButtonLabel" xml:space="preserve">
-                <source>next Page</source>
-            </trans-unit>
             <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve">
                 <source>uploaded image</source>
             </trans-unit>

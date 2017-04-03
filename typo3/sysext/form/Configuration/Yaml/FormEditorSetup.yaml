@@ -155,8 +155,15 @@ TYPO3:
                 paginationTitle: 'formEditor.pagination.title'
 
                 iconIdentifier: 'content-elements-mailform'
-                predefinedDefaults: []
+                predefinedDefaults:
+                  renderingOptions:
+                    submitButtonLabel: 'formEditor.elements.Form.editor.submitButtonLabel.value'
                 editors:
+                  300:
+                    identifier: 'submitButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Form.editor.submitButtonLabel.label'
+                    propertyPath: 'renderingOptions.submitButtonLabel'
                   900:
                     identifier: 'finishers'
                     templateName: 'Inspector-FinishersEditor'
@@ -329,7 +336,10 @@ TYPO3:
               formEditor:
                 __inheritances:
                   10: 'TYPO3.CMS.Form.mixins.formElementMixins.RemovableFormElementMixin'
-                predefinedDefaults: []
+                predefinedDefaults:
+                  renderingOptions:
+                    previousButtonLabel: 'formEditor.elements.Page.editor.previousButtonLabel.value'
+                    nextButtonLabel: 'formEditor.elements.Page.editor.nextButtonLabel.value'
                 label: 'formEditor.elements.Page.label'
                 group: page
                 groupSorting: 100
@@ -339,10 +349,23 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.Page.editor.label.label'
+                  300:
+                    identifier: 'previousButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Page.editor.previousButtonLabel.label'
+                    propertyPath: 'renderingOptions.previousButtonLabel'
+                  400:
+                    identifier: 'nextButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.Page.editor.nextButtonLabel.label'
+                    propertyPath: 'renderingOptions.nextButtonLabel'
 
             SummaryPage:
               formEditor:
-                predefinedDefaults: []
+                predefinedDefaults:
+                  renderingOptions:
+                    previousButtonLabel: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.value'
+                    nextButtonLabel: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.value'
                 label: 'formEditor.elements.SummaryPage.label'
                 group: page
                 groupSorting: 200
@@ -352,6 +375,16 @@ TYPO3:
                 editors:
                   200:
                     label: 'formEditor.elements.SummaryPage.editor.label.label'
+                  300:
+                    identifier: 'previousButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SummaryPage.editor.previousButtonLabel.label'
+                    propertyPath: 'renderingOptions.previousButtonLabel'
+                  400:
+                    identifier: 'nextButtonLabel'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'formEditor.elements.SummaryPage.editor.nextButtonLabel.label'
+                    propertyPath: 'renderingOptions.nextButtonLabel'
 
             ### FORM ELEMENTS: INPUT ###
 
@@ -372,8 +405,8 @@ TYPO3:
             AdvancedPassword:
               formEditor:
                 label: 'formEditor.elements.AdvancedPassword.label'
-                group: input
-                groupSorting: 400
+                group: custom
+                groupSorting: 500
                 predefinedDefaults:
                   properties:
                     confirmationLabel: 'formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults'
@@ -390,8 +423,8 @@ TYPO3:
             Hidden:
               formEditor:
                 label: 'formEditor.elements.Hidden.label'
-                group: input
-                groupSorting: 500
+                group: custom
+                groupSorting: 300
                 iconIdentifier: 't3-form-icon-hidden'
                 predefinedDefaults:
                   defaultValue: ''
@@ -428,7 +461,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.MultiCheckbox.label'
                 group: select
-                groupSorting: 500
+                groupSorting: 400
                 iconIdentifier: 't3-form-icon-multi-checkbox'
                 editors:
                   800:
@@ -439,7 +472,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.MultiSelect.label'
                 group: select
-                groupSorting: 400
+                groupSorting: 500
                 iconIdentifier: 't3-form-icon-multi-select'
                 editors:
                   250:
@@ -477,7 +510,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.DatePicker.label'
                 group: custom
-                groupSorting: 100
+                groupSorting: 200
                 predefinedDefaults:
                   properties:
                     dateFormat: 'Y-m-d'
@@ -526,7 +559,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.StaticText.label'
                 group: custom
-                groupSorting: 400
+                groupSorting: 600
                 predefinedDefaults:
                   properties:
                     text: ''
@@ -542,7 +575,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.ContentElement.label'
                 group: custom
-                groupSorting: 500
+                groupSorting: 700
                 predefinedDefaults:
                   properties:
                     contentElementUid: ''
@@ -566,7 +599,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.FileUpload.label'
                 group: custom
-                groupSorting: 200
+                groupSorting: 100
                 predefinedDefaults:
                   properties:
                     allowedMimeTypes: ['application/pdf']
@@ -604,7 +637,7 @@ TYPO3:
               formEditor:
                 label: 'formEditor.elements.ImageUpload.label'
                 group: custom
-                groupSorting: 300
+                groupSorting: 400
                 predefinedDefaults:
                   properties:
                     allowedMimeTypes: ['image/jpeg']
