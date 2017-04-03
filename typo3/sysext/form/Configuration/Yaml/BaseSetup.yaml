@@ -157,11 +157,14 @@ TYPO3:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
               properties:
                 elementClassAttribute: 'add-on'
+                containerClassAttribute: 'input checkbox'
                 value: 1
 
             MultiCheckbox:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.MultiSelectionMixin'
+              properties:
+                containerClassAttribute: 'input checkbox'
 
             MultiSelect:
               __inheritances:
