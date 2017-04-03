@@ -1927,8 +1927,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         }
         $theNewButton = '';
 
-        $allowCopy = true;
-        $allowTranslate = true;
+        $localizationTsConfig = BackendUtility::getModTSconfig($this->id, 'mod.web_layout.localization');
+        $allowCopy = isset($localizationTsConfig['properties']['enableCopy'])
+            ? (int)$localizationTsConfig['properties']['enableCopy'] === 1
+            : true;
+        $allowTranslate = isset($localizationTsConfig['properties']['enableTranslate'])
+            ? (int)$localizationTsConfig['properties']['enableTranslate'] === 1
+            : true;
+
         if (!empty($this->languageHasTranslationsCache[$lP])) {
             if (isset($this->languageHasTranslationsCache[$lP]['hasStandAloneContent'])) {
                 $allowTranslate = false;
