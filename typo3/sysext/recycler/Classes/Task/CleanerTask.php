@@ -79,7 +79,7 @@ class CleanerTask extends AbstractTask
                     $queryBuilder->createNamedParameter($dateBefore, \PDO::PARAM_INT)
                 );
             }
-            $this->checkFileResourceFieldsBeforeDeletion($tableName, $constraints);
+            $this->checkFileResourceFieldsBeforeDeletion($tableName);
             try {
                 $queryBuilder->delete($tableName)
                     ->where(...$constraints)
@@ -167,13 +167,12 @@ class CleanerTask extends AbstractTask
      * Checks if the table has fields for uploaded files and removes those files.
      *
      * @param string $table
-     * @param array $constraints
      */
-    protected function checkFileResourceFieldsBeforeDeletion($table, array $constraints)
+    protected function checkFileResourceFieldsBeforeDeletion($table)
     {
         $fieldList = $this->getFileResourceFields($table);
         if (!empty($fieldList)) {
-            $this->deleteFilesForTable($table, $constraints, $fieldList);
+            $this->deleteFilesForTable($table, $fieldList);
         }
     }
 
@@ -181,13 +180,27 @@ class CleanerTask extends AbstractTask
      * Removes all files from the given field list in the table.
      *
      * @param string $table
-     * @param array $constraints
      * @param array $fieldList
      */
-    protected function deleteFilesForTable($table, array $constraints, array $fieldList)
+    protected function deleteFilesForTable($table, array $fieldList)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
+
+        $constraints = [
+            $queryBuilder->expr()->eq(
+                $GLOBALS['TCA'][$table]['ctrl']['delete'],
+                $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+            )
+        ];
+
+        if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+            $dateBefore = $this->getPeriodAsTimestamp();
+            $constraints[] = $queryBuilder->expr()->lt(
+                $GLOBALS['TCA'][$table]['ctrl']['tstamp'],
+                $queryBuilder->createNamedParameter($dateBefore, \PDO::PARAM_INT)
+            );
+        }
 
         $result = $queryBuilder
             ->select(...$fieldList)
