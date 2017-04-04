@@ -141,11 +141,13 @@ define(['jquery',
 	 * @param {array} [additionalCssClasses=''] additional css classes to add to the modal
 	 */
 	Modal.confirm = function(title, content, severity, buttons, additionalCssClasses) {
+		severity = typeof severity !== 'undefined' ? severity : Severity.warning;
+
 		return Modal.advanced(
 			{
 				title: title,
 				content: content,
-				severity: typeof severity !== 'undefined' ? severity : Severity.warning,
+				severity: severity,
 				buttons: buttons || [
 					{
 						text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
