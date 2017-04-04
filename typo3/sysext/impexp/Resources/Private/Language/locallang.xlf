@@ -309,6 +309,12 @@
 			<trans-unit id="importdata_upload">
 				<source>Upload</source>
 			</trans-unit>
+			<trans-unit id="importdata_upload_error">
+				<source>Upload error</source>
+			</trans-unit>
+			<trans-unit id="importdata_upload_nodata">
+				<source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
+			</trans-unit>
 			<trans-unit id="importdata_metaData">
 				<source>Meta data:</source>
 			</trans-unit>
