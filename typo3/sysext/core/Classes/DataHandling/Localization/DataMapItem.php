@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\DataHandling\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -346,7 +347,7 @@ class DataMapItem
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        $this->parent = $this->extractId($parent);
     }
 
     /**
@@ -362,7 +363,7 @@ class DataMapItem
      */
     public function setSource($source)
     {
-        $this->source = $source;
+        $this->source = $this->extractId($source);
     }
 
     /**
@@ -420,6 +421,26 @@ class DataMapItem
         $scopes[] = static::SCOPE_PARENT;
         $scopes[] = static::SCOPE_EXCLUDE;
         return $scopes;
+    }
+
+    /**
+     * Extracts real id from provided id-value, which can either be a real
+     * integer value, a 'NEW...' id, or a combined identifier 'tt_content_13'.
+     *
+     * @param int|string $idValue
+     * @return int|string
+     */
+    protected function extractId($idValue)
+    {
+        if (MathUtility::canBeInterpretedAsInteger($idValue)) {
+            return $idValue;
+        } elseif (strpos($idValue, 'NEW') === 0) {
+            return $idValue;
+        } else {
+            // @todo Handle if $tableName does not match $this->tableName
+            list($tableName, $id) = BackendUtility::splitTable_Uid($idValue);
+            return $id;
+        }
     }
 
     /**
