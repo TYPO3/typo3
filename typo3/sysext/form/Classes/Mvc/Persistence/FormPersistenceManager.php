@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Mvc\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -310,6 +311,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
             try {
                 $folder = $storage->getFolder($fileMountIdentifier);
+            } catch (FolderDoesNotExistException $e) {
+                continue;
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 continue;
             }
