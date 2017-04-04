@@ -186,6 +186,22 @@ class ImportExportController extends BaseScriptClass
 
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
+        if ($inData === null) {
+            // This happens if the post request was larger than allowed on the server
+            // We set the import action as default and output a user information
+            $inData = [
+                'action' => 'import',
+            ];
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->getLL('importdata_upload_nodata'),
+                $this->getLanguageService()->getLL('importdata_upload_error'),
+                FlashMessage::ERROR
+            );
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+        }
         $this->standaloneView->assign('moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
