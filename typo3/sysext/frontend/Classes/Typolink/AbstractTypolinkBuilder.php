@@ -16,10 +16,12 @@ namespace TYPO3\CMS\Frontend\Typolink;
  */
 
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Abstract class to provide proper helper for most types necessary
@@ -191,6 +193,22 @@ abstract class AbstractTypolinkBuilder
      */
     public function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
+        if (!$GLOBALS['TSFE']) {
+            // This usually happens when typolink is created by the TYPO3 Backend, where no TSFE object
+            // is there. This functionality is currently completely internal, as these links cannot be
+            // created properly from the Backend.
+            // However, this is added to avoid any exceptions when trying to create a link
+            $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+                TypoScriptFrontendController::class,
+                    [],
+                    (int)GeneralUtility::_GP('id'),
+                    (int)GeneralUtility::_GP('type')
+            );
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+            $GLOBALS['TSFE']->sys_page->init(false);
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
+            $GLOBALS['TSFE']->tmpl->init();
+        }
         return $GLOBALS['TSFE'];
     }
 }
