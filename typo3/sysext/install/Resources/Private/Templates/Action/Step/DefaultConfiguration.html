@@ -15,27 +15,31 @@
 	</p>
 
 	<p>&nbsp;</p>
-	<div class="alert alert-notice">
-		<h4>Want a pre-configured site?</h4>
-		<p>
-			You now have an empty installation. If you want a pre-configured site, there are
-			distributions on the web which can be installed via the Extension Manager.
-			If you check the option below, the list of distributions will be fetched and you will
-			be able to choose one directly.
-			<strong>Please note: This may take some time after login.</strong>
-		</p>
-	</div>
+	<f:if condition="!{composerMode}">
+		<div class="alert alert-notice">
+			<h4>Want a pre-configured site?</h4>
+			<p>
+				You now have an empty installation. If you want a pre-configured site, there are
+				distributions on the web which can be installed via the Extension Manager.
+				If you check the option below, the list of distributions will be fetched and you will
+				be able to choose one directly.
+				<strong>Please note: This may take some time after login.</strong>
+			</p>
+		</div>
+	</f:if>
 
 	<form method="post">
 		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 		<input type="hidden" value="execute" name="install[set]" />
 		<div class="form-group">
-			<div class="radio">
-				<label for="load-distributions">
-					<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-					Yes, download the list of distributions.
-				</label>
-			</div>
+			<f:if condition="!{composerMode}">
+				<div class="radio">
+					<label for="load-distributions">
+						<input type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+						Yes, download the list of distributions.
+					</label>
+				</div>
+			</f:if>
 			<div class="radio">
 				<label for="create-site">
 					<input type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />

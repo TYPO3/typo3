@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -164,6 +165,7 @@ For each website you need a TypoScript template on the main page of your website
     protected function executeAction()
     {
         $this->assignSteps();
+        $this->view->assign('composerMode', Bootstrap::usesComposerClassLoading());
         return $this->view->render();
     }
 }
