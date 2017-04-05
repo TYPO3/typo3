@@ -36,5 +36,5 @@ lib.contentElement {
     }
 }
 
-# For compatability with CMS7 can be removed with CMS9
+# For compatibility with CMS7 can be removed with CMS9
 lib.fluidContent < lib.contentElement
