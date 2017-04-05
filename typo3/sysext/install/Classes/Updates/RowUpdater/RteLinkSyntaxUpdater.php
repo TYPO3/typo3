@@ -39,6 +39,7 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
     protected $blackListedTables = [
         'sys_log',
         'sys_history',
+        'sys_template',
     ];
 
     /**
