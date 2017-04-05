@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Install\Updates\RowUpdater;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -47,9 +49,22 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
      * @var array
      */
     protected $regularExpressions = [
-        'default' => '#(?\'tag\'<link\\s+(?\'typolink\'[^>]+)>)(?\'content\'(?:(?!</link>).)*)</link>#msi',
-        'flex' => '#(?\'tag\'&lt;link\\s+(?\'typolink\'.+?)&gt;)(?\'content\'(?:(?!&lt;/link&gt;).)*)&lt;/link&gt;#msi'
+        'default' => '#
+            (?\'tag\'<link\\s++(?\'typolink\'[^>]+)>)
+            (?\'content\'(?:[^<]++|<(?!/link>))*+)
+            </link>
+            #xumsi',
+        'flex' => '#
+            (?\'tag\'&lt;link\\s++(?\'typolink\'(?:[^&]++|&(?!gt;))++)&gt;)
+            (?\'content\'(?:[^&]++|&(?!lt;/link&gt;))*+)
+            &lt;/link&gt;
+            #xumsi'
     ];
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger = null;
 
     /**
      * Get title
@@ -112,10 +127,13 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
                 1484173650
             );
         }
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
         $fieldsToScan = $this->tableFieldListToConsider[$tableName];
         foreach ($fieldsToScan as $fieldName) {
             $row[$fieldName] = $this->transformLinkTagsIfFound(
-                $row[$fieldName],
+                $tableName,
+                $fieldName,
+                $row,
                 $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['type'] === 'flex'
             );
         }
@@ -126,17 +144,20 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
      * Finds all <link> tags and calls the typolink codec service and the link service (twice) to get a string
      * representation of the href part, and then builds an anchor tag.
      *
-     * @param mixed $content The content to process
+     * @param string $tableName
+     * @param string $fieldName
+     * @param array $row
      * @param bool $isFlexformField If true the content is htmlspecialchar()'d and must be treated as such
      * @return mixed the modified content
      */
-    protected function transformLinkTagsIfFound($content, $isFlexformField)
+    protected function transformLinkTagsIfFound(string $tableName, string $fieldName, array $row, bool $isFlexformField)
     {
+        $content = $row[$fieldName];
         if (is_string($content)
             && !empty($content)
             && (stripos($content, '<link') !== false || stripos($content, '&lt;link') !== false)
         ) {
-            $content = preg_replace_callback(
+            $result = preg_replace_callback(
                 $this->regularExpressions[$isFlexformField ? 'flex' : 'default'],
                 function ($matches) use ($isFlexformField) {
                     $typoLink = $isFlexformField ? htmlspecialchars_decode($matches['typolink']) : $matches['typolink'];
@@ -173,6 +194,16 @@ class RteLinkSyntaxUpdater implements RowUpdaterInterface
                 },
                 $content
             );
+            if ($result !== null) {
+                $content = $result;
+            } else {
+                $this->logger->error('Converting links failed due to PCRE error', [
+                    'table' => $tableName,
+                    'field' => $fieldName,
+                    'uid' => $row['uid'] ?? null,
+                    'errorCode' => preg_last_error()
+                ]);
+            }
         }
         return $content;
     }
