@@ -86,7 +86,7 @@ class DefaultConfiguration extends AbstractStepAction
                         'sitetitle' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                         'root' => 1,
                         'clear' => 1,
-                        'include_static_file' => 'EXT:fluid_styled_content/Configuration/TypoScript/Static/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/',
+                        'include_static_file' => 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:fluid_styled_content/Configuration/TypoScript/Styling/',
                         'constants' => '',
                         'config' => 'page = PAGE
 page.10 = TEXT
@@ -98,7 +98,7 @@ page.10.value (
       <h4 style="font-family: sans-serif;">Welcome to a default website made with <a href="https://typo3.org">TYPO3</a></h4>
    </div>
 )
-page.100 < styles.content.get',
+page.100 =< styles.content.get',
                         'description' => 'This is an Empty Site Package TypoScript template.
 
 For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via <INCLUDE_TYPOSCRIPT: source="FILE:EXT:site_myproject/Configuration/TypoScript/setup.ts">.'
