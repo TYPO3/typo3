@@ -593,19 +593,19 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="form-group col-xs-12 col-sm-6">
+                                <div class="form-group col-xs-12">
                                     <label for="search_field">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')) . ': </label>
 									<input class="form-control" type="search" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
                                 </div>
-                                <div class="form-group col-xs-6 col-sm-3">
+                                <div class="form-group col-xs-12 col-sm-6">
 									<label for="search_levels">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')) . ': </label>
 									' . $lMenu . '
                                 </div>
-                                <div class="form-group col-xs-6 col-sm-3">
+                                <div class="form-group col-xs-12 col-sm-6">
 									<label for="showLimit">' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.label.limit')) . ': </label>
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.limit')) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-12">
+                                <div class="form-group col-xs-12">
                                     <div class="form-control-wrap">
                                         <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.search')) . '">
                                             ' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.search')) . '
