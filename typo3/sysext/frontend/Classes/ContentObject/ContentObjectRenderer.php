@@ -6514,10 +6514,15 @@ class ContentObjectRenderer
 
                 // check if the file exists or if a / is contained (same check as in detectLinkType)
                 if (file_exists(rawurldecode($splitLinkParam[0])) || strpos($linkParameter, '/') !== false) {
+                    $fileUri = $linkParameter;
                     if ($linktxt === '') {
                         $linktxt = $this->parseFunc(rawurldecode($linkParameter), ['makelinks' => 0], '< lib.parseFunc');
                     }
-                    $fileUri = (!StringUtility::beginsWith($linkParameter, '/') ? $GLOBALS['TSFE']->absRefPrefix : '') . $linkParameter;
+                    if (!StringUtility::beginsWith($linkParameter, '/')
+                        && parse_url($linkParameter, PHP_URL_SCHEME) === null
+                    ) {
+                        $fileUri = $tsfe->absRefPrefix . $fileUri;
+                    }
                     $this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $fileUri, $conf);
                     $this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
                     $target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
