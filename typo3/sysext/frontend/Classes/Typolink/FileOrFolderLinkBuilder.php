@@ -43,7 +43,11 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
         $linkLocation = $fileOrFolderObject->getPublicUrl();
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-        $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
+        if (strpos($linkLocation, '/') !== 0
+            && parse_url($linkLocation, PHP_URL_SCHEME) === null
+        ) {
+            $linkLocation = $tsfe->absRefPrefix . $linkLocation;
+        }
         $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
         return [
             $this->forceAbsoluteUrl($url, $conf),
