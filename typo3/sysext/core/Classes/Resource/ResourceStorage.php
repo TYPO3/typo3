@@ -1893,9 +1893,6 @@ class ResourceStorage implements ResourceStorageInterface
     public function replaceFile(FileInterface $file, $localFilePath)
     {
         $this->assureFileReplacePermissions($file);
-        if (!$this->checkFileExtensionPermission($localFilePath)) {
-            throw new Exception\IllegalFileExtensionException('Source file extension not allowed.', 1378132239);
-        }
         if (!file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
         }
