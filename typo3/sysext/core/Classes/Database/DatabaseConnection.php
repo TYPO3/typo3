@@ -349,12 +349,27 @@ class DatabaseConnection
     /**
      * Executes a select based on input query parts array
      *
-     * @param array $queryParts Query parts array
+     *     $queryArray = [
+     *         'SELECT' => 'uid',
+     *         'FROM' => 'tt_content',
+     *         'WHERE' => 'uid = ' . (int)$uid,
+     *         'LIMIT' => 1
+     *     ];
+     *     exec_SELECT_queryArray($queryArray);
+     *
+     * @param array $queryParts Query parts array, where the keys »SELECT« & »FROM« are required
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      * @see exec_SELECTquery()
      */
     public function exec_SELECT_queryArray($queryParts)
     {
+        $queryPartsFallback = [
+            'WHERE' => '',
+            'GROUPBY' => '',
+            'ORDERBY' => '',
+            'LIMIT' => ''
+        ];
+        $queryParts = array_merge($queryPartsFallback, $queryParts);
         return $this->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
     }
 
