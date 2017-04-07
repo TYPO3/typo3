@@ -71,7 +71,10 @@ class SysRefindexHashUpdater extends AbstractUpdate
         }
 
         $description = 'The hash calculation for records within the table sys_refindex was changed'
-            . ' to exclude the sorting field. The records need to be updated with a newly calculated hash.';
+            . ' to exclude the sorting field. The records need to be updated with a newly calculated hash.<br />'
+            . '<b>Important:</b> If this online migration times out you can perform an offline update using the'
+            . ' command-line instead of the wizard, by executing the following command: '
+            . '<code>TYPO3_PATH_ROOT=$PWD/web vendor/bin/typo3 referenceindex:update</code>';
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
 
