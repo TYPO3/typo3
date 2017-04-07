@@ -214,22 +214,24 @@ hr {
 #install-menu-button {
     float: right;
     margin-bottom: 20px;
+
     .navbar-toggle {
         border: 0;
         background: #fff;
+
         .icon-bar {
             display: block;
             width: 22px;
             height: 2px;
             border-radius: 1px;
             background-color: black;
+
             & + .icon-bar {
                 margin-top: 4px;
             }
         }
     }
 }
-
 
 //
 // Styles for the "clearable" jquery plugin.
@@ -270,24 +272,23 @@ hr {
         background: $high-color;
         color: $gray-lighter;
     }
+
     &.risk-medium > .panel-heading {
         background: $medium-color;
         color: $gray-darker;
     }
+
     &.risk-low > .panel-heading {
         background: white;
         color: $gray-darker;
     }
 }
 
-
 a[data-toggle="collapse"] {
     text-decoration: none;
 }
 
-
 .panel-group-rst {
-
     .panel-body {
         padding-right: 0;
     }
@@ -305,22 +306,22 @@ a[data-toggle="collapse"] {
 
         &.panel-breaking {
             @include panel-variant($brand-danger, #fff, $brand-danger, $brand-danger);
-            @include panel-risk-levels($brand-danger, lighten($brand-danger,40) );
+            @include panel-risk-levels($brand-danger, lighten($brand-danger, 40));
         }
 
         &.panel-deprecation {
             @include panel-variant($brand-warning, #fff, $brand-warning, $brand-warning);
-            @include panel-risk-levels($brand-warning, lighten($brand-warning,30));
+            @include panel-risk-levels($brand-warning, lighten($brand-warning, 30));
         }
 
         &.panel-feature {
             @include panel-variant($brand-success, #fff, $brand-success, $brand-success);
-            @include panel-risk-levels($brand-success, lighten($brand-success,40));
+            @include panel-risk-levels($brand-success, lighten($brand-success, 40));
         }
 
         &.panel-important {
             @include panel-variant($brand-info, #fff, $brand-info, $brand-info);
-            @include panel-risk-levels($brand-info, lighten($brand-info,30));
+            @include panel-risk-levels($brand-info, lighten($brand-info, 30));
         }
 
         .panel-heading {
@@ -346,7 +347,6 @@ a[data-toggle="collapse"] {
         }
     }
 }
-
 
 .upgrade_analysis_item_to_filter pre a {
     text-decoration: underline;
