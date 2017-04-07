@@ -293,11 +293,6 @@ module.exports = function(grunt) {
 					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff' },
 					{ dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2', src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff2' }
 				]
-			},
-			npm: {
-				files: [
-					{dest: '<%= paths.install %>Public/JavaScript/chosen.jquery.js', src: '<%= paths.npm %>chosen-js/chosen.jquery.js'}
-				]
 			}
 		},
 		bowercopy: {
@@ -389,7 +384,7 @@ module.exports = function(grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
-					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.install %>Public/JavaScript/chosen.jquery.js"],
+					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.npm %>chosen-js/chosen.jquery.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
 				}
 			}
