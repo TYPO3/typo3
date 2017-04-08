@@ -136,8 +136,9 @@ class SysRefindexHashUpdater extends AbstractUpdate
             $connection->commit();
             $this->markWizardAsDone();
         } catch (DBALException $e) {
+            $customMessage = 'SQL-ERROR: ' . htmlspecialchars($e->getPrevious()->getMessage());
             $connection->rollBack();
-            throw $e;
+            return false;
         }
 
         return true;
