@@ -19,6 +19,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -107,6 +108,8 @@ class SysRefindexHashUpdater extends AbstractUpdate
      */
     public function performUpdate(array &$databaseQueries, &$customMessage)
     {
+        $this->deleteDuplicateRecords();
+
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
         $queryBuilder = $connection->createQueryBuilder();
 
@@ -179,5 +182,70 @@ class SysRefindexHashUpdater extends AbstractUpdate
             $concatFragment = sprintf('CONCAT_WS(%s, %s)', $connection->quote('///'), implode(', ', $quotedFields));
             return sprintf('LOWER(MD5(%s))', $concatFragment);
         }
+    }
+
+    /**
+     * Remove records from the sys_refindex table which will end up with identical hash values
+     * when used with hash version 2. These records can show up when the rows are identical in
+     * all fields besides hash and sorting. Due to sorting being ignored in the new hash version
+     * these will end up having identical hashes and resulting in a DUPLICATE KEY violation due
+     * to the hash field being the primary (unique) key.
+     */
+    public function deleteDuplicateRecords()
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
+
+        // Find all rows which are identical except for the hash and sorting value
+        $dupesQueryBuilder = $connection->createQueryBuilder();
+        $dupesQueryBuilder->select(...$this->hashMemberFields)
+            ->addSelectLiteral($dupesQueryBuilder->expr()->min('sorting', 'min_sorting'))
+            ->from('sys_refindex')
+            ->groupBy(...$this->hashMemberFields)
+            ->having(
+                $dupesQueryBuilder->expr()->comparison(
+                    $dupesQueryBuilder->expr()->count('sorting'),
+                    ExpressionBuilder::GT,
+                    1
+                )
+            );
+
+        // Find all hashes for rows which would have identical hashes using the new algorithm.
+        // This query will not return the row with the lowest sorting value. In the next step
+        // this will ensure we keep it to be updated to the new hash format.
+        $hashQueryBuilder = $connection->createQueryBuilder();
+        // Add the derived table for finding identical hashes.
+        $hashQueryBuilder->getConcreteQueryBuilder()->from(
+            sprintf('(%s)', $dupesQueryBuilder->getSQL()),
+            $hashQueryBuilder->quoteIdentifier('t')
+        );
+        $hashQueryBuilder->select('s.hash')
+            ->from('sys_refindex', 's')
+            ->where($hashQueryBuilder->expr()->gt('s.sorting', $hashQueryBuilder->quoteIdentifier('t.min_sorting')));
+
+        foreach ($this->hashMemberFields as $field) {
+            $hashQueryBuilder->andWhere(
+                $hashQueryBuilder->expr()->eq('s.' . $field, $hashQueryBuilder->quoteIdentifier('t.' . $field))
+            );
+        }
+
+        // Wrap the previous query in another derived table. This indirection is required to use the
+        // sys_refindex table in the final delete statement as well as in the subselect used to determine
+        // the records to be deleted.
+        $selectorQueryBuilder = $connection->createQueryBuilder()->select('d.hash');
+        $selectorQueryBuilder->getConcreteQueryBuilder()->from(
+            sprintf(('(%s)'), $hashQueryBuilder->getSQL()),
+            $selectorQueryBuilder->quoteIdentifier('d')
+        );
+
+        $deleteQueryBuilder = $connection->createQueryBuilder();
+        $deleteQueryBuilder->delete('sys_refindex')
+            ->where(
+                $deleteQueryBuilder->expr()->comparison(
+                    $deleteQueryBuilder->quoteIdentifier('sys_refindex.hash'),
+                    'IN',
+                    sprintf('(%s)', $selectorQueryBuilder->getSQL())
+                )
+            )
+            ->execute();
     }
 }
