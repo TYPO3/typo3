@@ -148,6 +148,14 @@ class LinkServiceTest extends UnitTestCase
                 ],
                 'mailto:one@love.com'
             ],
+            'email without protocol and subject parameter' => [
+                'email@mail.mail?subject=Anfrage:%20Text%20Text%20Lösungen',
+                [
+                    'type' => LinkService::TYPE_EMAIL,
+                    'email' => 'email@mail.mail?subject=Anfrage:%20Text%20Text%20Lösungen'
+                ],
+                'mailto:email@mail.mail?subject=Anfrage:%20Text%20Text%20Lösungen'
+            ],
             'current page - cool style' => [
                 't3://page?uid=current',
                 [
