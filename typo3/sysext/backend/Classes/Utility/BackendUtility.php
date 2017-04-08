@@ -351,29 +351,52 @@ class BackendUtility
     public static function BEenableFields($table, $inv = false)
     {
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-        $query = [];
-        $invQuery = [];
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->getExpressionBuilder();
+        $query = $expressionBuilder->andX();
+        $invQuery = $expressionBuilder->orX();
+
         if (is_array($ctrl)) {
             if (is_array($ctrl['enablecolumns'])) {
                 if ($ctrl['enablecolumns']['disabled']) {
                     $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
-                    $query[] = $field . '=0';
-                    $invQuery[] = $field . '<>0';
+                    $query->add($expressionBuilder->eq($field, 0));
+                    $invQuery->add($expressionBuilder->neq($field, 0));
                 }
                 if ($ctrl['enablecolumns']['starttime']) {
                     $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                    $query[] = '(' . $field . '<=' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
-                    $invQuery[] = '(' . $field . '<>0 AND ' . $field . '>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
+                    $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
+                    $invQuery->add(
+                        $expressionBuilder->andX(
+                            $expressionBuilder->neq($field, 0),
+                            $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                        )
+                    );
                 }
                 if ($ctrl['enablecolumns']['endtime']) {
                     $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                    $query[] = '(' . $field . '=0 OR ' . $field . '>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
-                    $invQuery[] = '(' . $field . '<>0 AND ' . $field . '<=' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
+                    $query->add(
+                        $expressionBuilder->orX(
+                            $expressionBuilder->eq($field, 0),
+                            $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                        )
+                    );
+                    $invQuery->add(
+                        $expressionBuilder->andX(
+                            $expressionBuilder->neq($field, 0),
+                            $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                        )
+                    );
                 }
             }
         }
-        $outQ = $inv ? '(' . implode(' OR ', $invQuery) . ')' : implode(' AND ', $query);
-        return $outQ ? ' AND ' . $outQ : '';
+
+        if ($query->count() === 0) {
+            return '';
+        }
+
+        return ' AND ' . ($inv ? $invQuery : $query);
     }
 
     /**
