@@ -399,7 +399,8 @@ class Typo3DbQueryParser
                     $plainValue = $this->dataMapper->getPlainValue($singleValue);
                     if ($plainValue !== null) {
                         $hasValue = true;
-                        $plainValues[] = $plainValue;
+                        $parameterType = ctype_digit((string)$plainValue) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+                        $plainValues[] = $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
                     }
                 }
                 if (!$hasValue) {
