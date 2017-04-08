@@ -117,13 +117,13 @@ class SysRefindexHashUpdater extends AbstractUpdate
 
         $updateQueryBuilder = $connection->createQueryBuilder();
         $updateQueryBuilder->update('sys_refindex')
+            ->set('hash', $updateQueryBuilder->createPositionalParameter('', \PDO::PARAM_STR), false)
             ->where(
                 $updateQueryBuilder->expr()->eq(
                     'hash',
                     $updateQueryBuilder->createPositionalParameter('', \PDO::PARAM_STR)
                 )
-            )
-            ->set('hash', $updateQueryBuilder->createPositionalParameter('', \PDO::PARAM_STR), false);
+            );
         $databaseQueries[] = $updateQueryBuilder->getSQL();
         $updateStatement = $connection->prepare($updateQueryBuilder->getSQL());
 
@@ -131,7 +131,7 @@ class SysRefindexHashUpdater extends AbstractUpdate
         try {
             while ($row = $statement->fetch()) {
                 $newHash = md5(implode('///', array_diff_key($row, ['hash' => true])) . '///' . $this->hashVersion);
-                $updateStatement->execute([$row['hash'], $newHash]);
+                $updateStatement->execute([$newHash, $row['hash']]);
             }
             $connection->commit();
             $this->markWizardAsDone();
