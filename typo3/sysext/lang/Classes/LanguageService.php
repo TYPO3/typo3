@@ -101,6 +101,13 @@ class LanguageService
     protected $languageDependencies = [];
 
     /**
+     * An internal cache for storing loaded files, see readLLfile()
+     *
+     * @var array
+     */
+    protected $languageFileCache = [];
+
+    /**
      * LanguageService constructor.
      */
     public function __construct()
@@ -418,6 +425,10 @@ class LanguageService
      */
     protected function readLLfile($fileRef)
     {
+        if (isset($this->languageFileCache[$fileRef . $this->lang])) {
+            return $this->languageFileCache[$fileRef . $this->lang];
+        }
+
         /** @var $languageFactory LocalizationFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 
@@ -439,6 +450,8 @@ class LanguageService
                 ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
             }
         }
+        $this->languageFileCache[$fileRef . $this->lang] = $localLanguage;
+
         return $localLanguage;
     }
 
