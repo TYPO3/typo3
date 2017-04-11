@@ -374,11 +374,11 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $rows = $result->fetchAll();
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
-                $result = $realStatement->execute($parameters);
+                $realStatement->execute($parameters);
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404);
             }
-            $rows = $result->fetchAll();
+            $rows = $realStatement->fetchAll();
         } elseif ($realStatement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
             GeneralUtility::deprecationLog('Extbase support for Prepared Statements has been deprecated in TYPO3 v8, and will be removed in TYPO3 v9. Use native Doctrine DBAL Statements or QueryBuilder objects.');
             $realStatement->execute($parameters);
