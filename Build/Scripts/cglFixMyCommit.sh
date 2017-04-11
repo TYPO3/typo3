@@ -11,7 +11,15 @@
 #
 ##########################
 
-COUNTER=0
+php_no_xdebug () {
+    temporaryPath="$(mktemp -t php.XXXX).ini"
+    php -i | grep "\.ini" | grep -o -e '\(/[a-z0-9._-]\+\)\+\.ini' | grep -v xdebug | xargs awk 'FNR==1{print ""}1' > "${temporaryPath}"
+    php -n -c "${temporaryPath}" "$@"
+    RETURN=$?
+    rm -f "${temporaryPath}"
+    exit $RETURN
+}
+
 DRYRUN=""
 
 if [ "$1" = "dryrun" ]
@@ -19,23 +27,16 @@ then
     DRYRUN="--dry-run"
 fi
 
-for FILE in $(git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$'); do
-    if [ -e $FILE ]
-    then
-        ./bin/php-cs-fixer fix $FILE \
-            -v $DRYRUN \
-            --config=Build/.php_cs
-
-        if [ "$?" -gt "0" ]
-        then
-            COUNTER=$((COUNTER+1))
-        fi
-    fi
-done
-
-if [ ${COUNTER} -gt 0 ] ; then
-    echo "$COUNTER number of files are not CGL clean. Check $0 to find out what is going wrong."
-    exit 1
+DETECTED_FILES=`git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$' 2>/dev/null`
+if [ -z "${DETECTED_FILES}" ]
+then
+    echo "No PHP files to check in current commit, all is well."
+    exit 0
 fi
 
-exit 0
+php_no_xdebug ./bin/php-cs-fixer fix \
+    -v ${DRYRUN} \
+    --config=Build/.php_cs \
+    `echo ${DETECTED_FILES} | xargs ls -d 2>/dev/null`
+
+exit $?
