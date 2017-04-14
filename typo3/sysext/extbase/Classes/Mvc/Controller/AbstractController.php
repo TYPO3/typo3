@@ -182,7 +182,11 @@ abstract class AbstractController implements ControllerInterface
         }
         /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
         $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class, $messageBody, $messageTitle, $severity, $storeInSession
+            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            (string)$messageBody,
+            (string)$messageTitle,
+            $severity,
+            $storeInSession
         );
         $this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
     }
