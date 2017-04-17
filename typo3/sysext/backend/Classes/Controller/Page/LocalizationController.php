@@ -167,10 +167,49 @@ class LocalizationController
             return $response;
         }
 
+        // Filter transmitted but invalid uids
+        $params['uidList'] = $this->filterInvalidUids(
+            (int)$params['pageId'],
+            (int)$params['colPos'],
+            (int)$params['destLanguageId'],
+            (int)$params['srcLanguageId'],
+            $params['uidList']
+        );
+
         $this->process($params);
 
         $response->getBody()->write(json_encode([]));
         return $response;
+    }
+
+    /**
+     * Gets all possible UIDs of a page, colPos and language that might be processed and removes invalid UIDs that might
+     * be smuggled in.
+     *
+     * @param int $pageId
+     * @param int $colPos
+     * @param int $destLanguageId
+     * @param int $srcLanguageId
+     * @param array $transmittedUidList
+     * @return array
+     */
+    protected function filterInvalidUids(
+        int $pageId,
+        int $colPos,
+        int $destLanguageId,
+        int $srcLanguageId,
+        array $transmittedUidList
+    ): array {
+        // Get all valid uids that can be processed
+        $validUidList = $result = $this->localizationRepository->getRecordsToCopyDatabaseResult(
+            $pageId,
+            $colPos,
+            $destLanguageId,
+            $srcLanguageId,
+            'uid'
+        );
+
+        return array_intersect(array_unique($transmittedUidList), array_column($validUidList->fetchAll(), 'uid'));
     }
 
     /**

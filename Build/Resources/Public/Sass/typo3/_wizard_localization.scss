@@ -5,3 +5,14 @@ $option-margin-bottom: $padding-small-horizontal;
         margin-bottom: $option-margin-bottom;
     }
 }
+
+[data-slide="localize-summary"] {
+    .input-group {
+        margin-bottom: $option-margin-bottom;
+
+        .form-control {
+            height: auto;
+            font-weight: normal;
+        }
+    }
+}

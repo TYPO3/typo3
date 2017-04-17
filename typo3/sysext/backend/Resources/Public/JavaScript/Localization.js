@@ -157,21 +157,49 @@ define([
 						Localization.records = [];
 
 						$.each(result, function(_, record) {
+							var label = ' (' + record.uid + ') ' + record.title;
 							Localization.records.push(record.uid);
+
 							$summary.append(
-								$('<div />', {class: 'col-sm-6'}).text(' (' + record.uid + ') ' + record.title).prepend(record.icon)
+								$('<div />', {'class': 'col-sm-6'}).append(
+									$('<div />', {'class': 'input-group'}).append(
+										$('<span />', {'class': 'input-group-addon'}).append(
+											$('<input />', {type: 'checkbox', id: 'record-uid-' + record.uid, checked: 'checked', 'data-uid': record.uid, 'aria-label': label})
+										),
+										$('<label />', {'class': 'form-control', for: 'record-uid-' + record.uid}).text(label).prepend(record.icon)
+									)
+								)
 							);
 						});
 						$slide.html($summary);
-
-						// Unlock button as we don't have an option
 						Wizard.unlockNextStep();
+
+						Wizard.getComponent().on('change', 'input[type="checkbox"]', function() {
+							var $me = $(this),
+								uid = $me.data('uid');
+
+							if ($me.is(':checked')) {
+								Localization.records.push(uid);
+							} else {
+								var index = Localization.records.indexOf(uid);
+								if (index > -1) {
+									Localization.records.splice(index, 1);
+								}
+							}
+
+							if (Localization.records.length > 0) {
+								Wizard.unlockNextStep();
+							} else {
+								Wizard.lockNextStep();
+							}
+						});
 					});
 				});
 			});
 			Wizard.addFinalProcessingSlide(function() {
 				Localization.localizeRecords(
 					$triggerButton.data('pageId'),
+					$triggerButton.data('colposId'),
 					$triggerButton.data('languageId'),
 					Localization.records
 				).done(function() {
@@ -241,15 +269,17 @@ define([
 		 * Localize records
 		 *
 		 * @param {Integer} pageId
+		 * @param {Integer} colPos
 		 * @param {Integer} languageId
 		 * @param {Array} uidList
 		 * @return {Promise}
 		 */
-		Localization.localizeRecords = function(pageId, languageId, uidList) {
+		Localization.localizeRecords = function(pageId, colPos, languageId, uidList) {
 			return $.ajax({
 				url: TYPO3.settings.ajaxUrls['records_localize'],
 				data: {
 					pageId: pageId,
+					colPos: colPos,
 					srcLanguageId: Localization.settings.language,
 					destLanguageId: languageId,
 					action: Localization.settings.mode,
