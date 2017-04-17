@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-// This entry-point is deprecated since TYPO3 v8 and will be removed in TYPO3 v9
-// Use the binary located typo3/sysext/core/bin/typo3 instead.
-require 'sysext/backend/Resources/Private/Php/cli.php';

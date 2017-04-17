@@ -1073,8 +1073,6 @@ return [
                 'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
             ],
-            // cliKeys have been deprecated and will be removed in TYPO3 v9
-            'cliKeys' => []
         ],
     ],
     'SVCONF' => []

@@ -41,7 +41,6 @@ class CommandApplication implements ApplicationInterface
      */
     protected $availableRequestHandlers = [
         \TYPO3\CMS\Core\Console\CommandRequestHandler::class,
-        \TYPO3\CMS\Backend\Console\CliRequestHandler::class
     ];
 
     /**

@@ -69,23 +69,6 @@ class CommandRequestHandler implements RequestHandlerInterface
             // Make sure output is not buffered, so command-line output and interaction can take place
             ->endOutputBufferingAndCleanPreviousOutput();
 
-        // Check if the command to run needs a backend user to be loaded
-        $command = $this->getCommandToRun($input);
-
-        if (!$command) {
-            // Using old "cliKeys" is marked as deprecated and will be removed in TYPO3 v9
-            $cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
-
-            $output->writeln('Using old "cliKeys" ($GLOBALS[TYPO3_CONF_VARS][SC_OPTIONS][GLOBAL][cliKeys]) is marked as deprecated and will be removed in TYPO3 v9:');
-            $output->writeln('Old entrypoint keys available:');
-            asort($cliKeys);
-            foreach ($cliKeys as $key => $value) {
-                $output->writeln('  ' . $value);
-            }
-            $output->writeln('');
-            $output->writeln('TYPO3 Console Commands:');
-        }
-
         $exitCode = $this->application->run($input, $output);
         exit($exitCode);
     }
@@ -110,20 +93,6 @@ class CommandRequestHandler implements RequestHandlerInterface
     public function getPriority()
     {
         return 50;
-    }
-
-    /**
-     * @param InputInterface $input
-     * @return bool|Command
-     */
-    protected function getCommandToRun(InputInterface $input)
-    {
-        $firstArgument = $input->getFirstArgument();
-        try {
-            return $this->application->find($firstArgument);
-        } catch (\InvalidArgumentException $e) {
-            return false;
-        }
     }
 
     /**

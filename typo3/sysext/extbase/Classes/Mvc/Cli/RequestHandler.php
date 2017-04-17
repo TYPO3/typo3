@@ -86,10 +86,6 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface
             $callingScript = $_SERVER['_'] . ' ' . $callingScript;
         }
 
-        // Add the "extbase" prefix for the cli_dispatch command line tool
-        if (strpos($callingScript, 'cli_dispatch') !== false) {
-            $callingScript .= ' extbase';
-        }
         $request = $this->requestBuilder->build($commandLine, $callingScript);
         /** @var $response \TYPO3\CMS\Extbase\Mvc\Cli\Response */
         $response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
