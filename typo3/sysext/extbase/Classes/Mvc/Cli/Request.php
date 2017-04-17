@@ -271,7 +271,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface
      * required arguments (if any) have been specified.
      *
      * For a command method with the signature ($argument1, $argument2) and for the command line
-     * cli_dispatch.phpsh extbase some-key someaction acme:foo --argument1 Foo --argument2 Bar baz quux
+     * typo3/sysext/core/bin/typo3 acme:foo --argument1 Foo --argument2 Bar baz quux
      * this method would return array(0 => 'baz', 1 => 'quux')
      *
      * @return array Numeric array of exceeding argument values

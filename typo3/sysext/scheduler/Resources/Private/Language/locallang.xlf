@@ -169,7 +169,7 @@
 				<source>The task was added successfully.</source>
 			</trans-unit>
 			<trans-unit id="msg.cliScript">
-				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</source>
+				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
 			</trans-unit>
 			<trans-unit id="msg.cliScriptExecutable">
 				<source>The webserver user is allowed execute this script.</source>

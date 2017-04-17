@@ -505,10 +505,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             } else {
                 $startTime = 'now+1minute';
             }
-            $cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
+            $cliDispatchPath = PATH_site . 'typo3/sysext/core/bin/typo3';
             list($cliDispatchPathEscaped, $startTimeEscaped) =
                 CommandUtility::escapeShellArguments([$cliDispatchPath, $startTime]);
-            $cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler | at ' . $startTimeEscaped . ' 2>&1';
+            $cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler:run | at ' . $startTimeEscaped . ' 2>&1';
             $output = shell_exec($cmd);
             $outputParts = '';
             foreach (explode(LF, $output) as $outputLine) {

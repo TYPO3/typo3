@@ -60,7 +60,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
      * Display help for a command
      *
      * The help command displays help for a given command:
-     * ./cli_dispatch.phpsh extbase help <command identifier>
+     * ./typo3/sysext/core/bin/typo3 extbase:help <command identifier>
      *
      * @param string $commandIdentifier Identifier of a command for more details
      * @cli
