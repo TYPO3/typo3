@@ -357,7 +357,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->view->assign('lastRunSeverity', $severity);
 
         // Check if CLI script is executable or not
-        $script = PATH_typo3 . 'cli_dispatch.phpsh';
+        $script = PATH_site . 'typo3/sysext/core/bin/typo3';
         $this->view->assign('script', $script);
 
         // Skip this check if running Windows, as rights do not work the same way on this platform
