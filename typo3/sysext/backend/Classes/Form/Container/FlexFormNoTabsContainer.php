@@ -45,7 +45,6 @@ class FlexFormNoTabsContainer extends AbstractContainer
         $sheetName = array_pop($flexFormSheetNames);
         $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
 
-        // That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
         unset($flexFormDataStructureArray['meta']);
 
         if (!is_array($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'])) {

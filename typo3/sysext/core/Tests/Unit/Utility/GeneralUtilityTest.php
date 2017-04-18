@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
-use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMinifyJavaScriptFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
@@ -911,123 +910,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $encoded = htmlspecialchars($string);
         $decoded = htmlspecialchars_decode($encoded);
         $this->assertEquals($string, $decoded);
-    }
-
-    ///////////////////////////////
-    // Tests concerning deHSCentities
-    ///////////////////////////////
-    /**
-     * @test
-     * @dataProvider deHSCentitiesReturnsDecodedStringDataProvider
-     */
-    public function deHSCentitiesReturnsDecodedString($input, $expected)
-    {
-        $this->assertEquals($expected, GeneralUtility::deHSCentities($input));
-    }
-
-    /**
-     * Data provider for deHSCentitiesReturnsDecodedString
-     *
-     * @return array
-     */
-    public function deHSCentitiesReturnsDecodedStringDataProvider()
-    {
-        return [
-            'Empty string' => ['', ''],
-            'Double encoded &' => ['&amp;amp;', '&amp;'],
-            'Double encoded numeric entity' => ['&amp;#1234;', '&#1234;'],
-            'Double encoded hexadecimal entity' => ['&amp;#x1b;', '&#x1b;'],
-            'Single encoded entities are not touched' => ['&amp; &#1234; &#x1b;', '&amp; &#1234; &#x1b;']
-        ];
-    }
-
-    //////////////////////////////////
-    // Tests concerning slashJS
-    //////////////////////////////////
-    /**
-     * @test
-     * @dataProvider slashJsDataProvider
-     */
-    public function slashJsEscapesSingleQuotesAndSlashes($input, $extended, $expected)
-    {
-        $this->assertEquals($expected, GeneralUtility::slashJS($input, $extended));
-    }
-
-    /**
-     * Data provider for slashJsEscapesSingleQuotesAndSlashes
-     *
-     * @return array
-     */
-    public function slashJsDataProvider()
-    {
-        return [
-            'Empty string is not changed' => ['', false, ''],
-            'Normal string is not changed' => ['The cake is a lie √', false, 'The cake is a lie √'],
-            'String with single quotes' => ['The \'cake\' is a lie', false, 'The \\\'cake\\\' is a lie'],
-            'String with single quotes and backslashes - just escape single quotes' => ['The \\\'cake\\\' is a lie', false, 'The \\\\\'cake\\\\\' is a lie'],
-            'String with single quotes and backslashes - escape both' => ['The \\\'cake\\\' is a lie', true, 'The \\\\\\\'cake\\\\\\\' is a lie']
-        ];
-    }
-
-    //////////////////////////////////
-    // Tests concerning rawUrlEncodeJS
-    //////////////////////////////////
-    /**
-     * @test
-     */
-    public function rawUrlEncodeJsPreservesWhitespaces()
-    {
-        $input = 'Encode \'me\', but leave my spaces √';
-        $expected = 'Encode %27me%27%2C but leave my spaces %E2%88%9A';
-        $this->assertEquals($expected, GeneralUtility::rawUrlEncodeJS($input));
-    }
-
-    //////////////////////////////////
-    // Tests concerning rawUrlEncodeJS
-    //////////////////////////////////
-    /**
-     * @test
-     */
-    public function rawUrlEncodeFpPreservesSlashes()
-    {
-        $input = 'Encode \'me\', but leave my / √';
-        $expected = 'Encode%20%27me%27%2C%20but%20leave%20my%20/%20%E2%88%9A';
-        $this->assertEquals($expected, GeneralUtility::rawUrlEncodeFP($input));
-    }
-
-    //////////////////////////////////
-    // Tests concerning strtoupper / strtolower
-    //////////////////////////////////
-    /**
-     * Data provider for strtoupper and strtolower
-     *
-     * @return array
-     */
-    public function strtouppperDataProvider()
-    {
-        return [
-            'Empty string' => ['', ''],
-            'String containing only latin characters' => ['the cake is a lie.', 'THE CAKE IS A LIE.'],
-            'String with umlauts and accent characters' => ['the càkê is ä lie.', 'THE CàKê IS ä LIE.']
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider strtouppperDataProvider
-     */
-    public function strtoupperConvertsOnlyLatinCharacters($input, $expected)
-    {
-        $this->assertEquals($expected, GeneralUtility::strtoupper($input));
-    }
-
-    /**
-     * @test
-     * @dataProvider strtouppperDataProvider
-     */
-    public function strtolowerConvertsOnlyLatinCharacters($expected, $input)
-    {
-        $this->assertEquals($expected, GeneralUtility::strtolower($input));
     }
 
     //////////////////////////////////
@@ -1957,32 +1839,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     //////////////////////////////////
-    // Tests concerning lcFirst
-    //////////////////////////////////
-    /**
-     * Data provider for lcFirst
-     *
-     * @return array expected, input string
-     */
-    public function lcfirstDataProvider()
-    {
-        return [
-            'single word' => ['blogexample', 'blogexample'],
-            'single Word starting upper case' => ['blogexample', 'Blogexample'],
-            'two words' => ['blogExample', 'BlogExample']
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider lcfirstDataProvider
-     */
-    public function lcFirst($expected, $inputString)
-    {
-        $this->assertEquals($expected, GeneralUtility::lcfirst($inputString));
-    }
-
-    //////////////////////////////////
     // Tests concerning isValidUrl
     //////////////////////////////////
     /**
@@ -2636,90 +2492,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
         $testString = $this->getUniqueId('string');
         $this->assertSame($testString, GeneralUtility::minifyJavaScript($testString));
-    }
-
-    /**
-     * Create an own hook callback class, register as hook, and check
-     * if given string to compress is given to hook method
-     *
-     * @test
-     */
-    public function minifyJavaScriptCallsRegisteredHookWithInputString()
-    {
-        $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(['minify'])
-            ->setMockClassName($hookClassName)
-            ->getMock();
-        $functionName = $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->once())->method('minify')->will($this->returnCallback([$this, 'isMinifyJavaScriptHookCalledCallback']));
-        GeneralUtility::minifyJavaScript('foo');
-    }
-
-    /**
-     * Callback function used in minifyJavaScriptCallsRegisteredHookWithInputString test
-     *
-     * @param array $params
-     */
-    public function isMinifyJavaScriptHookCalledCallback(array $params)
-    {
-        // We can not throw an exception here, because that would be caught by the
-        // minifyJavaScript method under test itself. Thus, we just die if the
-        // input string is not ok.
-        if ($params['script'] !== 'foo') {
-            die('broken');
-        }
-    }
-
-    /**
-     * Create a hook callback, use callback to throw an exception and check
-     * if the exception is given as error parameter to the calling method.
-     *
-     * @test
-     */
-    public function minifyJavaScriptReturnsErrorStringOfHookException()
-    {
-        $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(['minify'])
-            ->setMockClassName($hookClassName)
-            ->getMock();
-        $functionName = '&' . $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
-        $error = '';
-        GeneralUtility::minifyJavaScript('string to compress', $error);
-        $this->assertSame('Error minifying java script: foo', $error);
-    }
-
-    /**
-     * Check if the error message that is returned by the hook callback
-     * is logged to \TYPO3\CMS\Core\GeneralUtility::devLog.
-     *
-     * @test
-     */
-    public function minifyJavaScriptWritesExceptionMessageToDevLog()
-    {
-        $hookClassName = $this->getUniqueId('tx_coretest');
-        $minifyHookMock = $this->getMockBuilder('stdClass')
-            ->setMethods(['minify'])
-            ->setMockClassName($hookClassName)
-            ->getMock();
-        $functionName = '&' . $hookClassName . '->minify';
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName] = [];
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
-        $GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
-        $minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback([$this, 'minifyJavaScriptErroneousCallback']));
-        $this->expectException(\RuntimeException::class);
-        GeneralUtilityMinifyJavaScriptFixture::minifyJavaScript('string to compress');
     }
 
     /**
@@ -3618,12 +3390,11 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     ///////////////////////////////
     // Tests concerning unQuoteFilenames
     ///////////////////////////////
+
     /**
-     * Data provider for ImageMagick shell commands
-     *
-     * @see explodeAndUnquoteImageMagickCommands
+     * Data provider for unQuoteFilenamesUnquotesFileNames
      */
-    public function imageMagickCommandsDataProvider()
+    public function unQuoteFilenamesUnquotesFileNamesDataProvider()
     {
         return [
             // Some theoretical tests first
@@ -3784,10 +3555,10 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * Tests if the commands are exploded and unquoted correctly
      *
-     * @dataProvider imageMagickCommandsDataProvider
+     * @dataProvider unQuoteFilenamesUnquotesFileNamesDataProvider
      * @test
      */
-    public function explodeAndUnquoteImageMagickCommands($source, $expectedQuoted, $expectedUnquoted)
+    public function unQuoteFilenamesUnquotesFileNames($source, $expectedQuoted, $expectedUnquoted)
     {
         $actualQuoted = GeneralUtility::unQuoteFilenames($source);
         $actualUnquoted = GeneralUtility::unQuoteFilenames($source, true);
@@ -4566,39 +4337,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function user_calledUserFunction()
     {
         return 'Worked fine';
-    }
-
-    /**
-     * @test
-     */
-    public function callUserFunctionCanPrefixFuncNameWithFilePath()
-    {
-        $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction('typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php:TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
-        $this->assertEquals('Worked fine', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function callUserFunctionCanPersistObjectsBetweenCalls()
-    {
-        $inputData = ['called' => []];
-        GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
-        GeneralUtility::callUserFunction('&TYPO3\\CMS\\Core\\Tests\\Unit\\Utility\\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
-        $this->assertEquals(1, count($inputData['called']));
-    }
-
-    /**
-     * Takes the object hash and adds it to the passed array. In case
-     * persisting the objects would not work we'd see two different
-     * parent objects.
-     *
-     * @param $params
-     */
-    public function user_calledUserFunctionCountCallers(&$params)
-    {
-        $params['called'][spl_object_hash($this)]++;
     }
 
     /**

@@ -18,7 +18,6 @@ use GuzzleHttp\Exception\RequestException;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -241,28 +240,6 @@ class GeneralUtility
             $GLOBALS['HTTP_GET_VARS'] = $inputGet;
         }
     }
-
-    /**
-     * Wrapper for the RemoveXSS function.
-     * Removes potential XSS code from an input string.
-     *
-     * Using an external class by Travis Puderbaugh <kallahar@quickwired.com>
-     *
-     * @param string $string Input string
-     * @return string Input string with potential XSS code removed
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function removeXSS($string)
-    {
-        static::logDeprecatedFunction();
-        return \RemoveXSS::process($string);
-    }
-
-    /*************************
-     *
-     * IMAGE FUNCTIONS
-     *
-     *************************/
 
     /*************************
      *
@@ -692,21 +669,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns TRUE if the current TYPO3 version (or compatibility version) is compatible to the input version
-     * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
-     *
-     * @param string $verNumberStr Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
-     * @return bool Returns TRUE if this setup is compatible with the provided version number
-     * @todo Still needs a function to convert versions to branches
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function compat_version($verNumberStr)
-    {
-        static::logDeprecatedFunction();
-        return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
-    }
-
-    /**
      * Makes a positive integer hash out of the first 7 chars from the md5 hash of the input
      *
      * @param string $str String to md5-hash
@@ -893,20 +855,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns microtime input to milliseconds
-     *
-     * @param string $microtime Microtime
-     * @return int Microtime input string converted to an integer (milliseconds)
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function convertMicrotime($microtime)
-    {
-        static::logDeprecatedFunction();
-        $parts = explode(' ', $microtime);
-        return round(($parts[0] + $parts[1]) * 1000);
-    }
-
-    /**
      * This splits a string by the chars in $operators (typical /+-*) and returns an array with them in
      *
      * @param string $string Input string, eg "123 + 456 / 789 - 4
@@ -927,67 +875,6 @@ class GeneralUtility
         }
         reset($res);
         return $res;
-    }
-
-    /**
-     * Re-converts HTML entities if they have been converted by htmlspecialchars()
-     * Note: Use htmlspecialchars($str, ENT_COMPAT, 'UTF-8', FALSE) to avoid double encoding.
-     *       This makes the call to this method obsolete.
-     *
-     * @param string $str String which contains eg. "&amp;amp;" which should stay "&amp;". Or "&amp;#1234;" to "&#1234;". Or "&amp;#x1b;" to "&#x1b;
-     * @return string Converted result.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function deHSCentities($str)
-    {
-        static::logDeprecatedFunction();
-        return preg_replace('/&amp;([#[:alnum:]]*;)/', '&\\1', $str);
-    }
-
-    /**
-     * This function is used to escape any ' -characters when transferring text to JavaScript!
-     *
-     * @param string $string String to escape
-     * @param bool $extended If set, also backslashes are escaped.
-     * @param string $char The character to escape, default is ' (single-quote)
-     * @return string Processed input string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function slashJS($string, $extended = false, $char = '\'')
-    {
-        static::logDeprecatedFunction();
-        if ($extended) {
-            $string = str_replace('\\', '\\\\', $string);
-        }
-        return str_replace($char, '\\' . $char, $string);
-    }
-
-    /**
-     * Version of rawurlencode() where all spaces (%20) are re-converted to space-characters.
-     * Useful when passing text to JavaScript where you simply url-encode it to get around problems with syntax-errors, linebreaks etc.
-     *
-     * @param string $str String to raw-url-encode with spaces preserved
-     * @return string Rawurlencoded result of input string, but with all %20 (space chars) converted to real spaces.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, implement directly via PHP instead
-     */
-    public static function rawUrlEncodeJS($str)
-    {
-        static::logDeprecatedFunction();
-        return str_replace('%20', ' ', rawurlencode($str));
-    }
-
-    /**
-     * rawurlencode which preserves "/" chars
-     * Useful when file paths should keep the "/" chars, but have all other special chars encoded.
-     *
-     * @param string $str Input string
-     * @return string Output string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the PHP methods directly instead
-     */
-    public static function rawUrlEncodeFP($str)
-    {
-        static::logDeprecatedFunction();
-        return str_replace('%2F', '/', rawurlencode($str));
     }
 
     /**
@@ -1028,51 +915,6 @@ class GeneralUtility
     }
 
     /**
-     * Converts string to uppercase
-     * The function converts all Latin characters (a-z, but no accents, etc) to
-     * uppercase. It is safe for all supported character sets (incl. utf-8).
-     * Unlike strtoupper() it does not honour the locale.
-     *
-     * @param string $str Input string
-     * @return string Uppercase String
-     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, use mb_strtoupper() instead
-     */
-    public static function strtoupper($str)
-    {
-        self::logDeprecatedFunction();
-        return strtr((string)$str, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-    }
-
-    /**
-     * Converts string to lowercase
-     * The function converts all Latin characters (A-Z, but no accents, etc) to
-     * lowercase. It is safe for all supported character sets (incl. utf-8).
-     * Unlike strtolower() it does not honour the locale.
-     *
-     * @param string $str Input string
-     * @return string Lowercase String
-     * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9, use mb_strtolower() instead
-     */
-    public static function strtolower($str)
-    {
-        self::logDeprecatedFunction();
-        return strtr((string)$str, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
-    }
-
-    /**
-     * Returns a string of highly randomized bytes (over the full 8-bit range).
-     *
-     * @param int $bytesToReturn Number of bytes to return
-     * @return string Random Bytes
-     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9. Use \TYPO3\CMS\Core\Crypto\Random->generateRandomBytes() instead
-     */
-    public static function generateRandomBytes($bytesToReturn)
-    {
-        self::logDeprecatedFunction();
-        return self::makeInstance(Random::class)->generateRandomBytes($bytesToReturn);
-    }
-
-    /**
      * Returns an ASCII string (punicode) representation of $value
      *
      * @param string $value
@@ -1089,19 +931,6 @@ class GeneralUtility
             self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
             return self::$idnaStringCache[$value];
         }
-    }
-
-    /**
-     * Returns a hex representation of a random byte string.
-     *
-     * @param int $count Number of hex characters to return
-     * @return string Random Bytes
-     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9. Use \TYPO3\CMS\Core\Crypto\Random::generateRandomHexString() instead
-     */
-    public static function getRandomHexString($count)
-    {
-        self::logDeprecatedFunction();
-        return self::makeInstance(Random::class)->generateRandomHexString($count);
     }
 
     /**
@@ -1139,20 +968,6 @@ class GeneralUtility
     {
         $value = preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $string);
         return mb_strtolower($value, 'utf-8');
-    }
-
-    /**
-     * Converts the first char of a string to lowercase if it is a latin character (A-Z).
-     * Example: Converts "Hello World" to "hello World"
-     *
-     * @param string $string The string to be used to lowercase the first character
-     * @return string The string with the first character as lowercase
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function lcfirst($string)
-    {
-        static::logDeprecatedFunction();
-        return lcfirst($string);
     }
 
     /**
@@ -1384,21 +1199,6 @@ class GeneralUtility
     }
 
     /**
-     * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
-     *
-     * @param array $row Input array of values
-     * @param string $delim Delimited, default is comma
-     * @param string $quote Quote-character to wrap around the values.
-     * @return string A single line of CSV
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
-     */
-    public static function csvValues(array $row, $delim = ',', $quote = '"')
-    {
-        self::logDeprecatedFunction();
-        return CsvUtility::csvValues($row, $delim, $quote);
-    }
-
-    /**
      * Removes dots "." from end of a key identifier of TypoScript styled array.
      * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
      *
@@ -1530,15 +1330,10 @@ class GeneralUtility
      * This is nice for indenting JS code with PHP code on the same level.
      *
      * @param string $string JavaScript code
-     * @param null $_ unused, will be removed in TYPO3 CMS 9
      * @return string The wrapped JS code, ready to put into a XHTML page
      */
-    public static function wrapJS($string, $_ = null)
+    public static function wrapJS($string)
     {
-        if ($_ !== null) {
-            self::deprecationLog('Parameter 2 of GeneralUtility::wrapJS is obsolete and can be omitted.');
-        }
-
         if (trim($string)) {
             // remove nl from the beginning
             $string = ltrim($string, LF);
@@ -1625,26 +1420,6 @@ class GeneralUtility
             }
         }
         return $tagi['ch'];
-    }
-
-    /**
-     * Turns PHP array into XML. See array2xml()
-     *
-     * @param array $array The input PHP array with any kind of data; text, binary, integers. Not objects though.
-     * @param string $docTag Alternative document tag. Default is "phparray".
-     * @param array $options Options for the compilation. See array2xml() for description.
-     * @param string $charset Forced charset to prologue
-     * @return string An XML string made from the input content in the array.
-     * @see xml2array(),array2xml()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
-     */
-    public static function array2xml_cs(array $array, $docTag = 'phparray', array $options = [], $charset = '')
-    {
-        static::logDeprecatedFunction();
-        // Set default charset unless explicitly specified
-        $charset = $charset ?: 'utf-8';
-        // Return XML:
-        return '<?xml version="1.0" encoding="' . htmlspecialchars($charset) . '" standalone="yes" ?>' . LF . self::array2xml($array, '', 0, $docTag, 0, $options);
     }
 
     /**
@@ -1953,22 +1728,6 @@ class GeneralUtility
             }
         }
         return $XMLcontent;
-    }
-
-    /**
-     * Extracts the attributes (typically encoding and version) of an XML prologue (header).
-     *
-     * @param string $xmlData XML data
-     * @return array Attributes of the xml prologue (header)
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
-     */
-    public static function xmlGetHeaderAttribs($xmlData)
-    {
-        self::logDeprecatedFunction();
-        $match = [];
-        if (preg_match('/^\\s*<\\?xml([^>]*)\\?\\>/', $xmlData, $match)) {
-            return self::get_tag_attributes($match[1]);
-        }
     }
 
     /**
@@ -2641,18 +2400,6 @@ class GeneralUtility
     }
 
     /**
-     * Retrieves the maximum path length that is valid in the current environment.
-     *
-     * @return int The maximum available path length
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function getMaximumPathLength()
-    {
-        static::logDeprecatedFunction();
-        return PHP_MAXPATHLEN;
-    }
-
-    /**
      * Function for static version numbers on files, based on the filemtime
      *
      * This will make the filename automatically change when a file is
@@ -3261,22 +3008,13 @@ class GeneralUtility
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
      * @param string $filename The input filename/filepath to evaluate
-     * @param bool $_ - obsolete, will be removed in TYPO3 CMS 9
-     * @param bool $_2 - obsolete, will be removed in TYPO3 CMS 9
      * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
      */
-    public static function getFileAbsFileName($filename, $_ = null, $_2 = null)
+    public static function getFileAbsFileName($filename)
     {
         if ((string)$filename === '') {
             return '';
         }
-        if ($_ !== null) {
-            self::deprecationLog('Parameter 2 of GeneralUtility::getFileAbsFileName is obsolete and can be omitted.');
-        }
-        if ($_2 !== null) {
-            self::deprecationLog('Parameter 3 of GeneralUtility::getFileAbsFileName is obsolete and can be omitted.');
-        }
-
         // Extension
         if (strpos($filename, 'EXT:') === 0) {
             list($extKey, $local) = explode('/', substr($filename, 4), 2);
@@ -3626,77 +3364,10 @@ class GeneralUtility
     }
 
     /**
-     * Looks for a sheet-definition in the input data structure array. If found it will return the data structure for the sheet given as $sheet (if found).
-     * If the sheet definition is in an external file that file is parsed and the data structure inside of that is returned.
-     *
-     * @param array $dataStructArray Input data structure, possibly with a sheet-definition and references to external data source files.
-     * @param string $sheet The sheet to return, preferably.
-     * @return array An array with two num. keys: key0: The data structure is returned in this key (array) UNLESS an error occurred in which case an error string is returned (string). key1: The used sheet key value!
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. This is now integrated in FlexFormTools->parseDataStructureByIdentifier()
-     */
-    public static function resolveSheetDefInDS($dataStructArray, $sheet = 'sDEF')
-    {
-        self::logDeprecatedFunction();
-        if (!is_array($dataStructArray)) {
-            return 'Data structure must be an array';
-        }
-        if (is_array($dataStructArray['sheets'])) {
-            $singleSheet = false;
-            if (!isset($dataStructArray['sheets'][$sheet])) {
-                $sheet = 'sDEF';
-            }
-            $dataStruct = $dataStructArray['sheets'][$sheet];
-            // If not an array, but still set, then regard it as a relative reference to a file:
-            if ($dataStruct && !is_array($dataStruct)) {
-                $file = self::getFileAbsFileName($dataStruct);
-                if ($file && @is_file($file)) {
-                    $dataStruct = self::xml2array(file_get_contents($file));
-                }
-            }
-        } else {
-            $singleSheet = true;
-            $dataStruct = $dataStructArray;
-            if (isset($dataStruct['meta'])) {
-                unset($dataStruct['meta']);
-            }
-            // Meta data should not appear there.
-            // Default sheet
-            $sheet = 'sDEF';
-        }
-        return [$dataStruct, $sheet, $singleSheet];
-    }
-
-    /**
-     * Resolves ALL sheet definitions in dataStructArray
-     * If no sheet is found, then the default "sDEF" will be created with the dataStructure inside.
-     *
-     * @param array $dataStructArray Input data structure, possibly with a sheet-definition and references to external data source files.
-     * @return array Output data structure with all sheets resolved as arrays.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. This is now integrated in FlexFormTools->parseDataStructureByIdentifier()
-     */
-    public static function resolveAllSheetsInDS(array $dataStructArray)
-    {
-        self::logDeprecatedFunction();
-        if (is_array($dataStructArray['sheets'])) {
-            $out = ['sheets' => []];
-            foreach ($dataStructArray['sheets'] as $sheetId => $sDat) {
-                list($ds, $aS) = self::resolveSheetDefInDS($dataStructArray, $sheetId);
-                if ($sheetId == $aS) {
-                    $out['sheets'][$aS] = $ds;
-                }
-            }
-        } else {
-            list($ds) = self::resolveSheetDefInDS($dataStructArray);
-            $out = ['sheets' => ['sDEF' => $ds]];
-        }
-        return $out;
-    }
-
-    /**
      * Calls a user-defined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
      *
-     * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". However, using file references has been marked as deprecated and should be avoided, instead use the autoloading mechanism in place directly. Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+     * @param string $funcName Function/Method reference or Closure.
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
      * @param string $_ Not used anymore since 6.0
@@ -3712,63 +3383,15 @@ class GeneralUtility
             return call_user_func_array($funcName, [&$params, &$ref]);
         }
         $funcName = trim($funcName);
-        // Check persistent object and if found, call directly and exit.
-        if (isset($GLOBALS['T3_VAR']['callUserFunction'][$funcName]) && is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName])) {
-            return call_user_func_array([
-                &$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
-                $GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']
-            ], [&$params, &$ref]);
-        }
-        // Check file-reference prefix; if found, require_once() the file (should be library of code)
-        if (strpos($funcName, ':') !== false) {
-            // @deprecated since TYPO3 v8, will be removed in v9
-            self::deprecationLog('Using file references to resolve "' . $funcName . '" has been deprecated in TYPO3 v8 '
-                . 'when calling GeneralUtility::callUserFunction(), make sure the class is available via the class loader. '
-                . 'This functionality will be removed in TYPO3 v9.');
-            list($file, $funcRef) = self::revExplode(':', $funcName, 2);
-            $requireFile = self::getFileAbsFileName($file);
-            if ($requireFile) {
-                require_once $requireFile;
-            }
-        } else {
-            $funcRef = $funcName;
-        }
-        // Check for persistent object token, "&"
-        if ($funcRef[0] === '&') {
-            self::deprecationLog('Using the persistent object token "&" when resolving "' . $funcRef . '"  for '
-                . 'GeneralUtility::callUserFunc() is deprecated since TYPO3 v8. Make sure to implement '
-                . 'SingletonInterface to achieve the same functionality. This functionality will be removed in TYPO3 v9 '
-                . 'and will then result in a fatal PHP error.');
-            $funcRef = substr($funcRef, 1);
-            $storePersistentObject = true;
-        } else {
-            $storePersistentObject = false;
-        }
-        // Call function or method:
-        $parts = explode('->', $funcRef);
+        $parts = explode('->', $funcName);
+        // Call function or method
         if (count($parts) === 2) {
             // Class
             // Check if class/method exists:
             if (class_exists($parts[0])) {
-                // Get/Create object of class:
-                if ($storePersistentObject) {
-                    // Get reference to current instance of class:
-                    if (!is_object($GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]])) {
-                        $GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]] = self::makeInstance($parts[0]);
-                    }
-                    $classObj = $GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]];
-                } else {
-                    // Create new object:
-                    $classObj = self::makeInstance($parts[0]);
-                }
+                // Create object
+                $classObj = self::makeInstance($parts[0]);
                 if (method_exists($classObj, $parts[1])) {
-                    // If persistent object should be created, set reference:
-                    if ($storePersistentObject) {
-                        $GLOBALS['T3_VAR']['callUserFunction'][$funcName] = [
-                            'method' => $parts[1],
-                            'obj' => &$classObj
-                        ];
-                    }
                     // Call method:
                     $content = call_user_func_array([&$classObj, $parts[1]], [&$params, &$ref]);
                 } else {
@@ -3789,10 +3412,10 @@ class GeneralUtility
             }
         } else {
             // Function
-            if (function_exists($funcRef)) {
-                $content = call_user_func_array($funcRef, [&$params, &$ref]);
+            if (function_exists($funcName)) {
+                $content = call_user_func_array($funcName, [&$params, &$ref]);
             } else {
-                $errorMsg = 'No function named: ' . $funcRef;
+                $errorMsg = 'No function named: ' . $funcName;
                 if ($errorMode == 2) {
                     throw new \InvalidArgumentException($errorMsg, 1294585867);
                 } elseif (!$errorMode) {
@@ -3810,34 +3433,15 @@ class GeneralUtility
      * Creates and returns reference to a user defined object.
      * This function can return an object reference if you like.
      *
-     * @param string $classRef Class reference, '[file-reference":"]class-name'.
-     *                         You can prefix the class name with "[file-reference]:" and
-     *                         GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and
-     *                         subsequently include it by "require_once()" which means you don't have to worry about
-     *                         including the class file either! Example: "EXT:realurl/class.tx_realurl.php:tx_realurl".
-     *                         However, the file reference part is marked as deprecated as the class loading mechanism
-     *                         via composer or the autoloading part of TYPO3 should be used instead.
+     * @param string $className Class name
      * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
      */
-    public static function getUserObj($classRef)
+    public static function getUserObj($className)
     {
-        // Check file-reference prefix; if found, require_once() the file (should be library of code)
-        if (strpos($classRef, ':') !== false) {
-            // @deprecated since TYPO3 v8, will be removed in v9
-            self::deprecationLog('Using file references to resolve "' . $classRef . '" has been deprecated in TYPO3 v8 '
-                . 'when calling GeneralUtility::getUserObj(), make sure the class is available via the class loader. '
-                . 'This functionality will be removed in TYPO3 v9.');
-            list($file, $classRef) = self::revExplode(':', $classRef, 2);
-            $requireFile = self::getFileAbsFileName($file);
-            if ($requireFile) {
-                require_once $requireFile;
-            }
-        }
-
         // Check if class exists:
-        if (class_exists($classRef)) {
-            return self::makeInstance($classRef);
+        if (class_exists($className)) {
+            return self::makeInstance($className);
         }
     }
 
@@ -4159,37 +3763,6 @@ class GeneralUtility
     }
 
     /**
-     * Require a class for TYPO3
-     * Useful to require classes from inside other classes (not global scope). A limited set of global variables are available (see function)
-     *
-     * @param string $requireFile: Path of the file to be included
-     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
-     */
-    public static function requireOnce($requireFile)
-    {
-        self::logDeprecatedFunction();
-        // Needed for require_once
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        require_once $requireFile;
-    }
-
-    /**
-     * Requires a class for TYPO3
-     * Useful to require classes from inside other classes (not global scope).
-     * A limited set of global variables are available (see function)
-     *
-     * @param string $requireFile: Path of the file to be included
-     * @deprecated since TYPO3 CMS 8, this method will be removed in TYPO3 CMS 9
-     */
-    public static function requireFile($requireFile)
-    {
-        self::logDeprecatedFunction();
-        // Needed for require
-        global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
-        require $requireFile;
-    }
-
-    /**
      * Create a shortened "redirect" URL with specified length from an incoming URL
      *
      * @param string $inUrl Input URL
@@ -4221,22 +3794,6 @@ class GeneralUtility
             $inUrl = ($index_script_url ?: self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=' . $md5;
         }
         return $inUrl;
-    }
-
-    /**
-     * Function to compensate for DPI resolution.
-     *
-     * @param float $fontSize font size for freetype function call
-     *
-     * @return float compensated font size based on 96 dpi
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, the functionality is now moved to GraphicalFunctions->compensateFontSizeiBasedOnFreetypeDpi()
-     */
-    public static function freetypeDpiComp($fontSize)
-    {
-        self::logDeprecatedFunction();
-        // FreeType 2 always has 96 dpi.
-        $dpi = 96.0;
-        return $fontSize / $dpi * 72;
     }
 
     /**
@@ -4507,24 +4064,7 @@ class GeneralUtility
     }
 
     /**
-     * Compile the command for running ImageMagick/GraphicsMagick.
-     *
-     * @param string $command Command to be run: identify, convert or combine/composite
-     * @param string $parameters The parameters string
-     * @param string $path Override the default path (e.g. used by the install tool)
-     * @return string Compiled command that deals with ImageMagick & GraphicsMagick
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9. - use CommandUtility directly
-     */
-    public static function imageMagickCommand($command, $parameters, $path = '')
-    {
-        self::logDeprecatedFunction();
-        return CommandUtility::imageMagickCommand($command, $parameters, $path);
-    }
-
-    /**
      * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string.
-     *
-     * This is mostly needed by the imageMagickCommand function above.
      *
      * @param string $parameters The whole parameters string
      * @param bool $unQuote If set, the elements of the resulting array are unquoted.
@@ -4580,34 +4120,6 @@ class GeneralUtility
                 '\\r' => '\\u000D'
             ]
         );
-    }
-
-    /**
-     * Ends and flushes all output buffers
-     *
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-     */
-    public static function flushOutputBuffers()
-    {
-        self::logDeprecatedFunction();
-        $obContent = '';
-        while ($content = ob_get_clean()) {
-            $obContent .= $content;
-        }
-        // If previously a "Content-Encoding: whatever" has been set, we have to unset it
-        if (!headers_sent()) {
-            $headersList = headers_list();
-            foreach ($headersList as $header) {
-                // Split it up at the :
-                list($key, $value) = self::trimExplode(':', $header, true);
-                // Check if we have a Content-Encoding other than 'None'
-                if (strtolower($key) === 'content-encoding' && strtolower($value) !== 'none') {
-                    header('Content-Encoding: None');
-                    break;
-                }
-            }
-        }
-        echo $obContent;
     }
 
     /**
