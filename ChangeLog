@@ -1,3 +1,18 @@
+2017-04-18  ac75a78                  [RELEASE] Release of TYPO3 6.2.31 (TYPO3 Release Team)
+2017-04-18  3de0853  #80857          [TASK] Mark 6.2 as e-o-l in install tool core updater (Christian Kuhn)
+2017-04-07  f2ce731  #77855          [BUGFIX] Allow file replace for editors (Helmut Hummel)
+2017-04-04  7c45dc5  #48544          [FOLLOWUP][BUGFIX] Do not devlog bad code smells of core classes (Markus Klein)
+2017-04-03  5d266a7  #48544          [BUGFIX] Do not devlog bad code smells of core classes (Markus Klein)
+2017-03-31  a4c6edc  #80589          [BUGFIX] FAL: Correctly iterate folder content with offset (Markus Klein)
+2017-03-25  11506d7  #72299          [BUGFIX] Send correct HTTP message in getUrl (Markus Klein)
+2017-03-09  21a8ee2  #64742          [BUGFIX] Extension update: Prevent multiple update trigger (Nicole Cordes)
+2017-01-13  b236079  #78986          [BUGFIX] Remove range from sorting field (Georg Ringer)
+2017-01-11  a3cc3f9  #79275          [BUGFIX] CacheHashCalculator does not exclude ADMCMD arguments (Benni Mack)
+2017-01-07  8bc9de1  #79165          [TASK] Update copyright year to 2017 (Wouter Wolters)
+2017-01-03  5631d83  #78822          [BUGFIX] Documentation of sessionTimeout (Anja Leichsenring)
+2017-01-03  96f08d1                  [TASK] Set TYPO3 version to 6.2.31-dev (TYPO3 Release Team)
+
+
 2017-01-03  ec284cf                  [RELEASE] Release of TYPO3 6.2.30 (TYPO3 Release Team)
 2017-01-03  0f79d43  #79114          [SECURITY] Protect Mailtransport (Wouter Wolters)
 2016-12-31  7a99325  #70106          [BUGFIX] Do not use realpath for temporary file names (Stefan Froemken)
