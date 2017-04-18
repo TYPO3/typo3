@@ -1580,9 +1580,9 @@ class QueryGenerator
      * Get select query
      *
      * @param string $qString
-     * @return bool|\mysqli_result|object
+     * @return string
      */
-    public function getSelectQuery($qString = '')
+    public function getSelectQuery($qString = ''): string
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
@@ -1623,25 +1623,22 @@ class QueryGenerator
                 $webMountPageTree .= $webMountPageTreePrefix
                     . $this->getTreeList($webMount, 999, ($begin = 0), $perms_clause);
             }
+            // createNamedParameter() is not used here because the SQL fragment will only include
+            // the :dcValueX placeholder when the query is returned as a string. The value for the
+            // placeholder would be lost in the process.
             if ($this->table === 'pages') {
                 $queryBuilder->where(
                     QueryHelper::stripLogicalOperatorPrefix($perms_clause),
                     $queryBuilder->expr()->in(
                         'uid',
-                        $queryBuilder->createNamedParameter(
-                            GeneralUtility::intExplode(',', $webMountPageTree),
-                            Connection::PARAM_INT_ARRAY
-                        )
+                        GeneralUtility::intExplode(',', $webMountPageTree)
                     )
                 );
             } else {
                 $queryBuilder->where(
                     $queryBuilder->expr()->in(
                         'pid',
-                        $queryBuilder->createNamedParameter(
-                            GeneralUtility::intExplode(',', $webMountPageTree),
-                            Connection::PARAM_INT_ARRAY
-                        )
+                        GeneralUtility::intExplode(',', $webMountPageTree)
                     )
                 );
             }
