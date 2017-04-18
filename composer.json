@@ -79,9 +79,12 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "8.x-dev"
+			"dev-TYPO3_8-7": "8.x-dev"
 		}
 	},
+	"non-feature-branches": [
+		"TYPO3_.+"
+	],
 	"replace": {
 		"typo3/cms-about": "self.version",
 		"typo3/cms-backend": "self.version",
