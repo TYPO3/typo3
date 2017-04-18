@@ -28,7 +28,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Class for starting TypoScript page generation
  *
  * The class is not instantiated as an objects but called directly with the "::" operator.
- * eg: \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit()
  */
 class PageGenerator
 {
@@ -37,145 +36,6 @@ class PageGenerator
      * Typoscript setting: [config][noPageTitle]
      */
     const NO_PAGE_TITLE = 2;
-
-    /**
-     * Setting some vars in TSFE, primarily based on TypoScript config settings.
-     *
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function pagegenInit()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $GLOBALS['TSFE'];
-        if ($tsfe->page['content_from_pid'] > 0) {
-            // make REAL copy of TSFE object - not reference!
-            $temp_copy_TSFE = clone $tsfe;
-            // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
-            $temp_copy_TSFE->id = $tsfe->page['content_from_pid'];
-            $temp_copy_TSFE->MP = '';
-            $temp_copy_TSFE->getPageAndRootlineWithDomain($tsfe->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $tsfe->domainStartPage);
-            $tsfe->contentPid = (int)$temp_copy_TSFE->id;
-            unset($temp_copy_TSFE);
-        }
-        if ($tsfe->config['config']['MP_defaults']) {
-            $temp_parts = GeneralUtility::trimExplode('|', $tsfe->config['config']['MP_defaults'], true);
-            foreach ($temp_parts as $temp_p) {
-                list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
-                $temp_ids = GeneralUtility::intExplode(',', $temp_idP);
-                foreach ($temp_ids as $temp_id) {
-                    $tsfe->MP_defaults[$temp_id] = $temp_MPp;
-                }
-            }
-        }
-        // Global vars...
-        $tsfe->indexedDocTitle = $tsfe->page['title'];
-        $tsfe->debug = !empty($tsfe->config['config']['debug']);
-        // Base url:
-        if (isset($tsfe->config['config']['baseURL'])) {
-            $tsfe->baseUrl = $tsfe->config['config']['baseURL'];
-        }
-        // Internal and External target defaults
-        $tsfe->intTarget = '' . $tsfe->config['config']['intTarget'];
-        $tsfe->extTarget = '' . $tsfe->config['config']['extTarget'];
-        $tsfe->fileTarget = '' . $tsfe->config['config']['fileTarget'];
-        if ($tsfe->config['config']['spamProtectEmailAddresses'] === 'ascii') {
-            $tsfe->spamProtectEmailAddresses = 'ascii';
-        } else {
-            $tsfe->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($tsfe->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
-        }
-        // calculate the absolute path prefix
-        if (!empty($tsfe->config['config']['absRefPrefix'])) {
-            $absRefPrefix = trim($tsfe->config['config']['absRefPrefix']);
-            if ($absRefPrefix === 'auto') {
-                $tsfe->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-            } else {
-                $tsfe->absRefPrefix = $absRefPrefix;
-            }
-        } else {
-            $tsfe->absRefPrefix = '';
-        }
-        if ($tsfe->type && $tsfe->config['config']['frameReloadIfNotInFrameset']) {
-            GeneralUtility::deprecationLog(
-                'frameReloadIfNotInFrameset has been marked as deprecated since TYPO3 v8, ' .
-                'and will be removed in TYPO3 v9.'
-            );
-            $tdlLD = $tsfe->tmpl->linkData($tsfe->page, '_top', $tsfe->no_cache, '');
-            $tsfe->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($tsfe->sPre) . ' && !parent.view_frame) top.location.href="' . $tsfe->baseUrlWrap($tdlLD['totalURL']) . '"';
-        }
-        $tsfe->compensateFieldWidth = '' . $tsfe->config['config']['compensateFieldWidth'];
-        $tsfe->lockFilePath = '' . $tsfe->config['config']['lockFilePath'];
-        $tsfe->lockFilePath = $tsfe->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-        if (isset($tsfe->config['config']['noScaleUp'])) {
-            GeneralUtility::deprecationLog('The TypoScript property "config.noScaleUp" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please use the global TYPO3 configuration setting "GFX/processor_allowUpscaling" instead.');
-        }
-        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($tsfe->config['config']['noScaleUp']) ? !$tsfe->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
-        $tsfe->ATagParams = trim($tsfe->config['config']['ATagParams']) ? ' ' . trim($tsfe->config['config']['ATagParams']) : '';
-        if ($tsfe->config['config']['setJS_mouseOver']) {
-            $tsfe->logDeprecatedTyposcript(
-                'config.setJS_mouseOver',
-                'The TypoScript property "config.setJS_mouseOver" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
-            );
-            $tsfe->setJS('mouseOver');
-        }
-        if ($tsfe->config['config']['setJS_openPic']) {
-            $tsfe->logDeprecatedTyposcript(
-                'config.setJS_openPic',
-                'The TypoScript property "config.setJS_openPic" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
-            );
-            $tsfe->setJS('openPic');
-        }
-        static::initializeSearchWordDataInTsfe();
-        // linkVars
-        $tsfe->calculateLinkVars();
-        // dtdAllowsFrames indicates whether to use the target attribute in links
-        $tsfe->dtdAllowsFrames = false;
-        if ($tsfe->config['config']['doctype']) {
-            if (in_array(
-                (string)$tsfe->config['config']['doctype'],
-                ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'],
-                true)
-            ) {
-                $tsfe->dtdAllowsFrames = true;
-            }
-        } else {
-            $tsfe->dtdAllowsFrames = true;
-        }
-        // Setting XHTML-doctype from doctype
-        if (!$tsfe->config['config']['xhtmlDoctype']) {
-            $tsfe->config['config']['xhtmlDoctype'] = $tsfe->config['config']['doctype'];
-        }
-        if ($tsfe->config['config']['xhtmlDoctype']) {
-            $tsfe->xhtmlDoctype = $tsfe->config['config']['xhtmlDoctype'];
-            // Checking XHTML-docytpe
-            switch ((string)$tsfe->config['config']['xhtmlDoctype']) {
-                case 'xhtml_trans':
-                case 'xhtml_strict':
-                    $tsfe->xhtmlVersion = 100;
-                    break;
-                case 'xhtml_frames':
-                    GeneralUtility::deprecationLog(
-                        'xhtmlDoctype = xhtml_frames  and doctype = xhtml_frames have been marked as deprecated since TYPO3 v8, ' .
-                        'and will be removed in TYPO3 v9.'
-                    );
-                    $tsfe->xhtmlVersion = 100;
-                    break;
-                case 'xhtml_basic':
-                    $tsfe->xhtmlVersion = 105;
-                    break;
-                case 'xhtml_11':
-                case 'xhtml+rdfa_10':
-                    $tsfe->xhtmlVersion = 110;
-                    break;
-                default:
-                    static::getPageRenderer()->setRenderXhtml(false);
-                    $tsfe->xhtmlDoctype = '';
-                    $tsfe->xhtmlVersion = 0;
-            }
-        } else {
-            static::getPageRenderer()->setRenderXhtml(false);
-        }
-    }
 
     /**
      * Rendering the page content
@@ -283,11 +143,6 @@ class PageGenerator
                     $docTypeParts[] = '<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-                    break;
-                case 'xhtml_frames':
-                    $docTypeParts[] = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
                     break;
                 case 'xhtml_basic':
                     $docTypeParts[] = '<!DOCTYPE html
@@ -493,34 +348,6 @@ class PageGenerator
 
         // Stylesheets
         $style = '';
-        if ($tsfe->pSetup['insertClassesFromRTE']) {
-            $tsfe->logDeprecatedTyposcript(
-                'page.insertClassesFromRTE',
-                'Loading CSS classes from the RTE directly is discouraged in TYPO3 v8, as CSS classes should be '
-                . 'defined in CSS/LESS/SASS files instead, ensuring to load only what is necessary for a page, and '
-                . 'speeding up page rendering ("above the fold"). Additionally CSS should be defined in CSS files or '
-                . 'TypoScript and not via magic of pageTSconfig, overlaid by userTSconfig.'
-            );
-            $pageTSConfig = $tsfe->getPagesTSconfig();
-            $RTEclasses = $pageTSConfig['RTE.']['classes.'];
-            if (is_array($RTEclasses)) {
-                foreach ($RTEclasses as $RTEclassName => $RTEvalueArray) {
-                    if ($RTEvalueArray['value']) {
-                        $style .= '
-.' . substr($RTEclassName, 0, -1) . ' {' . $RTEvalueArray['value'] . '}';
-                    }
-                }
-            }
-            if ($tsfe->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'])) {
-                $mSOa_tList = GeneralUtility::trimExplode(',', strtoupper($tsfe->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), true);
-                foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key => $mSOa_value) {
-                    if (!is_array($mSOa_value) && (in_array('*', $mSOa_tList) || in_array($mSOa_key, $mSOa_tList))) {
-                        $style .= '
-' . $mSOa_key . ' {' . $mSOa_value . '}';
-                    }
-                }
-            }
-        }
         // Setting body tag margins in CSS:
         if (isset($tsfe->pSetup['bodyTagMargins']) && $tsfe->pSetup['bodyTagMargins.']['useCSS']) {
             $margins = (int)$tsfe->pSetup['bodyTagMargins'];
@@ -885,15 +712,6 @@ class PageGenerator
             $pageRenderer->addFooterData(implode(LF, $tsfe->additionalFooterData));
         }
         // Header complete, now add content
-        if ($tsfe->pSetup['frameSet.']) {
-            GeneralUtility::deprecationLog(
-                'frameSet, FRAME and FRAMESET have been marked as deprecated since TYPO3 v8 ' .
-                'and will be removed in TYPO3 v9.'
-            );
-            $fs = GeneralUtility::makeInstance(FramesetRenderer::class);
-            $pageRenderer->addBodyContent($fs->make($tsfe->pSetup['frameSet.']));
-            $pageRenderer->addBodyContent(LF . '<noframes>' . LF);
-        }
         // Bodytag:
         if ($tsfe->config['config']['disableBodyTag']) {
             $bodyTag = '';
@@ -926,10 +744,6 @@ class PageGenerator
         } else {
             // Render complete page
             $tsfe->content = $pageRenderer->render();
-        }
-        // Ending page
-        if ($tsfe->pSetup['frameSet.']) {
-            $tsfe->content .= LF . '</noframes>';
         }
     }
 
@@ -1119,31 +933,6 @@ class PageGenerator
             }
         }
         return $metaTags;
-    }
-
-    /**
-     * Fills the sWordList property and builds the regular expression in TSFE that can be used to split
-     * strings by the submitted search words.
-     *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::sWordList
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::sWordRegEx
-     */
-    protected static function initializeSearchWordDataInTsfe()
-    {
-        /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $GLOBALS['TSFE'];
-
-        $tsfe->sWordRegEx = '';
-        $tsfe->sWordList = GeneralUtility::_GP('sword_list');
-        if (is_array($tsfe->sWordList)) {
-            $space = !empty($tsfe->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
-            foreach ($tsfe->sWordList as $val) {
-                if (trim($val) !== '') {
-                    $tsfe->sWordRegEx .= $space . preg_quote($val, '/') . $space . '|';
-                }
-            }
-            $tsfe->sWordRegEx = rtrim($tsfe->sWordRegEx, '|');
-        }
     }
 
     /**

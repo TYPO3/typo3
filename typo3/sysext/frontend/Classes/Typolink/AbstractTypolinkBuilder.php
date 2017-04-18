@@ -131,7 +131,7 @@ abstract class AbstractTypolinkBuilder
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $targetAttributeAllowed = (!$respectFrameSetOption || !$tsfe->config['config']['doctype'] ||
-            in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'], true));
+            in_array((string)$tsfe->config['config']['doctype'], ['xhtml_trans', 'xhtml_basic', 'html5'], true));
 
         $target = '';
         if (isset($conf[$name])) {

@@ -52,17 +52,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
 
-    /////////////////////////////////////////
-    // Tests concerning getPathFromRootline
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function getPathFromRootLineForEmptyRootLineReturnsEmptyString()
-    {
-        $this->assertEquals('', $this->pageSelectObject->getPathFromRootline([]));
-    }
-
     ///////////////////////////////
     // Tests concerning getExtURL
     ///////////////////////////////
@@ -88,52 +77,5 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'urltype' => 0,
             'url' => 'hello/world/'
         ]));
-    }
-
-    /////////////////////////////////////////
-    // Tests concerning shouldFieldBeOverlaid
-    /////////////////////////////////////////
-    /**
-     * @test
-     * @dataProvider getShouldFieldBeOverlaidData
-     */
-    public function shouldFieldBeOverlaid($field, $table, $value, $expected, $comment = '')
-    {
-        $GLOBALS['TCA']['fake_table']['columns'] = [
-            'exclude' => [
-                'l10n_mode' => 'exclude',
-                'config' => ['type' => 'input'],
-            ],
-            'default' => [
-                // no l10n_mode set
-                'config' => ['type' => 'input'],
-            ],
-            'prefixLangTitle' => [
-                'l10n_mode' => 'prefixLangTitle',
-                'config' => ['type' => 'input'],
-            ],
-        ];
-
-        $result = $this->pageSelectObject->_call('shouldFieldBeOverlaid', $table, $field, $value);
-        unset($GLOBALS['TCA']['fake_table']);
-
-        $this->assertSame($expected, $result, $comment);
-    }
-
-    /**
-     * Data provider for shouldFieldBeOverlaid
-     */
-    public function getShouldFieldBeOverlaidData()
-    {
-        return [
-            ['default',               'fake_table', 'foobar', true,  'default is to overlay non-empty string'],
-            ['default',               'fake_table', '',       true,  'default is to overlay empty string'],
-
-            ['exclude',               'fake_table', '',       true, 'exclude field with empty string'],
-            ['exclude',               'fake_table', 'foobar', true, 'exclude field with non-empty string'],
-
-            ['prefixLangTitle',       'fake_table', 'foobar', true,  'prefixLangTitle is merged with non-empty string'],
-            ['prefixLangTitle',       'fake_table', '',       true,  'prefixLangTitle is merged with empty string'],
-        ];
     }
 }

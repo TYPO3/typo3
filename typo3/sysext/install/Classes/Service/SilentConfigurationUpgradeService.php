@@ -94,6 +94,9 @@ class SilentConfigurationUpgradeService
         'BE/lang',
         // #80050
         'FE/cHashIncludePageId',
+        // #80711
+        'FE/noPHPscriptInclude',
+        'FE/maxSessionDataSize',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

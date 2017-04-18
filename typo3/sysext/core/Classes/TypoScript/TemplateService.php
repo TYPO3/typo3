@@ -1300,25 +1300,6 @@ class TemplateService
      * Various API functions, used from elsewhere in the frontend classes
      *
      *******************************************************************/
-    /**
-     * Implementation of the "optionSplit" feature in TypoScript (used eg. for MENU objects)
-     * What it does is to split the incoming TypoScript array so that the values are exploded by certain strings ("||" and "|*|") and each part distributed into individual TypoScript arrays with a similar structure, but individualized values.
-     * The concept is known as "optionSplit" and is rather advanced to handle but quite powerful, in particular for creating menus in TYPO3.
-     *
-     * @param array $conf A TypoScript array
-     * @param int $splitCount The number of items for which to generated individual TypoScript arrays
-     * @return array The individualized TypoScript array.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMGTEXT(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use TypoScriptService::explodeConfigurationForOptionSplit() instead
-     */
-    public function splitConfArray($conf, $splitCount)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!is_array($conf)) {
-            return [];
-        }
-        return GeneralUtility::makeInstance(TypoScriptService::class)->explodeConfigurationForOptionSplit($conf, (int)$splitCount);
-    }
 
     /**
      * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
@@ -1404,58 +1385,6 @@ class TemplateService
     }
 
     /**
-     * Reads the fileContent of $fileName and returns it.
-     * Similar to GeneralUtility::getUrl() but with an additional check if the path is allowed
-     *
-     * @param string $fileName Absolute filepath to record
-     * @return NULL|string The content returned
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use $this->getFileName() and file_get_contents directly
-     */
-    public function fileContent($fileName)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $fileName = $this->getFileName($fileName);
-        if ($fileName) {
-            return GeneralUtility::getUrl($fileName);
-        }
-        return null;
-    }
-
-    /**
-     * Removes the "?" of input string IF the "?" is the last character.
-     *
-     * @param string $url Input string
-     * @return string Output string, free of "?" in the end, if any such character.
-     * @see linkData(), \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use rtrim($url, '?') instead
-     */
-    public function removeQueryString($url)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (substr($url, -1) === '?') {
-            return substr($url, 0, -1);
-        } else {
-            return $url;
-        }
-    }
-
-    /**
-     * Takes a TypoScript array as input and returns an array which contains all integer properties found which had a value (not only properties). The output array will be sorted numerically.
-     * Call it like \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList()
-     *
-     * @param array $setupArr TypoScript array with numerical array in
-     * @param bool $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
-     * @return array An array with all integer properties listed in numeric order.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::makeImageMap()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use ArrayUtility::filterAndSortByNumericKeys instead
-     */
-    public static function sortedKeyList($setupArr, $acceptOnlyProperties = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return ArrayUtility::filterAndSortByNumericKeys($setupArr, $acceptOnlyProperties);
-    }
-
-    /**
      * Returns the level of the given page in the rootline - Multiple pages can be given by separating the UIDs by comma.
      *
      * @param string $list A list of UIDs for which the rootline-level should get returned
@@ -1487,15 +1416,15 @@ class TemplateService
      * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, no_cache, title and sectionIndex_uid.
      * @param string $oTarget Default target string to use IF not $page['target'] is set.
      * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
-     * @param string $script Alternative script name if you don't want to use $this->getTypoScriptFrontendController()->config['mainScript'] (normally set to "index.php")
+     * @param string $_ not in use anymore
      * @param array $overrideArray Array with overriding values for the $page array.
      * @param string $addParams Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.
      * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $this->getTypoScriptFrontendController()->config['config']['forceTypeValue'] if found.
      * @param string $targetDomain The target Doamin, if any was detected in typolink
      * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
-     * @see \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
      */
-    public function linkData($page, $oTarget, $no_cache, $script, $overrideArray = null, $addParams = '', $typeOverride = '', $targetDomain = '')
+    public function linkData($page, $oTarget, $no_cache, $_ = null, $overrideArray = null, $addParams = '', $typeOverride = '', $targetDomain = '')
     {
         $LD = [];
         // Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
@@ -1519,9 +1448,7 @@ class TemplateService
             }
         }
         // Setting ID/alias:
-        if (!$script) {
-            $script = $this->getTypoScriptFrontendController()->config['mainScript'];
-        }
+        $script = 'index.php';
         if ($page['alias']) {
             $LD['url'] = $script . '?id=' . rawurlencode($page['alias']);
         } else {

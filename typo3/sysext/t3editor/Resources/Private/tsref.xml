@@ -241,27 +241,6 @@ config.baseURL = https://typo3.org/sub_dir/]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="beLoginLinkIPList" type="string">
-			<description><![CDATA[[IP-number]
-      If set and REMOTE_ADDR matches one of the listed IP-numbers (Wild-card, *, allowed) then a link to the typo3/ login scrip with redirect pointing back to the page is shown.
-
-NOTE: beLoginLinkIPList_login and/or beLoginLinkIPList_logout (see below) must be defined if the link should show up!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="beLoginLinkIPList_login" type="string">
-			<description><![CDATA[HTML code wrapped with the login link, see 'beLoginLinkIPList'
-
-Example:
-<HR><B>LOGING</B>]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="beLoginLinkIPList_logout" type="string">
-			<description><![CDATA[HTML code wrapped with the logout link, see above]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="cache" type="array">
 			<description><![CDATA[The maximum cache lifetime of a page can not only be determined the start and stop times of content elements on the page itself, but also by arbitrary records on any other page. However, the page has to be configured so that TYPO3 knows, which records' start and stop times to include. Otherwise, the cache entry will be used although a start/stop date already passed by.
 
@@ -287,19 +266,6 @@ config.cache.all = fe_users:2]]></description>
       The number of second a page may remain in cache.
 This value is overridden by the value set in the page-record (field="cache_timeout") if this value is greater than zero.]]></description>
 			<default><![CDATA[86400 (=24H)]]></default>
-		</property>
-		<property name="compensateFieldWidth" type="double">
-			<description><![CDATA[this floating point value will be used by the FORMS cObject to compensate the length of the formfields text and input.
-Netscape renders formfields much longer than IE. If you want the two browsers to display the same size formfields, use a value of approx "0.6" for netscape-browsers.
-
-Example:
-[browser = netscape]
-  config.compensateFieldWidth = 0.6
-[global]
-
-This option may be overridden in the FORMS-cObject.]]></description>
-			<default><![CDATA[
-]]></default>
 		</property>
 		<property name="content_from_pid_allowOutsideDomain" type="boolean">
 			<description><![CDATA[Using the "Show content from this page instead" feature allows you to insert content from the current domain only. Setting this option will allow content included from anywhere in the page tree!]]></description>
@@ -355,7 +321,6 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<description><![CDATA[If set, then a document type declaration (and an XML prologue) will be generated. The value can either be a complete doctype or one of the following keywords:
 
 "xhtml_trans" for XHTML 1.0 Transitional doctype.
-"xhtml_frames" for XHTML 1.0 Frameset doctype.
 "xhtml_strict" for XHTML 1.0 Strict doctype.
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
@@ -405,12 +370,6 @@ If you are not running in compliance mode you will get some other message. MSIE 
 		<property name="forceTypeValue" type="int">
 			<description><![CDATA[Force the &type value of all TYPO3 generated links to a specific value (except if overruled by local forceTypeValue values).
 Useful if you run a template with special content at - say &type=95 - but still wants to keep your targets neutral. Then you set your targets to blank and this value to the type value you wish.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="frameReloadIfNotInFrameset" type="boolean">
-			<description><![CDATA[If set, then the current page will check if the page object name (eg. "page" or "frameset") exists as "parent.[name]" (eg. "parent.page") and if not the page will be reloaded in top frame. This secures that links from search engines to pages inside a frameset will load the frameset.
-Works only with type-values different from zero.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -556,10 +515,6 @@ locale_all = da_DK]]></description>
 Used by "filelist" in stdWrap]]></description>
 			<default><![CDATA[fileadmin/]]></default>
 		</property>
-		<property name="mainScript" type="string">
-			<description><![CDATA[This lets you specify an alternative "mainScript" which is the document that TYPO3 expects to be the default doc. This is used in form-tags and other places where TYPO3 needs to refer directly to the main-script of the application]]></description>
-			<default><![CDATA[index.php]]></default>
-		</property>
 		<property name="message_page_is_being_generated" type="string">
 			<description><![CDATA[Alternative HTML message that appears if a page is being generated.
 Normally when a page is being generated a temporary copy is stored in the cache-table with an expire-time of 30 seconds.
@@ -619,26 +574,9 @@ This is especially useful if you want to add RDFa or microformats to your html.
 Please take note that this tag is required for XHTML compliant output, so you should only disable this tag if you generate it manually already.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="noScaleUp" type="boolean">
-			<description><![CDATA[Normally images are scaled to the size specified via TypoScript. This also forces small images to be scaled to a larger size. This is not always a good thing.
-If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class \TYPO3\CMS\Core\Imaging\GraphicalFunctions (often "gifbuilder"). Deprecated since TYPO3 CMS 8.4, will be removed in TYPO3 CMS 9.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="no_cache" type="boolean">
 			<description><![CDATA[If this is set to true, the page will not be cached. If set to false, it's ignored. Other parameters may have set it to true of other reasons.]]></description>
 			<default><![CDATA[-]]></default>
-		</property>
-		<property name="pageGenScript" type="string">
-			<description><![CDATA[Alternative page generation script for applications using \TYPO3\CMS\Frontend\Http\RequestHandler for initialization, caching, stating and so on. This script is included in the global scope of \TYPO3\CMS\Frontend\Http\RequestHandler and thus you may include libraries here. Always use include_once for libraries.
-Remember not to output anything from such an included script. All content must be set into $TSFE->content. Take a look at \TYPO3\CMS\Frontend\Page\PageGenerator
-
-NOTE: This option is ignored if
-
-$TYPO3_CONF_VARS["FE"]["noPHPscriptInclude"]=1;
-
-is set in localconf.php.]]></description>
-			<default><![CDATA[typo3/sysext/frontend/Classes/Page/PageGenerator.php]]></default>
 		</property>
 		<property name="pageRendererTemplateFile" type="string">
 			<description><![CDATA[
@@ -904,7 +842,6 @@ Will create a link to page with id 29 and add GET parameters where the return UR
 If config.doctype is set to a string then config.xhtmlDoctype must be set to one of these keywords:
 
 "xhtml_trans" for XHTML 1.0 Transitional doctype.
-"xhtml_frames" for XHTML 1.0 Frameset doctype.
 "xhtml_strict" for XHTML 1.0 Strict doctype.
 "xhtml_basic" for XHTML basic doctype.
 "xhtml_11" for XHTML 1.1 doctype.
@@ -1284,11 +1221,6 @@ Notice: In TYPO3 4.0 and later, CSS Styled Content is configured to produce acce
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="compensateFieldWidth" type="double">
-			<description><![CDATA[Overriding option to the config-value of the same name. See "CONFIG" above.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="data" type="stdWrap">
 			<description><![CDATA[This is the data that sets up the form. See above.
 "||" can be used instead of linebreaks]]></description>
@@ -1550,87 +1482,6 @@ If value is tx_myextension[input][  |  ]  then the fieldname "email" would be
 		<property name="layout" type="string">
 			<description><![CDATA[The same as "layout" above, but for reuired fields]]></description>
 			<default><![CDATA[the "layout"-property]]></default>
-		</property>
-	</type>
-	<type id="FRAMESET">
-		<property name="1" type="FRAME">
-			<description><![CDATA[Configuration of frames and nested framesets.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="2" type="FRAME">
-			<description><![CDATA[Configuration of frames and nested framesets.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="3" type="FRAME">
-			<description><![CDATA[Configuration of frames and nested framesets.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="4" type="FRAME">
-			<description><![CDATA[Configuration of frames and nested framesets.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="cols" type="string">
-			<description><![CDATA[<frameset>-data:cols
-			Cols]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="params" type="string">
-			<description><![CDATA[<frameset>-params
-			Example:
-border="0" framespacing="0" frameborder="NO"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="rows" type="string">
-			<description><![CDATA[<frameset>-data:rows
-			Rows]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="FRAME">
-		<property name="name" type="string">
-			<description><![CDATA[<frame>-data:name
-			Manually set name of frame
-
-NOTE: Is set automatically and should not be overridden under normal conditions!]]></description>
-			<default><![CDATA[value of ".obj"]]></default>
-		</property>
-		<property name="obj" type="string">
-			<description><![CDATA[pointer to toplevel object-name
-			toplevel object-name of a PAGE / FRAMESET
-
-Example:
-"left", "page", "frameset"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="options" type="string">
-			<description><![CDATA[url-parameters
-			Example:
-print=1&othervar=anotherthing
-would add '&print=1&othervar=anotherthing' to the ".src"-content (if not ".src" is set manually!!)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="params" type="string">
-			<description><![CDATA[<frame>-params
-			Example:
-scrolling="AUTO" noresize frameborder="NO"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="src" type="string">
-			<description><![CDATA[<frame>-data:src
-			Manually set the src of the frame
-
-NOTE: Is set automatically and should not be overridden under normal conditions!]]></description>
-			<default><![CDATA[could be index.php?$id&$type ]]></default>
 		</property>
 	</type>
 	<type id="GifBuilderObj">
@@ -5143,11 +4994,6 @@ cssInline {
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="frameSet" type="FRAMESET">
-			<description><![CDATA[if any properties is set to this property, the page is made into a frameset.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="headTag" type="string">
 			<description><![CDATA[Head-tag if alternatives are wanted]]></description>
 			<default><![CDATA[<head>]]></default>
@@ -5277,15 +5123,6 @@ will produce following source:
 
 TYPO3.settings = {"TS":{"setting1":"Hello","setting2":"GoOnTop"}};
 ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="insertClassesFromRTE" type="boolean">
-			<description><![CDATA[If set, the classes for the Rich Text Editor configured in Page TSconfig is inserted in as the first thing in the Style-section right after the setting of the stylesheet.
-
-.add_mainStyleOverrideDefs = [* / list of tags ] - will add all the "RTE.default. mainStyleOverride_add" - tags configured as well.
-
-Might be deprecated soon. Most likely the RTE should be configured by the stylesheet instead. Stay tuned...]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6585,12 +6422,6 @@ The value is exploded by "|" into parameters:
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="fontTag" type="wrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="hash" type="stdWrap">
 			<description><![CDATA[Returns a hashed value of the current content. Use one of the alogrithms which are available in PHP. For a list of supported algorithms see http://www.php.net/manual/en/function.hash-algos.php
 
@@ -6866,11 +6697,6 @@ Examples:
 		</property>
 		<property name="rawUrlEncode" type="boolean">
 			<description><![CDATA[Passes the content through rawurlencode()-PHP-function]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="removeBadHTML" type="boolean">
-			<description><![CDATA[Removes "bad" HTML code based on a pattern that filters away HTML that is considered dangerous for XSS bugs.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

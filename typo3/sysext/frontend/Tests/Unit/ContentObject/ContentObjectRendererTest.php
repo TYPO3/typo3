@@ -2614,7 +2614,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
-            'mainScript' => 'index.php',
         ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
@@ -2856,7 +2855,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
-            'mainScript' => 'index.php',
         ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
@@ -3007,7 +3005,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
         $typoScriptFrontendControllerMockObject->config = [
             'config' => [],
-            'mainScript' => 'index.php',
         ];
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
@@ -3421,7 +3418,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             }
         }
         $this->assertSame(1, $notCallable);
-        $this->assertSame(91, $callable);
+        $this->assertSame(89, $callable);
     }
 
     /**
@@ -3468,7 +3465,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             }
         }
         $this->assertSame($expectExceptions, $exceptions);
-        $this->assertSame(91, $count);
+        $this->assertSame(89, $count);
     }
 
     /***************************************************************************

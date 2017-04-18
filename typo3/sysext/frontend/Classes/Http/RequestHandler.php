@@ -200,16 +200,11 @@ class RequestHandler implements RequestHandlerInterface
         $this->timeTracker->push('Page generation', '');
         if ($this->controller->isGeneratePage()) {
             $this->controller->generatePage_preProcessing();
-            $temp_theScript = $this->controller->generatePage_whichScript();
-            if ($temp_theScript) {
-                include $temp_theScript;
-            } else {
-                $this->controller->preparePageContentGeneration();
-                // Content generation
-                if (!$this->controller->isINTincScript()) {
-                    PageGenerator::renderContent();
-                    $this->controller->setAbsRefPrefix();
-                }
+            $this->controller->preparePageContentGeneration();
+            // Content generation
+            if (!$this->controller->isINTincScript()) {
+                PageGenerator::renderContent();
+                $this->controller->setAbsRefPrefix();
             }
             $this->controller->generatePage_postProcessing();
         } elseif ($this->controller->isINTincScript()) {

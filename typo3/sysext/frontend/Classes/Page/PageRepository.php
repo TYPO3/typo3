@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -947,31 +946,6 @@ class PageRepository
     }
 
     /**
-     * Creates a "path" string for the input root line array titles.
-     * Used for writing statistics.
-     *
-     * @param array $rl A rootline array!
-     * @param int $len The max length of each title from the rootline.
-     * @return string The path in the form "/page title/This is another pageti.../Another page
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getConfigArray()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getPathFromRootline($rl, $len = 20)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $path = '';
-        if (is_array($rl)) {
-            $c = count($rl);
-            for ($a = 0; $a < $c; $a++) {
-                if ($rl[$a]['uid']) {
-                    $path .= '/' . GeneralUtility::fixed_lgd_cs(strip_tags($rl[$a]['title']), $len);
-                }
-            }
-        }
-        return $path;
-    }
-
-    /**
      * Returns the URL type for the input page row IF the doktype is set to 3.
      *
      * @param array $pagerow The page row to return URL type for
@@ -1244,54 +1218,9 @@ class PageRepository
 
     /********************************
      *
-     * Caching and standard clauses
+     * Standard clauses
      *
      ********************************/
-
-    /**
-     * Returns data stored for the hash string in the cache "cache_hash"
-     * Can be used to retrieved a cached value, array or object
-     * Can be used from your frontend plugins if you like. It is also used to
-     * store the parsed TypoScript template structures. You can call it directly
-     * like PageRepository::getHash()
-     *
-     * @param string $hash The hash-string which was used to store the data value
-     * @return mixed The "data" from the cache
-     * @see tslib_TStemplate::start(), storeHash()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the Cache Manager directly to fetch cache entries
-     */
-    public static function getHash($hash)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $hashContent = null;
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $contentHashCache */
-        $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
-        $cacheEntry = $contentHashCache->get($hash);
-        if ($cacheEntry) {
-            $hashContent = $cacheEntry;
-        }
-        return $hashContent;
-    }
-
-    /**
-     * Stores $data in the 'cache_hash' cache with the hash key, $hash
-     * and visual/symbolic identification, $ident
-     *
-     * Can be used from your frontend plugins if you like. You can call it
-     * directly like PageRepository::storeHash()
-     *
-     * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
-     * @param mixed $data The data to store
-     * @param string $ident Is just a textual identification in order to inform about the content!
-     * @param int $lifetime The lifetime for the cache entry in seconds
-     * @see tslib_TStemplate::start(), getHash()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the Cache Manager directly to store cache entries
-     */
-    public static function storeHash($hash, $data, $ident, $lifetime = 0)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], (int)$lifetime);
-    }
 
     /**
      * Returns the "AND NOT deleted" clause for the tablename given IF
@@ -1896,21 +1825,6 @@ class PageRepository
             }
         }
         return $row;
-    }
-
-    /**
-     * Determine if a field needs an overlay
-     *
-     * @param string $table TCA tablename
-     * @param string $field TCA fieldname
-     * @param mixed $value Current value of the field
-     * @return bool Returns TRUE if a given record field needs to be overlaid
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected function shouldFieldBeOverlaid($table, $field, $value)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return true;
     }
 
     /**

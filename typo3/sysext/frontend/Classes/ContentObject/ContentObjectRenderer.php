@@ -173,8 +173,6 @@ class ContentObjectRenderer
         'bytes.' => 'array',
         'substring' => 'parameters',
         'substring.' => 'array',
-        'removeBadHTML' => 'boolean',
-        'removeBadHTML.' => 'array',
         'cropHTML' => 'crop',
         'cropHTML.' => 'array',
         'stripHtml' => 'boolean',
@@ -200,8 +198,6 @@ class ContentObjectRenderer
         'innerWrap.' => 'array',
         'innerWrap2' => 'wrap',
         'innerWrap2.' => 'array',
-        'fontTag' => 'wrap',
-        'fontTag.' => 'array',
         'addParams.' => 'array',
         'filelink.' => 'array',
         'preCObject' => 'cObject',
@@ -1364,34 +1360,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * Returns content of a file. If it's an image the content of the file is not returned but rather an image tag is.
-     *
-     * @param string $fName The filename, being a TypoScript resource data type
-     * @param string $addParams Additional parameters (attributes). Default is empty alt and title tags.
-     * @return string If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
-     * @see FILE()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use file_get_contents() directly
-     */
-    public function fileResource($fName, $addParams = 'alt="" title=""')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $tsfe = $this->getTypoScriptFrontendController();
-        $incFile = $tsfe->tmpl->getFileName($fName);
-        if ($incFile && file_exists($incFile)) {
-            $fileInfo = GeneralUtility::split_fileref($incFile);
-            $extension = $fileInfo['fileext'];
-            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
-                $imgFile = $incFile;
-                $imgInfo = @getimagesize($imgFile);
-                return '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $imgFile) . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
-            } elseif (filesize($incFile) < 1024 * 1024) {
-                return file_get_contents($incFile);
-            }
-        }
-        return '';
-    }
-
-    /**
      * Sets the SYS_LASTCHANGED timestamp if input timestamp is larger than current value.
      * The SYS_LASTCHANGED timestamp can be used by various caching/indexing applications to determine if the page has new content.
      * Therefore you should call this function with the last-changed timestamp of any element you display.
@@ -1530,204 +1498,6 @@ class ContentObjectRenderer
      * HTML template processing functions
      *
      ***********************************************/
-    /**
-     * Returns a subpart from the input content stream.
-     * A subpart is a part of the input stream which is encapsulated in a
-     * string matching the input string, $marker. If this string is found
-     * inside of HTML comment tags the start/end points of the content block
-     * returned will be that right outside that comment block.
-     * Example: The contennt string is
-     * "Hello <!--###sub1### begin--> World. How are <!--###sub1### end--> you?"
-     * If $marker is "###sub1###" then the content returned is
-     * " World. How are ". The input content string could just as well have
-     * been "Hello ###sub1### World. How are ###sub1### you?" and the result
-     * would be the same
-     * Wrapper for \TYPO3\CMS\Core\Utility\MarkerBasedTemplateService::getSubpart which behaves identical
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param string $marker The marker string, typically on the form "###[the marker string]###
-     * @return string The subpart found, if found.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function getSubpart($content, $marker)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->getSubpart($content, $marker);
-    }
-
-    /**
-     * Substitute subpart in input template stream.
-     * This function substitutes a subpart in $content with the content of
-     * $subpartContent.
-     * Wrapper for \TYPO3\CMS\Core\Utility\MarkerBasedTemplateService::substituteSubpart which behaves identical
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param string $marker The marker string, typically on the form "###[the marker string]###
-     * @param mixed $subpartContent The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the EXISTING content of the subpart (fetched by getSubpart()) thereby not removing the original content.
-     * @param bool|int $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
-     * @return string The processed HTML content string.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive);
-    }
-
-    /**
-     * Substitues multiple subparts at once
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
-     * @return string The processed HTML content string.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteSubpartArray($content, array $subpartsContent)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteSubpartArray($content, $subpartsContent);
-    }
-
-    /**
-     * Substitutes a marker string in the input content
-     * (by a simple str_replace())
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param string $marker The marker string, typically on the form "###[the marker string]###
-     * @param mixed $markContent The content to insert instead of the marker string found.
-     * @return string The processed HTML content string.
-     * @see substituteSubpart()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteMarker($content, $marker, $markContent)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteMarker($content, $marker, $markContent);
-    }
-
-    /**
-     * Multi substitution function with caching.
-     *
-     * This function should be a one-stop substitution function for working
-     * with HTML-template. It does not substitute by str_replace but by
-     * splitting. This secures that the value inserted does not themselves
-     * contain markers or subparts.
-     *
-     * Note that the "caching" won't cache the content of the substition,
-     * but only the splitting of the template in various parts. So if you
-     * want only one cache-entry per template, make sure you always pass the
-     * exact same set of marker/subpart keys. Else you will be flooding the
-     * user's cache table.
-     *
-     * This function takes three kinds of substitutions in one:
-     * $markContentArray is a regular marker-array where the 'keys' are
-     * substituted in $content with their values
-     *
-     * $subpartContentArray works exactly like markContentArray only is whole
-     * subparts substituted and not only a single marker.
-     *
-     * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where
-     * the subparts pointed to by the main key is wrapped with the 0/1 value
-     * alternating.
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $markContentArray Regular marker-array where the 'keys' are substituted in $content with their values
-     * @param array $subpartContentArray Exactly like markContentArray only is whole subparts substituted and not only a single marker.
-     * @param array $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
-     * @return string The output content stream
-     * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
-    }
-
-    /**
-     * Traverses the input $markContentArray array and for each key the marker
-     * by the same name (possibly wrapped and in upper case) will be
-     * substituted with the keys value in the array.
-     *
-     * This is very useful if you have a data-record to substitute in some
-     * content. In particular when you use the $wrap and $uppercase values to
-     * pre-process the markers. Eg. a key name like "myfield" could effectively
-     * be represented by the marker "###MYFIELD###" if the wrap value
-     * was "###|###" and the $uppercase boolean TRUE.
-     *
-     * @param string $content The content stream, typically HTML template content.
-     * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
-     * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
-     * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
-     * @param bool $deleteUnused If set, all unused marker are deleted.
-     * @return string The processed output stream
-     * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = false, $deleteUnused = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
-    }
-
-    /**
-     * Substitute marker array in an array of values
-     *
-     * @param mixed $tree If string, then it just calls substituteMarkerArray. If array(and even multi-dim) then for each key/value pair the marker array will be substituted (by calling this function recursively)
-     * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content string/array values.
-     * @return mixed The processed input variable.
-     * @see substituteMarker()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteMarkerInObject(&$tree, array $markContentArray)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (is_array($tree)) {
-            foreach ($tree as $key => $value) {
-                $this->templateService->substituteMarkerInObject($tree[$key], $markContentArray);
-            }
-        } else {
-            $tree = $this->templateService->substituteMarkerArray($tree, $markContentArray);
-        }
-        return $tree;
-    }
-
-    /**
-     * Replaces all markers and subparts in a template with the content provided in the structured array.
-     *
-     * @param string $content
-     * @param array $markersAndSubparts
-     * @param string $wrap
-     * @param bool $uppercase
-     * @param bool $deleteUnused
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = false, $deleteUnused = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->templateService->substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
-    }
-
-    /**
-     * Adds elements to the input $markContentArray based on the values from
-     * the fields from $fieldList found in $row
-     *
-     * @param array $markContentArray Array with key/values being marker-strings/substitution values.
-     * @param array $row An array with keys found in the $fieldList (typically a record) which values should be moved to the $markContentArray
-     * @param string $fieldList A list of fields from the $row array to add to the $markContentArray array. If empty all fields from $row will be added (unless they are integers)
-     * @param bool $nl2br If set, all values added to $markContentArray will be nl2br()'ed
-     * @param string $prefix Prefix string to the fieldname before it is added as a key in the $markContentArray. Notice that the keys added to the $markContentArray always start and end with "###
-     * @param bool $HSC If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
-     * @return array The modified $markContentArray
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use the MarkerBasedTemplateService instead.
-     */
-    public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = true, $prefix = 'FIELD_', $HSC = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $tsfe = $this->getTypoScriptFrontendController();
-        return $this->templateService->fillInMarkerArray($markContentArray, $row, $fieldList, $nl2br, $prefix, $HSC, !empty($tsfe->xhtmlDoctype));
-    }
 
     /**
      * Sets the current file object during iterations over files.
@@ -2598,19 +2368,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * removeBadHTML
-     * Removes HTML tags based on stdWrap properties
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function stdWrap_removeBadHTML($content = '')
-    {
-        return $this->removeBadHTML($content);
-    }
-
-    /**
      * cropHTML
      * Crops content to a given size while leaving HTML tags untouched
      *
@@ -2783,22 +2540,6 @@ class ContentObjectRenderer
     public function stdWrap_innerWrap2($content = '', $conf = [])
     {
         return $this->wrap($content, $conf['innerWrap2']);
-    }
-
-    /**
-     * fontTag
-     * A wrap formerly used to apply font tags to format the content
-     * See wrap
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for fontTag.
-     * @return string The processed input value
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function stdWrap_fontTag($content = '', $conf = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->wrap($content, $conf['fontTag']);
     }
 
     /**
@@ -3793,47 +3534,6 @@ class ContentObjectRenderer
             $splittedContent = array_reverse($splittedContent);
         }
         return implode('', $splittedContent);
-    }
-
-    /**
-     * Function for removing malicious HTML code when you want to provide some HTML code user-editable.
-     * The purpose is to avoid XSS attacks and the code will be continuously modified to remove such code.
-     * For a complete reference with javascript-on-events, see http://www.wdvl.com/Authoring/JavaScript/Events/events_target.html
-     *
-     * @param string $text Input string to be cleaned.
-     * @return string Return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function removeBadHTML($text)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Copyright 2002-2003 Thomas Bley
-        $text = preg_replace([
-            '\'<script[^>]*?>.*?</script[^>]*?>\'si',
-            '\'<applet[^>]*?>.*?</applet[^>]*?>\'si',
-            '\'<object[^>]*?>.*?</object[^>]*?>\'si',
-            '\'<iframe[^>]*?>.*?</iframe[^>]*?>\'si',
-            '\'<frameset[^>]*?>.*?</frameset[^>]*?>\'si',
-            '\'<style[^>]*?>.*?</style[^>]*?>\'si',
-            '\'<marquee[^>]*?>.*?</marquee[^>]*?>\'si',
-            '\'<script[^>]*?>\'si',
-            '\'<meta[^>]*?>\'si',
-            '\'<base[^>]*?>\'si',
-            '\'<applet[^>]*?>\'si',
-            '\'<object[^>]*?>\'si',
-            '\'<link[^>]*?>\'si',
-            '\'<iframe[^>]*?>\'si',
-            '\'<frame[^>]*?>\'si',
-            '\'<frameset[^>]*?>\'si',
-            '\'<input[^>]*?>\'si',
-            '\'<form[^>]*?>\'si',
-            '\'<embed[^>]*?>\'si',
-            '\'background-image:url\'si',
-            '\'<\\w+.*?(onabort|onbeforeunload|onblur|onchange|onclick|ondblclick|ondragdrop|onerror|onfilterchange|onfocus|onhelp|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onmove|onreadystatechange|onreset|onresize|onscroll|onselect|onselectstart|onsubmit|onunload).*?>\'si'
-        ], '', $text);
-        $text = preg_replace('/<a[^>]*href[[:space:]]*=[[:space:]]*["\']?[[:space:]]*javascript[^>]*/i', '', $text);
-        // Return clean content
-        return $text;
     }
 
     /**
@@ -6259,29 +5959,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * Parses a set of text lines with "[parameters] = [values]" into an array with parameters as keys containing the value
-     * If lines are empty or begins with "/" or "#" then they are ignored.
-     *
-     * @param string $params Text which the parameters
-     * @return array array with the parameters as key/value pairs
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-     */
-    public function processParams($params)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $paramArr = [];
-        $lines = GeneralUtility::trimExplode(LF, $params, true);
-        foreach ($lines as $val) {
-            $pair = explode('=', $val, 2);
-            $key = trim($pair[0]);
-            if ($key[0] !== '#' && $key[0] !== '/') {
-                $paramArr[$key] = trim($pair[1]);
-            }
-        }
-        return $paramArr;
-    }
-
-    /**
      * Cleans up a string of keywords. Keywords at splitted by "," (comma)  ";" (semi colon) and linebreak
      *
      * @param string $content String of keywords
@@ -6457,45 +6134,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * Checks if $url has a '?' in it and if not, a '?' is inserted between $url and $params, which are anyway concatenated and returned
-     *
-     * @param string $url Input URL
-     * @param string $params URL parameters
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use this functionality by yourself instead of using cObj for that
-     */
-    public function URLqMark($url, $params)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if ($params && !strstr($url, '?')) {
-            return $url . '?' . $params;
-        } else {
-            return $url . $params;
-        }
-    }
-
-    /**
-     * Clears TypoScript properties listed in $propList from the input TypoScript array.
-     *
-     * @param array $TSArr TypoScript array of values/properties
-     * @param string $propList List of properties to clear both value/properties for. Eg. "myprop,another_property
-     * @return array The TypoScript array
-     * @see gifBuilderTextBox()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
-     */
-    public function clearTSProperties($TSArr, $propList)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $list = explode(',', $propList);
-        foreach ($list as $prop) {
-            $prop = trim($prop);
-            unset($TSArr[$prop]);
-            unset($TSArr[$prop . '.']);
-        }
-        return $TSArr;
-    }
-
-    /**
      * Resolves a TypoScript reference value to the full set of properties BUT overridden with any local properties set.
      * So the reference is resolved but overlaid with local TypoScript properties of the reference value.
      *
@@ -6517,108 +6155,6 @@ class ContentObjectRenderer
             $confArr[$prop . '.'] = $conf;
         }
         return $confArr;
-    }
-
-    /**
-     * This function creates a number of TEXT-objects in a Gifbuilder configuration in order to create a text-field like thing.
-     *
-     * @param array $gifbuilderConf TypoScript properties for Gifbuilder - TEXT GIFBUILDER objects are added to this array and returned.
-     * @param array $conf TypoScript properties for this function
-     * @param string $text The text string to write onto the GIFBUILDER file
-     * @return array The modified $gifbuilderConf array
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
-     */
-    public function gifBuilderTextBox($gifbuilderConf, $conf, $text)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $chars = (int)$conf['chars'] ?: 20;
-        $lineDist = (int)$conf['lineDist'] ?: 20;
-        $Valign = strtolower(trim($conf['Valign']));
-        $tmplObjNumber = (int)$conf['tmplObjNumber'];
-        $maxLines = (int)$conf['maxLines'];
-        if ($tmplObjNumber && $gifbuilderConf[$tmplObjNumber] === 'TEXT') {
-            $textArr = $this->linebreaks($text, $chars, $maxLines);
-            $angle = (int)$gifbuilderConf[$tmplObjNumber . '.']['angle'];
-            foreach ($textArr as $c => $textChunk) {
-                $index = $tmplObjNumber + 1 + $c * 2;
-                // Workarea
-                $gifbuilderConf = $this->clearTSProperties($gifbuilderConf, $index);
-                $rad_angle = 2 * pi() / 360 * $angle;
-                $x_d = sin($rad_angle) * $lineDist;
-                $y_d = cos($rad_angle) * $lineDist;
-                $diff_x_d = 0;
-                $diff_y_d = 0;
-                if ($Valign === 'center') {
-                    $diff_x_d = $x_d * count($textArr);
-                    $diff_x_d = $diff_x_d / 2;
-                    $diff_y_d = $y_d * count($textArr);
-                    $diff_y_d = $diff_y_d / 2;
-                }
-                $x_d = round($x_d * $c - $diff_x_d);
-                $y_d = round($y_d * $c - $diff_y_d);
-                $gifbuilderConf[$index] = 'WORKAREA';
-                $gifbuilderConf[$index . '.']['set'] = $x_d . ',' . $y_d;
-                // Text
-                $index++;
-                $gifbuilderConf = $this->clearTSProperties($gifbuilderConf, $index);
-                $gifbuilderConf[$index] = 'TEXT';
-                $gifbuilderConf[$index . '.'] = $this->clearTSProperties($gifbuilderConf[$tmplObjNumber . '.'], 'text');
-                $gifbuilderConf[$index . '.']['text'] = $textChunk;
-            }
-            $gifbuilderConf = $this->clearTSProperties($gifbuilderConf, $tmplObjNumber);
-        }
-        return $gifbuilderConf;
-    }
-
-    /**
-     * Splits a text string into lines and returns an array with these lines but a max number of lines.
-     *
-     * @param string $string The string to break
-     * @param int $chars Max number of characters per line.
-     * @param int $maxLines Max number of lines in all.
-     * @return array array with lines.
-     * @access private
-     * @see gifBuilderTextBox()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the textbox is built within GifBuilder
-     */
-    public function linebreaks($string, $chars, $maxLines = 0)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $lines = explode(LF, $string);
-        $lineArr = [];
-        $c = 0;
-        foreach ($lines as $paragraph) {
-            $words = explode(' ', $paragraph);
-            foreach ($words as $word) {
-                if (strlen($lineArr[$c] . $word) > $chars) {
-                    $c++;
-                }
-                if (!$maxLines || $c < $maxLines) {
-                    $lineArr[$c] .= $word . ' ';
-                }
-            }
-            $c++;
-        }
-        return $lineArr;
-    }
-
-    /**
-     * Includes resources if the config property 'includeLibs' is set.
-     *
-     * @param array $config TypoScript configuration
-     * @return bool Whether a configuration for including libs was found and processed
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use proper class loading instead.
-     */
-    public function includeLibs(array $config)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $librariesIncluded = false;
-        if (isset($config['includeLibs']) && $config['includeLibs']) {
-            $libraries = GeneralUtility::trimExplode(',', $config['includeLibs'], true);
-            $this->getTypoScriptFrontendController()->includeLibraries($libraries);
-            $librariesIncluded = true;
-        }
-        return $librariesIncluded;
     }
 
     /***********************************************
@@ -6891,23 +6427,14 @@ class ContentObjectRenderer
      * @param string $searchTable The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
      * @return string The WHERE clause.
      */
-    public function searchWhere($searchWords, $searchFieldList, $searchTable = '')
+    public function searchWhere($searchWords, $searchFieldList, $searchTable)
     {
         if (!$searchWords) {
             return ' AND 1=1';
         }
 
-        if (empty($searchTable)) {
-            GeneralUtility::deprecationLog(
-                'Parameter 3 of ContentObjectRenderer::searchWhere() is required can not be omitted anymore. Using Default connection!'
-            );
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-                ->createQueryBuilder();
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($searchTable);
-        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($searchTable);
 
         $prefixTableName = $searchTable ? $searchTable . '.' : '';
 
@@ -7446,64 +6973,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * Helper function for getQuery(), creating the WHERE clause of the SELECT query
-     *
-     * @param string $table The table name
-     * @param array $conf The TypoScript configuration properties
-     * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
-     * @return mixed A WHERE clause based on the relevant parts of the TypoScript properties for a "select" function in TypoScript, see link. If $returnQueryArray is FALSE the where clause is returned as a string with WHERE, GROUP BY and ORDER BY parts, otherwise as an array with these parts.
-     * @access private
-     * @see getQuery()
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getWhere($table, $conf, $returnQueryArray = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Init:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryConstraints = $this->getQueryConstraints($table, $conf);
-        $query = '';
-
-        $queryParts = [
-            'SELECT' => '',
-            'FROM' => '',
-            'WHERE' => '',
-            'GROUPBY' => '',
-            'ORDERBY' => '',
-            'LIMIT' => ''
-        ];
-
-        // MAKE WHERE:
-        if (!empty($queryConstraints['where'])) {
-            $queryParts['WHERE'] = (string)$queryConstraints['where'];
-            $query = 'WHERE ' . $queryParts['WHERE'];
-        }
-
-        // GROUP BY
-        if (!empty($queryConstraints['groupBy'])) {
-            $queryParts['GROUPBY'] = implode(
-                ', ',
-                array_map([$queryBuilder, 'quoteIdentifier'], $queryConstraints['groupBy'])
-            );
-            $query .= ' GROUP BY ' . $queryParts['GROUPBY'];
-        }
-
-        // ORDER BY
-        if (!empty($queryConstraints['orderBy'])) {
-            $orderBy = [];
-            foreach ($queryConstraints['orderBy'] as $orderPair) {
-                list($fieldName, $direction) = $orderPair;
-                $orderBy[] = trim($queryBuilder->quoteIdentifier($fieldName) . ' ' . $direction);
-            }
-            $queryParts['ORDERBY'] = implode(', ', $orderBy);
-            $query .= ' ORDER BY ' . $queryParts['ORDERBY'];
-        }
-
-        // Return result:
-        return $returnQueryArray ? $queryParts : $query;
-    }
-
-    /**
      * Helper function for getQuery, sanitizing the select part
      *
      * This functions checks if the necessary fields are part of the select
@@ -7549,7 +7018,7 @@ class ContentObjectRenderer
      * @param array $listArr Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
      * @return array Returns the array of remaining page UID numbers
      * @access private
-     * @see getWhere(),checkPid()
+     * @see checkPid()
      */
     public function checkPidArray($listArr)
     {
@@ -7592,7 +7061,7 @@ class ContentObjectRenderer
      * @param int $uid Page UID to test
      * @return bool TRUE if OK
      * @access private
-     * @see getWhere(), checkPidArray()
+     * @see checkPidArray()
      */
     public function checkPid($uid)
     {

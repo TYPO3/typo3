@@ -957,7 +957,6 @@ return [
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',
         'debug' => false,
-        'noPHPscriptInclude' => false,
         'compressionLevel' => 0,
         'pageNotFound_handling' => '',
         'pageNotFound_handling_statheader' => 'HTTP/1.0 404 Not Found',
@@ -971,7 +970,6 @@ return [
         'loginSecurityLevel' => '',
         'lifetime' => 0,
         'sessionDataLifetime' => 86400,
-        'maxSessionDataSize' => 10000,
         'permalogin' => 0,
         'cookieDomain' => '',
         'cookieName' => 'fe_typo_user',

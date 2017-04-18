@@ -519,13 +519,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     /**
      * Saves session data, either persistent or bound to current session cookie. Please see getKey() for more details.
      * When a value is set the flags $this->userData_change or $this->sesData_change will be set so that the final call to ->storeSessionData() will know if a change has occurred and needs to be saved to the database.
-     * Notice: The key "recs" is already used by the function record_registration() which stores table/uid=value pairs in that key. This is used for the shopping basket among other things.
      * Notice: Simply calling this function will not save the data to the database! The actual saving is done in storeSessionData() which is called as some of the last things in \TYPO3\CMS\Frontend\Http\RequestHandler. So if you exit before this point, nothing gets saved of course! And the solution is to call $GLOBALS['TSFE']->storeSessionData(); before you exit.
      *
      * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
      * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sessionData) and this value determines in which key the $data value will be stored.
      * @param mixed $data The data value to store in $key
-     * @see setKey(), storeSessionData(), record_registration()
+     * @see setKey(), storeSessionData()
      */
     public function setKey($type, $key, $data)
     {
@@ -576,43 +575,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $this->setSessionData($key, $data);
         $this->storeSessionData();
-    }
-
-    /**
-     * Registration of records/"shopping basket" in session data
-     * This will take the input array, $recs, and merge into the current "recs" array found in the session data.
-     * If a change in the recs storage happens (which it probably does) the function setKey() is called in order to store the array again.
-     *
-     * @param array $recs The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
-     * @param int $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Automatically feeding a "basket" by magic GET/POST keyword "recs" has been deprecated.
-     */
-    public function record_registration($recs, $maxSizeOfSessionData = 0)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Storing value ONLY if there is a confirmed cookie set,
-        // otherwise a shellscript could easily be spamming the fe_sessions table
-        // with bogus content and thus bloat the database
-        if (!$maxSizeOfSessionData || $this->isCookieSet()) {
-            if ($recs['clear_all']) {
-                $this->setKey('ses', 'recs', []);
-            }
-            $change = 0;
-            $recs_array = $this->getKey('ses', 'recs');
-            foreach ($recs as $table => $data) {
-                if (is_array($data)) {
-                    foreach ($data as $rec_id => $value) {
-                        if ($value != $recs_array[$table][$rec_id]) {
-                            $recs_array[$table][$rec_id] = $value;
-                            $change = 1;
-                        }
-                    }
-                }
-            }
-            if ($change && (!$maxSizeOfSessionData || strlen(serialize($recs_array)) < $maxSizeOfSessionData)) {
-                $this->setKey('ses', 'recs', $recs_array);
-            }
-        }
     }
 
     /**

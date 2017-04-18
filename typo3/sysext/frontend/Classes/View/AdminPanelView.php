@@ -765,7 +765,16 @@ class AdminPanelView
                 $tableArr[] = [$this->extGetLL('info_feuserName'), htmlspecialchars($tsfe->fe_user->user['username'])];
                 $tableArr[] = [$this->extGetLL('info_feuserId'), htmlspecialchars($tsfe->fe_user->user['uid'])];
             }
-            $tableArr[] = [$this->extGetLL('info_totalParsetime'), $tsfe->scriptParseTime . ' ms', true];
+
+            // Compensates for the time consumed with Back end user initialization.
+            $microtime_start = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : null;
+            $microtime_end = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : null;
+            $microtime_BE_USER_start = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : null;
+            $microtime_BE_USER_end = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : null;
+            $timeTracker = $this->getTimeTracker();
+            $scriptParseTime = $timeTracker->getMilliseconds($microtime_end) - $timeTracker->getMilliseconds($microtime_start) - ($timeTracker->getMilliseconds($microtime_BE_USER_end) - $timeTracker->getMilliseconds($microtime_BE_USER_start));
+
+            $tableArr[] = [$this->extGetLL('info_totalParsetime'), $scriptParseTime . ' ms', true];
             $table = '';
             foreach ($tableArr as $key => $arr) {
                 $label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\Plugin;
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -228,14 +227,6 @@ class AbstractPlugin
     protected $frontendController;
 
     /**
-     * Property for accessing DatabaseConnection centrally
-     *
-     * @var DatabaseConnection
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the Doctrine DBAL layer via the ConnectionPool class
-     */
-    protected $databaseConnection;
-
-    /**
      * @var MarkerBasedTemplateService
      */
     protected $templateService;
@@ -245,12 +236,11 @@ class AbstractPlugin
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
      *
-     * @param DatabaseConnection $databaseConnection, deprecated in TYPO3 v8, will be removed in TYPO3 v9
+     * @param $_ unused, previously used for the TYPO3_DB database connection
      * @param TypoScriptFrontendController $frontendController
      */
-    public function __construct(DatabaseConnection $databaseConnection = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
-        $this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         // Setting piVars:
@@ -941,10 +931,9 @@ class AbstractPlugin
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string $alternativeLabel Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-     * @param bool $hsc If TRUE, the output label is passed through htmlspecialchars()
      * @return string The value from LOCAL_LANG.
      */
-    public function pi_getLL($key, $alternativeLabel = '', $hsc = false)
+    public function pi_getLL($key, $alternativeLabel = '')
     {
         $word = null;
         if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])
@@ -975,14 +964,7 @@ class AbstractPlugin
                 $word = isset($this->LLtestPrefixAlt) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
             }
         }
-        $output = isset($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
-        if ($hsc) {
-            GeneralUtility::deprecationLog(
-                'Calling pi_getLL() with argument \'hsc\' has been deprecated.'
-            );
-            $output = htmlspecialchars($output);
-        }
-        return $output;
+        return isset($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
     }
 
     /**

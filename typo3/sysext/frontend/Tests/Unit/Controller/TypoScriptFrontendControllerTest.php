@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -36,6 +37,9 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $this->subject->sys_page = $pageRepository;
+
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->getMock();
+        $this->subject->_set('pageRenderer', $pageRenderer);
     }
 
     /**
@@ -227,5 +231,60 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit
     {
         $this->subject->baseUrl = $baseUrl;
         $this->assertSame($expected, $this->subject->baseUrlWrap($url));
+    }
+
+    /**
+     * @return array
+     */
+    public function initializeSearchWordDataInTsfeBuildsCorrectRegexDataProvider()
+    {
+        return [
+            'one simple search word' => [
+                ['test'],
+                false,
+                'test',
+            ],
+            'one simple search word with standalone words' => [
+                ['test'],
+                true,
+                '[[:space:]]test[[:space:]]',
+            ],
+            'two simple search words' => [
+                ['test', 'test2'],
+                false,
+                'test|test2',
+            ],
+            'two simple search words with standalone words' => [
+                ['test', 'test2'],
+                true,
+                '[[:space:]]test[[:space:]]|[[:space:]]test2[[:space:]]',
+            ],
+            'word with regex chars' => [
+                ['A \\ word with / a bunch of [] regex () chars .*'],
+                false,
+                'A \\\\ word with \\/ a bunch of \\[\\] regex \\(\\) chars \\.\\*',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider initializeSearchWordDataInTsfeBuildsCorrectRegexDataProvider
+     *
+     * @param array $searchWordGetParameters The values that should be loaded in the sword_list GET parameter.
+     * @param bool $enableStandaloneSearchWords If TRUE the sword_standAlone option will be enabled.
+     * @param string $expectedRegex The expected regex after processing the search words.
+     */
+    public function initializeSearchWordDataInTsfeBuildsCorrectRegex(array $searchWordGetParameters, $enableStandaloneSearchWords, $expectedRegex)
+    {
+        $_GET['sword_list'] = $searchWordGetParameters;
+
+        $this->subject->page = [];
+        if ($enableStandaloneSearchWords) {
+            $this->subject->config = ['config' => ['sword_standAlone' => 1]];
+        }
+
+        $this->subject->preparePageContentGeneration();
+        $this->assertEquals($this->subject->sWordRegEx, $expectedRegex);
     }
 }

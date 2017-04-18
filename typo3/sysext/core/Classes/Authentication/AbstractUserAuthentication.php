@@ -343,7 +343,6 @@ abstract class AbstractUserAuthentication
     /**
      * Holds deserialized data from session records.
      * 'Reserved' keys are:
-     *   - 'recs': (DEPRECATED) Array: Used to 'register' records, eg in a shopping basket. Structure: [recs][tablename][record_uid]=number
      *   - 'sys': Reserved for TypoScript standard code.
      * @var array
      */

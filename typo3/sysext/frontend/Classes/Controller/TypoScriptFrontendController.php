@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -487,13 +486,6 @@ class TypoScriptFrontendController
     public $absRefPrefix = '';
 
     /**
-     * Factor for form-field widths compensation
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     * @var string
-     */
-    public $compensateFieldWidth = '';
-
-    /**
      * Lock file path
      * @var string
      */
@@ -527,15 +519,6 @@ class TypoScriptFrontendController
      * @var string
      */
     public $linkVars = '';
-
-    /**
-     * A string set with a comma list of additional GET vars which should NOT be
-     * included in the cHash calculation. These vars should otherwise be detected
-     * and involved in caching, eg. through a condition in TypoScript.
-     * @deprecatd since TYPO3 v8, will be removed in TYPO3 v9, this is taken care of via TYPO3_CONF_VARS nowadays
-     * @var string
-     */
-    public $excludeCHashVars = '';
 
     /**
      * If set, edit icons are rendered aside content records. Must be set only if
@@ -704,35 +687,6 @@ class TypoScriptFrontendController
     public $content = '';
 
     /**
-     * @var int
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the calculations in setParseTime() directly
-     */
-    public $scriptParseTime = 0;
-
-    /**
-     * Character set (charset) conversion object:
-     * charset conversion class. May be used by any application.
-     *
-     * @var CharsetConverter
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, instantiate CharsetConverter on your own if you need it
-     */
-    public $csConvObj;
-
-    /**
-     * The default charset used in the frontend if nothing else is set.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     * @var string
-     */
-    public $defaultCharSet = 'utf-8';
-
-    /**
-     * Internal charset of the frontend during rendering. (Default: UTF-8)
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     * @var string
-     */
-    public $renderCharset = 'utf-8';
-
-    /**
      * Output charset of the websites content. This is the charset found in the
      * header, meta tag etc. If different than utf-8 a conversion
      * happens before output to browser. Defaults to utf-8.
@@ -872,7 +826,6 @@ class TypoScriptFrontendController
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
         $this->RDCT = $RDCT;
         $this->uniqueString = md5(microtime());
-        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
         $this->initPageRenderer();
         // Call post processing function for constructor:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
@@ -1009,15 +962,6 @@ class TypoScriptFrontendController
         }
         $this->fe_user->start();
         $this->fe_user->unpack_uc();
-
-        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-        // @todo: With the removal of that in v9, TYPO3_CONF_VARS maxSessionDataSize can be removed as well,
-        // @todo: and a silent ugrade wizard to remove the setting from LocalConfiguration should be added.
-        $recs = GeneralUtility::_GP('recs');
-        if (is_array($recs)) {
-            // If any record registration is submitted, register the record.
-            $this->fe_user->record_registration($recs, $GLOBALS['TYPO3_CONF_VARS']['FE']['maxSessionDataSize']);
-        }
 
         // Call hook for possible manipulation of frontend user object
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {
@@ -2532,10 +2476,6 @@ class TypoScriptFrontendController
                     }
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
-                    $this->config['mainScript'] = trim($this->config['config']['mainScript']) ?: 'index.php';
-                    if (isset($this->config['config']['mainScript']) || $this->config['mainScript'] !== 'index.php') {
-                        $this->logDeprecatedTyposcript('config.mainScript', 'Setting the frontend script to something else than index.php is deprecated as of TYPO3 v8, and will not be possible in TYPO3 v9 without a custom extension');
-                    }
                     // Class for render Header and Footer parts
                     if ($this->pSetup['pageHeaderFooterTemplateFile']) {
                         $file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
@@ -3216,41 +3156,9 @@ class TypoScriptFrontendController
         } else {
             $this->absRefPrefix = '';
         }
-        if ($this->type && $this->config['config']['frameReloadIfNotInFrameset']) {
-            $this->logDeprecatedTyposcript(
-                'config.frameReloadIfNotInFrameset',
-                'frameReloadIfNotInFrameset has been marked as deprecated since TYPO3 v8, ' .
-                'and will be removed in TYPO3 v9.'
-            );
-            $tdlLD = $this->tmpl->linkData($this->page, '_top', $this->no_cache, '');
-            $this->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($this->sPre) . ' && !parent.view_frame) top.location.href="' . $this->baseUrlWrap($tdlLD['totalURL']) . '"';
-        }
-        $this->compensateFieldWidth = '' . $this->config['config']['compensateFieldWidth'];
         $this->lockFilePath = '' . $this->config['config']['lockFilePath'];
         $this->lockFilePath = $this->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-        if (isset($this->config['config']['noScaleUp'])) {
-            $this->logDeprecatedTyposcript(
-                'config.noScaleUp',
-                'The TypoScript property "config.noScaleUp" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. ' .
-                'Please use the global TYPO3 configuration setting "GFX/processor_allowUpscaling" instead.'
-            );
-        }
-        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($this->config['config']['noScaleUp']) ? !$this->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
         $this->ATagParams = trim($this->config['config']['ATagParams']) ? ' ' . trim($this->config['config']['ATagParams']) : '';
-        if ($this->config['config']['setJS_mouseOver']) {
-            $this->logDeprecatedTyposcript(
-                'config.setJS_mouseOver',
-                'The TypoScript property "config.setJS_mouseOver" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
-            );
-            $this->setJS('mouseOver');
-        }
-        if ($this->config['config']['setJS_openPic']) {
-            $this->logDeprecatedTyposcript(
-                'config.setJS_openPic',
-                'The TypoScript property "config.setJS_openPic" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Please include the JavaScript snippet directly via TypoScript page.jsInline.'
-            );
-            $this->setJS('openPic');
-        }
         $this->initializeSearchWordDataInTsfe();
         // linkVars
         $this->calculateLinkVars();
@@ -3259,7 +3167,7 @@ class TypoScriptFrontendController
         if ($this->config['config']['doctype']) {
             if (in_array(
                 (string)$this->config['config']['doctype'],
-                ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'],
+                ['xhtml_trans', 'xhtml_basic', 'html5'],
                 true)
             ) {
                 $this->dtdAllowsFrames = true;
@@ -3277,14 +3185,6 @@ class TypoScriptFrontendController
             switch ((string)$this->config['config']['xhtmlDoctype']) {
                 case 'xhtml_trans':
                 case 'xhtml_strict':
-                    $this->xhtmlVersion = 100;
-                    break;
-                case 'xhtml_frames':
-                    $this->logDeprecatedTyposcript(
-                        'config.xhtmlDoctype=frames',
-                        'xhtmlDoctype = xhtml_frames  and doctype = xhtml_frames have been marked as deprecated since TYPO3 v8, ' .
-                        'and will be removed in TYPO3 v9.'
-                    );
                     $this->xhtmlVersion = 100;
                     break;
                 case 'xhtml_basic':
@@ -3327,22 +3227,6 @@ class TypoScriptFrontendController
             }
             $this->sWordRegEx = rtrim($this->sWordRegEx, '|');
         }
-    }
-
-    /**
-     * Determines to include custom or pagegen.php script
-     * returns script-filename if a TypoScript (config) script is defined and should be included instead of pagegen.php
-     *
-     * @return string|NULL The relative filepath of "config.pageGenScript" if found and allowed
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function generatePage_whichScript()
-    {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] && $this->config['config']['pageGenScript']) {
-            GeneralUtility::logDeprecatedFunction();
-            return $this->tmpl->getFileName($this->config['config']['pageGenScript']);
-        }
-        return null;
     }
 
     /**
@@ -3762,24 +3646,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Sets the parsetime of the page.
-     *
-     * @access private
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the Request Handler is taking care of that now
-     */
-    public function setParseTime()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Compensates for the time consumed with Back end user initialization.
-        $microtime_start = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : null;
-        $microtime_end = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : null;
-        $microtime_BE_USER_start = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : null;
-        $microtime_BE_USER_end = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : null;
-        $timeTracker = $this->getTimeTracker();
-        $this->scriptParseTime = $timeTracker->getMilliseconds($microtime_end) - $timeTracker->getMilliseconds($microtime_start) - ($timeTracker->getMilliseconds($microtime_BE_USER_end) - $timeTracker->getMilliseconds($microtime_BE_USER_start));
-    }
-
-    /**
      * Outputs preview info.
      */
     public function previewInfo()
@@ -3811,31 +3677,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Returns a link to the BE login screen with redirect to the front-end
-     *
-     * @return string HTML, a tag for a link to the backend.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function beLoginLinkIPList()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!empty($this->config['config']['beLoginLinkIPList'])) {
-            if (GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $this->config['config']['beLoginLinkIPList'])) {
-                $label = !$this->beUserLogin ? $this->config['config']['beLoginLinkIPList_login'] : $this->config['config']['beLoginLinkIPList_logout'];
-                if ($label) {
-                    if (!$this->beUserLogin) {
-                        $link = '<a href="' . htmlspecialchars((TYPO3_mainDir . 'index.php?redirect_url=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . $label . '</a>';
-                    } else {
-                        $link = '<a href="' . htmlspecialchars((TYPO3_mainDir . 'index.php?L=OUT&redirect_url=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . $label . '</a>';
-                    }
-                    return $link;
-                }
-            }
-        }
-        return '';
-    }
-
-    /**
      * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
      */
     public function addTempContentHttpHeaders()
@@ -3852,69 +3693,6 @@ class TypoScriptFrontendController
      * Various internal API functions
      *
      *******************************************/
-    /**
-     * Encryption (or decryption) of a single character.
-     * Within the given range the character is shifted with the supplied offset.
-     *
-     * @param int $n Ordinal of input character
-     * @param int $start Start of range
-     * @param int $end End of range
-     * @param int $offset Offset
-     * @return string encoded/decoded version of character
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality has been moved to ContentObjectRenderer
-     */
-    public function encryptCharcode($n, $start, $end, $offset)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $n = $n + $offset;
-        if ($offset > 0 && $n > $end) {
-            $n = $start + ($n - $end - 1);
-        } elseif ($offset < 0 && $n < $start) {
-            $n = $end - ($start - $n - 1);
-        }
-        return chr($n);
-    }
-
-    /**
-     * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
-     *
-     * @param string $string Input string to en/decode: "mailto:blabla@bla.com
-     * @param bool $back If set, the process is reversed, effectively decoding, not encoding.
-     * @return string encoded/decoded version of $string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, this functionality has been moved to ContentObjectRenderer
-     */
-    public function encryptEmail($string, $back = false)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $out = '';
-        // obfuscates using the decimal HTML entity references for each character
-        if ($this->spamProtectEmailAddresses === 'ascii') {
-            $stringLength = strlen($string);
-            for ($a = 0; $a < $stringLength; $a++) {
-                $out .= '&#' . ord(substr($string, $a, 1)) . ';';
-            }
-        } else {
-            // like str_rot13() but with a variable offset and a wider character range
-            $len = strlen($string);
-            $offset = (int)$this->spamProtectEmailAddresses * ($back ? -1 : 1);
-            for ($i = 0; $i < $len; $i++) {
-                $charValue = ord($string[$i]);
-                // 0-9 . , - + / :
-                if ($charValue >= 43 && $charValue <= 58) {
-                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
-                } elseif ($charValue >= 64 && $charValue <= 90) {
-                    // A-Z @
-                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
-                } elseif ($charValue >= 97 && $charValue <= 122) {
-                    // a-z
-                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
-                } else {
-                    $out .= $string[$i];
-                }
-            }
-        }
-        return $out;
-    }
 
     /**
      * Creates an instance of ContentObjectRenderer in $this->cObj
@@ -4043,12 +3821,11 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Returns the name of the workspace
+     * Returns the uid of the current workspace
      *
-     * @param bool $returnTitle If set, returns title of current workspace being previewed, please be aware that this parameter is deprecated as of TYPO3 v8, and will be removed in TYPO3 v9
-     * @return string|int|NULL If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. NULL if none.
+     * @return int|NULL returns workspace integer for which workspace is being preview. NULL if none.
      */
-    public function whichWorkspace($returnTitle = false)
+    public function whichWorkspace()
     {
         $ws = null;
         if ($this->doWorkspacePreview()) {
@@ -4056,55 +3833,7 @@ class TypoScriptFrontendController
         } elseif ($this->beUserLogin) {
             $ws = $this->getBackendUser()->workspace;
         }
-        if ($ws && $returnTitle) {
-            GeneralUtility::deprecationLog('The parameter $returnTitle of $TSFE->whichWorkspace() is marked as deprecated and has no effect anymore. It will be removed in TYPO3 v9.');
-            if (ExtensionManagementUtility::isLoaded('workspaces')) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('sys_workspace');
-
-                $queryBuilder->getRestrictions()->removeAll();
-
-                $row = $queryBuilder
-                    ->select('title')
-                    ->from('sys_workspace')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($ws, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->execute()
-                    ->fetch();
-
-                if ($row) {
-                    return $row['title'];
-                }
-            }
-        }
         return $ws;
-    }
-
-    /**
-     * Includes a comma-separated list of library files by PHP function include_once.
-     *
-     * @param array $libraries The libraries to be included.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use proper class loading instead.
-     */
-    public function includeLibraries(array $libraries)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $timeTracker = $this->getTimeTracker();
-        $timeTracker->push('Include libraries');
-        $timeTracker->setTSlogMessage('Files for inclusion: "' . implode(', ', $libraries) . '"');
-        foreach ($libraries as $library) {
-            $file = $this->tmpl->getFileName($library);
-            if ($file) {
-                include_once './' . $file;
-            } else {
-                $timeTracker->setTSlogMessage('Include file "' . $file . '" did not exist!', 2);
-            }
-        }
-        $timeTracker->pull();
     }
 
     /********************************************
@@ -4457,31 +4186,6 @@ class TypoScriptFrontendController
             /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             $this->metaCharset = $charsetConverter->parse_charset($this->config['config']['metaCharset']);
-        }
-    }
-
-    /**
-     * Converts the charset of the input string if applicable.
-     * The "to" charset is determined by the currently used charset for the page which is "utf-8" by default
-     * Only if there is a difference between the two charsets will a conversion be made
-     * The conversion is done real-time - no caching for performance at this point!
-     *
-     * @param string $str String to convert charset for
-     * @param string $from Optional "from" charset.
-     * @return string Output string, converted if needed.
-     * @see CharsetConverter
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function csConv($str, $from = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if ($from) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $output = $charsetConverter->conv($str, $charsetConverter->parse_charset($from), 'utf-8');
-            return $output ?: $str;
-        } else {
-            return $str;
         }
     }
 
