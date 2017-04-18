@@ -907,33 +907,6 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getSpecConfPartsSplitsDefaultExtras()
-    {
-        $defaultExtras = 'nowrap:wizards[foo|bar]:anotherDefaultExtras:some[other|setting|with|parameters]';
-        $expected = [
-            'nowrap' => 1,
-            'wizards' => [
-                'parameters' => [
-                    0 => 'foo',
-                    1 => 'bar',
-                ],
-            ],
-            'anotherDefaultExtras' => 1,
-            'some' => [
-                'parameters' => [
-                    0 => 'other',
-                    1 => 'setting',
-                    2 => 'with',
-                    3 => 'parameters',
-                ],
-            ],
-        ];
-        $this->assertEquals($expected, BackendUtility::getSpecConfParts($defaultExtras));
-    }
-
-    /**
-     * @test
-     */
     public function dateTimeAgeReturnsCorrectValues()
     {
         /** @var ObjectProphecy|LanguageService $languageServiceProphecy */

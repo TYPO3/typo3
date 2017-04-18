@@ -20,6 +20,18 @@ The following PHP classes that have been previously deprecated for v8 have been 
 The following PHP class methods that have been previously deprecated for v8 have been removed:
 * TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParametersFromArray()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParts()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getSQLselectableList()
+* TYPO3\CMS\Backend\Utility\BackendUtility::titleAltAttrib()
+* TYPO3\CMS\Backend\Utility\BackendUtility::makeConfigForm()
+* TYPO3\CMS\Backend\Utility\BackendUtility::processParams()
+* TYPO3\CMS\Backend\Utility\BackendUtility::replaceL10nModeFields()
+* TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup()
 * TYPO3\CMS\Core\Charset\CharsetConverter->convCapitalize()
 * TYPO3\CMS\Core\Charset\CharsetConverter->conv_case()
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char2byte_pos()
@@ -73,6 +85,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping() - Second and third argument dropped
+* TYPO3\CMS\Core\Html\HtmlParser->RTE_transform() - Second argument unused
 * TYPO3\CMS\Core\Localization\LanguageStore->setConfiguration() - Third argument dropped
 * TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData() - Third and fourth argument unused
 * TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser->getParsedData() - Third argument dropped
@@ -101,6 +114,9 @@ The following configuration options are not evaluated anymore:
 
 The following entry points have been removed:
 * typo3/cli_dispatch.phpsh
+
+The following hooks have been removed:
+* $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']
 
 
 Impact

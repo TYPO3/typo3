@@ -1280,9 +1280,6 @@ Check also the following points:\n
 			<trans-unit id="extension.not.installed">
 				<source>Extension "%s" is not installed.</source>
 			</trans-unit>
-			<trans-unit id="link.to.dblist.correctly">
-				<source>Please, do not link to this page. Use \TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink() for link generation.</source>
-			</trans-unit>
 			<trans-unit id="link.to.filefile.correctly">
 				<source>Please, do not link to this page.</source>
 			</trans-unit>
