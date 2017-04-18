@@ -93,16 +93,14 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileReference = $this->getUniqueId('file_');
         $selectionPrefix = $this->getUniqueId('prefix_');
         $stripFromSelectionName = $this->getUniqueId('strip_');
-        $errorMode = 0;
 
         $expectedInlineLanguageLabelFile = [
             'fileRef' => $fileReference,
             'selectionPrefix' => $selectionPrefix,
-            'stripFromSelectionName' => $stripFromSelectionName,
-            'errorMode' => $errorMode
+            'stripFromSelectionName' => $stripFromSelectionName
         ];
 
-        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $actualResult = $subject->getInlineLanguageLabelFiles();
 
         $this->assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
@@ -118,26 +116,22 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileReference1 = $this->getUniqueId('file1_');
         $selectionPrefix1 = $this->getUniqueId('prefix1_');
         $stripFromSelectionName1 = $this->getUniqueId('strip1_');
-        $errorMode1 = 0;
         $expectedInlineLanguageLabelFile1 = [
             'fileRef' => $fileReference1,
             'selectionPrefix' => $selectionPrefix1,
-            'stripFromSelectionName' => $stripFromSelectionName1,
-            'errorMode' => $errorMode1
+            'stripFromSelectionName' => $stripFromSelectionName1
         ];
         $fileReference2 = $this->getUniqueId('file2_');
         $selectionPrefix2 = $this->getUniqueId('prefix2_');
         $stripFromSelectionName2 = $this->getUniqueId('strip2_');
-        $errorMode2 = 0;
         $expectedInlineLanguageLabelFile2 = [
             'fileRef' => $fileReference2,
             'selectionPrefix' => $selectionPrefix2,
-            'stripFromSelectionName' => $stripFromSelectionName2,
-            'errorMode' => $errorMode2
+            'stripFromSelectionName' => $stripFromSelectionName2
         ];
 
-        $subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1, $errorMode1);
-        $subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2, $errorMode2);
+        $subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1);
+        $subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2);
         $actualResult = $subject->getInlineLanguageLabelFiles();
 
         $this->assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
@@ -154,10 +148,9 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $fileReference = $this->getUniqueId('file2_');
         $selectionPrefix = $this->getUniqueId('prefix2_');
         $stripFromSelectionName = $this->getUniqueId('strip2_');
-        $errorMode = 0;
 
-        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
-        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
+        $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
     }
 

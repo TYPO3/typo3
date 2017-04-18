@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Lang;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -38,28 +37,11 @@ class LanguageService
     public $lang = 'default';
 
     /**
-     * Default charset in backend, is always UTF-8, option is not in use anymore, but is kept for third-party extensions
-     * using this option. Will be removed in future versions
-     *
-     * @var string
-     */
-    public $charSet = 'utf-8';
-
-    /**
      * If TRUE, will show the key/location of labels in the backend.
      *
      * @var bool
      */
     public $debugKey = false;
-
-    /**
-     * Can contain labels and image references from the backend modules.
-     * Relies on \TYPO3\CMS\Backend\Module\ModuleLoader to initialize modules after a global instance of $LANG has been created.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use ModuleLoader directly instead.
-     *
-     * @var array
-     */
-    public $moduleLabels = [];
 
     /**
      * Internal cache for read LL-files
@@ -76,23 +58,6 @@ class LanguageService
     public $LL_labels_cache = [];
 
     /**
-     * instance of the "\TYPO3\CMS\Core\Charset\CharsetConverter" class. May be used by any application.
-     *
-     * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Charset is a singleton, load it via GeneralUtility directly
-     */
-    public $csConvObj;
-
-    /**
-     * instance of the parser factory
-     *
-     * @var LocalizationFactory
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as LocalizationFactory is a singleton, load it via
-     * GeneralUtility directly
-     */
-    public $parserFactory;
-
-    /**
      * List of language dependencies for actual language. This is used for local variants of a language
      * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
      *
@@ -105,13 +70,7 @@ class LanguageService
      */
     public function __construct()
     {
-        // Initialize the conversion object
-        $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
-        // Initialize the localization factory object
-        $this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug']) {
-            $this->debugKey = true;
-        }
+        $this->debugKey = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'];
     }
 
     /**
@@ -140,63 +99,6 @@ class LanguageService
     }
 
     /**
-     * Gets the parser factory.
-     *
-     * @return LocalizationFactory
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getParserFactory()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->parserFactory;
-    }
-
-    /**
-     * Adds labels and image references from the backend modules to the internal moduleLabels array
-     *
-     * @param array $arr Array with references to module labels, keys: ['labels']['table'],
-     * @param string $prefix Module name prefix
-     * @see \TYPO3\CMS\Backend\Module\ModuleLoader
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use ModuleLoader instead.
-     */
-    public function addModuleLabels($arr, $prefix)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (is_array($arr)) {
-            foreach ($arr as $k => $larr) {
-                if (!isset($this->moduleLabels[$k])) {
-                    $this->moduleLabels[$k] = [];
-                }
-                if (is_array($larr)) {
-                    foreach ($larr as $l => $v) {
-                        $this->moduleLabels[$k][$prefix . $l] = $v;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Will convert the input strings special chars (all above 127) to entities.
-     * The string is expected to be encoded in UTF-8
-     * This function is used to create strings that can be used in the Click Menu
-     * (Context Sensitive Menus). The reason is that the values that are dynamically
-     * written into the <div> layer is decoded as iso-8859-1 no matter what charset
-     * is used in the document otherwise (only MSIE, Mozilla is OK).
-     * So by converting we by-pass this problem.
-     *
-     * @param string $str Input string
-     * @return string Output string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function makeEntities($str)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Convert string back again, but using the full entity conversion:
-        return $this->csConvObj->utf8_to_entities($str);
-    }
-
-    /**
      * Debugs localization key.
      *
      * @param string $value value to debug
@@ -212,12 +114,11 @@ class LanguageService
      * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
      *
      * @param string $index Label key
-     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
-    public function getLL($index, $hsc = false)
+    public function getLL($index)
     {
-        return $this->getLLL($index, $GLOBALS['LOCAL_LANG'], $hsc);
+        return $this->getLLL($index, $GLOBALS['LOCAL_LANG']);
     }
 
     /**
@@ -225,18 +126,10 @@ class LanguageService
      *
      * @param string $index Label key
      * @param array $localLanguage $LOCAL_LANG array to get label key from
-     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
-    public function getLLL($index, $localLanguage, $hsc = false)
+    public function getLLL($index, $localLanguage)
     {
-        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-        if ($hsc) {
-            GeneralUtility::deprecationLog(
-                'Calling getLLL() with argument \'hsc\' has been deprecated.'
-            );
-        }
-
         // Get Local Language. Special handling for all extensions that
         // read PHP LL files and pass arrays here directly.
         if (isset($localLanguage[$this->lang][$index])) {
@@ -250,9 +143,6 @@ class LanguageService
         } else {
             $value = '';
         }
-        if ($hsc) {
-            $value = htmlspecialchars($value);
-        }
         return $value . $this->debugLL($index);
     }
 
@@ -264,19 +154,11 @@ class LanguageService
      * Refer to 'Inside TYPO3' for more details
      *
      * @param string $input Label key/reference
-     * @param bool $hsc DEPRECATED If set, the return value is htmlspecialchar'ed
      * @return string
      */
-    public function sL($input, $hsc = false)
+    public function sL($input)
     {
-        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-        if ($hsc) {
-            GeneralUtility::deprecationLog(
-                'Calling sL() with argument \'hsc\' has been deprecated.'
-            );
-        }
-
-        $identifier = $input . '_' . (int)$hsc . '_' . (int)$this->debugKey;
+        $identifier = $input . '_' . (int)$this->debugKey;
         if (isset($this->LL_labels_cache[$this->lang][$identifier])) {
             return $this->LL_labels_cache[$this->lang][$identifier];
         }
@@ -298,9 +180,6 @@ class LanguageService
         } else {
             // Use a constant non-localizable label
             $output = $input;
-        }
-        if ($hsc) {
-            $output = htmlspecialchars($output, ENT_COMPAT, 'UTF-8', false);
         }
         $output .= $this->debugLL($input);
         $this->LL_labels_cache[$this->lang][$identifier] = $output;
@@ -428,7 +307,7 @@ class LanguageService
         }
         $localLanguage = [];
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language, 'utf-8');
+            $tempLL = $languageFactory->getParsedData($fileRef, $language);
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
                 $localLanguage[$this->lang] = $localLanguage['default'];
@@ -440,26 +319,6 @@ class LanguageService
             }
         }
         return $localLanguage;
-    }
-
-    /**
-     * Overrides a label.
-     *
-     * @param string $index
-     * @param string $value
-     * @param bool $overrideDefault Overrides default language
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function overrideLL($index, $value, $overrideDefault = true)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!isset($GLOBALS['LOCAL_LANG'])) {
-            $GLOBALS['LOCAL_LANG'] = [];
-        }
-        $GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] = $value;
-        if ($overrideDefault) {
-            $GLOBALS['LOCAL_LANG']['default'][$index][0]['target'] = $value;
-        }
     }
 
     /**

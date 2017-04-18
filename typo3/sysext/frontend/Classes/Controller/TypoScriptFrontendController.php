@@ -4395,7 +4395,7 @@ class TypoScriptFrontendController
 
         $localLanguage = [];
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language, 'utf-8');
+            $tempLL = $languageFactory->getParsedData($fileRef, $language);
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
                 $localLanguage[$this->lang] = $localLanguage['default'];

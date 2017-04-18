@@ -1007,8 +1007,7 @@ class AbstractPlugin
         if ($languageFilePath !== '') {
             /** @var $languageFactory LocalizationFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-            // Read the strings in the required charset (since TYPO3 4.2)
-            $this->LOCAL_LANG = $languageFactory->getParsedData($languageFilePath, $this->LLkey, 'utf-8');
+            $this->LOCAL_LANG = $languageFactory->getParsedData($languageFilePath, $this->LLkey);
             $alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, true);
             foreach ($alternativeLanguageKeys as $languageKey) {
                 $tempLL = $languageFactory->getParsedData($languageFilePath, $languageKey);

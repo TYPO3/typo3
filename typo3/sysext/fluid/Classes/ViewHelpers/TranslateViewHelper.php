@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
@@ -90,7 +89,6 @@ class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('key', 'string', 'Translation Key');
         $this->registerArgument('id', 'string', 'Translation Key compatible to TYPO3 Flow');
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
-        $this->registerArgument('htmlEscape', 'bool', 'TRUE if the result should be htmlescaped. This won\'t have an effect for the default value');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
     }
@@ -123,17 +121,8 @@ class TranslateViewHelper extends AbstractViewHelper
         $key = $arguments['key'];
         $id = $arguments['id'];
         $default = $arguments['default'];
-        $htmlEscape = $arguments['htmlEscape'];
         $extensionName = $arguments['extensionName'];
         $arguments = $arguments['arguments'];
-
-        if ($htmlEscape !== null) {
-            GeneralUtility::logDeprecatedViewHelperAttribute(
-                'htmlEscape',
-                $renderingContext,
-                'Please wrap the view helper in <f:format.raw> if you want to disable HTML escaping, which is enabled by default now.'
-            );
-        }
 
         // Wrapper including a compatibility layer for TYPO3 Flow Translation
         if ($id === null) {

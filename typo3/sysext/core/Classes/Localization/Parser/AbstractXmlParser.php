@@ -38,11 +38,10 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      *
      * @param string $sourcePath Source file path
      * @param string $languageKey Language key
-     * @param string $charset File charset, not in use anymore and deprecated since TYPO3 v8, will be removed in TYPO3 v9 as UTF-8 is expected for all language files
      * @return array
      * @throws \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException
      */
-    public function getParsedData($sourcePath, $languageKey, $charset = '')
+    public function getParsedData($sourcePath, $languageKey)
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;

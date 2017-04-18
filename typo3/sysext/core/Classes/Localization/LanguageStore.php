@@ -139,19 +139,17 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $fileReference File reference
      * @param string $languageKey Valid language key
-     * @param string $charset Rendering charset
      * @return \TYPO3\CMS\Core\Localization\LanguageStore This instance to allow method chaining
      * @throws \TYPO3\CMS\Core\Localization\Exception\InvalidParserException
      * @throws \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException
      */
-    public function setConfiguration($fileReference, $languageKey, $charset)
+    public function setConfiguration($fileReference, $languageKey)
     {
         $this->configuration[$fileReference] = [
             'fileReference' => $fileReference,
             'fileExtension' => false,
             'parserClass' => null,
-            'languageKey' => $languageKey,
-            'charset' => $charset
+            'languageKey' => $languageKey
         ];
         $fileWithoutExtension = GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
         foreach ($this->supportedExtensions as $extension) {

@@ -24,8 +24,7 @@ interface LocalizationParserInterface
      *
      * @param string $sourcePath Source file path
      * @param string $languageKey Language key
-     * @param string $charset Charset, not in use anymore since TYPO3 v8, will be removed in TYPO3 v9 as UTF-8 is expected for all language files
      * @return array
      */
-    public function getParsedData($sourcePath, $languageKey, $charset = '');
+    public function getParsedData($sourcePath, $languageKey);
 }

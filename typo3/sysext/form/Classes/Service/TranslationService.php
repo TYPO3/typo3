@@ -486,10 +486,10 @@ class TranslationService implements SingletonInterface
         if (!empty($locallangPathAndFilename)) {
             /** @var $languageFactory LocalizationFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-            $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey, 'utf-8');
+            $this->LOCAL_LANG = $languageFactory->getParsedData($locallangPathAndFilename, $this->languageKey);
 
             foreach ($this->alternativeLanguageKeys as $language) {
-                $tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language, 'utf-8');
+                $tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language);
                 if ($this->languageKey !== 'default' && isset($tempLL[$language])) {
                     $this->LOCAL_LANG[$language] = $tempLL[$language];
                 }

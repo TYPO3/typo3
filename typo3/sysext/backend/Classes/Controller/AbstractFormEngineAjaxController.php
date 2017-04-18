@@ -101,12 +101,7 @@ abstract class AbstractFormEngineAjaxController
         /** @var $languageFactory LocalizationFactory */
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
         $language = $GLOBALS['LANG']->lang;
-        $localizationArray = $languageFactory->getParsedData(
-            $file,
-            $language,
-            'utf-8',
-            1
-        );
+        $localizationArray = $languageFactory->getParsedData($file, $language);
         if (is_array($localizationArray) && !empty($localizationArray)) {
             if (!empty($localizationArray[$language])) {
                 $xlfLabelArray = $localizationArray['default'];
