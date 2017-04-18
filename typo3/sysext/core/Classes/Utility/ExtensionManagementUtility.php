@@ -1237,7 +1237,7 @@ class ExtensionManagementUtility
      * The naming of #43 has historic reason and is rooted inside code which is now put into a TER extension called
      * "statictemplates". Since the static template with uid 43 is the "content.default" and practically always used
      * for rendering the content elements it's very useful to have this function automatically adding the necessary
-     * TypoScript for calling your plugin. It will also work for the extension "css_styled_content".
+     * TypoScript for calling your plugin.
      * The logic is now generalized and called "defaultContentRendering", see addTypoScript() as well.
      *
      * $type determines the type of frontend plugin:
@@ -1305,7 +1305,7 @@ tt_content.' . $key . $suffix . ' {
      * FOR USE IN ext_tables.php FILES or in Configuration/TCA/Overrides/sys_template.php Use the latter to benefit from TCA caching!
      *
      * @param string $extKey Is of course the extension key
-     * @param string $path Is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
+     * @param string $path Is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list of static templates to include, like:  EXT:fluid_styled_content/Configuration/TypoScript/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
      * @param string $title Is the title in the selector box.
      * @see addTypoScript()
      */
@@ -1376,7 +1376,7 @@ tt_content.' . $key . $suffix . ' {
      * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
      * FOR USE IN ext_localconf.php FILES
      * Note: As of TYPO3 CMS 6.2, static template #43 (content: default) was replaced with "defaultContentRendering" which makes it
-     * possible that a first extension like css_styled_content registers a "contentRendering" template (= a template that defines default content rendering TypoScript)
+     * possible that a first extension like fluid_styled_content registers a "contentRendering" template (= a template that defines default content rendering TypoScript)
      * by adding itself to $TYPO3_CONF_VARS[FE][contentRenderingTemplates][] = 'myext/Configuration/TypoScript'.
      * An extension calling addTypoScript('myext', 'setup', $typoScript, 'defaultContentRendering') will add its TypoScript directly after;
      * For now, "43" and "defaultContentRendering" can be used, but "defaultContentRendering" is more descriptive and
@@ -1400,7 +1400,7 @@ tt_content.' . $key . $suffix . ' {
 ' . $content;
             if ($afterStaticUid) {
                 // If 'content (default)' is targeted (static uid 43),
-                // the content is added after typoscript of type contentRendering, eg. css_styled_content, see EXT:frontend/TemplateService for more information on how the code is parsed
+                // the content is added after typoscript of type contentRendering, eg. fluid_styled_content, see EXT:frontend/TemplateService for more information on how the code is parsed
                 if ($afterStaticUid === 'defaultContentRendering' || $afterStaticUid == 43) {
                     $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
                 } else {

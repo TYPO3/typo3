@@ -1799,9 +1799,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDataDefaultProvider()
     {
-        /**
-         * @see css_styled_content/static/setup.txt
-         */
         $sourceCollectionArray = [
             'small.' => [
                 'width' => 200,
@@ -1873,9 +1870,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDataDataProvider()
     {
-        /**
-         * @see css_styled_content/static/setup.txt
-         */
         $sourceCollectionArray = [
             'small.' => [
                 'width' => 200,

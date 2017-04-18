@@ -200,7 +200,7 @@ The static mapping is obtained by selecting the "sys_language" table as a static
 				<source>Extension Dependencies</source>
 			</trans-unit>
 			<trans-unit id="extensionDependencies.description">
-				<source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "css_styled_content" for the template, "tt_news" for a news archive etc.</source>
+				<source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "fluid_styled_content" for the template, "tt_news" for a news archive etc.</source>
 			</trans-unit>
 			<trans-unit id="extensionDependencies.details">
 				<source>During import warnings will appear for all selected extensions from this list which were not installed.</source>

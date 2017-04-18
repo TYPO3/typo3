@@ -29,9 +29,6 @@
             "TYPO3/CMS/Cshmanuel/*": [
                 "../typo3/sysext/cshmanuel/Resources/Public/JavaScript/"
             ],
-            "TYPO3/CMS/CssStyledContent/*": [
-                "../typo3/sysext/css_styled_content/Resources/Public/JavaScript/"
-            ],
             "TYPO3/CMS/Documentation/*": [
                 "../typo3/sysext/documentation/Resources/Public/JavaScript/"
             ],

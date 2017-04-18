@@ -868,8 +868,8 @@ class TypoScriptParser
                 $newString .= $tsContentsTillNextInclude . LF;
 
                 // load default TypoScript for content rendering templates like
-                // css_styled_content if those have been included through f.e.
-                // <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
+                // fluid_styled_content if those have been included through f.e.
+                // <INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/setup.txt">
                 if (strpos(strtolower($filename), 'ext:') === 0) {
                     $filePointerPathParts = explode('/', substr($filename, 4));
 

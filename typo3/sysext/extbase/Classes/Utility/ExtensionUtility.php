@@ -30,7 +30,6 @@ class ExtensionUtility
      * of tt_content table AND to the TypoScript template which must initiate the rendering.
      * Including the plugin code after "defaultContentRendering" adds the necessary TypoScript
      * for calling the appropriate controller and action of your plugin.
-     * This means, it will also work for the extension "css_styled_content"
      * FOR USE IN ext_localconf.php FILES
      * Usage: 2
      *
