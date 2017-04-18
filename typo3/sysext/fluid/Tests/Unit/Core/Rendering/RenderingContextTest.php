@@ -38,15 +38,6 @@ class RenderingContextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function getObjectManagerReturnsObjectManagerPropertyValue()
-    {
-        $this->renderingContext->_set('objectManager', 'test');
-        $this->assertEquals('test', $this->renderingContext->getObjectManager());
-    }
-
-    /**
-     * @test
-     */
     public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
     {
         $renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
