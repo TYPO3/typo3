@@ -1,3 +1,8 @@
+2017-04-18  2d37504                  [RELEASE] Release of TYPO3 7.6.18 (TYPO3 Release Team)
+2017-04-18  03de833                  [TASK] Set TYPO3 version to 7.6.18-dev (Oliver Hader)
+2017-04-18  74f5bb4                  [RELEASE] Release of TYPO3 7.6.17 (TYPO3 Release Team)
+
+
 2017-04-18  2e9bee3                  [RELEASE] Release of TYPO3 7.6.17 (TYPO3 Release Team)
 2017-04-17  dc0e7ac  #80834          [BUGFIX] Use correct value for EU flag in sys_language records (Daniel Goerz)
 2017-04-07  ce65225  #80598          [TASK] Correct view webpage link anchor in list module (Gianluigi Martino)
