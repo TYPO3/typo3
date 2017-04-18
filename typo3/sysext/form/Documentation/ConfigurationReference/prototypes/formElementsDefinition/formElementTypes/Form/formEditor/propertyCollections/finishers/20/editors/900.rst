@@ -1,0 +1,38 @@
+formEditor.propertyCollections.finishers.20.editors.900
+-------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.900
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 20:
+                   identifier: EmailToReceiver
+                   editors:
+                     900:
+                       identifier: blindCarbonCopyAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyAddress.label
+                       propertyPath: options.blindCarbonCopyAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmailOrEmpty
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+

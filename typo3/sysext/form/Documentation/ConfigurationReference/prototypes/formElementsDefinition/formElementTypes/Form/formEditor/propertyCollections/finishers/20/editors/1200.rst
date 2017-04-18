@@ -1,0 +1,37 @@
+formEditor.propertyCollections.finishers.20.editors.1200
+--------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1200
+
+:aspect:`Data type`
+      array/ :ref:`[SingleSelectEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.singleselecteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 20:
+                   identifier: EmailToReceiver
+                   editors:
+                     1200:
+                       identifier: language
+                       templateName: Inspector-SingleSelectEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label
+                       propertyPath: options.translation.language
+                       selectOptions:
+                         10:
+                           value: default
+                           label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1
+

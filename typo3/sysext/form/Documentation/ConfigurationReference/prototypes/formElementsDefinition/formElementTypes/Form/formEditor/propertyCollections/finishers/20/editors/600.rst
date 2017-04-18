@@ -1,0 +1,36 @@
+formEditor.propertyCollections.finishers.20.editors.600
+-------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.600
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 20:
+                   identifier: EmailToReceiver
+                   editors:
+                     600:
+                       identifier: senderName
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label
+                       propertyPath: options.senderName
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: FormElementIdentifierWithinCurlyBracesInclusive
+

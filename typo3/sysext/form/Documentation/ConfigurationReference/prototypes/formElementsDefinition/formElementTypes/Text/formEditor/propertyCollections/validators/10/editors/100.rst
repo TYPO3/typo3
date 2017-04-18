@@ -1,0 +1,32 @@
+formEditor.propertyCollections.validators.10.editors.100
+--------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.10.editors.100
+
+:aspect:`Data type`
+      array/ :ref:`[CollectionElementHeaderEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.collectionelementheadereditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Text:
+           formEditor:
+             propertyCollections:
+               validators:
+                 10:
+                   identifier: Alphanumeric
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+

@@ -1,0 +1,37 @@
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[Typo3WinBrowserEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.typo3winbrowsereditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         ContentElement:
+           formEditor:
+             editors:
+               300:
+                 identifier: contentElement
+                 templateName: Inspector-Typo3WinBrowserEditor
+                 label: formEditor.elements.ContentElement.editor.contentElement.label
+                 buttonLabel: formEditor.elements.ContentElement.editor.contentElement.buttonLabel
+                 browsableType: tt_content
+                 propertyPath: properties.contentElementUid
+                 propertyValidatorsMode: OR
+                 propertyValidators:
+                   10: Integer
+                   20: FormElementIdentifierWithinCurlyBracesExclusive

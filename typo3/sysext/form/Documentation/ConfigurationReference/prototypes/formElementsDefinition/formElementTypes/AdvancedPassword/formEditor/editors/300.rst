@@ -1,0 +1,31 @@
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         AdvancedPassword:
+           formEditor:
+             editors:
+               300:
+                 identifier: confirmationLabel
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.AdvancedPassword.editor.confirmationLabel.label
+                 propertyPath: properties.confirmationLabel

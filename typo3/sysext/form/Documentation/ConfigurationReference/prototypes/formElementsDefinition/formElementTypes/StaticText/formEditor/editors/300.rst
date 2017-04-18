@@ -1,0 +1,31 @@
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.StaticText.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[TextareaEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.textareaeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         StaticText:
+           formEditor:
+             editors:
+               300:
+                 identifier: staticText
+                 templateName: Inspector-TextareaEditor
+                 label: formEditor.elements.StaticText.editor.staticText.label
+                 propertyPath: properties.text

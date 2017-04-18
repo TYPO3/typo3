@@ -1,0 +1,53 @@
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[MultiSelectEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.multiselecteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         FileUpload:
+           formEditor:
+             editors:
+               300:
+                 identifier: allowedMimeTypes
+                 templateName: Inspector-MultiSelectEditor
+                 label: formEditor.elements.FileUpload.editor.allowedMimeTypes.label
+                 propertyPath: properties.allowedMimeTypes
+                 selectOptions:
+                   10:
+                     value: application/msword
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.doc
+                   20:
+                     value: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.docx
+                   30:
+                     value: application/msexcel
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.xls
+                   40:
+                     value: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx
+                   50:
+                     value: application/pdf
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf
+                   60:
+                     value: application/vnd.oasis.opendocument.text
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.odt
+                   70:
+                     value: application/vnd.oasis.opendocument.spreadsheet-template
+                     label: formEditor.elements.FileUpload.editor.allowedMimeTypes.ods

@@ -1,0 +1,127 @@
+formEditor.propertyCollections.finishers.10
+-------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.10
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 10:
+                   identifier: EmailToSender
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.header.label
+                     200:
+                       identifier: subject
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.subject.label
+                       propertyPath: options.subject
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: NotEmpty
+                         20: FormElementIdentifierWithinCurlyBracesInclusive
+                     300:
+                       identifier: recipientAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label
+                       propertyPath: options.recipientAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmail
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     400:
+                       identifier: recipientName
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label
+                       propertyPath: options.recipientName
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: FormElementIdentifierWithinCurlyBracesInclusive
+                     500:
+                       identifier: senderAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label
+                       propertyPath: options.senderAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmail
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     600:
+                       identifier: senderName
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label
+                       propertyPath: options.senderName
+                       enableFormelementSelectionButton: true
+                       propertyValidators:
+                         10: FormElementIdentifierWithinCurlyBracesInclusive
+                     700:
+                       identifier: replyToAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label
+                       propertyPath: options.replyToAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmailOrEmpty
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     800:
+                       identifier: carbonCopyAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyAddress.label
+                       propertyPath: options.carbonCopyAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmailOrEmpty
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     900:
+                       identifier: blindCarbonCopyAddress
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyAddress.label
+                       propertyPath: options.blindCarbonCopyAddress
+                       enableFormelementSelectionButton: true
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: NaiveEmailOrEmpty
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     1000:
+                       identifier: format
+                       templateName: Inspector-SingleSelectEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.format.label
+                       propertyPath: options.format
+                       selectOptions:
+                         10:
+                           value: plaintext
+                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.1
+                         20:
+                           value: html
+                           label: formEditor.elements.Form.finisher.EmailToSender.editor.format.2
+                     1100:
+                       identifier: attachUploads
+                       templateName: Inspector-CheckboxEditor
+                       label: formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label
+                       propertyPath: options.attachUploads
+                     9999:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor
+

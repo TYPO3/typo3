@@ -1,0 +1,58 @@
+formEditor.editors.900
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.editors.900
+
+:aspect:`Data type`
+      array/ :ref:`[ValidatorsEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         AdvancedPassword:
+           formEditor:
+             editors:
+               900:
+                 identifier: validators
+                 templateName: Inspector-ValidatorsEditor
+                 label: formEditor.elements.TextMixin.editor.validators.label
+                 selectOptions:
+                   10:
+                     value: ''
+                     label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                   20:
+                     value: Alphanumeric
+                     label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
+                   30:
+                     value: Text
+                     label: formEditor.elements.TextMixin.editor.validators.Text.label
+                   40:
+                     value: StringLength
+                     label: formEditor.elements.TextMixin.editor.validators.StringLength.label
+                   50:
+                     value: EmailAddress
+                     label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
+                   60:
+                     value: Integer
+                     label: formEditor.elements.TextMixin.editor.validators.Integer.label
+                   70:
+                     value: Float
+                     label: formEditor.elements.TextMixin.editor.validators.Float.label
+                   80:
+                     value: NumberRange
+                     label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                   90:
+                     value: RegularExpression
+                     label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label

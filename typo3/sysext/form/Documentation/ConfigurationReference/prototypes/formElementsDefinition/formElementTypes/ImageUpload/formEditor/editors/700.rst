@@ -1,0 +1,49 @@
+formEditor.editors.700
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.700
+
+:aspect:`Data type`
+      array/ :ref:`[GridColumnViewPortConfigurationEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         ImageUpload:
+           formEditor:
+             editors:
+               700:
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+

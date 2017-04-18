@@ -1,0 +1,35 @@
+formEditor.propertyCollections.validators.60
+--------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.60
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Text:
+           formEditor:
+             propertyCollections:
+               validators:
+                 60:
+                   identifier: Float
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                     9999:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor
+

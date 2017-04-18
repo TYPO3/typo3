@@ -1,0 +1,96 @@
+formEditor
+----------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 2-
+
+         ImageUpload:
+           formEditor:
+             editors:
+               100:
+                 identifier: header
+                 templateName: Inspector-FormElementHeaderEditor
+               200:
+                 identifier: label
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.FormElement.editor.label.label
+                 propertyPath: label
+               300:
+                 identifier: allowedMimeTypes
+                 templateName: Inspector-MultiSelectEditor
+                 label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.label
+                 propertyPath: properties.allowedMimeTypes
+                 selectOptions:
+                   10:
+                     value: image/jpeg
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg
+                   20:
+                     value: image/png
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.png
+                   30:
+                     value: image/bmp
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp
+               400:
+                 identifier: saveToFileMount
+                 templateName: Inspector-SingleSelectEditor
+                 label: formEditor.elements.FileUploadMixin.editor.saveToFileMount.label
+                 propertyPath: properties.saveToFileMount
+                 selectOptions:
+                   10:
+                     value: '1:/user_upload/'
+                     label: '1:/user_upload/'
+               700:
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+               800:
+                 identifier: requiredValidator
+                 templateName: Inspector-RequiredValidatorEditor
+                 label: formEditor.elements.FormElement.editor.requiredValidator.label
+                 validatorIdentifier: NotEmpty
+                 propertyPath: properties.fluidAdditionalAttributes.required
+                 propertyValue: required
+               9999:
+                 identifier: removeButton
+                 templateName: Inspector-RemoveElementEditor
+             predefinedDefaults:
+               properties:
+                 saveToFileMount: '1:/user_upload/'
+                 allowedMimeTypes:
+                   - image/jpeg
+             label: formEditor.elements.ImageUpload.label
+             group: custom
+             groupSorting: 400
+             iconIdentifier: t3-form-icon-image-upload
