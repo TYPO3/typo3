@@ -63,7 +63,6 @@ class NodeFactory
         'outerWrapContainer' => Container\OuterWrapContainer::class,
         'paletteAndSingleContainer' => Container\PaletteAndSingleContainer::class,
         'singleFieldContainer' => Container\SingleFieldContainer::class,
-        'soloFieldContainer' => Container\SoloFieldContainer::class,
         'tabsContainer' => Container\TabsContainer::class,
 
         // Default single element classes

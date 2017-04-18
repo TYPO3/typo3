@@ -116,11 +116,6 @@ abstract class AbstractNode implements NodeInterface
         if ($mergeHtml && !empty($childReturn['html'])) {
             $existing['html'] .= LF . $childReturn['html'];
         }
-        if (!empty($childReturn['extJSCODE'])) {
-            // @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-            GeneralUtility::logDeprecatedFunction();
-            $existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
-        }
         foreach ($childReturn['additionalJavaScriptPost'] as $value) {
             $existing['additionalJavaScriptPost'][] = $value;
         }
@@ -150,20 +145,6 @@ abstract class AbstractNode implements NodeInterface
             $existing['inlineData'] = $existingInlineData;
         }
         return $existing;
-    }
-
-    /**
-     * Build JSON string for validations rules and return it
-     * as data attribute for HTML elements.
-     *
-     * @param array $config
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use getValidationDataAsJsonString() instead
-     */
-    protected function getValidationDataAsDataAttribute(array $config): string
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return sprintf(' data-formengine-validation-rules="%s" ', htmlspecialchars($this->getValidationDataAsJsonString($config)));
     }
 
     /**

@@ -38,13 +38,6 @@ return [
     ],
 
     /** Wizards */
-    // Register colorpicker wizard
-    // @deprecated since TYPO3 v8, will be removed in TYPO3 v9.
-    'wizard_colorpicker' => [
-        'path' => '/wizard/colorpicker',
-        'target' => Controller\Wizard\ColorpickerController::class . '::mainAction'
-    ],
-
     // Register table wizard
     'wizard_table' => [
         'path' => '/wizard/table',

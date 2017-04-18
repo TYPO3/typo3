@@ -136,23 +136,6 @@ abstract class AbstractItemProvider
                     && !empty($addItemsArray[$value . '.']['icon'])
                 ) {
                     $iconIdentifier = $addItemsArray[$value . '.']['icon'];
-                    if (!$iconRegistry->isRegistered($iconIdentifier)) {
-                        GeneralUtility::deprecationLog(
-                            'Using a file path for icon in pageTsConfig addItems is deprecated.' .
-                            'Use a registered iconIdentifier instead'
-                        );
-                        $iconPath = GeneralUtility::getFileAbsFileName($iconIdentifier);
-                        if ($iconPath !== '') {
-                            $iconIdentifier = md5($iconPath);
-                            $iconRegistry->registerIcon(
-                                $iconIdentifier,
-                                $iconRegistry->detectIconProvider($iconPath),
-                                [
-                                    'source' => $iconPath
-                                ]
-                            );
-                        }
-                    }
                 }
                 $items[] = [$label, $value, $iconIdentifier];
             }
@@ -1067,19 +1050,11 @@ abstract class AbstractItemProvider
             }
 
             $pageTsConfigId = 0;
-            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_ID']) {
-                // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - see also the flexHack part in TcaFlexProcess
-                $pageTsConfigId = (int)$result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_ID'];
-            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID']) {
                 $pageTsConfigId = (int)$result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_ID'];
             }
 
             $pageTsConfigIdList = 0;
-            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_IDLIST']) {
-                // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - see also the flexHack part in TcaFlexProcess
-                $pageTsConfigIdList = $result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_IDLIST'];
-            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST']) {
                 $pageTsConfigIdList = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_IDLIST'];
             }
@@ -1093,10 +1068,6 @@ abstract class AbstractItemProvider
             $pageTsConfigIdList = implode(',', $pageTsConfigIdList);
 
             $pageTsConfigString = '';
-            if ($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR']) {
-                // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - see also the flexHack part in TcaFlexProcess
-                $pageTsConfigString = $connection->quote($result['pageTsConfig']['flexHack.']['PAGE_TSCONFIG_STR']);
-            }
             if ($result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR']) {
                 $pageTsConfigString = $result['pageTsConfig']['TCEFORM.'][$localTable . '.'][$localFieldName . '.']['PAGE_TSCONFIG_STR'];
                 $pageTsConfigString = $connection->quote($pageTsConfigString);

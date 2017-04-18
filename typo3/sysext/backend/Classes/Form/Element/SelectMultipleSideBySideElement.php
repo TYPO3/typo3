@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -193,31 +192,17 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         if ($maxItems !== 1 && $size !== 1) {
             $multipleAttribute = ' multiple="multiple"';
         }
-        $selectedListStyle = '';
-        if (isset($config['selectedListStyle'])) {
-            GeneralUtility::deprecationLog('TCA property selectedListStyle is deprecated since TYPO3 v8 and will be removed in v9');
-            $selectedListStyle = ' style="' . htmlspecialchars($config['selectedListStyle']) . '"';
-        }
-        $selectableListStyle = '';
-        if (isset($config['itemListStyle'])) {
-            GeneralUtility::deprecationLog('TCA property itemListStyle is deprecated since TYPO3 v8 and will be removed in v9');
-            $selectableListStyle = ' style="' . htmlspecialchars($config['itemListStyle']) . '"';
-        }
-
-        $legacyWizards = $this->renderWizards();
-        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
-        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldControlResult = $this->renderFieldControl();
-        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
@@ -239,7 +224,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               ' class="' . implode(' ', $classes) . '"';
         $html[] =                               $multipleAttribute;
         $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
-        $html[] =                               $selectedListStyle;
         $html[] =                           '>';
         $html[] =                               implode(LF, $selectedItemsHtml);
         $html[] =                           '</select>';
@@ -305,7 +289,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                       ' size="' . $size . '"';
         $html[] =                       ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
         $html[] =                       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
-        $html[] =                       $selectableListStyle;
         $html[] =                   '>';
         $html[] =                       implode(LF, $selectableItemsHtml);
         $html[] =                   '</select>';

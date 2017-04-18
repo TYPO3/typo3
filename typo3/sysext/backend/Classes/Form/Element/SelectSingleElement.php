@@ -190,15 +190,12 @@ class SelectSingleElement extends AbstractFormElement
             $selectAttributes['disabled'] = 'disabled';
         }
 
-        $legacyWizards = $this->renderWizards();
-        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
-
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];

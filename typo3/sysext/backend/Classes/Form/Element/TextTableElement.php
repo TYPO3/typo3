@@ -168,20 +168,16 @@ class TextTableElement extends AbstractFormElement
             $attributes['placeholder'] = htmlspecialchars(trim($config['placeholder']));
         }
 
-        $legacyWizards = $this->renderWizards();
-        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
-        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
-
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldControlResult = $this->renderFieldControl();
-        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];

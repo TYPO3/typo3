@@ -148,20 +148,16 @@ class T3editorElement extends AbstractFormElement
             ['target' => 0]
         );
 
-        $legacyWizards = $this->renderWizards();
-        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
-        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
-
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldInformationResult, false);
 
         $fieldControlResult = $this->renderFieldControl();
-        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $fieldControlHtml = $fieldControlResult['html'];
         $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldControlResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $fieldWizardHtml = $fieldWizardResult['html'];
         $this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $fieldWizardResult, false);
 
         $html = [];

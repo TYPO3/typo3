@@ -57,14 +57,6 @@ class DocumentTemplate
     public $JScode = '';
 
     /**
-     * Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
-     *
-     * @var string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use PageRenderers's JS methods to inject JavaScript on a backend page.
-     */
-    public $extJScode = '';
-
-    /**
      * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
      *
      * @var array
@@ -604,11 +596,6 @@ function jumpToUrl(URL) {
             $this->pageRenderer->addJsInlineCode($name, $code, false);
         }
 
-        if ($this->extJScode) {
-            GeneralUtility::deprecationLog('The property DocumentTemplate->extJScode to add ExtJS-based onReadyCode is deprecated since TYPO3 v8, and will be removed in TYPO3 v9. Use the page renderer directly instead to add JavaScript code.');
-            $this->pageRenderer->addExtOnReadyCode($this->extJScode);
-        }
-
         // Load jquery and twbs JS libraries on every backend request
         $this->pageRenderer->loadJquery();
         // Note: please do not reference "bootstrap" outside of the TYPO3 Core (not in your own extensions)
@@ -630,7 +617,7 @@ function jumpToUrl(URL) {
         }
         // Construct page header.
         $str = $this->pageRenderer->render(PageRenderer::PART_HEADER);
-        $this->JScode = ($this->extJScode = '');
+        $this->JScode = '';
         $this->JScodeArray = [];
         $this->endOfPageJsBlock = $this->pageRenderer->render(PageRenderer::PART_FOOTER);
         $str .= $this->docBodyTagBegin() . ($this->divClass ? '

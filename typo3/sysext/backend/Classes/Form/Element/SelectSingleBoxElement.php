@@ -98,20 +98,16 @@ class SelectSingleBoxElement extends AbstractFormElement
 
         $selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);
 
-        $legacyWizards = $this->renderWizards();
-        $legacyFieldControlHtml = implode(LF, $legacyWizards['fieldControl']);
-        $legacyFieldWizardHtml = implode(LF, $legacyWizards['fieldWizard']);
-
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         $fieldControlResult = $this->renderFieldControl();
-        $fieldControlHtml = $legacyFieldControlHtml . $fieldControlResult['html'];
+        $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $fieldWizardResult = $this->renderFieldWizard();
-        $fieldWizardHtml = $legacyFieldWizardHtml . $fieldWizardResult['html'];
+        $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $html = [];
@@ -183,10 +179,6 @@ class SelectSingleBoxElement extends AbstractFormElement
         }
         if ($config['readOnly']) {
             $attributes['disabled'] = 'disabled';
-        }
-        if (isset($config['itemListStyle'])) {
-            GeneralUtility::deprecationLog('TCA property itemListStyle is deprecated since TYPO3 v8 and will be removed in v9');
-            $attributes['style'] = $config['itemListStyle'];
         }
 
         $html = [];

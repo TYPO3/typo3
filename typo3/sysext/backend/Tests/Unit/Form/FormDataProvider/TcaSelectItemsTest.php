@@ -1633,51 +1633,6 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     ],
                 ],
             ],
-            'deprecated flexHack PAGE_TSCONFIG_ID is substituted' => [
-                'AND fTable.uid=###PAGE_TSCONFIG_ID###',
-                [
-                    ['fTable.uid=123'],
-                    [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
-                ],
-                [
-                    'pageTsConfig' => [
-                        'flexHack.' => [
-                            'PAGE_TSCONFIG_ID' => '123',
-                        ],
-                    ],
-                ],
-            ],
-            'deprecated flexHack PAGE_TSCONFIG_IDLIST is substituted' => [
-                'AND fTable.uid IN (###PAGE_TSCONFIG_IDLIST###)',
-                [
-                    ['fTable.uid IN (123,124)'],
-                    [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
-                ],
-                [
-                    'pageTsConfig' => [
-                        'flexHack.' => [
-                            'PAGE_TSCONFIG_IDLIST' => '123,124',
-                        ],
-                    ],
-                ],
-            ],
-            'deprecated flexHack PAGE_TSCONFIG_STR is substituted' => [
-                'AND fTable.uid=\'###PAGE_TSCONFIG_STR###\'',
-                [
-                    ['fTable.uid=\'aString\''],
-                    [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
-                ],
-                [
-                    'pageTsConfig' => [
-                        'flexHack.' => [
-                            'PAGE_TSCONFIG_STR' => 'aString',
-                        ],
-                    ],
-                ],
-            ],
         ];
     }
 

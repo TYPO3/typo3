@@ -1203,17 +1203,6 @@ var inline = {
 	},
 
 	/**
-	 * Escapes object identifiers to be used as jQuery selector.
-	 *
-	 * @param {String} objectId
-	 * @return string
-	 * @deprecated since TYPO3 CMS v8, this method will be removed in TYPO3 CMS v9. Use $.escapeSelector() instead, which was added with jQuery 3.0.
-	 */
-	escapeSelectorObjectId: function (objectId) {
-		return $.escapeSelector(objectId);
-	},
-
-	/**
 	 * Helper function to get clean trimmed array from comma list
 	 *
 	 * @param {String} delimiter

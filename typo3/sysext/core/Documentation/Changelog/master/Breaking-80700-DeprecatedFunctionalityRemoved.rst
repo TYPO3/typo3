@@ -13,6 +13,10 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * RemoveXSS
 * TYPO3\CMS\Backend\Console\Application
 * TYPO3\CMS\Backend\Console\CliRequestHandler
+* TYPO3\CMS\Backend\Controller\Wizard\ColorpickerController
+* TYPO3\CMS\Backend\Form\Container\SoloFieldContainer
+* TYPO3\CMS\Backend\Form\Wizard\SuggestWizard
+* TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard
 * TYPO3\CMS\Core\Controller\CommandLineController
 * TYPO3\CMS\Core\Http\AjaxRequestHandler
 * TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage
@@ -22,7 +26,14 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Frontend\Page\FramesetRenderer
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
+The following PHP interfaces have been dropped:
+* TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface
+
 The following PHP class methods that have been previously deprecated for v8 have been removed:
+* TYPO3\CMS\Backend\Form\AbstractFormElement->isWizardsDisabled()
+* TYPO3\CMS\Backend\Form\AbstractFormElement->renderWizards()
+* TYPO3\CMS\Backend\Form\AbstractNode->getValidationDataAsDataAttribute()
+* TYPO3\CMS\Backend\Form\FormResultCompiler->JStop()
 * TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
@@ -155,6 +166,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Lang\LanguageService->getsL() - Second argument dropped
 
 The following public class properties have been dropped:
+* TYPO3\CMS\Backend\Template\DocumentTemplate->extJScode
 * TYPO3\CMS\Core\Charset\CharsetConverter->charSetArray
 * TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
 * TYPO3\CMS\Core\DataHandling\DataHandler->checkWorkspaceCache
@@ -204,6 +216,20 @@ The following TypoScript options have been removed:
 * config.beLoginLinkIPList_logout
 * page.frameSet
 * page.insertClassesFromRTE
+
+The following TCA properties have been removed:
+* type=select selectedListStyle
+* type=select itemListStyle
+
+The following PageTsConfig properties have been removed:
+* TCEFORM.[table].[field].addItems.icon - with icons not registered in IconRegistry
+* TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_ID
+* TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_IDLIST
+* TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_STR
+
+The following array constructs have been removed:
+* extJSCODE in FormEngine render result
+
 
 Impact
 ======
