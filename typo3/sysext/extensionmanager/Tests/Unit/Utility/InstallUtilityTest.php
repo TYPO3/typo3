@@ -242,7 +242,7 @@ class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processDatabaseUpdatesCallsImportStaticSqlFile()
     {
         $extKey = $this->createFakeExtension();
-        $extRelPath = 'typo3temp/var/tests/' . $extKey . '/';
+        $extensionSiteRelPath = 'typo3temp/var/tests/' . $extKey . '/';
         $installMock = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
             ['importStaticSqlFile', 'updateDbWithExtTablesSql', 'importT3DFile'],
@@ -252,7 +252,7 @@ class InstallUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         );
         $dependencyUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
-        $installMock->expects($this->once())->method('importStaticSqlFile')->with($extRelPath);
+        $installMock->expects($this->once())->method('importStaticSqlFile')->with($extensionSiteRelPath);
         $installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
     }
 

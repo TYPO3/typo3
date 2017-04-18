@@ -17,6 +17,11 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
 The following PHP class methods that have been previously deprecated for v8 have been removed:
+* TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addExtJSModule()
+* TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars()
+* TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()
+* TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler()
+* TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent()
 * TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs()
 * TYPO3\CMS\Core\Utility\GeneralUtility::compat_version()
 * TYPO3\CMS\Core\Utility\GeneralUtility::convertMicrotime()

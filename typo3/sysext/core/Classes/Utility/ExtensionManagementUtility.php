@@ -136,33 +136,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Returns the relative path to the extension as measured from from the TYPO3_mainDir
-     * If the extension is not loaded the function will die with an error message
-     * Useful for images and links from backend
-     *
-     * @param string $key Extension key
-     *
-     * @throws \BadFunctionCallException
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use PathUtility::getAbsoluteWebPath(), or ->siteRelPath()
-     */
-    public static function extRelPath($key)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!static::$packageManager->isPackageActive($key)) {
-            throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!', 1365429673);
-        }
-        $relativePathToSiteRoot = self::siteRelPath($key);
-        $typo3MainDirLength = strlen(TYPO3_mainDir);
-        if (substr($relativePathToSiteRoot, 0, $typo3MainDirLength) === TYPO3_mainDir) {
-            $relativePathToSiteRoot = substr($relativePathToSiteRoot, $typo3MainDirLength);
-        } else {
-            $relativePathToSiteRoot = '../' . $relativePathToSiteRoot;
-        }
-        return $relativePathToSiteRoot;
-    }
-
-    /**
      * Returns the relative path to the extension as measured from the PATH_site (frontend)
      * If the extension is not loaded the function will die with an error message
      * Useful for images and links from the frontend
@@ -810,49 +783,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds an ExtJS module (main or sub) to the backend interface
-     * FOR USE IN ext_tables.php FILES
-     *
-     * @param string $extensionName
-     * @param string $mainModuleName Is the main module key
-     * @param string $subModuleName Is the submodule key, if blank a plain main module is generated
-     * @param string $position Passed to \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule, see reference there
-     * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
-     * @throws \InvalidArgumentException
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use addModule instead for a regular module, as ExtJS usage is discouraged,
-     */
-    public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (empty($extensionName)) {
-            throw new \InvalidArgumentException('The extension name must not be empty', 1325938973);
-        }
-        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-        $defaultModuleConfiguration = [
-            'access' => 'admin',
-            'icon' => 'EXT:backend/Resources/Public/Images/Logo.png',
-            'labels' => '',
-        ];
-        // Add mandatory parameter to use new pagetree
-        if ($mainModuleName === 'web') {
-            $defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
-        }
-        ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
-        $moduleConfiguration = $defaultModuleConfiguration;
-        if ($subModuleName !== '') {
-            $moduleSignature = $mainModuleName . '_' . $subModuleName;
-        } else {
-            $moduleSignature = $mainModuleName;
-        }
-        $moduleConfiguration['name'] = $moduleSignature;
-        $moduleConfiguration['script'] = 'extjspaneldummy.html';
-        $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = [self::class, 'configureModule'];
-        $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
-        self::addModule($mainModuleName, $subModuleName, $position);
-    }
-
-    /**
      * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
      * and it replaces old conf.php.
      *
@@ -957,41 +887,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Registers an Ext.Direct component with access restrictions.
-     *
-     * @param string $endpointName
-     * @param string $callbackClass
-     * @param string $moduleName Optional: must be <mainmodule> or <mainmodule>_<submodule>
-     * @param string $accessLevel Optional: can be 'admin' or 'user,group'
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function registerExtDirectComponent($endpointName, $callbackClass, $moduleName = null, $accessLevel = null)
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName] = [
-            'callbackClass' => $callbackClass,
-            'moduleName' => $moduleName,
-            'accessLevel' => $accessLevel
-        ];
-    }
-
-    /**
-     * Registers an Ajax Handler
-     *
-     * @param string $ajaxId Identifier of the handler, that is used in the request
-     * @param string $callbackMethod TYPO3 callback method (className->methodName).
-     * @param bool $csrfTokenCheck Only set this to FALSE if you are sure that the registered handler does not modify any data!
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function registerAjaxHandler($ajaxId, $callbackMethod, $csrfTokenCheck = true)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxId] = [
-            'callbackMethod' => $callbackMethod,
-            'csrfTokenCheck' => $csrfTokenCheck
-        ];
-    }
-
-    /**
      * Adds a "Function menu module" ('third level module') to an existing function menu for some other backend module
      * The arguments values are generally determined by which function menu this is supposed to interact with
      * See Inside TYPO3 for information on how to use this function.
@@ -1012,24 +907,6 @@ class ExtensionManagementUtility
             'title' => $title,
             'ws' => $WS
         ];
-    }
-
-    /**
-     * Adds some more content to a key of TYPO3_CONF_VARS array.
-     *
-     * This also tracks which content was added by extensions (in TYPO3_CONF_VARS_extensionAdded)
-     * so that they cannot be editted again through the Install Tool.
-     *
-     * @param string $group The group ('FE', 'BE', 'SYS' ...)
-     * @param string $key The key of this setting within the group
-     * @param string $content The text to add (include leading "\n" in case of multi-line entries)
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public static function appendToTypoConfVars($group, $key, $content)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$group][$key] .= $content;
-        $GLOBALS['TYPO3_CONF_VARS'][$group][$key] .= $content;
     }
 
     /**

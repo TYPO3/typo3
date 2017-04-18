@@ -532,14 +532,16 @@ class Bootstrap
     protected function registerExtDirectComponents()
     {
         if (TYPO3_MODE === 'BE') {
-            ExtensionManagementUtility::registerExtDirectComponent(
-                'TYPO3.Components.PageTree.DataProvider',
-                \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class
-            );
-            ExtensionManagementUtility::registerExtDirectComponent(
-                'TYPO3.Components.PageTree.Commands',
-                \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class
-            );
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.DataProvider'] = [
+                'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class,
+                'moduleName' => null,
+                'accessLevel' => null
+            ];
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.Commands'] = [
+                'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class,
+                'moduleName' => null,
+                'accessLevel' => null
+            ];
         }
         return $this;
     }
