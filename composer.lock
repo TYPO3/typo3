@@ -3381,16 +3381,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "8.0.9",
+            "version": "8.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "67ef37d488d908b379d4dce113b489d440c7be3c"
+                "reference": "82a4cbcd8c97d37ae0b72f9450eb842af0eb7d67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/67ef37d488d908b379d4dce113b489d440c7be3c",
-                "reference": "67ef37d488d908b379d4dce113b489d440c7be3c",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/82a4cbcd8c97d37ae0b72f9450eb842af0eb7d67",
+                "reference": "82a4cbcd8c97d37ae0b72f9450eb842af0eb7d67",
                 "shasum": ""
             },
             "replace": {
@@ -3426,7 +3426,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2017-03-29T15:43:53+00:00"
+            "time": "2017-04-19T18:47:01+00:00"
         },
         {
             "name": "typo3/testing-framework",

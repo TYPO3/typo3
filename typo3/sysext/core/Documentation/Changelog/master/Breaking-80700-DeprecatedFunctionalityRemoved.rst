@@ -20,6 +20,22 @@ The following PHP classes that have been previously deprecated for v8 have been 
 The following PHP class methods that have been previously deprecated for v8 have been removed:
 * TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
+* TYPO3\CMS\Core\Charset\CharsetConverter->convCapitalize()
+* TYPO3\CMS\Core\Charset\CharsetConverter->conv_case()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_char2byte_pos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_substr()
+* TYPO3\CMS\Core\Charset\CharsetConverter->getPreferredClientLanguage()
+* TYPO3\CMS\Core\Charset\CharsetConverter->strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->substr()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_byte2char_pos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strpos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addExtJSModule()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()
@@ -54,6 +70,9 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Lang\LanguageService->overrideLL()
 
 The following methods changed signature according to previous deprecations in v8:
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping() - Third and fourth argument dropped
+* TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping() - Third and fourth argument dropped
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping() - Second and third argument dropped
 * TYPO3\CMS\Core\Localization\LanguageStore->setConfiguration() - Third argument dropped
 * TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData() - Third and fourth argument unused
 * TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser->getParsedData() - Third argument dropped
@@ -70,6 +89,8 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Lang\LanguageService->getsL() - Second argument dropped
 
 The following class properties have been dropped:
+* TYPO3\CMS\Core\Charset\CharsetConverter->charSetArray
+* TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
 * TYPO3\CMS\Lang\LanguageService->charSet
 * TYPO3\CMS\Lang\LanguageService->csConvObj
 * TYPO3\CMS\Lang\LanguageService->moduleLabels
