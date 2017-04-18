@@ -30,7 +30,7 @@ class CoreVersionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['fetchVersionMatrixFromRemote'], [], '', false);
         $registry = $this->createMock(Registry::class);
-        $versionArray = [8 => []];
+        $versionArray = [9 => []];
         $registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
         $instance->_set('registry', $registry);
         $instance->expects($this->once())->method('fetchVersionMatrixFromRemote')->will($this->returnValue($versionArray));
