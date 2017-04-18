@@ -123,104 +123,51 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     {
         $childTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
 
-        // localizationMode is either "none", "keep" or "select":
-        // * none:   Handled parent row is not a localized record, or if it is a localized row, this is ignored.
-        //           Default language records and overlays have distinct children that are not connected to each other.
-        // * keep:   Handled parent row is a localized record, but child table is either not localizable, or
-        //           "keep" is explicitly set. A localized parent and its default language row share the same
-        //           children records. Editing a child from a localized record will change this record for the
-        //           default language row, too.
-        // * select: Handled parent row is a localized record, child table is localizable. Children records are
-        //           localized overlays of a default language record. Three scenarios can happen:
-        //           ** Localized child overlay and its default language row exist - show localized overlay record
-        //           ** Default child language row exists but child overlay doesn't - show a "synchronize this record" button
-        //           ** Localized child overlay exists but default language row does not - this dangling child is a data inconsistency
-
-        // Mode was prepared by TcaInlineConfiguration provider
-        // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
-        $mode = $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'];
-        if ($mode === 'none') {
-            $connectedUids = [];
-            // A new record that has distinct children can not have children yet, fetch connected uids for existing only
-            if ($result['command'] === 'edit') {
-                $connectedUids = $this->resolveConnectedRecordUids(
-                    $result['processedTca']['columns'][$fieldName]['config'],
-                    $result['tableName'],
-                    $result['databaseRow']['uid'],
-                    $result['databaseRow'][$fieldName]
-                );
-            }
-            $result['databaseRow'][$fieldName] = implode(',', $connectedUids);
-            $connectedUids = $this->getWorkspacedUids($connectedUids, $childTableName);
-            // @todo: If inlineCompileExistingChildren must be kept, it might be better to change the data
-            // @todo: format of databaseRow for this field and separate the child compilation to an own provider?
-            if ($result['inlineCompileExistingChildren']) {
-                foreach ($connectedUids as $childUid) {
-                    $result['processedTca']['columns'][$fieldName]['children'][] = $this->compileChild($result, $fieldName, $childUid);
-                }
-            }
-        } elseif ($mode === 'keep') {
-            // Fetch connected uids of default language record
-            $connectedUids = $this->resolveConnectedRecordUids(
+        $connectedUidsOfLocalizedOverlay = [];
+        if ($result['command'] === 'edit') {
+            $connectedUidsOfLocalizedOverlay = $this->resolveConnectedRecordUids(
                 $result['processedTca']['columns'][$fieldName]['config'],
                 $result['tableName'],
+                $result['databaseRow']['uid'],
+                $result['databaseRow'][$fieldName]
+            );
+        }
+        $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
+        if ($result['inlineCompileExistingChildren']) {
+            $tableNameWithDefaultRecords = $result['tableName'];
+            if ($tableNameWithDefaultRecords === 'pages_language_overlay') {
+                $tableNameWithDefaultRecords = 'pages';
+            }
+            $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
+                $result['processedTca']['columns'][$fieldName]['config'],
+                $tableNameWithDefaultRecords,
                 $result['defaultLanguageRow']['uid'],
                 $result['defaultLanguageRow'][$fieldName]
             );
-            $result['databaseRow'][$fieldName] = implode(',', $connectedUids);
-            $connectedUids = $this->getWorkspacedUids($connectedUids, $childTableName);
-            if ($result['inlineCompileExistingChildren']) {
-                foreach ($connectedUids as $childUid) {
-                    $result['processedTca']['columns'][$fieldName]['children'][] = $this->compileChild($result, $fieldName, $childUid);
-                }
-            }
-        } else {
-            $connectedUidsOfLocalizedOverlay = [];
-            if ($result['command'] === 'edit') {
-                $connectedUidsOfLocalizedOverlay = $this->resolveConnectedRecordUids(
-                    $result['processedTca']['columns'][$fieldName]['config'],
-                    $result['tableName'],
-                    $result['databaseRow']['uid'],
-                    $result['databaseRow'][$fieldName]
-                );
-            }
-            $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
-            if ($result['inlineCompileExistingChildren']) {
-                $tableNameWithDefaultRecords = $result['tableName'];
-                if ($tableNameWithDefaultRecords === 'pages_language_overlay') {
-                    $tableNameWithDefaultRecords = 'pages';
-                }
-                $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
-                    $result['processedTca']['columns'][$fieldName]['config'],
-                    $tableNameWithDefaultRecords,
-                    $result['defaultLanguageRow']['uid'],
-                    $result['defaultLanguageRow'][$fieldName]
-                );
 
-                $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
+            $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
 
-                // Find which records are localized, which records are not localized and which are
-                // localized but miss default language record
-                $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
-                foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
-                    $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
-                    $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
-                    if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
-                        // This localized child has a default language record. Remove this record from list of default language records
-                        $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
-                    }
-                    // Compile localized record
-                    $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+            // Find which records are localized, which records are not localized and which are
+            // localized but miss default language record
+            $fieldNameWithDefaultLanguageUid = $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'];
+            foreach ($connectedUidsOfLocalizedOverlay as $localizedUid) {
+                $localizedRecord = $this->getRecordFromDatabase($childTableName, $localizedUid);
+                $uidOfDefaultLanguageRecord = $localizedRecord[$fieldNameWithDefaultLanguageUid];
+                if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord)) {
+                    // This localized child has a default language record. Remove this record from list of default language records
+                    $connectedUidsOfDefaultLanguageRecord = array_diff($connectedUidsOfDefaultLanguageRecord, [$uidOfDefaultLanguageRecord]);
+                }
+                // Compile localized record
+                $compiledChild = $this->compileChild($result, $fieldName, $localizedUid);
+                $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+            }
+            if ($showPossible) {
+                foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
+                    // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
+                    // exist in default language, but are not localized yet. Compile and mark those
+                    $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                    $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
-                }
-                if ($showPossible) {
-                    foreach ($connectedUidsOfDefaultLanguageRecord as $defaultLanguageUid) {
-                        // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
-                        // exist in default language, but are not localized yet. Compile and mark those
-                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
-                        $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
-                        $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
-                    }
                 }
             }
         }

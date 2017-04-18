@@ -102,9 +102,6 @@ return [
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
                 ],
-                'behaviour' => [
-                    'localizationMode' => 'select',
-                ],
             ]
         ],
         'hotelsort' => [

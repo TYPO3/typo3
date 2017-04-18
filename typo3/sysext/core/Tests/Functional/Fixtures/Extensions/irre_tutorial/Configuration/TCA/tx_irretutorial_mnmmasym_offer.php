@@ -92,9 +92,6 @@ return [
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
                 ],
-                'behaviour' => [
-                    'localizationMode' => 'select',
-                ],
             ]
         ],
         'prices' => [
@@ -111,9 +108,6 @@ return [
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
-                ],
-                'behaviour' => [
-                    'localizationMode' => 'select',
                 ],
             ]
         ],

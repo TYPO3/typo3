@@ -105,122 +105,12 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
-     * @see DataSet/copyParentContentToLanguageKeep.csv
+     * @see DataSet/localizeParentContentSynchronization.csv
      */
-    public function copyParentContentToLanguageInKeepMode()
+    public function localizeParentContentWithLanguageSynchronization()
     {
-        parent::copyParentContentToLanguageInKeepMode();
-        $this->assertAssertionDataSet('copyParentContentToLanguageKeep');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/copyParentContentToLanguageWAllChildrenKeep.csv
-     */
-    public function copyParentContentToLanguageWithAllChildrenInKeepMode()
-    {
-        parent::copyParentContentToLanguageWithAllChildrenInKeepMode();
-        $this->assertAssertionDataSet('copyParentContentToLanguageWAllChildrenKeep');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/copyParentContentToLanguageSelect.csv
-     */
-    public function copyParentContentToLanguageInSelectMode()
-    {
-        parent::copyParentContentToLanguageInSelectMode();
-        $this->assertAssertionDataSet('copyParentContentToLanguageSelect');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/copyParentContentToLanguageWAllChildrenSelect.csv
-     */
-    public function copyParentContentToLanguageWithAllChildrenInSelectMode()
-    {
-        parent::copyParentContentToLanguageWithAllChildrenInSelectMode();
-        $this->assertAssertionDataSet('copyParentContentToLanguageWAllChildrenSelect');
-
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/ExtbaseJsonRenderer.ts',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.ts'
-        ]);
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentKeep.csv
-     */
-    public function localizeParentContentInKeepMode()
-    {
-        parent::localizeParentContentInKeepMode();
-        $this->assertAssertionDataSet('localizeParentContentKeep');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentWAllChildrenKeep.csv
-     */
-    public function localizeParentContentWithAllChildrenInKeepMode()
-    {
-        parent::localizeParentContentWithAllChildrenInKeepMode();
-        $this->assertAssertionDataSet('localizeParentContentWAllChildrenKeep');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentSelect.csv
-     */
-    public function localizeParentContentInSelectMode()
-    {
-        parent::localizeParentContentInSelectMode();
-        $this->assertAssertionDataSet('localizeParentContentSelect');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentSelectWSynchronization.csv
-     */
-    public function localizeParentContentInSelectModeWithLanguageSynchronization()
-    {
-        parent::localizeParentContentInSelectModeWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeParentContentSelectWSynchronization');
+        parent::localizeParentContentWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeParentContentSynchronization');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -230,42 +120,12 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
-     * @see DataSet/localizeParentContentWAllChildrenSelect.csv
+     * @see DataSet/localizeParentContentChainLanguageSynchronizationSource.csv
      */
-    public function localizeParentContentWithAllChildrenInSelectMode()
+    public function localizeParentContentChainLanguageSynchronizationSource()
     {
-        parent::localizeParentContentWithAllChildrenInSelectMode();
-        $this->assertAssertionDataSet('localizeParentContentWAllChildrenSelect');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentWAllChildrenSelectNLanguageSynchronization.csv
-     */
-    public function localizeParentContentWithAllChildrenInSelectModeAndLanguageSynchronization()
-    {
-        parent::localizeParentContentWithAllChildrenInSelectModeAndLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeParentContentWAllChildrenSelectNLanguageSynchronization');
-
-        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
-            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', '[Translate to Dansk:] Hotel #2'));
-    }
-
-    /**
-     * @test
-     * @see DataSet/localizeParentContentChainWAllChildrenSelectNLanguageSynchronizationSource.csv
-     */
-    public function localizeParentContentChainWithAllChildrenInSelectModeAndLanguageSynchronizationSource()
-    {
-        parent::localizeParentContentChainWithAllChildrenInSelectModeAndLanguageSynchronizationSource();
-        $this->assertAssertionDataSet('localizeParentContentChainWAllChildrenSelectNLanguageSynchronizationSource');
+        parent::localizeParentContentChainLanguageSynchronizationSource();
+        $this->assertAssertionDataSet('localizeParentContentChainLanguageSynchronizationSource');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageIdSecond)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -290,13 +150,13 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
-     * @see DataSet/localizeChildrenHStandaloneChildrenWAllChildrenSelectNLanguageSynchronization.csv
+     * @see DataSet/localizeChildrenHStandaloneChildrenLanguageSynchronization.csv
      * @see https://forge.typo3.org/issues/81915
      */
-    public function localizeChildrenHavingStandaloneChildrenInSelectModeAndLanguageSynchronization()
+    public function localizeChildrenHavingStandaloneChildrenLanguageSynchronization()
     {
         parent::localizeChildrenHavingStandaloneChildrenInSelectModeAndLanguageSynchronization();
-        $this->assertAssertionDataSet('locChildrenHStandaloneChildrenWAllChildrenSelectNLanguageSynch');
+        $this->assertAssertionDataSet('locChildrenHStandaloneChildrenLanguageSynch');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()

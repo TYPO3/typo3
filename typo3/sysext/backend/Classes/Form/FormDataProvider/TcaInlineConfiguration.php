@@ -45,7 +45,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             }
 
             $result = $this->initializeMinMaxItems($result, $fieldName);
-            $result = $this->initializeLocalizationMode($result, $fieldName);
             $result = $this->initializeChildrenLanguage($result, $fieldName);
             $result = $this->initializeAppearance($result, $fieldName);
             $result = $this->addInlineSelectorAndUniqueConfiguration($result, $fieldName);
@@ -131,75 +130,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
     }
 
     /**
-     * Set localization mode. This will end up with localizationMode to be set to either 'select', 'keep'
-     * or 'none' if the handled record is a localized record.
-     *
-     * @see TcaInline for a detailed explanation on the meaning of these modes.
-     *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @return array Modified item array
-     * @throws \UnexpectedValueException If localizationMode configuration is broken
-     */
-    protected function initializeLocalizationMode(array $result, $fieldName)
-    {
-        if ($result['defaultLanguageRow'] === null) {
-            // Currently handled parent is a localized row if a former provider added the "default" row
-            // If handled record is not localized, set localizationMode to 'none' and return
-            // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
-            $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = 'none';
-
-            return $result;
-        }
-
-        $childTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
-        $parentConfig = $result['processedTca']['columns'][$fieldName]['config'];
-
-        $isChildTableLocalizable = false;
-        if (isset($GLOBALS['TCA'][$childTableName]['ctrl']) && is_array($GLOBALS['TCA'][$childTableName]['ctrl'])
-            && isset($GLOBALS['TCA'][$childTableName]['ctrl']['languageField'])
-            && $GLOBALS['TCA'][$childTableName]['ctrl']['languageField']
-            && isset($GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField'])
-            && $GLOBALS['TCA'][$childTableName]['ctrl']['transOrigPointerField']
-        ) {
-            $isChildTableLocalizable = true;
-        }
-
-        $mode = null;
-
-        if (isset($parentConfig['behaviour']['localizationMode'])) {
-            // Use explicit set mode, but validate before use
-            // Use  mode if set, but throw if not set to either 'select' or 'keep'
-            if ($parentConfig['behaviour']['localizationMode'] !== 'keep' && $parentConfig['behaviour']['localizationMode'] !== 'select') {
-                throw new \UnexpectedValueException(
-                    'localizationMode of table ' . $result['tableName'] . ' field ' . $fieldName . ' is not valid, set to either \'keep\' or \'select\'',
-                    1443829370
-                );
-            }
-            // Throw if is set to select, but child can not be localized
-            if ($parentConfig['behaviour']['localizationMode'] === 'select' && !$isChildTableLocalizable) {
-                throw new \UnexpectedValueException(
-                    'Wrong configuration: localizationMode of table ' . $result['tableName'] . ' field ' . $fieldName . ' is set to \'select\', but table is not localizable.',
-                    1443944274
-                );
-            }
-            $mode = $parentConfig['behaviour']['localizationMode'];
-        } else {
-            // Not set explicitly -> use "none"
-            $mode = 'none';
-            if ($isChildTableLocalizable) {
-                // Except if child is localizable, then use "select"
-                $mode = 'select';
-            }
-        }
-
-        // @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9
-        $result['processedTca']['columns'][$fieldName]['config']['behaviour']['localizationMode'] = $mode;
-
-        return $result;
-    }
-
-    /**
      * Set default value for child records 'sys_language_uid' field. This is relevant if a localized
      * parent is edited and a child is added via the ajax call. The child should then have the same
      * sys_language_uid as the parent.
@@ -223,9 +153,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         }
 
         $parentConfig = $result['processedTca']['columns'][$fieldName]['config'];
-        if ($parentConfig['behaviour']['localizationMode'] === 'keep') {
-            return $result;
-        }
 
         $parentLanguageField = $result['processedTca']['ctrl']['languageField'];
         if (!isset($parentConfig['inline']['parentSysLanguageUid'])

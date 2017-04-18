@@ -25,7 +25,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
                     'showRemovedLocalizationRecords' => 1,
                 ],
                 'behaviour' => [
-                    'localizationMode' => 'select',
                     'localizeChildrenAtParentLocalization' => true,
                 ],
             ]
@@ -44,7 +43,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
                     'showRemovedLocalizationRecords' => 1,
                 ],
                 'behaviour' => [
-                    'localizationMode' => 'select',
                     'localizeChildrenAtParentLocalization' => true,
                 ],
                 'default' => '',

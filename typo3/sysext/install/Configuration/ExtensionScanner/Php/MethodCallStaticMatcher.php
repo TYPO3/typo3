@@ -428,4 +428,11 @@ return [
             'Breaking-82572-RDCTFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

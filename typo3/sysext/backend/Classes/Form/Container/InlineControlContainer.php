@@ -120,7 +120,6 @@ class InlineControlContainer extends AbstractContainer
             'uid' => $row['uid'],
             'field' => $field,
             'config' => $config,
-            'localizationMode' => BackendUtility::getInlineLocalizationMode($table, $config),
         ];
         // Extract FlexForm parts (if any) from element name, e.g. array('vDEF', 'lDEF', 'FlexField', 'vDEF')
         if (!empty($parameterArray['itemFormElName'])) {

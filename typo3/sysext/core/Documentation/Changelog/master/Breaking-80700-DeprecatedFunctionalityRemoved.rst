@@ -41,6 +41,7 @@ The following PHP interface signatures have been changed:
 The following PHP static class methods that have been previously deprecated for v8 have been removed:
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField()
@@ -347,6 +348,7 @@ The following TypoScript options have been removed:
 The following TCA properties have been removed:
 * type=select selectedListStyle
 * type=select itemListStyle
+* type=inline behaviour['localizationMode']
 
 The following PageTsConfig properties have been removed:
 * TCEFORM.[table].[field].addItems.icon - with icons not registered in IconRegistry

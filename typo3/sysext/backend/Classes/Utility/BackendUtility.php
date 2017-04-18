@@ -575,37 +575,6 @@ class BackendUtility
     }
 
     /**
-     * Returns the value of the property localizationMode in the given $config array ($GLOBALS['TCA'][<table>]['columns'][<field>]['config']).
-     * If the table is prepared for localization and no localizationMode is set, 'select' is returned by default.
-     * If the table is not prepared for localization or not defined at all in $GLOBALS['TCA'], FALSE is returned.
-     *
-     * @param string $table The name of the table to lookup in TCA
-     * @param mixed $fieldOrConfig The fieldname (string) or the configuration of the field to check (array)
-     * @return mixed If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, FALSE is returned
-     * @deprecated: IRRE 'localizationMode' is deprecated and will be removed in TYPO3 CMS 9, migrate to l10n_mode or allowLanguageSynchronization
-     */
-    public static function getInlineLocalizationMode($table, $fieldOrConfig)
-    {
-        $localizationMode = false;
-        $config = null;
-        if (is_array($fieldOrConfig) && !empty($fieldOrConfig)) {
-            $config = $fieldOrConfig;
-        } elseif (is_string($fieldOrConfig) && isset($GLOBALS['TCA'][$table]['columns'][$fieldOrConfig]['config'])) {
-            $config = $GLOBALS['TCA'][$table]['columns'][$fieldOrConfig]['config'];
-        }
-        if (is_array($config) && isset($config['type']) && $config['type'] === 'inline' && self::isTableLocalizable($table)) {
-            $localizationMode = isset($config['behaviour']['localizationMode']) && $config['behaviour']['localizationMode']
-                ? $config['behaviour']['localizationMode']
-                : 'select';
-            // The mode 'select' is not possible when child table is not localizable at all:
-            if ($localizationMode === 'select' && !self::isTableLocalizable($config['foreign_table'])) {
-                $localizationMode = false;
-            }
-        }
-        return $localizationMode;
-    }
-
-    /**
      * Returns a page record (of page with $id) with an extra field "_thePath" set to the record path IF the WHERE clause, $perms_clause, selects the record. Thus is works as an access check that returns a page record if access was granted, otherwise not.
      * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
      * In any case ->isInWebMount must return TRUE for the user (regardless of $perms_clause)

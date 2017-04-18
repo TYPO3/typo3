@@ -67,7 +67,6 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -88,7 +87,6 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -110,7 +108,6 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -133,14 +130,12 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -161,14 +156,12 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -190,14 +183,12 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                             'uid' => 'grandParentUid',
                             'field' => 'grandParentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [
@@ -223,14 +214,12 @@ class InlineStackProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                                 'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
                             ],
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                         [
                             'table' => 'parentTable',
                             'uid' => 'parentUid',
                             'field' => 'parentField',
                             'config' => null,
-                            'localizationMode' => false,
                         ],
                     ],
                     'unstable' => [

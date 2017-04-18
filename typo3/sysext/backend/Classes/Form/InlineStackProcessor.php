@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form;
  */
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -81,7 +80,6 @@ class InlineStackProcessor
                     if (!$TSconfig['disabled']) {
                         $unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
                     }
-                    $unstable['localizationMode'] = BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
 
                     // Extract FlexForm from field part (if any)
                     if (strpos($unstable['field'], ':') !== false) {
@@ -119,10 +117,6 @@ class InlineStackProcessor
         }
         $current = &$this->inlineStructure['stable'][$level];
         $current['config'] = $config;
-        $current['localizationMode'] = BackendUtility::getInlineLocalizationMode(
-            $current['table'],
-            $current['config']
-        );
     }
 
     /**
