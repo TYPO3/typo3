@@ -1,0 +1,31 @@
+formEditor.propertyCollections.validators.40.editors.9999
+---------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.40.editors.9999
+
+:aspect:`Data type`
+      array/ :ref:`[RemoveElementEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.removeelementeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Text:
+           formEditor:
+             propertyCollections:
+               validators:
+                 40:
+                   identifier: EmailAddress
+                   editors:
+                     100:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor
+

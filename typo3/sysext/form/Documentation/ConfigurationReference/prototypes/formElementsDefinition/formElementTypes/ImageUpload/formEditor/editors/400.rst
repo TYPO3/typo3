@@ -1,0 +1,36 @@
+formEditor.editors.400
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.400
+
+:aspect:`Data type`
+      array/ :ref:`[SingleSelectEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.singleselecteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         ImageUpload:
+           formEditor:
+             editors:
+               400:
+                 identifier: saveToFileMount
+                 templateName: Inspector-SingleSelectEditor
+                 label: formEditor.elements.FileUploadMixin.editor.saveToFileMount.label
+                 propertyPath: properties.saveToFileMount
+                 selectOptions:
+                   10:
+                     value: '1:/user_upload/'
+                     label: '1:/user_upload/'
+

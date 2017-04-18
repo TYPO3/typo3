@@ -1,0 +1,30 @@
+formEditor.editors.9999
+-----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.9999
+
+:aspect:`Data type`
+      array/ :ref:`[RemoveElementEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.removeelementeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         ImageUpload:
+           formEditor:
+             editors:
+               9999:
+                 identifier: removeButton
+                 templateName: Inspector-RemoveElementEditor
+

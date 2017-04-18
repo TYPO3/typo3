@@ -1,0 +1,35 @@
+formEditor.editors.800
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.editors.800
+
+:aspect:`Data type`
+      array/ :ref:`[RequiredValidatorEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.requiredvalidatoreditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         DatePicker:
+           formEditor:
+             editors:
+               800:
+                 identifier: requiredValidator
+                 templateName: Inspector-RequiredValidatorEditor
+                 label: formEditor.elements.FormElement.editor.requiredValidator.label
+                 validatorIdentifier: NotEmpty
+                 propertyPath: properties.fluidAdditionalAttributes.required
+                 propertyValue: required
+
+

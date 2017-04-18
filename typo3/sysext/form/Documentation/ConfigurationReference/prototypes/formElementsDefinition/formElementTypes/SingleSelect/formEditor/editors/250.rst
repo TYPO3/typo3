@@ -1,0 +1,33 @@
+formEditor.editors.250
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.SingleSelect.formEditor.editors.250
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         SingleSelect:
+           formEditor:
+             editors:
+               250:
+                 identifier: inactiveOption
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.SelectionMixin.editor.inactiveOption.label
+                 propertyPath: properties.prependOptionLabel
+                 fieldExplanationText: formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText
+                 doNotSetIfPropertyValueIsEmpty: true

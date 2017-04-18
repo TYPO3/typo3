@@ -1,0 +1,39 @@
+formEditor.propertyCollections.finishers.30.editors.200
+-------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.30.editors.200
+
+:aspect:`Data type`
+      array/ :ref:`[Typo3WinBrowserEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.typo3winbrowsereditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 30:
+                   identifier: Redirect
+                   editors:
+                     200:
+                       identifier: pageUid
+                       templateName: Inspector-Typo3WinBrowserEditor
+                       label: formEditor.elements.Form.finisher.Redirect.editor.pageUid.label
+                       buttonLabel: formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel
+                       browsableType: pages
+                       propertyPath: options.pageUid
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: Integer
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+

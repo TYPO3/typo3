@@ -1,0 +1,41 @@
+formEditor.editors.300
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.300
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         ImageUpload:
+           formEditor:
+             editors:
+               300:
+                 identifier: allowedMimeTypes
+                 templateName: Inspector-MultiSelectEditor
+                 label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.label
+                 propertyPath: properties.allowedMimeTypes
+                 selectOptions:
+                   10:
+                     value: image/jpeg
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg
+                   20:
+                     value: image/png
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.png
+                   30:
+                     value: image/bmp
+                     label: formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp

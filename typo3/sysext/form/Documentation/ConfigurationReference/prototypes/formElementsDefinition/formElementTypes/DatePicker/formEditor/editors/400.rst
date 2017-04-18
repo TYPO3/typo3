@@ -1,0 +1,32 @@
+formEditor.editors.400
+----------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.editors.400
+
+:aspect:`Data type`
+      array/ :ref:`[CheckboxEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 4-
+
+         DatePicker:
+           formEditor:
+             editors:
+               400:
+                 identifier: enableDatePicker
+                 templateName: Inspector-CheckboxEditor
+                 label: formEditor.elements.DatePicker.editor.enableDatePicker.label
+                 propertyPath: properties.enableDatePicker
+

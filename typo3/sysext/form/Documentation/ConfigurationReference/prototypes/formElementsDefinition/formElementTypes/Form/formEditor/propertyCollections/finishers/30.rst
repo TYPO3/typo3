@@ -1,0 +1,51 @@
+formEditor.propertyCollections.finishers.30
+-------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.30
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Form:
+           formEditor:
+             propertyCollections:
+               finishers:
+                 30:
+                   identifier: Redirect
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.Form.finisher.Redirect.editor.header.label
+                     200:
+                       identifier: pageUid
+                       templateName: Inspector-Typo3WinBrowserEditor
+                       label: formEditor.elements.Form.finisher.Redirect.editor.pageUid.label
+                       buttonLabel: formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel
+                       browsableType: pages
+                       propertyPath: options.pageUid
+                       propertyValidatorsMode: OR
+                       propertyValidators:
+                         10: Integer
+                         20: FormElementIdentifierWithinCurlyBracesExclusive
+                     300:
+                       identifier: additionalParameters
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label
+                       propertyPath: options.additionalParameters
+                     9999:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor
+
