@@ -237,12 +237,11 @@ interface QueryInterface
      *
      * @param string $propertyName The name of the property to compare against
      * @param string $operand The value to compare with
-     * @param bool $caseSensitive Whether the matching should be done case-sensitive
      * @return ComparisonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a non-string property
      * @api
      */
-    public function like($propertyName, $operand, $caseSensitive = true);
+    public function like($propertyName, $operand);
 
     /**
      * Returns a "contains" criterion used for matching objects against a query.

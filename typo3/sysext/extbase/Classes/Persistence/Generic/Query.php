@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -493,21 +492,11 @@ class Query implements QueryInterface
      *
      * @param string $propertyName The name of the property to compare against
      * @param mixed $operand The value to compare with
-     * @param bool $caseSensitive, deprecated since TYPO3 v8, will be removed in TYPO3 v9
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
      * @api
      */
-    public function like($propertyName, $operand, $caseSensitive = null)
+    public function like($propertyName, $operand)
     {
-        if ($caseSensitive !== null) {
-            GeneralUtility::deprecationLog(
-                'The parameter $caseSensitive for the Extbase like criterion has been deprecated.' .
-                'A case sensitive comparison cannot be reliably done as it is dependent on Database ' .
-                'Server settings. For MySQL switch the field to a case sensitive collation to achieve ' .
-                'the desired result.'
-            );
-        }
-
         return $this->qomFactory->comparison(
             $this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
             QueryInterface::OPERATOR_LIKE,

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -78,12 +77,6 @@ class Comparison implements ComparisonInterface
     protected $operand2;
 
     /**
-     * @var string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected $parameterIdentifier;
-
-    /**
      * Constructs this Comparison instance
      *
      * @param PropertyValueInterface $operand1
@@ -135,26 +128,6 @@ class Comparison implements ComparisonInterface
     public function getOperand2()
     {
         return $this->operand2;
-    }
-
-    /**
-     * @param string $parameterIdentifier
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function setParameterIdentifier($parameterIdentifier)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->parameterIdentifier = $parameterIdentifier;
-    }
-
-    /**
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getParameterIdentifier()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->parameterIdentifier;
     }
 
     /**

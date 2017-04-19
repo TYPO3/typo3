@@ -66,23 +66,6 @@ class CategoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getIconInitiallyReturnsEmptyString()
-    {
-        $this->assertSame('', $this->fixture->getIcon());
-    }
-
-    /**
-     * @test
-     */
-    public function setIconSetsIcon()
-    {
-        $this->fixture->setIcon('icon.png');
-        $this->assertSame('icon.png', $this->fixture->getIcon());
-    }
-
-    /**
-     * @test
-     */
     public function getParentInitiallyReturnsNull()
     {
         $this->assertNull($this->fixture->getParent());

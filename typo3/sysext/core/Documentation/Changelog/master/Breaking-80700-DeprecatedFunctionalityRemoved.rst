@@ -99,6 +99,14 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Utility\GeneralUtility::strtolower()
 * TYPO3\CMS\Core\Utility\GeneralUtility::strtoupper()
 * TYPO3\CMS\Core\Utility\GeneralUtility::xmlGetHeaderAttribs()
+* TYPO3\CMS\Extbase\Domain\Model\Category->getIcon()
+* TYPO3\CMS\Extbase\Domain\Model\Category->setIcon()
+* TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison->getParameterIdentifier()
+* TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison->setParameterIdentifier()
+* TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getUsePreparedStatement()
+* TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getUseQueryCache()
+* TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->usePreparedStatement()
+* TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->useQueryCache()
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getObjectManager()
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getTemplateVariableContainer()
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->injectObjectManager()
@@ -158,6 +166,10 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and thrird argument dropped
 * TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj() - File reference prefix in first argument removed
 * TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS() - Second argument dropped
+* TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement - support for \TYPO3\CMS\Core\Database\PreparedStatement as argument dropped
+* TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->askAndValidate() - support for boolean as fourth argument removed
+* TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->select() - support for boolean as fifth argument removed
+* TYPO3\CMS\Extbase\Persistence\Generic\Query->like() - Third argument dropped
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->searchWhere() - Third parameter is now mandatory
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace() - First argument removed
 * TYPO3\CMS\Frontend\Plugin\AbstractPlugin->__constructor() - First argument unused
@@ -189,6 +201,9 @@ The following class properties have changed visibility:
 * TYPO3\CMS\Core\DataHandling\DataHandler->cachedTSconfig changed from public to protected
 * TYPO3\CMS\Core\DataHandling\DataHandler->pageCache changed from public to protected
 
+The following Interface signatures have been changed:
+* TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like() - Third argument dropped
+
 The following configuration options are not evaluated anymore:
 * $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
 * $TYPO3_CONF_VARS[FE][noPHPscriptInclude]
@@ -199,6 +214,9 @@ The following entry points have been removed:
 
 The following hooks have been removed:
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']
+
+The following functionality has been removed:
+* Support for legacy prepared statements within Extbase Persistence within Qom\Statement
 
 The following TypoScript options have been removed:
 * stdWrap.fontTag

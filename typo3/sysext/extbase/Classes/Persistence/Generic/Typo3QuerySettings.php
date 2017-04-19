@@ -91,22 +91,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     protected $languageUid = 0;
 
     /**
-     * Flag whether the query should use a prepared statement
-     *
-     * @var bool
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
-     */
-    protected $usePreparedStatement = false;
-
-    /**
-     * Flag whether the query should be cached using the caching framework
-     *
-     * @var bool
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
-     */
-    protected $useQueryCache = true;
-
-    /**
      * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
      * initializeObject is responsible for handling that.
      */
@@ -337,49 +321,5 @@ class Typo3QuerySettings implements QuerySettingsInterface
     public function getIncludeDeleted()
     {
         return $this->includeDeleted;
-    }
-
-    /**
-     * @param bool $usePreparedStatement
-     * @return QuerySettingsInterface
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
-     */
-    public function usePreparedStatement($usePreparedStatement)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->usePreparedStatement = $usePreparedStatement;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 9, this option is handled automatically now in the database abstraction
-     */
-    public function getUsePreparedStatement()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return (bool)$this->usePreparedStatement;
-    }
-
-    /**
-     * @param bool $useQueryCache
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
-     * @return QuerySettingsInterface
-     */
-    public function useQueryCache($useQueryCache)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $this->useQueryCache = (bool)$useQueryCache;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, as the database is taking care of query caching
-     */
-    public function getUseQueryCache()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->useQueryCache;
     }
 }

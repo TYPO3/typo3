@@ -379,12 +379,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404);
             }
             $rows = $realStatement->fetchAll();
-        } elseif ($realStatement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
-            GeneralUtility::deprecationLog('Extbase support for Prepared Statements has been deprecated in TYPO3 v8, and will be removed in TYPO3 v9. Use native Doctrine DBAL Statements or QueryBuilder objects.');
-            $realStatement->execute($parameters);
-            $rows = $realStatement->fetchAll();
-
-            $realStatement->free();
         } else {
             // Do a real raw query. This is very stupid, as it does not allow to use DBAL's real power if
             // several tables are on different databases, so this is used with caution and could be removed

@@ -33,11 +33,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $description = '';
 
     /**
-     * @var string
-     */
-    protected $icon = '';
-
-    /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\Category|NULL
      * @lazy
      */
@@ -85,30 +80,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-
-    /**
-     * Returns the icon
-     *
-     * @return string $icon
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getIcon()
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-        return $this->icon;
-    }
-
-    /**
-     * Sets the icon
-     *
-     * @param string $icon
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function setIcon($icon)
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-        $this->icon = $icon;
     }
 
     /**
