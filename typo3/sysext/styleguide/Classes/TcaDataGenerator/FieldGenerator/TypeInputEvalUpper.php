@@ -44,8 +44,6 @@ class TypeInputEvalUpper extends AbstractFieldGenerator implements FieldGenerato
      */
     public function generate(array $data): string
     {
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-        return $charsetConverter->conv_case('utf-8', $this->kauderwelschService->getWord(), 'toUpper');
+        return mb_strtoupper($this->kauderwelschService->getWord(), 'utf-8');
     }
 }
