@@ -469,64 +469,43 @@ class DataHandler
      * Used by function checkRecordUpdateAccess() to store whether a record is updatable or not.
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $recUpdateAccessCache = [];
+    protected $recUpdateAccessCache = [];
 
     /**
      * User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $recInsertAccessCache = [];
+    protected $recInsertAccessCache = [];
 
     /**
      * Caching array for check of whether records are in a webmount
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $isRecordInWebMount_Cache = [];
+    protected $isRecordInWebMount_Cache = [];
 
     /**
      * Caching array for page ids in webmounts
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $isInWebMount_Cache = [];
+    protected $isInWebMount_Cache = [];
 
     /**
      * Caching for collecting TSconfig for page ids
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $cachedTSconfig = [];
+    protected $cachedTSconfig = [];
 
     /**
      * Used for caching page records in pageInfo()
      *
      * @var array
-     *
-     * @deprecated since TYPO3 v8, visibility will change to protected or to a run-time cache in TYPO3 v9
      */
-    public $pageCache = [];
-
-    /**
-     * Array caching workspace access for BE_USER
-     *
-     * @var array
-     *
-     * @deprecated since TYPO3 v8, no references could be found in class will be removed in TYPO3 v9
-     */
-    public $checkWorkspaceCache = [];
+    protected $pageCache = [];
 
     // Other arrays:
     /**
@@ -7654,19 +7633,6 @@ class DataHandler
     }
 
     /**
-     * Returns the $input string without a comma in the end
-     *
-     * @param string $input Input string
-     * @return string Output string with any comma in the end removed, if any.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function rmComma($input)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return rtrim($input, ',');
-    }
-
-    /**
      * Converts a HTML entity (like &#123;) to the character '123'
      *
      * @param string $input Input string
@@ -7686,19 +7652,6 @@ class DataHandler
             }
         }
         return implode('', $parts);
-    }
-
-    /**
-     * Returns absolute destination path for the upload folder, $folder
-     *
-     * @param string $folder Upload folder name, relative to PATH_site
-     * @return string Input string prefixed with PATH_site
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, can be simplified by just prepending the PATH_site constant
-     */
-    public function destPathFromUploadFolder($folder)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return PATH_site . $folder;
     }
 
     /**
@@ -8184,19 +8137,6 @@ class DataHandler
                 }
             }
         }
-    }
-
-    /**
-     * Used by the deleteFunctions to check if there are records from disallowed tables under the pages to be deleted.
-     *
-     * @param string $inList List of page integers
-     * @return bool Return TRUE, if permission granted
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function noRecordsFromUnallowedTables($inList)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->checkForRecordsFromDisallowedTables(GeneralUtility::intExplode(',', $inList, true));
     }
 
     /**

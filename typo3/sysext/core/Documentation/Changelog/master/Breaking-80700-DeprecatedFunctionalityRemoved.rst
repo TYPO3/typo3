@@ -53,6 +53,9 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
+* TYPO3\CMS\Core\DataHandling\DataHandler::rmComma()
+* TYPO3\CMS\Core\DataHandling\DataHandler::destPathFromUploadFolder()
+* TYPO3\CMS\Core\DataHandling\DataHandler::noRecordsFromUnallowedTables()
 * TYPO3\CMS\Core\TypoScript\TemplateService->splitConfArray()
 * TYPO3\CMS\Core\TypoScript\TemplateService->fileContent()
 * TYPO3\CMS\Core\TypoScript\TemplateService->removeQueryString()
@@ -154,6 +157,7 @@ The following methods changed signature according to previous deprecations in v8
 The following public class properties have been dropped:
 * TYPO3\CMS\Core\Charset\CharsetConverter->charSetArray
 * TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
+* TYPO3\CMS\Core\DataHandling\DataHandler->checkWorkspaceCache
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->compensateFieldWidth
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->excludeCHashVars
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->scriptParseTime
@@ -164,6 +168,14 @@ The following public class properties have been dropped:
 * TYPO3\CMS\Lang\LanguageService->csConvObj
 * TYPO3\CMS\Lang\LanguageService->moduleLabels
 * TYPO3\CMS\Lang\LanguageService->parserFactory
+
+The following class properties have changed visibility:
+* TYPO3\CMS\Core\DataHandling\DataHandler->recUpdateAccessCache changed from public to protected
+* TYPO3\CMS\Core\DataHandling\DataHandler->recInsertAccessCache changed from public to protected
+* TYPO3\CMS\Core\DataHandling\DataHandler->isRecordInWebMount_Cache changed from public to protected
+* TYPO3\CMS\Core\DataHandling\DataHandler->isInWebMount_Cache changed from public to protected
+* TYPO3\CMS\Core\DataHandling\DataHandler->cachedTSconfig changed from public to protected
+* TYPO3\CMS\Core\DataHandling\DataHandler->pageCache changed from public to protected
 
 The following configuration options are not evaluated anymore:
 * $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
