@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
@@ -40,7 +41,8 @@ class FilesContentObject extends AbstractContentObject
         $availableFileObjectCount = count($fileObjects);
 
         // optionSplit applied to conf to allow different settings per file
-        $splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, $availableFileObjectCount);
+        $splitConf = GeneralUtility::makeInstance(TypoScriptService::class)
+            ->explodeConfigurationForOptionSplit($conf, $availableFileObjectCount);
 
         $start = 0;
         if (!empty($conf['begin'])) {
