@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,10 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Main entry point for AJAX calls in the TYPO3 Backend. Based on ?ajaxId of the outside application.
  * Before doing the basic BE-related set up of this request (see the additional calls on $this->bootstrap inside
  * handleRequest()), some AJAX-calls can be made without a valid user, which is determined here.
- * See $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] and the Core APIs on how to register an AJAX call in the TYPO3 Backend.
  *
- * Due to legacy reasons, the actual logic is in EXT:core/Http/AjaxRequestHandler which will eventually
- * be moved into this class.
+ * AJAX Requests are typically registered within EXT:myext/Configuration/Backend/AjaxRoutes.php
  */
 class AjaxRequestHandler implements RequestHandlerInterface
 {
@@ -79,13 +76,8 @@ class AjaxRequestHandler implements RequestHandlerInterface
         $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($ajaxID);
         $this->boot($proceedIfNoUserIsLoggedIn);
 
-        try {
-            // Backend Routing - check if a valid route is there, and dispatch
-            return $this->dispatch($request);
-        } catch (ResourceNotFoundException $e) {
-            // no Route found, fallback to the traditional AJAX request
-        }
-        return $this->dispatchTraditionalAjaxRequest($request);
+        // Backend Routing - check if a valid route is there, and dispatch
+        return $this->dispatch($request);
     }
 
     /**
@@ -164,73 +156,5 @@ class AjaxRequestHandler implements RequestHandlerInterface
         /** @var RouteDispatcher $dispatcher */
         $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
         return $dispatcher->dispatch($request, $response);
-    }
-
-    /**
-     * Calls the ajax callback method registered in TYPO3_CONF_VARS[BE][AJAX]
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected function dispatchTraditionalAjaxRequest($request)
-    {
-        GeneralUtility::deprecationLog('Using the traditional way for AJAX requests via $TYPO3_CONF_VARS[BE][AJAX] is discouraged. Use the Backend Routes logic instead.');
-        $ajaxID = $request->getAttribute('routePath');
-        // Finding the script path from the registry
-        $ajaxRegistryEntry = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID]) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID] : null;
-        $ajaxScript = null;
-        $csrfTokenCheck = false;
-        if ($ajaxRegistryEntry !== null && is_array($ajaxRegistryEntry) && isset($ajaxRegistryEntry['callbackMethod'])) {
-            $ajaxScript = $ajaxRegistryEntry['callbackMethod'];
-            $csrfTokenCheck = $ajaxRegistryEntry['csrfTokenCheck'];
-        }
-
-        // Instantiating the AJAX object
-        /** @var \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj */
-        $ajaxObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, $ajaxID);
-        $ajaxParams = ['request' => $request];
-
-        // Evaluating the arguments and calling the AJAX method/function
-        if (empty($ajaxID)) {
-            $ajaxObj->setError('No valid ajaxID parameter given.');
-        } elseif (empty($ajaxScript)) {
-            $ajaxObj->setError('No backend function registered for ajaxID "' . $ajaxID . '".');
-        } elseif ($csrfTokenCheck && !$this->isValidRequest($request)) {
-            $ajaxObj->setError('Invalid CSRF token detected for ajaxID "' . $ajaxID . '", reload the backend of TYPO3');
-        } else {
-            $success = GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, '', 1);
-            if ($success === false) {
-                $ajaxObj->setError('Registered backend function for ajaxID "' . $ajaxID . '" was not found.');
-            }
-        }
-
-        // Outputting the content (and setting the X-JSON-Header)
-        return $ajaxObj->render();
-    }
-
-    /**
-     * Wrapper method for static form protection utility
-     *
-     * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
-     */
-    protected function getFormProtection()
-    {
-        return FormProtectionFactory::get();
-    }
-
-    /**
-     * Checks if the request token is valid. This is checked to see if the route is really
-     * created by the same instance. Should be called for all routes in the backend except
-     * for the ones that don't require a login.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool
-     * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
-     */
-    protected function isValidRequest(ServerRequestInterface $request)
-    {
-        $token = (string)(isset($request->getParsedBody()['ajaxToken']) ? $request->getParsedBody()['ajaxToken'] : $request->getQueryParams()['ajaxToken']);
-        return $this->getFormProtection()->validateToken($token, 'ajaxCall', $request->getAttribute('routePath'));
     }
 }

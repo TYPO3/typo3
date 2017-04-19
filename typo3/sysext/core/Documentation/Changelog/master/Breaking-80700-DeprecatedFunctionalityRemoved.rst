@@ -14,9 +14,12 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Backend\Console\Application
 * TYPO3\CMS\Backend\Console\CliRequestHandler
 * TYPO3\CMS\Core\Controller\CommandLineController
+* TYPO3\CMS\Core\Http\AjaxRequestHandler
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
 The following PHP class methods that have been previously deprecated for v8 have been removed:
+* TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
+* TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addExtJSModule()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()

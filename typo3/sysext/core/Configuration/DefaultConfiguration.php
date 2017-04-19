@@ -947,7 +947,6 @@ return [
         'explicitConfirmationOfTranslation' => false,
         'versionNumberInFilename' => false,
         'debug' => false,
-        'AJAX' => [], // array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See the AjaxRequestHandler class for more information.
         'toolbarItems' => [], // Array: Registered toolbar items classes
         'HTTP' => [
             'Response' => [

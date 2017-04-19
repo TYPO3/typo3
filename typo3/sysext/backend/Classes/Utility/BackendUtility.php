@@ -3662,33 +3662,6 @@ class BackendUtility
     }
 
     /**
-     * Returns the Ajax URL for a given AjaxID including a CSRF token.
-     *
-     * This method is only called by the core and must not be used by extensions.
-     * Ajax URLs of all registered backend Ajax handlers are automatically published
-     * to JavaScript inline settings: TYPO3.settings.ajaxUrls['ajaxId']
-     *
-     * @param string $ajaxIdentifier Identifier of the AJAX callback
-     * @param array $urlParameters URL parameters that should be added as key value pairs
-     * @return string Calculated URL
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the UriBuilder directly.
-     */
-    public static function getAjaxUrl($ajaxIdentifier, array $urlParameters = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        try {
-            $routeIdentifier = 'ajax_' . $ajaxIdentifier;
-            $uri = $uriBuilder->buildUriFromRoute($routeIdentifier, $urlParameters);
-        } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            // no route registered, use the fallback logic to check for a module
-            $uri = $uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters);
-        }
-        return (string)$uri;
-    }
-
-    /**
      * Return a link to the list view
      *
      * @param array $urlParameters URL parameters that should be added as key value pairs

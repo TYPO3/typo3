@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Page;
 
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -2102,12 +2101,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected function addAjaxUrlsToInlineSettings()
     {
         $ajaxUrls = [];
-        // Note: this method of adding Ajax URLs is @deprecated as of TYPO3 v8, and will be removed in TYPO3 v9
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] as $ajaxHandler => $_) {
-            $ajaxUrls[$ajaxHandler] = BackendUtility::getAjaxUrl($ajaxHandler);
-        }
-
-        // also add the ajax-based routes
+        // Add the ajax-based routes
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var Router $router */

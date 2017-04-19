@@ -125,32 +125,6 @@ class UriBuilder
     }
 
     /**
-     * Returns the Ajax URL for a given AjaxID including a CSRF token.
-     *
-     * This method is only called by the core and must not be used by extensions.
-     * Ajax URLs of all registered backend Ajax handlers are automatically published
-     * to JavaScript inline settings: TYPO3.settings.ajaxUrls['ajaxId']
-     *
-     * @param string $ajaxIdentifier the ajaxID (used as GET parameter)
-     * @param array $parameters An array of parameters
-     * @param string $referenceType The type of reference to be generated (one of the constants)
-     *
-     * @return Uri The generated Uri
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the buildUriFromRoute() method
-     */
-    public function buildUriFromAjaxId($ajaxIdentifier, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $parameters = [
-            'ajaxID' => $ajaxIdentifier
-        ] + $parameters;
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxIdentifier]['csrfTokenCheck'])) {
-            $parameters['ajaxToken'] = FormProtectionFactory::get('backend')->generateToken('ajaxCall', $ajaxIdentifier);
-        }
-        return $this->buildUri($parameters, $referenceType);
-    }
-
-    /**
      * Internal method building a Uri object, merging the GET parameters array into a flat queryString
      *
      * @param array $parameters An array of GET parameters
