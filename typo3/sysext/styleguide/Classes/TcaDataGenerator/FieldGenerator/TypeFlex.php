@@ -48,12 +48,9 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
     public function generate(array $data): string
     {
         // Parse the flex form
-        $dataStructureArray = BackendUtility::getFlexFormDS(
-            $data['fieldConfig']['config'],
-            [],
-            $data['tableName'],
-            $data['fieldName']
-        );
+        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+        $structureIdentifier = $flexFormTools->getDataStructureIdentifier($data['fieldConfig'], $data['tableName'], $data['fieldName'], []);
+        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($structureIdentifier);
 
         // Early return if flex couldn't be parsed
         if (!is_array($dataStructureArray)) {
@@ -137,8 +134,6 @@ class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
         // Get string representation of result via FlexFormTools
         $resultString = '';
         if (!empty($resultArray)) {
-            /** @var FlexFormTools $flexFormTools */
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $resultString = $flexFormTools->flexArray2Xml($resultArray, true);
         }
 
