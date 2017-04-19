@@ -24,6 +24,9 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Core\Messaging\ErrorpageMessage
 * TYPO3\CMS\Core\TimeTracker\NullTimeTracker
 * TYPO3\CMS\Extbase\Utility\ArrayUtility
+* TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword
+* TYPO3\CMS\Form\ViewHelpers\Form\CheckboxViewHelper
+* TYPO3\CMS\Form\ViewHelpers\Form\PlainTextMailViewHelper
 * TYPO3\CMS\Frontend\Page\FramesetRenderer
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
@@ -165,6 +168,16 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getTemplateVariableContainer()
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->injectObjectManager()
 * TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setLegacyMode()
+* TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement->onSubmit()
+* TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection->onSubmit()
+* TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload->onBuildingFinished()
+* TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface->onSubmit()
+* TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement->onSubmit()
+* TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable->beforeRendering()
+* TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable->onBuildingFinished()
+* TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface->onBuildingFinished()
+* TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface->beforeRendering()
+* TYPO3\CMS\Form\Domain\Runtime\FormRuntime->beforeRendering()
 * TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->record_registration()
 * TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getContentObject()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->URLqMark()

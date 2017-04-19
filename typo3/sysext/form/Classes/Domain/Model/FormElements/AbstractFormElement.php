@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * A base form element, which is the starting point for creating custom (PHP-based)
@@ -164,19 +163,5 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     public function getProperties(): array
     {
         return $this->properties;
-    }
-
-    /**
-     * Override this method in your custom FormElements if needed
-     *
-     * @param FormRuntime $formRuntime
-     * @param mixed $elementValue
-     * @param array $requestArguments submitted raw request values
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 }

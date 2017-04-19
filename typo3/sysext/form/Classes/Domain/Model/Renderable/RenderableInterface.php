@@ -73,15 +73,6 @@ interface RenderableInterface extends RootRenderableInterface
     public function onRemoveFromParentRenderable();
 
     /**
-     * This is a callback that is invoked by the Form Factory after the whole form has been built.
-     * It can be used to add new form elements as children for complex form elements.
-     *
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onBuildingFinished();
-
-    /**
      * Register this element at the parent form, if there is a connection to the parent form.
      *
      * @internal

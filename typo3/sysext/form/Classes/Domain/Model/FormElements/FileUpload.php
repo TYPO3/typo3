@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * A generic file upload form element
  *
@@ -33,14 +31,5 @@ class FileUpload extends AbstractFormElement
     {
         $this->setDataType('TYPO3\CMS\Extbase\Domain\Model\FileReference');
         parent::initializeFormElement();
-    }
-
-    /**
-     * @internal
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onBuildingFinished()
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 }

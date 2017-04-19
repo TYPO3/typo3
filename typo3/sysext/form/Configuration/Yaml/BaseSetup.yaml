@@ -129,10 +129,7 @@ TYPO3:
             AdvancedPassword:
               __inheritances:
                 10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.Password'
-              # implementationClassName 'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword'
-              # is deprecated since TYPO3 v8 and will be removed in TYPO3 v9
-              # will be 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement' in TYPO3 v9
-              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword'
+              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
               properties:
                 elementClassAttribute: 'input-medium'
                 confirmationLabel: ''

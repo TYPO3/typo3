@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Exception\ValidatorPresetNotFoundException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * Convenience base class which implements common functionality for most
@@ -140,12 +139,6 @@ abstract class AbstractRenderable implements RenderableInterface
         }
 
         if (isset($options['properties'])) {
-            if (isset($options['properties']['placeholder'])) {
-                GeneralUtility::deprecationLog('EXT:form - "properties.placeholder" is deprecated since TYPO3 v8 and will be removed in TYPO3 v9. Use "properties.fluidAdditionalAttributes.placeholder."');
-                $options['properties']['fluidAdditionalAttributes']['placeholder'] = $options['properties']['placeholder'];
-                unset($options['properties']['placeholder']);
-            }
-
             foreach ($options['properties'] as $key => $value) {
                 $this->setProperty($key, $value);
             }
@@ -414,30 +407,5 @@ abstract class AbstractRenderable implements RenderableInterface
         return empty($this->renderingOptions['templateName'])
             ? $this->type
             : $this->renderingOptions['templateName'];
-    }
-
-    /**
-     * Override this method in your custom Renderable if needed
-     *
-     * @param FormRuntime $formRuntime
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function beforeRendering(FormRuntime $formRuntime)
-    {
-        GeneralUtility::logDeprecatedFunction();
-    }
-
-    /**
-     * This is a callback that is invoked by the Form Factory after the whole form has been built.
-     * It can be used to add new form elements as children for complex form elements.
-     *
-     * Override this method in your custom Renderable if needed.
-     *
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onBuildingFinished()
-    {
     }
 }

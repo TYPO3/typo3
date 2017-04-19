@@ -175,9 +175,6 @@ class FluidFormRenderer extends AbstractElementRenderer implements RendererInter
         // from the renderable
         $view->getTemplatePaths()->fillFromConfigurationArray($renderingOptions);
 
-        GeneralUtility::deprecationLog('EXT:form - calls for "beforeRendering" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
-        $this->formRuntime->getFormDefinition()->beforeRendering($this->formRuntime);
-
         if (
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])

@@ -1056,7 +1056,7 @@ define(['jquery',
          * @throws 1475421056
          */
         function renderTextEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-            var compatibilityPropertyData, compatibilityPropertyPath, propertyData, propertyPath;
+            var propertyData, propertyPath;
             assert(
                 'object' === $.type(editorConfiguration),
                 'Invalid parameter "editorConfiguration"',
@@ -1097,22 +1097,6 @@ define(['jquery',
                 collectionName
             );
             propertyData = getCurrentlySelectedFormElement().get(propertyPath);
-
-            if (
-                getUtility().isNonEmptyString(editorConfiguration['compatibilityPropertyPath'])
-                && getUtility().isUndefinedOrNull(propertyData)
-            ) {
-                compatibilityPropertyPath = getFormEditorApp().buildPropertyPath(
-                    editorConfiguration['compatibilityPropertyPath'],
-                    collectionElementIdentifier,
-                    collectionName
-                );
-                compatibilityPropertyData = getCurrentlySelectedFormElement().get(compatibilityPropertyPath);
-
-                getCurrentlySelectedFormElement().set(propertyPath, compatibilityPropertyData, true);
-                getCurrentlySelectedFormElement().unset(compatibilityPropertyPath, true);
-                propertyData = compatibilityPropertyData;
-            }
 
             _validateCollectionElement(propertyPath, editorHtml);
 

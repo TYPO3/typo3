@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * A base form element interface, which can be the starting point for creating
@@ -129,17 +128,4 @@ interface FormElementInterface extends RenderableInterface
      * @api
      */
     public function isRequired(): bool;
-
-    /**
-     * This callback is invoked by the FormRuntime whenever values are mapped and validated
-     * (after a form page was submitted)
-     *
-     * @param FormRuntime $formRuntime
-     * @param mixed $elementValue submitted value of the element *before post processing*
-     * @param array $requestArguments submitted raw request values
-     * @see FormRuntime::mapAndValidate()
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = []);
 }

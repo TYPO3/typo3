@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-
 /**
  * Base interface which all parts of a form must adhere to.
  *
@@ -53,17 +51,6 @@ interface RootRenderableInterface
      * @api
      */
     public function getLabel(): string;
-
-    /**
-     * This is a callback that is invoked by the Renderer before the corresponding element is rendered.
-     * Use this to access previously submitted values and/or modify the $formRuntime before an element
-     * is outputted to the browser.
-     *
-     * @param FormRuntime $formRuntime
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function beforeRendering(FormRuntime $formRuntime);
 
     /**
      * Get the renderer class name to be used to display this form;

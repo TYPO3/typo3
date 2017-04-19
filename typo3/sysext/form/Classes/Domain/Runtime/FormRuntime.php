@@ -436,10 +436,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         };
 
         $value = null;
-
-        GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
-        $page->onSubmit($this, $value, $requestArguments);
-
         if (
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
@@ -463,9 +459,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             } catch (\RuntimeException $exception) {
                 $value = null;
             }
-
-            GeneralUtility::deprecationLog('EXT:form - calls for "onSubmit" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
-            $element->onSubmit($this, $value, $requestArguments);
 
             if (
                 isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
@@ -837,20 +830,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function getFormDefinition(): FormDefinition
     {
         return $this->formDefinition;
-    }
-
-    /**
-     * This is a callback that is invoked by the Renderer before the corresponding element is rendered.
-     * Use this to access previously submitted values and/or modify the $formRuntime before an element
-     * is outputted to the browser.
-     *
-     * @param FormRuntime $formRuntime
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function beforeRendering(FormRuntime $formRuntime)
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 
     /**

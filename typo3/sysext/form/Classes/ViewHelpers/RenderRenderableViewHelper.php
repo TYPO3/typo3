@@ -69,9 +69,6 @@ class RenderRenderableViewHelper extends AbstractViewHelper
             ->getViewHelperVariableContainer()
             ->get(self::class, 'formRuntime');
 
-        GeneralUtility::deprecationLog('EXT:form - calls for "beforeRendering" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
-        $arguments['renderable']->beforeRendering($formRuntime);
-
         if (
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])

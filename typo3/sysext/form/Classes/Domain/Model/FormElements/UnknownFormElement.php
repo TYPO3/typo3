@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * A Form Element that has no definition.
@@ -140,20 +139,5 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
     public function isRequired(): bool
     {
         return false;
-    }
-
-    /**
-     * Not used in this implementation
-     *
-     * @param FormRuntime $formRuntime
-     * @param mixed $elementValue submitted value of the element *before post processing*
-     * @param array $requestArguments submitted raw request values
-     * @see FormRuntime::mapAndValidate()
-     * @internal
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 }

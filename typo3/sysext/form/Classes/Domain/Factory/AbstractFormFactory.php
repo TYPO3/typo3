@@ -62,9 +62,6 @@ abstract class AbstractFormFactory implements FormFactoryInterface
     protected function triggerFormBuildingFinished(FormDefinition $form)
     {
         foreach ($form->getRenderablesRecursively() as $renderable) {
-            GeneralUtility::deprecationLog('EXT:form - calls for "onBuildingFinished" are deprecated since TYPO3 v8 and will be removed in TYPO3 v9');
-            $renderable->onBuildingFinished();
-
             if (
                 isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])
                 && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])

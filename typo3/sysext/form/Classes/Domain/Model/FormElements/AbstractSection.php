@@ -24,7 +24,6 @@ use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
  * A base class for "section-like" form parts like "Page" or "Section" (which
@@ -184,21 +183,5 @@ abstract class AbstractSection extends AbstractCompositeRenderable
     public function removeElement(FormElementInterface $elementToRemove)
     {
         $this->removeRenderable($elementToRemove);
-    }
-
-    /**
-     * This callback is invoked by the FormRuntime whenever values are mapped and validated
-     * (after a form page was submitted)
-     * @see FormRuntime::mapAndValidate()
-     *
-     * @param FormRuntime $formRuntime
-     * @param mixed $elementValue submitted value of the element *before post processing*
-     * @param array $requestArguments submitted raw request values
-     * @api
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function onSubmit(FormRuntime $formRuntime, &$elementValue, array $requestArguments = [])
-    {
-        GeneralUtility::logDeprecatedFunction();
     }
 }
