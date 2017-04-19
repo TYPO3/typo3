@@ -4142,7 +4142,8 @@ class ContentObjectRenderer
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
             $splitArr['cObjNum'] = $cObjNumSplitConf;
-            $splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $splitCount);
+            $splitArr = GeneralUtility::makeInstance(TypoScriptService::class)
+                ->explodeConfigurationForOptionSplit($splitArr, $splitCount);
         }
         $content = '';
         for ($a = 0; $a < $splitCount; $a++) {
