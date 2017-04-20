@@ -230,6 +230,24 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
+     * Add configuration to replace LLL: references with the translated value
+     * @param array $configuration
+     *
+     * @return array
+     */
+    protected function replaceLanguageFileReferences(array $configuration): array
+    {
+        foreach ($configuration as $key => $value) {
+            if (is_array($value)) {
+                $configuration[$key] = $this->replaceLanguageFileReferences($value);
+            } elseif (is_string($value) && stripos($value, 'LLL:') === 0) {
+                $configuration[$key] = $this->getLanguageService()->sL($value);
+            }
+        }
+        return $configuration;
+    }
+
+    /**
      * Add configuration to replace absolute EXT: paths with relative ones
      * @param array $configuration
      *
@@ -240,7 +258,7 @@ class RichTextElement extends AbstractFormElement
         foreach ($configuration as $key => $value) {
             if (is_array($value)) {
                 $configuration[$key] = $this->replaceAbsolutePathsToRelativeResourcesPath($value);
-            } elseif (is_string($value) && substr($value, 0, 4) === 'EXT:') {
+            } elseif (is_string($value) && stripos($value, 'EXT:') === 0) {
                 $configuration[$key] = $this->resolveUrlPath($value);
             }
         }
@@ -282,7 +300,9 @@ class RichTextElement extends AbstractFormElement
         }
         $configuration['contentsLanguage'] = $this->getLanguageIsoCodeOfContent();
 
-        // replace all paths
+        // Replace all label references
+        $configuration = $this->replaceLanguageFileReferences($configuration);
+        // Replace all paths
         $configuration = $this->replaceAbsolutePathsToRelativeResourcesPath($configuration);
 
         // there are some places where we define an array, but it needs to be a list in order to work
