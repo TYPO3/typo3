@@ -1980,7 +1980,7 @@ class GraphicalFunctions
     public function randomName()
     {
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/transient/');
-        return 'typo3temp/var/transient/' . md5(uniqid('', true));
+        return PATH_site . 'typo3temp/var/transient/' . md5(uniqid('', true));
     }
 
     /**
