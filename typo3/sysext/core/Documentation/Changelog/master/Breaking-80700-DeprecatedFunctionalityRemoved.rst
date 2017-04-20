@@ -45,6 +45,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getExcludeQueryPart()
 * TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getPreviousLocalizedRecordUid()
 * TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getRecordLocalization()
+* TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->sanitizeMaxItems()
 * TYPO3\CMS\Backend\Module\AbstractFunctionModule->getBackPath()
 * TYPO3\CMS\Backend\Module\AbstractFunctionModule->getDatabaseConnection()
 * TYPO3\CMS\Backend\Module\AbstractFunctionModule->incLocalLang()
@@ -89,6 +90,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Backend\Utility\BackendUtility::processParams()
 * TYPO3\CMS\Backend\Utility\BackendUtility::replaceL10nModeFields()
 * TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup()
+* TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->veriCode()
 * TYPO3\CMS\Core\Charset\CharsetConverter->convCapitalize()
 * TYPO3\CMS\Core\Charset\CharsetConverter->conv_case()
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char2byte_pos()
@@ -107,11 +109,13 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
 * TYPO3\CMS\Core\Core\Bootstrap->loadExtensionTables()
 * TYPO3\CMS\Core\Database\RelationHandler->readyForInterface()
+* TYPO3\CMS\Core\Database\QueryView->tableWrap()
 * TYPO3\CMS\Core\DataHandling\DataHandler::rmComma()
 * TYPO3\CMS\Core\DataHandling\DataHandler::destPathFromUploadFolder()
 * TYPO3\CMS\Core\DataHandling\DataHandler::noRecordsFromUnallowedTables()
 * TYPO3\CMS\Core\Imaging\GraphicalFunctions->createTempSubDir()
 * TYPO3\CMS\Core\Imaging\GraphicalFunctions->prependAbsolutePath()
+* TYPO3\CMS\Core\Imaging\IconRegistry->getDeprecationSettings()
 * TYPO3\CMS\Core\Messaging\FlashMessage->getClass()
 * TYPO3\CMS\Core\Messaging\FlashMessage->getIconName()
 * TYPO3\CMS\Core\TypoScript\TemplateService->splitConfArray()
@@ -194,10 +198,14 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Frontend\Page\PageRepository->getPathFromRootline()
 * TYPO3\CMS\Frontend\Page\PageRepository::getHash()
 * TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
+* TYPO3\CMS\IndexedSearch\Indexer->includeCrawlerClass()
 * TYPO3\CMS\Lang\LanguageService->addModuleLabels()
 * TYPO3\CMS\Lang\LanguageService->getParserFactory()
 * TYPO3\CMS\Lang\LanguageService->makeEntities()
 * TYPO3\CMS\Lang\LanguageService->overrideLL()
+* TYPO3\CMS\Lowlevel\Utility\ArrayBrowser->wrapValue()
+* TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList->makeQueryArray()
+* TYPO3\CMS\Taskcenter\Controller\TaskModuleController->printContent()
 
 The following methods changed signature according to previous deprecations in v8:
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping() - Third and fourth argument dropped
@@ -241,6 +249,7 @@ The following public class properties have been dropped:
 * TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
 * TYPO3\CMS\Core\DataHandling\DataHandler->checkWorkspaceCache
 * TYPO3\CMS\Core\Imaging\GraphicalFunctions->tempPath
+* TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->parentMenuArr
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->compensateFieldWidth
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->excludeCHashVars
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->scriptParseTime
@@ -270,6 +279,7 @@ The following configuration options are not evaluated anymore:
 * $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
 * $TYPO3_CONF_VARS[FE][noPHPscriptInclude]
 * $TYPO3_CONF_VARS[FE][maxSessionDataSize]
+* $GLOBALS['TYPO3_CONF_VARS_extensionAdded']
 
 The following entry points have been removed:
 * typo3/cli_dispatch.phpsh
@@ -277,6 +287,7 @@ The following entry points have been removed:
 The following hooks have been removed:
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']
+* $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray']
 
 The following functionality has been removed:
 * Support for legacy prepared statements within Extbase Persistence within Qom\Statement

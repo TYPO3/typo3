@@ -3271,22 +3271,6 @@ class IconRegistry implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
-     *
-     * @return array
-     * @throws Exception
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getDeprecationSettings($identifier)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!$this->isDeprecated($identifier)) {
-            throw new Exception('Icon with identifier "' . $identifier . '" is not deprecated"', 1460976527);
-        }
-        return $this->deprecatedIcons[$identifier];
-    }
-
-    /**
      * @return array
      */
     public function getAllRegisteredIconIdentifiers()

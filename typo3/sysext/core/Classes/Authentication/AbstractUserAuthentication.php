@@ -1154,20 +1154,6 @@ abstract class AbstractUserAuthentication
         }
     }
 
-    /**
-     * VeriCode returns 10 first chars of a md5 hash of the session cookie AND the encryptionKey from TYPO3_CONF_VARS.
-     * This code is used as an alternative verification when the JavaScript interface executes cmd's to
-     * tce_db.php from eg. MSIE 5.0 because the proper referer is not passed with this browser...
-     *
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function veriCode()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return substr(md5($this->id . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 10);
-    }
-
     /*************************
      *
      * Session and Configuration Handling

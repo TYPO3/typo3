@@ -2070,17 +2070,6 @@ class Indexer
         }
     }
 
-    /**
-     * Includes the crawler class
-     *
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, autoloader is taking care of that functionality
-     */
-    public function includeCrawlerClass()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php';
-    }
-
     /********************************
      *
      * SQL; Submitting words

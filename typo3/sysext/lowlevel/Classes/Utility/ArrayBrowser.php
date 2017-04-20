@@ -132,23 +132,6 @@ class ArrayBrowser
     /**
      * Wrapping the value in bold tags etc.
      *
-     * @param string $theValue The title string
-     * @return string Title string, htmlspecialchars()'ed
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function wrapValue($theValue)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $wrappedValue = '';
-        if ((string)$theValue !== '') {
-            $wrappedValue = htmlspecialchars($theValue);
-        }
-        return $wrappedValue;
-    }
-
-    /**
-     * Wrapping the value in bold tags etc.
-     *
      * @param string $label The title string
      * @param string $depth Depth path
      * @param string $theValue The value for the array entry.

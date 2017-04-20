@@ -580,19 +580,6 @@ class QueryView
     }
 
     /**
-     * Table wrap
-     *
-     * @param string $str
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function tableWrap($str)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return '<pre>' . $str . '</pre>';
-    }
-
-    /**
      * Search
      *
      * @return string

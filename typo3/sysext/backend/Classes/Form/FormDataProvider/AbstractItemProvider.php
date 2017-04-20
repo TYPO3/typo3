@@ -1277,29 +1277,6 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * Make sure maxitems is always filled with a valid integer value.
-     *
-     * Used by TcaSelectItems and TcaSelectTreeItems data providers
-     *
-     * @param mixed $maxItems
-     * @return int
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function sanitizeMaxItems($maxItems)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!empty($maxItems)
-            && (int)$maxItems >= 1
-        ) {
-            $maxItems = (int)$maxItems;
-        } else {
-            $maxItems = 99999;
-        }
-
-        return $maxItems;
-    }
-
-    /**
      * Gets the record uid of the live default record. If already
      * pointing to the live record, the submitted record uid is returned.
      *

@@ -230,15 +230,6 @@ abstract class AbstractMenuContentObject
     protected $useCacheHash = false;
 
     /**
-     * Holds the menuArr of the parent menu, if this menu is a subMenu.
-     *
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, please use getter and setter methods.
-     *
-     * @var array
-     */
-    public $parentMenuArr = [];
-
-    /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
      *
      * @var null|int
