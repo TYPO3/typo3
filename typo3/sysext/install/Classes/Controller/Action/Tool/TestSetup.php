@@ -701,7 +701,7 @@ class TestSetup extends Action\AbstractAction
      */
     protected function getImagesPath(GraphicalFunctions $imageProcessor)
     {
-        $imagePath = $imageProcessor->tempPath . 'assets/images/';
+        $imagePath = $imageProcessor->absPrefix . 'typo3temp/assets/images/';
         if (!is_dir($imagePath)) {
             GeneralUtility::mkdir_deep($imagePath);
         }
