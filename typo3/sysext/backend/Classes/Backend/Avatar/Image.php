@@ -61,12 +61,8 @@ class Image
     public function getUrl($relativeToCurrentScript = false)
     {
         $url = $this->url;
-
         if ($relativeToCurrentScript && !GeneralUtility::isValidUrl($url)) {
-            $absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $url);
-            $pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
-            $filePart = substr(PATH_site . $url, strlen($absolutePathToContainingFolder) + 1);
-            $url = $pathPart . $filePart;
+            $url = PathUtility::getAbsoluteWebPath(PATH_site . $url);
         }
         return $url;
     }
