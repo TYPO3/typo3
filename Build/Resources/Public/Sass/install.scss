@@ -211,6 +211,10 @@ hr {
     }
 }
 
+#mobileMenuWrapper {
+    margin-bottom: 10px;
+}
+
 #install-menu-button {
     float: right;
     margin-bottom: 20px;
@@ -350,4 +354,10 @@ a[data-toggle="collapse"] {
 
 .upgrade_analysis_item_to_filter pre a {
     text-decoration: underline;
+}
+
+#phpinfo table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
 }
