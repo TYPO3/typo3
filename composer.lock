@@ -3430,26 +3430,26 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "1.0.1",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "91ac925c3e56f1dde6833d6143417bc2cabc4176"
+                "reference": "cfad33e387fb51f2657984e4213f0b167d4d2f45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/91ac925c3e56f1dde6833d6143417bc2cabc4176",
-                "reference": "91ac925c3e56f1dde6833d6143417bc2cabc4176",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/cfad33e387fb51f2657984e4213f0b167d4d2f45",
+                "reference": "cfad33e387fb51f2657984e4213f0b167d4d2f45",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.0",
                 "phpunit/phpunit": "^5.6",
-                "typo3/cms-backend": "^8.5",
-                "typo3/cms-core": "^8.5",
-                "typo3/cms-extbase": "^8.5",
-                "typo3/cms-fluid": "^8.5",
-                "typo3/cms-frontend": "^8.5",
+                "typo3/cms-backend": "^8.5 || ^9",
+                "typo3/cms-core": "^8.5 || ^9",
+                "typo3/cms-extbase": "^8.5 || ^9",
+                "typo3/cms-fluid": "^8.5 || ^9",
+                "typo3/cms-frontend": "^8.5 || ^9",
                 "typo3fluid/fluid": "^2.2"
             },
             "suggest": {
@@ -3489,7 +3489,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2017-04-03T10:27:36+00:00"
+            "time": "2017-04-20T19:59:33+00:00"
         },
         {
             "name": "webmozart/assert",

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
@@ -47,6 +48,7 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\Func
     protected function setUp()
     {
         parent::setUp();
+        Bootstrap::getInstance()->initializeTypo3DbGlobal();
         $this->subject = $GLOBALS['TYPO3_DB'];
         $this->subject->sql_query(
             "CREATE TABLE {$this->testTable} (" .
