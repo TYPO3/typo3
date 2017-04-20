@@ -18,6 +18,7 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage
 * TYPO3\CMS\Core\Messaging\ErrorpageMessage
 * TYPO3\CMS\Core\TimeTracker\NullTimeTracker
+* TYPO3\CMS\Extbase\Utility\ArrayUtility
 * TYPO3\CMS\Frontend\Page\FramesetRenderer
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
