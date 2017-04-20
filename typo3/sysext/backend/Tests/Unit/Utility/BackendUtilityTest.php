@@ -1118,7 +1118,6 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'cols' => 40,
                             'rows' => 5
                         ],
-                        'defaultExtras' => 'richtext:rte_transform[mode=ts_css]'
                     ],
                     'text2' => [
                         'label' => 'RTE Text 2',
@@ -1127,7 +1126,6 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'cols' => 40,
                             'rows' => 5
                         ],
-                        'defaultExtras' => 'richtext:rte_transform[mode=fooBar,type=RTE]'
                     ],
                     'select' => [
                         'label' => 'Select test',

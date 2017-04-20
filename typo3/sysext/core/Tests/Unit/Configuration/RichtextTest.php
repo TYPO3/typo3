@@ -155,43 +155,6 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationMigratesTsCss()
-    {
-        $fieldConfig = [
-            'type' => 'text',
-            'enableRichtext' => true,
-        ];
-        $pageTsConfig = [
-            'properties' => [
-                'classes.' => [
-                    'aClass.' => 'aConfig',
-                ],
-                'default.' => [
-                    'proc.' => [
-                        'overruleMode' => 'ts_css',
-                    ],
-                ],
-            ],
-        ];
-        $expected = [
-            'classes.' => [
-                'aClass.' => 'aConfig',
-            ],
-            'proc.' => [
-                'overruleMode' => 'default',
-            ],
-        ];
-        // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
-        // which can't be mocked in a sane way
-        $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
-        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
-        $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
-        $this->assertSame($expected, $output);
-    }
-
-    /**
-     * @test
-     */
     public function getConfigurationOverridesByDefault()
     {
         $fieldConfig = [

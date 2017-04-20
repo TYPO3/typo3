@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Core\Messaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * A class representing flash messages.
  */
@@ -28,30 +26,6 @@ class FlashMessage extends AbstractMessage
      * @var bool
      */
     protected $storeInSession = false;
-
-    /**
-     * @var string The message severity class names
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected $classes = [
-        self::NOTICE => 'notice',
-        self::INFO => 'info',
-        self::OK => 'success',
-        self::WARNING => 'warning',
-        self::ERROR => 'danger'
-    ];
-
-    /**
-     * @var string The message severity icon names
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected $icons = [
-        self::NOTICE => 'lightbulb-o',
-        self::INFO => 'info',
-        self::OK => 'check',
-        self::WARNING => 'exclamation',
-        self::ERROR => 'times'
-    ];
 
     /**
      * Constructor for a flash message
@@ -87,29 +61,5 @@ class FlashMessage extends AbstractMessage
     public function setStoreInSession($storeInSession)
     {
         $this->storeInSession = (bool)$storeInSession;
-    }
-
-    /**
-     * Gets the message severity class name
-     *
-     * @return string The message severity class name
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getClass()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return 'alert-' . $this->classes[$this->severity];
-    }
-
-    /**
-     * Gets the message severity icon name
-     *
-     * @return string The message severity icon name
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getIconName()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $this->icons[$this->severity];
     }
 }

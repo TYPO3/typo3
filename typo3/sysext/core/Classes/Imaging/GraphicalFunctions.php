@@ -210,14 +210,6 @@ class GraphicalFunctions
     protected $saveAlphaLayer = false;
 
     /**
-     * The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
-     *
-     * @var string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public $tempPath = 'typo3temp/';
-
-    /**
      * Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
      *
      * @var string
@@ -1920,20 +1912,6 @@ class GraphicalFunctions
      *
      *********************************/
     /**
-     * Checks if the $fontFile is already at an absolute path and if not, prepends the PATH_site.
-     * Call it by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::prependAbsolutePath()
-     *
-     * @param string $fontFile The font file
-     * @return string The font file with absolute path.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - use GeneralUtility::getFileAbsFileName()
-     */
-    public function prependAbsolutePath($fontFile)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return GeneralUtility::isAbsPath($fontFile) ? $fontFile : PATH_site . $fontFile;
-    }
-
-    /**
      * Returns the IM command for sharpening with ImageMagick 5
      * Uses $this->im5fx_sharpenSteps for translation of the factor to an actual command.
      *
@@ -2650,30 +2628,6 @@ class GraphicalFunctions
      * Various IO functions
      *
      ***********************************/
-
-    /**
-     * Creates subdirectory in typo3temp/ if not already found.
-     *
-     * @param string $dirName Name of sub directory
-     * @return bool Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use GeneralUtility::mkdir_deep() directly.
-     */
-    public function createTempSubDir($dirName)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        // Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
-        if (GeneralUtility::isFirstPartOfStr($this->tempPath, PATH_site)) {
-            $tmpPath = $this->tempPath;
-        } else {
-            $tmpPath = PATH_site . $this->tempPath;
-        }
-        // Making the temporary filename:
-        if (!@is_dir($tmpPath . $dirName)) {
-            GeneralUtility::mkdir_deep($tmpPath . $dirName);
-            return @is_dir($tmpPath . $dirName);
-        }
-        return false;
-    }
 
     /**
      * Applies an ImageMagick parameter to a GDlib image pointer resource by writing the resource to file, performing an IM operation upon it and reading back the result into the ImagePointer.

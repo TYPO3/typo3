@@ -630,40 +630,6 @@ class ArrayUtility
     }
 
     /**
-     * Check if an string item exists in an array.
-     * Please note that the order of function parameters is reverse compared to the PHP function in_array()!!!
-     *
-     * Comparison to PHP in_array():
-     * -> $array = array(0, 1, 2, 3);
-     * -> variant_a := \TYPO3\CMS\Core\Utility\ArrayUtility::inArray($array, $needle)
-     * -> variant_b := in_array($needle, $array)
-     * -> variant_c := in_array($needle, $array, TRUE)
-     * +---------+-----------+-----------+-----------+
-     * | $needle | variant_a | variant_b | variant_c |
-     * +---------+-----------+-----------+-----------+
-     * | '1a'    | FALSE     | TRUE      | FALSE     |
-     * | ''      | FALSE     | TRUE      | FALSE     |
-     * | '0'     | TRUE      | TRUE      | FALSE     |
-     * | 0       | TRUE      | TRUE      | TRUE      |
-     * +---------+-----------+-----------+-----------+
-     *
-     * @param array $in_array One-dimensional array of items
-     * @param string $item Item to check for
-     * @return bool TRUE if $item is in the one-dimensional array $in_array
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use in_array instead
-     */
-    public static function inArray(array $in_array, $item)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        foreach ($in_array as $val) {
-            if (!is_array($val) && (string)$val === (string)$item) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Removes the value $cmpValue from the $array if found there. Returns the modified array
      *
      * @param array $array Array containing the values

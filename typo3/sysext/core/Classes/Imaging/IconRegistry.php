@@ -117,12 +117,6 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-delete.svg'
             ]
         ],
-        'actions-document-close' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-document-close.svg'
-            ]
-        ],
         'actions-document-duplicates-select' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -289,12 +283,6 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-duplicates.svg'
-            ]
-        ],
-        'actions-edit-add' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-edit-add.svg'
             ]
         ],
         'actions-edit-copy-release' => [
@@ -3139,24 +3127,16 @@ class IconRegistry implements SingletonInterface
      *   which replaces the old identifier
      *
      * Example:
-     * array(
-     *   'deprecated-icon-identifier' => array(
-     *      'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8',
+     * [
+     *   'deprecated-icon-identifier' => [
+     *      'message' => '%s is deprecated since TYPO3 CMS 9, this icon will be removed in TYPO3 CMS 10',
      *      'replacement' => 'alternative-icon-identifier' // must be registered
-     *   )
-     * )
+     *   ]
+     * ]
      *
      * @var array
      */
     protected $deprecatedIcons = [
-        'actions-document-close' => [
-            'message' => '%s is deprecated since TYPO3 CMS 8, this icon will be removed in TYPO3 CMS 9',
-            'replacement' => 'actions-close'
-        ],
-        'actions-edit-add' => [
-            'message' => '%s is deprecated since TYPO3 CMS 8, this icon will be removed in TYPO3 CMS 9',
-            'replacement' => 'actions-add'
-        ]
     ];
 
     /**

@@ -1247,32 +1247,6 @@ class RelationHandler
     }
 
     /**
-     * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
-     *
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function readyForInterface()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (!is_array($this->itemArray)) {
-            return false;
-        }
-        $output = [];
-        $titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
-        foreach ($this->itemArray as $val) {
-            $theRow = $this->results[$val['table']][$val['id']];
-            if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
-                $label = GeneralUtility::fixed_lgd_cs(strip_tags(
-                        BackendUtility::getRecordTitle($val['table'], $theRow)), $titleLen);
-                $label = $label ? $label : '[...]';
-                $output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));
-            }
-        }
-        return implode(',', $output);
-    }
-
-    /**
      * This method is typically called after getFromDB().
      * $this->results holds a list of resolved and valid relations,
      * $this->itemArray hold a list of "selected" relations from the incoming selection array.

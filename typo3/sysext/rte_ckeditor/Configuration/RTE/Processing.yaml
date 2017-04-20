@@ -3,7 +3,6 @@
 # ****************************************************
 
 processing:
-  # previously known as "ts_css" for transformations
   mode: default
   # Tags that are allowed in the content in general
   allowTags:

@@ -1133,38 +1133,6 @@ abstract class AbstractUserAuthentication
     }
 
     /**
-     * This returns the where-clause needed to select the user
-     * with respect flags like deleted, hidden, starttime, endtime
-     *
-     * @return string
-     * @access private
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected function user_where_clause()
-    {
-        GeneralUtility::logDeprecatedFunction();
-
-        $whereClause = '';
-        if ($this->enablecolumns['rootLevel']) {
-            $whereClause .= ' AND ' . $this->user_table . '.pid=0 ';
-        }
-        if ($this->enablecolumns['disabled']) {
-            $whereClause .= ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0';
-        }
-        if ($this->enablecolumns['deleted']) {
-            $whereClause .= ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0';
-        }
-        if ($this->enablecolumns['starttime']) {
-            $whereClause .= ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')';
-        }
-        if ($this->enablecolumns['endtime']) {
-            $whereClause .= ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR '
-                . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')';
-        }
-        return $whereClause;
-    }
-
-    /**
      * Returns the IP address to lock to.
      * The IP address may be partial based on $parts.
      *

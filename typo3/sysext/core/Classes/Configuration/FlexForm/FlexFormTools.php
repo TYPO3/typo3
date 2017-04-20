@@ -490,22 +490,6 @@ class FlexFormTools
                 if (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]] . ',' . $row[$pointerFieldArray[1]]])) {
                     // firstValue,secondValue
                     $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]] . ',' . $row[$pointerFieldArray[1]];
-                } elseif (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[1]] . ',*'])) {
-                    // secondValue,* ?!
-                    // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - just remove this elseif together with two unit tests
-                    // This case is a wrong implementation - it matches "secondFieldValue,*", but it
-                    // should match "*,secondFieldValue" only. Since this bug has been in the code for ages, it
-                    // still works in v8 but is deprecated now.
-                    // Try to log a meaningful deprecation message though, so devs can adapt
-                    GeneralUtility::deprecationLog(
-                        'TCA field "' . $fieldName . '" of table "' . $tableName . '" has a registered data structure'
-                        . ' with name "' . $row[$pointerFieldArray[1]] . ',*". The ds_pointerField is set to "'
-                        . $tcaDataStructurePointerField . '", with the matching value "' . $row[$pointerFieldArray[1]] . '"'
-                        . ' for field "' . $pointerFieldArray[1] . '". This should be the other way round, so the name'
-                        . ' should be: "*,' . $row[$pointerFieldArray[1]] . '" in the ds TCA array. Please change that'
-                        . ' until TYPO3 v9, this matching code will be removed then.'
-                    );
-                    $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[1]] . ',*';
                 } elseif (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]] . ',*'])) {
                     // firstValue,*
                     $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]] . ',*';

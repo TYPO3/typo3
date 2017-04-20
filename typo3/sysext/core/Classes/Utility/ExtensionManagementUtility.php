@@ -792,11 +792,6 @@ class ExtensionManagementUtility
     public static function configureModule($moduleSignature)
     {
         $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
-        if (!empty($moduleConfiguration['labels']['tabs_images']['tab'])) {
-            GeneralUtility::deprecationLog('Module registration for backend module "' . $moduleSignature . '" uses old referencing for the icon. Use the configuration option "icon" directly instead of [labels][tabs_images][tab]. The old option is removed with TYPO3 v9.');
-            $moduleConfiguration['icon'] = $moduleConfiguration['labels']['tabs_images']['tab'];
-            unset($moduleConfiguration['labels']['tabs_images']['tab']);
-        }
 
         // Register the icon and move it too "iconIdentifier"
         if (!empty($moduleConfiguration['icon'])) {
@@ -863,12 +858,6 @@ class ExtensionManagementUtility
         if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
             $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
 
-            if (!empty($moduleConfiguration['labels']['tabs_images']['tab'])) {
-                GeneralUtility::deprecationLog('Module registration for module "' . $fullModuleSignature . '" uses old referencing for the icon. Use the configuration option "icon" directly instead of [labels][tabs_images][tab]. The old option is removed with TYPO3 v9.');
-                $moduleConfiguration['icon'] = $moduleConfiguration['labels']['tabs_images']['tab'];
-                unset($moduleConfiguration['labels']['tabs_images']['tab']);
-            }
-
             if (!empty($moduleConfiguration['icon'])) {
                 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
                 $iconIdentifier = 'module-' . $fullModuleSignature;
@@ -894,13 +883,13 @@ class ExtensionManagementUtility
      *
      * @param string $modname Module name
      * @param string $className Class name
-     * @param string $classPath Class path, deprecated since 6.2, use auto-loading instead
+     * @param string $_ unused
      * @param string $title Title of module
      * @param string $MM_key Menu array key - default is "function
      * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
      * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
      */
-    public static function insertModuleFunction($modname, $className, $classPath = null, $title, $MM_key = 'function', $WS = '')
+    public static function insertModuleFunction($modname, $className, $_ = null, $title, $MM_key = 'function', $WS = '')
     {
         $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = [
             'name' => $className,

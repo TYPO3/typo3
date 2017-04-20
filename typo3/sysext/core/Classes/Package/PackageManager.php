@@ -229,7 +229,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
             $this->packageStatesConfiguration = [];
         } elseif ($this->packageStatesConfiguration['version'] === 4) {
             // Convert to v5 format which only includes a list of active packages.
-            // Deprecated since version 8, will be removed in version 9.
+            // Deprecated since version 8, will be removed in version 10.
             $activePackages = [];
             foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageConfiguration) {
                 if ($packageConfiguration['state'] !== 'active') {

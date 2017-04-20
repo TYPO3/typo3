@@ -17,6 +17,7 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Backend\Form\Container\SoloFieldContainer
 * TYPO3\CMS\Backend\Form\Wizard\SuggestWizard
 * TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard
+* TYPO3\CMS\Core\Cache\CacheFactory
 * TYPO3\CMS\Core\Controller\CommandLineController
 * TYPO3\CMS\Core\Http\AjaxRequestHandler
 * TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage
@@ -104,18 +105,27 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
+* TYPO3\CMS\Core\Core\Bootstrap->loadExtensionTables()
+* TYPO3\CMS\Core\Database\RelationHandler->readyForInterface()
 * TYPO3\CMS\Core\DataHandling\DataHandler::rmComma()
 * TYPO3\CMS\Core\DataHandling\DataHandler::destPathFromUploadFolder()
 * TYPO3\CMS\Core\DataHandling\DataHandler::noRecordsFromUnallowedTables()
+* TYPO3\CMS\Core\Imaging\GraphicalFunctions->createTempSubDir()
+* TYPO3\CMS\Core\Imaging\GraphicalFunctions->prependAbsolutePath()
+* TYPO3\CMS\Core\Messaging\FlashMessage->getClass()
+* TYPO3\CMS\Core\Messaging\FlashMessage->getIconName()
 * TYPO3\CMS\Core\TypoScript\TemplateService->splitConfArray()
 * TYPO3\CMS\Core\TypoScript\TemplateService->fileContent()
 * TYPO3\CMS\Core\TypoScript\TemplateService->removeQueryString()
 * TYPO3\CMS\Core\TypoScript\TemplateService->sortedKeyList()
+* TYPO3\CMS\Core\Utility\ArrayUtility::inArray()
+* TYPO3\CMS\Core\Utility\ClientUtility::getDeviceType()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addExtJSModule()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent()
+* TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::pushErrorMessagesToFlashMessageQueue()
 * TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs()
 * TYPO3\CMS\Core\Utility\GeneralUtility::compat_version()
 * TYPO3\CMS\Core\Utility\GeneralUtility::convertMicrotime()
@@ -193,6 +203,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping() - Second and third argument dropped
+* TYPO3\CMS\Core\DataHandling\DataHandler->extFileFunctions() - Fourth argument dropped
 * TYPO3\CMS\Core\Html\HtmlParser->RTE_transform() - Second argument unused
 * TYPO3\CMS\Core\Localization\LanguageStore->setConfiguration() - Third argument dropped
 * TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData() - Third and fourth argument unused
@@ -203,6 +214,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Core\Page\PageRenderer->includeLanguageFileForInline() - Fourth argument dropped
 * TYPO3\CMS\Core\TypoScript\TemplateService->linkData() - Fourth argument unused
 * TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction() - Persistent or file prefix in first argument removed
+* \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule - Fifth argument ignores  [labels][tabs_images][tab]
 * TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and thrird argument dropped
 * TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj() - File reference prefix in first argument removed
 * TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS() - Second argument dropped
@@ -228,6 +240,7 @@ The following public class properties have been dropped:
 * TYPO3\CMS\Core\Charset\CharsetConverter->charSetArray
 * TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
 * TYPO3\CMS\Core\DataHandling\DataHandler->checkWorkspaceCache
+* TYPO3\CMS\Core\Imaging\GraphicalFunctions->tempPath
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->compensateFieldWidth
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->excludeCHashVars
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->scriptParseTime
@@ -263,6 +276,7 @@ The following entry points have been removed:
 
 The following hooks have been removed:
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']
+* $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']
 
 The following functionality has been removed:
 * Support for legacy prepared statements within Extbase Persistence within Qom\Statement
@@ -283,6 +297,7 @@ The following TypoScript options have been removed:
 * config.beLoginLinkIPList_logout
 * page.frameSet
 * page.insertClassesFromRTE
+* single slashes are no longer interpreted as comment
 
 The following TCA properties have been removed:
 * type=select selectedListStyle
@@ -294,8 +309,17 @@ The following PageTsConfig properties have been removed:
 * TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_IDLIST
 * TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_STR
 
-The following array constructs have been removed:
-* extJSCODE in FormEngine render result
+The following icon identifiers have been removed:
+* actions-document-close
+* actions-edit-add
+
+The following requireJS modules have been removed:
+* TYPO3/CMS/Core/QueryGenerator
+
+Further removal notes:
+* FormEngine result array ignores key `extJSCODE`
+* RTE transformation 'ts_css' dropped
+* Invalid flex form data structure wildcard matching `secondFieldValue,*` dropped
 
 The following JavaScript methods and options have been removed:
 * backend/Resources/Public/JavaScript/jsfunc.inline.js escapeSelectorObjectId

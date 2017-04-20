@@ -284,9 +284,6 @@ class RteHtmlParser extends HtmlParser
 
         // Replace the shortcut "default" with all custom modes
         $modeList = str_replace('default', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
-        // Replace the shortcut "ts_css" with all custom modes
-        // @deprecated since TYPO3 v8, will be removed in TYPO3 v9 - NEXT line can be removed in v9
-        $modeList = str_replace('ts_css', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
 
         // Make list unique
         $modes = array_unique(GeneralUtility::trimExplode(',', $modeList, true));

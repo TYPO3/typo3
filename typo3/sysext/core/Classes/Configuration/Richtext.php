@@ -101,10 +101,7 @@ class Richtext
         }
 
         // Handle "mode" / "transformation" config when overridden
-        if (isset($configuration['proc.']['overruleMode']) && $configuration['proc.']['overruleMode'] === 'ts_css') {
-            // Change legacy 'ts_css' to 'default'
-            $configuration['proc.']['overruleMode'] = 'default';
-        } elseif (!isset($configuration['proc.']['mode']) && !isset($configuration['proc.']['overruleMode'])) {
+        if (!isset($configuration['proc.']['mode']) && !isset($configuration['proc.']['overruleMode'])) {
             $configuration['proc.']['overruleMode'] = 'default';
         }
 

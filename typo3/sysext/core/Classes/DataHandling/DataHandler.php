@@ -8114,16 +8114,9 @@ class DataHandler
      * @param string $table Table name
      * @param string $field Field name
      * @param string $filelist List of files to work on from field
-     * @param string $func, previously "deleteAll" was possible, this argument is now removed, as deleteAll is the only option
      */
-    public function extFileFunctions($table, $field, $filelist, $func = null)
+    public function extFileFunctions($table, $field, $filelist)
     {
-        if ($func !== null) {
-            GeneralUtility::deprecationLog('Parameter 4 of DataHandler::extFileFunctions() has been removed in TYPO3 v8, and will be removed in TYPO3 v9.');
-            if ($func !== 'deleteAll') {
-                return;
-            }
-        }
         $uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
         if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] === 'file') {
             $uploadPath = PATH_site . $uploadFolder;

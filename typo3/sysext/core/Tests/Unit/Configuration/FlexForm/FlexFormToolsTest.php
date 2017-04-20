@@ -412,16 +412,6 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
                 '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}'
             ],
-            '@deprecated match on second field, * for first' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'secondValue,*' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"secondValue,*"}'
-            ],
             'match on second field, * for first' => [
                 [
                     'firstField' => 'firstValue',
@@ -473,17 +463,6 @@ class FlexFormToolsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     '*,secondValue' => '',
                 ],
                 '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}'
-            ],
-            '@deprecated chain falls through with no match on first value to *' => [
-                [
-                    'firstField' => 'noMatch',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'firstValue,secondValue' => '',
-                    'secondValue,*' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"secondValue,*"}'
             ],
             'chain falls through with no match on any field to default' => [
                 [

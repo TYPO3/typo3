@@ -1875,40 +1875,6 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     //////////////////////////////////
-    // Tests concerning inArray
-    //////////////////////////////////
-    /**
-     * @test
-     * @dataProvider inArrayDataProvider
-     * @param array $array target array
-     * @param string $item search string
-     * @param bool $expected expected value
-     */
-    public function inArrayChecksStringExistenceWithinArray($array, $item, $expected)
-    {
-        $this->assertEquals($expected, ArrayUtility::inArray($array, $item));
-    }
-
-    /**
-     * Data provider for inArrayChecksStringExistenceWithinArray
-     *
-     * @return array
-     */
-    public function inArrayDataProvider()
-    {
-        return [
-            'Empty array' => [[], 'search', false],
-            'One item array no match' => [['one'], 'two', false],
-            'One item array match' => [['one'], 'one', true],
-            'Multiple items array no match' => [['one', 2, 'three', 4], 'four', false],
-            'Multiple items array match' => [['one', 2, 'three', 4], 'three', true],
-            'Integer search items can match string values' => [['0', '1', '2'], 1, true],
-            'Search item is not casted to integer for a match' => [[4], '4a', false],
-            'Empty item won\'t match - in contrast to the php-builtin ' => [[0, 1, 2], '', false]
-        ];
-    }
-
-    //////////////////////////////////
     // Tests concerning removeArrayEntryByValue
     //////////////////////////////////
     /**

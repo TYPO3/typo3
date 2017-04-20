@@ -1321,8 +1321,8 @@ class AbstractPlugin
     }
 
     /**
-     * Will process the input string with the parseFunc function from ContentObjectRenderer based on configuration set in "lib.parseFunc_RTE" in the current TypoScript template.
-     * This is useful for rendering of content in RTE fields where the transformation mode is set to "ts_css" or so.
+     * Will process the input string with the parseFunc function from ContentObjectRenderer based on configuration
+     * set in "lib.parseFunc_RTE" in the current TypoScript template.
      *
      * @param string $str The input text string to process
      * @return string The processed string

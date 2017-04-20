@@ -47,7 +47,7 @@ lib.parseFunc {
 }
 
 
-# Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "ts_css" transformation.
+# Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "default" transformation.
 lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
     # Processing <ol>, <ul> and <table> blocks separately
