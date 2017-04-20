@@ -73,7 +73,6 @@ class ClearCacheService
             ->loadTypo3LoadedExtAndExtLocalconf(false)
             ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables()
-            ->initializeTypo3DbGlobal()
             ->loadBaseTca(false)
             ->loadExtTables(false);
 

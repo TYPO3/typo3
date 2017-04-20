@@ -29,11 +29,6 @@ use TYPO3\CMS\Install\Status\OkStatus;
 class DatabaseSelect extends AbstractStepAction
 {
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection = null;
-
-    /**
      * Create database if needed, save selected db name in configuration
      *
      * @return \TYPO3\CMS\Install\Status\StatusInterface[]

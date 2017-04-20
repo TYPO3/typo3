@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Typo3DbLegacy\Updates;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate;
 
 /**
  * Installs and downloads EXT:adodb and EXT:dbal
@@ -73,7 +74,7 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
                     <p>This update wizard cannot check if the extension was installed before the update.</p>
                     <p>Are you really sure, you want to install these two extensions?</p>
                     <p>They are only needed if this instance connects to a database server that is NOT MySQL
-                    and if an active extension uses $GLOBALS[\'TYPO3_DB\'] and a table mapping for EXT:dbal
+                    and if an active extension uses extension typo3db_legacy and a table mapping for EXT:dbal
                     is configured.</p>
                     <p>Loading these two extensions is a rather seldom exceptions, the vast majority of
                     instances should say "no" here.</p>

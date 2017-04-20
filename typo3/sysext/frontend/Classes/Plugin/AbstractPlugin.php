@@ -236,7 +236,7 @@ class AbstractPlugin
      * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the config.language setting.
      *
-     * @param $_ unused, previously used for the TYPO3_DB database connection
+     * @param null $_ unused,
      * @param TypoScriptFrontendController $frontendController
      */
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)

@@ -28,7 +28,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\TestingFramework\Core\Unit\Un
      */
     protected function getSqlSchemaMigrationService()
     {
-        /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $databaseConnection */
+        /** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $databaseConnection */
         $subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, ['isDbalEnabled'], [], '', false);
         $subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(false));
 

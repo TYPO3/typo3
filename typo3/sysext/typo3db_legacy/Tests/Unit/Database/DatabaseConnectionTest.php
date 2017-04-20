@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Database;
+namespace TYPO3\CMS\Typo3DbLegacy\Tests\Unit\Database;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Typo3DbLegacy\Database\DatabaseConnection;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**

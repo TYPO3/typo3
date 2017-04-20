@@ -657,7 +657,6 @@ class SqlSchemaMigrationService
      * Returns list of tables in the database
      *
      * @return array List of tables.
-     * @see \TYPO3\CMS\Core\Database\DatabaseConnection::admin_get_tables()
      */
     public function getListOfTables()
     {

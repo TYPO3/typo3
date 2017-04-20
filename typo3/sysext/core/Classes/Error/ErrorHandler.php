@@ -142,8 +142,7 @@ class ErrorHandler implements ErrorHandlerInterface
             }
             // Write error message to sys_log table (ext: belog, Tools->Log)
             if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
-                // Silently catch in case an error occurs before a database connection exists,
-                // but DatabaseConnection fails to connect.
+                // Silently catch in case an error occurs before a database connection exists.
                 try {
                     $this->writeLog($message, $severity);
                 } catch (\Exception $e) {

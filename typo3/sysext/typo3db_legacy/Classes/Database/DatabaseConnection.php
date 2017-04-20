@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Database;
+namespace TYPO3\CMS\Typo3DbLegacy\Database;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -799,15 +800,15 @@ class DatabaseConnection
      * @param string $groupBy See exec_SELECTquery()
      * @param string $orderBy See exec_SELECTquery()
      * @param string $limit See exec_SELECTquery()
-     * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE.
-     * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
+     * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::PARAM_AUTOTYPE.
+     * @return \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement Prepared statement
      */
     public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = [])
     {
         $this->logDeprecation();
         $query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-        /** @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
-        $preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\PreparedStatement::class, $query, $from_table, []);
+        /** @var $preparedStatement \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement */
+        $preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::class, $query, $from_table, []);
         // Bind values to parameters
         foreach ($input_parameters as $key => $value) {
             $preparedStatement->bindValue($key, $value, PreparedStatement::PARAM_AUTOTYPE);
@@ -820,8 +821,8 @@ class DatabaseConnection
      * Creates a SELECT prepared SQL statement based on input query parts array
      *
      * @param array $queryParts Query parts array
-     * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE.
-     * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
+     * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::PARAM_AUTOTYPE.
+     * @return \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement Prepared statement
      */
     public function prepare_SELECTqueryArray(array $queryParts, array $input_parameters = [])
     {
@@ -835,7 +836,7 @@ class DatabaseConnection
      * @param string $query The query to execute
      * @param array $queryComponents The components of the query to execute
      * @return \mysqli_stmt|object MySQLi statement / DBAL object
-     * @internal This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
+     * @internal This method may only be called by \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement
      */
     public function prepare_PREPAREDquery($query, array $queryComponents)
     {
@@ -1674,7 +1675,7 @@ class DatabaseConnection
                     || $hookObject instanceof PostProcessQueryHookInterface
                 )) {
                     throw new \UnexpectedValueException(
-                        '$hookObject must either implement interface TYPO3\\CMS\\Core\\Database\\PreProcessQueryHookInterface or interface TYPO3\\CMS\\Core\\Database\\PostProcessQueryHookInterface',
+                        '$hookObject must either implement interface TYPO3\\CMS\\Typo3DbLegacy\\Database\\PreProcessQueryHookInterface or interface TYPO3\\CMS\\Typo3DbLegacy\\Database\\PostProcessQueryHookInterface',
                         1299158548
                     );
                 }
@@ -1841,7 +1842,7 @@ class DatabaseConnection
         if ($error || (int)$this->debugOutput === 2) {
             \TYPO3\CMS\Core\Utility\DebugUtility::debug(
                 [
-                    'caller' => \TYPO3\CMS\Core\Database\DatabaseConnection::class . '::' . $func,
+                    'caller' => \TYPO3\CMS\Typo3DbLegacy\Database\DatabaseConnection::class . '::' . $func,
                     'ERROR' => $error,
                     'lastBuiltQuery' => $query ? $query : $this->debug_lastBuiltQuery,
                     'debug_backtrace' => \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail()
@@ -1868,7 +1869,7 @@ class DatabaseConnection
         }
         $trace = debug_backtrace(0);
         array_shift($trace);
-        $msg = 'Invalid database result detected: function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->'
+        $msg = 'Invalid database result detected: function TYPO3\\CMS\\Typo3DbLegacy\\Database\\DatabaseConnection->'
             . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2))
             . ' in line ' . $trace[0]['line'] . '.';
         GeneralUtility::sysLog(

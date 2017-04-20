@@ -118,7 +118,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     }
 
     /**
-     * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
+     * Constructor.
      */
     public function __construct()
     {

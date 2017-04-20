@@ -60,7 +60,6 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface
         return trim('
 # TYPO3 Extension Manager dump 1.1
 #
-# Host: ' . TYPO3_db_host . '    Database: ' . TYPO3_db . '
 #--------------------------------------------------------
 ');
     }

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Database;
+namespace TYPO3\CMS\Typo3DbLegacy\Database;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -75,7 +75,7 @@ class PreparedStatement
     /**
      * Specifies that the fetch method shall return each row as an array indexed by
      * column name as returned in the corresponding result set. If the result set
-     * contains multiple columns with the same name, \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_ASSOC
+     * contains multiple columns with the same name, \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::FETCH_ASSOC
      * returns only a single value per column name.
      *
      * @var int
@@ -157,7 +157,7 @@ class PreparedStatement
      * parse the query and will be able to safely know where parameters are used
      * and will use $queryComponents instead.
      *
-     * This constructor may only be used by \TYPO3\CMS\Core\Database\DatabaseConnection
+     * This constructor may only be used by \TYPO3\CMS\Typo3DbLegacy\Database\DatabaseConnection
      *
      * @param string $query SQL query to be executed
      * @param string $table FROM table, used to call $GLOBALS['TYPO3_DB']->fullQuoteStr().
@@ -201,7 +201,7 @@ class PreparedStatement
      * </code>
      *
      * @param array $values The values to bind to the parameter. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, NULL), so make sure your variables are properly casted, if needed.
-     * @return \TYPO3\CMS\Core\Database\PreparedStatement The current prepared statement to allow method chaining
+     * @return \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement The current prepared statement to allow method chaining
      * @api
      */
     public function bindValues(array $values)
@@ -233,8 +233,8 @@ class PreparedStatement
      *
      * @param mixed $parameter Parameter identifier. For a prepared statement using named placeholders, this will be a parameter name of the form :name. For a prepared statement using question mark placeholders, this will be the 1-indexed position of the parameter.
      * @param mixed $value The value to bind to the parameter.
-     * @param int $data_type Explicit data type for the parameter using the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants. If not given, the PHP type of the value will be used instead (int, string, boolean).
-     * @return \TYPO3\CMS\Core\Database\PreparedStatement The current prepared statement to allow method chaining
+     * @param int $data_type Explicit data type for the parameter using the \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::PARAM_* constants. If not given, the PHP type of the value will be used instead (int, string, boolean).
+     * @return \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement The current prepared statement to allow method chaining
      * @api
      */
     public function bindValue($parameter, $value, $data_type = self::PARAM_AUTOTYPE)
@@ -271,12 +271,12 @@ class PreparedStatement
      * Executes the prepared statement. If the prepared statement included parameter
      * markers, you must either:
      * <ul>
-     * <li>call {@link \TYPO3\CMS\Core\Database\PreparedStatement::bindParam()} to bind PHP variables
+     * <li>call {@link \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::bindParam()} to bind PHP variables
      * to the parameter markers: bound variables pass their value as input</li>
      * <li>or pass an array of input-only parameter values</li>
      * </ul>
      *
-     * $input_parameters behave as in {@link \TYPO3\CMS\Core\Database\PreparedStatement::bindParams()}
+     * $input_parameters behave as in {@link \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::bindParams()}
      * and work for both named parameters and question mark parameters.
      *
      * Example 1:
@@ -409,9 +409,9 @@ class PreparedStatement
     }
 
     /**
-     * Fetches a row from a result set associated with a \TYPO3\CMS\Core\Database\PreparedStatement object.
+     * Fetches a row from a result set associated with a \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement object.
      *
-     * @param int $fetch_style Controls how the next row will be returned to the caller. This value must be one of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants. If omitted, default fetch mode for this prepared query will be used.
+     * @param int $fetch_style Controls how the next row will be returned to the caller. This value must be one of the \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::FETCH_* constants. If omitted, default fetch mode for this prepared query will be used.
      * @return array Array of rows or FALSE if there are no more rows.
      * @api
      */
@@ -450,7 +450,7 @@ class PreparedStatement
                         $row[] = $value;
                         break;
                     default:
-                        throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
+                        throw new \InvalidArgumentException('$fetch_style must be either TYPO3\\CMS\\Typo3DbLegacy\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Typo3DbLegacy\\Database\\PreparedStatement::FETCH_NUM', 1281646455);
                 }
             }
         } else {
@@ -480,7 +480,7 @@ class PreparedStatement
     /**
      * Returns an array containing all of the result set rows.
      *
-     * @param int $fetch_style Controls the contents of the returned array as documented in {@link \TYPO3\CMS\Core\Database\PreparedStatement::fetch()}.
+     * @param int $fetch_style Controls the contents of the returned array as documented in {@link \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::fetch()}.
      * @return array Array of rows.
      * @api
      */
@@ -547,7 +547,7 @@ class PreparedStatement
     /**
      * Sets the default fetch mode for this prepared query.
      *
-     * @param int $mode One of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants
+     * @param int $mode One of the \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::FETCH_* constants
      * @api
      */
     public function setFetchMode($mode)
@@ -558,7 +558,7 @@ class PreparedStatement
                 $this->defaultFetchMode = $mode;
                 break;
             default:
-                throw new \InvalidArgumentException('$mode must be either TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Core\\Database\\PreparedStatement::FETCH_NUM', 1281875340);
+                throw new \InvalidArgumentException('$mode must be either TYPO3\\CMS\\Typo3DbLegacy\\Database\\PreparedStatement::FETCH_ASSOC or TYPO3\\CMS\\Typo3DbLegacy\\Database\\PreparedStatement::FETCH_NUM', 1281875340);
         }
     }
 
@@ -566,7 +566,7 @@ class PreparedStatement
      * Guesses the type of a given value.
      *
      * @param mixed $value
-     * @return int One of the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants
+     * @return int One of the \TYPO3\CMS\Typo3DbLegacy\Database\PreparedStatement::PARAM_* constants
      */
     protected function guessValueType($value)
     {

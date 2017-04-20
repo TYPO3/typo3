@@ -1,0 +1,26 @@
+{
+  "name": "typo3/cms-typo3db-legacy",
+  "type": "typo3-cms-framework",
+	"description": "TYPO3_DB compatibility layer for TYPO3 v9.x",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0+"],
+
+	"require": {
+		"typo3/cms-core": "*"
+	},
+	"replace": {
+		"typo3db_legacy": "*"
+	},
+	"extra": {
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Typo3DbLegacy\\": "Classes/"
+		}
+	}
+}

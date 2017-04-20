@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,11 +30,6 @@ class DatabaseLanguageRowsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
      * @var DatabaseLanguageRows|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
-
-    /**
-     * @var DatabaseConnection | ObjectProphecy
-     */
-    protected $dbProphecy;
 
     /**
      * @var BackendUserAuthentication | ObjectProphecy

@@ -19,7 +19,6 @@ use Prophecy\Argument;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
@@ -40,11 +39,6 @@ class DatabaseTreeDataProviderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      * @var TreeNode
      */
     protected $treeData;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseConnection|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $database;
 
     /**
      * Set up

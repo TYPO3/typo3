@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Functional\Database;
+namespace TYPO3\CMS\Typo3DbLegacy\Tests\Functional\Database;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,7 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Typo3DbLegacy\Database\DatabaseConnection;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
@@ -21,6 +21,11 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
  */
 class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = ['typo3db_legacy'];
+
     /**
      * @var DatabaseConnection
      */
