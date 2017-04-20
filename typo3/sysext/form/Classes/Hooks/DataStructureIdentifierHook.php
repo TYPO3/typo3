@@ -172,7 +172,7 @@ class DataStructureIdentifierHook
             $sheetElements = [];
             foreach ($finisherValue['options'] as $optionKey => $optionValue) {
                 if (is_array($optionValue)) {
-                    $optionKey = $optionKey . '.' . $this->extractDottedPathToLastElement($finisherValue['options'][$optionKey]);
+                    $optionKey = $optionKey . '.' . $this->implodeArrayKeys($finisherValue['options'][$optionKey]);
                     try {
                         $elementConfiguration = ArrayUtility::getValueByPath(
                             $finishersDefinition[$finisherIdentifier]['FormEngine']['elements'],
@@ -249,16 +249,16 @@ class DataStructureIdentifierHook
     /**
      * Recursive helper to implode a nested array to a dotted path notation
      *
-     * @param array $array
+     * ['a' => [ 'b' => 42 ] ] becomes 'a.b'
+     *
+     * @param array $nestedArray
      * @return string
      */
-    protected function extractDottedPathToLastElement(array $array): string
+    protected function implodeArrayKeys(array $nestedArray): string
     {
-        $dottedPath = key($array);
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $dottedPath = $dottedPath . '.' . $this->extractDottedPathToLastElement($value);
-            }
+        $dottedPath = (string)key($nestedArray);
+        if (is_array($nestedArray[$dottedPath])) {
+            $dottedPath .= '.' . $this->implodeArrayKeys($nestedArray[$dottedPath]);
         }
         return $dottedPath;
     }

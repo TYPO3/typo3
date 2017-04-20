@@ -236,4 +236,83 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
 
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * Data provider for implodeArrayKeysReturnsString
+     *
+     * @return array
+     */
+    public function implodeArrayKeysReturnsStringDataProvider()
+    {
+        return [
+            'One string' => [
+                [
+                    'a' => 'b',
+                ],
+                'a'
+            ],
+            'Two strings' => [
+                [
+                    'a' => [
+                        'b' => 'c'
+                    ],
+                ],
+                'a.b'
+            ],
+            'One integer' => [
+                [
+                    20 => 'a',
+                ],
+                '20'
+            ],
+            'Two integers' => [
+                [
+                    20 => [
+                        30 => 'a'
+                    ],
+                ],
+                '20.30'
+            ],
+            'Mixed' => [
+                [
+                    20 => [
+                        'a' => 'b'
+                    ],
+                ],
+                '20.a'
+            ],
+            'Multiple Entries' => [
+                [
+                    1 => [
+                        'a' => 'b',
+                        'b' => 'foo',
+                    ],
+                ],
+                '1.a'
+            ],
+            'four levels' => [
+                [
+                    1 => [
+                        'a' => [
+                            '2' => [
+                                42 => 'foo',
+                            ],
+                        ],
+                        'b' => 22,
+                    ],
+                ],
+                '1.a.2.42',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider implodeArrayKeysReturnsStringDataProvider
+     * @test
+     */
+    public function implodeArrayKeysReturnsString($array, $expectation)
+    {
+        $hookMock = $this->getAccessibleMock(DataStructureIdentifierHook::class, [ 'dummy' ], [], '', false);
+        $this->assertEquals($expectation, $hookMock->_call('implodeArrayKeys', $array));
+    }
 }
