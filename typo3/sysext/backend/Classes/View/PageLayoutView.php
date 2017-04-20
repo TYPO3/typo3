@@ -1459,10 +1459,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             // Call drawFooter hooks
         $drawFooterHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'];
         if (is_array($drawFooterHooks)) {
-            foreach ($drawFooterHooks as $hookClass) {
-                $hookObject = GeneralUtility::getUserObj($hookClass);
+            foreach ($drawFooterHooks as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
-                    throw new \UnexpectedValueException($hookClass . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1404378171);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1404378171);
                 }
                 $hookObject->preProcess($this, $info, $row);
             }
@@ -1668,10 +1668,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // Hook: Render an own preview of a record
         $drawItemHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
         if (is_array($drawItemHooks)) {
-            foreach ($drawItemHooks as $hookClass) {
-                $hookObject = GeneralUtility::getUserObj($hookClass);
+            foreach ($drawItemHooks as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-                    throw new \UnexpectedValueException($hookClass . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1218547409);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1218547409);
                 }
                 $hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
             }

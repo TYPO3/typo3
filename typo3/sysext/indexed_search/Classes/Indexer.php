@@ -483,13 +483,13 @@ class Indexer
             $this->initializeExternalParsers();
         }
         // Initialize lexer (class that deconstructs the text into words):
-        $lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : 'TYPO3\\CMS\\IndexedSearch\\Lexer';
-        $this->lexerObj = GeneralUtility::getUserObj($lexerObjRef);
+        $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
+        $this->lexerObj = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj->debug = $this->indexerConfig['debugMode'];
         // Initialize metaphone hook:
         // Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
         if ($this->enableMetaphoneSearch && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']) {
-            $this->metaphoneObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
+            $this->metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
             $this->metaphoneObj->pObj = $this;
         }
         // Init charset class:
@@ -505,8 +505,8 @@ class Indexer
     public function initializeExternalParsers()
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
-                $this->external_parsers[$extension] = GeneralUtility::getUserObj($_objRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $className) {
+                $this->external_parsers[$extension] = GeneralUtility::makeInstance($className);
                 $this->external_parsers[$extension]->pObj = $this;
                 // Init parser and if it returns FALSE, unset its entry again:
                 if (!$this->external_parsers[$extension]->initParser($extension)) {

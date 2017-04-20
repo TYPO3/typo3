@@ -628,10 +628,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $selFieldList = implode(',', $selectFields);
         $this->selFieldList = $selFieldList;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof RecordListGetTableHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
                 }
                 $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
             }
@@ -1164,10 +1164,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                      *        or other "Action" functions which perform operations on the listed records.
                     */
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
-                            $hookObject = GeneralUtility::getUserObj($classData);
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
+                            $hookObject = GeneralUtility::makeInstance($className);
                             if (!$hookObject instanceof RecordListHookInterface) {
-                                throw new \UnexpectedValueException($classData . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
+                                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
                             }
                             $cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
                         }
@@ -1291,10 +1291,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
          *        table or perform special clipboard tasks like mark and copy all listed records to clipboard, etc.
          */
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . RecordListHookInterface::class, 1195567855);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567855);
                 }
                 $theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
             }
@@ -1693,10 +1693,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     $cells[$actionKey] = $action;
                 }
             }
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . RecordListHookInterface::class, 1195567840);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567840);
                 }
                 $cells = $hookObject->makeControl($table, $row, $cells, $this);
             }
@@ -1855,10 +1855,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
          *        The order of the icons is depending on the order of those array entries.
          */
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . RecordListHookInterface::class, 1195567845);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567845);
                 }
                 $cells = $hookObject->makeClip($table, $row, $cells, $this);
             }

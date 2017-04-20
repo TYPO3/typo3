@@ -96,7 +96,7 @@ class SaltFactory
             } else {
                 $classNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
                 $availableClasses = static::getRegisteredSaltedHashingMethods();
-                self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($availableClasses[$classNameToUse]);
+                self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($availableClasses[$classNameToUse]);
             }
         }
         return self::$instance;
@@ -121,7 +121,7 @@ class SaltFactory
         $registeredMethods = [$defaultClassName => $defaultReference] + $registeredMethods;
         $methodFound = false;
         foreach ($registeredMethods as $method) {
-            $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($method);
+            $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($method);
             if ($objectInstance instanceof SaltInterface) {
                 $methodFound = $objectInstance->isValidSaltedPW($saltedHash);
                 if ($methodFound) {
@@ -142,7 +142,7 @@ class SaltFactory
     public static function setPreferredHashingMethod($resource)
     {
         self::$instance = null;
-        $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($resource);
+        $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($resource);
         if (is_object($objectInstance) && is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt::class)) {
             self::$instance = $objectInstance;
         }

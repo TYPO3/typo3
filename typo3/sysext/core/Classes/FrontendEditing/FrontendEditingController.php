@@ -96,11 +96,9 @@ class FrontendEditingController
         if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
-                $edit = GeneralUtility::getUserObj($editClass);
-                if (is_object($edit)) {
-                    $allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
-                    $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));
-                }
+                $edit = GeneralUtility::makeInstance($editClass);
+                $allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
+                $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));
             }
         }
         return $content;
@@ -138,10 +136,8 @@ class FrontendEditingController
         if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $fieldList && $this->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
-                $edit = GeneralUtility::getUserObj($editClass);
-                if (is_object($edit)) {
-                    $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
-                }
+                $edit = GeneralUtility::makeInstance($editClass);
+                $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
             }
         }
         return $content;

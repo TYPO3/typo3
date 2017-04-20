@@ -212,9 +212,9 @@ class ElementInformationController
         // render type by user func
         $typeRendered = false;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
-                $typeRenderObj = GeneralUtility::getUserObj($classRef);
-                if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $className) {
+                $typeRenderObj = GeneralUtility::makeInstance($className);
+                if (method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
                     if ($typeRenderObj->isValid($this->type, $this)) {
                         $content .= $typeRenderObj->render($this->type, $this);
                         $typeRendered = true;

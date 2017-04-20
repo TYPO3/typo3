@@ -770,8 +770,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
         $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
                     $hookObject->buildQueryParametersPostProcess(
                         $parameters,

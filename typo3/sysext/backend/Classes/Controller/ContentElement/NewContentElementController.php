@@ -225,11 +225,11 @@ class NewContentElementController extends AbstractModule
             // Wrapper for wizards
             // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
-                    $hookObject = GeneralUtility::getUserObj($classData);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof NewContentElementWizardHookInterface) {
                         throw new \UnexpectedValueException(
-                            $classData . ' must implement interface ' . NewContentElementWizardHookInterface::class,
+                            $className . ' must implement interface ' . NewContentElementWizardHookInterface::class,
                             1227834741
                         );
                     }

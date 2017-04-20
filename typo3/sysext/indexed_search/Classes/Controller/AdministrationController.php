@@ -493,9 +493,9 @@ class AdministrationController extends ActionController
     public function statisticAction($depth = 1, $mode = 'overview')
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $className) {
                 /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
-                $fileContentParser = GeneralUtility::getUserObj($_objRef);
+                $fileContentParser = GeneralUtility::makeInstance($className);
                 if ($fileContentParser->softInit($extension)) {
                     $this->external_parsers[$extension] = $fileContentParser;
                 }

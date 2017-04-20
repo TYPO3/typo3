@@ -607,7 +607,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             foreach ($registeredClasses as $class => $registrationInfo) {
                 if (!empty($registrationInfo['provider'])) {
                     /** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
-                    $providerObject = GeneralUtility::getUserObj($registrationInfo['provider']);
+                    $providerObject = GeneralUtility::makeInstance($registrationInfo['provider']);
                     if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                         $additionalFields = $providerObject->getAdditionalFields($taskInfo, null, $this);
                         $allAdditionalFields = array_merge($allAdditionalFields, [$class => $additionalFields]);
@@ -616,7 +616,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             }
         } else {
             if (!empty($registeredClasses[$taskInfo['class']]['provider'])) {
-                $providerObject = GeneralUtility::getUserObj($registeredClasses[$taskInfo['class']]['provider']);
+                $providerObject = GeneralUtility::makeInstance($registeredClasses[$taskInfo['class']]['provider']);
                 if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                     $allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
                 }
@@ -1250,7 +1250,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Save additional input values
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
                 /** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
-                $providerObject = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
+                $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
                 if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                     $providerObject->saveAdditionalFields($this->submittedData, $task);
                 }
@@ -1278,7 +1278,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             // Save additional input values
             if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
                 /** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
-                $providerObject = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
+                $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
                 if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                     $providerObject->saveAdditionalFields($this->submittedData, $task);
                 }
@@ -1393,7 +1393,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // Validate additional input fields
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
             /** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
-            $providerObject = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
+            $providerObject = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
             if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
                 // The validate method will return true if all went well, but that must not
                 // override previous false values => AND the returned value with the existing one

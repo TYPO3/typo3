@@ -1240,10 +1240,10 @@ abstract class AbstractMenuContentObject
     {
         $includePage = true;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof AbstractMenuFilterPagesHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . AbstractMenuFilterPagesHookInterface::class, 1269877402);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . AbstractMenuFilterPagesHookInterface::class, 1269877402);
                 }
                 $includePage = $includePage && $hookObject->processFilter($data, $banUidArray, $spacer, $this);
             }

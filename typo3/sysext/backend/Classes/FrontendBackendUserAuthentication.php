@@ -131,7 +131,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                     }
                     $controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
                     if ($controllerClass) {
-                        $this->frontendEdit = GeneralUtility::getUserObj($controllerClass);
+                        $this->frontendEdit = GeneralUtility::makeInstance($controllerClass);
                     }
                     break;
                 }

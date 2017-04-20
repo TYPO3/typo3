@@ -558,19 +558,19 @@ class ContentObjectRenderer
         }
         $this->stdWrapHookObjects = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof ContentObjectStdWrapHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . ContentObjectStdWrapHookInterface::class, 1195043965);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . ContentObjectStdWrapHookInterface::class, 1195043965);
                 }
                 $this->stdWrapHookObjects[] = $hookObject;
             }
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
-                $postInitializationProcessor = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $className) {
+                $postInitializationProcessor = GeneralUtility::makeInstance($className);
                 if (!$postInitializationProcessor instanceof ContentObjectPostInitHookInterface) {
-                    throw new \UnexpectedValueException($classData . ' must implement interface ' . ContentObjectPostInitHookInterface::class, 1274563549);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . ContentObjectPostInitHookInterface::class, 1274563549);
                 }
                 $postInitializationProcessor->postProcessContentObjectInitialization($this);
             }
@@ -598,8 +598,8 @@ class ContentObjectRenderer
         if (!isset($this->getImgResourceHookObjects)) {
             $this->getImgResourceHookObjects = [];
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
-                    $hookObject = GeneralUtility::getUserObj($classData);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof ContentObjectGetImageResourceHookInterface) {
                         throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetImageResourceHookInterface::class, 1218636383);
                     }
@@ -718,7 +718,7 @@ class ContentObjectRenderer
                 // Application defined cObjects
                 if (!empty($this->cObjHookObjectsRegistry[$name])) {
                     if (empty($this->cObjHookObjectsArr[$name])) {
-                        $this->cObjHookObjectsArr[$name] = GeneralUtility::getUserObj($this->cObjHookObjectsRegistry[$name]);
+                        $this->cObjHookObjectsArr[$name] = GeneralUtility::makeInstance($this->cObjHookObjectsRegistry[$name]);
                     }
                     $hookObj = $this->cObjHookObjectsArr[$name];
                     if (method_exists($hookObj, 'cObjGetSingleExt')) {
@@ -733,8 +733,8 @@ class ContentObjectRenderer
                     } else {
                         // Call hook functions for extra processing
                         if ($name && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
-                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData) {
-                                $hookObject = GeneralUtility::getUserObj($classData);
+                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $className) {
+                                $hookObject = GeneralUtility::makeInstance($className);
                                 if (!$hookObject instanceof ContentObjectGetSingleHookInterface) {
                                     throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetSingleHookInterface::class, 1195043731);
                                 }
@@ -1222,8 +1222,8 @@ class ContentObjectRenderer
                     $oneSourceCollection = $this->templateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] as $classData) {
-                            $hookObject = GeneralUtility::getUserObj($classData);
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] as $className) {
+                            $hookObject = GeneralUtility::makeInstance($className);
                             if (!$hookObject instanceof ContentObjectOneSourceCollectionHookInterface) {
                                 throw new \UnexpectedValueException(
                                     '$hookObject must implement interface ' . ContentObjectOneSourceCollectionHookInterface::class,
@@ -1459,8 +1459,8 @@ class ContentObjectRenderer
                 'conf' => &$conf,
                 'aTagParams' => &$aTagParams
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] as $objRef) {
-                $processor =& GeneralUtility::getUserObj($objRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] as $className) {
+                $processor =& GeneralUtility::makeInstance($className);
                 $aTagParams = $processor->process($_params, $this);
             }
         }
@@ -1485,7 +1485,7 @@ class ContentObjectRenderer
     {
         $out = '';
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']) {
-            $extLinkATagParamsHandler = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
+            $extLinkATagParamsHandler = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
             if (method_exists($extLinkATagParamsHandler, 'main')) {
                 $out .= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
             }
@@ -4993,8 +4993,8 @@ class ContentObjectRenderer
                 }
             }
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $classData) {
-                    $hookObject = GeneralUtility::getUserObj($classData);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof ContentObjectGetDataHookInterface) {
                         throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetDataHookInterface::class, 1195044480);
                     }
@@ -5218,7 +5218,7 @@ class ContentObjectRenderer
         // Check for link-handler keyword
         list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameterParts['url'], 2);
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
-            $linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
+            $linkHandlerObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
             if (method_exists($linkHandlerObj, 'main')) {
                 return $linkHandlerObj->main($linkText, $configuration, $linkHandlerKeyword, $linkHandlerValue, $mixedLinkParameter, $this);
             }

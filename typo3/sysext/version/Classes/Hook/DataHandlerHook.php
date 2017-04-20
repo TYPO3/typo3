@@ -592,8 +592,8 @@ class DataHandlerHook
             }
             // Hook for preprocessing of the content for formmails:
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
-                    $_procObj =& GeneralUtility::getUserObj($_classRef);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $className) {
+                    $_procObj = GeneralUtility::makeInstance($className);
                     $markers = $_procObj->postModifyMarkers($markers, $this);
                 }
             }

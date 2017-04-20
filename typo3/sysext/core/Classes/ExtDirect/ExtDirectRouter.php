@@ -136,7 +136,7 @@ class ExtDirectRouter
                 'access' => $configuration['accessLevel']
             ], true);
         }
-        $endpointObject = GeneralUtility::getUserObj($callbackClass);
+        $endpointObject = GeneralUtility::makeInstance($callbackClass);
         return call_user_func_array([$endpointObject, $singleRequest->method], is_array($singleRequest->data) ? $singleRequest->data : []);
     }
 }

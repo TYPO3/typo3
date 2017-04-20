@@ -3369,7 +3369,7 @@ class GeneralUtility
      * @param string $_ Not used anymore since 6.0
      * @param int $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
      * @return mixed Content from method/function call or FALSE if the class/method/function was not found
-     * @see getUserObj()
+     * @see makeInstance()
      */
     public static function callUserFunction($funcName, &$params, &$ref, $_ = '', $errorMode = 0)
     {
@@ -3432,9 +3432,11 @@ class GeneralUtility
      * @param string $className Class name
      * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use makeInstance instead.
      */
     public static function getUserObj($className)
     {
+        self::logDeprecatedFunction();
         // Check if class exists:
         if (class_exists($className)) {
             return self::makeInstance($className);

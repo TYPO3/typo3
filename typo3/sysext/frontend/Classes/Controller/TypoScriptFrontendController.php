@@ -2671,8 +2671,8 @@ class TypoScriptFrontendController
     {
         // Hook for processing data submission to extensions
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef) {
-                $_procObj = GeneralUtility::getUserObj($_classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $className) {
+                $_procObj = GeneralUtility::makeInstance($className);
                 $_procObj->checkDataSubmission($this);
             }
         }
@@ -2922,8 +2922,8 @@ class TypoScriptFrontendController
         // NOTE: as hooks are called in a loop, the last hook will have the final word (however each
         // hook receives the current status of the $usePageCache flag)
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] as $_classRef) {
-                $_procObj = GeneralUtility::getUserObj($_classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] as $className) {
+                $_procObj = GeneralUtility::makeInstance($className);
                 $usePageCache = $_procObj->usePageCache($this, $usePageCache);
             }
         }
@@ -2933,8 +2933,8 @@ class TypoScriptFrontendController
         }
         // Hook for cache post processing (eg. writing static files!)
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] as $_classRef) {
-                $_procObj = GeneralUtility::getUserObj($_classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] as $className) {
+                $_procObj = GeneralUtility::makeInstance($className);
                 $_procObj->insertPageIncache($this, $timeOutTime);
             }
         }
@@ -3237,8 +3237,8 @@ class TypoScriptFrontendController
         $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef) {
-                $_procObj = GeneralUtility::getUserObj($_classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $className) {
+                $_procObj = GeneralUtility::makeInstance($className);
                 $_procObj->hook_indexContent($this);
             }
         }

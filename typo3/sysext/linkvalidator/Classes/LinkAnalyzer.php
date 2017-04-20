@@ -107,8 +107,8 @@ class LinkAnalyzer
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
         // Hook to handle own checks
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
-                $this->hookObjectsArr[$key] = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $className) {
+                $this->hookObjectsArr[$key] = GeneralUtility::makeInstance($className);
             }
         }
     }

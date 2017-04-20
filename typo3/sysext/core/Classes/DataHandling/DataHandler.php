@@ -906,10 +906,10 @@ class DataHandler
         if (!isset($this->checkModifyAccessListHookObjects)) {
             $this->checkModifyAccessListHookObjects = [];
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $classData) {
-                    $hookObject = GeneralUtility::getUserObj($classData);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
-                        throw new \UnexpectedValueException($classData . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
+                        throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
                     }
                     $this->checkModifyAccessListHookObjects[] = $hookObject;
                 }
@@ -947,8 +947,8 @@ class DataHandler
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'processDatamap_beforeStart')) {
                     $hookObject->processDatamap_beforeStart($this);
                 }
@@ -2160,10 +2160,10 @@ class DataHandler
                                         GeneralUtility::upload_copy_move($theFile, $theDestFile);
                                         // Hook for post-processing the upload action
                                         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'])) {
-                                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $classRef) {
-                                                $hookObject = GeneralUtility::getUserObj($classRef);
+                                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $className) {
+                                                $hookObject = GeneralUtility::makeInstance($className);
                                                 if (!$hookObject instanceof DataHandlerProcessUploadHookInterface) {
-                                                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
+                                                    throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
                                                 }
                                                 $hookObject->processUpload_postProcessAction($theDestFile, $this);
                                             }
@@ -2351,8 +2351,8 @@ class DataHandler
             $arrValue = GeneralUtility::xml2array($xmlValue);
 
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] as $classRef) {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
                         $hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
                     }
@@ -3140,8 +3140,8 @@ class DataHandler
         // Hook initialization:
         $hookObjectsArr = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
-                $hookObj = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'processCmdmap_beforeStart')) {
                     $hookObj->processCmdmap_beforeStart($this);
                 }
@@ -4289,8 +4289,8 @@ class DataHandler
         $recordWasMoved = false;
         // Move the record via a hook, used e.g. for versioning
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
-                $hookObj = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'moveRecord')) {
                     $hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
                 }
@@ -4328,8 +4328,8 @@ class DataHandler
         // Prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
-                $hookObjectsArr[] = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $className) {
+                $hookObjectsArr[] = GeneralUtility::makeInstance($className);
             }
         }
         // Timestamp field:
@@ -4729,8 +4729,8 @@ class DataHandler
                         $translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
                     }
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $classRef) {
-                            $hookObj = GeneralUtility::getUserObj($classRef);
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $className) {
+                            $hookObj = GeneralUtility::makeInstance($className);
                             if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
                                 $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this);
                             }
@@ -4950,8 +4950,8 @@ class DataHandler
         if (is_array($recordToDelete)) {
             $recordWasDeleted = false;
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
-                    $hookObj = GeneralUtility::getUserObj($classRef);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
                     if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
                         $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
                     }

@@ -206,8 +206,8 @@ class RteHtmlParser extends HtmlParser
         foreach ($modes as $cmd) {
             if ($direction === 'db') {
                 // Checking for user defined transformation:
-                if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
-                    $_procObj = GeneralUtility::getUserObj($_classRef);
+                if ($className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
+                    $_procObj = GeneralUtility::makeInstance($className);
                     $_procObj->pObj = $this;
                     $_procObj->transformationKey = $cmd;
                     $value = $_procObj->transform_db($value, $this);
@@ -236,8 +236,8 @@ class RteHtmlParser extends HtmlParser
                 }
             } elseif ($direction === 'rte') {
                 // Checking for user defined transformation:
-                if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
-                    $_procObj = GeneralUtility::getUserObj($_classRef);
+                if ($className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]) {
+                    $_procObj = GeneralUtility::makeInstance($className);
                     $_procObj->pObj = $this;
                     $value = $_procObj->transform_rte($value, $this);
                 } else {
@@ -548,8 +548,8 @@ class RteHtmlParser extends HtmlParser
                         'url' => $linkInformation['href'],
                         'attributes' => $tagAttributes
                     ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $objRef) {
-                        $processor = GeneralUtility::getUserObj($objRef);
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $className) {
+                        $processor = GeneralUtility::makeInstance($className);
                         $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
                     }
                 } else {
@@ -613,8 +613,8 @@ class RteHtmlParser extends HtmlParser
                         'external' => $linkInformation['type'] === LinkService::TYPE_URL,
                         'error' => $error
                     ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $objRef) {
-                        $processor = GeneralUtility::getUserObj($objRef);
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $className) {
+                        $processor = GeneralUtility::makeInstance($className);
                         $blockSplit[$k] = $processor->modifyParamsLinksRte($parameters, $this);
                     }
                 } else {

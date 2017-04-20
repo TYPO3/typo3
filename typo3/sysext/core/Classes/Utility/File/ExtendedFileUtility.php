@@ -268,10 +268,10 @@ class ExtendedFileUtility extends BasicFileUtility
                         }
                         // Hook for post-processing the action
                         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'])) {
-                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] as $classRef) {
-                                $hookObject = GeneralUtility::getUserObj($classRef);
+                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] as $className) {
+                                $hookObject = GeneralUtility::makeInstance($className);
                                 if (!$hookObject instanceof ExtendedFileUtilityProcessDataHookInterface) {
-                                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . ExtendedFileUtilityProcessDataHookInterface::class, 1279719168);
+                                    throw new \UnexpectedValueException($className . ' must implement interface ' . ExtendedFileUtilityProcessDataHookInterface::class, 1279719168);
                                 }
                                 $hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
                             }

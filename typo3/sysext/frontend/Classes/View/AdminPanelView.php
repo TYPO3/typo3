@@ -290,10 +290,10 @@ class AdminPanelView
         $moduleContent .= $this->getModule('info', $this->getInfoModule());
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof AdminPanelViewHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
                 }
                 $content = $hookObject->extendAdminPanel($moduleContent, $this);
                 if ($content) {

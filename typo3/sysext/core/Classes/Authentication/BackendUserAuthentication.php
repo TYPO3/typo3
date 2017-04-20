@@ -1452,8 +1452,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         );
         // Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
-                $hookObj = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'fetchGroupQuery_processQuery')) {
                     $constraints = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, (string)$constraints);
                 }

@@ -2517,8 +2517,8 @@ class BackendUtility
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
         ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $funcRef) {
-                $hookObj = GeneralUtility::getUserObj($funcRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'preProcess')) {
                     $hookObj->preProcess(
                         $pageUid,
@@ -3551,12 +3551,9 @@ class BackendUtility
             // Now, try to create parser object:
             $objRef = null;
             if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey])) {
-                $objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey];
-                if ($objRef) {
-                    $softRefParserObj = GeneralUtility::getUserObj($objRef);
-                    if (is_object($softRefParserObj)) {
-                        $GLOBALS['T3_VAR']['softRefParser'][$spKey] = $softRefParserObj;
-                    }
+                $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey];
+                if ($className) {
+                    $GLOBALS['T3_VAR']['softRefParser'][$spKey] = GeneralUtility::makeInstance($className);
                 }
             }
         }

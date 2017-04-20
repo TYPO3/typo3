@@ -78,10 +78,10 @@ class FileDumpController
 
             // Hook: allow some other process to do some security/access checks. Hook should issue 403 if access is rejected
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] as $classRef) {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof FileDumpEIDHookInterface) {
-                        throw new \UnexpectedValueException($classRef . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
+                        throw new \UnexpectedValueException($className . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
                     }
                     $hookObject->checkFileAccess($file);
                 }

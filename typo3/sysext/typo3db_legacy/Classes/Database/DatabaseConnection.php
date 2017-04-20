@@ -1668,8 +1668,8 @@ class DatabaseConnection
         $this->preProcessHookObjects = [];
         $this->postProcessHookObjects = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_db.php']['queryProcessors'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_db.php']['queryProcessors'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_db.php']['queryProcessors'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!(
                     $hookObject instanceof PreProcessQueryHookInterface
                     || $hookObject instanceof PostProcessQueryHookInterface

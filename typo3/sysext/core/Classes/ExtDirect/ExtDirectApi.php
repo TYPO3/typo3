@@ -113,7 +113,7 @@ class ExtDirectApi
                 }
                 if (is_array($configuration)) {
                     $className = $configuration['callbackClass'];
-                    $serverObject = GeneralUtility::getUserObj($className);
+                    $serverObject = GeneralUtility::makeInstance($className);
                     $javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = [];
                     foreach (get_class_methods($serverObject) as $methodName) {
                         $reflectionMethod = new \ReflectionMethod($serverObject, $methodName);

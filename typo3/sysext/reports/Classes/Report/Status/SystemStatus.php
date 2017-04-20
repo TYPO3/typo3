@@ -46,8 +46,8 @@ class SystemStatus implements StatusProviderInterface
     {
         $modules = [];
         if (is_array(${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']})) {
-            foreach (${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']} as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach (${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']} as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 $modules = $hookObject->setRequiredPhpModules($modules, $this);
             }
         }

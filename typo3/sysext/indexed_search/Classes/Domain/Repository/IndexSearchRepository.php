@@ -1301,7 +1301,7 @@ class IndexSearchRepository
     {
         // Hook: menuConfig_preProcessModMenu
         if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]) {
-            $hookObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
+            $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
             if (method_exists($hookObj, $functionName)) {
                 $hookObj->pObj = $this;
                 return $hookObj;

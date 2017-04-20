@@ -233,10 +233,10 @@ class PageRepository
     {
         // Hook to manipulate the page uid for special overlay handling
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageRepositoryGetPageHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
                 }
                 $hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
             }
@@ -422,10 +422,10 @@ class PageRepository
         $row = null;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
             foreach ($pagesInput as &$origPage) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $className) {
+                    $hookObject = GeneralUtility::makeInstance($className);
                     if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
-                        throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
+                        throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
                     }
                     $hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
                 }
@@ -521,10 +521,10 @@ class PageRepository
     public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '')
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
                 }
                 $hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
             }
@@ -604,10 +604,10 @@ class PageRepository
             }
         }
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
                 }
                 $hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
             }

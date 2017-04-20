@@ -103,9 +103,9 @@ class ElementBrowserController
         // Render type by user func
         $browserRendered = false;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
-                $browserRenderObj = GeneralUtility::getUserObj($classRef);
-                if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $className) {
+                $browserRenderObj = GeneralUtility::makeInstance($className);
+                if (method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
                     if ($browserRenderObj->isValid($this->mode, $this)) {
                         $content = $browserRenderObj->render($this->mode, $this);
                         $browserRendered = true;

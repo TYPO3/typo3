@@ -1025,11 +1025,11 @@ class FileList extends AbstractRecordList
         // Hook for manipulating edit icons.
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
             $cells['__fileOrFolderObject'] = $fileOrFolderObject;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof FileListEditIconHookInterface) {
                     throw new \UnexpectedValueException(
-                        $classData . ' must implement interface ' . FileListEditIconHookInterface::class,
+                        $className . ' must implement interface ' . FileListEditIconHookInterface::class,
                         1235225797
                     );
                 }

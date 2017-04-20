@@ -82,8 +82,8 @@ class ContentContentObject extends AbstractContentObject
                 foreach ($records as $row) {
                     // Call hook for possible manipulation of database row for cObj->data
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
-                            $_procObj = GeneralUtility::getUserObj($_classRef);
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $className) {
+                            $_procObj = GeneralUtility::makeInstance($className);
                             $_procObj->modifyDBRow($row, $conf['table']);
                         }
                     }
