@@ -114,7 +114,6 @@ class InfoModuleController extends BaseScriptClass
 
             $this->view = $this->getFluidTemplateObject();
             $this->view->assign('moduleName', BackendUtility::getModuleUrl($this->moduleName));
-            $this->view->assign('versionSelector', $this->moduleTemplate->getVersionSelector($this->id, 1));
             $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();

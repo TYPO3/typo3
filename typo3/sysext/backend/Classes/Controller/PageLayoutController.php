@@ -876,8 +876,6 @@ class PageLayoutController
             $dbList->start($this->id, $table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
             $dbList->counter = $CMcounter;
             $dbList->ext_function = $this->MOD_SETTINGS['function'];
-            // Render versioning selector:
-            $dbList->HTMLcode .= $this->moduleTemplate->getVersionSelector($this->id);
             // Generate the list of elements here:
             $dbList->generateList();
             // Adding the list content to the tableOutput variable:

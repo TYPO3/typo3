@@ -132,7 +132,6 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $this->view = $this->getFluidTemplateObject('func', 'func');
             $this->view->assign('moduleName', BackendUtility::getModuleUrl('web_func'));
             $this->view->assign('id', $this->id);
-            $this->view->assign('versionSelector', $this->moduleTemplate->getVersionSelector($this->id, true));
             $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
