@@ -922,6 +922,8 @@ class FileList extends AbstractRecordList
     {
         $cells = [];
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
+        $md5 = GeneralUtility::shortMD5($fullIdentifier);
+        $isSel = $this->clipObj->isSelected('_FILE', $md5);
 
         // Edit file content (if editable)
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
@@ -988,6 +990,30 @@ class FileList extends AbstractRecordList
             $cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['info'] = $this->spaceIcon;
+        }
+
+        // copy the file
+        if ($fileOrFolderObject->checkActionPermission('copy') && $this->clipObj->current === 'normal') {
+            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy'));
+            $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
+
+            if ($isSel === 'copy') {
+                $copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL)->render();
+            }
+
+            $cells['copy'] = '<a class="btn btn-default"" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel === 'copy'))) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
+        }
+
+        // cut the file
+        if ($fileOrFolderObject->checkActionPermission('move') && $this->clipObj->current === 'normal') {
+            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut'));
+            $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL)->render();
+
+            if ($isSel === 'cut') {
+                $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL)->render();
+            }
+
+            $cells['cut'] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel === 'cut'))) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
         }
 
         // delete the file
