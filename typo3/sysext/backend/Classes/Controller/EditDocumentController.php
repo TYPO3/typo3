@@ -208,12 +208,6 @@ class EditDocumentController extends AbstractModule
     public $returnEditConf;
 
     /**
-     * @var string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public $localizationMode;
-
-    /**
      * Workspace used for the editing action.
      *
      * @var NULL|int

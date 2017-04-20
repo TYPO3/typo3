@@ -674,27 +674,6 @@ class Clipboard
      * @param string $type Type-code
      * @param array $clElements Array of selected elements
      * @param string $columnLabel Name of the content column
-     * @return string JavaScript "confirm" message
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '')
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $message = $this->confirmMsgText($table, $rec, $type, $clElements, $columnLabel);
-        if (!empty($message)) {
-            $message = 'confirm(' . GeneralUtility::quoteJSvalue($message) . ');';
-        }
-        return $message;
-    }
-
-    /**
-     * Returns confirm JavaScript message
-     *
-     * @param string $table Table name
-     * @param mixed $rec For records its an array, for files its a string (path)
-     * @param string $type Type-code
-     * @param array $clElements Array of selected elements
-     * @param string $columnLabel Name of the content column
      * @return string the text for a confirm message
      */
     public function confirmMsgText($table, $rec, $type, $clElements, $columnLabel = '')

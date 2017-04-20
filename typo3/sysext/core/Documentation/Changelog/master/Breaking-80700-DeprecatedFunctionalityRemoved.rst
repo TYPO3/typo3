@@ -29,12 +29,52 @@ The following PHP classes that have been previously deprecated for v8 have been 
 The following PHP interfaces have been dropped:
 * TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface
 
+The following PHP interface signatures have been changed:
+* TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like() - Third argument dropped
+
 The following PHP class methods that have been previously deprecated for v8 have been removed:
+* TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg()
+* TYPO3\CMS\Backend\Controller\BackendController->addCssFile()
+* TYPO3\CMS\Backend\Controller\BackendController->addJavascript()
+* TYPO3\CMS\Backend\Controller\BackendController->addJavascriptFile()
+* TYPO3\CMS\Backend\Controller\BackendController->includeLegacyBackendItems()
+* TYPO3\CMS\Backend\Controller\Page\LocalizationController->getRecordUidsToCopy()
+* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->printContent()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getAllowedLanguagesForBackendUser()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getExcludeQueryPart()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getPreviousLocalizedRecordUid()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getRecordLocalization()
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->getBackPath()
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->getDatabaseConnection()
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->incLocalLang()
+* TYPO3\CMS\Backend\Module\BaseScriptClass->getDatabaseConnection()
 * TYPO3\CMS\Backend\Form\AbstractFormElement->isWizardsDisabled()
 * TYPO3\CMS\Backend\Form\AbstractFormElement->renderWizards()
 * TYPO3\CMS\Backend\Form\AbstractNode->getValidationDataAsDataAttribute()
 * TYPO3\CMS\Backend\Form\FormResultCompiler->JStop()
 * TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->divider()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->funcMenu()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getContextMenuCode()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getDragDropCode()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getResourceHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenu()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenuRaw()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->header()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->icons()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->loadJavascriptLib()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->section()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionBegin()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionEnd()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->t3Button()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getVersionSelector()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->viewPageIcon()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapInCData()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapScriptTags()
+* TYPO3\CMS\Backend\Template\ModuleTemplate->getVersionSelector()
+* TYPO3\CMS\Backend\View\PageLayoutView->pages_getTree()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink()
@@ -178,7 +218,13 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Lang\LanguageService->getsL() - Second argument dropped
 
 The following public class properties have been dropped:
+* TYPO3\CMS\Backend\Controller\EditDocumentController->localizationMode
+* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->edit_record
+* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->new_unique_uid
+* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->externalTables
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->thisPath
 * TYPO3\CMS\Backend\Template\DocumentTemplate->extJScode
+* TYPO3\CMS\Backend\Template\DocumentTemplate->form_largeComp
 * TYPO3\CMS\Core\Charset\CharsetConverter->charSetArray
 * TYPO3\CMS\Core\Charset\CharsetConverter->fourByteSets
 * TYPO3\CMS\Core\DataHandling\DataHandler->checkWorkspaceCache
@@ -201,8 +247,11 @@ The following class properties have changed visibility:
 * TYPO3\CMS\Core\DataHandling\DataHandler->cachedTSconfig changed from public to protected
 * TYPO3\CMS\Core\DataHandling\DataHandler->pageCache changed from public to protected
 
-The following Interface signatures have been changed:
-* TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like() - Third argument dropped
+The following public class constants have been dropped:
+* TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
+* TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING
+* TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_NOTIFICATION
+* TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_OK
 
 The following configuration options are not evaluated anymore:
 * $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
@@ -247,6 +296,11 @@ The following PageTsConfig properties have been removed:
 
 The following array constructs have been removed:
 * extJSCODE in FormEngine render result
+
+The following JavaScript methods and options have been removed:
+* backend/Resources/Public/JavaScript/jsfunc.inline.js escapeSelectorObjectId
+* TYPO3/CMS/Backend/Modal.getSeverityClass()
+* TYPO3/CMS/Backend/Severity.information
 
 
 Impact

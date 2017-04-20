@@ -1294,62 +1294,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     }
 
     /**
-     * Adds pages-rows to an array, selecting recursively in the page tree.
-     *
-     * @param array $theRows Array which will accumulate page rows
-     * @param int $pid Pid to select from
-     * @param string $qWhere Query-where clause
-     * @param string $treeIcons Prefixed icon code.
-     * @param int $depth Depth (decreasing)
-     * @return array $theRows, but with added rows.
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $depth--;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)));
-
-        if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
-            $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
-        }
-
-        if (!empty($qWhere)) {
-            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($qWhere));
-        }
-
-        if ($depth >= 0) {
-            $result = $queryBuilder->execute();
-            $rc = $result->rowCount();
-            $c = 0;
-            while ($row = $result->fetch()) {
-                BackendUtility::workspaceOL('pages', $row);
-                if (is_array($row)) {
-                    $c++;
-                    $row['treeIcons'] = $treeIcons . '<span class="treeline-icon treeline-icon-join' . ($rc === $c ? 'bottom' : '') . '"></span>';
-                    $theRows[] = $row;
-                    // Get the branch
-                    $spaceOutIcons = '<span class="treeline-icon treeline-icon-' . ($rc === $c ? 'clear' : 'line') . '"></span>';
-                    $theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons,
-                        $row['php_tree_stop'] ? 0 : $depth);
-                }
-            }
-        } else {
-            $count = (int)$queryBuilder->count('uid')->execute()->fetchColumn(0);
-            if ($count) {
-                $this->plusPages[$pid] = $count;
-            }
-        }
-        return $theRows;
-    }
-
-    /**
      * Adds a list item for the pages-rendering
      *
      * @param array $row Record array
@@ -2207,18 +2151,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     /**
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
-     * @param Statement|\mysqli_result $result DBAL Statement or MySQLi result object
+     * @param Statement $result DBAL Statement
      * @param string $table Table name defaulting to tt_content
      * @return array The selected rows returned in this array.
      */
-    public function getResult($result, string $table = 'tt_content'): array
+    public function getResult(Statement $result, string $table = 'tt_content'): array
     {
-        if ($result instanceof \mysqli_result) {
-            GeneralUtility::deprecationLog('Using \TYPO3\CMS\Backend\View\PageLayoutView::getResult with a mysqli_result object is deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9');
-        }
         $output = [];
         // Traverse the result:
-        while ($row = ($result instanceof Statement ? $result->fetch() : $result->fetch_assoc())) {
+        while ($row = $result->fetch()) {
             BackendUtility::workspaceOL($table, $row, -99, true);
             if ($row) {
                 // Add the row to the array:

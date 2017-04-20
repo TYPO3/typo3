@@ -152,35 +152,6 @@ class LocalizationController
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @return ResponseInterface
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getRecordUidsToCopy(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $params = $request->getQueryParams();
-        if (!isset($params['pageId'], $params['colPos'], $params['languageId'])) {
-            $response = $response->withStatus(500);
-            return $response;
-        }
-
-        $pageId = (int)$params['pageId'];
-        $colPos = (int)$params['colPos'];
-        $languageId = (int)$params['languageId'];
-
-        $result = $this->localizationRepository->getRecordsToCopyDatabaseResult($pageId, $colPos, $languageId, 'uid');
-        $uids = [];
-        while ($row = $result->fetch()) {
-            $uids[] = (int)$row['uid'];
-        }
-
-        $response->getBody()->write(json_encode($uids));
-        return $response;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface
      */
     public function localizeRecords(ServerRequestInterface $request, ResponseInterface $response)
     {

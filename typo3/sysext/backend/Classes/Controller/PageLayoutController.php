@@ -109,24 +109,6 @@ class PageLayoutController
     public $popView;
 
     /**
-     * QuickEdit: Variable, that tells quick edit what to show/edit etc.
-     * Format is [tablename]:[uid] with some exceptional values for both parameters (with special meanings).
-     *
-     * @var string
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-     */
-    public $edit_record;
-
-    /**
-     * QuickEdit: If set, this variable tells quick edit that the last edited record had
-     * this value as UID and we should look up the new, real uid value in sys_log.
-     *
-     * @var string
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-     */
-    public $new_unique_uid;
-
-    /**
      * Page select perms clause
      *
      * @var string
@@ -212,14 +194,6 @@ class PageLayoutController
     public $MOD_SETTINGS = [];
 
     /**
-     * Array of tables to be listed by the Web > Page module in addition to the default tables
-     *
-     * @var array
-     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9.
-     */
-    public $externalTables = [];
-
-    /**
      * Module output accumulation
      *
      * @var string
@@ -294,13 +268,10 @@ class PageLayoutController
         $this->imagemode = GeneralUtility::_GP('imagemode');
         $this->clear_cache = GeneralUtility::_GP('clear_cache');
         $this->popView = GeneralUtility::_GP('popView');
-        $this->edit_record = GeneralUtility::_GP('edit_record');
-        $this->new_unique_uid = GeneralUtility::_GP('new_unique_uid');
         $this->search_field = GeneralUtility::_GP('search_field');
         $this->search_levels = GeneralUtility::_GP('search_levels');
         $this->showLimit = GeneralUtility::_GP('showLimit');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
         $sessionData['search_field'] = $this->search_field;
         // Store session data
         $this->getBackendUser()->setAndSaveSessionData(RecordList::class, $sessionData);
@@ -334,31 +305,7 @@ class PageLayoutController
         // initialize page/be_user TSconfig settings
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
-        // example settings:
-        //  $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables']['tx_myext'] =
-        //      array ('default' => array(
-        //              'MENU' => 'LLL:EXT:tx_myext/locallang_db.xlf:menuDefault',
-        //              'fList' =>  'title,description,image',
-        //              'icon' => TRUE));
-        if (is_array($this->externalTables)) {
-            if (!empty($this->externalTables)) {
-                GeneralUtility::deprecationLog('The rendering of records in the page module by using '
-                    . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'cms\'][\'db_layout\'][\'addTables\']'
-                    . ' has been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.'
-                );
-            }
-            foreach ($this->externalTables as $table => $tableSettings) {
-                // delete the default settings from above
-                if (is_array($this->MOD_MENU[$table])) {
-                    unset($this->MOD_MENU[$table]);
-                }
-                if (is_array($tableSettings) && count($tableSettings) > 1) {
-                    foreach ($tableSettings as $key => $settings) {
-                        $this->MOD_MENU[$table][$key] = $lang->sL($settings['MENU']);
-                    }
-                }
-            }
-        }
+
         // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $queryBuilder->getRestrictions()->removeAll();
@@ -463,16 +410,6 @@ class PageLayoutController
 
         if (!$count) {
             unset($actions['2']);
-        }
-        // @internal: This is an internal hook for compatibility7 only, this hook will be removed without further notice
-        $initActionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['initActionHook'];
-        if (is_array($initActionHook)) {
-            foreach ($initActionHook as $hook) {
-                $params = [
-                    'actions' => &$actions
-                ];
-                GeneralUtility::callUserFunction($hook, $params, $this);
-            }
         }
         // page/be_user TSconfig blinding of menu-items
         $actions = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $actions, 'menu.function');
@@ -875,7 +812,6 @@ class PageLayoutController
         if (!$dbList->nextThree) {
             $dbList->nextThree = 1;
         }
-        $dbList->externalTables = $this->externalTables;
         // Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
         // also fills $dbList->activeTables
         $dbList->getTableMenu($this->id);
@@ -998,17 +934,6 @@ class PageLayoutController
     public function getModuleTemplate()
     {
         return $this->moduleTemplate;
-    }
-
-    /**
-     * Print accumulated content of module
-     *
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function printContent()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        echo $this->moduleTemplate->renderContent();
     }
 
     /***************************

@@ -113,21 +113,6 @@ define(['jquery',
 	};
 
 	/**
-	 * Get the correct css class for given severity
-	 *
-	 * @param {int} severity use constants from Severity.*
-	 * @returns {String}
-	 * @private
-	 * @deprecated
-	 */
-	Modal.getSeverityClass = function(severity) {
-		if (console) {
-			console.warn('Modal.getSeverityClass() is deprecated and will be removed with TYPO3 v9, please use Severity.getCssClass()');
-		}
-		return Severity.getCssClass(severity);
-	};
-
-	/**
 	 * Shows a confirmation dialog
 	 * Events:
 	 * - button.clicked
@@ -411,15 +396,6 @@ define(['jquery',
 	Modal.dismiss = function() {
 		if (Modal.currentModal) {
 			Modal.currentModal.modal('hide');
-		}
-	};
-
-	/**
-	 * Center the modal windows
-	 */
-	Modal.center = function() {
-		if (console) {
-			console.warn('Modal.center() is deprecated and will be removed with TYPO3 v9, please remove the call. Modals are now automatically centered.');
 		}
 	};
 

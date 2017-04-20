@@ -48,8 +48,6 @@ define(function () {
 	 */
 	var Severity = {
 		notice: -2,
-		// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 9, use info instead of information
-		information: -1,
 		info: -1,
 		ok: 0,
 		warning: 1,

@@ -3003,7 +3003,6 @@ class BackendUtility
      *
      * @return string HTML javascript code
      * @see BackendUtility::setUpdateSignal()
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::sectionEnd
      */
     public static function getUpdateSignalCode()
     {

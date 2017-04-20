@@ -558,34 +558,6 @@ class ModuleTemplate
     }
 
     /**
-     * Creates the version selector for the page id inputted.
-     * Requires the core version management extension, "version" to be loaded.
-     *
-     * @param int $id Page id to create selector for.
-     * @param bool $noAction If set, there will be no button for swapping page.
-     *
-     * @return string
-     * @internal
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function getVersionSelector($id, $noAction = false)
-    {
-        if (ExtensionManagementUtility::isLoaded('version')
-            && ExtensionManagementUtility::isLoaded('compatibility7')
-            && !ExtensionManagementUtility::isLoaded('workspaces')
-        ) {
-            /**
-             * For Code Completion
-             *
-             * @var $versionGuiObj \TYPO3\CMS\Compatibility7\View\VersionView
-             */
-            $versionGuiObj = GeneralUtility::makeInstance(\TYPO3\CMS\Compatibility7\View\VersionView::class);
-            return $versionGuiObj->getVersionSelector($id, $noAction);
-        }
-        return '';
-    }
-
-    /**
      * Returns the BE USER Object
      *
      * @return BackendUserAuthentication

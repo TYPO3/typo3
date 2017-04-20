@@ -17,9 +17,7 @@ namespace TYPO3\CMS\Backend\Module;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -122,15 +120,6 @@ abstract class AbstractFunctionModule
     public $extObj = null;
 
     /**
-     * Set to the directory name of this class file.
-     *
-     * @see init()
-     * @var string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public $thisPath = '';
-
-    /**
      * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
      * and is included / added to $GLOBALS['LOCAL_LANG']
      *
@@ -173,12 +162,6 @@ abstract class AbstractFunctionModule
     public function init(&$pObj, $conf)
     {
         $this->pObj = $pObj;
-        // Path of this script:
-        $reflector = new \ReflectionObject($this);
-        $this->thisPath = dirname($reflector->getFileName());
-        if (!@is_dir($this->thisPath)) {
-            throw new \RuntimeException('TYPO3 Fatal Error: Could not find path for class ' . get_class($this), 1381164687);
-        }
         // Local lang:
         if (!empty($this->localLangFile)) {
             $this->getLanguageService()->includeLLFile($this->localLangFile);
@@ -199,29 +182,6 @@ abstract class AbstractFunctionModule
         $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
         if ($this->function_key) {
             $this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'], $this->function_key, $this->pObj->MOD_SETTINGS[$this->function_key]);
-        }
-    }
-
-    /**
-     * Including any locallang file configured and merging its content over
-     * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    public function incLocalLang()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        if (
-            $this->localLangFile
-            && (
-                @is_file(($this->thisPath . '/' . $this->localLangFile))
-                || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml'))
-            )
-        ) {
-            $LOCAL_LANG = $this->getLanguageService()->includeLLFile($this->thisPath . '/' . $this->localLangFile, false);
-            if (is_array($LOCAL_LANG)) {
-                $GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];
-                ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
-            }
         }
     }
 
@@ -283,26 +243,6 @@ abstract class AbstractFunctionModule
     protected function getDocumentTemplate()
     {
         return $GLOBALS['TBE_TEMPLATE'];
-    }
-
-    /**
-     * @return string
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected function getBackPath()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return '';
-    }
-
-    /**
-     * @return DatabaseConnection
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use the Doctrine DBAL layer via the ConnectionPool class
-     */
-    protected function getDatabaseConnection()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
