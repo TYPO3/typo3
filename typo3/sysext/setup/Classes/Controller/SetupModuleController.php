@@ -297,9 +297,10 @@ class SetupModuleController extends AbstractModule
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                 // This is so the user can actually update his user record.
-                $isAdmin = $this->beUser->user['admin'];
-                $this->beUser->user['admin'] = 1;
-                $dataHandler->start($storeRec, [], $this->beUser);
+                $realUser = $this->getRealScriptUserObj();
+                $isAdmin = $realUser->user['admin'];
+                $realUser->user['admin'] = 1;
+                $dataHandler->start($storeRec, [], $realUser);
                 // This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
                 $dataHandler->bypassWorkspaceRestrictions = true;
                 $dataHandler->process_datamap();
@@ -308,7 +309,7 @@ class SetupModuleController extends AbstractModule
                     $this->setupIsUpdated = true;
                 }
                 // Restore admin status after processing
-                $this->beUser->user['admin'] = $isAdmin;
+                $realUser->user['admin'] = $isAdmin;
 
                 BackendUtility::setUpdateSignal('updateTopbar');
             }
