@@ -460,7 +460,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     {
         // Log only if enabled
         if (!empty($this->extConf['enableBELog'])) {
-            $GLOBALS['BE_USER']->writelog(4, 0, $status, $code, '[scheduler]: ' . $message, []);
+            $GLOBALS['BE_USER']->writelog(4, 0, $status, 0, '[scheduler]: ' . $code . ' - ' . $message, []);
         }
     }
 
