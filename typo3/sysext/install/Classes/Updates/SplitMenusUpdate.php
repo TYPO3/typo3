@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,7 +45,7 @@ class SplitMenusUpdate extends AbstractUpdate
             return false;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
         $elementCount = $queryBuilder->count('uid')
             ->from('tt_content')
             ->where(
@@ -72,7 +71,7 @@ class SplitMenusUpdate extends AbstractUpdate
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
         $queryBuilder = $connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder->select('uid', 'header', 'menu_type')
             ->from('tt_content')
             ->where(
