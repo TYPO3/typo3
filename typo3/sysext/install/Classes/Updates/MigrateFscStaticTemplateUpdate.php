@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Install\Updates;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,7 +39,7 @@ class MigrateFscStaticTemplateUpdate extends AbstractUpdate
             return false;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
         $elementCount = $queryBuilder->count('uid')
             ->from('sys_template')
             ->where(
@@ -77,7 +76,7 @@ class MigrateFscStaticTemplateUpdate extends AbstractUpdate
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
         $queryBuilder = $connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder->select('uid', 'include_static_file', 'constants', 'config')
             ->from('sys_template')
             ->where(
