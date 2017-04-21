@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Script class for the Setup module
@@ -266,9 +267,14 @@ class SetupModuleController extends AbstractModule
                 }
                 // Update the password:
                 if ($passwordIsConfirmed) {
-                    $currentPasswordHashed = $GLOBALS['BE_USER']->user['password'];
-                    $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($currentPasswordHashed);
-                    if ($saltFactory->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed)) {
+                    if ($this->isAdmin) {
+                        $passwordOk = true;
+                    } else {
+                        $currentPasswordHashed = $GLOBALS['BE_USER']->user['password'];
+                        $saltFactory = SaltFactory::getSaltingInstance($currentPasswordHashed);
+                        $passwordOk = $saltFactory->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
+                    }
+                    if ($passwordOk) {
                         $this->passwordIsUpdated = self::PASSWORD_UPDATED;
                         $storeRec['be_users'][$beUserId]['password'] = $be_user_data['password'];
                     } else {
@@ -895,6 +901,13 @@ class SetupModuleController extends AbstractModule
     protected function getFieldsFromShowItem()
     {
         $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
+        // do not ask for current password if admin (unknown for other users and no security gain)
+        if ($this->isAdmin) {
+            $key = array_search('passwordCurrent', $allowedFields);
+            if ($key !== false) {
+                unset($allowedFields[$key]);
+            }
+        }
         if (!is_array($this->tsFieldConf)) {
             return $allowedFields;
         }
