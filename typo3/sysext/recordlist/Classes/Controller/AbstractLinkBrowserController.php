@@ -174,7 +174,21 @@ abstract class AbstractLinkBrowserController
             $content .= $this->renderCurrentUrl();
         }
 
-        $content .= '<div class="element-browser-panel element-browser-tabs">' . $this->doc->getTabMenuRaw($menuData) . '</div>';
+        $options = '';
+        foreach ($menuData as $id => $def) {
+            $class = $def['isActive'] ? 'active' : '';
+            $label = $def['label'];
+            $url = htmlspecialchars($def['url']);
+            $params = $def['addParams'];
+
+            $options .= '<li class="' . $class . '">' .
+                '<a href="' . $url . '" ' . $params . '>' . $label . '</a>' .
+                '</li>';
+        }
+
+        $content .= '<div class="element-browser-panel element-browser-tabs"><ul class="nav nav-tabs" role="tablist">' .
+            $options . '</ul></div>';
+
         $content .= $renderLinkAttributeFields;
 
         $content .= $browserContent;
