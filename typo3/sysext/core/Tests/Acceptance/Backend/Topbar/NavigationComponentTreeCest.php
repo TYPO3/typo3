@@ -32,7 +32,7 @@ class NavigationComponentTreeCest
     /**
      * @param Admin $I
      */
-    public function checkTreefExpandsAndCollapseByPageModule(Admin $I)
+    public function checkTreeExpandsAndCollapseByPageModule(Admin $I)
     {
         $treeArea = '.scaffold-content-navigation-expanded';
         $I->wantTo('check Page Module for Expands And Collapse');
@@ -53,21 +53,21 @@ class NavigationComponentTreeCest
     /**
      * @param Admin $I
      */
-    public function checkTreefExpandsAndCollapseByFileModule(Admin $I)
+    public function checkTreeExpandsAndCollapseByFileModule(Admin $I)
     {
         $I->wantTo('check File Module for Expands And Collapse');
         $I->click('Filelist');
         $I->switchToIFrame('nav_frame');
+        $I->waitForElement('.t3js-module-body');
         $I->see('fileadmin', '.t3js-module-body');
         $I->switchToIFrame();
         $I->wantTo('check File Module for Collapse');
         $I->click('button.t3js-topbar-button-navigationcomponent');
-        $I->switchToIFrame('nav_frame');
-        $I->cantSee('fileadmin', '.t3js-module-body');
-        $I->switchToIFrame();
+        $I->waitForElementNotVisible('.scaffold-content-navigation-expanded');
         $I->wantTo('check File Module for Expands');
         $I->click('button.t3js-topbar-button-navigationcomponent');
         $I->switchToIFrame('nav_frame');
+        $I->waitForElement('.t3js-module-body');
         $I->see('fileadmin', '.t3js-module-body');
         $I->switchToIFrame();
     }

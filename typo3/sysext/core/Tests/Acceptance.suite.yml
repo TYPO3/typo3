@@ -7,9 +7,9 @@ modules:
   config:
     WebDriver:
       url: http://localhost:8000/typo3temp/var/tests/acceptance
-      browser: firefox
+      browser: chrome
       port: 4444
-      window_size: 1280x960
+      window_size: 1280x1024
       wait: 1
       restart: true
       capabilities:
@@ -20,3 +20,5 @@ modules:
         # You have to ensure that the element is in the viewport by your own before clicking it!
         # You can simply do that by scrolling to it.
         elementScrollBehavior: 1
+        chromeOptions:
+          args: [no-sandbox,disable-infobars,disable-notifications,disable-gpu,disable-software-rasterizer]

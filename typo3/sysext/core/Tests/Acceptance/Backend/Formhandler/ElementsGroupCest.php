@@ -37,8 +37,8 @@ class ElementsGroupCest
 
         $I->executeJS('window.name="TYPO3Main";');
 
+        $I->waitForText('elements group');
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_group a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }
@@ -101,8 +101,9 @@ class ElementsGroupCest
         $I->switchToWindow('Typo3WinBrowser');
 
         try {
-            $I->amGoingTo('click record name in DB-Browser');
-            $I->click('#recordlist-be_groups > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(2)');
+            $I->amGoingTo('click + button to select record and close DB-Browser');
+            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
+            $I->closeTab();
         } catch (NoSuchWindowException $e) {
             // missing focus by auto close window
         }
@@ -128,8 +129,9 @@ class ElementsGroupCest
         $I->click('#recordlist-be_groups > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
         try {
-            $I->amGoingTo('click record name in DB-Browser');
-            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(2)');
+            $I->amGoingTo('click + button to select record and close DB-Browser');
+            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
+            $I->closeTab();
         } catch (NoSuchWindowException $e) {
             // missing focus by auto close window
         }
@@ -178,7 +180,9 @@ class ElementsGroupCest
 
         // search Test only by string
         try {
-            $I->click('admin');
+            $I->amGoingTo('click + button to select record and close DB-Browser');
+            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
+            $I->closeTab();
         } catch (NoSuchWindowException $e) {
             // missing focus by auto close window
         }

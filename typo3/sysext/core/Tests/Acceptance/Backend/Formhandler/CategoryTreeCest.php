@@ -55,6 +55,11 @@ class CategoryTreeCest
         $I->waitForElementVisible('#web .modulemenu-group-container .modulemenu-item');
         $I->click('#web_list');
         $I->switchToIFrame('list_frame');
+        // Collapse all tables and expand category again - ensures category fits into window
+        $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
+        $I->wait(1);
+        $I->executeJS('$(\'a[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
+        $I->wait(1);
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Change title and level to root
