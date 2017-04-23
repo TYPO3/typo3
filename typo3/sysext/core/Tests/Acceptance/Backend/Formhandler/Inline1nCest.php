@@ -36,8 +36,8 @@ class Inline1nCest
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToIFrame('list_frame');
 
+        $I->waitForText('inline 1n');
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }

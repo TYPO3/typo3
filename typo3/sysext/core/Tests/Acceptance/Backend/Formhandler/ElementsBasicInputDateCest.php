@@ -41,8 +41,8 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         $I->switchToIFrame('list_frame');
 
         // Open record and wait until form is ready
+        $I->waitForText('elements basic');
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_elements_basic a[data-original-title="Edit record"]';
-        $I->waitForElement($editRecordLinkCssPath, 30);
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
         $I->click('inputDateTime');

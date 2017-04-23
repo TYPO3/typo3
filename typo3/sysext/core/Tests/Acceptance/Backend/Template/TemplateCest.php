@@ -59,12 +59,11 @@ class TemplateCest
         // click on website root page
         $I->click('#extdd-3');
         $I->switchToIFrame('list_frame');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('No template');
+        $I->waitForText('No template');
         $I->see('There was no template on this page!');
         $I->see('You need to create a template record below in order to edit your configuration.');
 
-        // @todo These input fields should be changed to buttons. Shoult be changed to proper HTML.
+        // @todo These input fields should be changed to buttons. Should be changed to proper HTML.
         $I->seeInFormFields(
             '#TypoScriptTemplateModuleController',
             [
@@ -83,10 +82,9 @@ class TemplateCest
         $I->switchToIFrame();
         $I->click('#extdd-3');
         $I->switchToIFrame('list_frame');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
+        $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('Edit constants for template');
+        $I->waitForText('Edit constants for template');
 
         $I->wantTo('change to Info/Modify and see the template overview table');
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
@@ -120,29 +118,23 @@ class TemplateCest
 
         $I->wantTo('change the template within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('Current template');
+        $I->waitForText('Current template');
         $I->see('CONSTANTS ROOT');
         $I->selectOption('//select[@name="SET[ts_browser_type]"]', 'Setup');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('SETUP ROOT');
+        $I->waitForText('SETUP ROOT');
         // find and open [page] in tree
         $I->see('[page] = PAGE');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../a');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
         // find and open [page][10] in tree
-        $I->see('[10] = TEXT');
+        $I->waitForText('[10] = TEXT');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'page\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'10\']/../../../a');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
         // find and edit [page][10][value] in tree
-        $I->see('[value] = Hello Acceptance Test!');
+        $I->waitForText('[value] = Hello Acceptance Test!');
         $I->click('//span[@class="list-tree-label"]/a[text()=\'10\']/../../../ul//span[@class="list-tree-label"]/a[text()=\'value\']');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('page.10.value =');
+        $I->waitForText('page.10.value =');
         $I->fillField('//input[@name="data[page.10.value][value]"]', 'HELLO WORLD!');
         $I->click('//input[@name="update_value"]');
-        $I->waitForElement('#TypoScriptTemplateModuleController');
-        $I->see('Value updated');
+        $I->waitForText('Value updated');
         $I->see('page.10.value = HELLO WORLD!');
         $I->see('[value] = HELLO WORLD!');
     }

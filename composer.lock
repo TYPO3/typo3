@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d466da27236cd52e943ba1e2f894f070",
+    "content-hash": "11fafa90e76890dc750be42d0ba3e915",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1463,16 +1463,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.2.8",
+            "version": "2.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "0a87d4b19070a24636125993450a9d3f698a6663"
+                "reference": "c32a3f92834db08ceedb4666ea2265c3aa43396e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/0a87d4b19070a24636125993450a9d3f698a6663",
-                "reference": "0a87d4b19070a24636125993450a9d3f698a6663",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/c32a3f92834db08ceedb4666ea2265c3aa43396e",
+                "reference": "c32a3f92834db08ceedb4666ea2265c3aa43396e",
                 "shasum": ""
             },
             "require": {
@@ -1483,10 +1483,11 @@
                 "guzzlehttp/guzzle": ">=4.1.4 <7.0",
                 "guzzlehttp/psr7": "~1.0",
                 "php": ">=5.4.0 <8.0",
-                "phpunit/php-code-coverage": ">=2.1.3 <5.0",
+                "phpunit/php-code-coverage": ">=2.2.4 <5.0",
                 "phpunit/phpunit": ">4.8.20 <6.0",
                 "sebastian/comparator": "~1.1",
                 "sebastian/diff": "^1.4",
+                "stecman/symfony-console-completion": "^0.7.0",
                 "symfony/browser-kit": ">=2.7 <4.0",
                 "symfony/console": ">=2.7 <4.0",
                 "symfony/css-selector": ">=2.7 <4.0",
@@ -1551,7 +1552,45 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-01-20T00:54:15+00:00"
+            "time": "2017-03-25T03:19:52+00:00"
+        },
+        {
+            "name": "enm1989/chromedriver",
+            "version": "2.29",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ENM1989/chromedriver.git",
+                "reference": "61c748b3e89063ac8901bf092a36c8a8d4afb681"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/61c748b3e89063ac8901bf092a36c8a8d4afb681",
+                "reference": "61c748b3e89063ac8901bf092a36c8a8d4afb681",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/chromedriver"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache License Version 2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nico Müller",
+                    "email": "nico.mueller.1989@googlemail.com"
+                }
+            ],
+            "description": "Composer distribution of Chromedriver. Adds a executable to your composer bin directory.",
+            "homepage": "https://github.com/ENM1989/chromedriver",
+            "keywords": [
+                "Chromedriver",
+                "chrome",
+                "selenium",
+                "webdriver"
+            ],
+            "time": "2017-04-05T10:16:10+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -2398,16 +2437,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "v2.53.1",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361"
+                "reference": "6d8ae7864f2fc2d39456501ff8b01aa26d5cdda6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/ef4eea9c99efb9c0e3084e9cae625662ccd43361",
-                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/6d8ae7864f2fc2d39456501ff8b01aa26d5cdda6",
+                "reference": "6d8ae7864f2fc2d39456501ff8b01aa26d5cdda6",
                 "shasum": ""
             },
             "require-dev": {
@@ -2433,7 +2472,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2016-07-01T14:16:52+00:00"
+            "time": "2017-03-23T10:12:26+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2947,6 +2986,51 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "stecman/symfony-console-completion",
+            "version": "0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stecman/symfony-console-completion.git",
+                "reference": "5461d43e53092b3d3b9dbd9d999f2054730f4bbb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stecman/symfony-console-completion/zipball/5461d43e53092b3d3b9dbd9d999f2054730f4bbb",
+                "reference": "5461d43e53092b3d3b9dbd9d999f2054730f4bbb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/console": "~2.3 || ~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stecman\\Component\\Symfony\\Console\\BashCompletion\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Holdaway",
+                    "email": "stephen@stecman.co.nz"
+                }
+            ],
+            "description": "Automatic BASH completion for Symfony Console Component based applications.",
+            "time": "2016-02-24T05:08:54+00:00"
         },
         {
             "name": "symfony/browser-kit",
