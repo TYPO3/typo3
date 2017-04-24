@@ -9,6 +9,12 @@ return [
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
+        'versioningWS' => true,
+        'origUid' => 't3_origuid',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
     ],
 
 
