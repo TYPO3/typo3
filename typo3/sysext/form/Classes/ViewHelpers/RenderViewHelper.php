@@ -18,7 +18,9 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -78,8 +80,9 @@ class RenderViewHelper extends AbstractViewHelper
         $prototypeName = $arguments['prototypeName'];
         $overrideConfiguration = $arguments['overrideConfiguration'];
 
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if (!empty($persistenceIdentifier)) {
-            $formPersistenceManager = $renderingContext->getObjectManager()->get(FormPersistenceManagerInterface::class);
+            $formPersistenceManager = $objectManager->get(FormPersistenceManagerInterface::class);
             $formConfiguration = $formPersistenceManager->load($persistenceIdentifier);
             ArrayUtility::mergeRecursiveWithOverrule(
                 $formConfiguration,
@@ -93,9 +96,9 @@ class RenderViewHelper extends AbstractViewHelper
             $prototypeName = isset($overrideConfiguration['prototypeName']) ? $overrideConfiguration['prototypeName'] : 'standard';
         }
 
-        $factory = $renderingContext->getObjectManager()->get($factoryClass);
+        $factory = $objectManager->get($factoryClass);
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
-        $response = $renderingContext->getObjectManager()->get(Response::class, $renderingContext->getControllerContext()->getResponse());
+        $response = $objectManager->get(Response::class, $renderingContext->getControllerContext()->getResponse());
         $form = $formDefinition->bind($renderingContext->getControllerContext()->getRequest(), $response);
         return $form->render();
     }

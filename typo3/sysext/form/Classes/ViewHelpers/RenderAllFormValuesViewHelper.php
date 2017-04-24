@@ -100,9 +100,9 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
                 'processedValue' => self::processElementValue($element, $value, $renderChildrenClosure, $renderingContext),
                 'isMultiValue' => is_array($value) || $value instanceof \Iterator
             ];
-            $renderingContext->getTemplateVariableContainer()->add($as, $formValue);
+            $renderingContext->getVariableProvider()->add($as, $formValue);
             $output .= $renderChildrenClosure();
-            $renderingContext->getTemplateVariableContainer()->remove($as);
+            $renderingContext->getVariableProvider()->remove($as);
         }
         return $output;
     }
