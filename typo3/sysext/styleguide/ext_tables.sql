@@ -7,7 +7,7 @@ CREATE TABLE pages_language_overlay (
 );
 
 CREATE TABLE sys_language (
-	tx_styleguide_isdemolanguage varchar(255) DEFAULT '' NOT NULL
+	tx_styleguide_isdemolanguage tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE be_groups (
