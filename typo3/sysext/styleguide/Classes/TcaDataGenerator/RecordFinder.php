@@ -30,7 +30,7 @@ class RecordFinder
     /**
      * Returns a uid list of existing styleguide demo top level pages.
      * These are pages with pid=0 and tx_styleguide_containsdemo set to 'tx_styleguide'.
-     * This can be multiple pages if "create" button was clickd multiple times without "delete" in between.
+     * This can be multiple pages if "create" button was clicked multiple times without "delete" in between.
      *
      * @return array
      */
@@ -48,6 +48,36 @@ class RecordFinder
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_containsdemo',
                     $queryBuilder->createNamedParameter('tx_styleguide', \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+        $uids = [];
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                $uids[] = (int)$row['uid'];
+            }
+        }
+        return $uids;
+    }
+
+    /**
+     * Returns a uid list of existing styleguide demo pages_language_overlays.
+     * These are pages_language_overlays tx_styleguide_containsdemo set to tca types of 'tx_styleguide'.
+     * This can be multiple pages_language_overlay if "create" button was clicked multiple times without "delete" in between.
+     *
+     * @return array
+     */
+    public function findUidsOfStyleguidePagesLanguageOverlay(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('pages_language_overlay')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter('tx_styleguide%', \PDO::PARAM_STR)
                 )
             )
             ->execute()
@@ -92,6 +122,34 @@ class RecordFinder
             );
         }
         return (int)$row['uid'];
+    }
+
+    /**
+     * Find uids of styleguide demo sys_language`s
+     *
+     * @return array List of uids
+     */
+    public function findUidsOfDemoLanguages(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('sys_language')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_isdemolanguage',
+                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+        $result = [];
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                $result[] = $row['uid'];
+            }
+        }
+        return $result;
     }
 
     /**
