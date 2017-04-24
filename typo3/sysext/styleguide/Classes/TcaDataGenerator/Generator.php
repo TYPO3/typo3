@@ -146,6 +146,14 @@ class Generator
             }
         }
 
+        // Delete all the pages_language_overlay records on this tree
+        $overlayUids = $recordFinder->findUidsOfStyleguidePagesLanguageOverlay();
+        if (!empty($overlayUids)) {
+            foreach ($overlayUids as $overlayUid) {
+                $commands['pages_language_overlay'][(int)$overlayUid]['delete'] = 1;
+            }
+        }
+
         // Delete demo users
         $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
         if (!empty($demoUserUids)) {
@@ -237,6 +245,33 @@ class Generator
             $fields['usergroup'] = '';
             $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
             $connection->insert('be_users', $fields);
+        }
+
+        $demoLanguagesUids = $recordFinder->findUidsOfDemoLanguages();
+        if (empty($demoLanguagesUids)) {
+            // Add four sys_language`s
+            $fields = [
+                'pid' => 0,
+                'hidden' => 1,
+                'tx_styleguide_isdemolanguage' => 1,
+                'title' => 'styleguide demo language 1',
+                'language_isocode' => 'da',
+                'flag' => 'dk',
+            ];
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_language');
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 2';
+            $fields['language_isocode'] = 'de';
+            $fields['flag'] = 'de';
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 3';
+            $fields['language_isocode'] = 'fr';
+            $fields['flag'] = 'fr';
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 4';
+            $fields['language_isocode'] = 'es';
+            $fields['flag'] = 'es';
+            $connection->insert('sys_language', $fields);
         }
 
         // Add 3 files from resources directory to default storage

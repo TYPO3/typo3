@@ -2,6 +2,14 @@ CREATE TABLE pages (
 	tx_styleguide_containsdemo varchar(255) DEFAULT '' NOT NULL
 );
 
+CREATE TABLE pages_language_overlay (
+	tx_styleguide_containsdemo varchar(255) DEFAULT '' NOT NULL
+);
+
+CREATE TABLE sys_language (
+	tx_styleguide_isdemolanguage varchar(255) DEFAULT '' NOT NULL
+);
+
 CREATE TABLE be_groups (
 	tx_styleguide_isdemorecord tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
