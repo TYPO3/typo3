@@ -480,6 +480,14 @@ class TypoScriptParser
                         } else {
                             break;
                         }
+                    } else {
+                        if ($this->syntaxHighLight) {
+                            $this->regHighLight('comment', $lineP);
+                        }
+                        // Comment. The comments are concatenated in this temporary string:
+                        if ($this->regComments) {
+                            $this->lastComment .= rtrim($line) . LF;
+                        }
                     }
                     if (strpos($line, '### ERROR') === 0) {
                         $this->error(substr($line, 11));
