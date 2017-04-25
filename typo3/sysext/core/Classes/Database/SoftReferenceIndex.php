@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Database;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -246,7 +247,7 @@ class SoftReferenceIndex
 
     /**
      * TypoLink tag processing.
-     * Will search for <link ...> tags in the content string and process any found.
+     * Will search for <link ...> and <a> tags in the content string and process any found.
      *
      * @param string $content The input content to analyse
      * @param array $spParams Parameters set for the softref parser key in TCA/columns
@@ -257,14 +258,54 @@ class SoftReferenceIndex
     {
         // Parse string for special TYPO3 <link> tag:
         $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-        $linkTags = $htmlParser->splitTags('link', $content);
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        $linkTags = $htmlParser->splitTags('a', $content);
         // Traverse result:
         $elements = [];
-        foreach ($linkTags as $k => $foundValue) {
-            if ($k % 2) {
-                $typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
-                $tLP = $this->getTypoLinkParts($typolinkValue);
-                $linkTags[$k] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k) . '>';
+        foreach ($linkTags as $key => $foundValue) {
+            if ($key % 2) {
+                if (preg_match('/href="([^"]+)"/', $foundValue, $matches)) {
+                    try {
+                        $linkDetails = $linkService->resolve($matches[1]);
+                        if ($linkDetails['type'] === LinkService::TYPE_FILE && preg_match('/file\?uid=(\d+)/', $matches[1], $fileIdMatch)) {
+                            $token = $this->makeTokenID($key);
+                            $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
+                            $elements[$key] = $linkDetails;
+                            $elements[$key]['subst'] = [
+                                'type' => $linkDetails['type'],
+                                'relFileName' => $fileIdMatch[1],
+                                'tokenID' => $token,
+                                'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1])
+                            ];
+                        } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?uid=(\d+)#?(\d+)?/', $matches[1], $pageAndAnchorMatches)) {
+                            $token = $this->makeTokenID($key);
+                            $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
+                            $elements[$key] = $linkDetails;
+                            $elements[$key]['subst'] = [
+                                'type' => 'db',
+                                'recordRef' => 'pages:' . $linkDetails['pageuid'] . (isset($pageAndAnchorMatches[2]) ? '#c' . $pageAndAnchorMatches[2] : ''),
+                                'tokenID' => $token,
+                                'tokenValue' => $linkDetails['pageuid'] . (isset($pageAndAnchorMatches[2]) ? '#c' . $pageAndAnchorMatches[2] : '')
+                            ];
+                        } elseif ($linkDetails['type'] === LinkService::TYPE_URL) {
+                            $token = $this->makeTokenID($key);
+                            $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
+                            $elements[$key] = $linkDetails;
+                            $elements[$key]['subst'] = [
+                                'type' => 'external',
+                                'tokenID' => $token,
+                                'tokenValue' => $linkDetails['url']
+                            ];
+                        }
+                    } catch (\Exception $e) {
+                        // skip invalid links
+                    }
+                } else {
+                    // keep the legacy code for now
+                    $typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
+                    $tLP = $this->getTypoLinkParts($typolinkValue);
+                    $linkTags[$k] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k) . '>';
+                }
             }
         }
         // Return output:
@@ -323,7 +364,7 @@ class SoftReferenceIndex
     public function findRef_url($content, $spParams)
     {
         // URLs
-        $parts = preg_split('/([^[:alnum:]"\']+)((http|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split('/([^[:alnum:]"\']+)((https?|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
             if ($idx % 5 == 3) {
                 unset($parts[$idx]);

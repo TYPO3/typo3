@@ -363,7 +363,7 @@ class LinkAnalyzer
     protected function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
     {
         $currentR = [];
-        $linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
+        $linkTags = $htmlParser->splitIntoBlock('a,link', $resultArray['content']);
         $idRecord = $record['uid'];
         $type = '';
         $title = '';
