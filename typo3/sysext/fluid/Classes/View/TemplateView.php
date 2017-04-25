@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Fluid\View;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Fluid\Fluid;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
