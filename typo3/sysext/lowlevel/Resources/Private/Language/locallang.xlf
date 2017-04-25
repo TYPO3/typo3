@@ -39,6 +39,9 @@
 			<trans-unit id="tbemodules">
 				<source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
 			</trans-unit>
+			<trans-unit id="pagesTypes">
+				<source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>
+			</trans-unit>
 			<trans-unit id="cropLines">
 				<source>Crop lines</source>
 			</trans-unit>

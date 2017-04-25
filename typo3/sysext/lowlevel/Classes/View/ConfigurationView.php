@@ -128,7 +128,8 @@ class ConfigurationView extends BaseScriptClass
                 7 => LocalizationUtility::translate('tbeStyles', 'lowlevel'),
                 8 => LocalizationUtility::translate('beUser', 'lowlevel'),
                 9 => LocalizationUtility::translate('usersettings', 'lowlevel'),
-                10 => LocalizationUtility::translate('routes', 'lowlevel')
+                10 => LocalizationUtility::translate('pagesTypes', 'lowlevel'),
+                11 => LocalizationUtility::translate('routes', 'lowlevel'),
             ],
             'regexsearch' => '',
             'fixedLgd' => ''
@@ -205,6 +206,11 @@ class ConfigurationView extends BaseScriptClass
                 $arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
                 break;
             case 10:
+                $theVar = $GLOBALS['PAGES_TYPES'];
+                ArrayUtility::naturalKeySortRecursive($theVar);
+                $arrayBrowser->varName = '$PAGES_TYPES';
+                break;
+            case 11:
                 $router = GeneralUtility::makeInstance(Router::class);
                 $routes = $router->getRoutes();
                 $theVar = [];
