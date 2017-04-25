@@ -66,6 +66,7 @@ class TypeGroupFile extends AbstractFieldGenerator implements FieldGeneratorInte
             $sourceFile = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
             $targetFile = $basicFileUtility->getUniqueName($sourceFile, PATH_site . 'uploads/tx_styleguide');
             GeneralUtility::upload_copy_move($sourceFile, $targetFile);
+            // in case of exception at this point (basename requires parameter, null given) => empty uploads/tx_styleguide
             $finalFileNames[] = basename($targetFile);
         }
         return implode(',', $finalFileNames);
