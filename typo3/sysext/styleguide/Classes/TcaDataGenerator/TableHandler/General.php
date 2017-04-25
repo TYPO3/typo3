@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
+use TYPO3\CMS\Styleguide\Service\TranslateCopyService;
 
 /**
  * General table handler
@@ -64,5 +65,32 @@ class General extends AbstractTableHandler implements TableHandlerInterface
             $fieldValues,
             [ 'uid' => $fieldValues['uid'] ]
         );
+
+        /** @var TranslateCopyService $translateCopyService */
+        $translateCopyService = GeneralUtility::makeInstance(TranslateCopyService::class);
+        $demoLanguages = $recordFinder->findUidsOfDemoLanguages();
+
+        $translatedRecord = -42;
+        foreach ($demoLanguages as $demoLanguageIndex => $demoLanguageUid) {
+            switch ($demoLanguageIndex) {
+                case 0:
+                    $translateCopyService->copyRecordToLanguage($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    break;
+                case 1:
+                    $result = $translateCopyService->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    $translatedRecord = $result[$tableName][$fieldValues['uid']];
+                    break;
+                case 2:
+                    $result = $translateCopyService->localizeRecord($tableName, $translatedRecord, $demoLanguageUid);
+                    $translatedRecord = $result[$tableName][$translatedRecord];
+                    break;
+                case 3:
+                    $translateCopyService->copyRecordToLanguage($tableName, $translatedRecord, $demoLanguageUid);
+                    break;
+                default:
+                    $translateCopyService->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    break;
+            }
+        }
     }
 }
