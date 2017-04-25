@@ -280,7 +280,6 @@ class Generator
             // Add four sys_language`s
             $fields = [
                 'pid' => 0,
-                'hidden' => 1,
                 'tx_styleguide_isdemolanguage' => 1,
                 'title' => 'styleguide demo language 1',
                 'language_isocode' => 'da',
