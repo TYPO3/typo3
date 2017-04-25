@@ -11,12 +11,6 @@ return [
         'sortby' => 'sorting',
         'selicon_field' => 'group_1',
         'selicon_field_path' => 'uploads/tx_styleguide',
-        'versioningWS' => true,
-        'origUid' => 't3_origuid',
-        'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l10n_parent',
-        'transOrigDiffSourceField' => 'l10n_diffsource',
-        'translationSource' => 'l10n_source',
     ],
 
 

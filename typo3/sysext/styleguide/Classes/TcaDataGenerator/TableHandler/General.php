@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
+use TYPO3\CMS\Styleguide\Service\TranslateCopyService;
+
 
 /**
  * General table handler
@@ -64,5 +66,13 @@ class General extends AbstractTableHandler implements TableHandlerInterface
             $fieldValues,
             [ 'uid' => $fieldValues['uid'] ]
         );
+
+        /** @var TranslateCopyService $translateCopyService */
+        $translateCopyService = GeneralUtility::makeInstance(TranslateCopyService::class);
+
+        $demoLanguages = $recordFinder->findUidsOfDemoLanguages();
+        foreach ($demoLanguages as $demoLanguage) {
+            $translateCopyService->localizeRecord($tableName, $fieldValues['uid'], $demoLanguage);
+        }
     }
 }
