@@ -72,6 +72,9 @@ class Generator
             ],
         ];
 
+        // Add rows of third party tables like be_users and fal records
+        $this->populateRowsOfThirdPartyTables();
+
         // Add a page for each main table below entry page
         $mainTables = $this->getListOfStyleguideMainTables();
         // Have the first main table inside entry page
@@ -84,6 +87,22 @@ class Generator
                 'hidden' => 0,
                 'pid' => $neighborPage,
             ];
+
+            /** @var RecordFinder $recordFinder */
+            $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+            $languageUids = $recordFinder->findUidsOfDemoLanguages();
+            if (!empty($languageUids)) {
+                foreach ($languageUids as $languageUid) {
+                    $newIdOfPageLanguageOverlay = StringUtility::getUniqueId('NEW');
+                    $data['pages_language_overlay'][$newIdOfPageLanguageOverlay] = [
+                        'title' => str_replace('_', ' ', substr($mainTable . " - language " . $languageUid, strlen('tx_styleguide_'))),
+                        'tx_styleguide_containsdemo' => $mainTable,
+                        'hidden' => 0,
+                        'pid' => $newIdOfPage,
+                        'sys_language_uid' => $languageUid,
+                    ];
+                }
+            }
             // Have next page after this page
             $neighborPage = '-' . $newIdOfPage;
         }
@@ -95,8 +114,6 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-        // Add rows of third party tables like be_users and fal records
-        $this->populateRowsOfThirdPartyTables();
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
@@ -145,6 +162,25 @@ class Generator
                 $commands['pages'][(int)$topUid]['delete'] = 1;
             }
         }
+
+        // Delete all the pages_language_overlay records on this tree
+        $overlayUids = $recordFinder->findUidsOfStyleguidePagesLanguageOverlay();
+        if (!empty($overlayUids)) {
+            foreach ($overlayUids as $overlayUid) {
+                $commands['pages_language_overlay'][(int)$overlayUid]['delete'] = 1;
+            }
+        }
+
+        // Delete all the pages_language_overlay records on this tree
+        $languageUids = $recordFinder->findUidsOfDemoLanguages();
+        if (!empty($languageUids)) {
+            foreach ($languageUids as $languageUid) {
+                $commands['sys_language'][(int)$languageUid]['delete'] = 1;
+            }
+        }
+
+        // Delete all Images in uploads/tx_styleguide/
+        array_map('unlink', glob("../uploads/tx_styleguide/*.jpg"));
 
         // Delete demo users
         $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
@@ -237,6 +273,33 @@ class Generator
             $fields['usergroup'] = '';
             $fields['password'] = $saltedpassword->getHashedPassword($random->generateRandomBytes(10));
             $connection->insert('be_users', $fields);
+        }
+
+        $demoLanguagesUids = $recordFinder->findUidsOfDemoLanguages();
+        if (empty($demoLanguagesUids)) {
+            // Add four sys_language`s
+            $fields = [
+                'pid' => 0,
+                'hidden' => 1,
+                'tx_styleguide_isdemolanguage' => 1,
+                'title' => 'styleguide demo language 1',
+                'language_isocode' => 'da',
+                'flag' => 'dk',
+            ];
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_language');
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 2';
+            $fields['language_isocode'] = 'de';
+            $fields['flag'] = 'de';
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 3';
+            $fields['language_isocode'] = 'fr';
+            $fields['flag'] = 'fr';
+            $connection->insert('sys_language', $fields);
+            $fields['title'] = 'styleguide demo language 4';
+            $fields['language_isocode'] = 'es';
+            $fields['flag'] = 'es';
+            $connection->insert('sys_language', $fields);
         }
 
         // Add 3 files from resources directory to default storage
