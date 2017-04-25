@@ -281,6 +281,9 @@ class ValidatorTask extends AbstractTask
         $pageList = GeneralUtility::trimExplode(',', $this->page, true);
         $modTs = $this->loadModTsConfig($this->page);
         if (is_array($pageList)) {
+            // reset broken link counts as they were stored in the serialized object
+            $this->oldTotalBrokenLink = 0;
+            $this->totalBrokenLink = 0;
             foreach ($pageList as $page) {
                 $pageSections .= $this->checkPageLinks($page);
             }

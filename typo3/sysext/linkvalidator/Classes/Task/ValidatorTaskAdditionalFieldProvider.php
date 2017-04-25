@@ -225,7 +225,11 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         // @todo which is normally a comma separated string
         $lang = $this->getLanguageService();
         if (!empty($submittedData['linkvalidator']['email'])) {
-            $emailList = GeneralUtility::trimExplode(',', $submittedData['linkvalidator']['email']);
+            if (strpos($submittedData['linkvalidator']['email'], ',') !== false) {
+                $emailList = GeneralUtility::trimExplode(',', $submittedData['linkvalidator']['email']);
+            } else {
+                $emailList = GeneralUtility::trimExplode(LF, $submittedData['linkvalidator']['email']);
+            }
             foreach ($emailList as $emailAdd) {
                 if (!GeneralUtility::validEmail($emailAdd)) {
                     $isValid = false;
