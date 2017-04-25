@@ -173,15 +173,16 @@ class InternalLinktype extends AbstractLinktype
         $this->responseContent = true;
         // this content element exists
         if ($row) {
+            $page = (int)$page;
             // page ID on which this CE is in fact located.
-            $correctPageID = $row['pid'];
+            $correctPageID = (int)$row['pid'];
             // Check if the element is on the linked page
             // (The element might have been moved to another page)
-            if (!($correctPageID === $page)) {
+            if ($correctPageID !== $page) {
                 $this->errorParams['errorType']['content'] = self::MOVED;
                 $this->errorParams['content']['uid'] = (int)$anchor;
-                $this->errorParams['content']['wrongPage'] = (int)$page;
-                $this->errorParams['content']['rightPage'] = (int)$correctPageID;
+                $this->errorParams['content']['wrongPage'] = $page;
+                $this->errorParams['content']['rightPage'] = $correctPageID;
                 $this->responseContent = false;
             } else {
                 // The element is located on the page to which the link is pointing
