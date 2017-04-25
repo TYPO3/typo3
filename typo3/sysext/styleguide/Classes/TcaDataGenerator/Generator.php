@@ -72,6 +72,9 @@ class Generator
             ],
         ];
 
+        // Add rows of third party tables like be_users and fal records
+        $this->populateRowsOfThirdPartyTables();
+
         // Add a page for each main table below entry page
         $mainTables = $this->getListOfStyleguideMainTables();
         // Have the first main table inside entry page
@@ -84,6 +87,22 @@ class Generator
                 'hidden' => 0,
                 'pid' => $neighborPage,
             ];
+
+            /** @var RecordFinder $recordFinder */
+            $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+            $languageUids = $recordFinder->findUidsOfDemoLanguages();
+            if (!empty($languageUids)) {
+                foreach ($languageUids as $languageUid) {
+                    $newIdOfPageLanguageOverlay = StringUtility::getUniqueId('NEW');
+                    $data['pages_language_overlay'][$newIdOfPageLanguageOverlay] = [
+                        'title' => str_replace('_', ' ', substr($mainTable . " - language " . $languageUid, strlen('tx_styleguide_'))),
+                        'tx_styleguide_containsdemo' => $mainTable,
+                        'hidden' => 0,
+                        'pid' => $newIdOfPage,
+                        'sys_language_uid' => $languageUid,
+                    ];
+                }
+            }
             // Have next page after this page
             $neighborPage = '-' . $newIdOfPage;
         }
@@ -95,8 +114,6 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-        // Add rows of third party tables like be_users and fal records
-        $this->populateRowsOfThirdPartyTables();
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
@@ -153,6 +170,17 @@ class Generator
                 $commands['pages_language_overlay'][(int)$overlayUid]['delete'] = 1;
             }
         }
+
+        // Delete all the pages_language_overlay records on this tree
+        $languageUids = $recordFinder->findUidsOfDemoLanguages();
+        if (!empty($languageUids)) {
+            foreach ($languageUids as $languageUid) {
+                $commands['sys_language'][(int)$languageUid]['delete'] = 1;
+            }
+        }
+
+        // Delete all Images in uploads/tx_styleguide/
+        array_map('unlink', glob("../uploads/tx_styleguide/*.jpg"));
 
         // Delete demo users
         $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
