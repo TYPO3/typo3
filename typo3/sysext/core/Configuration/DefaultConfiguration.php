@@ -185,7 +185,7 @@ return [
                     'groups' => ['system']
                 ],
                 'fluid_template' => [
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
                     'groups' => ['system'],
                 ],
