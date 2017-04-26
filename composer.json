@@ -182,7 +182,6 @@
 			"TYPO3\\CMS\\T3editor\\": "typo3/sysext/t3editor/Classes/",
 			"TYPO3\\CMS\\Taskcenter\\": "typo3/sysext/taskcenter/Classes/",
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
-			"TYPO3\\CMS\\Typo3DbLegacy\\": "typo3/sysext/typo3db_legacy/Classes/",
 			"TYPO3\\CMS\\Version\\": "typo3/sysext/version/Classes/",
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
 			"TYPO3\\CMS\\WizardCrpages\\": "typo3/sysext/wizard_crpages/Classes/",
@@ -224,7 +223,6 @@
 			"TYPO3\\CMS\\Sv\\Tests\\": "typo3/sysext/sv/Tests/",
 			"TYPO3\\CMS\\SysAction\\Tests\\": "typo3/sysext/sys_action/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
-			"TYPO3\\CMS\\Typo3DbLegacy\\Tests\\": "typo3/sysext/typo3db_legacy/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/"
 		},

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Typo3DbLegacy\Updates;
+namespace TYPO3\CMS\Install\Updates;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,31 +15,30 @@ namespace TYPO3\CMS\Typo3DbLegacy\Updates;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate;
 
 /**
- * Installs and downloads EXT:adodb and EXT:dbal
+ * Installs and downloads EXT:typo3db_legacy
  */
-class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
+class Typo3DbExtractionUpdate extends AbstractDownloadExtensionUpdate
 {
     /**
      * @var string
      */
-    protected $title = '[Optional] Install extensions "dbal" and "adodb" from TER.';
+    protected $title = 'Install extension "typo3db_legacy" from TER';
+
+    /**
+     * @var string
+     */
+    protected $extensionKey = 'typo3db_legacy';
 
     /**
      * @var array
      */
     protected $extensionDetails = [
-        'adodb' => [
-            'title' => 'ADOdb',
-            'description' => 'Adds ADOdb to TYPO3',
-            'versionString' => '8.4.0',
-        ],
-        'dbal' => [
-            'title' => 'dbal',
-            'description' => 'Adds old database abstraction layer to TYPO3',
-            'versionString' => '8.4.0',
+        'typo3db_legacy' => [
+            'title' => '$GLOBALS[\'TYPO3_DB\'] compatibility layer',
+            'description' => 'Provides the well-known database API $GLOBALS[\'TYPO3_DB\'] used in previous TYPO3 versions for extensions that still rely on it.',
+            'versionString' => '1.0.1',
         ]
     ];
 
@@ -51,15 +50,21 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $description = 'The extensions "dbal" and "adodb" have been extracted to'
-            . ' the TYPO3 Extension Repository. This update downloads the TYPO3 Extension from the TER'
-            . ' if the two extensions are still needed.';
+        $description = 'The old database API populated as $GLOBALS[\'TYPO3_DB\'] has been extracted into'
+            . ' the TYPO3 Extension Repository. This update downloads the TYPO3 extension typo3db_legacy from the TER.'
+            . ' Use this if you\'re dealing with extensions in the instance that still rely on the old database API.';
 
-        return !$this->isWizardDone();
+        $updateNeeded = false;
+
+        if (!$this->isWizardDone()) {
+            $updateNeeded = true;
+        }
+
+        return $updateNeeded;
     }
 
     /**
-     * Second step: Ask user to install the extensions
+     * Second step: Ask user to install the extension
      *
      * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
      * @return string HTML output
@@ -70,14 +75,9 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
             <div class="panel panel-danger">
                 <div class="panel-heading">Are you really sure?</div>
                 <div class="panel-body">
-                    <p>You should install EXT:adodb and EXT:dbal only if you really need it.</p>
+                    <p>You should install EXT:typo3db_legacy only if you really need it.</p>
                     <p>This update wizard cannot check if the extension was installed before the update.</p>
-                    <p>Are you really sure, you want to install these two extensions?</p>
-                    <p>They are only needed if this instance connects to a database server that is NOT MySQL
-                    and if an active extension uses extension typo3db_legacy and a table mapping for EXT:dbal
-                    is configured.</p>
-                    <p>Loading these two extensions is a rather seldom exceptions, the vast majority of
-                    instances should say "no" here.</p>
+                    <p>Are you really sure, you want to install EXT:typo3db_legacy?</p>
                     <div class="btn-group clearfix" data-toggle="buttons">
                         <label class="btn btn-default active">
                             <input type="radio" name="' . $inputPrefix . '[install]" value="0" checked="checked" /> no, don\'t install
@@ -92,7 +92,7 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
     }
 
     /**
-     * Fetch and enable ext:adodb and ext:dbal
+     * Performs the update if EXT:typo3db_legacy should be installed.
      *
      * @param array $databaseQueries Queries done in this update
      * @param string $customMessage Custom message
@@ -101,16 +101,15 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $requestParams = GeneralUtility::_GP('install');
-        if (!isset($requestParams['values']['TYPO3\CMS\Install\Updates\DbalAndAdodbExtractionUpdate']['install'])) {
+        if (!isset($requestParams['values']['typo3DbLegacyExtension']['install'])) {
             return false;
         }
-        $install = (int)$requestParams['values']['TYPO3\CMS\Install\Updates\DbalAndAdodbExtractionUpdate']['install'];
+        $install = (int)$requestParams['values']['typo3DbLegacyExtension']['install'];
 
         if ($install === 1) {
-            // user decided to install extensions, install and mark wizard as done
-            $adodbSuccessful = $this->installExtension('adodb', $customMessage);
-            $dbalSuccessful = $this->installExtension('dbal', $customMessage);
-            if ($adodbSuccessful && $dbalSuccessful) {
+            // user decided to install extension, install and mark wizard as done
+            $updateSuccessful = $this->installExtension($this->extensionKey, $customMessage);
+            if ($updateSuccessful) {
                 $this->markWizardAsDone();
                 return true;
             }
@@ -119,6 +118,6 @@ class DbalAndAdodbExtractionUpdate extends AbstractDownloadExtensionUpdate
             $this->markWizardAsDone();
             return true;
         }
-        return false;
+        return $updateSuccessful;
     }
 }
