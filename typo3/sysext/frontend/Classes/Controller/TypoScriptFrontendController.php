@@ -1185,27 +1185,10 @@ class TypoScriptFrontendController
                     }
                 }
             }
-            if ($this->id) {
-                if ($this->determineIdIsHiddenPage()) {
-                    // The preview flag is set only if the current page turns out to actually be hidden!
-                    $this->fePreview = 1;
-                    $this->showHiddenPage = true;
-                }
-                // For Live workspace: Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
-                if (!$this->fePreview && $this->whichWorkspace() === 0) {
-                    // Initialize the page-select functions to check rootline:
-                    $temp_sys_page = GeneralUtility::makeInstance(PageRepository::class);
-                    $temp_sys_page->init($this->showHiddenPage);
-                    // If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
-                    if (empty($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
-                        // Setting versioningPreview flag and try again:
-                        $temp_sys_page->versioningPreview = true;
-                        if (!empty($temp_sys_page->getRootLine($this->id, $this->MP))) {
-                            // Finally, we got a root line (meaning that it WAS due to versioning preview of a page somewhere) and we set the fePreview flag which in itself will allow sys_page class to display previews of versionized records.
-                            $this->fePreview = 1;
-                        }
-                    }
-                }
+            if ($this->id && $this->determineIdIsHiddenPage()) {
+                // The preview flag is set only if the current page turns out to actually be hidden!
+                $this->fePreview = 1;
+                $this->showHiddenPage = true;
             }
             // The preview flag will be set if a backend user is in an offline workspace
             if (
@@ -1492,23 +1475,13 @@ class TypoScriptFrontendController
         $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
         // If not rootline we're off...
         if (empty($this->rootLine)) {
-            $ws = $this->whichWorkspace();
-            if ($this->sys_page->error_getRootLine_failPid == -1 && $ws) {
-                $this->sys_page->versioningPreview = true;
-                $this->sys_page->versioningWorkspaceId = $ws;
-                $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+            $message = 'The requested page didn\'t have a proper connection to the tree-root!';
+            if ($this->checkPageUnavailableHandler()) {
+                $this->pageUnavailableAndExit($message);
+            } else {
+                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                throw new ServiceUnavailableException($message, 1301648167);
             }
-            if (empty($this->rootLine)) {
-                $message = 'The requested page didn\'t have a proper connection to the tree-root!';
-                if ($this->checkPageUnavailableHandler()) {
-                    $this->pageUnavailableAndExit($message);
-                } else {
-                    $rootline = '(' . $this->sys_page->error_getRootLine . ')';
-                    GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-                    throw new ServiceUnavailableException($message . '<br /><br />' . $rootline, 1301648167);
-                }
-            }
-            $this->fePreview = 1;
         }
         // Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
         if ($this->checkRootlineForIncludeSection()) {
