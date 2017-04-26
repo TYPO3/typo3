@@ -5303,7 +5303,7 @@ class ContentObjectRenderer
         $linkService = GeneralUtility::makeInstance(LinkService::class);
         $linkDetails = $linkService->resolve($linkParameter);
         $linkDetails['typoLinkParameter'] = $linkParameter;
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
+        if (isset($linkDetails['type']) && isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
             /** @var AbstractTypolinkBuilder $linkBuilder */
             $linkBuilder = GeneralUtility::makeInstance(
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
@@ -5315,6 +5315,8 @@ class ContentObjectRenderer
                 // Only return the link text directly
                 return $e->getLinkText();
             }
+        } elseif (isset($linkDetails['url'])) {
+            $this->lastTypoLinkUrl = $linkDetails['url'];
         } else {
             return $linkText;
         }
