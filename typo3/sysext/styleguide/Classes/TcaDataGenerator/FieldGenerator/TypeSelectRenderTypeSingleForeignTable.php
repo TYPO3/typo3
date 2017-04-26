@@ -62,7 +62,6 @@ class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator impl
 
         $lastUid = '';
         foreach ($files as $fileName) {
-            /** @var BasicFileUtility $basicFileUtility */
             $basicFileUtility = GeneralUtility::makeInstance(BasicFileUtility::class);
             $sourceFile = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
             $targetFile = $basicFileUtility->getUniqueName($sourceFile, PATH_site . 'uploads/tx_styleguide');

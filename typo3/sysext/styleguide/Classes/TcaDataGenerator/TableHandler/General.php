@@ -66,7 +66,6 @@ class General extends AbstractTableHandler implements TableHandlerInterface
             [ 'uid' => $fieldValues['uid'] ]
         );
 
-        /** @var TranslateCopyService $translateCopyService */
         $translateCopyService = GeneralUtility::makeInstance(TranslateCopyService::class);
         $demoLanguages = $recordFinder->findUidsOfDemoLanguages();
 

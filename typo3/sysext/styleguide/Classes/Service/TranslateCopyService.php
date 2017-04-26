@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Styleguide\Service;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-
 class TranslateCopyService
 {
 
