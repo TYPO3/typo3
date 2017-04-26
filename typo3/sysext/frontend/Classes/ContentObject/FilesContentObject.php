@@ -180,12 +180,7 @@ class FilesContentObject extends AbstractContentObject
         $pageRepository = $this->getPageRepository();
         // Fetch element if definition has been modified via TypoScript
         if ($referencesForeignTable !== $tableName || $referencesForeignUid !== $currentId) {
-            $element = $pageRepository->getRawRecord(
-                $referencesForeignTable,
-                $referencesForeignUid,
-                '*',
-                false
-            );
+            $element = $pageRepository->getRawRecord($referencesForeignTable, $referencesForeignUid);
 
             $pageRepository->versionOL($referencesForeignTable, $element, true);
             if ($referencesForeignTable === 'pages') {

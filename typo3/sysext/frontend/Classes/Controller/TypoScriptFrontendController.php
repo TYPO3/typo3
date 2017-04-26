@@ -2576,7 +2576,7 @@ class TypoScriptFrontendController
             // using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
             // Set the fourth parameter to TRUE in the next two getRawRecord() calls to
             // avoid versioning overlay to be applied as it generates an SQL error
-            $sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'language_isocode,static_lang_isocode', true);
+            $sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'language_isocode,static_lang_isocode');
             if (is_array($sys_language_row) && !empty($sys_language_row['language_isocode'])) {
                 $this->sys_language_isocode = $sys_language_row['language_isocode'];
             }
