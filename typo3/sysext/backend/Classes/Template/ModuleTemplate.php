@@ -88,6 +88,11 @@ class ModuleTemplate
     protected $pageRenderer;
 
     /**
+     * @var bool
+     */
+    protected $uiBlock = false;
+
+    /**
      * TemplateRootPath
      *
      * @var string[]
@@ -355,6 +360,7 @@ class ModuleTemplate
         if ($this->moduleName) {
             $this->view->assign('moduleName', $this->moduleName);
         }
+        $this->view->assign('uiBlock', $this->uiBlock);
         $this->view->assign('flashMessageQueueIdentifier', $this->getFlashMessageQueue()->getIdentifier());
         $renderedPage = $this->pageRenderer->render(PageRenderer::PART_HEADER);
         $renderedPage .= $this->bodyTag;
@@ -883,5 +889,21 @@ class ModuleTemplate
             $this->flashMessageQueue = $service->getMessageQueueByIdentifier();
         }
         return $this->flashMessageQueue;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUiBlock()
+    {
+        return $this->uiBlock;
+    }
+
+    /**
+     * @param bool $uiBlock
+     */
+    public function setUiBlock($uiBlock)
+    {
+        $this->uiBlock = (bool)$uiBlock;
     }
 }

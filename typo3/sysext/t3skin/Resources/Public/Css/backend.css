@@ -325,7 +325,8 @@ th {
 :root .fa-rotate-270,
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical {
-  filter: none;
+  -webkit-filter: none;
+          filter: none;
 }
 .fa-stack {
   position: relative;
@@ -11232,6 +11233,17 @@ ul.tree div.treeLinkItem span.dragIcon {
 .x-layout-split {
   width: 1px;
   background-color: #c3c3c3;
+}
+.ui-block {
+  text-align: center;
+  padding-top: 200px;
+  position: absolute;
+  z-index: 3000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
 }
 .pagination .t3-icon {
   margin: 0;
