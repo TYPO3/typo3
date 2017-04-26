@@ -971,9 +971,11 @@ define(['jquery',
 			});
 		}
 		// Apply DatePicker to all date time fields
-		require(['TYPO3/CMS/Backend/DateTimePicker'], function(DateTimePicker) {
-			DateTimePicker.initialize();
-		});
+		if ($('.t3js-datetimepicker').length) {
+			require(['TYPO3/CMS/Backend/DateTimePicker'], function(DateTimePicker) {
+				DateTimePicker.initialize();
+			});
+		}
 
 		FormEngine.convertTextareasResizable();
 		FormEngine.convertTextareasEnableTab();
@@ -1127,20 +1129,14 @@ define(['jquery',
 		FormEngine.Validation.setUsMode(mode);
 
 		$(function() {
+			FormEngine.initializeEvents();
+			FormEngine.SelectBoxFilter.initializeEvents();
 			FormEngine.initializeSelectCheckboxes();
 			FormEngine.Validation.initialize();
 			FormEngine.reinitialize();
+			$('#t3js-ui-block').remove();
 		});
 	};
-
-	/**
-	 * initialize function, always require possible post-render hooks return the main object
-	 */
-
-	// the events are only bound to the document, which is already present for sure.
-	// no need to have it in DOMready handler
-	FormEngine.initializeEvents();
-	FormEngine.SelectBoxFilter.initializeEvents();
 
 	// load required modules to hook in the post initialize function
 	if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {

@@ -405,6 +405,7 @@ class EditDocumentController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
+        $this->moduleTemplate->setUiBlock(true);
         $GLOBALS['SOBE'] = $this;
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
     }
