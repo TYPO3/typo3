@@ -575,7 +575,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
         // get translated labels for search levels from pagets
         foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
-            $label = $lang->sL('LLL:' . $labelConfigured, false);
+            $label = $lang->sL('LLL:' . $labelConfigured);
             if ($label === '') {
                 $label = $labelConfigured;
             }

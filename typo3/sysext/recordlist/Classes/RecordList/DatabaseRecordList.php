@@ -646,12 +646,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         }
         if ($this->firstElementNumber > 2 && $this->iLimit > 0) {
             // Get the two previous rows for sorting if displaying page > 1
-            $this->firstElementNumber = $this->firstElementNumber - 2;
-            $this->iLimit = $this->iLimit + 2;
+            $this->firstElementNumber -= 2;
+            $this->iLimit += 2;
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
             $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);
-            $this->firstElementNumber = $this->firstElementNumber + 2;
-            $this->iLimit = $this->iLimit - 2;
+            $this->firstElementNumber += 2;
+            $this->iLimit -= 2;
         } else {
             // (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
             $queryBuilder = $this->getQueryBuilder($table, $id, $additionalConstraints);

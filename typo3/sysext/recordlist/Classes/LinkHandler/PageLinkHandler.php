@@ -221,34 +221,6 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     }
 
     /**
-     * Sets a DB mount and stores it in the currently defined backend user in her/his uc
-     */
-    protected function setTemporaryDbMounts()
-    {
-        $backendUser = $this->getBackendUser();
-
-        // Clear temporary DB mounts
-        $tmpMount = GeneralUtility::_GET('setTempDBmount');
-        if (isset($tmpMount)) {
-            $backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-        }
-        // Set temporary DB mounts
-        $alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
-        if ($alternativeWebmountPoint) {
-            $alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-            $backendUser->setWebmounts($alternativeWebmountPoint);
-        } else {
-            // Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-            $alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-            $appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
-            if ($alternativeWebmountPoints) {
-                $alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-                $this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
-            }
-        }
-    }
-
-    /**
      * @return string[] Array of body-tag attributes
      */
     public function getBodyTagAttributes()

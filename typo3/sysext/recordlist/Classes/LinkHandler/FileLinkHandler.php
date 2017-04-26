@@ -146,7 +146,6 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      *
      * @param Folder $folder The folder path to expand
      * @param string $extensionList List of file extensions to show
-     * @return string HTML output
      */
     public function expandFolder(Folder $folder, $extensionList = '')
     {
