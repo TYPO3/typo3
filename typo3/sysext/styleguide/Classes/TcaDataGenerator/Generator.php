@@ -88,7 +88,6 @@ class Generator
                 'pid' => $neighborPage,
             ];
 
-            /** @var RecordFinder $recordFinder */
             $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
             $languageUids = $recordFinder->findUidsOfDemoLanguages();
             if (!empty($languageUids)) {
@@ -108,7 +107,6 @@ class Generator
         }
 
         // Populate page tree via DataHandler
-        /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
@@ -200,7 +198,6 @@ class Generator
 
         // Do the thing
         if (!empty($commands)) {
-            /** @var DataHandler $dataHandler */
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->deleteTree = true;
             $dataHandler->start([], $commands);
@@ -209,7 +206,6 @@ class Generator
         }
 
         // Delete demo images in fileadmin again
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
@@ -255,7 +251,6 @@ class Generator
             // Add two be_users, one admin user, one non-admin user, both hidden and with a random password
             /** @var $saltedpassword \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
             $saltedpassword = SaltFactory::getSaltingInstance();
-            /** @var Random $random */
             $random = GeneralUtility::makeInstance(Random::class);
             $fields = [
                 'pid' => 0,
@@ -302,7 +297,6 @@ class Generator
         }
 
         // Add 3 files from resources directory to default storage
-        /** @var StorageRepository $storageRepository */
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
@@ -405,5 +399,47 @@ class Generator
             $uid = (int)$lastPage;
         }
         return $uid;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    public function localizeRecord($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'localize' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    public function copyRecordToLanguage($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'copyToLanguage' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
     }
 }
