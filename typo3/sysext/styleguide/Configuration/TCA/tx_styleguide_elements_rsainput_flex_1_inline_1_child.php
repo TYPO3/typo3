@@ -103,7 +103,10 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'rsainput_1',
+            'showitem' => '
+                rsainput_1
+                --div--;meta,
+                        disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,',
         ],
     ],
 

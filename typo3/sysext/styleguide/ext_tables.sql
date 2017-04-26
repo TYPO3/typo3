@@ -1698,6 +1698,11 @@ CREATE TABLE tx_styleguide_inline_usecombination_child (
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
 	input_1 varchar(255) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),

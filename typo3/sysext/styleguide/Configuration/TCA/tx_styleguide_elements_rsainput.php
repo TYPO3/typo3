@@ -242,6 +242,8 @@ return [
                     rsainput_inline_1,
                 --div--;flex,
                     rsainput_flex_1,
+                --div--;meta,
+                disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
 
