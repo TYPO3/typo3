@@ -678,8 +678,7 @@ class PageGenerator
                 $pageRenderer->addInlineLanguageLabelFile(
                     $languageFile,
                     $languageFileConfig['selectionPrefix'] ?: '',
-                    $languageFileConfig['stripFromSelectionName'] ?: '',
-                    $languageFileConfig['errorMode'] ? (int)$languageFileConfig['errorMode'] : 0
+                    $languageFileConfig['stripFromSelectionName'] ?: ''
                 );
             }
         }
