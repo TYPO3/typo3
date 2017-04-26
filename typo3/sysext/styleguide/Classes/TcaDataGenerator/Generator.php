@@ -75,6 +75,9 @@ class Generator
         // Add rows of third party tables like be_users and fal records
         $this->populateRowsOfThirdPartyTables();
 
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+        $sysLanguageStyleguideDemoUids = $recordFinder->findUidsOfDemoLanguages();
+
         // Add a page for each main table below entry page
         $mainTables = $this->getListOfStyleguideMainTables();
         // Have the first main table inside entry page
@@ -88,10 +91,8 @@ class Generator
                 'pid' => $neighborPage,
             ];
 
-            $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-            $languageUids = $recordFinder->findUidsOfDemoLanguages();
-            if (!empty($languageUids)) {
-                foreach ($languageUids as $languageUid) {
+            if (!empty($sysLanguageStyleguideDemoUids)) {
+                foreach ($sysLanguageStyleguideDemoUids as $languageUid) {
                     $newIdOfPageLanguageOverlay = StringUtility::getUniqueId('NEW');
                     $data['pages_language_overlay'][$newIdOfPageLanguageOverlay] = [
                         'title' => str_replace('_', ' ', substr($mainTable . " - language " . $languageUid, strlen('tx_styleguide_'))),
@@ -148,7 +149,6 @@ class Generator
      */
     public function delete()
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
         $commands = [];
@@ -169,7 +169,7 @@ class Generator
             }
         }
 
-        // Delete all the pages_language_overlay records on this tree
+        // Delete all the sys_language demo records
         $languageUids = $recordFinder->findUidsOfDemoLanguages();
         if (!empty($languageUids)) {
             foreach ($languageUids as $languageUid) {
@@ -224,7 +224,6 @@ class Generator
      */
     protected function populateRowsOfThirdPartyTables()
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
         $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
@@ -249,7 +248,6 @@ class Generator
             // These edge cases are ignored for now.
 
             // Add two be_users, one admin user, one non-admin user, both hidden and with a random password
-            /** @var $saltedpassword \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
             $saltedpassword = SaltFactory::getSaltingInstance();
             $random = GeneralUtility::makeInstance(Random::class);
             $fields = [
