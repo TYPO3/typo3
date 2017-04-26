@@ -161,14 +161,6 @@ class Generator
             }
         }
 
-        // Delete all the pages_language_overlay records on this tree
-        $overlayUids = $recordFinder->findUidsOfStyleguidePagesLanguageOverlay();
-        if (!empty($overlayUids)) {
-            foreach ($overlayUids as $overlayUid) {
-                $commands['pages_language_overlay'][(int)$overlayUid]['delete'] = 1;
-            }
-        }
-
         // Delete all the sys_language demo records
         $languageUids = $recordFinder->findUidsOfDemoLanguages();
         if (!empty($languageUids)) {
