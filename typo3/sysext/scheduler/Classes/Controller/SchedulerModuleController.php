@@ -1017,7 +1017,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL)->render() . '</a>';
                 $runAction = '<a class="btn btn-default" data-toggle="tooltip" data-container="body" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
-                $runCronAction = '<a class="btn btn-default" data-toggle="tooltip" data-container="body" href="' . htmlspecialchars($this->moduleUri . '&CMD=setNextExecutionTime&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task_cron', true) . '" class="icon">' .
+                $runCronAction = '<a class="btn btn-default" data-toggle="tooltip" data-container="body" href="' . htmlspecialchars($this->moduleUri . '&CMD=setNextExecutionTime&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('action.run_task_cron')) . '" class="icon">' .
                     $this->moduleTemplate->getIconFactory()->getIcon('extensions-scheduler-run-task-cron', Icon::SIZE_SMALL)->render() . '</a>';
 
                 // Define some default values
