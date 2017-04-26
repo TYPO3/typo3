@@ -24,8 +24,6 @@ return [
 
 
     'columns' => [
-
-
         'hidden' => [
             'exclude' => 1,
             'config' => [
