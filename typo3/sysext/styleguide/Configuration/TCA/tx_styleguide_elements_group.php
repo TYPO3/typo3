@@ -14,6 +14,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -96,6 +97,30 @@ return [
                 'foreign_table' => 'tx_styleguide_elements_group',
                 'foreign_table_where' => 'AND tx_styleguide_elements_group.pid=###CURRENT_PID### AND tx_styleguide_elements_group.sys_language_uid IN (-1,0)',
                 'default' => 0
+            ]
+        ],
+        'l10n_source' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'Translation source',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_elements_group',
+                'foreign_table_where' => 'AND tx_styleguide_elements_group.pid=###CURRENT_PID### AND tx_styleguide_elements_group.uid!=###THIS_UID###',
+                'default' => 0
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
             ]
         ],
 
@@ -419,6 +444,8 @@ return [
                     flex_1,
                 --div--;requestUpdate,
                     group_requestUpdate_1,
+                --div--;meta,
+                disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
     ],

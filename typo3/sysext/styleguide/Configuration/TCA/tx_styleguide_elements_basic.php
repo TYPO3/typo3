@@ -24,8 +24,6 @@ return [
 
 
     'columns' => [
-
-
         'hidden' => [
             'exclude' => 1,
             'config' => [
@@ -117,7 +115,12 @@ return [
                 'default' => 0
             ]
         ],
-
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
 
         'input_1' => [
             'l10n_mode' => 'prefixLangTitle',
@@ -575,6 +578,7 @@ return [
             ],
         ],
         'text_2' => [
+            'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
             'label' => 'text_2 cols=20',
             'config' => [

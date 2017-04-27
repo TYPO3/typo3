@@ -63,7 +63,65 @@ return [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly'
         ],
-
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'special' => 'languages',
+                'items' => [
+                    [
+                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+                        -1,
+                        'flags-multiple'
+                    ],
+                ],
+                'default' => 0,
+            ]
+        ],
+        'l10n_parent' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'Translation parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_elements_rsainput',
+                'foreign_table_where' => 'AND tx_styleguide_elements_rsainput.pid=###CURRENT_PID### AND tx_styleguide_elements_rsainput.sys_language_uid IN (-1,0)',
+                'default' => 0
+            ]
+        ],
+        'l10n_source' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'Translation source',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'tx_styleguide_elements_rsainput',
+                'foreign_table_where' => 'AND tx_styleguide_elements_rsainput.pid=###CURRENT_PID### AND tx_styleguide_elements_rsainput.uid!=###THIS_UID###',
+                'default' => 0
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
 
         'rsainput_1' => [
             'exclude' => 1,
@@ -184,6 +242,8 @@ return [
                     rsainput_inline_1,
                 --div--;flex,
                     rsainput_flex_1,
+                --div--;meta,
+                disable, starttime, endtime, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
 
