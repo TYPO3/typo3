@@ -62,6 +62,36 @@ class RecordFinder
     }
 
     /**
+     * Returns a uid list of existing styleguide demo pages_language_overlays.
+     * These are pages_language_overlays tx_styleguide_containsdemo set to tca types of 'tx_styleguide'.
+     * This can be multiple pages_language_overlay if "create" button was clicked multiple times without "delete" in between.
+     *
+     * @return array
+     */
+    public function findUidsOfStyleguidePagesLanguageOverlay(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages_language_overlay');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $rows = $queryBuilder->select('uid')
+            ->from('pages_language_overlay')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter('tx_styleguide%', \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+        $uids = [];
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                $uids[] = (int)$row['uid'];
+            }
+        }
+        return $uids;
+    }
+
+    /**
      * "Main" tables have a single page they are located on with their possible children.
      * The methods find this page by getting the highest uid of a page where field
      * tx_styleguide_containsdemo is set to given table name.

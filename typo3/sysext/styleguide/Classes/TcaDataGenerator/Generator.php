@@ -113,7 +113,6 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
             $generator = NULL;
