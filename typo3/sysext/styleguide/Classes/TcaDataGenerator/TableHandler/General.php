@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
@@ -66,30 +66,71 @@ class General extends AbstractTableHandler implements TableHandlerInterface
             [ 'uid' => $fieldValues['uid'] ]
         );
 
-        $localizeFunctions = GeneralUtility::makeInstance(Generator::class);
         $demoLanguages = $recordFinder->findUidsOfDemoLanguages();
 
         $translatedRecord = -42;
         foreach ($demoLanguages as $demoLanguageIndex => $demoLanguageUid) {
             switch ($demoLanguageIndex) {
                 case 0:
-                    $localizeFunctions->copyRecordToLanguage($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    $this->copyRecordToLanguage($tableName, $fieldValues['uid'], $demoLanguageUid);
                     break;
                 case 1:
-                    $result = $localizeFunctions->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    $result = $this->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
                     $translatedRecord = $result[$tableName][$fieldValues['uid']];
                     break;
                 case 2:
-                    $result = $localizeFunctions->localizeRecord($tableName, $translatedRecord, $demoLanguageUid);
+                    $result = $this->localizeRecord($tableName, $translatedRecord, $demoLanguageUid);
                     $translatedRecord = $result[$tableName][$translatedRecord];
                     break;
                 case 3:
-                    $localizeFunctions->copyRecordToLanguage($tableName, $translatedRecord, $demoLanguageUid);
+                    $this->copyRecordToLanguage($tableName, $translatedRecord, $demoLanguageUid);
                     break;
                 default:
-                    $localizeFunctions->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
+                    $this->localizeRecord($tableName, $fieldValues['uid'], $demoLanguageUid);
                     break;
             }
         }
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    protected function localizeRecord($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'localize' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    protected function copyRecordToLanguage($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'copyToLanguage' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
     }
 }
