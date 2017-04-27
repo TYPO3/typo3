@@ -24,8 +24,6 @@ return [
 
 
     'columns' => [
-
-
         'hidden' => [
             'exclude' => 1,
             'config' => [
@@ -117,7 +115,12 @@ return [
                 'default' => 0
             ]
         ],
-
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
 
         'parentid' => [
             'config' => [

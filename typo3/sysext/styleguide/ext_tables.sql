@@ -218,6 +218,7 @@ CREATE TABLE tx_styleguide_elements_rsainput (
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumtext,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -1327,6 +1328,11 @@ CREATE TABLE tx_styleguide_inline_mm_child_rel (
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 	ident varchar(255) DEFAULT '' NOT NULL,
 
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
 	PRIMARY KEY (uid)
@@ -1379,6 +1385,11 @@ CREATE TABLE tx_styleguide_inline_mm_child_childchild_rel (
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 	ident varchar(255) DEFAULT '' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
 
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
@@ -1662,6 +1673,11 @@ CREATE TABLE tx_styleguide_inline_usecombination_mm (
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
 	select_parent int(11) unsigned DEFAULT '0' NOT NULL,
 	select_child int(11) unsigned DEFAULT '0' NOT NULL,
 
@@ -1681,6 +1697,11 @@ CREATE TABLE tx_styleguide_inline_usecombination_child (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
 
 	input_1 varchar(255) DEFAULT '' NOT NULL,
 
@@ -1737,6 +1758,11 @@ CREATE TABLE tx_styleguide_inline_usecombinationbox_mm (
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
+
 	select_parent int(11) unsigned DEFAULT '0' NOT NULL,
 	select_child int(11) unsigned DEFAULT '0' NOT NULL,
 
@@ -1756,6 +1782,11 @@ CREATE TABLE tx_styleguide_inline_usecombinationbox_child (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
 
 	input_1 varchar(255) DEFAULT '' NOT NULL,
 
@@ -2065,6 +2096,11 @@ CREATE TABLE tx_styleguide_required_rte_2_child (
 CREATE TABLE tx_styleguide_staticdata (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_source int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumtext,
 
 	value_1 tinytext,
 

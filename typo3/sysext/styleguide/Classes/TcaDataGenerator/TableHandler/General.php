@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
+use TYPO3\CMS\Styleguide\Service\TranslateCopyService;
 
 /**
  * General table handler

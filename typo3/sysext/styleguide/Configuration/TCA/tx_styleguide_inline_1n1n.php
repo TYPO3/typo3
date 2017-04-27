@@ -117,7 +117,12 @@ return [
                 'default' => 0
             ]
         ],
-
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
 
         'inline_1' => [
             'exclude' => 1,

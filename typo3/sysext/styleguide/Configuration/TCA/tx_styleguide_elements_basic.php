@@ -24,8 +24,6 @@ return [
 
 
     'columns' => [
-
-
         'hidden' => [
             'exclude' => 1,
             'config' => [
@@ -117,9 +115,15 @@ return [
                 'default' => 0
             ]
         ],
-
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
 
         'input_1' => [
+            'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
             'label' => 'input_1',
             'config' => [
@@ -130,6 +134,7 @@ return [
             ],
         ],
         'input_2' => [
+            'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
             'label' => 'input_2, size=10',
             'config' => [
@@ -565,6 +570,7 @@ return [
 
 
         'text_1' => [
+            'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
             'label' => 'text_1',
             'config' => [
@@ -572,6 +578,7 @@ return [
             ],
         ],
         'text_2' => [
+            'l10n_mode' => 'prefixLangTitle',
             'exclude' => 1,
             'label' => 'text_2 cols=20',
             'config' => [

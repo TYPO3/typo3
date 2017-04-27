@@ -113,7 +113,6 @@ class Generator
         $dataHandler->process_datamap();
         BackendUtility::setUpdateSignal('updatePageTree');
 
-
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
             $generator = NULL;
@@ -265,7 +264,7 @@ class Generator
             // Add four sys_language`s
             $fields = [
                 'pid' => 0,
-                'tx_styleguide_isdemolanguage' => 1,
+                'tx_styleguide_isdemorecord' => 1,
                 'title' => 'styleguide demo language 1',
                 'language_isocode' => 'da',
                 'flag' => 'dk',
