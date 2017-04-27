@@ -269,9 +269,12 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $node->setHasChildren(true);
             /** @var $childNodes \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection */
             $childNodes = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection::class);
+            $tempNodes = [];
             foreach ($basicNode->getChildNodes() as $child) {
-                $childNodes->append($this->buildRepresentationForNode($child, $node, $level + 1));
+                $tempNodes[] = $this->buildRepresentationForNode($child, $node, $level + 1);
             }
+            $childNodes->exchangeArray($tempNodes);
+            $childNodes->asort();
             $node->setChildNodes($childNodes);
         }
         return $node;
