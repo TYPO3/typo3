@@ -4845,12 +4845,13 @@ class BackendUtility
      */
     public static function ADMCMD_previewCmds($pageInfo)
     {
-        $tableNameFeGroup = 'fe_groups';
         $simUser = '';
         $simTime = '';
-        if ($pageInfo[$tableNameFeGroup] > 0) {
-            $simUser = '&ADMCMD_simUser=' . $pageInfo[$tableNameFeGroup];
-        } elseif ((int)$pageInfo[$tableNameFeGroup] === -2) {
+        if ($pageInfo['fe_group'] > 0) {
+            $simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
+        } elseif ((int)$pageInfo['fe_group'] === -2) {
+            $tableNameFeGroup = 'fe_groups';
+
             // -2 means "show at any login". We simulate first available fe_group.
             /** @var PageRepository $sysPage */
             $sysPage = GeneralUtility::makeInstance(PageRepository::class);
@@ -4862,7 +4863,7 @@ class BackendUtility
             $activeFeGroupRow = $queryBuilder->select('uid')
                 ->from($tableNameFeGroup)
                 ->where(
-                    QueryHelper::stripLogicalOperatorPrefix('1=1' . $sysPage->enableFields('fe_groups'))
+                    QueryHelper::stripLogicalOperatorPrefix('1=1' . $sysPage->enableFields($tableNameFeGroup))
                 )
                 ->execute()
                 ->fetch();
