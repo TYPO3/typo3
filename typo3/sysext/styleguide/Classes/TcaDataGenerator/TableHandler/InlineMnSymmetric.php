@@ -41,10 +41,8 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        /** @var RecordData $recordData */
         $recordData = GeneralUtility::makeInstance(RecordData::class);
 
         $isFirst = true;
