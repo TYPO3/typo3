@@ -62,11 +62,11 @@ class TypeSelectRenderTypeSingleForeignTable extends AbstractFieldGenerator impl
 
         $lastUid = '';
         foreach ($files as $fileName) {
-            /** @var BasicFileUtility $basicFileUtility */
             $basicFileUtility = GeneralUtility::makeInstance(BasicFileUtility::class);
             $sourceFile = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
             $targetFile = $basicFileUtility->getUniqueName($sourceFile, PATH_site . 'uploads/tx_styleguide');
             GeneralUtility::upload_copy_move($sourceFile, $targetFile);
+            // in case of exception at this point (basename requires parameter, null given) => empty uploads/tx_styleguide
             $finalFileName = basename($targetFile);
 
             // Insert an empty row again to have the uid already. This is useful for

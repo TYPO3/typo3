@@ -398,4 +398,46 @@ class Generator
         }
         return $uid;
     }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    public function localizeRecord($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'localize' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int $uid
+     * @param int $languageId
+     * @return array
+     */
+    public function copyRecordToLanguage($tableName, $uid, $languageId)
+    {
+        $commandMap = [
+            $tableName => [
+                $uid => [
+                    'copyToLanguage' => $languageId,
+                ],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        return $dataHandler->copyMappingArray;
+    }
 }
