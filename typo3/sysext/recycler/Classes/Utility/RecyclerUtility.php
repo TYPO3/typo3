@@ -72,17 +72,10 @@ class RecyclerUtility
      * Deleted pages are filtered out.
      *
      * @param int $uid Page uid for which to create record path
-     * @param string $clause is additional where clauses, eg.
-     * @param int $titleLimit Title limit
-     * @param int $fullTitleLimit Title limit of Full title (typ. set to 1000 or so)
-     * @return mixed Path of record (string) OR array with short/long title if $fullTitleLimit is set.
+     * @return string Path of record (string) OR array with short/long title if $fullTitleLimit is set.
      */
-    public static function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0)
+    public static function getRecordPath($uid)
     {
-        if ($clause !== '' || (int)$titleLimit !== 1000 || (int)$fullTitleLimit !== 0) {
-            GeneralUtility::deprecationLog('The arguments "clause", "tileLimit" and "fullTitleLimit" ' .
-                'have been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9');
-        }
         $uid = (int)$uid;
         $output = ($fullOutput = '/');
         if ($uid === 0) {
@@ -91,7 +84,6 @@ class RecyclerUtility
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 
-        $clause = trim($clause);
         $loopCheck = 100;
         while ($loopCheck > 0) {
             $loopCheck--;
@@ -100,21 +92,15 @@ class RecyclerUtility
                 ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
-            if (!empty($clause)) {
-                $queryBuilder->andWhere($clause);
-            }
             $row = $queryBuilder->execute()->fetch();
             if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
                     BackendUtility::fixVersioningPid('pages', $row);
                     $uid = (int)$row['pid'];
-                    $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
+                    $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 1000)) . $output;
                     if ($row['deleted']) {
                         $output = '<span class="text-danger">' . $output . '</span>';
-                    }
-                    if ($fullTitleLimit) {
-                        $fullOutput = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
                     }
                 } else {
                     break;
@@ -123,11 +109,7 @@ class RecyclerUtility
                 break;
             }
         }
-        if ($fullTitleLimit) {
-            return [$output, $fullOutput];
-        } else {
-            return $output;
-        }
+        return $output;
     }
 
     /**

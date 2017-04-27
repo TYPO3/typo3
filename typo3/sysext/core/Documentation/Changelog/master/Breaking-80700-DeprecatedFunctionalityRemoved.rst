@@ -250,6 +250,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Lang\LanguageService->getLL() - Second argument dropped
 * TYPO3\CMS\Lang\LanguageService->getLLL() - Third argument dropped
 * TYPO3\CMS\Lang\LanguageService->getsL() - Second argument dropped
+* TYPO3\CMS\Recycler\Utility\RecyclerUtility->getRecordPath() - Second, third and fourth argument dropped
 
 The following public class properties have been dropped:
 * TYPO3\CMS\Backend\Controller\EditDocumentController->localizationMode
