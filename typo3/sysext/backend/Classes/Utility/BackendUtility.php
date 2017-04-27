@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -763,8 +764,6 @@ class BackendUtility
      * Stores $data in the 'cache_hash' cache with the hash key, $hash
      * and visual/symbolic identification, $ident
      *
-     * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
-     *
      * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
      * @param mixed $data The data to store
      * @param string $ident $ident is just a textual identification in order to inform about the content!
@@ -779,8 +778,6 @@ class BackendUtility
     /**
      * Returns data stored for the hash string in the cache "cache_hash"
      * Can be used to retrieved a cached value, array or object
-     *
-     * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
      *
      * @param string $hash The hash-string which was used to store the data value
      * @return mixed The "data" from the cache
@@ -4266,21 +4263,16 @@ class BackendUtility
         if ($pageInfo['fe_group'] > 0) {
             $simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
         } elseif ((int)$pageInfo['fe_group'] === -2) {
-            $tableNameFeGroup = 'fe_groups';
-
             // -2 means "show at any login". We simulate first available fe_group.
-            /** @var PageRepository $sysPage */
-            $sysPage = GeneralUtility::makeInstance(PageRepository::class);
-
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tableNameFeGroup);
-            $queryBuilder->getRestrictions()->removeAll();
+                ->getQueryBuilderForTable('fe_groups');
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
             $activeFeGroupRow = $queryBuilder->select('uid')
-                ->from($tableNameFeGroup)
-                ->where(
-                    QueryHelper::stripLogicalOperatorPrefix('1=1' . $sysPage->enableFields($tableNameFeGroup))
-                )
+                ->from('fe_groups')
                 ->execute()
                 ->fetch();
 
