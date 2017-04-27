@@ -55,10 +55,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Depth for the recursive traversal of pages for the link validation
+     * For "Report" and "Check link" tab.
      *
-     * @var int
+     * @var array
      */
-    protected $searchLevel;
+    protected $searchLevel = ['report' => 0, 'check' => 0];
 
     /**
      * Link validation class
@@ -91,19 +92,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Html for the statistics table with the checkboxes of the link types
-     * and the numbers of broken links for report tab
+     * and the numbers of broken links for report / check links tab
      *
-     * @var string
+     * @var array
      */
-    protected $checkOptionsHtml;
-
-    /**
-     * Html for the statistics table with the checkboxes of the link types
-     * and the numbers of broken links for check links tab
-     *
-     * @var string
-     */
-    protected $checkOptionsHtmlCheck;
+    protected $checkOptionsHtml = [];
 
     /**
      * Complete content (html) to be displayed
@@ -146,22 +139,29 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     {
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->searchLevel = GeneralUtility::_GP('search_levels');
+        $update = GeneralUtility::_GP('updateLinkList');
+        $prefix = 'check';
+        $other = 'report';
+
+        if (empty($update)) {
+            $prefix = 'report';
+            $other = 'check';
+        }
+
+        $this->searchLevel[$prefix] = GeneralUtility::_GP($prefix . '_search_levels');
         if (isset($this->pObj->id)) {
             $this->modTS = BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
             $this->modTS = $this->modTS['properties'];
         }
-        $update = GeneralUtility::_GP('updateLinkList');
-        $prefix = '';
-        if (!empty($update)) {
-            $prefix = 'check';
-        }
-        $set = GeneralUtility::_GP($prefix . 'SET');
+        $set = GeneralUtility::_GP($prefix . '_SET');
         $this->pObj->handleExternalFunctionValue();
-        if (isset($this->searchLevel)) {
-            $this->pObj->MOD_SETTINGS['searchlevel'] = $this->searchLevel;
+        if (isset($this->searchLevel[$prefix])) {
+            $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] = $this->searchLevel[$prefix];
         } else {
-            $this->searchLevel = $this->pObj->MOD_SETTINGS['searchlevel'];
+            $this->searchLevel[$prefix] = $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'];
+        }
+        if (isset($this->pObj->MOD_SETTINGS[$other . '_searchlevel'])) {
+            $this->searchLevel[$other] = $this->pObj->MOD_SETTINGS[$other . '_searchlevel'];
         }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $value) {
             // Compile list of all available types. Used for checking with button "Check Links".
@@ -169,12 +169,17 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
                 $this->availableOptions[$linkType] = 1;
             }
             // Compile list of types currently selected by the checkboxes
-            if ($this->pObj->MOD_SETTINGS[$linkType] && empty($set) || $set[$linkType]) {
-                $this->checkOpt[$linkType] = 1;
-                $this->pObj->MOD_SETTINGS[$linkType] = 1;
+            if ($this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] && empty($set) || $set[$linkType]) {
+                $this->checkOpt[$prefix][$linkType] = 1;
+                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] = 1;
             } else {
-                $this->pObj->MOD_SETTINGS[$linkType] = 0;
-                unset($this->checkOpt[$linkType]);
+                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] = 0;
+                unset($this->checkOpt[$prefix][$linkType]);
+            }
+            if (isset($this->pObj->MOD_SETTINGS[$other . '_' . $linkType])) {
+                $this->checkOpt[$other][$linkType] = $this->pObj->MOD_SETTINGS[$other . '_' . $linkType];
+            } else {
+                $this->checkOpt[$other][$linkType] = 0;
             }
         }
         $this->getBackendUser()->pushModuleData('web_info', $this->pObj->MOD_SETTINGS);
@@ -191,8 +196,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $this->updateBrokenLinks();
 
         $brokenLinkOverView = $this->linkAnalyzer->getLinkCounts($this->pObj->id);
-        $this->checkOptionsHtml = $this->getCheckOptions($brokenLinkOverView);
-        $this->checkOptionsHtmlCheck = $this->getCheckOptions($brokenLinkOverView, 'check');
+        $this->checkOptionsHtml['report'] = $this->getCheckOptions($brokenLinkOverView, 'report');
+        $this->checkOptionsHtml['check'] = $this->getCheckOptions($brokenLinkOverView, 'check');
         $this->render();
 
         $pageTile = '';
@@ -278,7 +283,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             // Get children pages
             $pageList = $this->linkAnalyzer->extGetTreeList(
                 $this->pObj->id,
-                $this->searchLevel,
+                $this->searchLevel['check'],
                 0,
                 $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
                 $this->modTS['checkhidden']
@@ -292,7 +297,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             // Check if button press
             $update = GeneralUtility::_GP('updateLinkList');
             if (!empty($update)) {
-                $this->linkAnalyzer->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
+                $this->linkAnalyzer->getLinkStatistics($this->checkOpt['check'], $this->modTS['checkhidden']);
             }
         }
     }
@@ -339,9 +344,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     /**
      * Builds the selector for the level of pages to search
      *
+     * @param string $prefix Indicating if the selector is build for the "report" or "check" tab
+     *
      * @return string Html code of that selector
      */
-    protected function getLevelSelector()
+    protected function getLevelSelector($prefix = 'report')
     {
         // Build level selector
         $options = [];
@@ -354,9 +361,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
             999 => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
         ];
         foreach ($availableOptions as $optionValue => $optionLabel) {
-            $options[] = '<option value="' . $optionValue . '"' . ($optionValue === (int)$this->searchLevel ? ' selected="selected"' : '') . '>' . htmlspecialchars($optionLabel) . '</option>';
+            $options[] = '<option value="' . $optionValue . '"' . ($optionValue === (int)$this->searchLevel[$prefix] ? ' selected="selected"' : '') . '>' . htmlspecialchars($optionLabel) . '</option>';
         }
-        return '<select name="search_levels" class="form-control">' . implode('', $options) . '</select>';
+        return '<select name="' . $prefix . '_search_levels" class="form-control">' . implode('', $options) . '</select>';
     }
 
     /**
@@ -373,8 +380,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         );
 
         $linkTypes = [];
-        if (is_array($this->checkOpt)) {
-            $linkTypes = array_keys($this->checkOpt);
+        if (is_array($this->checkOpt['report'])) {
+            $linkTypes = array_keys($this->checkOpt['report']);
         }
 
         // Table header
@@ -430,7 +437,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     {
         $pageList = $this->linkAnalyzer->extGetTreeList(
             $currentPageUid,
-            $this->searchLevel,
+            $this->searchLevel['report'],
             0,
             $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
             $this->modTS['checkhidden']
@@ -545,7 +552,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         // Construct link to edit the content element
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
             '&id=' . $this->pObj->id .
-            '&search_levels=' . $this->searchLevel;
+            '&search_levels=' . $this->searchLevel['report'];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
@@ -646,9 +653,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
                         ];
 
                         $translation = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
-                        $hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix
-                            . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="'
-                            . $prefix . 'SET_' . $type . '">&nbsp;' . htmlspecialchars($translation) . '</label>';
+
+                        $hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr
+                            . ' id="' . $prefix . '_SET_' . $type
+                            . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
+                            . ($this->pObj->MOD_SETTINGS[$prefix . '_' . $type] ? ' checked="checked"' : '') . '/>' . '<label for="'
+                            . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($translation) . '</label>';
 
                         $hookSectionContent .= $this->templateService->substituteMarkerArray(
                             $hookSectionTemplate,
@@ -699,6 +709,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Gets the filled markers that are used in the HTML template
+     * Reports tab
      *
      * @return array The filled marker array
      */
@@ -707,9 +718,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         return [
             'FUNC_TITLE' => $this->getLanguageService()->getLL('report.func.title'),
             'CHECKOPTIONS_TITLE' => $this->getLanguageService()->getLL('report.statistics.header'),
-            'FUNC_MENU' => $this->getLevelSelector(),
+            'FUNC_MENU' => $this->getLevelSelector('report'),
             'CONTENT' => $this->content,
-            'CHECKOPTIONS' => $this->checkOptionsHtml,
+            'CHECKOPTIONS' => $this->checkOptionsHtml['report'],
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
             'REFRESH' => '<input type="submit" class="btn btn-default t3js-update-button" name="refreshLinkList" id="refreshLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_refresh-link-list')) . '" />',
             'UPDATE' => '',
@@ -718,6 +729,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
     /**
      * Gets the filled markers that are used in the HTML template
+     * Check Links tab
      *
      * @return array The filled marker array
      */
@@ -726,9 +738,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         return [
             'FUNC_TITLE' => $this->getLanguageService()->getLL('checklinks.func.title'),
             'CHECKOPTIONS_TITLE' => $this->getLanguageService()->getLL('checklinks.statistics.header'),
-            'FUNC_MENU' => $this->getLevelSelector(),
+            'FUNC_MENU' => $this->getLevelSelector('check'),
             'CONTENT' => '',
-            'CHECKOPTIONS' => $this->checkOptionsHtmlCheck,
+            'CHECKOPTIONS' => $this->checkOptionsHtml['check'],
             'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
             'REFRESH' => '',
             'UPDATE' => '<input type="submit" class="btn btn-default t3js-update-button" name="updateLinkList" id="updateLinkList" value="' . htmlspecialchars($this->getLanguageService()->getLL('label_update')) . '" data-notification-message="' . htmlspecialchars($this->getLanguageService()->getLL('label_update-link-list')) . '"/>',
