@@ -137,7 +137,7 @@ class RecordFinder
             ->from('sys_language')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'tx_styleguide_isdemolanguage',
+                    'tx_styleguide_isdemorecord',
                     $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             )
