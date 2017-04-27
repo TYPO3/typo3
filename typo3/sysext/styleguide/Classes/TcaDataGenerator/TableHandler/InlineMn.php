@@ -39,10 +39,8 @@ class InlineMn extends AbstractTableHandler implements TableHandlerInterface
      */
     public function handle(string $tableName)
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        /** @var RecordData $recordData */
         $recordData = GeneralUtility::makeInstance(RecordData::class);
 
         $childRelationUids = [];
