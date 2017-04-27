@@ -150,7 +150,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
         if ($conf['useCacheHash']) {
             $params = $tsfe->linkVars . $addQueryParams . '&id=' . $page['uid'];
-            if (trim($params, '& ') != '') {
+            if (trim($params, '& ') !== '') {
                 $cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
                 $cHash = $cacheHash->generateForParameters($params);
                 $addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
@@ -282,7 +282,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return $tsfe->MP;
         }
 
-        // Find closest meeting point
+        // Find closest mount point
         // Gets rootline of linked-to page
         $tCR_rootline = $tsfe->sys_page->getRootLine($pageId, '', true);
         $inverseTmplRootline = array_reverse($tsfe->tmpl->rootLine);

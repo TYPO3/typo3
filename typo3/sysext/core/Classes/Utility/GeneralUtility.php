@@ -423,7 +423,7 @@ class GeneralUtility
         // According to RFC lowercase-representation is recommended
         $address = strtolower($address);
         // Normalized representation has 39 characters (0000:0000:0000:0000:0000:0000:0000:0000)
-        if (strlen($address) == 39) {
+        if (strlen($address) === 39) {
             // Already in full expanded form
             return $address;
         }
@@ -435,7 +435,7 @@ class GeneralUtility
             $left = count($chunksLeft);
             $right = count($chunksRight);
             // Special case: leading zero-only blocks count to 1, should be 0
-            if ($left == 1 && strlen($chunksLeft[0]) == 0) {
+            if ($left === 1 && strlen($chunksLeft[0]) === 0) {
                 $left = 0;
             }
             $hiddenBlocks = 8 - ($left + $right);
@@ -445,7 +445,7 @@ class GeneralUtility
                 $hiddenPart .= '0000:';
                 $h++;
             }
-            if ($left == 0) {
+            if ($left === 0) {
                 $stageOneAddress = $hiddenPart . $chunks[1];
             } else {
                 $stageOneAddress = $chunks[0] . ':' . $hiddenPart . $chunks[1];
@@ -1962,10 +1962,6 @@ class GeneralUtility
      */
     public static function writeFileToTypo3tempDir($filepath, $content)
     {
-        if (!defined('PATH_site')) {
-            return 'PATH_site constant was NOT defined!';
-        }
-
         // Parse filepath into directory and basename:
         $fI = pathinfo($filepath);
         $fI['dirname'] .= '/';
@@ -1995,13 +1991,13 @@ class GeneralUtility
         }
         // Checking dir-name again (sub-dir might have been created):
         if (@is_dir($dirName)) {
-            if ($filepath == $dirName . $fI['basename']) {
+            if ($filepath === $dirName . $fI['basename']) {
                 static::writeFile($filepath, $content);
                 if (!@is_file($filepath)) {
                     return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
                 }
             } else {
-                return 'Calculated filelocation didn\'t match input "' . $filepath . '".';
+                return 'Calculated file location didn\'t match input "' . $filepath . '".';
             }
         } else {
             return '"' . $dirName . '" is not a directory!';

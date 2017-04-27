@@ -1543,7 +1543,6 @@ class PageRepository
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
             && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
-            // Only for WS ver 2... (moving) - enabled by default with CMS7
             // If t3ver_move_id is not found, then find it (but we like best if it is here)
             if (!isset($row['t3ver_move_id'])) {
                 $moveIDRec = $this->getRawRecord($table, $row['uid'], 't3ver_move_id', true);
