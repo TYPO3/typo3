@@ -69,6 +69,8 @@ class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInte
                 [ 'uid' => $fieldValues['uid'] ]
             );
 
+            $this->generateTranslatedRecords($tableName, $fieldValues);
+
             if (!$isFirst && count($relationUids) < $numberOfRelationsForFirstRecord) {
                 $relationUids[] = $fieldValues['uid'];
             }
