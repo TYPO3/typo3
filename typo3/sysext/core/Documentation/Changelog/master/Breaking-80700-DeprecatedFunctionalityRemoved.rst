@@ -171,6 +171,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->clearTSProperties()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->fileResource()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->fillInMarkerArray()
+* TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getClosestMPvalueForPage()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getSubpart()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getWhere()
 * TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->gifBuilderTextBox()

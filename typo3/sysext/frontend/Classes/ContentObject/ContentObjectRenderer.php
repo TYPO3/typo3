@@ -5596,63 +5596,6 @@ class ContentObjectRenderer
     }
 
     /**
-     * Returns the &MP variable value for a page id.
-     * The function will do its best to find a MP value that will keep the page id inside the current Mount Point rootline if any.
-     *
-     * @param int $pageId page id
-     * @param bool $raw If TRUE, the MPvalue is returned raw. Normally it is encoded as &MP=... variable
-     * @return string MP value, prefixed with &MP= (depending on $raw)
-     * @see typolink()
-     */
-    public function getClosestMPvalueForPage($pageId, $raw = false)
-    {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || !$tsfe->MP) {
-            return '';
-        }
-        // MountPoints:
-        $MP = '';
-        // Same page as current.
-        if ((int)$tsfe->id === (int)$pageId) {
-            $MP = $tsfe->MP;
-        } else {
-            // ... otherwise find closest meeting point:
-            // Gets rootline of linked-to page
-            $tCR_rootline = $tsfe->sys_page->getRootLine($pageId, '', true);
-            $inverseTmplRootline = array_reverse($tsfe->tmpl->rootLine);
-            $rl_mpArray = [];
-            $startMPaccu = false;
-            // Traverse root line of link uid and inside of that the REAL root line of current position.
-            foreach ($tCR_rootline as $tCR_data) {
-                foreach ($inverseTmplRootline as $rlKey => $invTmplRLRec) {
-                    // Force accumulating when in overlay mode: Links to this page have to stay within the current branch
-                    if ($invTmplRLRec['_MOUNT_OL'] && (int)$tCR_data['uid'] === (int)$invTmplRLRec['uid']) {
-                        $startMPaccu = true;
-                    }
-                    // Accumulate MP data:
-                    if ($startMPaccu && $invTmplRLRec['_MP_PARAM']) {
-                        $rl_mpArray[] = $invTmplRLRec['_MP_PARAM'];
-                    }
-                    // If two PIDs matches and this is NOT the site root, start accumulation of MP data (on the next level):
-                    // (The check for site root is done so links to branches outsite the site but sharing the site roots PID
-                    // is NOT detected as within the branch!)
-                    if ((int)$tCR_data['pid'] === (int)$invTmplRLRec['pid'] && count($inverseTmplRootline) !== $rlKey + 1) {
-                        $startMPaccu = true;
-                    }
-                }
-                if ($startMPaccu) {
-                    // Good enough...
-                    break;
-                }
-            }
-            if (!empty($rl_mpArray)) {
-                $MP = implode(',', array_reverse($rl_mpArray));
-            }
-        }
-        return $raw ? $MP : ($MP ? '&MP=' . rawurlencode($MP) : '');
-    }
-
-    /**
      * Creates a href attibute for given $mailAddress.
      * The function uses spamProtectEmailAddresses for encoding the mailto statement.
      * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
