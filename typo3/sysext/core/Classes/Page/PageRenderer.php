@@ -1460,10 +1460,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function loadRequireJs()
     {
+        $this->addRequireJs = true;
         if (!empty($this->requireJsConfig)) {
             return;
         }
-        $this->addRequireJs = true;
 
         $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
