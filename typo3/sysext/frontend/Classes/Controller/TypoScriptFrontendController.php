@@ -1590,7 +1590,7 @@ class TypoScriptFrontendController
                 $c = 0;
                 $page = [];
                 foreach ($pageArray as $pV) {
-                    if ($c == $pO) {
+                    if ($c === $pO) {
                         $page = $pV;
                         break;
                     }
@@ -1699,7 +1699,7 @@ class TypoScriptFrontendController
      * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
      * @param bool $bypassGroupCheck Bypass group-check
      * @return bool TRUE, if record is viewable.
-     * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
      */
     public function checkEnableFields($row, $bypassGroupCheck = false)
     {
@@ -1745,7 +1745,7 @@ class TypoScriptFrontendController
      * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
      * @return bool Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
      * @access private
-     * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
+     * @see checkEnableFields(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
      */
     public function checkPagerecordForIncludeSection($row)
     {
@@ -2012,7 +2012,7 @@ class TypoScriptFrontendController
         } elseif ($code !== '') {
             // Check if URL is relative
             $url_parts = parse_url($code);
-            if ($url_parts['host'] == '') {
+            if ($url_parts['host'] === '') {
                 $url_parts['host'] = GeneralUtility::getIndpEnv('HTTP_HOST');
                 if ($code[0] === '/') {
                     $code = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
@@ -4507,7 +4507,7 @@ class TypoScriptFrontendController
             $result = min($result, $this->getFirstTimeValueForRecord($tableDef, $now));
         }
         // We return + 1 second just to ensure that cache is definitely regenerated
-        return $result == PHP_INT_MAX ? PHP_INT_MAX : $result - $now + 1;
+        return $result === PHP_INT_MAX ? PHP_INT_MAX : $result - $now + 1;
     }
 
     /**

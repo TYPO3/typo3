@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\Hooks;
 class FrontendHooks
 {
     /**
-     * Include the preview block in cause we're looking at a hidden page
+     * Include the preview block in case we're looking at a hidden page
      * in the LIVE workspace
      *
      * @param array $params
