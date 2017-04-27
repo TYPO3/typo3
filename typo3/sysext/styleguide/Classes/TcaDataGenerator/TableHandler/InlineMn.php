@@ -81,6 +81,8 @@ class InlineMn extends AbstractTableHandler implements TableHandlerInterface
             [ 'uid' => (int)$fieldValues['uid'] ]
         );
 
+        $this->generateTranslatedRecords($tableName, $fieldValues);
+
         foreach ($childRelationUids as $uid) {
             $mmFieldValues = [
                 'pid' => $pidOfMainTable,
