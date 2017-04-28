@@ -170,21 +170,19 @@ tt_content.login {
 );
 
 // Add login to new content element wizard
-if (TYPO3_MODE === 'BE') {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-        mod.wizards.newContentElement.wizardItems.forms {
-            elements.login {
-                iconIdentifier = content-elements-login
-                title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title
-                description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_description
-                tt_content_defValues {
-                    CType = login
-                }
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+    mod.wizards.newContentElement.wizardItems.forms {
+        elements.login {
+            iconIdentifier = content-elements-login
+            title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title
+            description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_description
+            tt_content_defValues {
+                CType = login
             }
-            show :=addToList(login)
         }
-    ');
-}
+        show :=addToList(login)
+    }
+');
 
 // Page module hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['felogin'] = \TYPO3\CMS\Felogin\Hooks\CmsLayout::class;

@@ -33,6 +33,10 @@ class FileMetadataOverlayAspect
      */
     public function languageAndWorkspaceOverlay(\ArrayObject $data)
     {
+        // Should only be in Frontend, but not in eID context
+        if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) || isset($_REQUEST['eID'])) {
+            return;
+        }
         $overlaidMetaData = $data->getArrayCopy();
         $this->getTsfe()->sys_page->versionOL('sys_file_metadata', $overlaidMetaData);
         $overlaidMetaData = $this->getTsfe()->sys_page->getRecordOverlay(

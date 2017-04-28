@@ -9,3 +9,5 @@ defined('TYPO3_MODE') or die();
         \TYPO3\CMS\Documentation\Slots\ExtensionManager::class,
         'processActions'
     );
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']['cshmanual'] = \TYPO3\CMS\Documentation\Service\JavaScriptService::class . '->addJavaScript';

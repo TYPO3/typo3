@@ -106,7 +106,5 @@ $GLOBALS['TBE_STYLES'] = [];
 // General Core
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf');
 
-if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
-    // extJS theme
-    $GLOBALS['TBE_STYLES']['extJS']['theme'] = 'EXT:core/Resources/Public/ExtJs/xtheme-t3skin.css';
-}
+// extJS theme
+$GLOBALS['TBE_STYLES']['extJS']['theme'] = 'EXT:core/Resources/Public/ExtJs/xtheme-t3skin.css';

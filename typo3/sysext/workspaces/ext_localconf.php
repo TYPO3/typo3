@@ -33,14 +33,13 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
     ];
 }
 
-if (TYPO3_MODE === 'BE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'][] = \TYPO3\CMS\Workspaces\Hooks\PagetreeCollectionsProcessor::class;
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433114] = \TYPO3\CMS\Workspaces\Backend\ToolbarItems\WorkspaceSelectorToolbarItem::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'][] = \TYPO3\CMS\Workspaces\Hooks\PagetreeCollectionsProcessor::class;
 
-    // Registers preview link icon
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
-        'module-workspaces-action-preview-link',
-        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-        ['source' => 'EXT:workspaces/Resources/Public/Images/generate-ws-preview-link.png']
-    );
-}
+$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433114] = \TYPO3\CMS\Workspaces\Backend\ToolbarItems\WorkspaceSelectorToolbarItem::class;
+
+// Registers preview link icon
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
+    'module-workspaces-action-preview-link',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:workspaces/Resources/Public/Images/generate-ws-preview-link.png']
+);

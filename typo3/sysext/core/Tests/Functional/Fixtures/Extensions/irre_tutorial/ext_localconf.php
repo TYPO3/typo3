@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'OliverHader.' . $_EXTKEY,
+    'OliverHader.IrreTutorial',
     'Irre',
     [
         'Queue' => 'index',

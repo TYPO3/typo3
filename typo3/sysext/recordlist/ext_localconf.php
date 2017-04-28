@@ -1,6 +1,11 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// Register element browsers
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['db'] =  \TYPO3\CMS\Recordlist\Browser\DatabaseBrowser::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['file'] =  \TYPO3\CMS\Recordlist\Browser\FileBrowser::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers']['folder'] =  \TYPO3\CMS\Recordlist\Browser\FolderBrowser::class;
+
 // Register default link handlers
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
     TCEMAIN.linkHandler {

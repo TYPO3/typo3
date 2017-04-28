@@ -72,22 +72,20 @@ if (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1')
 }
 
 // Add search to new content element wizard
-if (TYPO3_MODE === 'BE') {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-    mod.wizards.newContentElement.wizardItems.forms {
-        elements.search {
-            iconIdentifier = content-elements-searchform
-            title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title
-            description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description
-            tt_content_defValues {
-                CType = list
-                list_type = indexedsearch_pi2
-            }
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+mod.wizards.newContentElement.wizardItems.forms {
+    elements.search {
+        iconIdentifier = content-elements-searchform
+        title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title
+        description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description
+        tt_content_defValues {
+            CType = list
+            list_type = indexedsearch_pi2
         }
-        show :=addToList(search)
     }
-    ');
+    show :=addToList(search)
 }
+');
 
 // Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
 if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSearch'] == 2) {
