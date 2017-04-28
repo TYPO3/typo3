@@ -130,7 +130,8 @@ class ExtDirectRouter
         }
         $callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
-        if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
+        if (isset($configuration['moduleName']) && !is_null($configuration['moduleName'])
+            && isset($configuration['accessLevel']) && !is_null($configuration['accessLevel'])) {
             $GLOBALS['BE_USER']->modAccess([
                 'name' => $configuration['moduleName'],
                 'access' => $configuration['accessLevel']

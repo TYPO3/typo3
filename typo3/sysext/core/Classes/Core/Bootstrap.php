@@ -397,7 +397,6 @@ class Bootstrap
             ->initializePackageManagement($packageManagerClassName)
             ->initializeRuntimeActivatedPackagesFromConfiguration()
             ->defineUserAgentConstant()
-            ->registerExtDirectComponents()
             ->setCacheHashOptions()
             ->setDefaultTimezone()
             ->initializeL10nLocales()
@@ -520,28 +519,6 @@ class Bootstrap
     protected function defineUserAgentConstant()
     {
         define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['headers']['User-Agent']);
-        return $this;
-    }
-
-    /**
-     * Register default ExtDirect components
-     *
-     * @return Bootstrap
-     */
-    protected function registerExtDirectComponents()
-    {
-        if (TYPO3_MODE === 'BE') {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.DataProvider'] = [
-                'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class,
-                'moduleName' => null,
-                'accessLevel' => null
-            ];
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.Commands'] = [
-                'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class,
-                'moduleName' => null,
-                'accessLevel' => null
-            ];
-        }
         return $this;
     }
 

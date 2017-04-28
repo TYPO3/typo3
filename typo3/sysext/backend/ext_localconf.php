@@ -42,3 +42,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 // Include base TSconfig setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:backend/Configuration/TSconfig/Page/Mod/Wizards/NewContentElement.ts">');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:backend/Configuration/TSconfig/User/Options.ts">');
+
+// Register ExtDirect components
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.DataProvider'] = [
+    'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class,
+];
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Components.PageTree.Commands'] = [
+    'callbackClass' => \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class,
+];
