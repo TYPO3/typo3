@@ -1,5 +1,5 @@
 <f:if condition="{editIcon}">
-    <a href="<f:format.raw>{editIcon}</f:format.raw>" title="{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:{editTitle}')}">
+    <a href="{editIcon -> f:format.raw()}" title="{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:{editTitle}')}">
         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-document-open" data-identifier="actions-document-open">
             <span class="icon-markup">
                 <img width="16" height="16" src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-document-open.svg">
