@@ -134,11 +134,11 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
         reset($listOfAllTables);
         $firstTable = current($listOfAllTables);
         $startPosition = $this->getStartPosition($firstTable);
-        foreach ($listOfAllTables as $table) {
+        foreach ($listOfAllTables as $key => $table) {
             if ($table === $startPosition['table']) {
                 break;
             } else {
-                unset($listOfAllTables[$table]);
+                unset($listOfAllTables[$key]);
             }
         }
 
