@@ -291,7 +291,7 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
     protected function getStartPosition(string $firstTable): array
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $startPosition = $registry->get('installUpdateRows', 'rowUpdaterPosition', []);
+        $startPosition = $registry->get('installUpdateRows', 'rowUpdatePosition', []);
         if (empty($startPosition)) {
             $startPosition = [
                 'table' => $firstTable,
