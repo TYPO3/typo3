@@ -543,6 +543,10 @@ class ExtendedFileUtility extends BasicFileUtility
                 $queryBuilder->expr()->neq(
                     'tablename',
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'deleted',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )->execute()->fetchColumn(0);
 
