@@ -1,14 +1,17 @@
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}" data-parent-deleted="{record.isParentDeleted}">
+	<td class="nowrap">
+		<label class="btn btn-default btn-checkbox">
+			<input type="checkbox">
+			<span class="t3-icon fa"></span>
+		</label>
+	</td>
 	<td class="nowrap">{record.tableTitle}</td>
 	<td class="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>
 	<td class="nowrap">{record.tstamp}</td>
 	<td class="nowrap">{record.uid}</td>
 	<td class="nowrap">{record.pageTitle} ({record.pid})</td>
-	<td class="text-right nowrap">
+	<td class="nowrap text-right">
 		<div class="btn-group">
-			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}">
-				<core:icon identifier="apps-pagetree-collapse" />
-			</a>
 			<a class="btn btn-default" data-action="undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}">
 				<core:icon identifier="actions-edit-undo" />
 			</a>
@@ -17,10 +20,11 @@
 					<core:icon identifier="actions-edit-delete" />
 				</a>
 			</f:if>
-			<label class="btn btn-default btn-checkbox">
-				<input type="checkbox">
-				<span class="t3-icon fa"></span>
-			</label>
+		</div>
+		<div class="btn-group">
+			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}">
+				<core:icon identifier="actions-document-info" />
+			</a>
 		</div>
 	</td>
 </tr>
