@@ -1,9 +1,11 @@
 <f:format.raw>{table}</f:format.raw>
-<button class="btn btn-default" name="go" id="scheduler_executeselected">
-	<f:translate key="label.executeSelected" />
-</button>
 <button class="btn btn-default" name="go_cron" id="scheduler_executeselected">
+	<core:icon identifier="extensions-scheduler-run-task-cron" />
 	<f:translate key="label.cronjobSelected" />
+</button>
+<button class="btn btn-default" name="go" id="scheduler_executeselected">
+	<core:icon identifier="extensions-scheduler-run-task" />
+	<f:translate key="label.executeSelected" />
 </button>
 
 <f:render partial="ServerTime" arguments="{now: now}" />
