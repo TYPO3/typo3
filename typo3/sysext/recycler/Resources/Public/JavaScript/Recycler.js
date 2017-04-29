@@ -249,8 +249,9 @@ define(['jquery',
 			var btnTextUndo = Recycler.createMessage(TYPO3.lang['button.undoselected'], [Recycler.markedRecordsForMassAction.length]),
 				btnTextDelete = Recycler.createMessage(TYPO3.lang['button.deleteselected'], [Recycler.markedRecordsForMassAction.length]);
 
-			Recycler.elements.$massUndo.text(btnTextUndo);
-			Recycler.elements.$massDelete.text(btnTextDelete);
+			Recycler.elements.$massUndo.find('span.text').text(btnTextUndo);
+			Recycler.elements.$massDelete.find('span.text').text(btnTextDelete);
+
 		} else {
 			Recycler.resetMassActionButtons();
 		}
@@ -261,8 +262,10 @@ define(['jquery',
 	 */
 	Recycler.resetMassActionButtons = function() {
 		Recycler.markedRecordsForMassAction = [];
-		Recycler.elements.$massUndo.addClass('disabled').text(TYPO3.lang['button.undo']);
-		Recycler.elements.$massDelete.addClass('disabled').text(TYPO3.lang['button.delete']);
+		Recycler.elements.$massUndo.addClass('disabled');
+		Recycler.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
+		Recycler.elements.$massDelete.addClass('disabled');
+		Recycler.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
 	};
 
 	/**
