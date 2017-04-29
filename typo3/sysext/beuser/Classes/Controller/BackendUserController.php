@@ -157,6 +157,9 @@ class BackendUserController extends BackendUserActionController
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
         $this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
         $this->view->assign('backendUserGroups', array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()));
+        $this->view->assign('compareUserUidList', array_map(function ($item) {
+            return true;
+        }, array_flip((array)$compareUserList)));
         $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
     }
 
