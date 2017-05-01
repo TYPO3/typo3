@@ -306,6 +306,19 @@ This option may be overridden in the FORMS-cObject.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="contentObjectExceptionHandler" type="array">
+			<description><![CDATA[Exceptions which occur during rendering of content objects (typically plugins) will now be caught by default in production context and an error message is shown along with the rendered output.
+
+			Use "1" for the default exception handler (enabled by default in production context)
+			Use "0" to disable the default exception handler
+			Use a class name for individual exception handlers
+
+			See TSref for details:
+			https://docs.typo3.org/typo3cms/TyposcriptReference/Setup/Config/Index.html#contentobjectexceptionhandler
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="debug" type="boolean">
 			<description><![CDATA[If set any debug-information in the TypoScript code is output. Currently this applies only to the menu-objects]]></description>
 			<default><![CDATA[
