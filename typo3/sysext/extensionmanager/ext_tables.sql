@@ -42,7 +42,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   lastreviewedversion int(3) NOT NULL default '0',
   PRIMARY KEY (uid),
   KEY index_extrepo (extension_key,repository),
-  KEY index_versionrepo (integer_version,repository),
+  KEY index_versionrepo (integer_version,repository,extension_key),
   KEY index_currentversions (current_version,review_state),
   UNIQUE versionextrepo (extension_key,version,repository)
 );
