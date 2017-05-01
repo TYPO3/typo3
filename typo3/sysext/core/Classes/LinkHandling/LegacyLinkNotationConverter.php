@@ -85,7 +85,7 @@ class LegacyLinkNotationConverter
             $isIdOrAlias = MathUtility::canBeInterpretedAsInteger($linkParameter);
             $matches = [];
             // capture old RTE links relative to TYPO3_mainDir
-            if (preg_match('#../\\?id=([^&]+)#', $linkParameter, $matches)) {
+            if (preg_match('#../(?:index\\.php)?\\?id=([^&]+)#', $linkParameter, $matches)) {
                 $linkParameter = $matches[1];
                 $isIdOrAlias = true;
             }
