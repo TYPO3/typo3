@@ -447,6 +447,42 @@ return [
                                         </el>
                                     </ROOT>
                                 </sheet_2>
+                                <sheet_3>
+                                    <ROOT>
+                                        <TCEforms>
+                                            <sheetTitle>sheet_3</sheetTitle>
+                                        </TCEforms>
+                                        <type>array</type>
+                                        <el>
+                                            <input_1>
+                                                <TCEforms>
+                                                    <label>input_1</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                                <TCEforms>
+                                                    <label>input_2</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                                <TCEforms>
+                                                    <label>input_3 (depends on input_1 AND input_2)</label>
+                                                    <displayCond>
+                                                        <and>
+                                                            <value1>FIELD:sheet_3.input_1:REQ:true</value1>
+                                                            <value2>FIELD:sheet_3.input_2:REQ:true</value2>
+                                                        </and>
+                                                    </displayCond>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
+                                                </TCEforms>
+                                            </input_1>
+                                        </el>
+                                    </ROOT>
+                                </sheet_3>
                             </sheets>
                         </T3DataStructure>
                     ',
