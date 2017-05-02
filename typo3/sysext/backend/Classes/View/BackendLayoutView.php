@@ -396,26 +396,14 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     {
         return '
 		backend_layout {
-			colCount = 4
+			colCount = 1
 			rowCount = 1
 			rows {
 				1 {
 					columns {
 						1 {
-							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.0
-							colPos = 1
-						}
-						2 {
 							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.1
 							colPos = 0
-						}
-						3 {
-							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.2
-							colPos = 2
-						}
-						4 {
-							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.3
-							colPos = 3
 						}
 					}
 				}
