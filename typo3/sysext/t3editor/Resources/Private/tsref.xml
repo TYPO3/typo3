@@ -2856,7 +2856,7 @@ If this is true, RO becomes a GIFBUILDER-object defining the layout of the menui
 
 Example:
 This is useful it you want to create a menu with individual items but a common background image that extends to the whole area behind the menu. Then you should setup the background image in each GIFBUILDER-object and include the object-number in this list.
-Look at the implementation in static_template "styles.gmenu.bug"]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3422,8 +3422,6 @@ In the example below, the text of each menuitem is rendered by letting the title
 		<property name="distrib" type="string">
 			<description><![CDATA[.distrib is (x,y,v,h +calc) of the distribution of the menuitems. This provides a way to space each item from the other. The codes "textX" and "textY" can be used for the width (X) and height (Y) dimension of each link.
 This works by adding a WORKAREA-GifBuilderObj between each of the IMGMENUITEM ("subset" of a GIFBUILDER-object) and this workarea defines where the text should be printed. As such the "x,y" defines the offset the next item will have (this should be the width of the previous in many cases!) and "v,h" defines the dimensions of the current item.
-Consider this example taken from the static_template "template: MM":
-    NO.distrib = textX+10, 0, textX+10, textY+5
 In the future TypoScript may provide better ways to position GIFBUILDER-objects on the image-maps! ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4332,7 +4330,7 @@ Please note that this value will override the properties "width", "maxH", "maxW"
 			<description><![CDATA[Frames:
 .key points to the frame used.
 
-".image_frames.x" is imgResource-mask (".m")properties which will override to the [imgResource].m properties of the imageObjects. This is used to mask the images into a frame. See how it's done in the default configuration and IMGTEXT in the static_template-table.
+".image_frames.x" is imgResource-mask (".m")properties which will override to the [imgResource].m properties of the imageObjects. This is used to mask the images into a frame.
 
 Example:
 1 {

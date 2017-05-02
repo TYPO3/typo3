@@ -686,8 +686,8 @@ class TemplateService
      * Checks if the template ($row) has some included templates and after including them it fills the arrays with the setup
      * Builds up $this->rowSum
      *
-     * @param array $row A full TypoScript template record (sys_template/static_template/forged "dummy" record made from static template file)
-     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
+     * @param array $row A full TypoScript template record (sys_template/forged "dummy" record made from static template file)
+     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
      * @param int $pid The PID of the input template record
      * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
      * @param string $templateParent Parent template id (during recursive call); Same syntax as $idList ids, eg. "sys_123
@@ -722,7 +722,7 @@ class TemplateService
                 $this->clearList_setup = [];
             }
         }
-        // Include static records (static_template) or files (from extensions) (#1/2)
+        // Include files (from extensions) (#1/2)
         // NORMAL inclusion, The EXACT same code is found below the basedOn inclusion!!!
         if (!$row['includeStaticAfterBasedOn']) {
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
@@ -766,7 +766,7 @@ class TemplateService
                 }
             }
         }
-        // Include static records (static_template) or files (from extensions) (#2/2)
+        // Include files (from extensions) (#2/2)
         if ($row['includeStaticAfterBasedOn']) {
             $this->includeStaticTypoScriptSources($idList, $templateID, $pid, $row);
         }
@@ -839,9 +839,9 @@ class TemplateService
     }
 
     /**
-     * Includes static template records (from static_template table, loaded through a hook) and static template files (from extensions) for the input template record row.
+     * Includes static template files (from extensions) for the input template record row.
      *
-     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
+     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
      * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
      * @param int $pid The PID of the input template record
      * @param array $row A full TypoScript template record
@@ -849,7 +849,6 @@ class TemplateService
      */
     public function includeStaticTypoScriptSources($idList, $templateID, $pid, $row)
     {
-        // Static Template Records (static_template): include_static is a list of static templates to include
         // Call function for link rendering:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'])) {
             $_params = [
@@ -935,7 +934,7 @@ class TemplateService
     /**
      * Adds the default TypoScript files for extensions if any.
      *
-     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
+     * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
      * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
      * @param int $pid The PID of the input template record
      * @param array $row A full TypoScript template record
@@ -965,7 +964,6 @@ class TemplateService
 
     /**
      * Appends (not prepends) additional TypoScript code to static template records/files as set in TYPO3_CONF_VARS
-     * For DB records the "uid" value is the integer of the "static_template" record.
      * For files the "uid" value is the extension key but with any underscores removed. Possibly with a path if its a static file selected in the template record
      *
      * @param array $subrow Static template record/file

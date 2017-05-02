@@ -126,7 +126,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 
     /**
      * Function, which fills in the internal array, $this->allowedTableNames with all tables to
-     * which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...)
+     * which the user has access. Also a set of standard tables (pages, sys_filemounts, etc...)
      * are filtered out. So what is left is basically all tables which makes sense to list content from.
      *
      * @return string[]
@@ -137,7 +137,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $tableNames = array_flip(array_keys($GLOBALS['TCA']));
         // Unset common names:
         unset($tableNames['pages']);
-        unset($tableNames['static_template']);
         unset($tableNames['sys_filemounts']);
         unset($tableNames['sys_action']);
         unset($tableNames['sys_workflows']);
