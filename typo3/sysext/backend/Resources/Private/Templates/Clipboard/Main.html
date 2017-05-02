@@ -8,13 +8,13 @@
 				</div>
 				<table class="table">
 					<tr>
-						<td colspan="2" nowrap="nowrap" width="95%">
+						<td colspan="2" class="nowrap" width="95%">
 							<f:render partial="Clipboard/CopymodeSelector" arguments="{_all}"/>
 							<f:if condition="{elementCount}">
 								<f:render partial="Clipboard/MenuSelector" arguments="{_all}"/>
 							</f:if>
 						</td>
-						<td nowrap="nowrap" class="col-control">
+						<td class="col-control nowrap">
 							<f:if condition="{elementCount}">
 								<a href="{removeAllUrl}#clip_head"
 									 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.clear')}" class="btn btn-danger">

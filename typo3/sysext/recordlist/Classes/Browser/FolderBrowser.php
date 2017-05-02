@@ -175,7 +175,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($subFolder->getName(), $titleLength)) . $aTag_e;
             $lines[] = '
 				<tr>
-					<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
+					<td class="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
 					<td>' . $aTag . '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . '</td>
 					<td>&nbsp;</td>
 				</tr>';

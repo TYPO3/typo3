@@ -1156,7 +1156,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                             . '<td><span class="t-span">' . $multiple . '</span></td>'
                             . '<td><span class="t-span">' . $lastExecution . '</span></td>'
                             . '<td><span class="t-span">' . $nextDate . '</span></td>'
-                            . '<td nowrap="nowrap"><span class="t-span">' . $actions . '</span></td>'
+                            . '<td class="nowrap"><span class="t-span">' . $actions . '</span></td>'
                         . '</tr>';
                 } else {
                     // The task object is not valid
@@ -1172,7 +1172,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                             . '<td>' . $startExecutionElement . '</td>'
                             . '<td class="right">' . $schedulerRecord['uid'] . '</td>'
                             . '<td colspan="6">' . $executionStatusOutput . '</td>'
-                            . '<td nowrap="nowrap"><div class="btn-group" role="group">'
+                            . '<td class="nowrap"><div class="btn-group" role="group">'
                                 . '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
                                 . '<span class="btn btn-default disabled">' . $this->moduleTemplate->getIconFactory()->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>'
                                 . $deleteAction

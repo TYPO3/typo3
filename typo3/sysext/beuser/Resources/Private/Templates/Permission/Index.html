@@ -34,7 +34,7 @@
 									A "normal" page row is rendered, not the root page
 								</f:comment>
 
-								<td align="left" nowrap="nowrap">
+								<td align="left" class="nowrap">
 									<f:link.action
 										action="edit"
 										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth}"
@@ -59,7 +59,7 @@
 									</f:link.action>
 								</td>
 
-								<td nowrap="nowrap">
+								<td class="nowrap">
 									<bu:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
 									<f:render
 										partial="Permission/Ownername"
@@ -71,7 +71,7 @@
 									/>
 								</td>
 
-								<td nowrap="nowrap">
+								<td class="nowrap">
 									<bu:permissions permission="{data.row.perms_group}" scope="group" pageId="{data.row.uid}" />
 									<f:render
 										partial="Permission/Groupname"
@@ -83,11 +83,11 @@
 									/>
 								</td>
 
-								<td nowrap="nowrap">
+								<td class="nowrap">
 									<bu:permissions permission="{data.row.perms_everybody}" scope="everybody" pageId="{data.row.uid}" />
 								</td>
 
-								<td nowrap="nowrap">
+								<td class="nowrap">
 									<span id="el_{data.row.uid}">
 										<f:if condition="{data.row.editlock}">
 											<f:then>
@@ -119,15 +119,15 @@
 								<f:comment>
 									Root page row is rendered
 								</f:comment>
-								<td align="left" nowrap="nowrap">
+								<td align="left" class="nowrap">
 									<f:format.raw>{data.HTML}</f:format.raw>
 									{data.row.title -> f:format.crop(maxCharacters:20)}
 								</td>
 								<td></td>
-								<td nowrap="nowrap"></td>
-								<td nowrap="nowrap"></td>
-								<td nowrap="nowrap"></td>
-								<td nowrap="nowrap"></td>
+								<td class="nowrap"></td>
+								<td class="nowrap"></td>
+								<td class="nowrap"></td>
+								<td class="nowrap"></td>
 							</f:else>
 						</f:if>
 					</tr>
@@ -142,49 +142,49 @@
 	<div class="beuser-legend">
 		<table>
 			<tr>
-				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap"><span class="number">1</span></td>
-				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1_t" /></td>
+				<td class="edge nowrap"><span><span></span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="nowrap"><span class="number">1</span></td>
+				<td class="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1_t" /></td>
 			</tr>
 			<tr>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap"><span class="number">2</span></td>
-				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16_t" /></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="edge nowrap"><span><span></span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="nowrap"><span class="number">2</span></td>
+				<td class="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16_t" /></td>
 			</tr>
 			<tr>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap"><span class="number">3</span></td>
-				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2_t" /></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="edge nowrap"><span><span></span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="nowrap"><span class="number">3</span></td>
+				<td class="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2_t" /></td>
 			</tr>
 			<tr>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="vr"><span></span></td>
-				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
-				<td nowrap="nowrap" class="hr"><span></span></td>
-				<td nowrap="nowrap"><span class="number">4</span></td>
-				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="vr nowrap"><span></span></td>
+				<td class="edge nowrap"><span><span></span></span></td>
+				<td class="hr nowrap"><span></span></td>
+				<td class="nowrap"><span class="number">4</span></td>
+				<td class="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /></td>
 			</tr>
 			<tr>
-				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
-				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
-				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
-				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
-				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
-				<td nowrap="nowrap"><span class="number">5</span></td>
-				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" /></td>
+				<td class="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td class="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td class="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td class="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td class="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td class="nowrap"><span class="number">5</span></td>
+				<td class="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" /></td>
 			</tr>
 		</table>
 	</div>
