@@ -581,9 +581,9 @@ class AbstractPlugin
             $pagefloat = -1;
         }
         // Default values for "traditional" wrapping with a table. Can be overwritten by vars from $wrapArr
-        $wrapper['disabledLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
-        $wrapper['inactiveLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
-        $wrapper['activeLinkWrap'] = '<td' . $this->pi_classParam('browsebox-SCell') . ' nowrap="nowrap"><p>|</p></td>';
+        $wrapper['disabledLinkWrap'] = '<td class="nowrap"><p>|</p></td>';
+        $wrapper['inactiveLinkWrap'] = '<td class="nowrap"><p>|</p></td>';
+        $wrapper['activeLinkWrap'] = '<td' . $this->pi_classParam('browsebox-SCell') . ' class="nowrap"><p>|</p></td>';
         $wrapper['browseLinksWrap'] = rtrim('<table ' . $tableParams) . '><tr>|</tr></table>';
         $wrapper['showResultsWrap'] = '<p>|</p>';
         $wrapper['browseBoxWrap'] = '

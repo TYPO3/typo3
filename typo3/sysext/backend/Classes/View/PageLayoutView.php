@@ -946,7 +946,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . ' ' . $recordIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
                 }
                 $sCont[$lP] = '
-					<td nowrap="nowrap" class="t3-page-column t3-page-lang-label">' . $lPLabel . '</td>';
+					<td class="t3-page-column t3-page-lang-label nowrap">' . $lPLabel . '</td>';
             }
             // Add headers:
             $out .= '<tr>' . implode($cCont) . '</tr>';

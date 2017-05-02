@@ -546,7 +546,7 @@ define([
 					$('<td />').text(item.label_Stage),
 					$('<td />').html($integrityIcon),
 					$('<td />').html(item.language.icon),
-					$('<td />', {class: 'text-right', nowrap: 'nowrap'}).append($actions)
+					$('<td />', {class: 'text-right nowrap'}).append($actions)
 				)
 			);
 

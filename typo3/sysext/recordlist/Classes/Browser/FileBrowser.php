@@ -247,13 +247,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 
         $lines[] = '
 			<tr>
-				<th class="col-title" nowrap="nowrap">' . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</th>
-				<th class="col-control" nowrap="nowrap"></th>
-				<th class="col-clipboard" nowrap="nowrap">
+				<th class="col-title nowrap">' . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</th>
+				<th class="col-control nowrap"></th>
+				<th class="col-clipboard nowrap">
 					<a href="#" class="btn btn-default" id="t3js-importSelection" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . '</a>
 					<a href="#" class="btn btn-default" id="t3js-toggleSelection" title="' . htmlspecialchars($lang->getLL('toggleSelection')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>
 				</th>
-				<th nowrap="nowrap">&nbsp;</th>
+				<th class="nowrap">&nbsp;</th>
 			</tr>';
 
         if ($filesCount === 0) {
@@ -325,13 +325,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Show element:
             $lines[] = '
 					<tr class="file_list_normal">
-						<td class="col-title" nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+						<td class="col-title nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td class="col-control">
 							<div class="btn-group">' . $ATag . $ATag_e . '
 							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
 						<td class="col-clipboard" valign="top">' . $bulkCheckBox . '</td>
-						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
+						<td class="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
             if ($pDim) {
                 $lines[] = '

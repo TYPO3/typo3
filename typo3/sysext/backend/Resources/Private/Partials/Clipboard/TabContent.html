@@ -1,8 +1,8 @@
 <tr>
-	<td nowrap="nowrap" class="col-icon">
+	<td class="col-icon nowrap">
 		<f:format.raw>{content.icon}</f:format.raw>
 	</td>
-	<td nowrap="nowrap" width="95%">
+	<td width="95%" class="nowrap">
 		<f:format.raw>{content.title}</f:format.raw>
 		<f:if condition="{tab.id} == 'normal'">
 			<strong>(
@@ -21,18 +21,22 @@
 			<f:image image="{content.thumb.image}" title="{content.thumb.title}"/>
 		</f:if>
 	</td>
-	<td nowrap="nowrap" class="col-control">
+	<td class="col-control nowrap">
 		<div class="btn-group">
 			<f:if condition="{content.infoLink}">
 				<a class="btn btn-default" href="#" onclick="{content.infoLink}"
 					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info')}">
-					<f:format.raw><core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/></f:format.raw>
+					<f:format.raw>
+						<core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
+					</f:format.raw>
 				</a>
 			</f:if>
 			<f:if condition="{content.removeLink}">
 				<a class="btn btn-default" href="{content.removeLink}#clip_head"
 					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
-					<f:format.raw><core:icon identifier="actions-selection-delete" alternativeMarkupIdentifier="inline"/></f:format.raw>
+					<f:format.raw>
+						<core:icon identifier="actions-selection-delete" alternativeMarkupIdentifier="inline"/>
+					</f:format.raw>
 				</a>
 			</f:if>
 		</div>

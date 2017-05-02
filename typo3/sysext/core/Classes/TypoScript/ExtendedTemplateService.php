@@ -695,7 +695,7 @@ class ExtendedTemplateService extends TemplateService
             $RL = $this->ext_getRootlineNumber($row['pid']);
             $statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
             $keyArray[] = '<tr>
-							<td nowrap="nowrap">' . $HTML . '</td>
+							<td class="nowrap">' . $HTML . '</td>
 							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
 							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>
 							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
