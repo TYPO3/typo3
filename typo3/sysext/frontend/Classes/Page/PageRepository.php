@@ -103,11 +103,6 @@ class PageRepository
     /**
      * @var array
      */
-    protected $cache_getRootLine = [];
-
-    /**
-     * @var array
-     */
     protected $cache_getPage = [];
 
     /**
