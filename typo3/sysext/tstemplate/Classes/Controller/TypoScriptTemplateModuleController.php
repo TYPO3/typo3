@@ -44,11 +44,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     /**
      * @var string
      */
-    public $e;
-
-    /**
-     * @var string
-     */
     public $sObj;
 
     /**
@@ -134,7 +129,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     {
         parent::init();
         $this->id = (int)GeneralUtility::_GP('id');
-        $this->e = GeneralUtility::_GP('e');
         $this->sObj = GeneralUtility::_GP('sObj');
         $this->edit = GeneralUtility::_GP('edit');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
@@ -298,8 +292,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
@@ -318,6 +310,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
+
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
                 // NEW button
                 $urlParameters = [
@@ -326,52 +319,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     'createExtension' => 'new'
                 ];
 
-                if (!empty($this->e) && !GeneralUtility::_POST('_saveandclosedok')) {
-                    $saveButton = $buttonBar->makeInputButton()
-                        ->setName('_savedok')
-                        ->setValue('1')
-                        ->setForm('TypoScriptTemplateModuleController')
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-save',
-                            Icon::SIZE_SMALL
-                        ))
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'));
-
-                    $saveAndCloseButton = $buttonBar->makeInputButton()
-                        ->setName('_saveandclosedok')
-                        ->setValue('1')
-                        ->setForm('TypoScriptTemplateModuleController')
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-save-close',
-                            Icon::SIZE_SMALL
-                        ));
-
-                    $splitButtonElement = $buttonBar->makeSplitButton()
-                        ->addItem($saveButton)
-                        ->addItem($saveAndCloseButton);
-
-                    $buttonBar->addButton($splitButtonElement, ButtonBar::BUTTON_POSITION_LEFT, 3);
-
-                    // CLOSE button
-                    $closeButton = $buttonBar->makeLinkButton()
-                        ->setHref(BackendUtility::getModuleUrl('web_ts', ['id' => $this->id]))
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-close',
-                            Icon::SIZE_SMALL
-                        ));
-                    $buttonBar->addButton($closeButton);
-                } else {
-                    $newButton = $buttonBar->makeLinkButton()
-                        ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
-                        ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-document-new',
-                            Icon::SIZE_SMALL
-                        ));
-                    $buttonBar->addButton($newButton);
-                }
+                $newButton = $buttonBar->makeLinkButton()
+                    ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                        'actions-document-new',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($newButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class
                 && !empty($this->MOD_MENU['constant_editor_cat'])) {
                 // SAVE button

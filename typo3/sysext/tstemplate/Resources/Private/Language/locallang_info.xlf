@@ -72,9 +72,6 @@
 			<trans-unit id="editTemplateRecord">
 				<source>Edit the whole template record</source>
 			</trans-unit>
-			<trans-unit id="includeTypoScriptFileContent">
-				<source>Include TypoScript file content</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

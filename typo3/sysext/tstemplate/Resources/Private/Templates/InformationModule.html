@@ -12,29 +12,6 @@
         </div>
     </f:if>
     <f:format.raw>{formResult}</f:format.raw>
-    <f:if condition="{showConstantsEditor}">
-        <h3><f:translate key="{LLPrefix}constants"/></h3>
-        <textarea name="data[constants]" rows="{numberOfRows}" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">{constants}</textarea>
-        <input type="hidden" name="e[constants]" value="1">
-        <div class="checkbox">
-            <label for="checkIncludeTypoScriptFileContent">
-                <f:format.raw>{constantsLabel}</f:format.raw>
-                <f:translate key="{LLPrefix}includeTypoScriptFileContent"/>
-            </label>
-        </div>
-    </f:if>
-    <f:if condition="{showConfigEditor}">
-        <h3><f:translate key="{LLPrefix}setup"/></h3>
-        <textarea name="data[config]" rows="{numberOfRows}" wrap="off" class="text-monospace enable-tab" style="width:98%;height:70%" class="text-monospace">{config}</textarea>
-        <input type="hidden" name="e[config]" value="1">
-        <div class="checkbox">
-            <label for="checkIncludeTypoScriptFileContent">
-                <f:format.raw>{configLabel}</f:format.raw>
-                <f:translate key="{LLPrefix}includeTypoScriptFileContent"/>
-            </label>
-        </div>
-    </f:if>
-    <br />
     <div class="table-fit">
         <table class="table table-striped table-hover">
             <f:for each="{tableRows}" as="line">
