@@ -237,6 +237,7 @@ class ElementInformationController
             $view->assignMultiple($this->getPropertiesForTable());
             $view->assignMultiple($this->getReferences());
             $view->assignMultiple($this->getBackButton());
+            $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
             $content .=  $view->render();
         }
         $this->moduleTemplate->setContent($content);
@@ -250,7 +251,7 @@ class ElementInformationController
     protected function getPageTitle() : array
     {
         $pageTitle = [
-            'title' => strip_tags(BackendUtility::getRecordTitle($this->table, $this->row))
+            'title' => BackendUtility::getRecordTitle($this->table, $this->row, false)
         ];
         if ($this->type === 'folder') {
             $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:folder');
@@ -585,7 +586,7 @@ class ElementInformationController
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
-                $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, true);
+                $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, false, true);
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
@@ -649,7 +650,7 @@ class ElementInformationController
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
-                $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, true);
+                $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($table, $row['field']);
                 $line['actions'] = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
