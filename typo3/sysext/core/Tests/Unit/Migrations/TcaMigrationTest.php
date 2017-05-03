@@ -6158,7 +6158,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function migrateOfChildOverrideIsSkippedWhenNewConfigIsFound()
+    public function migrateForeignTypesMergedIntoExistingOverrideChildTca()
     {
         $input = [
             'aTable' => [
@@ -6168,7 +6168,13 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'type' => 'inline',
                             'foreign_types' => [
                                 '0' => [
-                                    'showitem' => 'bar'
+                                    // This does NOT override existing 'showitem'='baz' below
+                                    'showitem' => 'doesNotOverrideExistingSetting',
+                                    // This is added to existing types 0 below
+                                    'bitmask_value_field' => 42,
+                                ],
+                                'otherType' => [
+                                    'showitem' => 'aField',
                                 ],
                             ],
                             'overrideChildTca' => [
@@ -6183,7 +6189,28 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ],
             ],
         ];
-        $expected = $input;
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'overrideChildTca' => [
+                                'types' => [
+                                    '0' => [
+                                        'showitem' => 'baz',
+                                        'bitmask_value_field' => 42,
+                                    ],
+                                    'otherType' => [
+                                        'showitem' => 'aField',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
         $subject = new TcaMigration();
         $this->assertEquals($expected, $subject->migrate($input));
     }
@@ -6200,8 +6227,22 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'foreign_record_defaults' => [
-                                'aField' => 'overriddenValue',
-                                'bField' => 'overriddenValue',
+                                'aField' => 'doesNotOverrideExistingOverrideChildTcaDefault',
+                                'bField' => 'aDefault',
+                            ],
+                            'overrideChildTca' => [
+                                'columns' => [
+                                    'aField' => [
+                                        'config' => [
+                                            'default' => 'aDefault'
+                                        ],
+                                    ],
+                                    'cField' => [
+                                        'config' => [
+                                            'default' => 'aDefault'
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -6218,12 +6259,17 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                 'columns' => [
                                     'aField' => [
                                         'config' => [
-                                            'default' => 'overriddenValue'
+                                            'default' => 'aDefault'
                                         ],
                                     ],
                                     'bField' => [
                                         'config' => [
-                                            'default' => 'overriddenValue'
+                                            'default' => 'aDefault'
+                                        ],
+                                    ],
+                                    'cField' => [
+                                        'config' => [
+                                            'default' => 'aDefault'
                                         ],
                                     ],
                                 ],
@@ -6254,9 +6300,19 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                 'config' => [
                                     'aGivenSetting' => 'overrideValue',
                                     'aNewSetting' => 'anotherNewValue',
+                                    'anExistingSettingInOverrideChildTca' => 'doesNotOverrideExistingOverrideChildTcaDefault',
                                     'appearance' => [
                                         'elementBrowserType' => 'file',
                                         'elementBrowserAllowed' => 'jpg,png'
+                                    ],
+                                ],
+                            ],
+                            'overrideChildTca' => [
+                                'columns' => [
+                                    'uid_local' => [
+                                        'config' => [
+                                            'anExistingSettingInOverrideChildTca' => 'notOverridenByOldSetting',
+                                        ],
                                     ],
                                 ],
                             ],
@@ -6277,6 +6333,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                     'uid_local' => [
                                         'label' => 'aDifferentLabel',
                                         'config' => [
+                                            'anExistingSettingInOverrideChildTca' => 'notOverridenByOldSetting',
                                             'aGivenSetting' => 'overrideValue',
                                             'aNewSetting' => 'anotherNewValue',
                                             'appearance' => [
