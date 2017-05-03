@@ -129,7 +129,7 @@ return [
             'label' => 'LLL:EXT:sys_action/Resources/Private/Language/locallang_tca.xlf:sys_action.t3_tables',
             'config' => [
                 'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
+                'renderType' => 'selectSingle',
                 'special' => 'tables',
                 'items' => [
                     ['', '']
