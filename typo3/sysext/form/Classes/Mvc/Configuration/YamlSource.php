@@ -70,6 +70,12 @@ class YamlSource
             if ($fileToLoad instanceof File) {
                 $fileIdentifier = $fileToLoad->getIdentifier();
                 $rawYamlContent = $fileToLoad->getContents();
+                if ($rawYamlContent === false) {
+                    throw new NoSuchFileException(
+                        'The file "' . $fileToLoad . '" does not exist.',
+                        1498802253
+                    );
+                }
             } else {
                 $fileIdentifier = $fileToLoad;
                 $fileToLoad = GeneralUtility::getFileAbsFileName($fileToLoad);
