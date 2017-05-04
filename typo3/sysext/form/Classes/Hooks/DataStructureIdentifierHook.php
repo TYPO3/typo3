@@ -15,12 +15,18 @@ namespace TYPO3\CMS\Form\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Hooks into flex form handling of backend for tt_content form elements:
@@ -33,6 +39,11 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class DataStructureIdentifierHook
 {
+
+    /**
+     * Localisation prefix
+     */
+    const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
     /**
      * The data structure depends on a current form selection (persistenceIdentifier)
@@ -90,27 +101,51 @@ class DataStructureIdentifierHook
     public function parseDataStructureByIdentifierPostProcess(array $dataStructure, array $identifier): array
     {
         if (isset($identifier['ext-form-persistenceIdentifier'])) {
-            // Add list of existing forms to drop down if we find our key in the identifier
-            $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
-            foreach ($formPersistenceManager->listForms() as $form) {
-                $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
-                    $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                    $form['persistenceIdentifier'],
-                ];
-            }
+            try {
+                // Add list of existing forms to drop down if we find our key in the identifier
+                $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
+                $formIsAccessible = false;
+                foreach ($formPersistenceManager->listForms() as $form) {
+                    if ($form['persistenceIdentifier'] === $identifier['ext-form-persistenceIdentifier']) {
+                        $formIsAccessible = true;
+                    }
 
-            // If a specific form is selected and if finisher override is active, add finisher sheets
-            if (!empty($identifier['ext-form-persistenceIdentifier'])
-                && isset($identifier['ext-form-overrideFinishers'])
-                && $identifier['ext-form-overrideFinishers'] === true
-            ) {
-                $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
-                $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
-                $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
-                ArrayUtility::mergeRecursiveWithOverrule(
-                    $dataStructure,
-                    $newSheets
-                );
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                        $form['persistenceIdentifier'],
+                    ];
+                }
+
+                if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                        sprintf(
+                            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                            $identifier['ext-form-persistenceIdentifier']
+                        ),
+                        $identifier['ext-form-persistenceIdentifier'],
+                    ];
+                }
+
+                // If a specific form is selected and if finisher override is active, add finisher sheets
+                if (!empty($identifier['ext-form-persistenceIdentifier'])
+                    && $formIsAccessible
+                    && isset($identifier['ext-form-overrideFinishers'])
+                    && $identifier['ext-form-overrideFinishers'] === true
+                ) {
+                    $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
+                    $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
+                    $newSheets = $this->getAdditionalFinisherSheets($persistenceIdentifier, $formDefinition);
+                    ArrayUtility::mergeRecursiveWithOverrule(
+                        $dataStructure,
+                        $newSheets
+                    );
+                }
+            } catch (NoSuchFileException $e) {
+                $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
+                $this->addInvalidFrameworkConfigurationFlashMessage($e);
+            } catch (ParseErrorException $e) {
+                $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
+                $this->addInvalidFrameworkConfigurationFlashMessage($e);
             }
         }
         return $dataStructure;
@@ -261,5 +296,57 @@ class DataStructureIdentifierHook
             $dottedPath .= '.' . $this->implodeArrayKeys($nestedArray[$dottedPath]);
         }
         return $dottedPath;
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @param array $dataStructure
+     * @return array
+     */
+    protected function addSelectedPersistenceIdentifier(string $persistenceIdentifier, array $dataStructure): array
+    {
+        if (!empty($persistenceIdentifier)) {
+            $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                sprintf(
+                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                    $persistenceIdentifier
+                ),
+                $persistenceIdentifier,
+            ];
+        }
+
+        return $dataStructure;
+    }
+
+    /**
+     * @param \Exception $e
+     */
+    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e)
+    {
+        $messageText = sprintf(
+            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+            $e->getMessage()
+        );
+
+        GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(FlashMessageService::class)
+            ->getMessageQueueByIdentifier('core.template.flashMessages')
+            ->enqueue(
+                GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    $messageText,
+                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
+                    AbstractMessage::ERROR,
+                    true
+                )
+            );
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
