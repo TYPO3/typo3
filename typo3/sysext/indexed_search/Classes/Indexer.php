@@ -2180,7 +2180,9 @@ class Indexer
             ];
         }
 
-        $connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
+        if (!empty($rows)) {
+            $connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
+        }
     }
 
     /**
