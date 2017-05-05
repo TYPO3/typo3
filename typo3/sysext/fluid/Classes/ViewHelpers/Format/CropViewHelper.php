@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Use this view helper to crop the text between its opening and closing tags.
@@ -63,6 +64,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class CropViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * The output may contain HTML and can not be escaped.
      *
@@ -82,31 +85,6 @@ class CropViewHelper extends AbstractViewHelper
         $this->registerArgument('append', 'string', 'What to append, if truncation happened', false, '...');
         $this->registerArgument('respectWordBoundaries', 'bool', 'If TRUE and division is in the middle of a word, the remains of that word is removed.', false, true);
         $this->registerArgument('respectHtml', 'bool', 'If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()', false, true);
-    }
-
-    /**
-     * Render the cropped text.
-     *
-     * @return string cropped text
-     * @throws \InvalidArgumentException
-     */
-    public function render()
-    {
-        $maxCharacters = $this->arguments['maxCharacters'];
-        $append = $this->arguments['append'];
-        $respectWordBoundaries = $this->arguments['respectWordBoundaries'];
-        $respectHtml = $this->arguments['respectHtml'];
-
-        return static::renderStatic(
-            [
-                'maxCharacters' => $maxCharacters,
-                'append' => $append,
-                'respectWordBoundaries' => $respectWordBoundaries,
-                'respectHtml' => $respectHtml,
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

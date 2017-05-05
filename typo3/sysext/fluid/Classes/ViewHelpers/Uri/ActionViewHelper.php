@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * A view helper for creating URIs to extbase actions.
  *
@@ -29,6 +32,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  */
 class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      *
@@ -57,30 +62,32 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     }
 
     /**
-     * @return string Rendered link
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $pageUid = $this->arguments['pageUid'];
-        $pageType = $this->arguments['pageType'];
-        $noCache = $this->arguments['noCache'];
-        $noCacheHash = $this->arguments['noCacheHash'];
-        $section = $this->arguments['section'];
-        $format = $this->arguments['format'];
-        $linkAccessRestrictedPages = $this->arguments['linkAccessRestrictedPages'];
-        $additionalParams = $this->arguments['additionalParams'];
-        $absolute = $this->arguments['absolute'];
-        $addQueryString = $this->arguments['addQueryString'];
-        $argumentsToBeExcludedFromQueryString = $this->arguments['argumentsToBeExcludedFromQueryString'];
-        $addQueryStringMethod = $this->arguments['addQueryStringMethod'];
-        $action = $this->arguments['action'];
-        $arguments = $this->arguments['arguments'];
-        $controller = $this->arguments['controller'];
-        $extensionName = $this->arguments['extensionName'];
-        $pluginName = $this->arguments['pluginName'];
+        $pageUid = $arguments['pageUid'];
+        $pageType = $arguments['pageType'];
+        $noCache = $arguments['noCache'];
+        $noCacheHash = $arguments['noCacheHash'];
+        $section = $arguments['section'];
+        $format = $arguments['format'];
+        $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];
+        $additionalParams = $arguments['additionalParams'];
+        $absolute = $arguments['absolute'];
+        $addQueryString = $arguments['addQueryString'];
+        $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
+        $addQueryStringMethod = $arguments['addQueryStringMethod'];
+        $action = $arguments['action'];
+        $controller = $arguments['controller'];
+        $extensionName = $arguments['extensionName'];
+        $pluginName = $arguments['pluginName'];
+        $arguments = $arguments['arguments'];
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
-        $uri = $uriBuilder
+        $uri = $renderingContext->getControllerContext()->getUriBuilder()
             ->reset()
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)

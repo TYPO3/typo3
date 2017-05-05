@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  */
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Applies html_entity_decode() to a value
@@ -40,6 +41,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * We accept value and children interchangeably, thus we must disable children escaping.
      *
@@ -68,19 +71,7 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
     /**
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
-     * @return string the altered string
      * @see http://www.php.net/html_entity_decode
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
@@ -89,13 +80,10 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $arguments['value'];
+        $value = $renderChildrenClosure();
         $encoding = $arguments['encoding'];
         $keepQuotes = $arguments['keepQuotes'];
 
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
         if (!is_string($value)) {
             return $value;
         }

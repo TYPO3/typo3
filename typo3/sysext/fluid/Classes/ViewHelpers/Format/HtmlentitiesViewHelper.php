@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Applies htmlentities() escaping to a value
@@ -38,8 +39,10 @@ use TYPO3\CMS\Core\SingletonInterface;
  *
  * @api
  */
-class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements SingletonInterface
+class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * Output gets encoded by this viewhelper
      *
@@ -68,20 +71,19 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper implements Singl
     /**
      * Escapes special characters with their escaped counterparts as needed using PHPs htmlentities() function.
      *
-     * @return string the altered string
      * @see http://www.php.net/manual/function.htmlentities.php
-     * @api
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $this->arguments['value'];
-        $encoding = $this->arguments['encoding'];
-        $keepQuotes = $this->arguments['keepQuotes'];
-        $doubleEncode = $this->arguments['doubleEncode'];
+        $value = $renderChildrenClosure();
+        $encoding = $arguments['encoding'];
+        $keepQuotes = $arguments['keepQuotes'];
+        $doubleEncode = $arguments['doubleEncode'];
 
-        if ($value === null) {
-            $value = $this->renderChildren();
-        }
         if (!is_string($value)) {
             return $value;
         }

@@ -18,6 +18,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Translate a key from locallang. The files are loaded from the folder
@@ -72,6 +73,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class TranslateViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -93,20 +96,6 @@ class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('htmlEscape', 'bool', 'TRUE if the result should be htmlescaped. This won\'t have an effect for the default value');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
-    }
-
-    /**
-     * Render translation
-     *
-     * @return string The translated key or tag body if key doesn't exist
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

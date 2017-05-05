@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Removes tags from the given string (applying PHPs strip_tags() function)
@@ -42,6 +43,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class StripTagsViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * No output escaping as some tags may be allowed
      *
@@ -69,33 +72,12 @@ unction');
     protected $escapeChildren = false;
 
     /**
-     * Escapes special characters with their escaped counterparts as needed using PHPs strip_tags() function.
-     *
-     * @return mixed
-     * @see http://www.php.net/manual/function.strip-tags.php
-     * @api
-     */
-    public function render()
-    {
-        $value = $this->arguments['value'];
-        $allowedTags = $this->arguments['allowedTags'];
-
-        return static::renderStatic(
-            [
-                'value' => $value,
-                'allowedTags' => $allowedTags
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
      * Applies strip_tags() on the specified value.
      *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @see http://www.php.net/manual/function.strip-tags.php
      * @return string
      */
     public static function renderStatic(
@@ -103,11 +85,8 @@ unction');
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $arguments['value'];
+        $value = $renderChildrenClosure();
         $allowedTags = $arguments['allowedTags'];
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
         if (!is_string($value)) {
             return $value;
         }
