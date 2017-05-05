@@ -765,7 +765,8 @@ class AdminPanelView
                 $tableArr[] = [$this->extGetLL('info_feuserName'), htmlspecialchars($tsfe->fe_user->user['username'])];
                 $tableArr[] = [$this->extGetLL('info_feuserId'), htmlspecialchars($tsfe->fe_user->user['uid'])];
             }
-            $tableArr[] = [$this->extGetLL('info_totalParsetime'), $tsfe->scriptParseTime . ' ms', true];
+
+            $tableArr[] = [$this->extGetLL('info_totalParsetime'), $this->getTimeTracker()->getParseTime() . ' ms', true];
             $table = '';
             foreach ($tableArr as $key => $arr) {
                 $label = (isset($arr[2]) ? '<strong>' . $arr[0] . '</strong>' : $arr[0]);
