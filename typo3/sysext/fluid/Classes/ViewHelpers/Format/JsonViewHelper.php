@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Wrapper for PHPs json_encode function.
@@ -50,11 +51,16 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class JsonViewHelper extends AbstractViewHelper
 {
+    use CompileWithContentArgumentAndRenderStatic;
+
     /**
      * @var bool
      */
     protected $escapeChildren = false;
 
+    /**
+     * Initialize arguments
+     */
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'The incoming data to convert, or null if VH children should be used');
@@ -62,35 +68,23 @@ class JsonViewHelper extends AbstractViewHelper
     }
 
     /**
+     * Applies json_encode() on the specified value.
+     *
      * Outputs content with its JSON representation. To prevent issues in HTML context, occurrences
      * of greater-than or less-than characters are converted to their hexadecimal representations.
      *
      * If $forceObject is TRUE a JSON object is outputted even if the value is a non-associative array
      * Example: array('foo', 'bar') as input will not be ["foo","bar"] but {"0":"foo","1":"bar"}
      *
-     * @return string the JSON-encoded string.
-     * @see http://www.php.net/manual/en/function.json-encode.php
-     * @api
-     */
-    public function render()
-    {
-        return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    /**
-     * Applies json_encode() on the specified value.
-     *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     * @see http://www.php.net/manual/en/function.json-encode.php
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $arguments['value'];
-        if ($value === null) {
-            $value = $renderChildrenClosure();
-        }
+        $value = $renderChildrenClosure();
         $options = JSON_HEX_TAG;
         if ($arguments['forceObject'] !== false) {
             $options = $options | JSON_FORCE_OBJECT;

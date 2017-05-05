@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
@@ -79,6 +81,8 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class FlashMessagesViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * ViewHelper outputs HTML therefore output escaping has to be disabled
      *
@@ -104,57 +108,31 @@ class FlashMessagesViewHelper extends AbstractViewHelper
      * from being cached.
      *
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
-     * @return string rendered Flash Messages, if there are any.
-     * @api
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $as = $this->arguments['as'];
-        $queueIdentifier = isset($this->arguments['queueIdentifier']) ? $this->arguments['queueIdentifier'] : null;
-        $flashMessages = $this->renderingContext->getControllerContext()
+        $as = $arguments['as'];
+        $queueIdentifier = isset($arguments['queueIdentifier']) ? $arguments['queueIdentifier'] : null;
+        $flashMessages = $renderingContext->getControllerContext()
             ->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {
             return '';
         }
 
         if ($as === null) {
-            $content = $this->renderDefault($flashMessages);
+            return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
+                ->resolve()
+                ->render($flashMessages);
         } else {
-            $content = $this->renderFromTemplate($flashMessages, $as);
+            $templateVariableContainer = $renderingContext->getVariableProvider();
+            $templateVariableContainer->add($as, $flashMessages);
+            $content = $renderChildrenClosure();
+            $templateVariableContainer->remove($as);
         }
-
-        return $content;
-    }
-
-    /**
-     * Renders the flash messages
-     *
-     * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
-     * @return string
-     */
-    protected function renderDefault(array $flashMessages) : string
-    {
-        return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
-            ->resolve()
-            ->render($flashMessages);
-    }
-
-    /**
-     * Renders the flash messages as nested divs
-     * Defer the rendering of Flash Messages to the template. In this case,
-     * the flash messages are stored in the template inside the variable specified
-     * in "as".
-     *
-     * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
-     * @param string $as
-     * @return string
-     */
-    protected function renderFromTemplate(array $flashMessages, $as) : string
-    {
-        $templateVariableContainer = $this->renderingContext->getVariableProvider();
-        $templateVariableContainer->add($as, $flashMessages);
-        $content = $this->renderChildren();
-        $templateVariableContainer->remove($as);
 
         return $content;
     }

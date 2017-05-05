@@ -33,16 +33,24 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     protected $escapeOutput = false;
 
     /**
-     * @param array $arguments
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('arguments', 'array', 'Arguments to assign as template variables', false, []);
+    }
+
+    /**
      * @return string
      */
-    public function render(array $arguments = [])
+    public function render()
     {
         $renderingContext = $this->getWidgetRenderingContext();
         $widgetChildNodes = $this->getWidgetChildNodes();
-        $this->addArgumentsToTemplateVariableContainer($arguments);
+        $this->addArgumentsToTemplateVariableContainer($this->arguments['arguments']);
         $output = $widgetChildNodes->evaluate($renderingContext);
-        $this->removeArgumentsFromTemplateVariableContainer($arguments);
+        $this->removeArgumentsFromTemplateVariableContainer($this->arguments['arguments']);
         return $output;
     }
 
