@@ -239,7 +239,7 @@ class RequestHandler implements RequestHandlerInterface
                 $debugParseTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
             }
             if ($debugParseTime) {
-                $this->controller->content .= LF . '<!-- Parsetime: ' . $this->getParseTime() . 'ms -->';
+                $this->controller->content .= LF . '<!-- Parsetime: ' . $this->timeTracker->getParseTime() . 'ms -->';
             }
         }
         $this->controller->redirectToExternalUrl();
@@ -342,23 +342,5 @@ class RequestHandler implements RequestHandlerInterface
         // that the $controller member always works on the same object as the global variable.
         // This is a dirty workaround and bypasses the protected access modifier of the controller member.
         $GLOBALS['TSFE'] = &$this->controller;
-    }
-
-    /**
-     * Calculates the parsetime of the page and returns it.
-     *
-     * @return int the parse time of the page
-     */
-    protected function getParseTime()
-    {
-        // Compensates for the time consumed with Back end user initialization.
-        $processStart = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : null;
-        $processEnd = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : null;
-        $beUserInitializationStart = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : null;
-        $beUserInitializationEnd = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : null;
-        return $this->timeTracker->getMilliseconds($processStart)
-                - $this->timeTracker->getMilliseconds($processEnd)
-                - ($this->timeTracker->getMilliseconds($beUserInitializationStart)
-                - $this->timeTracker->getMilliseconds($beUserInitializationEnd));
     }
 }
