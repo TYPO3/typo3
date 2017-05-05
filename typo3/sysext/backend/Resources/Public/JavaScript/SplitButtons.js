@@ -37,7 +37,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 			'button[name^="_save"]',
 			'a[data-name^="_save"]',
 			'button[name="CMD"][value^="save"]',
-			'a[data-name="CMD"][data-value^="save"]'
+			'a[data-name="CMD"][data-value^="save"]',
+			'button[name^="_translation_save"]',
+			'a[data-name^="_translation_save"]',
+			'button[name="CMD"][value^="_translation_save"]',
+			'a[data-name="CMD"][data-value^="_translation_save"]'
 		].join(',');
 		$('.t3js-module-docheader').on('click', elements, function(e) {
 			// prevent doubleclick double submission bug in chrome,
