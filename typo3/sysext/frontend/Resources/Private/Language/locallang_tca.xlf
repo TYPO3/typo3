@@ -307,22 +307,22 @@
 				<source>Show Content from Page</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid">
-				<source>Mount Point (advanced):</source>
+				<source>Mount Point of:</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_formlabel">
 				<source>Mounted page</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_ol">
-				<source>Substitute Mount Point (this page) with Mounted page:</source>
+				<source>Mount Point redirects to mounted page</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_ol_formlabel">
-				<source>Show Content from</source>
+				<source>Mount Point Display Option</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_ol.I.0">
-				<source>This Page</source>
+				<source>Show this page</source>
 			</trans-unit>
 			<trans-unit id="pages.mount_pid_ol.I.1">
-				<source>Mounted Page</source>
+				<source>Show the mounted page</source>
 			</trans-unit>
 			<trans-unit id="pages.abstract">
 				<source>Abstract:</source>
