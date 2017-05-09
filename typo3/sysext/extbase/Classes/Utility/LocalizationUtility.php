@@ -72,18 +72,23 @@ class LocalizationUtility
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
-     * @param string $extensionName The name of the extension
+     * @param string|null $extensionName The name of the extension
      * @param array $arguments the arguments of the extension, being passed over to vsprintf
      * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
      * @api
      * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
      */
-    public static function translate($key, $extensionName, $arguments = null)
+    public static function translate($key, $extensionName = null, $arguments = null)
     {
         $value = null;
         if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
             $value = self::translateFileReference($key);
         } else {
+            if (empty($extensionName)) {
+                throw new \InvalidArgumentException(
+                    'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.', 1498144052
+                );
+            }
             self::initializeLocalization($extensionName);
             // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
             if (!empty(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'])

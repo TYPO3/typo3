@@ -454,4 +454,25 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $this->assertNotNull($result);
         $this->assertEquals('', $result);
     }
+
+    /**
+     * Tests whether method can be invoked without second parameter. Actual translation is not tested here.
+     *
+     * @test
+     */
+    public function translateWithFullyQualifiedKey()
+    {
+        $result = LocalizationUtility::translate('LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type');
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @test
+     */
+    public function translateThrowsExceptionWithEmptyExtensionNameIfKeyIsNotPrefixedWithLLL()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1498144052);
+        LocalizationUtility::translate('foo/bar', '');
+    }
 }
