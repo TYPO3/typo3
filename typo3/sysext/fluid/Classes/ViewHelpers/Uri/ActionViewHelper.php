@@ -82,10 +82,10 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
         $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
         $addQueryStringMethod = $arguments['addQueryStringMethod'];
         $action = $arguments['action'];
-        $arguments = $arguments['arguments'];
         $controller = $arguments['controller'];
         $extensionName = $arguments['extensionName'];
         $pluginName = $arguments['pluginName'];
+        $arguments = $arguments['arguments'];
 
         $uri = $renderingContext->getControllerContext()->getUriBuilder()
             ->reset()
