@@ -519,7 +519,7 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 		 * @return	string		the url
 		 */
 		makeUrlFromModulePath: function (modulePath, parameters) {
-			return modulePath + (modulePath.indexOf("?") === -1 ? "?" : "&") + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + (parameters?parameters:'');
+			return modulePath + (modulePath.indexOf("?") === -1 ? "?" : "&") + this.editorConfiguration.uidOfPageRecord + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + (parameters?parameters:'');
 		},
 
 		/**

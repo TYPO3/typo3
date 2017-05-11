@@ -659,6 +659,7 @@ class RichTextElement extends AbstractFormElement
         $jsArray[] = 'editornumber = ' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ';';
         $jsArray[] = 'RTEarea[editornumber] = new Object();';
         $jsArray[] = 'RTEarea[editornumber].RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams()) . '";';
+        $jsArray[] = 'RTEarea[editornumber].uidOfPageRecord = "&id=' . (int)$this->pidOfPageRecord . '";';
         $jsArray[] = 'RTEarea[editornumber].number = editornumber;';
         $jsArray[] = 'RTEarea[editornumber].deleted = false;';
         $jsArray[] = 'RTEarea[editornumber].textAreaId = ' . GeneralUtility::quoteJSvalue($this->domIdentifier) . ';';
