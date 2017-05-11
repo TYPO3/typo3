@@ -111,8 +111,6 @@ class RequestHandler implements RequestHandlerInterface
         $this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
         $this->initializeOutputCompression();
 
-        $this->bootstrap->loadBaseTca();
-
         // Initializing the Frontend User
         $this->timeTracker->push('Front End user initialized', '');
         $this->controller->initFEuser();

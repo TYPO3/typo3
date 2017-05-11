@@ -172,7 +172,8 @@ class Bootstrap
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
             ->defineLoggingAndExceptionConstants()
-            ->unsetReservedGlobalVariables();
+            ->unsetReservedGlobalVariables()
+            ->loadBaseTca();
 
         return $this;
     }

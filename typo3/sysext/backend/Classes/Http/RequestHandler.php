@@ -90,7 +90,6 @@ class RequestHandler implements RequestHandlerInterface
             ->checkBackendIpOrDie()
             ->checkSslBackendAndRedirectIfNeeded()
             ->initializeBackendRouter()
-            ->loadBaseTca()
             ->loadExtTables()
             ->initializeBackendUser()
             ->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)

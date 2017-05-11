@@ -39,9 +39,7 @@ class EidUtility
      */
     public static function initFeUser()
     {
-        // Get TSFE instance. It knows how to initialize the user. We also
-        // need TCA because services may need extra tables!
-        self::initTCA();
+        // Get TSFE instance. It knows how to initialize the user.
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = self::getTSFE();
         $tsfe->initFEuser();
@@ -64,9 +62,11 @@ class EidUtility
 
     /**
      * Makes TCA available inside eID
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - this is not needed anymore as TCA is now always available
      */
     public static function initTCA()
     {
+        GeneralUtility::logDeprecatedFunction();
         // Some badly made extensions attempt to manipulate TCA in a wrong way
         // (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
         // but in fact it is not loaded. The check below ensure that
