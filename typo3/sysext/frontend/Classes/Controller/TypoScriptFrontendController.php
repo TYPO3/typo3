@@ -4532,14 +4532,4 @@ class TypoScriptFrontendController
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }
-
-    /**
-     * Returns an instance of DocumentTemplate
-     *
-     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-     */
-    protected function getDocumentTemplate()
-    {
-        return $GLOBALS['TBE_TEMPLATE'];
-    }
 }
