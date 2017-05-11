@@ -787,11 +787,6 @@ class TypoScriptFrontendController
     protected $requestedId;
 
     /**
-     * @var bool
-     */
-    public $dtdAllowsFrames;
-
-    /**
      * Class constructor
      * Takes a number of GET/POST input variable as arguments and stores them internally.
      * The processing of these variables goes on later in this class.
@@ -3135,19 +3130,6 @@ class TypoScriptFrontendController
         $this->initializeSearchWordDataInTsfe();
         // linkVars
         $this->calculateLinkVars();
-        // dtdAllowsFrames indicates whether to use the target attribute in links
-        $this->dtdAllowsFrames = false;
-        if ($this->config['config']['doctype']) {
-            if (in_array(
-                (string)$this->config['config']['doctype'],
-                ['xhtml_trans', 'xhtml_basic', 'html5'],
-                true)
-            ) {
-                $this->dtdAllowsFrames = true;
-            }
-        } else {
-            $this->dtdAllowsFrames = true;
-        }
         // Setting XHTML-doctype from doctype
         if (!$this->config['config']['xhtmlDoctype']) {
             $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'];

@@ -494,23 +494,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
     /**
      * @return array
      */
-    protected function getLibParseTarget()
-    {
-        return [
-            'override' => '',
-            'override.' => [
-                'if.' => [
-                    'isTrue.' => [
-                        'data' => 'TSFE:dtdAllowsFrames',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
     protected function getLibParseFunc()
     {
         return [
@@ -519,7 +502,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                 'http.' => [
                     'keep' => '{$styles.content.links.keep}',
                     'extTarget' => '',
-                    'extTarget.' => $this->getLibParseTarget(),
                     'mailto.' => [
                         'keep' => 'path',
                     ],
@@ -533,8 +515,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                         'parameter.' => [
                             'data' => 'parameters : allParams',
                         ],
-                        'extTarget.' => $this->getLibParseTarget(),
-                        'target.' => $this->getLibParseTarget(),
                     ],
                     'parseFunc.' => [
                         'constants' => '1',

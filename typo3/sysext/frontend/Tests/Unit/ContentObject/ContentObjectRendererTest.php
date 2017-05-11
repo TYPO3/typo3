@@ -2299,23 +2299,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     /**
      * @return array
      */
-    protected function getLibParseTarget()
-    {
-        return [
-            'override' => '',
-            'override.' => [
-                'if.' => [
-                    'isTrue.' => [
-                        'data' => 'TSFE:dtdAllowsFrames',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
     protected function getLibParseFunc()
     {
         return [
@@ -2324,7 +2307,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                 'http.' => [
                     'keep' => '{$styles.content.links.keep}',
                     'extTarget' => '',
-                    'extTarget.' => $this->getLibParseTarget(),
                     'mailto.' => [
                         'keep' => 'path',
                     ],
@@ -2338,8 +2320,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                         'parameter.' => [
                             'data' => 'parameters : allParams',
                         ],
-                        'extTarget.' => $this->getLibParseTarget(),
-                        'target.' => $this->getLibParseTarget(),
                     ],
                     'parseFunc.' => [
                         'constants' => '1',
@@ -2464,13 +2444,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                     'http.' => [
                         'extTarget.' =>  [
                             'override' => '_blank',
-                            'override.' => [
-                                'if.' => [
-                                    'isTrue.' => [
-                                        'data' => 'TSFE:dtdAllowsFrames',
-                                    ],
-                                ],
-                            ],
                         ],
                         'keep' => 'path',
                     ],
@@ -2511,26 +2484,12 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                         'typolink.' => [
                             'extTarget.' =>  [
                                 'override' => '',
-                                'override.' => [
-                                    'if.' => [
-                                        'isTrue.' => [
-                                            'data' => 'TSFE:dtdAllowsFrames',
-                                        ],
-                                    ],
-                                ],
                             ],
                             'parameter.' => [
                                 'data' => 'parameters : allParams',
                             ],
                             'target.' =>  [
                                 'override' => '',
-                                'override.' => [
-                                    'if.' => [
-                                        'isTrue.' => [
-                                            'data' => 'TSFE:dtdAllowsFrames',
-                                        ],
-                                    ],
-                                ],
                             ],
                         ],
                     ],

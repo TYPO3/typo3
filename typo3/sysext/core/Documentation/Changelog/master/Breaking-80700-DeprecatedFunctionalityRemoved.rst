@@ -265,6 +265,7 @@ The following public class properties have been dropped:
 * TYPO3\CMS\Core\Imaging\GraphicalFunctions->tempPath
 * TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject->parentMenuArr
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->compensateFieldWidth
+* TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->dtdAllowsFrames
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->excludeCHashVars
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->scriptParseTime
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->csConvObj
