@@ -812,7 +812,7 @@ class DataHandler
         }
 
         foreach ($userTS as $k => $v) {
-            $k = substr($k, 0, -1);
+            $k = mb_substr($k, 0, -1);
             if (!$k || !is_array($v) || !isset($GLOBALS['TCA'][$k])) {
                 continue;
             }
@@ -2778,12 +2778,12 @@ class DataHandler
                     }
                     break;
                 case 'is_in':
-                    $c = strlen($value);
+                    $c = mb_strlen($value);
                     if ($c) {
                         $newVal = '';
                         for ($a = 0; $a < $c; $a++) {
-                            $char = substr($value, $a, 1);
-                            if (strpos($is_in, $char) !== false) {
+                            $char = mb_substr($value, $a, 1);
+                            if (mb_strpos($is_in, $char) !== false) {
                                 $newVal .= $char;
                             }
                         }
@@ -3052,7 +3052,7 @@ class DataHandler
                     }
                     // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
                     // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
-                    if (substr($vKey, -9) !== '.vDEFbase') {
+                    if (mb_substr($vKey, -9) !== '.vDEFbase') {
                         if ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
@@ -4071,7 +4071,7 @@ class DataHandler
             }
             $fileInfo = [];
             $fileInfo['exists'] = @is_file((PATH_site . $rteFileRecord['ref_string']));
-            $fileInfo['original'] = substr($rteFileRecord['ref_string'], 0, -strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
+            $fileInfo['original'] = mb_substr($rteFileRecord['ref_string'], 0, -mb_strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', mb_substr($filename, 10));
             $fileInfo['original_exists'] = @is_file((PATH_site . $fileInfo['original']));
             // CODE from tx_impexp and class.rte_images.php adapted for use here:
             if (!$fileInfo['exists'] || !$fileInfo['original_exists']) {
@@ -4090,7 +4090,7 @@ class DataHandler
                 $origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
                 // Create copy file name:
                 $pI = pathinfo($rteFileRecord['ref_string']);
-                $copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+                $copyDestName = dirname($origDestName) . '/RTEmagicC_' . mb_substr(basename($origDestName), 10) . '.' . $pI['extension'];
                 if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
                     // Making copies:
                     GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
