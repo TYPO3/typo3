@@ -478,7 +478,7 @@ class IndexSearchRepository
         if ($hookObj = &$this->hookRequest('execFinalQuery_idList')) {
             $pageWhere = $hookObj->execFinalQuery_idList('');
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($pageWhere));
-        } elseif ($this->getJoinPagesForQuery()) {
+        } elseif ($this->joinPagesForQuery) {
             // Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.
             $queryBuilder
                 ->join(
@@ -502,7 +502,7 @@ class IndexSearchRepository
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         } elseif ($searchRootPageIdList[0] >= 0) {
             // Collecting all pages IDs in which to search;
-            // filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
+            // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
             $idList = [];
             foreach ($searchRootPageIdList as $rootId) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
@@ -1043,11 +1043,10 @@ class IndexSearchRepository
         } elseif ($this->joinPagesForQuery) {
             // Alternative to getting all page ids by ->getTreeList() where
             // "excludeSubpages" is NOT respected.
-            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $queryBuilder->from('pages');
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('ISEC.page_id')),
-                QueryHelper::stripLogicalOperatorPrefix($this->enableFields('pages')),
                 $queryBuilder->expr()->eq(
                     'pages.no_search',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -1059,7 +1058,7 @@ class IndexSearchRepository
             );
         } elseif ($this->searchRootPageIdList >= 0) {
             // Collecting all pages IDs in which to search;
-            // filtering out ALL pages that are not accessible due to enableFields.
+            // filtering out ALL pages that are not accessible due to restriction containers.
             // Does NOT look for "no_search" field!
             $siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
             $pageIdList = [];
@@ -1226,25 +1225,6 @@ class IndexSearchRepository
             $desc = !$desc;
         }
         return !$desc ? ' DESC' : '';
-    }
-
-    /**
-     * Returns a part of a WHERE clause which will filter out records with start/end times or hidden/fe_groups fields
-     * set to values that should de-select them according to the current time, preview settings or user login.
-     * Definitely a frontend function.
-     * THIS IS A VERY IMPORTANT FUNCTION: Basically you must add the output from this function for EVERY select query you create
-     * for selecting records of tables in your own applications - thus they will always be filtered according to the "enablefields"
-     * configured in TCA
-     * Simply calls \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() BUT will send the show_hidden flag along!
-     * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
-     *
-     * @param string $table The table for which to get the where clause
-     * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
-     * @see \TYPO3\CMS\Frontend\Page\PageRepository::enableFields()
-     */
-    protected function enableFields($table)
-    {
-        return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $table === 'pages' ? $this->getTypoScriptFrontendController()->showHiddenPage : $this->getTypoScriptFrontendController()->showHiddenRecords);
     }
 
     /**
