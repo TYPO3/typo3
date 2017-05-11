@@ -1804,38 +1804,17 @@ class PageRepository
      * Checks if user has access to workspace.
      *
      * @param int $wsid Workspace ID
-     * @return bool <code>TRUE</code> if has access
+     * @return bool true if the backend user has access to a certain workspace
      */
     public function checkWorkspaceAccess($wsid)
     {
         if (!$this->getBackendUser() || !ExtensionManagementUtility::isLoaded('workspaces')) {
             return false;
         }
-        if (isset($this->workspaceCache[$wsid])) {
-            $ws = $this->workspaceCache[$wsid];
-        } else {
-            if ($wsid > 0) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('sys_workspace');
-                $queryBuilder->getRestrictions()->removeAll();
-                $ws = $queryBuilder->select('*')
-                    ->from('sys_workspace')
-                    ->where(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($wsid, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-                    )
-                    ->execute()
-                    ->fetch();
-                if (!is_array($ws)) {
-                    return false;
-                }
-            } else {
-                $ws = $wsid;
-            }
-            $ws = $this->getBackendUser()->checkWorkspace($ws);
-            $this->workspaceCache[$wsid] = $ws;
+        if (!isset($this->workspaceCache[$wsid])) {
+            $this->workspaceCache[$wsid] = $this->getBackendUser()->checkWorkspace($wsid);
         }
-        return (string)$ws['_ACCESS'] !== '';
+        return (string)$this->workspaceCache[$wsid]['_ACCESS'] !== '';
     }
 
     /**
