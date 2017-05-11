@@ -8,7 +8,7 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes JSUNIT_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
 
 sudo: false
 
@@ -64,12 +64,6 @@ script:
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
       ./vendor/typo3/testing-framework/Resources/Core/Build/Scripts/splitFunctionalTests.sh 14
       parallel --jobs 4 -a <(seq 0 13) --gnu './bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-{}.xml'
-    fi
-
-  - >
-    if [[ "$JSUNIT_TESTS" == "yes" ]]; then
-      cd Build && npm update -g npm && npm install && cd ..
-      ./Build/node_modules/karma/bin/karma start vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.js --single-run
     fi
 
   - >
