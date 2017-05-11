@@ -111,8 +111,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
                     }
                 }
-                // @todo: is that a bug? name and id should usually be of different form
-                $fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
+                $fakeParameterArray['itemFormElID'] = $parameterArray['itemFormElID'] . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName);
                 if (isset($flexFormRowData[$flexFormFieldName]['vDEF'])) {
                     $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName]['vDEF'];
                 } else {
