@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * This ViewHelper renders a Pagination of objects for the TYPO3 Backend.
@@ -61,13 +64,27 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
-     * @param string $as
-     * @param array $configuration
+     * Initialize arguments.
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('objects', 'mixed', 'Object', true);
+        $this->registerArgument('as', 'string', 'as', true);
+        $this->registerArgument('configuration', 'array', 'configuration', false, ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]);
+    }
+
+    /**
+     * @throws Exception
      * @return string
      */
-    public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, array $configuration = ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'recordsLabel' => ''])
+    public function render()
     {
+        $objects = $this->arguments['objects'];
+
+        if (!($objects instanceof QueryResultInterface || $objects instanceof ObjectStorage || is_array($objects))) {
+            throw new Exception('Supplied file object type ' . get_class($objects) . ' must be QueryResultInterface or ObjectStorage or be an array.', 1454510732);
+        }
         return $this->initiateSubRequest();
     }
 }

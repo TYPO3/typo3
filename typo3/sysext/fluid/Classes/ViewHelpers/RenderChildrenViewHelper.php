@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Render the inner parts of a Widget.
@@ -25,6 +27,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper might render HTML, the output must not be escaped
      *
@@ -42,48 +46,54 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     }
 
     /**
-     * @return string
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $renderingContext = $this->getWidgetRenderingContext();
-        $widgetChildNodes = $this->getWidgetChildNodes();
-        $this->addArgumentsToTemplateVariableContainer($this->arguments['arguments']);
-        $output = $widgetChildNodes->evaluate($renderingContext);
-        $this->removeArgumentsFromTemplateVariableContainer($this->arguments['arguments']);
+        $subRenderingContext = static::getWidgetRenderingContext($renderingContext);
+        $widgetChildNodes = static::getWidgetChildNodes($renderingContext);
+        static::addArgumentsToTemplateVariableContainer($subRenderingContext, $arguments['arguments']);
+        $output = $widgetChildNodes->evaluate($subRenderingContext);
+        static::removeArgumentsFromTemplateVariableContainer($subRenderingContext, $arguments['arguments']);
         return $output;
     }
 
     /**
      * Get the widget rendering context, or throw an exception if it cannot be found.
      *
+     * @param RenderingContextInterface $renderingContext
      * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException
      * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
-    protected function getWidgetRenderingContext()
+    protected static function getWidgetRenderingContext(RenderingContextInterface $renderingContext)
     {
-        $renderingContext = $this->getWidgetContext()->getViewHelperChildNodeRenderingContext();
-        if (!$renderingContext instanceof \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface) {
+        $subRenderingContext = static::getWidgetContext($renderingContext)->getViewHelperChildNodeRenderingContext();
+        if (!$subRenderingContext instanceof \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface) {
             throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
         }
-        return $renderingContext;
+        return $subRenderingContext;
     }
 
     /**
+     * @param RenderingContextInterface $renderingContext
      * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode
      */
-    protected function getWidgetChildNodes()
+    protected static function getWidgetChildNodes(RenderingContextInterface $renderingContext)
     {
-        return $this->getWidgetContext()->getViewHelperChildNodes();
+        return static::getWidgetContext($renderingContext)->getViewHelperChildNodes();
     }
 
     /**
+     * @param RenderingContextInterface $renderingContext
      * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException
      * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
      */
-    protected function getWidgetContext()
+    protected static function getWidgetContext(RenderingContextInterface $renderingContext)
     {
-        $request = $this->controllerContext->getRequest();
+        $request = $renderingContext->getControllerContext()->getRequest();
         if (!$request instanceof \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest) {
             throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException('The Request is not a WidgetRequest! <f:renderChildren> must be called inside a Widget Template.', 1284986120);
         }
@@ -93,11 +103,12 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     /**
      * Add the given arguments to the TemplateVariableContainer of the widget.
      *
+     * @param RenderingContextInterface $renderingContext
      * @param array $arguments
      */
-    protected function addArgumentsToTemplateVariableContainer(array $arguments)
+    protected static function addArgumentsToTemplateVariableContainer(RenderingContextInterface $renderingContext, array $arguments)
     {
-        $templateVariableContainer = $this->getWidgetRenderingContext()->getVariableProvider();
+        $templateVariableContainer = $renderingContext->getVariableProvider();
         foreach ($arguments as $identifier => $value) {
             $templateVariableContainer->add($identifier, $value);
         }
@@ -106,11 +117,12 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     /**
      * Remove the given arguments from the TemplateVariableContainer of the widget.
      *
+     * @param RenderingContextInterface $renderingContext
      * @param array $arguments
      */
-    protected function removeArgumentsFromTemplateVariableContainer(array $arguments)
+    protected static function removeArgumentsFromTemplateVariableContainer(RenderingContextInterface $renderingContext, array $arguments)
     {
-        $templateVariableContainer = $this->getWidgetRenderingContext()->getVariableProvider();
+        $templateVariableContainer = $renderingContext->getVariableProvider();
         foreach ($arguments as $identifier => $value) {
             $templateVariableContainer->remove($identifier);
         }

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Utility class for phpinfo()
@@ -23,6 +24,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class PhpInfoViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
@@ -32,20 +35,6 @@ class PhpInfoViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeChildren = false;
-
-    /**
-     * Render PHP info
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            [],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
 
     /**
      * @param array $arguments

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Validation results view helper
@@ -63,6 +65,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -83,23 +87,25 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
     }
 
     /**
-     * Iterates through selected errors of the request.
-     *
-     * @return string Rendered string
-     * @api
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return mixed
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $for = $this->arguments['for'];
-        $as = $this->arguments['as'];
+        $templateVariableContainer = $renderingContext->getVariableProvider();
+        $controllerContext = $renderingContext->getcontrollerContext();
+        $for = $arguments['for'];
+        $as = $arguments['as'];
 
-        $validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
+        $validationResults = $controllerContext->getRequest()->getOriginalRequestMappingResults();
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);
         }
-        $this->templateVariableContainer->add($as, $validationResults);
-        $output = $this->renderChildren();
-        $this->templateVariableContainer->remove($as);
+        $templateVariableContainer->add($as, $validationResults);
+        $output = $renderChildrenClosure();
+        $templateVariableContainer->remove($as);
         return $output;
     }
 }

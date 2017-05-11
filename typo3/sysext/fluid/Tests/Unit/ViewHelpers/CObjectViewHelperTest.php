@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  */
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
@@ -137,12 +139,15 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
         ];
 
         $this->configurationManager->getConfiguration(Argument::any())->willReturn($configArray);
-        $this->viewHelper->injectConfigurationManager($this->configurationManager->reveal());
 
         $this->contentObjectRenderer->start(['foo'], 'table')->willReturn();
         $this->contentObjectRenderer->setCurrentVal('foo')->willReturn();
         $this->contentObjectRenderer->cObjGetSingle('TEXT', $subConfigArray)->willReturn('Hello World');
-        $this->viewHelper->injectContentObjectRenderer($this->contentObjectRenderer->reveal());
+
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(ConfigurationManagerInterface::class)->willReturn($this->configurationManager->reveal());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        $GLOBALS['TSFE'] = (object) ['cObj' => $this->contentObjectRenderer->reveal()];
 
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $expectedResult = 'Hello World';
@@ -155,10 +160,11 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
     protected function stubBaseDependencies()
     {
         $this->configurationManager->getConfiguration(Argument::any())->willReturn([]);
-        $this->viewHelper->injectConfigurationManager($this->configurationManager->reveal());
-
         $this->contentObjectRenderer->setCurrentVal(Argument::cetera())->willReturn();
         $this->contentObjectRenderer->cObjGetSingle(Argument::cetera())->willReturn('');
-        $this->viewHelper->injectContentObjectRenderer($this->contentObjectRenderer->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(ConfigurationManagerInterface::class)->willReturn($this->configurationManager->reveal());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        $GLOBALS['TSFE'] = (object) ['cObj' => $this->contentObjectRenderer->reveal()];
     }
 }

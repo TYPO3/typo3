@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A view helper for creating URIs to extbase actions within widgets.
@@ -31,6 +33,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  */
 class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Initialize arguments
      *
@@ -48,38 +52,41 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     }
 
     /**
-     * Render the Uri.
-     *
-     * @return string The rendered link
-     * @api
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $ajax = $this->arguments['ajax'];
+        $ajax = $arguments['ajax'];
 
         if ($ajax === true) {
-            return $this->getAjaxUri();
+            return static::getAjaxUri($renderingContext, $arguments);
         } else {
-            return $this->getWidgetUri();
+            return static::getWidgetUri($renderingContext, $arguments);
         }
     }
 
     /**
      * Get the URI for an AJAX Request.
      *
+     * @param RenderingContextInterface $renderingContext
+     * @param array $arguments
      * @return string the AJAX URI
      */
-    protected function getAjaxUri()
+    protected static function getAjaxUri(RenderingContextInterface $renderingContext, array $arguments)
     {
-        $action = $this->arguments['action'];
-        $arguments = $this->arguments['arguments'];
+        $controllerContext = $renderingContext->getControllerContext();
+        $action = $arguments['action'];
+        $arguments = $arguments['arguments'];
         if ($action === null) {
-            $action = $this->controllerContext->getRequest()->getControllerActionName();
+            $action = $controllerContext->getRequest()->getControllerActionName();
         }
         $arguments['id'] = $GLOBALS['TSFE']->id;
         // @todo page type should be configurable
         $arguments['type'] = 7076;
-        $arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
+        $arguments['fluid-widget-id'] = $controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
         $arguments['action'] = $action;
         return '?' . http_build_query($arguments, null, '&');
     }
@@ -87,26 +94,29 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     /**
      * Get the URI for a non-AJAX Request.
      *
+     * @param RenderingContextInterface $renderingContext
+     * @param array $arguments
      * @return string the Widget URI
      */
-    protected function getWidgetUri()
+    protected static function getWidgetUri(RenderingContextInterface $renderingContext, array $arguments)
     {
-        $uriBuilder = $this->controllerContext->getUriBuilder();
-        $argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
-        $arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : [];
-        if ($this->hasArgument('action')) {
-            $arguments['action'] = $this->arguments['action'];
+        $controllerContext = $renderingContext->getControllerContext();
+        $uriBuilder = $controllerContext->getUriBuilder();
+        $argumentPrefix = $controllerContext->getRequest()->getArgumentPrefix();
+        $parameters = $arguments['arguments'] ?? [];
+        if ($arguments['action'] ?? false) {
+            $parameters['action'] = $arguments['action'];
         }
-        if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
-            $arguments['format'] = $this->arguments['format'];
+        if ($arguments['format'] ?? '' !== '') {
+            $parameters['format'] = $arguments['format'];
         }
         return $uriBuilder->reset()
-            ->setArguments([$argumentPrefix => $arguments])
-            ->setSection($this->arguments['section'])
+            ->setArguments([$argumentPrefix => $parameters])
+            ->setSection($arguments['section'])
             ->setAddQueryString(true)
-            ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'])
+            ->setAddQueryStringMethod($arguments['addQueryStringMethod'])
             ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
-            ->setFormat($this->arguments['format'])
+            ->setFormat($arguments['format'])
             ->build();
     }
 }

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get file path relative to PATH_site from absolute path
@@ -33,26 +34,14 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class RelativePathViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
      * @var bool
      */
     protected $escapeChildren = false;
-
-    /**
-     * Get relative path
-     *
-     * @return string Relative path
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            [],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
 
     /**
      * @param array $arguments

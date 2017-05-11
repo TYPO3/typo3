@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Modifies the case of an input string to upper- or lowercase or capitalization.
@@ -66,6 +67,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class CaseViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Directs the input string being converted to "lowercase"
      */
@@ -105,24 +108,6 @@ class CaseViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('value', 'string', 'The input value. If not given, the evaluated child nodes will be used.', false, null);
         $this->registerArgument('mode', 'string', 'The case to apply, must be one of this\' CASE_* constants. Defaults to uppercase application.', false, self::CASE_UPPER);
-    }
-
-    /**
-     * Changes the case of the input string
-     *
-     * @return string the altered string.
-     * @api
-     */
-    public function render()
-    {
-        return static::renderStatic(
-            [
-                'value' => $this->arguments['value'],
-                'mode' => $this->arguments['mode']
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
     }
 
     /**

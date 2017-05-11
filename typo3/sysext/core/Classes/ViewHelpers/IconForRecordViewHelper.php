@@ -18,12 +18,16 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Displays icon for record
  */
 class IconForRecordViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * View helper returns HTML, thus we need to disable output escaping
      *
@@ -43,16 +47,17 @@ class IconForRecordViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Prints icon html for record icon
-     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render() : string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $table = $this->arguments['table'];
-        $size = $this->arguments['size'];
-        $row = $this->arguments['row'];
-        $alternativeMarkupIdentifier = $this->arguments['alternativeMarkupIdentifier'];
+        $table = $arguments['table'];
+        $size = $arguments['size'];
+        $row = $arguments['row'];
+        $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIconForRecord($table, $row, $size)->render($alternativeMarkupIdentifier);

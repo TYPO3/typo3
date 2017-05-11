@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
@@ -35,18 +38,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class PageRendererViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * @param PageRenderer $pageRenderer
-     */
-    public function injectPageRenderer(PageRenderer $pageRenderer)
-    {
-        $this->pageRenderer = $pageRenderer;
-    }
+    use CompileWithRenderStatic;
 
     /**
      * Initialize arguments.
@@ -65,48 +57,60 @@ class PageRendererViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      */
-    public function render()
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $pageTitle = $this->arguments['pageTitle'];
-        $includeCssFiles = $this->arguments['includeCssFiles'];
-        $includeJsFiles = $this->arguments['includeJsFiles'];
-        $addJsInlineLabels = $this->arguments['addJsInlineLabels'];
-        $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
-        $addInlineSettings = $this->arguments['addInlineSettings'];
+        $pageRenderer = static::getPageRenderer();
+        $pageTitle = $arguments['pageTitle'];
+        $includeCssFiles = $arguments['includeCssFiles'];
+        $includeJsFiles = $arguments['includeJsFiles'];
+        $addJsInlineLabels = $arguments['addJsInlineLabels'];
+        $includeRequireJsModules = $arguments['includeRequireJsModules'];
+        $addInlineSettings = $arguments['addInlineSettings'];
 
         if ($pageTitle) {
-            $this->pageRenderer->setTitle($pageTitle);
+            $pageRenderer->setTitle($pageTitle);
         }
+
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
             foreach ($includeCssFiles as $addCssFile) {
-                $this->pageRenderer->addCssFile($addCssFile);
+                $pageRenderer->addCssFile($addCssFile);
             }
         }
         if (is_array($includeJsFiles) && count($includeJsFiles) > 0) {
             foreach ($includeJsFiles as $addJsFile) {
-                $this->pageRenderer->addJsFile($addJsFile);
+                $pageRenderer->addJsFile($addJsFile);
             }
         }
         if (is_array($includeRequireJsModules) && count($includeRequireJsModules) > 0) {
             foreach ($includeRequireJsModules as $addRequireJsFile) {
-                $this->pageRenderer->loadRequireJsModule($addRequireJsFile);
+                $pageRenderer->loadRequireJsModule($addRequireJsFile);
             }
         }
 
         if (is_array($addInlineSettings) && count($addInlineSettings) > 0) {
-            $this->pageRenderer->addInlineSettingArray(null, $addInlineSettings);
+            $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         }
 
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-            $extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
+            $extensionKey = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionKey();
             foreach ($addJsInlineLabels as $key) {
                 $label = LocalizationUtility::translate($key, $extensionKey);
-                $this->pageRenderer->addInlineLanguageLabel($key, $label);
+                $pageRenderer->addInlineLanguageLabel($key, $label);
             }
         }
+    }
+
+    /**
+     * @return PageRenderer
+     */
+    protected static function getPageRenderer()
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
