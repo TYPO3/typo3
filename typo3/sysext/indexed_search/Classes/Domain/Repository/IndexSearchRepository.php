@@ -908,7 +908,6 @@ class IndexSearchRepository
         // First, look if the freeIndexUid is a meta configuration:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('index_config');
-        $queryBuilder->getRestrictions()->removeAll();
         $indexCfgRec = $queryBuilder->select('indexcfgs')
             ->from('index_config')
             ->where(
@@ -916,8 +915,7 @@ class IndexSearchRepository
                 $queryBuilder->expr()->eq(
                     'uid',
                     $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config'))
+                )
             )
             ->execute()
             ->fetch();
@@ -931,14 +929,12 @@ class IndexSearchRepository
                 $uid = (int)$uid;
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_config');
-                $queryBuilder->getRestrictions()->removeAll();
                 $queryBuilder->select('uid')
-                    ->from('index_config')
-                    ->where(QueryHelper::stripLogicalOperatorPrefix($this->enableFields('index_config')));
+                    ->from('index_config');
                 switch ($table) {
                     case 'index_config':
                         $idxRec = $queryBuilder
-                            ->andWhere(
+                            ->where(
                                 $queryBuilder->expr()->eq(
                                     'uid',
                                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
@@ -952,7 +948,7 @@ class IndexSearchRepository
                         break;
                     case 'pages':
                         $indexCfgRecordsFromPid = $queryBuilder
-                            ->andWhere(
+                            ->where(
                                 $queryBuilder->expr()->eq(
                                     'pid',
                                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
