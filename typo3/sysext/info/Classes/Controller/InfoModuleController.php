@@ -41,7 +41,7 @@ class InfoModuleController extends BaseScriptClass
     protected $backendUser;
 
     /**
-     * @var \TYPO3\CMS\Lang\LanguageService
+     * @var \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected $languageService;
 

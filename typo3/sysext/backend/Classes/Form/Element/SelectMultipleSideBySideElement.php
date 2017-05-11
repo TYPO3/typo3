@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Render a widget with two boxes side by side.

@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Reports\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 

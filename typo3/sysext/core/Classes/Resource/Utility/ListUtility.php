@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Utility function for working with resource-lists

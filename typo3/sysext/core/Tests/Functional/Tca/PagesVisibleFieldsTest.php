@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tca;
  */
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Lang\LanguageService;
 
 class PagesVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {

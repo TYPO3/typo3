@@ -18,9 +18,9 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**

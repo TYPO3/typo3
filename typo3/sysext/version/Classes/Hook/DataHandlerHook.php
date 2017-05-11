@@ -21,11 +21,11 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Contains some parts for staging, versioning and workspaces
@@ -621,8 +621,8 @@ class DataHandlerHook
                     if (!isset($languageObjects[$recipientLanguage])) {
                         // a LANG object in this language hasn't been
                         // instantiated yet, so this is done here
-                        /** @var $languageObject \TYPO3\CMS\Lang\LanguageService */
-                        $languageObject = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+                        /** @var $languageObject \TYPO3\CMS\Core\Localization\LanguageService */
+                        $languageObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
                         $languageObject->init($recipientLanguage);
                         $languageObjects[$recipientLanguage] = $languageObject;
                     } else {

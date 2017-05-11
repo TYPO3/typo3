@@ -33,7 +33,7 @@ class ExtendedFileUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      */
     protected function setUp()
     {
-        $GLOBALS['LANG'] = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)
+        $GLOBALS['LANG'] = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageService::class)
             ->setMethods(['sL'])
             ->getMock();
     }

@@ -35,7 +35,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected $installUtility;
 
     /**
-     * @var \TYPO3\CMS\Lang\LanguageService
+     * @var \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected $languageService;
 
@@ -56,9 +56,9 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Lang\LanguageService $languageService
+     * @param \TYPO3\CMS\Core\Localization\LanguageService $languageService
      */
-    public function injectLanguageService(\TYPO3\CMS\Lang\LanguageService $languageService)
+    public function injectLanguageService(\TYPO3\CMS\Core\Localization\LanguageService $languageService)
     {
         $this->languageService = $languageService;
     }

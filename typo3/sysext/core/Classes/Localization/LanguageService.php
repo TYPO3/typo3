@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lang;
+namespace TYPO3\CMS\Core\Localization;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Lang;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -76,7 +74,7 @@ class LanguageService
     /**
      * Initializes the backend language.
      * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
-     * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+     * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
      * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
      *
      * @throws \RuntimeException

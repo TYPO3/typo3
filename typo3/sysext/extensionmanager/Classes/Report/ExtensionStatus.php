@@ -50,7 +50,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected $listUtility = null;
 
     /**
-     * @var \TYPO3\CMS\Lang\LanguageService
+     * @var \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected $languageService = null;
 
@@ -62,7 +62,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
         $this->listUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
-        $this->languageService = $this->objectManager->get(\TYPO3\CMS\Lang\LanguageService::class);
+        $this->languageService = $this->objectManager->get(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 

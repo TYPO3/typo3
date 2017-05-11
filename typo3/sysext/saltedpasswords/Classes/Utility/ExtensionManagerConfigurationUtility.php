@@ -431,7 +431,7 @@ class ExtensionManagerConfigurationUtility
     }
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected function getLanguageService()
     {

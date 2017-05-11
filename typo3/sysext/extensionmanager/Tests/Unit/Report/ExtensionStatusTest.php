@@ -30,7 +30,7 @@ class ExtensionStatusTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $mockRepositoryRepository;
 
     /**
-     * @var \TYPO3\CMS\Lang\LanguageService
+     * @var \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected $mockLanguageService;
 
@@ -44,7 +44,7 @@ class ExtensionStatusTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->mockRepositoryRepository = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class)
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
-        $this->mockLanguageService = $this->createMock(\TYPO3\CMS\Lang\LanguageService::class);
+        $this->mockLanguageService = $this->createMock(\TYPO3\CMS\Core\Localization\LanguageService::class);
     }
 
     /**

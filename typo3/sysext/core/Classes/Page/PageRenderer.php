@@ -2658,7 +2658,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns global language service instance
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected function getLanguageService()
     {

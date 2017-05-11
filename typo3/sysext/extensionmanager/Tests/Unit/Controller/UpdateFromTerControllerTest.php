@@ -43,7 +43,7 @@ class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
     protected $repositoryHelperMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Lang\LanguageService
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Localization\LanguageService
      */
     protected $languageServiceMock;
 
@@ -56,7 +56,7 @@ class UpdateFromTerControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
             ->getMock();
         $this->extensionRepositoryMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, [], [$this->mockObjectManager]);
         $this->repositoryHelperMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, ['updateExtList'], [], '', false);
-        $this->languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)
+        $this->languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageService::class)
             ->setMethods(['__none'])
             ->getMock();
     }

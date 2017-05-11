@@ -138,7 +138,7 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
         $fileHandlerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
-        $languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Lang\LanguageService::class)->getMock();
+        $languageServiceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageService::class)->getMock();
         $fileHandlerMock->_set('languageService', $languageServiceMock);
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }

@@ -146,7 +146,7 @@ class FormProtectionFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
             ->method('enqueue')
             ->with($this->isInstanceOf(\TYPO3\CMS\Core\Messaging\FlashMessage::class))
             ->will($this->returnCallback([$this, 'enqueueAjaxFlashMessageCallback']));
-        $languageServiceMock = $this->createMock(\TYPO3\CMS\Lang\LanguageService::class);
+        $languageServiceMock = $this->createMock(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $languageServiceMock->expects($this->once())->method('sL')->will($this->returnValue('foo'));
 
         FormProtectionFactory::getMessageClosure($languageServiceMock, $flashMessageQueueMock, true)->__invoke();

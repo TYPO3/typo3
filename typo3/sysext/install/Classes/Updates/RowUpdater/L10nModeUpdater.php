@@ -20,9 +20,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Migrate values for database records having columns

@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Form\Hooks;
 
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Error\Exception;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Contains a preview rendering for the page module of CType="form_formframework"

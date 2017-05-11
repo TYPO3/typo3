@@ -18,7 +18,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
  * Test case

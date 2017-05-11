@@ -24,7 +24,7 @@ class Typo3StatusTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
-        $GLOBALS['LANG'] = $this->createMock(\TYPO3\CMS\Lang\LanguageService::class);
+        $GLOBALS['LANG'] = $this->createMock(\TYPO3\CMS\Core\Localization\LanguageService::class);
     }
 
     /**

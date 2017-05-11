@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case

@@ -54,7 +54,7 @@ class FileContentParser
     public $pObj;
 
     /**
-     * @var \TYPO3\CMS\Lang\LanguageService|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @var \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
     protected $langObject;
 
