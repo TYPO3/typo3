@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * The abstract base class for all view helpers.
@@ -32,13 +33,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      * @api
      */
     protected $controllerContext;
-
-    /**
-     * Reflection service
-     *
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    private $reflectionService;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -65,16 +59,6 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     }
 
     /**
-     * Inject a Reflection service
-     *
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService Reflection service
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
      * Call the render() method and handle errors.
      *
      * @return string the rendered ViewHelper
@@ -83,9 +67,11 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     protected function callRenderMethod()
     {
         $renderMethodParameters = [];
-        foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
-            if ($argumentDefinition instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition && $argumentDefinition->isMethodParameter()) {
-                $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
+        if ($this->hasRenderMethodArguments()) {
+            foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
+                if ($argumentDefinition instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition && $argumentDefinition->isMethodParameter()) {
+                    $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
+                }
             }
         }
 
@@ -110,18 +96,27 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     }
 
     /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10; intentionally not deprecation logged (logged once above)
+     * @return bool
+     */
+    protected function hasRenderMethodArguments()
+    {
+        return (new \ReflectionMethod($this, 'render'))->getNumberOfParameters() > 0;
+    }
+
+    /**
      * Register method arguments for "render" by analysing the doc comment above.
      *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10; logged from this location but not elsewhere in class.
      * @throws \TYPO3Fluid\Fluid\Core\Parser\Exception
      */
     protected function registerRenderMethodArguments()
     {
-        $methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
-        if (count($methodParameters) === 0) {
-            return;
-        }
+        GeneralUtility::deprecationLog(sprintf('Render method argument support is deprecated (used on class "%s"), switch to initializeArguments and registerArgument.', get_class($this)));
 
-        $methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
+        $reflectionService = $this->getReflectionService();
+        $methodParameters = $reflectionService->getMethodParameters(get_class($this), 'render');
+        $methodTags = $reflectionService->getMethodTagsValues(get_class($this), 'render');
 
         $paramAnnotations = [];
         if (isset($methodTags['param'])) {
@@ -154,12 +149,21 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     }
 
     /**
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10; intentionally not deprecation logged (logged once above)
+     * @return ReflectionService
+     */
+    protected function getReflectionService()
+    {
+        return $this->objectManager->get(ReflectionService::class);
+    }
+
+    /**
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition[]
      * @throws \TYPO3Fluid\Fluid\Core\Parser\Exception
      */
     public function prepareArguments()
     {
-        if (method_exists($this, 'registerRenderMethodArguments')) {
+        if ($this->hasRenderMethodArguments() && method_exists($this, 'registerRenderMethodArguments')) {
             $this->registerRenderMethodArguments();
         }
         return parent::prepareArguments();

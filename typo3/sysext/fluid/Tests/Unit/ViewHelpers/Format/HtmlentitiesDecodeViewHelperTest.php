@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesDecodeViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -24,11 +22,6 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class HtmlentitiesDecodeViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * @var ReflectionService|ObjectProphecy
-     */
-    protected $reflectionServiceProphecy;
-
     /**
      * @var HtmlentitiesDecodeViewHelper
      */
@@ -44,9 +37,7 @@ class HtmlentitiesDecodeViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
         $this->viewHelper = new HtmlentitiesDecodeViewHelper();
-        $this->viewHelper->injectReflectionService($this->reflectionServiceProphecy->reveal());
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 

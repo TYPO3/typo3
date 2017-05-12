@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\TextfieldViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
@@ -83,8 +82,6 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $reflectionServiceProphecy = $this->prophesize(ReflectionService::class);
-        $this->viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
 
         $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
         $this->viewHelper->render();
