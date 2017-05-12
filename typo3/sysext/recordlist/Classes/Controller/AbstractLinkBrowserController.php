@@ -244,6 +244,11 @@ abstract class AbstractLinkBrowserController
         $lang = $this->getLanguageService();
         foreach ($linkHandlers as $identifier => $configuration) {
             $identifier = rtrim($identifier, '.');
+
+            if (empty($configuration['handler'])) {
+                throw new \UnexpectedValueException(sprintf('Missing handler for link handler "%1$s", check page TSconfig TCEMAIN.linkHandler.%1$s.handler', $identifier), 1494579849);
+            }
+
             /** @var LinkHandlerInterface $handler */
             $handler = GeneralUtility::makeInstance($configuration['handler']);
             $handler->initialize(
