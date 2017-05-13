@@ -814,8 +814,6 @@ class TypoScriptFrontendController
     /**
      * Doctype to use
      *
-     * Currently set via PageGenerator
-     *
      * @var string
      */
     public $xhtmlDoctype = '';
