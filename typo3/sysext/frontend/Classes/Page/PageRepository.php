@@ -1127,7 +1127,7 @@ class PageRepository
      * @return mixed Returns array (the record) if found, otherwise blank/0 (zero)
      * @see getPage_noCheck()
      */
-    public function getRawRecord($table, $uid, $fields = '*', $noWSOL = false)
+    public function getRawRecord($table, $uid, $fields = '*', $noWSOL = null)
     {
         $uid = (int)$uid;
         if (isset($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
@@ -1142,6 +1142,10 @@ class PageRepository
                 ->fetch();
 
             if ($row) {
+                if ($noWSOL !== null) {
+                    GeneralUtility::deprecationLog('The fourth parameter of PageRepository->getRawRecord() has been deprecated, use a SQL statement directly. The parameter will be removed in TYPO3 v10.');
+                }
+                // @deprecated - remove this if-clause in TYPO3 v10
                 if (!$noWSOL) {
                     $this->versionOL($table, $row);
                 }
@@ -1410,16 +1414,37 @@ class PageRepository
             } else {
                 // Otherwise we have to expect "uid" to be in the record and look up based
                 // on this:
-                $newPidRec = $this->getRawRecord($table, $rr['uid'], 't3ver_oid,t3ver_wsid', true);
-                if (is_array($newPidRec)) {
-                    $oid = $newPidRec['t3ver_oid'];
-                    $wsid = $newPidRec['t3ver_wsid'];
+                $uid = (int)$rr['uid'];
+                if ($uid > 0) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $newPidRec = $queryBuilder->select('t3ver_oid', 't3ver_wsid')
+                        ->from($table)
+                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+                        ->execute()
+                        ->fetch();
+
+                    if (is_array($newPidRec)) {
+                        $oid = $newPidRec['t3ver_oid'];
+                        $wsid = $newPidRec['t3ver_wsid'];
+                    }
                 }
             }
             // If workspace ids matches and ID of current online version is found, look up
             // the PID value of that:
             if ($oid && ((int)$this->versioningWorkspaceId === 0 && $this->checkWorkspaceAccess($wsid) || (int)$wsid === (int)$this->versioningWorkspaceId)) {
-                $oidRec = $this->getRawRecord($table, $oid, 'pid', true);
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $oidRec = $queryBuilder->select('pid')
+                    ->from($table)
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($oid, \PDO::PARAM_INT)))
+                    ->execute()
+                    ->fetch();
+
                 if (is_array($oidRec)) {
                     // SWAP uid as well? Well no, because when fixing a versioning PID happens it is
                     // assumed that this is a "branch" type page and therefore the uid should be
@@ -1538,10 +1563,24 @@ class PageRepository
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
             && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
+            $moveID = 0;
             // If t3ver_move_id is not found, then find it (but we like best if it is here)
             if (!isset($row['t3ver_move_id'])) {
-                $moveIDRec = $this->getRawRecord($table, $row['uid'], 't3ver_move_id', true);
-                $moveID = $moveIDRec['t3ver_move_id'];
+                if ((int)$row['uid'] > 0) {
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                    $moveIDRec = $queryBuilder->select('t3ver_move_id')
+                        ->from($table)
+                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)))
+                        ->execute()
+                        ->fetch();
+
+                    if (is_array($moveIDRec)) {
+                        $moveID = $moveIDRec['t3ver_move_id'];
+                    }
+                }
             } else {
                 $moveID = $row['t3ver_move_id'];
             }
