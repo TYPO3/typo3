@@ -399,12 +399,15 @@ class Typo3DbQueryParser
                     $plainValue = $this->dataMapper->getPlainValue($singleValue);
                     if ($plainValue !== null) {
                         $hasValue = true;
-                        $parameterType = ctype_digit((string)$plainValue) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
-                        $plainValues[] = $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
+                        $plainValues[] = $this->createTypedNamedParameter($singleValue);
                     }
                 }
                 if (!$hasValue) {
-                    throw new Exception\BadConstraintException('The IN operator needs a non-empty value list to compare against. The given value list is empty.', 1484828466);
+                    throw new Exception\BadConstraintException(
+                        'The IN operator needs a non-empty value list to compare against. ' .
+                        'The given value list is empty.',
+                        1484828466
+                    );
                 }
                 $expr = $exprBuilder->comparison($fieldName, 'IN', '(' . implode(', ', $plainValues) . ')');
                 break;
@@ -412,8 +415,8 @@ class Typo3DbQueryParser
                 if ($value === null) {
                     $expr = $fieldName . ' IS NULL';
                 } else {
-                    $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
-                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::EQ, $value);
+                    $placeHolder = $this->createTypedNamedParameter($value);
+                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::EQ, $placeHolder);
                 }
                 break;
             case QueryInterface::OPERATOR_EQUAL_TO_NULL:
@@ -423,37 +426,83 @@ class Typo3DbQueryParser
                 if ($value === null) {
                     $expr = $fieldName . ' IS NOT NULL';
                 } else {
-                    $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
-                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::NEQ, $value);
+                    $placeHolder = $this->createTypedNamedParameter($value);
+                    $expr = $exprBuilder->comparison($fieldName, $exprBuilder::NEQ, $placeHolder);
                 }
                 break;
             case QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL:
                 $expr = $fieldName . ' IS NOT NULL';
                 break;
             case QueryInterface::OPERATOR_LESS_THAN:
-                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
-                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LT, $value);
+                $placeHolder = $this->createTypedNamedParameter($value);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LT, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
-                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
-                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LTE, $value);
+                $placeHolder = $this->createTypedNamedParameter($value);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LTE, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_GREATER_THAN:
-                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
-                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GT, $value);
+                $placeHolder = $this->createTypedNamedParameter($value);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GT, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
-                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value), \PDO::PARAM_INT);
-                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GTE, $value);
+                $placeHolder = $this->createTypedNamedParameter($value);
+                $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GTE, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_LIKE:
-                $value = $this->queryBuilder->createNamedParameter($this->dataMapper->getPlainValue($value));
-                $expr = $exprBuilder->comparison($fieldName, 'LIKE', $value);
+                $placeHolder = $this->createTypedNamedParameter($value, \PDO::PARAM_STR);
+                $expr = $exprBuilder->comparison($fieldName, 'LIKE', $placeHolder);
                 break;
             default:
-                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
+                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception(
+                    'Unsupported operator encountered.',
+                    1242816073
+                );
         }
         return $expr;
+    }
+
+    /**
+     * Maps plain value of operand to PDO types to help Doctrine and/or the database driver process the value
+     * correctly when building the query.
+     *
+     * @param mixed $value The parameter value
+     * @return int
+     * @throws \InvalidArgumentException
+     */
+    protected function getParameterType($value): int
+    {
+        $parameterType = gettype($value);
+        switch ($parameterType) {
+            case 'integer':
+                return \PDO::PARAM_INT;
+            case 'string':
+                return \PDO::PARAM_STR;
+            default:
+                throw new \InvalidArgumentException(
+                    'Unsupported parameter type encountered. Expected integer or string, ' . $parameterType . ' given.',
+                    1494878863
+                );
+        }
+    }
+
+    /**
+     * Create a named parameter for the QueryBuilder and guess the parameter type based on the
+     * output of DataMapper::getPlainValue(). The type of the named parameter can be forced to
+     * one of the \PDO::PARAM_* types by specifying the $forceType argument.
+     *
+     * @param mixed $value The input value that should be sent to the database
+     * @param int|null $forceType The \PDO::PARAM_* type that should be forced
+     * @return string The placeholder string to be used in the query
+     * @see \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::getPlainValue()
+     */
+    protected function createTypedNamedParameter($value, int $forceType = null): string
+    {
+        $plainValue = $this->dataMapper->getPlainValue($value);
+        $parameterType = $forceType ?? $this->getParameterType($plainValue);
+        $placeholder = $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
+
+        return $placeholder;
     }
 
     /**

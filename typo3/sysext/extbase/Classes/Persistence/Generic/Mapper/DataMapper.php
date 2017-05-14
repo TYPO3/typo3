@@ -695,6 +695,8 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
 
         if (is_bool($input)) {
             $parameter = (int)$input;
+        } elseif (is_int($input)) {
+            $parameter = $input;
         } elseif ($input instanceof \DateTime) {
             if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
                 $storageFormat = $columnMap->getDateTimeStorageFormat();

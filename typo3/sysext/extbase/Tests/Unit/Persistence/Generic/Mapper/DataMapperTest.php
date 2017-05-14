@@ -323,11 +323,13 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'datetime to timestamp' => ['1365866253', new \DateTime('@1365866253')],
             'boolean true to 1' => [1, true],
             'boolean false to 0' => [0, false],
-            'NULL is handled' => ['NULL', null],
-            'plain value is returned unchanged' => ['RANDOM string', 'RANDOM string'],
+            'NULL is handled as string' => ['NULL', null],
+            'string value is returned unchanged' => ['RANDOM string', 'RANDOM string'],
             'array is flattened' => ['a,b,c', ['a', 'b', 'c']],
             'deep array is flattened' => ['a,b,c', [['a', 'b'], 'c']],
             'traversable domain object to identifier' => [1, $traversableDomainObject->reveal()],
+            'integer value is returned unchanged' => [1234, 1234],
+            'float is converted to string' => ['1234.56', 1234.56],
         ];
     }
 
