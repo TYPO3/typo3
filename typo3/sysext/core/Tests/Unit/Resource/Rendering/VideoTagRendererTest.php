@@ -65,70 +65,57 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     }
 
     /**
-     * @test
+     * Array of configurations
      */
-    public function renderOutputIsCorrect()
+    public function renderArgumentsDataProvider()
     {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile?foo=bar&baz=true'));
-
-        $this->assertSame(
-            '<video width="300" height="200" controls><source src="//:path/myVideoFile?foo=bar&amp;baz=true" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200')
-        );
+        return [
+            [
+                '//:path/myVideoFile?foo=bar&baz=true',
+                [],
+                '<video width="300" height="200" controls><source src="//:path/myVideoFile?foo=bar&amp;baz=true" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['loop' => 1],
+                '<video width="300" height="200" controls loop><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['autoplay' => 1],
+                '<video width="300" height="200" controls autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['controls' => 0, 'autoplay' => 1],
+                '<video width="300" height="200" autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['controls' => 1, 'controlsList' => 'nodownload'],
+                '<video width="300" height="200" controls controlsList="nodownload"><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ]
+        ];
     }
 
     /**
      * @test
+     * @dataProvider renderArgumentsDataProvider
+     * @param string $url
+     * @param array $arguments
+     * @param string $expected
      */
-    public function renderOutputWithLoopIsCorrect()
+    public function renderOutputIsCorrect($url, $arguments, $expected)
     {
         $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
 
         $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile'));
+        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue($url));
 
         $this->assertSame(
-            '<video width="300" height="200" controls loop><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['loop' => 1])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function renderOutputWithAutoplayIsCorrect()
-    {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile'));
-
-        $this->assertSame(
-            '<video width="300" height="200" controls autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
-    {
-        $VideoTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile'));
-
-        $this->assertSame(
-            '<video width="300" height="200" autoplay><source src="//:path/myVideoFile" type="video/mp4"></video>',
-            $VideoTagRenderer->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
+            $expected,
+            $VideoTagRenderer->render($fileResourceMock, '300m', '200', $arguments)
         );
     }
 }

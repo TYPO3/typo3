@@ -62,70 +62,57 @@ class AudioTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     }
 
     /**
-     * @test
+     * Array of configurations
      */
-    public function renderOutputIsCorrect()
+    public function renderArgumentsDataProvider()
     {
-        $audioTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile?foo=bar&baz=true'));
-
-        $this->assertSame(
-            '<audio controls><source src="//:path/myAudioFile?foo=bar&amp;baz=true" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200')
-        );
+        return [
+            [
+                '//:path/myAudioFile?foo=bar&baz=true',
+                [],
+                '<audio controls><source src="//:path/myAudioFile?foo=bar&amp;baz=true" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['loop' => 1],
+                '<audio controls loop><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['autoplay' => 1],
+                '<audio controls autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['controls' => 0, 'autoplay' => 1],
+                '<audio autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['controls' => 1, 'controlsList' => 'nodownload'],
+                '<audio controls controlsList="nodownload"><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ]
+        ];
     }
 
     /**
      * @test
+     * @dataProvider renderArgumentsDataProvider
+     * @param string $url
+     * @param array $arguments
+     * @param string $expected
      */
-    public function renderOutputWithLoopIsCorrect()
+    public function renderOutputIsCorrect($url, $arguments, $expected)
     {
         $audioTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer();
 
         $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
         $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile'));
+        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue($url));
 
         $this->assertSame(
-            '<audio controls loop><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['loop' => 1])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function renderOutputWithAutoplayIsCorrect()
-    {
-        $audioTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile'));
-
-        $this->assertSame(
-            '<audio controls autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
-    {
-        $audioTagRenderer = new \TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer();
-
-        $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile'));
-
-        $this->assertSame(
-            '<audio autoplay><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            $audioTagRenderer->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
+            $expected,
+            $audioTagRenderer->render($fileResourceMock, '300m', '200', $arguments)
         );
     }
 }
