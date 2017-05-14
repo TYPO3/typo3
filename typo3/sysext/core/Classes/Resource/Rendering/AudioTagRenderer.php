@@ -88,7 +88,7 @@ class AudioTagRenderer implements FileRendererInterface
         if (!empty($options['loop'])) {
             $additionalAttributes[] = 'loop';
         }
-        foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'preload'] as $key) {
+        foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'preload', 'controlsList'] as $key) {
             if (!empty($options[$key])) {
                 $additionalAttributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
             }
