@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\ContextHelp\Controller;
+namespace TYPO3\CMS\Backend\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -57,7 +57,6 @@ class ContextHelpAjaxController
     protected function getContextHelp($table, $field)
     {
         $helpTextArray = BackendUtility::helpTextArray($table, $field);
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
         return [

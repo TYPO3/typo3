@@ -8,3 +8,9 @@ namespace TYPO3\CMS\Lang {
     {
     }
 }
+
+namespace TYPO3\CMS\ContextHelp\Controller {
+    class ContextHelpAjaxController extends \TYPO3\CMS\Backend\Controller\ContextHelpAjaxController
+    {
+    }
+}
