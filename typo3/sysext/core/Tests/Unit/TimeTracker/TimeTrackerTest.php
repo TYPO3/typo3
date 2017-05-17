@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
-
-namespace TimeTracker;
+namespace TYPO3\CMS\Core\Tests\Unit\TimeTracker;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,27 +16,13 @@ namespace TimeTracker;
  */
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Class TimeTrackerTest
  */
-class TimeTrackerTest extends \PHPUnit_Framework_TestCase
+class TimeTrackerTest extends UnitTestCase
 {
-    /**
-     * @var bool
-     */
-    protected $backupGlobals = true;
-
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTracker;
-
-    protected function setUp()
-    {
-        $this->timeTracker = new TimeTracker();
-    }
-
     /**
      * @test
      */
@@ -49,7 +34,7 @@ class TimeTrackerTest extends \PHPUnit_Framework_TestCase
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'],
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']
         );
-        $parseTime = $this->timeTracker->getParseTime();
+        $parseTime = (new TimeTracker())->getParseTime();
         self::assertSame(0, $parseTime);
     }
 
@@ -63,7 +48,7 @@ class TimeTrackerTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = $baseValue + 1;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = $baseValue + 3;
-        $parseTime = $this->timeTracker->getParseTime();
+        $parseTime = (new TimeTracker())->getParseTime();
         self::assertSame(8000, $parseTime);
     }
 
@@ -77,7 +62,7 @@ class TimeTrackerTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = $baseValue + 1;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = 0;
-        $parseTime = $this->timeTracker->getParseTime();
+        $parseTime = (new TimeTracker())->getParseTime();
         self::assertSame(10000, $parseTime);
     }
 
@@ -91,7 +76,7 @@ class TimeTrackerTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = 0;
         $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = 0;
-        $parseTime = $this->timeTracker->getParseTime();
+        $parseTime = (new TimeTracker())->getParseTime();
         self::assertSame(10000, $parseTime);
     }
 }
