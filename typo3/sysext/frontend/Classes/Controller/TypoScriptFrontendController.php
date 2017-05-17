@@ -1610,7 +1610,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     . 'mounts a page which is not accessible (ID ' . $this->originalMountPointPage['mount_pid'] . ').';
                 throw new PageNotFoundException($message, 1402043263);
             }
-            $this->MP = $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
+            if ($this->MP === '') {
+                $this->MP = $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
+            } else {
+                $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
+            }
             $this->id = $this->page['uid'];
         }
         // Gets the rootLine
