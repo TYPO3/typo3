@@ -170,7 +170,7 @@ class NewRecordController extends AbstractModule
             if (!empty($pidList)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('pages');
-                $this->perms_clause .= ' AND ' . $queryBuilder->expr()->in(
+                $this->perms_clause .= ' AND ' . $queryBuilder->expr()->notIn(
                     'pages.uid',
                     GeneralUtility::intExplode(',', $pidList)
                 );
