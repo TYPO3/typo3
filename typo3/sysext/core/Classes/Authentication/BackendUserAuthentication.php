@@ -2305,7 +2305,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             'tablename' => $tablename,
             'recuid' => (int)$recuid,
             'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            'tstamp' => time(),
+            'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
             'event_pid' => (int)$event_pid,
             'NEWid' => $NEWid,
             'workspace' => $this->workspace
