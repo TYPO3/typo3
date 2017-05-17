@@ -294,7 +294,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $dateTimeZone = new \DateTimeZone('+2');
         $gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($dateTimeZone);
         $expectedPropertyNames = ['location', 'name'];
-        $this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames does not respect method arguments.');
+        $this->assertArraySubset($expectedPropertyNames, $gettablePropertyNames);
     }
 
     /**
