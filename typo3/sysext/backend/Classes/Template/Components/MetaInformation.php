@@ -123,13 +123,13 @@ class MetaInformation
     /**
      * Setting page title
      *
-     * @return string Record title
+     * @return string Record title, already htmlspecialchar()'ed
      */
     public function getRecordInformationTitle()
     {
         $recordInformations = $this->getRecordInformations();
         if (!empty($recordInformations)) {
-            $title = htmlspecialchars($recordInformations['title']);
+            $title = $recordInformations['title'];
         } else {
             $title = '';
         }
@@ -137,14 +137,7 @@ class MetaInformation
         // crop the title to title limit (or 50, if not defined)
         $beUser = $this->getBackendUser();
         $cropLength = empty($beUser->uc['titleLen']) ? 50 : $beUser->uc['titleLen'];
-        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, $cropLength);
-        if ($croppedTitle !== $title) {
-            $recordInformationTitle = htmlspecialchars($croppedTitle);
-        } else {
-            $recordInformationTitle = htmlspecialchars($title);
-        }
-
-        return $recordInformationTitle;
+        return htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $cropLength));
     }
 
     /**
@@ -231,7 +224,7 @@ class MetaInformation
         return [
             'uid' => $uid,
             'icon' => $theIcon,
-            'title' => htmlspecialchars($title),
+            'title' => $title,
             'additionalInfo' => $additionalInfo
         ];
     }
