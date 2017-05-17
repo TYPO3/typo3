@@ -340,6 +340,19 @@ The following icon identifiers have been removed:
 * actions-document-close
 * actions-edit-add
 
+The following Fluid ViewHelper arguments have been removed:
+* f:be.container->enableClickMenu
+* f:be.container->loadExtJs
+* f:be.container->loadExtJsTheme
+* f:be.container->enableExtJsDebug
+* f:be.container->loadJQuery
+* f:be.container->jQueryNamespace
+* f:be.pageRenderer->loadExtJs
+* f:be.pageRenderer->loadExtJsTheme
+* f:be.pageRenderer->enableExtJsDebug
+* f:be.pageRenderer->loadJQuery
+* f:be.pageRenderer->jQueryNamespace
+
 The following requireJS modules have been removed:
 * TYPO3/CMS/Core/QueryGenerator
 
