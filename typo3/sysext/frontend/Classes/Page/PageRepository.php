@@ -963,16 +963,35 @@ class PageRepository
     }
 
     /**
-     * Returns MountPoint id for page
+     * Returns a MountPoint array for the specified page
      *
-     * Does a recursive search if the mounted page should be a mount page itself. It
-     * has a run-away break so it can't go into infinite loops.
+     * Does a recursive search if the mounted page should be a mount page
+     * itself.
      *
-     * @param int $pageId Page id for which to look for a mount pid. Will be returned only if mount pages are enabled, the correct doktype (7) is set for page and there IS a mount_pid (which has a valid record that is not deleted...)
-     * @param array|bool $pageRec Optional page record for the page id. If not supplied it will be looked up by the system. Must contain at least uid,pid,doktype,mount_pid,mount_pid_ol
-     * @param array $prevMountPids Array accumulating formerly tested page ids for mount points. Used for recursivity brake.
+     * Note:
+     *
+     * Recursive mount points are not supported by all parts of the core.
+     * The usage is discouraged. They may be removed from this method.
+     *
+     * @see: https://decisions.typo3.org/t/supporting-or-prohibiting-recursive-mount-points/165/3
+     *
+     * An array will be returned if mount pages are enabled, the correct
+     * doktype (7) is set for page and there IS a mount_pid with a valid
+     * record.
+     *
+     * The optional page record must contain at least uid, pid, doktype,
+     * mount_pid,mount_pid_ol. If it is not supplied it will be looked up by
+     * the system at additional costs for the lookup.
+     *
+     * Returns FALSE if no mount point was found, "-1" if there should have been
+     * one, but no connection to it, otherwise an array with information
+     * about mount pid and modes.
+     *
+     * @param int $pageId Page id to do the lookup for.
+     * @param array|bool $pageRec Optional page record for the given page.
+     * @param array $prevMountPids Internal register to prevent lookup cycles.
      * @param int $firstPageUid The first page id.
-     * @return mixed Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.
+     * @return mixed Mount point array or failure flags (-1, false).
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
      */
     public function getMountPointInfo($pageId, $pageRec = false, $prevMountPids = [], $firstPageUid = 0)
