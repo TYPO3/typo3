@@ -32,7 +32,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $pageTsConfig = $tsfe->getPagesTSconfig();
         $configurationKey = $linkDetails['identifier'] . '.';
         $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'];
-        $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'];
+        $linkHandlerConfiguration =  $tsfe->getPagesTSconfig()['TCEMAIN.']['linkHandler.'];
 
         if (!isset($configuration[$configurationKey]) || !isset($linkHandlerConfiguration[$configurationKey])) {
             throw new UnableToLinkException(
