@@ -10,7 +10,7 @@ Description
 ===========
 
 Editing "Constants" and "Setup" of templates in the backend template module has been
-refactored to use FormEngine field rendering instead of and own baked solution.
+refactored to use FormEngine field rendering instead of an own baked solution.
 
 
 Impact
