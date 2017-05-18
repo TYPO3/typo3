@@ -172,6 +172,9 @@ class RichTextElement extends AbstractFormElement
 
         $externalPlugins = '';
         foreach ($this->getExtraPlugins() as $pluginName => $config) {
+            if (!empty($config['config']) && !empty($configuration[$pluginName])) {
+                $config['config'] = array_replace_recursive($config['config'], $configuration[$pluginName]);
+            }
             $configuration[$pluginName] = $config['config'];
             $configuration['extraPlugins'] .= ',' . $pluginName;
 
