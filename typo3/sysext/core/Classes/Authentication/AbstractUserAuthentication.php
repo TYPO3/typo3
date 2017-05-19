@@ -381,7 +381,7 @@ abstract class AbstractUserAuthentication
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog' . $this->loginType]) {
             $this->writeDevLog = true;
         }
-        if (TYPO3_DLOG) {
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
             $this->writeDevLog = true;
         }
         if ($this->writeDevLog) {

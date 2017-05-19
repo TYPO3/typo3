@@ -131,10 +131,8 @@ class ErrorHandler implements ErrorHandlerInterface
                 GeneralUtility::sysLog($message, 'core', $severity + 1);
             }
             // Write error message to devlog extension(s),
-            // see: $TYPO3_CONF_VARS['SYS']['enable_errorDLOG']
-            if (TYPO3_ERROR_DLOG) {
-                GeneralUtility::devLog($message, 'core', $severity + 1);
-            }
+            GeneralUtility::devLog($message, 'core', $severity + 1);
+
             // Write error message to TSlog (admin panel)
             $timeTracker = $this->getTimeTracker();
             if (is_object($timeTracker)) {

@@ -264,9 +264,7 @@ class RequestHandler implements RequestHandlerInterface
         if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debugOutput'])) {
             $GLOBALS['error']->debugOutput();
         }
-        if (TYPO3_DLOG) {
-            GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
-        }
+        GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
         return $response;
     }
 

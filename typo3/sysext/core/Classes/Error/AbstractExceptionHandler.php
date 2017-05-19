@@ -74,13 +74,10 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
         // otherwise this will lead into recurring exceptions.
         try {
             // Write error message to devlog
-            // see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
-            if (TYPO3_EXCEPTION_DLOG) {
-                GeneralUtility::devLog($logMessage, $logTitle, 3, [
-                    'TYPO3_MODE' => TYPO3_MODE,
-                    'backtrace' => $backtrace
-                ]);
-            }
+            GeneralUtility::devLog($logMessage, $logTitle, 3, [
+                'TYPO3_MODE' => TYPO3_MODE,
+                'backtrace' => $backtrace
+            ]);
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);
         } catch (\Exception $exception) {
