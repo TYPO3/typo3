@@ -664,9 +664,7 @@ function jumpToUrl(URL) {
 </div>' : '') . $this->endOfPageJsBlock;
 
         // Logging: Can't find better place to put it:
-        if (TYPO3_DLOG) {
-            GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, ['_FLUSH' => true]);
-        }
+        GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, ['_FLUSH' => true]);
         return $str;
     }
 

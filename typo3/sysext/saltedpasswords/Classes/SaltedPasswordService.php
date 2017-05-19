@@ -257,8 +257,6 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message);
         }
-        if (TYPO3_DLOG) {
-            GeneralUtility::devLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
-        }
+        GeneralUtility::devLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
     }
 }

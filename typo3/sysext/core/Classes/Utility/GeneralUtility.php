@@ -4346,8 +4346,8 @@ class GeneralUtility
      * This should be implemented around the source code, both frontend and backend, logging everything from the flow through an application, messages, results from comparisons to fatal errors.
      * The result is meant to make sense to developers during development or debugging of a site.
      * The idea is that this function is only a wrapper for external extensions which can set a hook which will be allowed to handle the logging of the information to any format they might wish and with any kind of filter they would like.
-     * If you want to implement the devLog in your applications, simply add lines like:
-     * if (TYPO3_DLOG)	\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[write message in english here]', 'extension key');
+     * If you want to implement the devLog in your applications, simply add a line like:
+     * \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[write message in english here]', 'extension key');
      *
      * @param string $msg Message (in english).
      * @param string $extKey Extension key (from which extension you are calling the log)
@@ -4356,7 +4356,7 @@ class GeneralUtility
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG'] && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
             $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] as $hookMethod) {
