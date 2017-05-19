@@ -97,7 +97,7 @@ class ImportantActions extends Action\AbstractAction
                 'host' => $connection->getHost(),
                 'port' => $connection->getPort(),
                 'socket' => $connectionParameters['unix_socket'] ?? '',
-                'numberOfTables' => count($connection->getSchemaManager()->listTables()),
+                'numberOfTables' => count($connection->getSchemaManager()->listTableNames()),
                 'numberOfMappedTables' => 0,
             ];
             if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])

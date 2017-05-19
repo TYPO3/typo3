@@ -49,10 +49,10 @@ class ClearCacheService
         // Get all table names from Default connection starting with 'cf_' and truncate them
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName('Default');
-        $tables = $connection->getSchemaManager()->listTables();
-        foreach ($tables as $table) {
-            if (strpos($table->getName(), 'cf_') === 0 || $table->getName() === 'cache_treelist') {
-                $connection->truncate($table->getName());
+        $tableNames = $connection->getSchemaManager()->listTableNames();
+        foreach ($tableNames as $tableName) {
+            if (strpos($tableName, 'cf_') === 0 || $tableName === 'cache_treelist') {
+                $connection->truncate($tableName);
             }
         }
 
