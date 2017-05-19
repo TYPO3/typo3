@@ -391,7 +391,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             // in the future
             try {
                 $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-                $statement = $connection->executeQuery($realStatement);
+                $statement = $connection->executeQuery($realStatement, $parameters);
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775);
             }
