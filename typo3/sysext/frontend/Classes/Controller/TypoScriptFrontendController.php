@@ -2010,7 +2010,8 @@ class TypoScriptFrontendController
         } elseif ($code !== '') {
             // Check if URL is relative
             $url_parts = parse_url($code);
-            if ($url_parts['host'] === '') {
+            // parse_url could return an array without the key "host", the empty check works better than strict check
+            if (empty($url_parts['host'])) {
                 $url_parts['host'] = GeneralUtility::getIndpEnv('HTTP_HOST');
                 if ($code[0] === '/') {
                     $code = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . $code;
