@@ -399,7 +399,7 @@ class ConnectionMigrator
                 foreach ($changedTable->addedColumns as $addedColumn) {
                     $changedTables[$index . ':tbl_' . $addedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [$addedColumn],
                         [],
                         [],
@@ -417,7 +417,7 @@ class ConnectionMigrator
                 foreach ($changedTable->addedIndexes as $addedIndex) {
                     $changedTables[$index . ':idx_' . $addedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [],
@@ -436,7 +436,7 @@ class ConnectionMigrator
                     $fkIndex = $index . ':fk_' . $addedForeignKey->getName();
                     $changedTables[$fkIndex] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [],
@@ -549,7 +549,7 @@ class ConnectionMigrator
                     // Build a dedicated diff just for the current column
                     $tableDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [$changedColumn],
                         [],
@@ -581,7 +581,7 @@ class ConnectionMigrator
                 foreach ($changedTable->renamedIndexes as $key => $changedIndex) {
                     $indexDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [],
@@ -612,7 +612,7 @@ class ConnectionMigrator
                 // argument to pass in renamed indexes.
                 $tableDiff = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->getName($this->connection->getDatabasePlatform()),
+                    $changedTable->name,
                     [],
                     [],
                     [],
@@ -648,7 +648,7 @@ class ConnectionMigrator
             if (count($changedTable->changedForeignKeys) !== 0) {
                 $tableDiff = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->getName($this->connection->getDatabasePlatform()),
+                    $changedTable->name,
                     [],
                     [],
                     [],
@@ -717,7 +717,7 @@ class ConnectionMigrator
             foreach ($statements as $statement) {
                 $updateSuggestions['change_table'][md5($statement)] = $statement;
             }
-            $updateSuggestions['tables_count'][md5($statements[0])] = $this->getTableRecordCount($tableDiff->name);
+            $updateSuggestions['tables_count'][md5($statements[0])] = $this->getTableRecordCount((string)$tableDiff->name);
         }
 
         return $updateSuggestions;
@@ -753,7 +753,7 @@ class ConnectionMigrator
 
                 $changedTables[$index . ':' . $changedColumn->column->getName()] = GeneralUtility::makeInstance(
                     TableDiff::class,
-                    $changedTable->getName($this->connection->getDatabasePlatform()),
+                    $changedTable->name,
                     [],
                     [$changedColumn],
                     [],
@@ -801,7 +801,7 @@ class ConnectionMigrator
                 foreach ($changedTable->removedColumns as $removedColumn) {
                     $changedTables[$index . ':tbl_' . $removedColumn->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [$removedColumn],
@@ -819,7 +819,7 @@ class ConnectionMigrator
                 foreach ($changedTable->removedIndexes as $removedIndex) {
                     $changedTables[$index . ':idx_' . $removedIndex->getName()] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [],
@@ -838,7 +838,7 @@ class ConnectionMigrator
                     $fkIndex = $index . ':fk_' . $removedForeignKey->getName();
                     $changedTables[$fkIndex] = GeneralUtility::makeInstance(
                         TableDiff::class,
-                        $changedTable->getName($this->connection->getDatabasePlatform()),
+                        $changedTable->name,
                         [],
                         [],
                         [],
