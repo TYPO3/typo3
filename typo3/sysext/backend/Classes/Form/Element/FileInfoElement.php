@@ -66,19 +66,21 @@ class FileInfoElement extends AbstractFormElement
         $lang = $GLOBALS['LANG'];
 
         if ($file !== null) {
-            $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
-            $previewImage = $processedFile->getPublicUrl(true);
             $content = '';
             if ($file->isMissing()) {
                 $content .= '<span class="label label-danger label-space-right">'
                     . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                     . '</span>';
             }
-            if ($previewImage) {
-                $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
-                    'width="' . $processedFile->getProperty('width') . '" ' .
-                    'height="' . $processedFile->getProperty('height') . '" ' .
-                    'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+            if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
+                $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
+                $previewImage = $processedFile->getPublicUrl(true);
+                if ($previewImage) {
+                    $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
+                        'width="' . $processedFile->getProperty('width') . '" ' .
+                        'height="' . $processedFile->getProperty('height') . '" ' .
+                        'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+                }
             }
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
