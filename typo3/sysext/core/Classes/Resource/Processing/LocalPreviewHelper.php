@@ -93,15 +93,14 @@ class LocalPreviewHelper
      * @param File $file The source file
      * @param array $configuration Processing configuration
      * @param string $targetFilePath Output file path
-     * @return array|NULL
+     * @return array
      */
     protected function generatePreviewFromFile(File $file, array $configuration, $targetFilePath)
     {
-        $originalFileName = $file->getForLocalProcessing(false);
-
         // Check file extension
-        if ($file->getType() != File::FILETYPE_IMAGE &&
-            !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
+        if ($file->getType() !== File::FILETYPE_IMAGE
+            && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())
+        ) {
             // Create a default image
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
             $graphicalFunctions->getTemporaryImageWithText(
@@ -110,10 +109,13 @@ class LocalPreviewHelper
                 'No ext!',
                 $file->getName()
             );
-            $result = [
+            return [
                 'filePath' => $targetFilePath,
             ];
-        } elseif ($file->getExtension() === 'svg') {
+        }
+
+        $originalFileName = $file->getForLocalProcessing(false);
+        if ($file->getExtension() === 'svg') {
             /** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
             $gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
             $gifBuilder->init();
