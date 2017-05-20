@@ -14,13 +14,20 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Functional test for the DataHandler
  */
-abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
     const VALUE_BackendUserId = 1;
 
@@ -62,7 +69,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
     protected $recordIds = [];
 
     /**
-     * @var \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService
+     * @var ActionService
      */
     protected $actionService;
 
@@ -80,7 +87,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
         $this->backendUser->workspace = 0;
 
         $this->actionService = $this->getActionService();
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
+        Bootstrap::getInstance()->initializeLanguageObject();
     }
 
     protected function tearDown()
@@ -92,12 +99,12 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService
+     * @return ActionService
      */
     protected function getActionService()
     {
         return GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService::class
+            ActionService::class
         );
     }
 
@@ -156,34 +163,34 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\TestingFramework
     }
 
     /**
-     * @return \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint
+     * @return HasRecordConstraint
      */
     protected function getRequestSectionHasRecordConstraint()
     {
-        return new \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint();
+        return new HasRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint
+     * @return DoesNotHaveRecordConstraint
      */
     protected function getRequestSectionDoesNotHaveRecordConstraint()
     {
-        return new \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint();
+        return new DoesNotHaveRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint
+     * @return StructureHasRecordConstraint
      */
     protected function getRequestSectionStructureHasRecordConstraint()
     {
-        return new \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint();
+        return new StructureHasRecordConstraint();
     }
 
     /**
-     * @return \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint
+     * @return StructureDoesNotHaveRecordConstraint
      */
     protected function getRequestSectionStructureDoesNotHaveRecordConstraint()
     {
-        return new \TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint();
+        return new StructureDoesNotHaveRecordConstraint();
     }
 }
