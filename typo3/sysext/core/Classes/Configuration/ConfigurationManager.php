@@ -66,11 +66,6 @@ class ConfigurationManager
     protected $additionalFactoryConfigurationFile = 'typo3conf/AdditionalFactoryConfiguration.php';
 
     /**
-     * @var string Absolute path to typo3conf directory
-     */
-    protected $pathTypo3Conf = PATH_typo3conf;
-
-    /**
      * Writing to these configuration paths is always allowed,
      * even if the requested sub path does not exist yet.
      *
@@ -286,7 +281,7 @@ class ConfigurationManager
     public function canWriteConfiguration()
     {
         $fileLocation = $this->getLocalConfigurationFileLocation();
-        return @is_writable(file_exists($fileLocation) ? $fileLocation : $this->pathTypo3Conf);
+        return @is_writable(file_exists($fileLocation) ? $fileLocation : PATH_site . 'typo3conf/');
     }
 
     /**
