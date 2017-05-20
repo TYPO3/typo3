@@ -1405,6 +1405,12 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Set search levels:
         $searchLevels = $this->searchLevels;
 
+        // Set search levels to 999 instead of -1 as the following methods
+        // do not support -1 as valid value for infinite search.
+        if ($searchLevels === -1) {
+            $searchLevels = 999;
+        }
+
         // Default is to search everywhere
         $constraint = '1=1';
 
