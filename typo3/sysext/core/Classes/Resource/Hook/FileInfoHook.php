@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource\Hook;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility class to render TCEforms information about a sys_file record
@@ -64,19 +65,21 @@ class FileInfoHook
     protected function renderFileInformationContent(\TYPO3\CMS\Core\Resource\File $file = null)
     {
         if ($file !== null) {
-            $processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
-            $previewImage = $processedFile->getPublicUrl(true);
             $content = '';
             if ($file->isMissing()) {
                 $content .= '<span class="label label-danger label-space-right">'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
+                    . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'))
                     . '</span>';
             }
-            if ($previewImage) {
-                $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
-                            'width="' . $processedFile->getProperty('width') . '" ' .
-                            'height="' . $processedFile->getProperty('height') . '" ' .
-                            'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+            if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
+                $processedFile = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
+                $previewImage = $processedFile->getPublicUrl(true);
+                if ($previewImage) {
+                    $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
+                        'width="' . $processedFile->getProperty('width') . '" ' .
+                        'height="' . $processedFile->getProperty('height') . '" ' .
+                        'alt="" class="t3-tceforms-sysfile-imagepreview" />';
+                }
             }
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
