@@ -215,15 +215,33 @@ class PageRepository
      **************************/
 
     /**
-     * Returns the $row for the page with uid = $uid (observing ->where_hid_del)
-     * Any pages_language_overlay will be applied before the result is returned.
-     * If no page is found an empty array is returned.
+     * Loads the full page record for the given page ID.
      *
-     * @param int $uid The page id to look up.
-     * @param bool $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
+     * The page record is either served from a first-level cache or loaded from the
+     * database. If no page can be found, an empty array is returned.
+     *
+     * Language overlay and versioning overlay are applied. Mount Point
+     * handling is not done, an overlaid Mount Point is not replaced.
+     *
+     * The result is conditioned by the public properties where_groupAccess
+     * and where_hid_del that are preset by the init() method.
+     *
+     * @see PageRepository::where_groupAccess
+     * @see PageRepository::where_hid_del
+     * @see PageRepository::init()
+     *
+     * By default the usergroup access check is enabled. Use the second method argument
+     * to disable the usergroup access check.
+     *
+     * The given UID can be preprocessed by registering a hook class that is
+     * implementing the PageRepositoryGetPageHookInterface into the configuration array
+     * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'].
+     *
+     * @param int $uid The page id to look up
+     * @param bool $disableGroupAccessCheck set to true to disable group access check
+     * @return array The resulting page record with overlays or empty array
      * @throws \UnexpectedValueException
-     * @return array The page row with overlaid localized fields. Empty it no page.
-     * @see getPage_noCheck()
+     * @see PageRepository::getPage_noCheck()
      */
     public function getPage($uid, $disableGroupAccessCheck = false)
     {
