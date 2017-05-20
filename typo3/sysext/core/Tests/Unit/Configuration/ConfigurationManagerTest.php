@@ -397,19 +397,12 @@ class ConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
         $directory = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $absoluteDirectory = PATH_site . $directory;
         mkdir($absoluteDirectory);
-        $subject->_set('pathTypo3Conf', $absoluteDirectory);
 
-        $file1 = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteFile1 = PATH_site . $file1;
+        $file = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
+        $absoluteFile1 = PATH_site . $file;
         touch($absoluteFile1);
         $this->testFilesToDelete[] = $absoluteFile1;
         $subject->_set('localConfigurationFile', $absoluteFile1);
-
-        $file2 = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteFile2 = PATH_site . $file2;
-        touch($absoluteFile2);
-        $this->testFilesToDelete[] = $absoluteFile2;
-        $subject->_set('localconfFile', $absoluteFile2);
 
         clearstatcache();
 
