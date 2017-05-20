@@ -36,7 +36,6 @@ Build/typings/*
 .session
 typo3/sysext/*/Resources/Private/TypeScript/*.js
 typo3/sysext/*/Resources/Public/JavaScript/*.js.map
-components/testing_framework/Resources/Core/Build/Configuration/Acceptance/Support/_generated/*
 phantomjsdriver.log
 #
 # Ignore composer stuff
