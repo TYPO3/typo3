@@ -732,12 +732,21 @@ class PageRepository
     }
 
     /**
-     * Add the mount point parameter to the page if needed
+     * Replaces the given page record with mounted page if required
      *
-     * @param array $page The page to check
-     * @return array
+     * If the given page record is a mount point in overlay mode, the page
+     * record is replaced by the record of the overlaying page. The overlay
+     * record is enriched by setting the mount point mapping into the field
+     * _MP_PARAM as string for example '23-14'.
+     *
+     * In all other cases the given page record is returned as is.
+     *
+     * @todo Find a better name. The current doesn't hit the point.
+     *
+     * @param array $page The page record to handle.
+     * @return array The given page record or it's replacement.
      */
-    protected function addMountPointParameterToPage(array $page)
+    protected function addMountPointParameterToPage(array $page): array
     {
         if (empty($page)) {
             return [];
@@ -746,7 +755,7 @@ class PageRepository
         // $page MUST have "uid", "pid", "doktype", "mount_pid", "mount_pid_ol" fields in it
         $mountPointInfo = $this->getMountPointInfo($page['uid'], $page);
 
-        // There is a valid mount point.
+        // There is a valid mount point in overlay mode.
         if (is_array($mountPointInfo) && $mountPointInfo['overlay']) {
 
             // Using "getPage" is OK since we need the check for enableFields AND for type 2
