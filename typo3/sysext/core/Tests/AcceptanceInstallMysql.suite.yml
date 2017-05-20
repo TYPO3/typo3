@@ -1,0 +1,24 @@
+class_name: AcceptanceTester
+modules:
+  enabled:
+    - WebDriver
+    - \Helper\Acceptance
+    - Asserts
+  config:
+    WebDriver:
+      url: http://localhost:8000/typo3temp/var/tests/acceptanceinstallmysql
+      browser: chrome
+      port: 4444
+      window_size: 1280x1024
+      wait: 1
+      restart: true
+      capabilities:
+        # Disable the "scroll to element before clicking" behavior as this breaks tests
+        # where for example a fixed docbar is used. Selenium scrolls to the element before
+        # clicking it and then complains that it can't click the element because another elemnt
+        # is overlaying it.
+        # You have to ensure that the element is in the viewport by your own before clicking it!
+        # You can simply do that by scrolling to it.
+        elementScrollBehavior: 1
+        chromeOptions:
+          args: [no-sandbox,disable-infobars,disable-notifications,disable-gpu,disable-software-rasterizer]
