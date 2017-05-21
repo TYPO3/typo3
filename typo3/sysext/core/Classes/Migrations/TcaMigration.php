@@ -2445,7 +2445,6 @@ class TcaMigration
                             $this->messages[] = 'The \'foreign_types\' property from TCA ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\']  and has been migrated to ' . $table . '[\'types\'][\'' . $typeName . '\'][\'columnOverrides\'][\'' . $fieldName . '\'][\'config\'][\'overrideChildTca\'][\'types\']';
                         }
                         if (isset($fieldConfig['config']['foreign_selector_fieldTcaOverride']) && is_array($fieldConfig['config']['foreign_selector_fieldTcaOverride'])) {
-
                             if (isset($fieldConfig['config']['foreign_selector']) && is_string($fieldConfig['config']['foreign_selector'])) {
                                 $foreignSelectorFieldName = $fieldConfig['config']['foreign_selector'];
                             } elseif (isset($tca[$table]['columns'][$fieldName]['config']['foreign_selector']) && is_string($tca[$table]['columns'][$fieldName]['config']['foreign_selector'])) {
