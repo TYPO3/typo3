@@ -1257,9 +1257,63 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Get The Page ID
-     * This gets the id of the page, checks if the page is in the domain and if the page is accessible
-     * Sets variables such as $this->sys_page, $this->loginUser, $this->gr_list, $this->id, $this->type, $this->domainStartPage
+     * Resolves the page id and sets up several related properties.
+     *
+     * If $this->id is not set at all or is not a plain integer, the method
+     * does it's best to set the value to an integer. Resolving is based on
+     * this options:
+     *
+     * - Splitting $this->id if it contains an additional type parameter.
+     * - Getting the id for an alias in $this->id
+     * - Finding the domain record start page
+     * - First visible page
+     * - Relocating the id below the domain record if outside
+     *
+     * The following properties may be set up or updated:
+     *
+     * - id
+     * - requestedId
+     * - type
+     * - domainStartPage
+     * - sys_page
+     * - sys_page->where_groupAccess
+     * - sys_page->where_hid_del
+     * - loginUser
+     * - gr_list
+     * - no_cache
+     * - register['SYS_LASTCHANGED']
+     * - pageNotFound
+     *
+     * Via getPageAndRootlineWithDomain()
+     *
+     * - rootLine
+     * - page
+     * - MP
+     * - originalShortcutPage
+     * - originalMountPointPage
+     * - pageAccessFailureHistory['direct_access']
+     * - pageNotFound
+     *
+     * @todo:
+     *
+     * On the first impression the method does to much. This is increased by
+     * the fact, that is is called repeated times by the method determineId.
+     * The reasons are manifold.
+     *
+     * 1.) The first part, the creation of sys_page, the type and alias
+     * resolution don't need to be repeated. They could be separated to be
+     * called only once.
+     *
+     * 2.) The user group setup could be done once on a higher level.
+     *
+     * 3.) The workflow of the resolution could be elaborated to be less
+     * tangled. Maybe the check of the page id to be below the domain via the
+     * root line doesn't need to be done each time, but for the final result
+     * only.
+     *
+     * 4.) The root line does not need to be directly addressed by this class.
+     * A root line is always related to one page. The rootline could be handled
+     * indirectly by page objects. Page objects still don't exist.
      *
      * @throws ServiceUnavailableException
      * @access private
