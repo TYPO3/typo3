@@ -24,11 +24,14 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Core\Messaging\ErrorpageMessage
 * TYPO3\CMS\Core\TimeTracker\NullTimeTracker
 * TYPO3\CMS\Extbase\Utility\ArrayUtility
+* TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper
+* TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper
 * TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword
 * TYPO3\CMS\Form\ViewHelpers\Form\CheckboxViewHelper
 * TYPO3\CMS\Form\ViewHelpers\Form\PlainTextMailViewHelper
 * TYPO3\CMS\Frontend\Page\FramesetRenderer
 * TYPO3\CMS\Lowlevel\CleanerCommand
+
 
 The following PHP interfaces have been dropped:
 * TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface
@@ -352,6 +355,7 @@ The following Fluid ViewHelper arguments have been removed:
 * f:be.pageRenderer->enableExtJsDebug
 * f:be.pageRenderer->loadJQuery
 * f:be.pageRenderer->jQueryNamespace
+* f:case->default (use f:defaultCase instead)
 
 The following requireJS modules have been removed:
 * TYPO3/CMS/Core/QueryGenerator
