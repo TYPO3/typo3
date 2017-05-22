@@ -13,7 +13,7 @@ return [
         'versioningWS' => true,
 
         'origUid' => 't3_origuid',
-
+        'transOrigDiffSourceField' => 'l18n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
