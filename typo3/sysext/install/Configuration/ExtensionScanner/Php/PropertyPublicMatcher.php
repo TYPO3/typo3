@@ -241,4 +241,74 @@ return [
             'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->matchAll' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->whereClause' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->debug' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->allowedPaths' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->simulationHiddenOrTime' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->nextLevel' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->rootId' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->absoluteRootLine' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->outermostRootlineIndexWithTemplate' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->rowSum' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->sitetitle' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->sectionsMatch' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->frames' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->MPmap' => [
+        'restFiles' => [
+            'Deprecation-83273-PublicPropertiesOfTemplateService.rst',
+        ],
+    ],
 ];

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
@@ -39,6 +40,29 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class TemplateService
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * Properties which have been moved to protected status from public
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'matchAll' => 'Using $matchAll from the outside is discouraged, as this variable is only used for internal storage.',
+        'whereClause' => 'Using $whereClause is discouraged, as this has been superseeded by Doctrine DBAL API.',
+        'debug' => 'Using $debug is discouraged, as this option has no effect anymore.',
+        'allowedPaths' => 'Using $allowedPaths from the outside is discouraged, as this variable is only used for internal storage.',
+        'simulationHiddenOrTime' => 'Using $simulationHiddenOrTime is discouraged, as this has been superseeded by Doctrine DBAL API.',
+        'nextLevel' => 'Using $nextLevel from the outside is discouraged, as this variable is only used for internal storage.',
+        'rootId' => 'Using $rootId from the outside is discouraged, as this variable is only used for internal storage.',
+        'absoluteRootLine' => 'Using $absoluteRootLine from the outside is discouraged, as this variable is only used for internal storage.',
+        'outermostRootlineIndexWithTemplate' => 'Using $outermostRootlineIndexWithTemplate from the outside is discouraged, as this variable is only used for internal storage.',
+        'rowSum' => 'Using $rowSum from the outside is discouraged, as this variable is only used for internal storage.',
+        'sitetitle' => 'Using $sitetitle from the outside is discouraged, as this variable is only used for internal storage.',
+        'sectionsMatch' => 'Using $sectionsMatch from the outside is discouraged, as this variable is only used for internal storage.',
+        'frames' => 'Using $frames from the outside is discouraged, as this variable is only used for internal storage.',
+        'MPmap' => 'Using $frames from the outside is discouraged, as this variable is only used for internal storage.',
+    ];
+
     /**
      * option to enable logging, time-tracking (FE-only)
      * usually, this is only done when
@@ -76,7 +100,7 @@ class TemplateService
      *
      * @var bool
      */
-    public $matchAll = false;
+    protected $matchAll = false;
 
     /**
      * Externally set breakpoints (used by Backend Modules)
@@ -105,12 +129,12 @@ class TemplateService
      *
      * @var string
      */
-    public $whereClause = '';
+    protected $whereClause = '';
 
     /**
      * @var bool
      */
-    public $debug = false;
+    protected $debug = false;
 
     /**
      * This is the only paths (relative!!) that are allowed for resources in TypoScript.
@@ -118,14 +142,14 @@ class TemplateService
      *
      * @var array
      */
-    public $allowedPaths = [];
+    protected $allowedPaths = [];
 
     /**
      * See init(); Set if preview of some kind is enabled.
      *
      * @var int
      */
-    public $simulationHiddenOrTime = 0;
+    protected $simulationHiddenOrTime = 0;
 
     /**
      * Set, if the TypoScript template structure is loaded and OK, see ->start()
@@ -179,21 +203,21 @@ class TemplateService
      *
      * @var array
      */
-    public $hierarchyInfoToRoot = [];
+    protected $hierarchyInfoToRoot = [];
 
     /**
      * Next-level flag (see runThroughTemplates())
      *
      * @var int
      */
-    public $nextLevel = 0;
+    protected $nextLevel = 0;
 
     /**
      * The Page UID of the root page
      *
      * @var int
      */
-    public $rootId;
+    protected $rootId;
 
     /**
      * The rootline from current page to the root page
@@ -207,28 +231,28 @@ class TemplateService
      *
      * @var array
      */
-    public $absoluteRootLine;
+    protected $absoluteRootLine;
 
     /**
      * A pointer to the last entry in the rootline where a template was found.
      *
      * @var int
      */
-    public $outermostRootlineIndexWithTemplate = 0;
+    protected $outermostRootlineIndexWithTemplate = 0;
 
     /**
      * Array of arrays with title/uid of templates in hierarchy
      *
      * @var array
      */
-    public $rowSum;
+    protected $rowSum;
 
     /**
      * The current site title field.
      *
      * @var string
      */
-    public $sitetitle = '';
+    protected $sitetitle = '';
 
     /**
      * Tracking all conditions found during parsing of TypoScript. Used for the "all" key in currentPageData
@@ -242,7 +266,7 @@ class TemplateService
      *
      * @var array
      */
-    public $sectionsMatch;
+    protected $sectionsMatch;
 
     /**
      * Used by Backend only (Typoscript Template Analyzer)
@@ -278,14 +302,14 @@ class TemplateService
      *
      * @var array
      */
-    public $frames = [];
+    protected $frames = [];
 
     /**
      * Contains mapping of Page id numbers to MP variables.
      *
      * @var string
      */
-    public $MPmap = '';
+    protected $MPmap = '';
 
     /**
      * Indicator that extension statics are processed.
