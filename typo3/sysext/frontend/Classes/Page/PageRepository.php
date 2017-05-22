@@ -1664,7 +1664,7 @@ class PageRepository
                         $queryBuilder->expr()->eq(
                             't3ver_state',
                             $queryBuilder->createNamedParameter(
-                                new VersionState(VersionState::MOVE_PLACEHOLDER),
+                                (string)VersionState::cast(VersionState::MOVE_PLACEHOLDER),
                                 \PDO::PARAM_INT
                             )
                         ),
