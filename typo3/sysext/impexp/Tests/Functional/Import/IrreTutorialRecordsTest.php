@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Impexp\Tests\Functional\Import\IrreTutorialRecords;
+namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 /*
  * This file is part of the TYPO3 CMS project.
