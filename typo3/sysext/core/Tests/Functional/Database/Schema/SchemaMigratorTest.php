@@ -142,8 +142,6 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
-     * @TODO: Find PostgreSQL failure
      */
     public function changeExistingColumn()
     {
@@ -298,7 +296,6 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
      */
     public function installDoesNotAddIndexOnChangedColumn()
     {
