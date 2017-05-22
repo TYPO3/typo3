@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
@@ -174,14 +175,22 @@ class MetaDataRepository implements SingletonInterface
         $row = $this->findByFileUid($fileUid);
         if (!empty($updateRow)) {
             $updateRow['tstamp'] = time();
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->tableName)
-                ->update(
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
+            $types = [];
+            if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+                // mssql needs to set proper PARAM_LOB and others to update fields
+                $tableDetails = $connection->getSchemaManager()->listTableDetails($this->tableName);
+                foreach ($updateRow as $columnName => $columnValue) {
+                    $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
+                }
+            }
+            $connection->update(
                     $this->tableName,
                     $updateRow,
                     [
                         'uid' => (int)$row['uid']
-                    ]
+                    ],
+                    $types
                 );
 
             $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
