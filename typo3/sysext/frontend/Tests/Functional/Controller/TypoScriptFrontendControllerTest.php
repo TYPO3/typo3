@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -115,11 +116,23 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
             ],
         ];
 
+        $connection = (new ConnectionPool())->getConnectionForTable('sys_domain');
+
+        $sqlServerIdentityDisabled = false;
+        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+            $connection->exec('SET IDENTITY_INSERT sys_domain ON');
+            $sqlServerIdentityDisabled = true;
+        }
+
         foreach ($domainRecords as $domainRecord) {
-            (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
+            $connection->insert(
                 'sys_domain',
                 $domainRecord
             );
+        }
+
+        if ($sqlServerIdentityDisabled) {
+            $connection->exec('SET IDENTITY_INSERT sys_domain OFF');
         }
 
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
@@ -162,11 +175,23 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
             ],
         ];
 
+        $connection = (new ConnectionPool())->getConnectionForTable('sys_domain');
+
+        $sqlServerIdentityDisabled = false;
+        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+            $connection->exec('SET IDENTITY_INSERT sys_domain ON');
+            $sqlServerIdentityDisabled = true;
+        }
+
         foreach ($domainRecords as $domainRecord) {
-            (new ConnectionPool())->getConnectionForTable('sys_domain')->insert(
+            $connection->insert(
                 'sys_domain',
                 $domainRecord
             );
+        }
+
+        if ($sqlServerIdentityDisabled) {
+            $connection->exec('SET IDENTITY_INSERT sys_domain OFF');
         }
 
         GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();

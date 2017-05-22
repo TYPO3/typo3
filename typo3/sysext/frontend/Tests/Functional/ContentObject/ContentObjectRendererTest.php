@@ -31,11 +31,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     protected $subject;
 
-    /**
-     * @var string
-     */
-    protected $quoteChar;
-
     protected function setUp()
     {
         parent::setUp();
@@ -51,10 +46,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
 
         $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $this->quoteChar = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tt_content')
-            ->getDatabasePlatform()
-            ->getIdentifierQuoteCharacter();
     }
 
     /**
@@ -79,7 +70,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'selectFields' => 'header,bodytext'
                 ],
                 [
-                    'SELECT' => 'header,bodytext, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
+                    'SELECT' => 'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
                 ]
             ],
             'testing #17284: no need to add' => [
@@ -107,7 +98,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'join' => 'be_users ON tt_content.cruser_id = be_users.uid'
                 ],
                 [
-                    'SELECT' => 'tt_content.header,be_users.username, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
+                    'SELECT' => 'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
                 ]
             ],
             'testing #34152: single count(*), add nothing' => [
@@ -190,10 +181,16 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         ];
 
         $result = $this->subject->getQuery($table, $conf, true);
+
+        $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
-            // Replace the MySQL backtick quote character with the actual quote character for the DBMS
-            if ($field === 'SELECT') {
-                $value = str_replace('`', $this->quoteChar, $value);
+            if (!($databasePlatform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform)) {
+                // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
+                if ($field === 'SELECT') {
+                    $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
+                    $value = str_replace('[', $quoteChar, $value);
+                    $value = str_replace(']', $quoteChar, $value);
+                }
             }
             $this->assertEquals($value, $result[$field]);
         }
@@ -270,7 +267,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ],
-                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5) GROUP BY `tt_content`.`title` ORDER BY `tt_content`.`sorting`',
+                'WHERE ([tt_content].[uid] IN (42)) AND ([tt_content].[pid] IN (43)) AND (tt_content.cruser_id=5) GROUP BY [tt_content].[title] ORDER BY [tt_content].[sorting]',
             ],
             [
                 [
@@ -297,7 +294,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'groupBy' => 'tt_content.title',
                     'orderBy' => 'tt_content.sorting',
                 ],
-                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5) AND (`tt_content`.`sys_language_uid` = 13) AND ((`tt_content`.`deleted` = 0) AND (`tt_content`.`hidden` = 0) AND (`tt_content`.`startdate` <= 4242) AND ((`tt_content`.`enddate` = 0) OR (`tt_content`.`enddate` > 4242))) GROUP BY `tt_content`.`title` ORDER BY `tt_content`.`sorting`',
+                'WHERE ([tt_content].[uid] IN (42)) AND ([tt_content].[pid] IN (43)) AND (tt_content.cruser_id=5) AND ([tt_content].[sys_language_uid] = 13) AND (([tt_content].[deleted] = 0) AND ([tt_content].[hidden] = 0) AND ([tt_content].[startdate] <= 4242) AND (([tt_content].[enddate] = 0) OR ([tt_content].[enddate] > 4242))) GROUP BY [tt_content].[title] ORDER BY [tt_content].[sorting]',
             ],
             [
                 [
@@ -317,7 +314,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'where' => 'tt_content.cruser_id=5',
                     'languageField' => 0,
                 ],
-                'WHERE (`tt_content`.`uid` IN (42)) AND (`tt_content`.`pid` IN (43)) AND (tt_content.cruser_id=5)',
+                'WHERE ([tt_content].[uid] IN (42)) AND ([tt_content].[pid] IN (43)) AND (tt_content.cruser_id=5)',
             ],
         ];
     }
@@ -343,8 +340,13 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
             ->method('checkPidArray')
             ->willReturn(explode(',', $configuration['pidInList']));
 
-        // Replace the MySQL backtick quote character with the actual quote character for the DBMS
-        $expectedResult = str_replace('`', $this->quoteChar, $expectedResult);
+        // Replace the [] quote chars of mssql with the actual quote character of other DBMS
+        $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
+        if (!($databasePlatform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform)) {
+            $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
+            $expectedResult = str_replace('[', $quoteChar, $expectedResult);
+            $expectedResult = str_replace(']', $quoteChar, $expectedResult);
+        }
 
         // Embed the enable fields string into the expected result as the database
         // connection is still unconfigured when the data provider is being run.
