@@ -1593,20 +1593,36 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Checks the current rootline for defined sections.
+     * Checks if visibility of the page is blocked upwards in the root line.
+     *
+     * If any page in the root line is blocking visibility, true is returend.
+     *
+     * All pages from the blocking page downwards are removed from the root
+     * line, so that the remaning pages can be used to relocate the page up
+     * to lowest visible page.
+     *
+     * The blocking feature of a page must be turned on by setting the page
+     * record field 'extendToSubpages' to 1.
+     *
+     * The following fields are evaluated then:
+     *
+     *      hidden, starttime, endtime, fe_group
+     *
+     * @todo Find a better name, i.e. checkVisibilityByRootLine
+     * @todo Invert boolean return value. Return true if visible.
      *
      * @return bool
      * @access private
      */
-    public function checkRootlineForIncludeSection()
+    public function checkRootlineForIncludeSection(): bool
     {
         $c = count($this->rootLine);
-        $removeTheRestFlag = 0;
+        $removeTheRestFlag = false;
         for ($a = 0; $a < $c; $a++) {
             if (!$this->checkPagerecordForIncludeSection($this->rootLine[$a])) {
                 // Add to page access failure history:
                 $this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
-                $removeTheRestFlag = 1;
+                $removeTheRestFlag = true;
             }
 
             if ($this->rootLine[$a]['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION) {
@@ -1635,17 +1651,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // versionOL()?
                     if (!$row) {
                         // If there was no page selected, the user apparently did not have read access to the current PAGE (not position in rootline) and we set the remove-flag...
-                        $removeTheRestFlag = 1;
+                        $removeTheRestFlag = true;
                     }
                 } else {
                     // Don't go here, if there is no backend user logged in.
-                    $removeTheRestFlag = 1;
+                    $removeTheRestFlag = true;
                 }
             }
             if ($removeTheRestFlag) {
                 // Page is 'not found' in case a subsection was found and not accessible, code 2
                 $this->pageNotFound = 2;
                 unset($this->rootLine[$a]);
+                break;
             }
         }
         return $removeTheRestFlag;
@@ -1698,14 +1715,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Checks page record for include section
+     * Checks if the current page of the root line is visible.
      *
-     * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
-     * @return bool Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
+     * If the field extendToSubpages is 0, access is granted,
+     * else the fields hidden, starttime, endtime, fe_group are evaluated.
+     *
+     * @todo Find a better name, i.e. isVisibleRecord()
+     *
+     * @param array $row The page record
+     * @return bool true if visible
      * @access private
-     * @see checkEnableFields(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
+     * @see checkEnableFields()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
+     * @see checkRootlineForIncludeSection()
      */
-    public function checkPagerecordForIncludeSection($row)
+    public function checkPagerecordForIncludeSection(array $row): bool
     {
         return !$row['extendToSubpages'] || $this->checkEnableFields($row);
     }
