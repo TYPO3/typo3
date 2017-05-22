@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Version\Hook;
  */
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -907,11 +908,28 @@ class DataHandlerHook
         // Execute swapping:
         $sqlErrors = [];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $platform = $connection->getDatabasePlatform();
+        $tableDetails = null;
+        if ($platform instanceof SQLServerPlatform) {
+            // mssql needs to set proper PARAM_LOB and others to update fields
+            $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+        }
+
         try {
+            $types = [];
+
+            if ($platform instanceof SQLServerPlatform) {
+                foreach ($curVersion as $columnName => $columnValue) {
+                    $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
+                }
+            }
+
             $connection->update(
                 $table,
                 $swapVersion,
-                ['uid' => (int)$id]
+                ['uid' => (int)$id],
+                $types
             );
         } catch (DBALException $e) {
             $sqlErrors[] = $e->getPrevious()->getMessage();
@@ -919,10 +937,18 @@ class DataHandlerHook
 
         if (empty($sqlErrors)) {
             try {
+                $types = [];
+                if ($platform instanceof SQLServerPlatform) {
+                    foreach ($curVersion as $columnName => $columnValue) {
+                        $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
+                    }
+                }
+
                 $connection->update(
                     $table,
                     $curVersion,
-                    ['uid' => (int)$swapWith]
+                    ['uid' => (int)$swapWith],
+                    $types
                 );
                 unlink($lockFileName);
             } catch (DBALException $e) {

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -2535,9 +2536,9 @@ class DataHandler
             $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
             // For as long as records with the test-value existing, try again (with incremented numbers appended)
             if ($statement->fetchColumn()) {
-                $statement->bindParam(1, $newValue);
                 for ($counter = 0; $counter <= 100; $counter++) {
                     $newValue = $value . $counter;
+                    $statement->bindValue(1, $newValue);
                     $statement->execute();
                     if (!$statement->fetchColumn()) {
                         break;
@@ -6937,12 +6938,23 @@ class DataHandler
             unset($fieldArray['uid']);
             if (!empty($fieldArray)) {
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
+
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+                $types = [];
+                $platform = $connection->getDatabasePlatform();
+                if ($platform instanceof SQLServerPlatform) {
+                    // mssql needs to set proper PARAM_LOB and others to update fields
+                    $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+                    foreach ($fieldArray as $columnName => $columnValue) {
+                        $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
+                    }
+                }
+
                 // Execute the UPDATE query:
                 $updateErrorMessage = '';
                 try {
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable($table)
-                        ->update($table, $fieldArray, ['uid' => (int)$id]);
+                    $connection->update($table, $fieldArray, ['uid' => (int)$id], $types);
                 } catch (DBALException $e) {
                     $updateErrorMessage = $e->getPrevious()->getMessage();
                 }
@@ -6951,7 +6963,6 @@ class DataHandler
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
                     if ($this->enableLogging) {
-                        $newRow = [];
                         if ($this->checkStoredRecords) {
                             $newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
                         } else {

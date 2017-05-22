@@ -512,7 +512,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
         unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
-        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigDiffSourceField']);
         $GLOBALS['TCA'][self::TABLE_PageOverlay]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
