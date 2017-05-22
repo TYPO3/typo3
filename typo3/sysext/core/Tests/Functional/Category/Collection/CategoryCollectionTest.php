@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -336,7 +339,7 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
             'is_dummy_record' => 1
         ];
 
-        $connection->insert('sys_category', $values);
+        $connection->insert('sys_category', $values, [ 'l10n_diffsource' => Connection::PARAM_LOB ]);
         $this->categoryUid = $connection->lastInsertId('sys_category');
     }
 
@@ -351,16 +354,17 @@ class CategoryCollectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     {
         $connection = $this->getConnectionPool()
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $currentSchema = $connection->getSchemaManager()->createSchema();
-        $targetSchema = clone $currentSchema;
 
         foreach ($this->tables as $table) {
-            $targetSchema->getTable($table)->dropColumn('is_dummy_record');
-        }
-
-        $queries = $currentSchema->getMigrateToSql($targetSchema, $connection->getDatabasePlatform());
-        foreach ($queries as $query) {
-            $connection->query($query);
+            $diff = new TableDiff(
+                $table,
+                [],
+                [],
+                [
+                    'is_dummy_record' => new Column('is_dummy_record', Type::getType(Type::SMALLINT))
+                ]
+            );
+            $connection->getSchemaManager()->alterTable($diff);
         }
     }
 }

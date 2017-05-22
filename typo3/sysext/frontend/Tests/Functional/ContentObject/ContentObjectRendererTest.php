@@ -31,11 +31,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     protected $subject;
 
-    /**
-     * @var string
-     */
-    protected $quoteChar;
-
     protected function setUp()
     {
         parent::setUp();
@@ -51,10 +46,6 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
 
         $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $this->quoteChar = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tt_content')
-            ->getDatabasePlatform()
-            ->getIdentifierQuoteCharacter();
     }
 
     /**
@@ -79,7 +70,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'selectFields' => 'header,bodytext'
                 ],
                 [
-                    'SELECT' => 'header,bodytext, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
+                    'SELECT' => 'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
                 ]
             ],
             'testing #17284: no need to add' => [
@@ -107,7 +98,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
                     'join' => 'be_users ON tt_content.cruser_id = be_users.uid'
                 ],
                 [
-                    'SELECT' => 'tt_content.header,be_users.username, `tt_content`.`uid` AS `uid`, `tt_content`.`pid` AS `pid`, `tt_content`.`t3ver_state` AS `t3ver_state`'
+                    'SELECT' => 'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
                 ]
             ],
             'testing #34152: single count(*), add nothing' => [
@@ -190,10 +181,16 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
         ];
 
         $result = $this->subject->getQuery($table, $conf, true);
+
+        $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
-            // Replace the MySQL backtick quote character with the actual quote character for the DBMS
-            if ($field === 'SELECT') {
-                $value = str_replace('`', $this->quoteChar, $value);
+            if (!($databasePlatform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform)) {
+                // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
+                if ($field === 'SELECT') {
+                    $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
+                    $value = str_replace('[', $quoteChar, $value);
+                    $value = str_replace(']', $quoteChar, $value);
+                }
             }
             $this->assertEquals($value, $result[$field]);
         }

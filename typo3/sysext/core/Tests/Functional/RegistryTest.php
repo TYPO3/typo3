@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 
@@ -51,6 +52,9 @@ class RegistryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
                     'entry_namespace' => 'myExtension',
                     'entry_key' => 'myKey',
                     'entry_value' => serialize('myValue'),
+                ],
+                [
+                    'entry_value' => Connection::PARAM_LOB,
                 ]
             );
         $this->assertSame('myValue', (new Registry())->get('myExtension', 'myKey'));
@@ -84,6 +88,9 @@ class RegistryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
                     'entry_namespace' => 'myExtension',
                     'entry_key' => 'myKey',
                     'entry_value' => serialize('myValue'),
+                ],
+                [
+                    'entry_value' => Connection::PARAM_LOB,
                 ]
             );
         (new Registry())->set('myExtension', 'myKey', 'myNewValue');
@@ -110,7 +117,10 @@ class RegistryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
                     ['ns1', 'k2', serialize('v2')],
                     ['ns2', 'k1', serialize('v1')],
                 ],
-                ['entry_namespace', 'entry_key', 'entry_value']
+                ['entry_namespace', 'entry_key', 'entry_value'],
+                [
+                    'entry_value' => Connection::PARAM_LOB,
+                ]
             );
 
         (new Registry())->remove('ns1', 'k1');
@@ -133,7 +143,10 @@ class RegistryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
                 ['ns1', 'k2', serialize('v2')],
                 ['ns2', 'k1', serialize('v1')],
             ],
-            ['entry_namespace', 'entry_key', 'entry_value']
+            ['entry_namespace', 'entry_key', 'entry_value'],
+            [
+                'entry_value' => Connection::PARAM_LOB,
+            ]
         );
 
         (new Registry())->removeAllByNamespace('ns1');

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Collection\StaticRecordCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -84,8 +85,8 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     {
         $type = RecordCollectionRepository::TYPE_Static;
         $this->insertTestData([
-            ['type' => $type, 'table_name' => $this->testTableName],
-            ['type' => $type, 'table_name' => $this->testTableName]
+            ['uid' => 1, 'type' => $type, 'table_name' => $this->testTableName],
+            ['uid' => 2, 'type' => $type, 'table_name' => $this->testTableName]
         ]);
 
         $objects = $this->subject->findByType($type);
@@ -110,8 +111,8 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     {
         $type = RecordCollectionRepository::TYPE_Static;
         $this->insertTestData([
-            ['type' => $type, 'table_name' => $this->testTableName],
-            ['type' => $type, 'table_name' => $this->testTableName]
+            ['uid' => 1, 'type' => $type, 'table_name' => $this->testTableName],
+            ['uid' => 2, 'type' => $type, 'table_name' => $this->testTableName]
         ]);
         $objects = $this->subject->findByTableName($this->testTableName);
 
@@ -138,8 +139,8 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     {
         $type = RecordCollectionRepository::TYPE_Static;
         $this->insertTestData([
-            ['type' => $type, 'table_name' => $this->testTableName],
-            ['type' => $type, 'table_name' => $this->testTableName]
+            ['uid' => 1, 'type' => $type, 'table_name' => $this->testTableName],
+            ['uid' => 2, 'type' => $type, 'table_name' => $this->testTableName]
         ]);
         $objects = $this->subject->findByTypeAndTableName($type, $this->testTableName);
 
@@ -305,9 +306,35 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     protected function insertTestData(array $rows)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_collection');
+        $platform = $connection->getDatabasePlatform();
+        $sqlServerIdentityDisabled = false;
+        if ($platform instanceof SQLServerPlatform) {
+            try {
+                $connection->exec('SET IDENTITY_INSERT sys_collection ON');
+                $sqlServerIdentityDisabled = true;
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                // Some tables like sys_refindex don't have an auto-increment uid field and thus no
+                // IDENTITY column. Instead of testing existance, we just try to set IDENTITY ON
+                // and catch the possible error that occurs.
+            }
+        }
+
+        $types = [];
+        $tableDetails = $connection->getSchemaManager()->listTableDetails('sys_collection');
+        foreach ($rows as $row) {
+            foreach ($row as $columnName => $columnValue) {
+                $types[] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
+            }
+            break;
+        }
 
         foreach ($rows as $row) {
-            $connection->insert('sys_collection', $row);
+            $connection->insert('sys_collection', $row, $types);
+        }
+
+        if ($sqlServerIdentityDisabled) {
+            // Reset identity if it has been changed
+            $connection->exec('SET IDENTITY_INSERT sys_collection OFF');
         }
     }
 }
