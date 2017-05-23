@@ -63,7 +63,7 @@ class CacheHashEnforcer implements SingletonInterface
             $parameters = [$pluginNamespace => $arguments];
             $parameters['id'] = $this->typoScriptFrontendController->id;
             $relevantParameters = $this->cacheHashCalculator->getRelevantParameters(
-                http_build_query($parameters)
+                http_build_query($parameters, '', '&', PHP_QUERY_RFC3986)
             );
             if (count($relevantParameters) > 0) {
                 $this->typoScriptFrontendController->reqCHash();
