@@ -221,4 +221,19 @@ return [
     ],
 
     // Deprecated public properties
+    'TYPO3\CMS\Frontend\Page\PageRepository->workspaceCache' => [
+        'restFiles' => [
+            'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine' => [
+        'restFiles' => [
+            'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->error_getRootLine_failPid' => [
+        'restFiles' => [
+            'Deprecation-81318-PublicPropertiesOfPageRepository.rst',
+        ],
+    ],
 ];

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Page;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -41,6 +42,17 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class PageRepository implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * List of all deprecated public properties
+     * @var array
+     */
+    protected $deprecatedPublicProperties = [
+        'workspaceCache' => 'Using $workspaceCache from the outside is discouraged, as this only reflects a local runtime cache.',
+        'error_getRootLine' => 'Using $error_getRootLine from the outside is deprecated as this property only exists for legacy reasons.',
+        'error_getRootLine_failPid' => 'Using $error_getRootLine_failPid from the outside is deprecated as this property only exists for legacy reasons.',
+    ];
 
     /**
      * This is not the final clauses. There will normally be conditions for the
@@ -82,21 +94,21 @@ class PageRepository implements LoggerAwareInterface
     /**
      * @var array
      */
-    public $workspaceCache = [];
+    protected $workspaceCache = [];
 
     /**
      * Error string set by getRootLine()
      *
      * @var string
      */
-    public $error_getRootLine = '';
+    protected $error_getRootLine = '';
 
     /**
      * Error uid set by getRootLine()
      *
      * @var int
      */
-    public $error_getRootLine_failPid = 0;
+    protected $error_getRootLine_failPid = 0;
 
     /**
      * @var array
