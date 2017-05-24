@@ -345,7 +345,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $module = $returnUrlParameters['M'];
                 $returnUrl = BackendUtility::getModuleUrl($module, $returnUrlParameters);
                 $parameters['returnUrl'] = $returnUrl;
-                $url = $parsedUrl['path'] . '?' . http_build_query($parameters);
+                $url = $parsedUrl['path'] . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
             }
         }
 
