@@ -77,7 +77,7 @@ class PageLinkHandler implements LinkHandlingInterface
             unset($data['type']);
         }
         if (!empty($data)) {
-            $result['parameters'] = http_build_query($data);
+            $result['parameters'] = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
         }
         if (empty($result)) {
             $result['pageuid'] = 'current';
