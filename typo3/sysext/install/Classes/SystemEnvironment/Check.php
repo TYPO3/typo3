@@ -951,9 +951,9 @@ class Check implements CheckInterface
                 ' On Windows the default stack size for Apache is a lot smaller than on UNIX.' .
                 ' You can increase the size to 8MB (default on UNIX) by adding the following configuration' .
                 ' to httpd.conf and restarting Apache afterwards:' . LF .
-                '<IfModule mpm_winnt_module>' . LF .
+                '&lt;IfModule mpm_winnt_module&gt;' . LF .
                 'ThreadStackSize 8388608' . LF .
-                '</IfModule>'
+                '&lt;/IfModule&gt;'
             );
         } else {
             $status = new Status\OkStatus();
