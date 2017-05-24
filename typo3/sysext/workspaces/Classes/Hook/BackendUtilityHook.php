@@ -65,10 +65,9 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface
      * a staged element
      *
      * @param array $params
-     * @param \TYPO3\CMS\Backend\Controller\EditDocumentController $form
      * @return bool
      */
-    public function makeEditForm_accessCheck($params, &$form)
+    public function makeEditForm_accessCheck($params)
     {
         if ($GLOBALS['BE_USER']->workspace !== 0 && $GLOBALS['TCA'][$params['table']]['ctrl']['versioningWS']) {
             $record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($params['table'], $params['uid']);
