@@ -317,7 +317,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * the $TCA column configuration
      *
      * @param ColumnMap $columnMap The column map
-     * @param string $columnConfiguration The column configuration from $TCA
+     * @param NULL|array $columnConfiguration The column configuration from $TCA
      * @param array $propertyMetaData The property metadata as delivered by the reflection service
      * @return ColumnMap
      */
@@ -367,10 +367,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * the $TCA column configuration
      *
      * @param ColumnMap $columnMap The column map
-     * @param string $columnConfiguration The column configuration from $TCA
+     * @param NULL|array $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setOneToOneRelation(ColumnMap $columnMap, $columnConfiguration)
+    protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null)
     {
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -389,10 +389,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * the $TCA column configuration
      *
      * @param ColumnMap $columnMap The column map
-     * @param string $columnConfiguration The column configuration from $TCA
+     * @param NULL|array $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setOneToManyRelation(ColumnMap $columnMap, $columnConfiguration)
+    protected function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null)
     {
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -411,11 +411,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * the $TCA column configuration
      *
      * @param ColumnMap $columnMap The column map
-     * @param string $columnConfiguration The column configuration from $TCA
+     * @param NULL|array $columnConfiguration The column configuration from $TCA
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
      * @return ColumnMap
      */
-    protected function setManyToManyRelation(ColumnMap $columnMap, $columnConfiguration)
+    protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null)
     {
         if (isset($columnConfiguration['MM'])) {
             $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
