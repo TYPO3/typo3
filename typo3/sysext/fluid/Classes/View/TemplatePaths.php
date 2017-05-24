@@ -108,9 +108,9 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
                 );
             }
             $signature = str_replace('_', '', $extensionKey);
-            if (TYPO3_MODE === 'BE' && isset($this->typoScript['module']['tx_' . $signature]['view'])) {
+            if ($this->isBackendMode() && isset($this->typoScript['module']['tx_' . $signature]['view'])) {
                 $configuredPaths = (array)$this->typoScript['module']['tx_' . $signature]['view'];
-            } elseif (TYPO3_MODE === 'FE' && isset($this->typoScript['plugin']['tx_' . $signature]['view'])) {
+            } elseif (isset($this->typoScript['plugin']['tx_' . $signature]['view'])) {
                 $configuredPaths = (array)$this->typoScript['plugin']['tx_' . $signature]['view'];
             }
         }
@@ -121,45 +121,13 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
         foreach ($paths as $name => $defaultPaths) {
             if (!empty($configuredPaths[$name])) {
-                $paths[$name] = array_merge($defaultPaths, (array)$configuredPaths[$name]);
+                $paths[$name] = array_merge($defaultPaths, ArrayUtility::sortArrayWithIntegerKeys((array)$configuredPaths[$name]));
             }
         }
 
         $cache->set($cacheIdentifier, $paths);
 
         return $paths;
-    }
-
-    /**
-     * @return VariableFrontend
-     */
-    protected function getRuntimeCache()
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
-    }
-
-    /**
-     * Guarantees that $reference is turned into a
-     * correct, absolute path. The input can be a
-     * relative path or a FILE: or EXT: reference
-     * but cannot be a FAL resource identifier.
-     *
-     * @param mixed $reference
-     * @return string
-     */
-    protected function ensureAbsolutePath($reference)
-    {
-        if (false === is_array($reference)) {
-            $filename = PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);
-        } else {
-            foreach ($reference as &$subValue) {
-                $subValue = $this->ensureAbsolutePath($subValue);
-            }
-
-            return $reference;
-        }
-
-        return $filename;
     }
 
     /**
@@ -230,5 +198,41 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     public function getTemplatePathAndFilename()
     {
         return $this->templatePathAndFilename;
+    }
+
+    /**
+     * Guarantees that $reference is turned into a
+     * correct, absolute path. The input can be a
+     * relative path or a FILE: or EXT: reference
+     * but cannot be a FAL resource identifier.
+     *
+     * @param mixed $reference
+     * @return string
+     */
+    protected function ensureAbsolutePath($reference)
+    {
+        if (!is_array($reference)) {
+            return PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);
+        }
+        foreach ($reference as &$subValue) {
+            $subValue = $this->ensureAbsolutePath($subValue);
+        }
+        return $reference;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isBackendMode()
+    {
+        return TYPO3_MODE === 'BE';
+    }
+
+    /**
+     * @return VariableFrontend
+     */
+    protected function getRuntimeCache()
+    {
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
     }
 }
