@@ -39,7 +39,7 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
     protected $tagName = 'div';
 
     /**
-     * @var TagBuilder
+     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tag;
 
@@ -53,7 +53,7 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
      */
     public function __construct()
     {
-        $this->tag = new TagBuilder();
+        $this->tag = new \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder();
     }
 
     /**
