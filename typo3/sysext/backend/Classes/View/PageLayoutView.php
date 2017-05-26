@@ -2089,13 +2089,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 ->from('sys_language')
                 ->orderBy('sorting')
                 ->execute();
-            $langSelItems = [];
-            $langSelItems[0] = '
-						<option value="0"></option>';
+            $availableTranslations = [];
             while ($row = $statement->fetch()) {
                 if ($this->getBackendUser()->checkLanguageAccess($row['uid'])) {
-                    $langSelItems[$row['uid']] = '
-							<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
+                    $availableTranslations[(int)$row['uid']] = $row['title'];
                 }
             }
             // Then, subtract the languages which are already on the page:
@@ -2155,18 +2152,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             }
             $statement = $queryBuilder->execute();
             while ($row = $statement->fetch()) {
-                unset($langSelItems[$row['uid']]);
+                unset($availableTranslations[(int)$row['uid']]);
             }
             // Remove disallowed languages
-            if (count($langSelItems) > 1
+            if (!empty($availableTranslations)
                 && !$this->getBackendUser()->user['admin']
                 && $this->getBackendUser()->groupData['allowed_languages'] !== ''
             ) {
                 $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
                 if (!empty($allowed_languages)) {
-                    foreach ($langSelItems as $key => $value) {
+                    foreach ($availableTranslations as $key => $value) {
                         if (!isset($allowed_languages[$key]) && $key != 0) {
-                            unset($langSelItems[$key]);
+                            unset($availableTranslations[$key]);
                         }
                     }
                 }
@@ -2176,29 +2173,41 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
                 ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true)
                 : [];
-            if (!empty($langSelItems) && !empty($disableLanguages)) {
+            if (!empty($availableTranslations) && !empty($disableLanguages)) {
                 foreach ($disableLanguages as $language) {
-                    if ($language != 0 && isset($langSelItems[$language])) {
-                        unset($langSelItems[$language]);
+                    if ($language != 0 && isset($availableTranslations[$language])) {
+                        unset($availableTranslations[$language]);
                     }
                 }
             }
             // If any languages are left, make selector:
-            if (count($langSelItems) > 1) {
-                $url = BackendUtility::getModuleUrl('record_edit', [
-                    'edit[pages_language_overlay][' . $id . ']' => 'new',
-                    'overrideVals[pages_language_overlay][doktype]' => (int)$this->pageRecord['doktype'],
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                ]);
-                $onChangeContent = 'window.location.href=' . GeneralUtility::quoteJSvalue($url . '&overrideVals[pages_language_overlay][sys_language_uid]=') . '+this.options[this.selectedIndex].value';
+            if (!empty($availableTranslations)) {
+                $output = '<option value=""></option>';
+                foreach ($availableTranslations as $languageUid => $languageTitle) {
+                    // Build localize command URL to DataHandler (tce_db)
+                    // which redirects to FormEngine (record_edit)
+                    // which, when finished editing should return back to the current page (returnUrl)
+                    $parameters = [
+                        'justLocalized' => 'pages:' . $id . ':' . $languageUid,
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    ];
+                    $redirectUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
+                    $targetUrl = BackendUtility::getLinkToDataHandlerAction(
+                        '&cmd[pages][' . $id . '][localize]=' . $languageUid,
+                        $redirectUrl
+                    );
+
+                    $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
+                }
+
                 return '<div class="form-inline form-inline-spaced">'
-                . '<div class="form-group">'
-                . '<label for="createNewLanguage">'
-                . htmlspecialchars($this->getLanguageService()->getLL('new_language'))
-                . '</label>'
-                . '<select class="form-control input-sm" name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">'
-                . implode('', $langSelItems)
-                . '</select></div></div>';
+                    . '<div class="form-group">'
+                    . '<label for="createNewLanguage">'
+                    . htmlspecialchars($this->getLanguageService()->getLL('new_language'))
+                    . '</label>'
+                    . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
+                    . $output
+                    . '</select></div></div>';
             }
         }
         return '';
