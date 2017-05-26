@@ -1630,6 +1630,7 @@ class EditDocumentController extends AbstractModule
     public function localizationRedirect($justLocalized)
     {
         list($table, $origUid, $language) = explode(':', $justLocalized);
+        $table = $table === 'pages' ? 'pages_language_overlay' : $table;
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
