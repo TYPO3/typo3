@@ -130,8 +130,8 @@
     <tr>
         <f:if condition="{line.record}">
             <f:then>
-                <td class="col-icon"><f:link.page pageUid="{line.url}" title="id={line.record.uid}">{line.icon -> f:format.raw()}</f:link.page></td>
-                <td class="col-title"><f:link.page pageUid="{line.url}" title="[id={line.record.uid}] {line.recordTitle}">{line.recordTitle -> f:format.crop(maxCharacters: maxTitleLength)}</f:link.page></td>
+                <td class="col-icon"><a href="{line.url}" title="id={line.record.uid}">{line.icon -> f:format.raw()}</a></td>
+                <td class="col-title"><a href="{line.url}" title="[id={line.record.uid}] {line.recordTitle}">{line.recordTitle -> f:format.crop(maxCharacters: maxTitleLength)}</a></td>
                 <td>{line.title}</td>
                 <td><span title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:page')}: {line.parentRecordTitle} (uid={line.record.pid})">
                         {line.record.uid}
@@ -158,8 +158,8 @@
     <tr>
         <f:if condition="{line.record}">
             <f:then>
-                <td class="col-icon"><f:link.page pageUid="{line.url}" title="id={line.record.uid}">{line.icon -> f:format.raw()}</f:link.page></td>
-                <td class="col-title"><f:link.page pageUid="{line.url}" title="[id={line.record.uid}] {line.recordTitle}">{line.recordTitle -> f:format.crop(maxCharacters: maxTitleLength)}</f:link.page></td>
+                <td class="col-icon"><a href="{line.url}" title="id={line.record.uid}">{line.icon -> f:format.raw()}</a></td>
+                <td class="col-title"><a href="{line.url}" title="[id={line.record.uid}] {line.recordTitle}">{line.recordTitle -> f:format.crop(maxCharacters: maxTitleLength)}</a></td>
                 <td>{line.title}</td>
                 <td>{line.row.ref_uid}</td>
             </f:then>
