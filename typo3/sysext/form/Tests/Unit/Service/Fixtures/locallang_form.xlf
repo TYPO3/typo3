@@ -49,8 +49,16 @@
                 <source>my-form-runtime-identifier my-form-element-identifier LABEL EN</source>
             </trans-unit>
 
+            <trans-unit id="element.my-form-element-with-translation-arguments.properties.label" xml:space="preserve">
+                <source>See %s or %s</source>
+            </trans-unit>
+
             <trans-unit id="my-form-runtime-identifier.finisher.SaveToDatabase.subject" xml:space="preserve">
                 <source>my-form-runtime-identifier form-element-identifier SaveToDatabase subject EN</source>
+            </trans-unit>
+
+            <trans-unit id="finisher.EmailToReceiverWithTranslationArguments.subject" xml:space="preserve">
+                <source>My %s subject</source>
             </trans-unit>
         </body>
     </file>

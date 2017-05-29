@@ -258,13 +258,19 @@ class TranslationService implements SingletonInterface
             $language = $renderingOptions['language'];
         }
 
+        try {
+            $arguments = ArrayUtility::getValueByPath($renderingOptions['arguments'] ?? [], $optionKey, '.');
+        } catch (\RuntimeException $e) {
+            $arguments = [];
+        }
+
         $translationKeyChain = [];
         foreach ($translationFiles as $translationFile) {
             $translationKeyChain[] = sprintf('%s:%s.finisher.%s.%s', $translationFile, $formRuntime->getIdentifier(), $finisherIdentifier, $optionKey);
             $translationKeyChain[] = sprintf('%s:finisher.%s.%s', $translationFile, $finisherIdentifier, $optionKey);
         }
 
-        $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
+        $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
         $translatedValue = (empty($translatedValue)) ? $optionValue : $translatedValue;
 
         return $translatedValue;
@@ -337,6 +343,12 @@ class TranslationService implements SingletonInterface
             $language = $renderingOptions['translation']['language'];
         }
 
+        try {
+            $arguments = ArrayUtility::getValueByPath($renderingOptions['translation']['arguments'] ?? [], $propertyParts, '.');
+        } catch (\RuntimeException $e) {
+            $arguments = [];
+        }
+
         if ($property === 'options' && is_array($defaultValue)) {
             foreach ($defaultValue as $optionValue => &$optionLabel) {
                 $translationKeyChain = [];
@@ -346,7 +358,7 @@ class TranslationService implements SingletonInterface
                     $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property, $optionValue);
                 }
 
-                $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
+                $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
                 $optionLabel = (empty($translatedValue)) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
@@ -359,7 +371,7 @@ class TranslationService implements SingletonInterface
                     $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $propertyName);
                 }
 
-                $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
+                $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
                 $propertyValue = (empty($translatedValue)) ? $propertyValue : $translatedValue;
             }
             $translatedValue = $defaultValue;
@@ -371,7 +383,7 @@ class TranslationService implements SingletonInterface
                 $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property);
             }
 
-            $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
+            $translatedValue = $this->processTranslationChain($translationKeyChain, $language, $arguments);
             $translatedValue = (empty($translatedValue)) ? $defaultValue : $translatedValue;
         }
 
