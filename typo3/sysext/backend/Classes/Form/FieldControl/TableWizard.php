@@ -68,7 +68,7 @@ class TableWizard extends AbstractNode
 
         $onClick = [];
         $onClick[] = 'this.blur();';
-        $onClick[] = 'return !TBE_EDITOR.isFormChanged();';
+        $onClick[] = 'return TYPO3.FormEngine.preventFollowLinkIfNotSaved(this.getAttribute(\'href\'));';
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         return [

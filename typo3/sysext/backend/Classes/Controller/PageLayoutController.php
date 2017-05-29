@@ -708,21 +708,6 @@ class PageLayoutController
 
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 
-            // override the default jumpToUrl
-            $this->moduleTemplate->addJavaScriptCode('jumpToUrl', '
-                function jumpToUrl(URL,formEl) {
-                    if (document.editform && TBE_EDITOR.isFormChanged)  {   // Check if the function exists... (works in all browsers?)
-                        if (!TBE_EDITOR.isFormChanged()) {
-                            window.location.href = URL;
-                        } else if (formEl) {
-                            if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
-                        }
-                    } else {
-                        window.location.href = URL;
-                    }
-                }
-            ');
-
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 

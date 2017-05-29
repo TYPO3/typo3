@@ -942,13 +942,6 @@ class EditDocumentController
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
-            function jumpToUrl(URL,formEl) {
-                if (!TBE_EDITOR.isFormChanged()) {
-                    window.location.href = URL;
-                } else if (formEl && formEl.type=="checkbox") {
-                    formEl.checked = formEl.checked ? 0 : 1;
-                }
-            }
             // Info view:
             function launchView(table,uid) {
                 console.warn(\'Calling launchView() has been deprecated in v9 and will be removed in v10.0\');

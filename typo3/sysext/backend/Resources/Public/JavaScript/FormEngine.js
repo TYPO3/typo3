@@ -1118,9 +1118,22 @@ define(['jquery',
    * @param {boolean} response
    */
   FormEngine.preventExitIfNotSavedCallback = function(response) {
-    if (response) {
-      FormEngine.closeDocument();
-    }
+    FormEngine.closeDocument();
+  };
+
+  /**
+   * Show modal to confirm following a clicked link to confirm leaving the document without saving
+   *
+   * @param {String} href
+   * @returns {Boolean}
+   */
+  FormEngine.preventFollowLinkIfNotSaved = function(href) {
+    FormEngine.preventExitIfNotSaved(
+      function () {
+        window.location.href = href;
+      }
+    );
+    return false;
   };
 
   /**
@@ -1156,7 +1169,6 @@ define(['jquery',
       $modal.on('button.clicked', function(e) {
         if (e.target.name === 'no') {
           Modal.dismiss();
-          callback.call(null, false);
         } else if (e.target.name === 'yes') {
           Modal.dismiss();
           callback.call(null, true);
