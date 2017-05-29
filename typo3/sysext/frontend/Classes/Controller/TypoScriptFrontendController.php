@@ -1382,14 +1382,49 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Gets the page and rootline arrays based on the id, $this->id
+     * Loads the page and root line records based on $this->id
      *
-     * If the id does not correspond to a proper page, the 'previous' valid page in the rootline is found
-     * If the page is a shortcut (doktype=4), the ->id is loaded with that id
+     * A final page and the matching root line are determined and loaded by
+     * the algorithm defined by this method.
      *
-     * Whether or not the ->id is changed to the shortcut id or the previous id in rootline (eg if a page is hidden), the ->page-array and ->rootline is found and must also be valid.
+     * First it loads the initial page from the page repository for $this->id.
+     * If that can't be loaded directly, it gets the root line for $this->id.
+     * It walks up the root line towards the root page until the page
+     * repository can deliver a page record. (The loading restrictions of
+     * the root line records are more liberal than that of the page record.)
      *
-     * Sets or manipulates internal variables such as: $this->id, $this->page, $this->rootLine, $this->MP, $this->pageNotFound
+     * Now the page type is evaluated and handled if necessary. If the page is
+     * a short cut, it is replaced by the target page. If the page is a mount
+     * point in overlay mode, the page is replaced by the mounted page.
+     *
+     * After this potential replacements are done, the root line is loaded
+     * (again) for this page record. It walks up the root line up to
+     * the first viewable record.
+     *
+     * (While upon the first accessibility check of the root line it was done
+     * by loading page by page from the page repository, this time the method
+     * checkRootlineForIncludeSection() is used to find the most distant
+     * accessible page within the root line.)
+     *
+     * Having found the final page id, the page record and the root line are
+     * loaded for last time by this method.
+     *
+     * Exceptions may be thrown for DOKTYPE_SPACER and not loadable page records
+     * or root lines.
+     *
+     * If $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] is set,
+     * instead of throwing an exception it's handled by a page unavailable
+     * handler.
+     *
+     * May set or update this properties:
+     *
+     * @see TypoScriptFrontendController::$id
+     * @see TypoScriptFrontendController::$MP
+     * @see TypoScriptFrontendController::$page
+     * @see TypoScriptFrontendController::$pageNotFound
+     * @see TypoScriptFrontendController::$pageAccessFailureHistory
+     * @see TypoScriptFrontendController::$originalMountPointPage
+     * @see TypoScriptFrontendController::$originalShortcutPage
      *
      * @throws ServiceUnavailableException
      * @throws PageNotFoundException
