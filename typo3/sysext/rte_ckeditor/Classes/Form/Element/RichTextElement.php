@@ -184,10 +184,11 @@ class RichTextElement extends AbstractFormElement
         return 'function(CKEDITOR) {
                 ' . $externalPlugins . '
                 CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
-                require([\'TYPO3/CMS/Backend/FormEngine\'], function(FormEngine) {
+                require([\'jquery\', \'TYPO3/CMS/Backend/FormEngine\'], function($, FormEngine) {
                     CKEDITOR.instances.' . $fieldId . '.on(\'change\', function() {
                         CKEDITOR.instances.' . $fieldId . '.updateElement();
                         FormEngine.Validation.validate();
+                        FormEngine.Validation.markFieldAsChanged($(\'#' . $fieldId . '\'));
                     });
                 });
         }';
