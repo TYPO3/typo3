@@ -26,13 +26,13 @@
 			<input type="hidden" name="install[values][identifier]" value="{nextUpdateIdentifier}"/>
 			<f:render
 				partial="Action/Common/SubmitButton"
-				arguments="{name:'getUserInput', text:'Go to the next update wizard'}"
+				arguments="{name:'getUserInput', text:'Go to the next upgrade wizard'}"
 			/>
 		</f:then>
 		<f:else>
 			<f:render
 				partial="Action/Common/SubmitButton"
-				arguments="{name:'backToWizard', text:'Go back to the update wizard'}"
+				arguments="{name:'backToWizard', text:'Go back to the upgrade wizard'}"
 			/>
 		</f:else>
 	</f:if>
