@@ -367,8 +367,9 @@ class MarkerBasedTemplateService
         }
         asort($keysToReplace);
         $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $keysToReplace]));
-        if ($runtimeCache->get($storeKey)) {
-            $storeArr = $runtimeCache->get($storeKey);
+        $fromCache = $runtimeCache->get($storeKey);
+        if ($fromCache) {
+            $storeArr = $fromCache;
         } else {
             $cache = $this->getCache();
             $storeArrDat = $cache->get($storeKey);
