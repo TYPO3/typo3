@@ -434,13 +434,15 @@ class InlineRecordContainer extends AbstractContainer
             $uid = $rec['uid'];
             $table = $foreignTable;
         }
-        if ($enabledControls['info'] && !$isNewItem) {
-            $cells['info'] = '
+        if ($enabledControls['info']) {
+            if ($isNewItem) {
+                $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            } else {
+                $cells['info'] = '
 				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo')) . '">
 					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
 				</a>';
-        } else {
-            $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+            }
         }
         // If the table is NOT a read-only table, then show these links:
         if (!$tcaTableCtrl['readOnly'] && !$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
