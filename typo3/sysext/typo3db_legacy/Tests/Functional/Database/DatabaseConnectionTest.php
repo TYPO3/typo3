@@ -75,7 +75,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function selectDbReturnsTrue()
     {
@@ -85,7 +85,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function selectDbReturnsFalse()
     {
@@ -100,7 +100,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlAffectedRowsReturnsCorrectAmountOfRows()
     {
@@ -111,7 +111,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlInsertIdReturnsCorrectId()
     {
@@ -122,7 +122,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function noSqlError()
     {
@@ -133,7 +133,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlErrorWhenInsertIntoInexistentField()
     {
@@ -144,7 +144,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function noSqlErrorCode()
     {
@@ -155,7 +155,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlErrorNoWhenInsertIntoInexistentField()
     {
@@ -166,7 +166,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlPconnectReturnsInstanceOfMySqli()
     {
@@ -176,7 +176,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function connectDbThrowsExeptionsWhenNoDatabaseIsGiven()
     {
@@ -191,7 +191,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function connectDbConnectsToDatabaseWithoutErrors()
     {
@@ -202,7 +202,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function disconnectIfConnectedDisconnects()
     {
@@ -263,7 +263,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @param string $values
      * @param string $expectedResult
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function fullQuoteStrReturnsQuotedString($values, $expectedResult)
     {
@@ -389,7 +389,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @param string $values
      * @param string $expectedResult
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function fullQuoteArrayQuotesArray($values, $expectedResult)
     {
@@ -437,7 +437,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @param string $string String to quote
      * @param string $expectedResult Quoted string we expect
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function quoteStrQuotesDoubleQuotesCorrectly($string, $expectedResult)
     {
@@ -448,7 +448,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminQueryReturnsTrueForInsertQuery()
     {
@@ -460,7 +460,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminQueryReturnsTrueForUpdateQuery()
     {
@@ -476,7 +476,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminQueryReturnsTrueForDeleteQuery()
     {
@@ -490,7 +490,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminQueryReturnsResultForSelectQuery()
     {
@@ -506,7 +506,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminGetCharsetsReturnsArrayWithCharsets()
     {
@@ -523,7 +523,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminGetKeysReturnIndexKeysOfTable()
     {
@@ -534,7 +534,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminGetFieldsReturnFieldInformationsForTable()
     {
@@ -546,7 +546,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminGetTablesReturnAllTablesFromDatabase()
     {
@@ -558,7 +558,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function adminGetDbsReturnsAllDatabases()
     {
@@ -601,7 +601,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      * @param string $sql
      * @param string $expectedResult
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlNumRowsReturnsCorrectAmountOfRows($sql, $expectedResult)
     {
@@ -619,7 +619,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlNumRowsReturnsFalse()
     {
@@ -658,7 +658,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlFetchAssocReturnsAssocArray()
     {
@@ -717,7 +717,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlFetchRowReturnsNumericArray()
     {
@@ -739,7 +739,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlFreeResultReturnsFalseOnFailure()
     {
@@ -753,7 +753,7 @@ class DatabaseConnectionTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function sqlFreeResultReturnsTrueOnSuccess()
     {
