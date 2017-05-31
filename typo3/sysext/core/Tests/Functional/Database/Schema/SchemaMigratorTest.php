@@ -199,7 +199,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
+     * @group not-postgres
      */
     public function renameUnusedField()
     {
@@ -280,7 +280,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
+     * @group not-postgres
      */
     public function installPerformsOnlyAddAndCreateOperations()
     {
@@ -308,7 +308,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
+     * @group not-postgres
      */
     public function installCanPerformChangeOperations()
     {
@@ -324,7 +324,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
+     * @group not-postgres
      */
     public function importStaticDataInsertsRecords()
     {
@@ -350,7 +350,7 @@ class SchemaMigratorTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @group mysql
+     * @group not-postgres
      */
     public function changeTableEngine()
     {

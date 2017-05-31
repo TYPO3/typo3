@@ -401,7 +401,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function flushByTagWorksWithEmptyCacheTablesWithMysql()
     {
@@ -412,7 +412,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function flushByTagsWorksWithEmptyCacheTablesWithMysql()
     {
@@ -423,7 +423,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function flushByTagRemovesCorrectRowsFromDatabaseWithMysql()
     {
@@ -443,7 +443,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function flushByTagsRemovesCorrectRowsFromDatabaseWithMysql()
     {
@@ -517,7 +517,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function collectGarbageWorksWithEmptyTableWithMysql()
     {
@@ -528,7 +528,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql()
     {
@@ -559,7 +559,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql()
     {
@@ -590,7 +590,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      *
-     * @group mysql
+     * @group not-postgres
      */
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql()
     {
