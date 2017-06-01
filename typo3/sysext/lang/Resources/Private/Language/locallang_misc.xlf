@@ -244,10 +244,10 @@
 				<source>System Records</source>
 			</trans-unit>
 			<trans-unit id="1_selectType">
-				<source>1: Select type of content element:</source>
+				<source>First select the type of the new content element</source>
 			</trans-unit>
 			<trans-unit id="2_selectPosition">
-				<source>2: Select position:</source>
+				<source>Now click on the position of the new content element</source>
 			</trans-unit>
 			<trans-unit id="CM_history">
 				<source>History/Undo</source>

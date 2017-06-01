@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/PageActions
  * JavaScript implementations for page actions
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, PersistentStorage) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent', 'TYPO3/CMS/Backend/Wizard/NewContentElement'], function($, PersistentStorage, NewContentElement) {
 	'use strict';
 
 	/**
@@ -32,7 +32,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, Persisten
 		},
 		identifier: {
 			pageTitle: '.t3js-title-inlineedit',
-			hiddenElements: '.t3js-hidden-record'
+			hiddenElements: '.t3js-hidden-record',
+			newButton: '.t3js-toggle-new-content-element-wizard'
 		},
 		elements: {
 			$pageTitle: null,
@@ -182,6 +183,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, Persisten
 	};
 
 	/**
+	 * Activate New Content Element Wizard
+	 */
+	PageActions.initializeNewContentElementWizard = function() {
+		$(PageActions.identifier.newButton).click(function() {
+			NewContentElement.wizard($(this).data('url'), $(this).data('title'));
+		});
+	};
+
+	/**
 	 * Save the changes and reload the page tree
 	 *
 	 * @param {Object} $field
@@ -219,6 +229,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, Persisten
 	$(function() {
 		PageActions.initializeElements();
 		PageActions.initializeEvents();
+		PageActions.initializeNewContentElementWizard();
 		PageActions.documentIsReady = true;
 	});
 

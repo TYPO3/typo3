@@ -143,6 +143,12 @@ return [
         'target' => Controller\ContentElement\NewContentElementController::class . '::mainAction'
     ],
 
+    // Register new content element module
+    'new_content_element_wizard' => [
+        'path' => '/record/content/wizard/new',
+        'target' => Controller\Wizard\NewContentElementWizardController::class . '::mainAction'
+    ],
+
     // Register move element module
     'move_element' => [
         'path' => '/record/move',

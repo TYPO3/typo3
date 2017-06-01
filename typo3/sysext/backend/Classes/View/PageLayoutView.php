@@ -943,7 +943,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
                         $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                             ? $tsConfig['properties']['newContentElementWizard.']['override']
-                            : 'new_content_element';
+                            : 'new_content_element_wizard';
                         $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
                     } else {
                         $urlParameters = [
@@ -962,9 +962,11 @@ class PageLayoutView implements LoggerAwareInterface
                         ];
                         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                     }
-
-                    $link = '<a href="' . htmlspecialchars($url) . '" title="'
-                        . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="btn btn-default btn-sm">'
+                    $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
+                    $link = '<a href="#" data-url="' . htmlspecialchars($url) . '" '
+                        . 'title="' . $title . '"'
+                        . 'data-title="' . $title . '"'
+                        . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
                         . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
@@ -1063,7 +1065,7 @@ class PageLayoutView implements LoggerAwareInterface
                                     $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod');
                                     $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                                         ? $tsConfig['properties']['newContentElementWizard.']['override']
-                                        : 'new_content_element';
+                                        : 'new_content_element_wizard';
                                     $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
                                 } else {
                                     $urlParameters = [
@@ -1076,13 +1078,14 @@ class PageLayoutView implements LoggerAwareInterface
                                     ];
                                     $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
                                 }
-                                $singleElementHTML .= '
-								<a href="' . htmlspecialchars($url) . '" title="'
-                                    . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="btn btn-default btn-sm">'
+                                $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
+                                $singleElementHTML .= '<a href="#" data-url="' . htmlspecialchars($url) . '" '
+                                    . 'title="' . $title . '"'
+                                    . 'data-title="' . $title . '"'
+                                    . 'class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
                                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
-                                    . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>
-							';
+                                    . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                             }
                             $singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div></div>';
                             if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
@@ -1450,8 +1453,10 @@ class PageLayoutView implements LoggerAwareInterface
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ];
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-            $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" '
-                . 'title="' . htmlspecialchars($this->getLanguageService()->getLL('new')) . '">'
+            $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
+            $theData['__cmds__'] = '<a href="#" data-url="' . htmlspecialchars($url) . '" class="t3js-toggle-new-content-element-wizard" '
+                . 'title="' . $title . '"'
+                . 'data-title="' . $title . '">'
                 . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
         }
         $out .= $this->addElement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
@@ -2382,7 +2387,7 @@ class PageLayoutView implements LoggerAwareInterface
             $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
             $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                 ? $tsConfig['properties']['newContentElementWizard.']['override']
-                : 'new_content_element';
+                : 'new_content_element_wizard';
             $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($moduleName) . '&id=' . $id . '&colPos=' . $colPos
                 . '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id
                 . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';

@@ -295,7 +295,7 @@ class RecordProvider extends AbstractProvider
             $tsConfig = BackendUtility::getModTSconfig($this->record['pid'], 'mod');
             $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                 ? $tsConfig['properties']['newContentElementWizard.']['override']
-                : 'new_content_element';
+                : 'new_content_element_wizard';
             $urlParameters = [
                 'id' => $this->record['pid'],
                 'sys_language_uid' => $this->record['sys_language_uid'],

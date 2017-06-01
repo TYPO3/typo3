@@ -191,6 +191,14 @@ class NewRecordController
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule(
+            'TYPO3/CMS/Backend/Wizard/NewContentElement',
+            'function(NewContentElement) {
+                $(".t3js-toggle-new-content-element-wizard").click(function() {
+                    NewContentElement.wizard($(this).data("url"), $(this).data("title"));
+                });
+            }'
+        );
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'
@@ -400,9 +408,7 @@ class NewRecordController
             ->fetchColumn(0);
 
         if ($numberOfPages > 0) {
-            $this->code .= '
-				<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>
-			';
+            $this->code .= '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>';
             $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
             /** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
             $this->code .= $positionMap->positionTree(
@@ -441,9 +447,7 @@ class NewRecordController
         // Finish initializing new pages options with TSconfig
         // Each new page option may be hidden by TSconfig
         // Enabled option for the position of a new page
-        $this->newPagesSelectPosition = !empty(
-            $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']
-        );
+        $this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
         // Pseudo-boolean (0/1) for backward compatibility
         $displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
         $displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
@@ -461,12 +465,25 @@ class NewRecordController
         $rowContent = '';
         // New pages INSIDE this pages
         $newPageLinks = [];
-        if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
+        if ($displayNewPagesIntoLink
+            && $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
+            && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
+            && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')
+        ) {
             // Create link to new page inside:
-            $newPageLinks[] = $this->linkWrap($this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render() . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')', $table, $this->id);
+            $recordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
+            $newPageLinks[] = $this->linkWrap(
+                $recordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
+                $table,
+                $this->id
+            );
         }
         // New pages AFTER this pages
-        if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
+        if ($displayNewPagesAfterLink
+            && $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
+            && $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
+            && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')
+        ) {
             $newPageLinks[] = $this->linkWrap($pageIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')', 'pages', -$this->id);
         }
         // New pages at selection position
@@ -511,14 +528,22 @@ class NewRecordController
                         // If the table is 'tt_content', create link to wizard
                         if ($table === 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');
-                            $rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';
+                            $rowContent = $newContentIcon
+                                . '<strong>' . $lang->getLL('createNewContent') . '</strong>'
+                                . '<ul>';
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
                             $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
                             $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                                 ? $tsConfig['properties']['newContentElementWizard.']['override']
-                                : 'new_content_element';
+                                : 'new_content_element_wizard';
                             $url = BackendUtility::getModuleUrl($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
-                            $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($url) . '">' . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard')) . '</a></li></ul>';
+                            $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
+                                . '<li>'
+                                . '<a href="#" data-url="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
+                                . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard'))
+                                . '</a>'
+                                . '</li>'
+                                . '</ul>';
                         } else {
                             // Get the title
                             if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {

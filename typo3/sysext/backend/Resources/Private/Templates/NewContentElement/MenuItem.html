@@ -1,26 +1,45 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="media media-new-content-element-wizard">
-		<f:if condition="{onClickEvent} == ''">
+	<f:if condition="{onClickEvent}">
+		<f:then>
+			<f:if condition="{content}">
+				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+					{content -> f:format.raw()}
+				</a>
+			</f:if>
 			<div class="media-left">
-				<input type="radio" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}" onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
+				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+					{icon -> f:format.raw()}
+				</a>
 			</div>
-		</f:if>
-		<f:if condition="{content}">
-		<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
-			{content -> f:format.raw()}
-		</a>
-		</f:if>
-		<div class="media-left">
-			<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
-				{icon -> f:format.raw()}
-			</a>
-		</div>
-		<div class="media-body">
-			<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}">
-				<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-				<br />
-				{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
-			</a>
-		</div>
+			<div class="media-body">
+				<a href="#" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-dismiss="modal">
+					<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
+					<br />
+					{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+				</a>
+			</div>
+		</f:then>
+		<f:else>
+			<input type="radio" class="hide" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}" onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
+			<f:if condition="{content}">
+				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+					{content -> f:format.raw()}
+				</a>
+			</f:if>
+			<div class="media-left">
+				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+					{icon -> f:format.raw()}
+				</a>
+			</div>
+			<div class="media-body">
+				<a href="#new-content-element-wizard-carousel" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-slide="next">
+					<strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
+					<br />
+					{wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+				</a>
+			</div>
+		</f:else>
+	</f:if>
 </div>
 </html>

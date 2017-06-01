@@ -54,6 +54,6 @@ class ContentCreationPagePositionMap extends PagePositionMap
             'defVals[tt_content][sys_language_uid]' => $sys_lang,
             'returnUrl' => $GLOBALS['SOBE']->R_URI
         ]);
-        return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
+        return 'list_frame.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
 }

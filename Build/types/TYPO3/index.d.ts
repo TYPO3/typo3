@@ -21,6 +21,7 @@ declare namespace TYPO3 {
       export class Modal {
         public readonly sizes: {[key: string]: string};
         public readonly styles: {[key: string]: string};
+        public readonly types: {[key: string]: string};
         public currentModal: JQuery;
         public advanced(configuration: object): any;
         public confirm(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length

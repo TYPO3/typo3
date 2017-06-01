@@ -333,3 +333,53 @@ $page-ce-dropzone-possible-border: $state-warning-border;
 .t3-page-ce-dropzone-possible {
     max-height: 225px;
 }
+
+//
+// New Content Element Wizard
+//
+.t3-new-content-element-wizard-window {
+    background-color: #fafafa;
+    padding: 0;
+
+    .t3-new-content-element-wizard-title {
+        background-color: #292929;
+        color: #fff;
+        padding: $grid-gutter-width/3 $grid-gutter-width/2;
+
+        h2 {
+            margin: 0;
+        }
+
+        & + .nav-tabs {
+            padding-top: 0;
+        }
+    }
+
+    .t3-new-content-element-wizard-body {
+        padding: $grid-gutter-width/2;
+    }
+
+    .nav-tabs {
+        padding: $grid-gutter-width/2 $grid-gutter-width/2 0;
+    }
+
+    .panel {
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+@media (min-width: $screen-md-min) {
+    .media-new-content-element-wizard {
+        float: left;
+        width: 50%;
+
+        &:nth-child(2) {
+            margin-top: 0;
+        }
+
+        &:nth-child(odd) {
+            clear: both;
+        }
+    }
+}

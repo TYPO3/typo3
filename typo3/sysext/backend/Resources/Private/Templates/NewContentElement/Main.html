@@ -2,24 +2,34 @@
 <f:if condition="{hasAccess}">
 	<f:then>
 		<f:form action="" name="editForm" id="NewContentElementController">
-			<f:form.hidden name="defValues" value=""/>
-			<h1>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
-			<f:if condition="{onClickEvent} == ''">
-				<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
-			</f:if>
-			<div>
-				<p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:sel1')}</p>
-				{renderedTabs -> f:format.raw()}
-			</div>
-
-			<f:if condition="{onClickEvent} == ''">
-				<div><a name="sel2"></a></div>
-				<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
-				<div>
-					<p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:sel2') ->
-						f:format.htmlspecialchars()}</p>
-					{posMap -> f:format.raw()}
-				</div>
+			<f:form.hidden name="defValues" value="" />
+			<f:if condition="{onClickEvent}">
+				<f:then>
+					<script type="text/javascript">
+						function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
+					</script>
+					{renderedTabs -> f:format.raw()}
+				</f:then>
+				<f:else>
+					<div id="new-content-element-wizard-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner" role="listbox">
+							<div class="item active" data-slide="next">
+								<div class="t3-new-content-element-wizard-title">
+									<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
+								</div>
+								{renderedTabs -> f:format.raw()}
+							</div>
+							<div class="item">
+								<div class="t3-new-content-element-wizard-title">
+									<h2>{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
+								</div>
+								<div class="t3-new-content-element-wizard-body">
+									{posMap -> f:format.raw()}
+								</div>
+							</div>
+						</div>
+					</div>
+				</f:else>
 			</f:if>
 		</f:form>
 	</f:then>

@@ -281,7 +281,7 @@ class PagePositionMap
                 'cmd'         => 'crPage',
                 'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')]
             );
-            return 'window.location.href=' . GeneralUtility::quoteJSvalue($url) . ';';
+            return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . ';';
         }
         $params = '&edit[pages][' . $pid . ']=new&returnNewPageId=1';
         return BackendUtility::editOnClick($params, '', $this->R_URI);
@@ -544,7 +544,7 @@ class PagePositionMap
             $uid = '';
         }
         $cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
-        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewRecordHere)) . '"></i></a>';
+        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '" data-dismiss="modal">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewRecordHere)) . '"></i></a>';
     }
 
     /**
@@ -568,7 +568,7 @@ class PagePositionMap
         }
         $location .= '&redirect=' . rawurlencode($this->R_URI);
         // returns to prev. page
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue($location) . ';return false;';
+        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . ';return false;';
     }
 
     /**
