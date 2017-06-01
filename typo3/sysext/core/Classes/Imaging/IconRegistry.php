@@ -2994,40 +2994,16 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/multiple.png'
             ]
         ],
-        'flags-an' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/an.png'
-            ]
-        ],
         'flags-catalonia' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/catalonia.png'
             ]
         ],
-        'flags-cs' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/cs.png'
-            ]
-        ],
         'flags-en-us-gb' => [
             'provider' => BitmapIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/en_us-gb.png'
-            ]
-        ],
-        'flags-fam' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/fam.png'
-            ]
-        ],
-        'flags-qc' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/qc.png'
             ]
         ],
         'flags-scotland' => [
@@ -3423,11 +3399,11 @@ class IconRegistry implements SingletonInterface
      */
     protected function registerFlags()
     {
-        $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/SVG/';
+        $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/PNG/';
         $files = [
-            'AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
+            'AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AN', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
             'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
-            'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CP', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
+            'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CP', 'CR', 'CS', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
             'DE', 'DG', 'DJ', 'DK', 'DM', 'DO', 'DZ',
             'EA', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'EU',
             'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
@@ -3441,11 +3417,11 @@ class IconRegistry implements SingletonInterface
             'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',
             'OM',
             'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
-            'QA',
+            'QA', 'QC',
             'RE', 'RO', 'RS', 'RU', 'RW',
             'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
             'TA', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
-            'UA', 'UG', 'UM', 'US-AK', 'US-AL', 'US-AR', 'US-AZ', 'US-CA', 'US-CO', 'US-CT', 'US-DE', 'US-FL', 'US-GA', 'US-HI', 'US-IA', 'US-ID', 'US-IL', 'US-IN', 'US-KS', 'US-KY', 'US-LA', 'US-MA', 'US-MD', 'US-ME', 'US-MI', 'US-MN', 'US-MO', 'US-MS', 'US-MT', 'US-NC', 'US-ND', 'US-NE', 'US-NH', 'US-NJ', 'US-NM', 'US-NV', 'US-NY', 'US-OH', 'US-OK', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VA', 'US-VT', 'US-WA', 'US-WI', 'US-WV', 'US-WY', 'US', 'UY', 'UZ',
+            'UA', 'UG', 'UM', 'US', 'UY', 'UZ',
             'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU',
             'WF', 'WS',
             'XK',
@@ -3455,9 +3431,9 @@ class IconRegistry implements SingletonInterface
         foreach ($files as $file) {
             $identifier = strtolower($file);
             $this->icons['flags-' . $identifier] = [
-                'provider' => SvgIconProvider::class,
+                'provider' => BitmapIconProvider::class,
                 'options' => [
-                    'source' => $iconFolder . $file . '.svg'
+                    'source' => $iconFolder . $file . '.png'
                 ]
             ];
         }
