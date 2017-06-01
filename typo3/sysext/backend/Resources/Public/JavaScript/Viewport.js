@@ -28,7 +28,7 @@ define(
 		TYPO3.Backend = {
 			initialize: function() {
 				TYPO3.Backend.doLayout();
-				$(document).on('resize', TYPO3.Backend.doLayout);
+				$(window).on('resize', TYPO3.Backend.doLayout);
 			},
 			/**
 			 * This function is triggered whenever a re-layouting of component is needed
