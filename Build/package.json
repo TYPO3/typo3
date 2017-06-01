@@ -15,6 +15,7 @@
     "@types/nprogress": "*",
     "@types/requirejs": "*",
     "autoprefixer": "^6.3.7",
+    "bower": "^1.8.0",
     "chosen-js": "^1.7.0",
     "grunt": "~1.0.1",
     "grunt-bower-just-install": "0.0.3",
@@ -49,5 +50,10 @@
     "tagsort": "1.4.0",
     "tslint": "^3.15.1",
     "typescript": "^2.2.0"
+  },
+  "scripts": {
+    "bower": "./node_modules/.bin/bower install",
+    "grunt-stylelint": "./node_modules/.bin/grunt stylelint",
+    "grunt-tslint": "./node_modules/.bin/grunt tslint"
   }
 }
