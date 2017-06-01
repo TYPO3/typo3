@@ -19,7 +19,7 @@
 			<ul class="modulemenu-group-container">
 				<f:for each="{mainModule.children}" as="subModule">
 					<li id="{subModule.name}" class="modulemenu-item t3js-mainmodule" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
-						<a title="{subModule.description}" href="{subModule.link}" class="modulemenu-item-link">
+						<a href="#" data-link="{subModule.link}" class="modulemenu-item-link" title="{subModule.description}">
 							<span class="modulemenu-icon modulemenu-item-icon">
                                 <f:format.raw>{subModule.icon}</f:format.raw>
 							</span>
