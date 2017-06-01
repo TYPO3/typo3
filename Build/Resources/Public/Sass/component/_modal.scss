@@ -62,6 +62,7 @@ $modal-danger-border: $btn-danger-border;
 
 .modal-body {
     flex: 1;
+    overflow-y: scroll;
 }
 
 .modal-header,
