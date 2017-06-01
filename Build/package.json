@@ -53,7 +53,6 @@
   },
   "scripts": {
     "bower": "./node_modules/.bin/bower install",
-    "grunt-stylelint": "./node_modules/.bin/grunt stylelint",
-    "grunt-tslint": "./node_modules/.bin/grunt tslint"
+    "lint": "./node_modules/.bin/grunt lint"
   }
 }

@@ -534,6 +534,17 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', ['css']);
 
 	/**
+	 * grunt lint
+	 *
+	 * call "$ grunt lint"
+	 *
+	 * this task does the following things:
+	 * - tslint
+	 * - stylelint
+	 */
+	grunt.registerTask('lint', ['tslint', 'stylelint']);
+
+	/**
 	 * grunt format
 	 *
 	 * call "$ grunt format"
