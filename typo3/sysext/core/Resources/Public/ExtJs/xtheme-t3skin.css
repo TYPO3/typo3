@@ -1279,31 +1279,31 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 }
 
 .x-tree-lines .x-tree-elbow{
-	background-image: url('images/ol/join.gif');
+	background-image: url('images/ol/join.svg');
 }
 
 .x-tree-lines .x-tree-elbow-plus {
-	background-image: url('images/ol/plus.gif');
+	background-image: url('images/ol/plus.svg');
 }
 
 .x-tree-lines .x-tree-elbow-minus {
-	background-image: url('images/ol/minus.gif');
+	background-image: url('images/ol/minus.svg');
 }
 
 .x-tree-lines .x-tree-elbow-end-minus {
-	background: url('images/ol/minusbottom.gif') left top no-repeat;
+	background: url('images/ol/minusbottom.svg') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-end {
-	background: url('images/ol/joinbottom.gif') left top no-repeat;
+	background: url('images/ol/joinbottom.svg') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-end-plus{
-	background: url('images/ol/plusbottom.gif') left top no-repeat;
+	background: url('images/ol/plusbottom.svg') left top no-repeat;
 }
 
 .x-tree-lines .x-tree-elbow-line{
-	background-image: url('images/ol/line.gif');
+	background-image: url('images/ol/line.svg');
 }
 
 .x-tree-no-lines .x-tree-elbow-plus{
