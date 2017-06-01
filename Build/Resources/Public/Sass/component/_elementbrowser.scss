@@ -92,6 +92,7 @@ $elementbrowser-breakpoint: 600px;
 
 .element-browser-attributes {
     padding: ($grid-gutter-width / 2);
+    background-color: #fafafa;
     border-bottom: 1px solid #ddd;
 
     > .form-horizontal:last-child .form-group {
