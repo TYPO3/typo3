@@ -159,7 +159,7 @@ require(
 					navigationComponentId: $subModuleElement.data('navigationcomponentid'),
 					navigationFrameScript: $subModuleElement.data('navigationframescript'),
 					navigationFrameScriptParam: $subModuleElement.data('navigationframescriptparameters'),
-					link: $subModuleElement.find('a').attr('href')
+					link: $subModuleElement.find('a').data('link')
 				};
 			},
 
