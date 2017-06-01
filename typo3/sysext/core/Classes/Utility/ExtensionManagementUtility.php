@@ -1556,11 +1556,11 @@ tt_content.' . $key . $suffix . ' {
     {
         $icon = '';
         $locationsToCheckFor = [
-            'Resources/Public/Icons/Extension.png',
             'Resources/Public/Icons/Extension.svg',
+            'Resources/Public/Icons/Extension.png',
             'Resources/Public/Icons/Extension.gif',
-            'ext_icon.png',
             'ext_icon.svg',
+            'ext_icon.png',
             'ext_icon.gif',
         ];
         foreach ($locationsToCheckFor as $fileLocation) {
