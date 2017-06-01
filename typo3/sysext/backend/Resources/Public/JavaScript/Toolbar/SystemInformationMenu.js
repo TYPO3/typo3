@@ -46,6 +46,11 @@ define([
 	};
 
 	/**
+	 * Timer for auto reloading the SystemInformation
+	 */
+	SystemInformationMenu.timer = null;
+
+	/**
 	 * Updates the menu
 	 */
 	SystemInformationMenu.updateMenu = function() {
@@ -53,9 +58,9 @@ define([
 			$existingIcon = $toolbarItemIcon.clone(),
 			$menuContainer = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector);
 
-		// hide the menu if it's active
-		if ($menuContainer.is(':visible')) {
-			$menuContainer.click();
+		if (SystemInformationMenu.timer !== null) {
+			clearTimeout(SystemInformationMenu.timer);
+			SystemInformationMenu.timer = null;
 		}
 
 		Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
@@ -64,6 +69,9 @@ define([
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['systeminformation_render'],
+			data: {
+				skipSessionUpdate: 1
+			},
 			type: 'post',
 			cache: false,
 			success: function(data) {
@@ -73,6 +81,12 @@ define([
 
 				SystemInformationMenu.initialize();
 			}
+		}).done(function(){
+			// reload error data every five minutes
+			SystemInformationMenu.timer = setTimeout(
+				SystemInformationMenu.updateMenu,
+				1000 * 300
+			);
 		});
 	};
 
@@ -86,10 +100,14 @@ define([
 			badgeClass = $container.data('severityclass');
 
 		$counter.text(count).toggle(parseInt(count) > 0);
-		$counter.removeClass();
 
+		// ensure all default classes are available and previous
+		// (at this time in processing unknown) class is removed
+		$counter.removeClass();
+		$counter.addClass('t3js-systeminformation-counter toolbar-item-badge badge');
+		// badgeClass e.g. could be 'badge-info', 'badge-danger', ...
 		if (badgeClass !== '') {
-			$counter.addClass('toolbar-item-badge badge ' + badgeClass);
+			$counter.addClass(badgeClass);
 		}
 	};
 
