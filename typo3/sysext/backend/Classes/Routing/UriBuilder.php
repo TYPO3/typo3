@@ -74,6 +74,10 @@ class UriBuilder
         }
 
         $route = $this->routes[$name];
+        $parameters = array_merge(
+            $route->getOptions()['parameters'] ?? [],
+            $parameters
+        );
 
         // The Route is an AJAX route, so the parameters are different in order
         // for the AjaxRequestHandler to be triggered

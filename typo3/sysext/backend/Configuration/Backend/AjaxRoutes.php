@@ -103,7 +103,10 @@ return [
     // Render systeminformtion toolbar item
     'systeminformation_render' => [
         'path' => '/system-information/render',
-        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class . '::renderMenuAction'
+        'target' => \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class . '::renderMenuAction',
+        'parameters' => [
+            'skipSessionUpdate' => 1
+        ]
     ],
 
     // Reload the module menu
@@ -140,7 +143,10 @@ return [
     'login_timedout' => [
         'path' => '/login/timedout',
         'target' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '::isTimedOutAction',
-        'access' => 'public'
+        'access' => 'public',
+        'parameters' => [
+            'skipSessionUpdate' => 1
+        ]
     ],
 
     // ExtDirect routing

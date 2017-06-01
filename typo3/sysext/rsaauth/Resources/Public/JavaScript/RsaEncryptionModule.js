@@ -75,7 +75,6 @@ define(['jquery', './RsaLibrary'], function($) {
 
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['rsa_publickey'],
-					data: {'skipSessionUpdate': 1},
 					success: RsaEncryption.handlePublicKeyResponse
 				});
 

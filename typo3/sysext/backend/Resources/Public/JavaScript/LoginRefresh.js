@@ -436,9 +436,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	LoginRefresh.checkActiveSession = function() {
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['login_timedout'],
-			data: {
-				skipSessionUpdate: 1
-			},
 			success: function(response) {
 				if (response.login.locked) {
 					if (!LoginRefresh.backendIsLocked) {
