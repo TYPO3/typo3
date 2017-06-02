@@ -164,6 +164,13 @@ table {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
+    .col-word-break {
+        @media (min-width: $screen-sm-min) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+    }
 }
 
 .table-fixed {
@@ -284,6 +291,12 @@ table {
             > th,
             > td {
                 white-space: nowrap;
+
+                &.col-word-break {
+                    @media (min-width: $screen-sm-min) {
+                        white-space: normal;
+                    }
+                }
             }
 
             > th:first-child,
