@@ -69,9 +69,6 @@ define([
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['systeminformation_render'],
-			data: {
-				skipSessionUpdate: 1
-			},
 			type: 'post',
 			cache: false,
 			success: function(data) {
