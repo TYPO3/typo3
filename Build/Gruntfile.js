@@ -60,7 +60,6 @@ module.exports = function(grunt) {
 			ckeditor  : '<%= paths.sysext %>rte_ckeditor/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/',
 			bower     : 'bower_components/',
-			flags     : '<%= paths.bower %>region-flags/svg/',
 			t3icons   : '<%= paths.bower %>typo3-icons/dist/',
 			npm       : 'node_modules/'
 		},
@@ -400,17 +399,6 @@ module.exports = function(grunt) {
 				plugins: [
 					{ removeViewBox: false }
 				]
-			},
-			// Flags
-			flags: {
-				files: [{
-					expand: true,
-					cwd: '<%= paths.flags %>',
-					src: '*.svg',
-					dest: '<%= paths.sysext %>core/Resources/Public/Icons/Flags/SVG/',
-					ext: '.svg',
-					extDot: 'first'
-				}]
 			}
 		}
 	});
