@@ -80,15 +80,18 @@ class Inline1nCest
         $fieldLabel = 'input_1';
         $testValue = 'Fo Bar';
 
-        $this->fillFieldByLable($I, $fieldLabel, $testValue);
+        $this->fillFieldByLabel($I, $fieldLabel, $testValue);
 
         $I->click('button[name="_savedok"]');
         $I->wait(3);
         $I->click('a[title="Close"]');
         $I->wait(3);
 
+        $I->executeJS('$(\'a[data-table="pages_language_overlay"] .icon-actions-view-list-collapse\').click();');
+        $I->wait(1);
+
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > a');
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2) > a');
+        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2) > a');
     }
 
     /**
@@ -104,9 +107,12 @@ class Inline1nCest
         $I->click('a[title="Close"]');
         $I->wait(3);
 
+        $I->executeJS('$(\'a[data-table="pages_language_overlay"] .icon-actions-view-list-collapse\').click();');
+        $I->wait(1);
+
         $I->wantTo('Check new sorting');
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > a');
-        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2) > a');
+        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2) > a');
+        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2) > a');
     }
 
     /**
@@ -151,7 +157,7 @@ class Inline1nCest
      * @param $fieldLabel
      * @param $testValue
      */
-    protected function fillFieldByLable(Admin $I, $fieldLabel, $testValue)
+    protected function fillFieldByLabel(Admin $I, $fieldLabel, $testValue)
     {
         $fieldContext = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel
