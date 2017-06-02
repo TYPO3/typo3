@@ -45,7 +45,8 @@ $modal-danger-border: $btn-danger-border;
 
 .modal-dialog {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: center;
     margin: 0 auto !important;
     height: 100vh;
@@ -55,13 +56,14 @@ $modal-danger-border: $btn-danger-border;
 .modal-content {
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 0 auto;
     max-height: calc(100vh - 40px);
+    max-width: calc(100vw - 40px);
 }
 
 .modal-body {
-    flex: 1;
+    flex: 1 1 auto;
+    overflow-y: auto;
 }
 
 .modal-header,
