@@ -201,7 +201,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 					// This is a workaround to prevent TreeEditor being triggered, which also requires a patch within TreeEditor
 					node.attributes.editable = false;
 				} else {
-					node.attributes.editable = true;
+					node.attributes.editable = node.attributes.editableDefault;
 
 					if (!this.clicksRegistered && this.getSelectionModel().isSelected(node)) {
 						node.fireEvent('click', node, event);
@@ -315,6 +315,10 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 				if (attr.id == 0) {
 					attr.id = 'siteRootNode';
 				}
+
+				// nodes editable state needs to be forced to false at times
+				// so we need to store the original value to revert back to
+				attr.editableDefault = attr.editable;
 
 				return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
 			},
