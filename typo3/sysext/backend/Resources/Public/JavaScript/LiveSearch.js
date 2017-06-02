@@ -19,9 +19,10 @@
 define([
 	'jquery',
 	'TYPO3/CMS/Backend/Viewport',
+	'TYPO3/CMS/Backend/Icons',
 	'jquery/autocomplete',
 	'TYPO3/CMS/Backend/jquery.clearable'
-], function ($, Viewport) {
+], function ($, Viewport, Icons) {
 	'use strict';
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
@@ -82,10 +83,24 @@ define([
 					+ '</div>'
 					+ '';
 			},
+			onSearchStart: function () {
+				if(!$(toolbarItem).hasClass('loading')) {
+					$(toolbarItem).addClass('loading');
+					Icons.getIcon('spinner-circle-light', Icons.sizes.small, '', 'default', 'inline').done(function (markup) {
+						$(toolbarItem).find('.icon-apps-toolbar-menu-search').replaceWith(markup)
+					});
+				}
+			},
 			onSearchComplete: function(query, suggestions) {
 				if (!$(toolbarItem).hasClass('open') && $(searchFieldSelector).val().length > 1) {
 					$(dropdownToggle).dropdown('toggle');
 					$(searchFieldSelector).focus();
+				}
+				if ($(toolbarItem).hasClass('loading')) {
+					$(toolbarItem).removeClass('loading');
+					Icons.getIcon('apps-toolbar-menu-search', Icons.sizes.small, '', 'default', 'inline').done(function (markup) {
+						$(toolbarItem).find('.icon-spinner-circle-light').replaceWith(markup)
+					});
 				}
 			},
 			beforeRender: function(container) {
