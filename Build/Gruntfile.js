@@ -60,8 +60,8 @@ module.exports = function (grunt) {
 			ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
 			core: '<%= paths.sysext %>core/Resources/',
 			bower: 'bower_components/',
-			t3icons: '<%= paths.bower %>typo3-icons/dist/',
-			npm: 'node_modules/'
+			npm: 'node_modules/',
+			t3icons: '<%= paths.npm %>@typo3/icons/dist/'
 		},
 		stylelint: {
 			options: {
@@ -84,9 +84,9 @@ module.exports = function (grunt) {
 				outputStyle: 'expanded',
 				precision: 8,
 				includePaths: [
-					'bower_components/bootstrap-sass/assets/stylesheets',
-					'bower_components/fontawesome/scss',
-					'bower_components/eonasdan-bootstrap-datetimepicker/src/sass',
+					'node_modules/bootstrap-sass/assets/stylesheets',
+					'node_modules/font-awesome/scss',
+					'node_modules/eonasdan-bootstrap-datetimepicker/src/sass',
 					'node_modules/tagsort'
 				]
 			},
@@ -374,23 +374,23 @@ module.exports = function (grunt) {
 				files: [
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot',
-						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.eot'
+						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.eot'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg',
-						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.svg'
+						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.svg'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf',
-						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.ttf'
+						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.ttf'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff',
-						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff'
+						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.woff'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2',
-						src: '<%= paths.bower %>fontawesome/fonts/fontawesome-webfont.woff2'
+						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.woff2'
 					}
 				]
 			}
@@ -402,26 +402,15 @@ module.exports = function (grunt) {
 				runBower: false,
 				srcPrefix: "bower_components/"
 			},
-			glob: {
-				files: {
-					// When using glob patterns, destinations are *always* folder names
-					// into which matching files will be copied
-					// Also note that subdirectories are **not** maintained
-					// if a destination is specified
-					// For example, one of the files copied here is
-					// 'lodash/dist/lodash.js' -> 'public/js/libs/lodash/lodash.js'
-					'<%= paths.sysext %>core/Resources/Public/Images/colorpicker': 'jquery-minicolors/*.png'
-				}
-			},
 			ckeditor: {
 				options: {
 					destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
 				},
 				files: {
-					'ckeditor.js': 'ckeditor/ckeditor.js',
-					'plugins/': 'ckeditor/plugins/',
-					'skins/': 'ckeditor/skins/',
-					'lang/': 'ckeditor/lang/'
+					'ckeditor.js': '../node_modules/ckeditor/ckeditor.js',
+					'plugins/': '../node_modules/ckeditor/plugins/',
+					'skins/': '../node_modules/ckeditor/skins/',
+					'lang/': '../node_modules/ckeditor/lang/'
 				}
 			},
 			all: {
@@ -429,27 +418,28 @@ module.exports = function (grunt) {
 					destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
 				},
 				files: {
-					'nprogress.js': 'nprogress/nprogress.js',
-					'jquery.matchHeight-min.js': 'matchHeight/dist/jquery.matchHeight-min.js',
-					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
-					'require.js': 'requirejs/require.js',
-					'moment.js': 'moment/min/moment-with-locales.min.js',
-					'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
-					'cropper.min.js': 'cropper/dist/cropper.min.js',
-					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
-					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-					'autosize.js': 'autosize/dist/autosize.min.js',
-					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
-					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
+					'nprogress.js': '../node_modules/nprogress/nprogress.js',
+					'jquery.matchHeight-min.js': '../node_modules/jquery-match-height/dist/jquery.matchHeight-min.js',
+					'jquery.dataTables.js': '../node_modules/datatables/media/js/jquery.dataTables.min.js',
+					'require.js': '../node_modules/requirejs/require.js',
+					'moment.js': '../node_modules/moment/min/moment-with-locales.min.js',
+					'moment-timezone.js': '../node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
+					'cropper.min.js': '../node_modules/cropper/dist/cropper.min.js',
+					'imagesloaded.pkgd.min.js': '../node_modules/imagesloaded/imagesloaded.pkgd.min.js',
+					'bootstrap-datetimepicker.js': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+					'autosize.js': '../node_modules/autosize/dist/autosize.min.js',
+					'taboverride.min.js': '../node_modules/taboverride/build/output/taboverride.min.js',
+					'bootstrap-slider.min.js': '../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js',
 					/* disabled until events are not bound to document only
-					 see https://github.com/claviska/jquery-minicolors/issues/192
-					 see https://github.com/claviska/jquery-minicolors/issues/206
-					 'jquery.minicolors.js': 'jquery-minicolors/jquery.minicolors.min.js',
+					see https://github.com/claviska/jquery-minicolors/issues/192
+					see https://github.com/claviska/jquery-minicolors/issues/206
+					'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
+					'../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png'
 					 */
 					/* disabled until autocomplete formatGroup is fixed to pass on the index too
-					 'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
+					   'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
 					 */
-					'd3/d3.js': 'd3/d3.min.js',
+					'd3/d3.js': '../node_modules/d3/build/d3.min.js',
 					/**
 					 * copy needed parts of jquery
 					 */
@@ -458,15 +448,15 @@ module.exports = function (grunt) {
 					/**
 					 * copy needed parts of jquery-ui
 					 */
-					'jquery-ui/core.js': 'jquery-ui/ui/core.js',
-					'jquery-ui/draggable.js': 'jquery-ui/ui/draggable.js',
-					'jquery-ui/droppable.js': 'jquery-ui/ui/droppable.js',
-					'jquery-ui/mouse.js': 'jquery-ui/ui/mouse.js',
-					'jquery-ui/position.js': 'jquery-ui/ui/position.js',
-					'jquery-ui/resizable.js': 'jquery-ui/ui/resizable.js',
-					'jquery-ui/selectable.js': 'jquery-ui/ui/selectable.js',
-					'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
-					'jquery-ui/widget.js': 'jquery-ui/ui/widget.js'
+					'jquery-ui/core.js': '../node_modules/jquery-ui/ui/core.js',
+					'jquery-ui/draggable.js': '../node_modules/jquery-ui/ui/draggable.js',
+					'jquery-ui/droppable.js': '../node_modules/jquery-ui/ui/droppable.js',
+					'jquery-ui/mouse.js': '../node_modules/jquery-ui/ui/mouse.js',
+					'jquery-ui/position.js': '../node_modules/jquery-ui/ui/position.js',
+					'jquery-ui/resizable.js': '../node_modules/jquery-ui/ui/resizable.js',
+					'jquery-ui/selectable.js': '../node_modules/jquery-ui/ui/selectable.js',
+					'jquery-ui/sortable.js': '../node_modules/jquery-ui/ui/sortable.js',
+					'jquery-ui/widget.js': '../node_modules/jquery-ui/ui/widget.js'
 				}
 			}
 		},
