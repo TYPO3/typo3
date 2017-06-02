@@ -1035,7 +1035,18 @@ class IconRegistry implements SingletonInterface
                 'name' => 'arrows-alt'
             ]
         ],
-
+        'actions-add-placeholder' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-add-placeholder.svg'
+            ]
+        ],
+        'actions-view-page' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-view-page.svg'
+            ]
+        ],
         // Apps
         'apps-clipboard-images' => [
             'provider' => SvgIconProvider::class,
@@ -2657,6 +2668,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-scheduled.svg'
+            ]
+        ],
+        'overlay-endtime' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-endtime.svg'
             ]
         ],
         'overlay-shop' => [
