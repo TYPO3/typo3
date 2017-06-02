@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -50,14 +51,38 @@ class ViewModuleController extends ActionController
     {
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
-        $this->registerButtons();
+        $this->registerDocHeader();
     }
 
     /**
-     * Registers the docheader buttons
+     * Registers the docheader
      */
-    protected function registerButtons()
+    protected function registerDocHeader()
     {
+        $languages = $this->getPreviewLanguages();
+        if (count($languages) > 1) {
+            $languageMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+            $languageMenu->setIdentifier('_langSelector');
+            $languageUid = $this->getCurrentLanguage();
+            foreach ($languages as $value => $label) {
+                $href = BackendUtility::getModuleUrl(
+                    'web_ViewpageView',
+                    [
+                        'id' => (int)GeneralUtility::_GP('id'),
+                        'language' => (int)$value
+                    ]
+                );
+                $menuItem = $languageMenu->makeMenuItem()
+                    ->setTitle($label)
+                    ->setHref($href);
+                if ($languageUid === (int)$value) {
+                    $menuItem->setActive(true);
+                }
+                $languageMenu->addMenuItem($menuItem);
+            }
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+        }
+
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($this->getTargetUrl())
@@ -101,10 +126,34 @@ class ViewModuleController extends ActionController
      */
     public function showAction()
     {
-        $this->view->assign('widths', $this->getPreviewFrameWidths());
+        $this->view->getModuleTemplate()->setBodyTag('<body class="typo3-module-viewpage">');
+        $this->view->getModuleTemplate()->setModuleName('typo3-module-viewpage');
+        $this->view->getModuleTemplate()->setModuleId('typo3-module-viewpage');
+
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $icons = [];
+        $icons['orientation'] = $iconFactory->getIcon('actions-device-orientation-change', Icon::SIZE_SMALL)->render('inline');
+        $icons['fullscreen'] = $iconFactory->getIcon('actions-fullscreen', Icon::SIZE_SMALL)->render('inline');
+        $icons['expand'] = $iconFactory->getIcon('actions-expand', Icon::SIZE_SMALL)->render('inline');
+        $icons['desktop'] = $iconFactory->getIcon('actions-device-desktop', Icon::SIZE_SMALL)->render('inline');
+        $icons['tablet'] = $iconFactory->getIcon('actions-device-tablet', Icon::SIZE_SMALL)->render('inline');
+        $icons['mobile'] = $iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
+        $icons['unidentified'] = $iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
+
+        $current = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['current'] ?: []);
+        $current['label'] = (isset($current['label']) ? $current['label'] : $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
+        $current['width'] = (isset($current['width']) && (int) $current['width'] >= 300 ? (int) $current['width'] : 320);
+        $current['height'] = (isset($current['height']) && (int) $current['height'] >= 300 ? (int) $current['height'] : 480);
+
+        $custom = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['custom'] ?: []);
+        $custom['width'] = (isset($current['custom']) && (int) $current['custom'] >= 300 ? (int) $current['custom'] : 320);
+        $custom['height'] = (isset($current['custom']) && (int) $current['custom'] >= 300 ? (int) $current['custom'] : 480);
+
+        $this->view->assign('icons', $icons);
+        $this->view->assign('current', $current);
+        $this->view->assign('custom', $custom);
+        $this->view->assign('presetGroups', $this->getPreviewPresets());
         $this->view->assign('url', $this->getTargetUrl());
-        $this->view->assign('languages', $this->getPreviewLanguages());
-        $this->view->assign('pageTitle', $this->getPageTitle());
     }
 
     /**
@@ -207,41 +256,48 @@ class ViewModuleController extends ActionController
     }
 
     /**
-     * Get available widths for preview frame
+     * Get available presets for preview frame
      *
      * @return array
      */
-    protected function getPreviewFrameWidths()
+    protected function getPreviewPresets()
     {
         $pageId = (int)GeneralUtility::_GP('id');
         $modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
-        $widths = [
-            '100%|100%' => $this->getLanguageService()->getLL('autoSize')
+        $presetGroups = [
+            'desktop' => [],
+            'tablet' => [],
+            'mobile' => [],
+            'unidentified' => []
         ];
         if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
             foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf) {
-                $label = '';
-
-                $width = substr($item, 0, -1);
-                $data = ['width' => $width];
-                $label .= $width . 'px ';
-
-                //if height is set
-                if (isset($conf['height'])) {
-                    $label .= ' × ' . $conf['height'] . 'px ';
-                    $data['height'] = $conf['height'];
+                $data = [
+                    'key' => substr($item, 0, -1),
+                    'label' => (isset($conf['label']) ? $conf['label'] : null),
+                    'type' => (isset($conf['type']) ? $conf['type'] : 'unknown'),
+                    'width' => ((isset($conf['width']) && (int) $conf['width'] > 0 && strpos($conf['width'], '%') === false) ? (int) $conf['width'] : null),
+                    'height' => ((isset($conf['height']) && (int) $conf['height'] > 0 && strpos($conf['height'], '%') === false) ? (int) $conf['height'] : null),
+                ];
+                $width = (int) substr($item, 0, -1);
+                if (!isset($data['width']) && $width > 0) {
+                    $data['width'] = $width;
+                }
+                if (!isset($data['label'])) {
+                    $data['label'] = $data['key'];
+                } elseif (strpos($data['label'], 'LLL:') === 0) {
+                    $data['label'] = $this->getLanguageService()->sL(trim($data['label']));
                 }
 
-                if (substr($conf['label'], 0, 4) !== 'LLL:') {
-                    $label .= $conf['label'];
+                if (array_key_exists($data['type'], $presetGroups)) {
+                    $presetGroups[$data['type']][$data['key']] = $data;
                 } else {
-                    $label .= $this->getLanguageService()->sL(trim($conf['label']));
+                    $presetGroups['unidentified'][$data['key']] = $data;
                 }
-                $value = ($data['width'] ?: '100%') . '|' . ($data['height'] ?: '100%');
-                $widths[$value] = $label;
             }
         }
-        return $widths;
+
+        return $presetGroups;
     }
 
     /**
@@ -297,19 +353,24 @@ class ViewModuleController extends ActionController
     }
 
     /**
-     * Returns the page title
+     * Returns the current language
      *
      * @return string
      */
-    protected function getPageTitle()
+    protected function getCurrentLanguage()
     {
-        $pageIdToShow = (int)GeneralUtility::_GP('id');
-        $pageRecord = BackendUtility::getRecord('pages', $pageIdToShow);
-        $pageRecordTitle = is_array($pageRecord)
-            ? BackendUtility::getRecordTitle('pages', $pageRecord)
-            : '';
-
-        return $pageRecordTitle;
+        $languageUid = GeneralUtility::_GP('language');
+        if ($languageUid === null) {
+            $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'];
+            $languages = $this->getPreviewLanguages();
+            if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
+                $languageUid = $states['languageSelectorValue'];
+            }
+        } else {
+            $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = (int)$languageUid;
+            $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
+        }
+        return (int)$languageUid;
     }
 
     /**
@@ -319,11 +380,10 @@ class ViewModuleController extends ActionController
      */
     protected function getLanguageParameter()
     {
-        $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'];
-        $languages = $this->getPreviewLanguages();
         $languageParameter = '';
-        if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
-            $languageParameter = '&L=' . (int)$states['languageSelectorValue'];
+        $languageUid = $this->getCurrentLanguage();
+        if ($languageUid) {
+            $languageParameter = '&L=' . $languageUid;
         }
         return $languageParameter;
     }

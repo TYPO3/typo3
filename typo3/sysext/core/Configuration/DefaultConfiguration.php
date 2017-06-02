@@ -887,48 +887,99 @@ return [
 			}
 		',
         // String (exclude). Enter lines of default backend user/group TSconfig.
-        'defaultPageTSconfig' => 'mod.web_list.enableDisplayBigControlPanel=selectable
-			mod.web_list.enableClipBoard=selectable
-			mod.web_list.enableLocalizationView=selectable
-			mod.web_list.tableDisplayOrder {
-				be_users.after = be_groups
-				sys_filemounts.after = be_users
-				sys_file_storage.after = sys_filemounts
-				sys_language.after = sys_file_storage
-				pages_language_overlay.before = pages
-				fe_users.after = fe_groups
-				fe_users.before = pages
-				sys_template.after = pages
-				backend_layout.after = pages
-				sys_domain.after = sys_template
-				tt_content.after = pages,backend_layout,sys_template
-				sys_category.after = tt_content
-			}
-			mod.web_list.searchLevel.items {
-				-1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
-				0 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
-				1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
-				2 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
-				3 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
-				4 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
-			}
-			mod.wizards.newRecord.pages.show.pageInside=1
-			mod.wizards.newRecord.pages.show.pageAfter=1
-			mod.wizards.newRecord.pages.show.pageSelectPosition=1
-			mod.web_view.previewFrameWidths {
-				1280.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
-				1024.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
-				960.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-				800.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
-				768.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
-				600.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:tablet
-				640.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-				480.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-				400.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-				360.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-				300.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:mobile
-			}
-		',
+        'defaultPageTSconfig' => '
+            mod.web_list.enableDisplayBigControlPanel=selectable
+            mod.web_list.enableClipBoard=selectable
+            mod.web_list.enableLocalizationView=selectable
+            mod.web_list.tableDisplayOrder {
+                be_users.after = be_groups
+                sys_filemounts.after = be_users
+                sys_file_storage.after = sys_filemounts
+                sys_language.after = sys_file_storage
+                pages_language_overlay.before = pages
+                fe_users.after = fe_groups
+                fe_users.before = pages
+                sys_template.after = pages
+                backend_layout.after = pages
+                sys_domain.after = sys_template
+                tt_content.after = pages,backend_layout,sys_template
+                sys_category.after = tt_content
+            }
+            mod.web_list.searchLevel.items {
+                -1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+                0 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+                1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+                2 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+                3 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+                4 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
+            }
+            mod.wizards.newRecord.pages.show.pageInside=1
+            mod.wizards.newRecord.pages.show.pageAfter=1
+            mod.wizards.newRecord.pages.show.pageSelectPosition=1
+            mod.web_view.previewFrameWidths {
+
+                1920.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+                1920.type = desktop
+                1920.width = 1920
+                1920.height = 1080
+
+                1366.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+                1366.type = desktop
+                1366.width = 1366
+                1366.height = 768
+
+                1280.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+                1280.type = desktop
+                1280.width = 1280
+                1280.height = 1024
+
+                1024.label = LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:computer
+                1024.type = desktop
+                1024.width = 1024
+                1024.height = 768
+
+                nexus7.label = Nexus 7
+                nexus7.type = tablet
+                nexus7.width = 600
+                nexus7.height = 960
+
+                nexus6p.label = Nexus 6P
+                nexus6p.type = mobile
+                nexus6p.width = 411
+                nexus6p.height = 731
+
+                ipadpro.label = iPad Pro
+                ipadpro.type = tablet
+                ipadpro.width = 1024
+                ipadpro.height = 1366
+
+                ipadair.label = iPad Air
+                ipadair.type = tablet
+                ipadair.width = 768
+                ipadair.height = 1024
+
+                iphone7plus.label = iPhone 7 Plus
+                iphone7plus.type = mobile
+                iphone7plus.width = 414
+                iphone7plus.height = 736
+
+                iphone6.label = iPhone 6
+                iphone6.type = mobile
+                iphone6.width = 375
+                iphone6.height = 667
+
+                iphone5.label = iPhone 5
+                iphone5.type = mobile
+                iphone5.width = 320
+                iphone5.height = 568
+
+                iphone4.label = iPhone 4
+                iphone4.type = mobile
+                iphone4.width = 320
+                iphone4.height = 480
+
+            }
+        ',
         // String (exclude).Enter lines of default Page TSconfig.
         'defaultPermissions' => [],
         'defaultUC' => [],

@@ -8,6 +8,9 @@
 // Variables
 //
 $module-bg: #fff;
+$module-color: inherit;
+$module-dark-bg: #333;
+$module-dark-color: #ccc;
 $module-docheader-bg: #eee;
 $module-docheader-border: #c3c3c3;
 $module-docheader-zindex: 300;
@@ -27,9 +30,15 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 // Template
 //
 .module {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     background-color: $module-bg;
+    color: $module-color;
+}
+
+.module-dark {
+    background-color: $module-dark-bg;
+    color: $module-dark-color;
 }
 
 //
@@ -79,6 +88,30 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
         label {
             margin-top: 0;
             margin-bottom: 0;
+        }
+
+        .form-inline {
+            .form-group {
+                display: table;
+
+                label {
+                    display: table-cell;
+                    font-size: 11px;
+                    font-weight: normal;
+                    line-height: ($module-docheader-bar-height - 10px);
+                    padding: 4px;
+                    border-radius: 2px 0 0 2px;
+                    border: 1px solid #bbb;
+                    border-right: 0;
+                    background-color: rgba(0, 0, 0, 0.05);
+                }
+
+                label + select {
+                    display: table-cell;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
         }
 
         .form-group {

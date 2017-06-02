@@ -321,6 +321,36 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-edit-download.svg'
             ]
         ],
+        'actions-device-desktop' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-device-desktop.svg'
+            ]
+        ],
+        'actions-device-mobile' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-device-mobile.svg'
+            ]
+        ],
+        'actions-device-orientation-change' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-device-orientation-change.svg'
+            ]
+        ],
+        'actions-device-tablet' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-device-tablet.svg'
+            ]
+        ],
+        'actions-device-unidentified' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-device-tablet.svg'
+            ]
+        ],
         'actions-edit-hide' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -399,6 +429,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-edit-upload.svg'
             ]
         ],
+        'actions-expand' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-expand.svg'
+            ]
+        ],
         'actions-file-csv' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -439,6 +475,12 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-folder.svg'
+            ]
+        ],
+        'actions-fullscreen' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/actions-fullscreen.svg'
             ]
         ],
         'actions-input-clear' => [

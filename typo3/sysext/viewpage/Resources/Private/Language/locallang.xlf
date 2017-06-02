@@ -15,6 +15,9 @@
 			<trans-unit id="computer">
 				<source>Computer</source>
 			</trans-unit>
+			<trans-unit id="desktop">
+				<source>Desktop</source>
+			</trans-unit>
 			<trans-unit id="customWidth">
 				<source>Custom Size</source>
 			</trans-unit>
@@ -26,6 +29,18 @@
 			</trans-unit>
 			<trans-unit id="language">
 				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="automatic">
+				<source>Automatic</source>
+			</trans-unit>
+			<trans-unit id="maximized">
+				<source>Maximized</source>
+			</trans-unit>
+			<trans-unit id="custom">
+				<source>Custom</source>
+			</trans-unit>
+			<trans-unit id="unidentified">
+				<source>Unidentified</source>
 			</trans-unit>
 		</body>
 	</file>

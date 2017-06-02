@@ -5,23 +5,4 @@
 	includeRequireJsModules="{
 		0:'TYPO3/CMS/Viewpage/Main'
 	}" />
-<div class="tx_viewpage">
-	<f:if condition="{pageTitle}">
-		<h1>{pageTitle}</h1>
-	</f:if>
-
-	<form class="form-inline form-inline-spaced">
-		<div class="form-group">
-			<label for="width"><f:translate key="width" /></label>
-			<f:form.select options="{widths}" id="width" name="width" class="form-control" />
-		</div>
-		<f:if condition="{languages -> f:count()} > 1">
-			<div class="form-group">
-				<label for="language"><f:translate key="language" /></label>
-				<f:form.select options="{languages}" id="language" name="language" class="form-control" />
-			</div>
-		</f:if>
-	</form>
-
-	<f:render section="Content" />
-</div>
+<f:render section="Content" />

@@ -1,0 +1,161 @@
+//
+// Viewpage
+// ========
+//
+
+//
+// Variables
+//
+$viewpage-bg: #494949;
+$viewpage-resizable-size: 5px;
+$viewpage-item-bg: #292929;
+$viewpage-item-color: #fafafa;
+$viewpage-topbar-height: 40px;
+
+//
+// Module
+//
+.typo3-module-viewpage {
+    background-color: $viewpage-bg;
+
+    .module {
+        background-color: transparent;
+    }
+
+    .module-body {
+        text-align: center;
+    }
+
+    .ui-resizable-w {
+        left: -$viewpage-resizable-size;
+        height: 100%;
+        width: $viewpage-resizable-size;
+    }
+
+    .ui-resizable-s {
+        bottom: -$viewpage-resizable-size;
+        height: $viewpage-resizable-size;
+    }
+
+    .ui-resizable-e {
+        right: -$viewpage-resizable-size;
+        height: 100%;
+        width: $viewpage-resizable-size;
+    }
+
+    .ui-resizable-se,
+    .ui-resizable-sw {
+        height: $viewpage-resizable-size;
+        width: $viewpage-resizable-size;
+        background-image: none;
+        bottom: -$viewpage-resizable-size;
+    }
+
+    .ui-resizable-sw {
+        left: -$viewpage-resizable-size;
+    }
+
+    .ui-resizable-se {
+        right: -$viewpage-resizable-size;
+    }
+}
+
+//
+// Item
+//
+.viewpage-item {
+    position: relative;
+    display: inline-block;
+    background-color: $viewpage-item-bg;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    color: $viewpage-item-color;
+
+    a {
+        color: $viewpage-item-color;
+    }
+
+    iframe {
+        display: block;
+    }
+}
+
+//
+// Topbar
+//
+.viewpage-topbar {
+    height: $viewpage-topbar-height;
+    flex-shrink: 0;
+    padding: 0.75em 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.viewpage-topbar-orientation {
+    a {
+        opacity: 0.5;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.viewpage-topbar-preset {
+    button {
+        background-color: transparent;
+        border: none;
+        padding-left: 20px;
+        padding-right: 20px;
+
+        span {
+            vertical-align: middle;
+        }
+    }
+}
+
+.viewpage-topbar-size {
+    input {
+        background-color: transparent;
+        padding-left: 0;
+        padding-right: 0;
+        border: 0;
+        border-bottom: 1px solid rgba($brand-primary, 0.5);
+        transition: all 0.5s ease-in-out;
+
+        &:focus,
+        &:hover {
+            outline: 0;
+            border-bottom-color: rgba($brand-primary, 1);
+        }
+    }
+}
+
+//
+// Resizeable
+//
+.viewpage-resizeable {
+    background-color: #fafafa;
+}
+
+//
+// Preset Item
+//
+.viewpage-preset-item {
+    display: flex;
+}
+
+.viewpage-preset-item-icon {
+    padding-right: 0.5em;
+}
+
+.viewpage-preset-item-label {
+    flex: 1 1 auto;
+}
+
+.viewpage-preset-item-size {
+    padding-left: 1em;
+    opacity: 0.5;
+}

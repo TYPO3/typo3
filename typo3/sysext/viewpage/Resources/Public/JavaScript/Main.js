@@ -14,158 +14,241 @@
  * Module: TYPO3/CMS/Viewpage/Main
  * Main logic for resizing the view of the frame
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage', 'jquery-ui/resizable'], function($, Storage) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Storage',
+	'jquery-ui/resizable'
+], function($, Storage) {
 	'use strict';
 
 	/**
-	 *
-	 * @type {{resizableContainerIdentifier: string, widthSelectorIdentifier: string, moduleBodySelector: string, storagePrefix: string, $iframe: null, $languageSelector: null, $resizableContainer: null, $widthSelector: null}}
+	 * @type {{<resizableContainerIdentifier: string, sizeIdentifier: string, moduleBodySelector: string, storagePrefix: string, $iframe: null, $resizableContainer: null, $sizeSelector: null}}
 	 * @exports TYPO3/CMS/Viewpage/Main
 	 */
 	var ViewPage = {
-		resizableContainerIdentifier: '#resizeable',
-		widthSelectorIdentifier: '#width',
+
+		resizableContainerIdentifier: '.t3js-viewpage-resizeable',
+		sizeIdentifier: ' .t3js-viewpage-size',
 		moduleBodySelector: '.t3js-module-body',
+
+		defaultLabel: $('.t3js-preset-custom-label').html().trim(),
+		minimalHeight: 300,
+		minimalWidth: 300,
+
 		storagePrefix: 'moduleData.web_view.States.',
 		$iframe: null,
-		$languageSelector: null,
 		$resizableContainer: null,
-		$widthSelector: null
+		$sizeSelector: null,
+
+		customSelector: '.t3js-preset-custom',
+		customWidthSelector: '.t3js-preset-custom-width',
+		customHeightSelector: '.t3js-preset-custom-height',
+
+		changeOrientationSelector: '.t3js-change-orientation',
+		changePresetSelector: '.t3js-change-preset',
+
+		inputWidthSelector: '.t3js-viewpage-input-width',
+		inputHeightSelector: '.t3js-viewpage-input-height',
+
+		currentLabelSelector: '.t3js-viewpage-current-label',
+		topbarContainerSelector: '.t3js-viewpage-topbar',
+
+		queue: [],
+		queueIsRunning: false,
+		queueDelayTimer: null
+
+	};
+
+	ViewPage.persistQueue = function() {
+		if (ViewPage.queueIsRunning === false && ViewPage.queue.length >= 1) {
+			ViewPage.queueIsRunning = true;
+			var item = ViewPage.queue.shift();
+			Storage.Persistent.set(item.storageIdentifier, item.data).done(function() {
+				ViewPage.queueIsRunning = false;
+				ViewPage.persistQueue();
+			});
+		}
+	}
+
+	ViewPage.addToQueue = function(storageIdentifier, data) {
+		var item = {
+			'storageIdentifier': storageIdentifier,
+			'data': data
+		};
+		ViewPage.queue.push(item);
+		if (ViewPage.queue.length >= 1) {
+			ViewPage.persistQueue();
+		}
+	}
+
+	ViewPage.setSize = function(width, height) {
+		if (isNaN(height)) {
+			height = ViewPage.calculateContainerMaxHeight();
+		}
+		if (height < ViewPage.minimalHeight) {
+			height = ViewPage.minimalHeight;
+		}
+		if (isNaN(width)) {
+			width = ViewPage.calculateContainerMaxWidth();
+		}
+		if (width < ViewPage.minimalWidth) {
+			width = ViewPage.minimalWidth;
+		}
+
+		$(ViewPage.inputWidthSelector).val(width);
+		$(ViewPage.inputHeightSelector).val(height);
+
+		ViewPage.$resizableContainer.css({
+			width: width,
+			height: height,
+			left: 0
+		});
+	}
+
+	ViewPage.getCurrentWidth = function() {
+		return $(ViewPage.inputWidthSelector).val();
+	}
+
+	ViewPage.getCurrentHeight = function() {
+		return $(ViewPage.inputHeightSelector).val();
+	}
+
+	ViewPage.setLabel = function(label) {
+		$(ViewPage.currentLabelSelector).html(label);
+	}
+
+	ViewPage.getCurrentLabel = function() {
+		return $(ViewPage.currentLabelSelector).html().trim();
+	}
+
+	ViewPage.persistCurrentPreset = function() {
+		var data = {
+			width: ViewPage.getCurrentWidth(),
+			height: ViewPage.getCurrentHeight(),
+			label: ViewPage.getCurrentLabel()
+		}
+		ViewPage.addToQueue(ViewPage.storagePrefix + 'current', data);
+	}
+
+	ViewPage.persistCustomPreset = function() {
+		var data = {
+			width: ViewPage.getCurrentWidth(),
+			height: ViewPage.getCurrentHeight()
+		}
+		$(ViewPage.customSelector).data("width", data.width);
+		$(ViewPage.customSelector).data("height", data.height);
+		$(ViewPage.customWidthSelector).html(data.width);
+		$(ViewPage.customHeightSelector).html(data.height);
+		ViewPage.addToQueue(ViewPage.storagePrefix + 'custom', data);
+	}
+
+	ViewPage.persistCustomPresetAfterChange = function() {
+		clearTimeout(ViewPage.queueDelayTimer);
+		ViewPage.queueDelayTimer = setTimeout(function() {
+			ViewPage.persistCustomPreset();
+		}, 1000);
 	};
 
 	/**
-	 *
+	 * Initialize
 	 */
 	ViewPage.initialize = function() {
-		ViewPage.$iframe = $('#tx_viewpage_iframe');
-		ViewPage.$languageSelector = $('#language');
-		ViewPage.$resizableContainer = $(ViewPage.resizableContainerIdentifier);
-		ViewPage.$widthSelector = $(ViewPage.widthSelectorIdentifier);
 
-		// Add event to width selector so the container is resized
-		$(document).on('change', ViewPage.widthSelectorIdentifier, function() {
-			var value = ViewPage.$widthSelector.val();
-			if (value) {
-				value = value.split('|');
-				var height = value[1] || '100%';
-				if (height === '100%') {
-					height = ViewPage.calculateContainerMaxHeight();
-				}
-				ViewPage.$resizableContainer.animate({
-					width:  value[0],
-					height: height
-				});
-				Storage.Persistent.set(ViewPage.storagePrefix + 'widthSelectorValue', value[0] + '|' + (value[1] || '100%'));
-			}
+		ViewPage.$iframe = $('#tx_viewpage_iframe');
+		ViewPage.$resizableContainer = $(ViewPage.resizableContainerIdentifier);
+		ViewPage.$sizeSelector = $(ViewPage.sizeIdentifier);
+
+		// Change orientation
+		$(document).on('click', ViewPage.changeOrientationSelector, function() {
+			var width = $(ViewPage.inputHeightSelector).val();
+			var height = $(ViewPage.inputWidthSelector).val();
+			ViewPage.setSize(width, height);
+			ViewPage.persistCurrentPreset();
 		});
 
-		// Restore custom selector
-		var storedCustomWidth = Storage.Persistent.get(ViewPage.storagePrefix + 'widthSelectorCustomValue');
-		// Check for the " symbol is done in order to avoid problems with the old (non-jQuery) syntax which might be stored inside
-		// the UC from previous versions, can be removed with TYPO3 CMS9 again
-		if (storedCustomWidth && storedCustomWidth.indexOf('"') === -1) {
-			// add custom selector if stored value is not there
-			if (ViewPage.$widthSelector.find('option[value="' + storedCustomWidth + '"]').length === 0) {
-				ViewPage.addCustomWidthOption(storedCustomWidth);
-			}
-		}
+		// On change
+		$(document).on('change', ViewPage.inputWidthSelector, function() {
+			var width = $(ViewPage.inputWidthSelector).val();
+			var height = $(ViewPage.inputHeightSelector).val();
+			ViewPage.setSize(width, height);
+			ViewPage.setLabel(ViewPage.defaultLabel);
+			ViewPage.persistCustomPresetAfterChange();
+		});
+		$(document).on('change', ViewPage.inputHeightSelector, function() {
+			var width = $(ViewPage.inputWidthSelector).val();
+			var height = $(ViewPage.inputHeightSelector).val();
+			ViewPage.setSize(width, height);
+			ViewPage.setLabel(ViewPage.defaultLabel);
+			ViewPage.persistCustomPresetAfterChange();
+		});
 
-		// Re-select stored value
-		var storedWidth = Storage.Persistent.get(ViewPage.storagePrefix + 'widthSelectorValue');
-		// Check for the " symbol is done in order to avoid problems with the old (non-jQuery) syntax which might be stored inside
-		// the UC from previous versions, can be removed with TYPO3 CMS9 again
-		if (storedWidth && storedWidth.indexOf('"') === -1) {
-			ViewPage.$widthSelector.val(storedWidth).trigger('change');
-		}
+		// Add event to width selector so the container is resized
+		$(document).on('click', ViewPage.changePresetSelector, function() {
+			var data = $(this).data();
+			ViewPage.setSize(parseInt(data.width), parseInt(data.height));
+			ViewPage.setLabel(data.label);
+			ViewPage.persistCurrentPreset();
+		});
 
 		// Initialize the jQuery UI Resizable plugin
 		ViewPage.$resizableContainer.resizable({
-			handles: 'e, se, s'
+			handles: 'w, sw, s, se, e'
 		});
 
-		// Create and select custom option
 		ViewPage.$resizableContainer.on('resizestart', function() {
-			// Check custom option is there, if not, add it
-			if (ViewPage.$widthSelector.find('#customOption').length === 0) {
-				ViewPage.addCustomWidthOption('100%|100%');
-			}
-			// Select the custom option
-			ViewPage.$widthSelector.find('#customOption').prop('selected', true);
-
 			// Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
-			$(this).append('<div id="iframeCover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
+			$(this).append('<div id="viewpage-iframe-cover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
 		});
 
 		ViewPage.$resizableContainer.on('resize', function(evt, ui) {
-			// Update custom option
-			var value = ui.size.width + '|' + ui.size.height;
-			var label = ViewPage.getOptionLabel(value);
-			ViewPage.$widthSelector.find('#customOption').text(label).val(value);
+			ui.size.width = ui.originalSize.width + ((ui.size.width - ui.originalSize.width) * 2);
+			if (ui.size.height < ViewPage.minimalHeight) {
+				ui.size.height = ViewPage.minimalHeight;
+			}
+			if (ui.size.width < ViewPage.minimalWidth) {
+				ui.size.width = ViewPage.minimalWidth;
+			}
+			$(ViewPage.inputWidthSelector).val(ui.size.width);
+			$(ViewPage.inputHeightSelector).val(ui.size.height);
+			ViewPage.$resizableContainer.css({
+				left: 0
+			});
+			ViewPage.setLabel(ViewPage.defaultLabel);
 		});
 
 		ViewPage.$resizableContainer.on('resizestop', function() {
-			Storage.Persistent.set(ViewPage.storagePrefix + 'widthSelectorCustomValue', ViewPage.$widthSelector.val()).done(function() {
-				Storage.Persistent.set(ViewPage.storagePrefix + 'widthSelectorValue', ViewPage.$widthSelector.val());
-			});
-
-			// Remove iframe overlay
-			$('#iframeCover').remove();
-		});
-
-		// select stored language
-		var storedLanguage = Storage.Persistent.get(ViewPage.storagePrefix + 'languageSelectorValue');
-		if (storedLanguage) {
-			// select it
-			ViewPage.$languageSelector.val(storedLanguage);
-		}
-
-		// Add event to language selector
-		ViewPage.$languageSelector.on('change',function() {
-			var iframeUrl = ViewPage.$iframe.attr('src');
-			var iframeParameters = ViewPage.getUrlVars(iframeUrl);
-			// change language
-			iframeParameters.L = ViewPage.$languageSelector.val();
-			var newIframeUrl = iframeUrl.slice(0, iframeUrl.indexOf('?') + 1) + $.param(iframeParameters);
-			// load new url into iframe
-			ViewPage.$iframe.attr('src', newIframeUrl);
-			Storage.Persistent.set(ViewPage.storagePrefix + 'languageSelectorValue', ViewPage.$languageSelector.val());
+			$('#viewpage-iframe-cover').remove();
+			ViewPage.persistCurrentPreset();
+			ViewPage.persistCustomPreset();
 		});
 	};
 
 	/**
-	 *
 	 * @returns {Number}
 	 */
 	ViewPage.calculateContainerMaxHeight = function() {
 		ViewPage.$resizableContainer.hide();
 		var $moduleBody = $(ViewPage.moduleBodySelector);
 		var padding = $moduleBody.outerHeight() - $moduleBody.height(),
-			controlsHeight = ViewPage.$widthSelector.parents('form:first').height(),
-			documentHeight = $(document).height();
+			documentHeight = $(document).height(),
+			topbarHeight = $(ViewPage.topbarContainerSelector).outerHeight();
 		ViewPage.$resizableContainer.show();
-		return documentHeight - (controlsHeight + padding);
+		return documentHeight - padding - topbarHeight - 8;
 	};
 
 	/**
-	 *
-	 * @param {String} value
+	 * @returns {Number}
 	 */
-	ViewPage.addCustomWidthOption = function(value) {
-		ViewPage.$widthSelector.prepend('<option id="customOption" value="' + value + '">' + ViewPage.getOptionLabel(value) + '</option>');
+	ViewPage.calculateContainerMaxWidth = function() {
+		ViewPage.$resizableContainer.hide();
+		var $moduleBody = $(ViewPage.moduleBodySelector);
+		var padding = $moduleBody.outerWidth() - $moduleBody.width(),
+			documentWidth = $(document).width();
+		ViewPage.$resizableContainer.show();
+		return parseInt(documentWidth - padding);
 	};
 
 	/**
-	 *
-	 * @param {String} data
-	 * @returns {String}
-	 */
-	ViewPage.getOptionLabel = function(data) {
-		data = data.split('|');
-		return data[0] + 'px ' + (data[1] ? '× ' + data[1] + 'px ' : '') + TYPO3.lang['customWidth'];
-	};
-
-	/**
-	 *
 	 * @param {String} url
 	 * @returns {{}}
 	 */

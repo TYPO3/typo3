@@ -24,6 +24,11 @@
 @import "component/card";
 
 //
+// Modules
+//
+@import "module/viewpage";
+
+//
 // Components from bootstrap plugins
 //
 @import "bootstrap-datetimepicker";
@@ -79,7 +84,6 @@
 @import "typo3/module_scheduler";
 @import "typo3/module_tstemplate";
 @import "typo3/module_web_page";
-@import "typo3/module_viewpage";
 @import "typo3/module_workspaces";
 @import "typo3/debugconsole";
 @import "typo3/module_web_list_sysnote";
