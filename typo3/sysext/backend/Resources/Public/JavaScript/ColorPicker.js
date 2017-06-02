@@ -34,8 +34,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Core/Contrib/jquery.minicolor
                 theme: 'bootstrap',
             });
             $(document).on('change', '.t3js-colorpicker-value-trigger', function () {
-                $(this)
-                    .closest('.t3js-formengine-field-item')
+                $(this).closest('.t3js-formengine-field-item')
                     .find('.t3js-color-picker')
                     .val(this.value)
                     .trigger('paste');

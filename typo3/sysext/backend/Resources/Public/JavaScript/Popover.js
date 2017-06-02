@@ -112,6 +112,7 @@ define(["require", "exports", "jquery", "bootstrap"], function (require, exports
     // Create an instance, initialize and return it
     var popover = new Popover();
     popover.initialize();
+    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10 prevent global object usage
     TYPO3.Popover = popover;
     return popover;
 });

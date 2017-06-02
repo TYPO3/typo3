@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/// <amd-dependency path="TYPO3/CMS/Core/Contrib/jquery.minicolors">
 import $ = require('jquery');
+import 'TYPO3/CMS/Core/Contrib/jquery.minicolors';
 
 /**
  * Module: TYPO3/CMS/Backend/ColorPicker
@@ -36,18 +36,17 @@ class ColorPicker {
    * Initialize the color picker for the given selector
    */
   public initialize(): void {
-    (<any> $(this.selector)).minicolors({
+    ($(this.selector) as any).minicolors({
       format: 'hex',
       position: 'bottom left',
       theme: 'bootstrap',
     });
-    (<any> $(document)).on('change', '.t3js-colorpicker-value-trigger', function(): void {
-      (<any> $(this))
-        .closest('.t3js-formengine-field-item')
-        .find('.t3js-color-picker')
-        .val(this.value)
-        .trigger('paste');
-      (<any> $(this)).val('');
+    $(document).on('change', '.t3js-colorpicker-value-trigger', function(this: HTMLFormElement): void {
+      $(this).closest('.t3js-formengine-field-item')
+             .find('.t3js-color-picker')
+             .val(this.value)
+             .trigger('paste');
+      $(this).val('');
     });
   }
 }

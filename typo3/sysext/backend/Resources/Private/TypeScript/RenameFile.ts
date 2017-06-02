@@ -11,13 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/// <amd-dependency path='TYPO3/CMS/Backend/Modal' name='Modal'>
-/// <amd-dependency path='TYPO3/CMS/Backend/Severity' name='Severity'>
-
 import $ = require('jquery');
-declare const Modal: any;
-declare const Severity: any;
-declare const TYPO3: any;
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import Severity = require('TYPO3/CMS/Backend/Severity');
 
 /**
  * Module: TYPO3/CMS/Backend/RenameFile
@@ -31,7 +27,7 @@ class RenameFile {
   }
 
   public initialize(): void {
-    (<any> $('.t3js-submit-file-rename')).on('click', this.checkForDuplicate);
+    $('.t3js-submit-file-rename').on('click', this.checkForDuplicate);
   }
 
   private checkForDuplicate(e: any): void {
@@ -48,16 +44,16 @@ class RenameFile {
         fileName: fileNameField.val(),
         fileTarget: form.find('input[name="file[rename][0][destination]"]').val(),
       },
-      success: function (response: any): void {
+      success: (response: any): void => {
         const fileExists: boolean = response !== false;
         const originalFileName: string = fileNameField.data('original');
         const newFileName: string = fileNameField.val();
 
         if (fileExists && originalFileName !== newFileName) {
           const description: string = TYPO3.lang['file_rename.exists.description']
-            .replace('{0}', originalFileName).replace('{1}', newFileName);
+                                           .replace('{0}', originalFileName).replace('{1}', newFileName);
 
-          const modal: boolean = Modal.confirm(
+          const modal: JQuery = Modal.confirm(
             TYPO3.lang['file_rename.exists.title'],
             description,
             Severity.warning,
@@ -80,7 +76,7 @@ class RenameFile {
               },
             ]);
 
-          (<any> modal).on('button.clicked', function (event: any): void {
+          modal.on('button.clicked', (event: any): void => {
             conflictModeField.val(event.target.name);
             form.submit();
             Modal.dismiss();
@@ -91,7 +87,7 @@ class RenameFile {
       },
       url: ajaxUrl,
     });
-  };
+  }
 }
 
 export = new RenameFile();

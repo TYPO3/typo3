@@ -1,2 +1,68 @@
+/* tslint:disable:max-classes-per-file */
+
+/**
+ * Currently a mixture between namespace and global object
+ * Add types as you use them
+ */
+declare namespace TYPO3 {
+  export let Popover: any;
+  export const lang: any;
+  export const settings: any;
+  export namespace CMS {
+    export namespace Backend {
+      export class FormEngineValidation {
+        public readonly errorClass: string;
+      }
+      export class FormEngine {
+        public readonly Validation: FormEngineValidation;
+      }
+      export class Modal {
+        public readonly sizes: {[key: string]: string};
+        public readonly styles: {[key: string]: string};
+        public advanced(configuration: object): any;
+        public confirm(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
+        public dismiss(): void;
+      }
+      export class Severity {
+        public readonly notice: number;
+        public readonly info: number;
+        public readonly ok: number;
+        public readonly warning: number;
+        public readonly: number;
+      }
+    }
+  }
+}
+
+/**
+ * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
+ */
+
+declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
+  export = new TYPO3.CMS.Backend.FormEngineValidation();
+}
+
+declare module 'TYPO3/CMS/Backend/FormEngine' {
+  export = new TYPO3.CMS.Backend.FormEngine();
+}
+
+declare module 'TYPO3/CMS/Backend/Modal' {
+  export = new TYPO3.CMS.Backend.Modal();
+}
+
+declare module 'TYPO3/CMS/Backend/Severity' {
+  export = new TYPO3.CMS.Backend.Severity();
+}
+
 // Type definition for global namespace object
-declare var TYPO3: any;
+interface Window {
+  TYPO3: any;
+}
+
+/**
+ * Needed type declarations for provided libs
+ */
+declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
+  import * as imagesloaded from 'imagesloaded';
+  export = imagesloaded;
+}

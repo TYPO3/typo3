@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/// <amd-dependency path="bootstrap">
+import 'bootstrap';
 import $ = require('jquery');
 
 /**
@@ -56,11 +56,11 @@ class Popover {
    */
   public setOptions($element: JQuery, options?: PopoverOptions): void {
     options = options || {};
-    let title: string|Function = options.title || $element.data('title') || '';
-    let content: string|Function = options.content || $element.data('content') || '';
+    const title: string|(() => void) = options.title || $element.data('title') || '';
+    const content: string|(() => void) = options.content || $element.data('content') || '';
     $element
-      .attr('data-original-title', (<string> title))
-      .attr('data-content', (<string> content))
+      .attr('data-original-title', (title as string))
+      .attr('data-content', (content as string))
       .attr('data-placement', 'auto')
       .popover(options);
   }
@@ -119,10 +119,9 @@ class Popover {
 }
 
 // Create an instance, initialize and return it
-let popover: Popover = new Popover();
+const popover: Popover = new Popover();
 popover.initialize();
 
 // @deprecated since TYPO3 v9, will be removed in TYPO3 v10 prevent global object usage
-declare var TYPO3: any;
 TYPO3.Popover = popover;
 export = popover;

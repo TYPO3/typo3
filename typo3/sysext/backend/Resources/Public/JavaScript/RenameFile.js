@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity", "jquery"], function (require, exports, Modal, Severity, $) {
+define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function (require, exports, $, Modal, Severity) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/RenameFile
@@ -74,7 +74,6 @@ define(["require", "exports", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Seve
                 url: ajaxUrl,
             });
         };
-        ;
         return RenameFile;
     }());
     return new RenameFile();

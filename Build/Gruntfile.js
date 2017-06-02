@@ -192,14 +192,8 @@ module.exports = function (grunt) {
 				src: '<%= paths.workspaces %>Public/Css/*.css'
 			}
 		},
-		ts: {
-			default: {
-				tsconfig: true,
-				options: {
-					verbose: false,
-					additionalFlags: '--typeRoots "node_modules/@types,types"'
-				}
-			}
+		exec: {
+			ts: './node_modules/.bin/tsc --project tsconfig.json'
 		},
 		tslint: {
 			options: {
@@ -433,10 +427,10 @@ module.exports = function (grunt) {
 					   see https://github.com/claviska/jquery-minicolors/issues/206
 					   'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
 					   '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png'
-					*/
+					 */
 					/* disabled until autocomplete formatGroup is fixed to pass on the index too
 					   'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
-					*/
+					 */
 					'd3/d3.js': 'd3/build/d3.min.js',
 					/**
 					 * copy needed parts of jquery
@@ -487,7 +481,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks("grunt-ts");
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-tslint');
 	grunt.loadNpmTasks('grunt-stylelint');
 
@@ -554,11 +548,60 @@ module.exports = function (grunt) {
 	 * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
 	 * - 3) Copy all generated JavaScript and Map files to public folders
 	 */
-	grunt.registerTask('scripts', ['tslint', 'tsclean', 'ts', 'copy:ts_files']);
+	grunt.registerTask('scripts', ['tsconfig', 'tslint', 'tsclean', 'exec:ts', 'copy:ts_files']);
 
+	/**
+	 * grunt tsclean task
+	 *
+	 * call "$ grunt tsclean"
+	 *
+	 * Clean the JavaScript output folder before building
+	 */
 	grunt.task.registerTask('tsclean', function () {
 		grunt.option('force');
 		grunt.file.delete("JavaScript");
+	});
+
+	/**
+	 * grunt tsdev task
+	 *
+	 * call "$ grunt tsdev"
+	 *
+	 * this task copies and modifies the TypeScript configuration for a developer system
+	 * most TypeScript tooling expects tsconfig.json to be in a domineering/root-level position
+	 */
+	grunt.task.registerTask('tsdev', function () {
+		var content = grunt.file.read("tsconfig.json");
+		content = content.replace(/..\/typo3\//g, 'typo3/');
+		content = content.replace('"rootDir": "../",', '"rootDir": "./",');
+		content = content.replace('./JavaScript', './Build/JavaScript');
+		content = content.replace('"node_modules/@types"', '"Build/node_modules/@types"');
+		content = content.replace('"types"', '"Build/types"');
+		grunt.file.write('../tsconfig.json', content);
+		grunt.file.copy('./tslint.json', '../tslint.json');
+	});
+
+	/**
+	 * grunt tsconfig task
+	 *
+	 * call "$ grunt tsconfig"
+	 *
+	 * this task updates the tsconfig.json file with modules paths for all sysexts
+	 */
+	grunt.task.registerTask('tsconfig', function () {
+		var config = grunt.file.readJSON("tsconfig.json");
+		config.compilerOptions.paths = {};
+		grunt.file.expand('../typo3/sysext/*/Resources/Public/JavaScript').forEach( function(dir){
+			var extname = '_' + dir.match(/sysext\/(.*?)\//)[1],
+				extname = extname.replace(/_./g, function(match){
+					return match.charAt(1).toUpperCase();
+				});
+			var namespace = 'TYPO3/CMS/' + extname + '/*',
+				path = dir + "/*";
+			config.compilerOptions.paths[namespace] = [path];
+		});
+
+		grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4));
 	});
 
 	/**

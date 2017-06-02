@@ -31,7 +31,7 @@ define(["require", "exports", "TYPO3/CMS/Backend/FormEngine", "jquery", "bootstr
                 var $invalidFields = FormEngineReview.findInvalidField();
                 var $toggleButton = $('.' + _this.toggleButtonClass);
                 if ($invalidFields.length > 0) {
-                    var $list_1 = $('<div />', { 'class': 'list-group' });
+                    var $list_1 = $('<div />', { class: 'list-group' });
                     $invalidFields.each(function () {
                         var $field = $(this);
                         var $input = $field.find('[data-formengine-validation-rules]');
@@ -40,9 +40,9 @@ define(["require", "exports", "TYPO3/CMS/Backend/FormEngine", "jquery", "bootstr
                             inputId = $input.parent().children('[id]').first().attr('id');
                         }
                         $list_1.append($('<a />', {
-                            href: '#',
                             'class': 'list-group-item ' + me.fieldListItemClass,
                             'data-field-id': inputId,
+                            'href': '#',
                         }).text($field.find(me.labelSelector).text()));
                     });
                     $toggleButton.removeClass('hidden');
@@ -95,10 +95,10 @@ define(["require", "exports", "TYPO3/CMS/Backend/FormEngine", "jquery", "bootstr
         FormEngineReview.attachButtonToModuleHeader = function (context) {
             var $leastButtonBar = $('.t3js-module-docheader-bar-buttons').children().last().find('[role="toolbar"]');
             var $button = $('<a />', {
-                'class': 'btn btn-danger btn-sm hidden ' + context.toggleButtonClass,
+                class: 'btn btn-danger btn-sm hidden ' + context.toggleButtonClass,
                 href: '#',
                 title: TYPO3.lang['buttons.reviewFailedValidationFields'],
-            }).append($('<span />', { 'class': 'fa fa-fw fa-info' }));
+            }).append($('<span />', { class: 'fa fa-fw fa-info' }));
             $button.popover({
                 container: 'body',
                 html: true,

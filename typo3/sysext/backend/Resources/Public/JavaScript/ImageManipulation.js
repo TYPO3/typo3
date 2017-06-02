@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "TYPO3/CMS/Backend/Modal", "jquery", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, ImagesLoaded, Modal, $) {
+define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "jquery-ui/draggable", "jquery-ui/resizable"], function (require, exports, $, Modal, ImagesLoaded) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/ImageManipulation
@@ -479,6 +479,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                         }, revertDelay);
                         return true;
                     }
+                    return false;
                 },
                 revertDuration: 200,
                 stop: function () {
@@ -667,12 +668,10 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
             return coverAreas
                 .some(function (coverArea) {
                 // noinspection OverlyComplexBooleanExpressionJS
-                if (focusArea.x < coverArea.x + coverArea.width &&
+                return (focusArea.x < coverArea.x + coverArea.width &&
                     focusArea.x + focusArea.width > coverArea.x &&
                     focusArea.y < coverArea.y + coverArea.height &&
-                    focusArea.height + focusArea.y > coverArea.y) {
-                    return true;
-                }
+                    focusArea.height + focusArea.y > coverArea.y);
             });
         };
         /**
@@ -725,7 +724,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                     .find(".t3js-image-manipulation-preview[data-crop-variant-id=\"" + cropVariantId + "\"]");
                 var $previewSelectedRatio = _this.trigger
                     .closest('.form-group')
-                    .find(".t3js-image-manipulation-selected-ratio[data-crop-variant-id=\"" + cropVariantId + "\"]");
+                    .find(".t3js-image-manipulation-selected-ratio[data-crop-variant-id=\"" + cropVariantId + "\"]"); // tslint:disable-line:max-line-length
                 if ($preview.length === 0) {
                     return;
                 }
@@ -747,7 +746,7 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 }
                 var ratio = previewWidth / cropData.width;
                 var $viewBox = $('<div />').html('<img src="' + $image.attr('src') + '">');
-                var $ratioTitleText = _this.currentModal.find(".t3-js-ratio-title[data-ratio-id=\"" + cropVariant.id + cropVariant.selectedRatio + "\"]");
+                var $ratioTitleText = _this.currentModal.find(".t3-js-ratio-title[data-ratio-id=\"" + cropVariant.id + cropVariant.selectedRatio + "\"]"); // tslint:disable-line:max-line-length
                 $previewSelectedRatio.text($ratioTitleText.text());
                 $viewBox.addClass('cropper-preview-container');
                 $preview.empty().append($viewBox);
@@ -760,7 +759,6 @@ define(["require", "exports", "TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min", "T
                 });
             });
         };
-        ;
         /**
          * @method openPreview
          * @desc Opens a preview view with the crop variants
