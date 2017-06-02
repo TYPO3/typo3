@@ -73,6 +73,7 @@ class PreparedStatementTest extends \TYPO3\TestingFramework\Core\Functional\Func
      * @test
      *
      * @group not-postgres
+     * @group not-mssql
      */
     public function prepareSelectQueryCreateValidQuery()
     {

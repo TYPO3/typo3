@@ -63,6 +63,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
+     * @group not-mssql
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery()
     {
@@ -87,6 +88,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      * Test ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
      *
      * @test
+     * @group not-mssql
      */
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult()
     {
@@ -104,6 +106,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      * Test ColumnMap::RELATION_HAS_MANY
      *
      * @test
+     * @group not-mssql
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
@@ -122,6 +125,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      * Test ColumnMap::RELATION_HAS_ONE, ColumnMap::ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
      *
      * @test
+     * @group not-mssql
      */
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
@@ -137,6 +141,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
+     * @group not-mssql
      */
     public function orReturnsExpectedResult()
     {
@@ -155,6 +160,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
+     * @group not-mssql
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery()
     {
@@ -174,6 +180,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
+     * @group not-mssql
      */
     public function queryWithFindInSetReturnsExpectedResult()
     {
