@@ -119,7 +119,6 @@ abstract class AbstractItemProvider
     protected function addItemsFromPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
             && is_array($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['addItems.'])
         ) {
