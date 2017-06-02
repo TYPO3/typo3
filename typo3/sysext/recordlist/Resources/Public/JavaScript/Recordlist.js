@@ -19,23 +19,23 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], funct
 	'use strict';
 
 	/**
-	 *
-	 * @type {{identifier: {toggle: string, icons: {collapse: string, expand: string}}}}
+	 * @type {Object}
 	 * @exports TYPO3/CMS/Recordlist/Recordlist
 	 */
 	var Recordlist = {
 		identifier: {
+			entity: '.t3js-entity',
 			toggle: '.t3js-toggle-recordlist',
 			icons: {
 				collapse: 'actions-view-list-collapse',
-				expand: 'actions-view-list-expand'
+				expand: 'actions-view-list-expand',
+				editMultiple: '.t3js-record-edit-multiple'
 			}
 		}
 	};
 
 	/**
-	 *
-	 * @param {Event} e
+	 * @param {MouseEvent} e
 	 */
 	Recordlist.toggleClick = function(e) {
 		e.preventDefault();
@@ -67,9 +67,61 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], funct
 		});
 	};
 
-	$(function() {
-		$(document).on('click', Recordlist.identifier.toggle, Recordlist.toggleClick);
-	});
+	/**
+	 * Handles editing multiple records.
+	 *
+	 * @param {MouseEvent} event
+	 */
+	Recordlist.onEditMultiple = function(event) {
+		event.preventDefault();
+
+		var $tableContainer, tableName, entityIdentifiers, uri, patterns;
+
+		$tableContainer = $(this).closest('[data-table]');
+		if ($tableContainer.length === 0) {
+			return;
+		}
+
+		uri = $(this).data('uri');
+		tableName = $tableContainer.data('table');
+		entityIdentifiers = $tableContainer
+			.find(Recordlist.identifier.entity + '[data-uid][data-table="' + tableName + '"]')
+			.map(function(index, entity) { return $(entity).data('uid'); })
+			.toArray()
+			.join(',');
+
+		patterns = uri.match(/{[^}]+}/g);
+		$.each(patterns, function(patternIndex, pattern) {
+			var expression = pattern.substr(1, pattern.length - 2);
+			var pipes = expression.split(':');
+			var name = pipes.shift();
+			var value;
+
+			switch (name) {
+				case 'entityIdentifiers':
+					value = entityIdentifiers;
+					break;
+				case 'T3_THIS_LOCATION':
+					value = T3_THIS_LOCATION;
+					break;
+				default:
+					return;
+			}
+
+			$.each(pipes, function(pipeIndex, pipe) {
+				if (pipe === 'editList') {
+					value = editList(tableName, value);
+				}
+			});
+
+			uri = uri.replace(pattern, value);
+		});
+
+		window.location.href = uri;
+	};
+
+	$(document).on('click', Recordlist.identifier.toggle, Recordlist.toggleClick);
+	$(document).on('click', Recordlist.identifier.icons.editMultiple, Recordlist.onEditMultiple);
 
 	return Recordlist;
 });

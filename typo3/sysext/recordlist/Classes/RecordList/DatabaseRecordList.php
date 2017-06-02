@@ -915,19 +915,23 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             $id_orig = $this->id;
             $this->id = $row['pid'];
         }
+
+        $tagAttributes = [
+            'class' => ['t3js-entity'],
+            'data-table' => $table,
+        ];
+
         // Add special classes for first and last row
-        $rowSpecial = '';
         if ($cc == 1 && $indent == 0) {
-            $rowSpecial .= ' firstcol';
+            $tagAttributes['class'][] = 'firstcol';
         }
         if ($cc == $this->totalRowCount || $cc == $this->iLimit) {
-            $rowSpecial .= ' lastcol';
+            $tagAttributes['class'][] = 'lastcol';
         }
-
-        $row_bgColor = ' class="' . $rowSpecial . '"';
-
         // Overriding with versions background color if any:
-        $row_bgColor = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : $row_bgColor;
+        if (!empty($row['_CSSCLASS'])) {
+            $tagAttributes['class'] = [$row['_CSSCLASS']];
+        }
         // Incr. counter.
         $this->counter++;
         // The icon with link
@@ -1033,7 +1037,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         ) {
             $theData['_l10nparent_'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         }
-        $rowOutput .= $this->addElement(1, $theIcon, $theData, $row_bgColor);
+
+        $tagAttributes = array_map(
+            function ($attributeValue) {
+                if (is_array($attributeValue)) {
+                    return implode(' ', $attributeValue);
+                }
+                return $attributeValue;
+            },
+            $tagAttributes
+        );
+
+        $rowOutput .= $this->addElement(1, $theIcon, $theData, GeneralUtility::implodeAttributes($tagAttributes, true));
         // Finally, return table row element:
         return $rowOutput;
     }
@@ -1129,16 +1144,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
                         $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
                         // The "edit marked" link:
-                        $editIdList = implode(',', $currentIdList);
-                        $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
-                        $params = 'edit[' . $table . '][' . $editIdList . ']=edit';
-                        $onClick = BackendUtility::editOnClick('', '', -1);
-                        $onClickArray = explode('?', $onClick, 2);
-                        $lastElement = array_pop($onClickArray);
-                        $onClickArray[] = $params . '&' . $lastElement;
-                        $onClick = implode('?', $onClickArray);
-                        $cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                            . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
+                        $editUri = BackendUtility::getModuleUrl('record_edit')
+                            . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit'
+                            . '&returnUrl={T3_THIS_LOCATION}';
+                        $cells['edit'] = '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
+                            . ' data-uri="' . htmlspecialchars($editUri) . '"'
+                            . ' title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
                             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                         // The "Delete marked" link:
                         $cells['delete'] = $this->linkClipboardHeaderIcon(
@@ -1215,19 +1226,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         }
                         // If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
                         if ($permsEdit && $this->table && is_array($currentIdList)) {
-                            $editIdList = implode(',', $currentIdList);
+                            $entityIdentifiers = 'entityIdentifiers';
                             if ($this->clipNumPane()) {
-                                $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
+                                $entityIdentifiers .= ':editList';
                             }
-                            $params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
-                            // we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
-                            $onClick = BackendUtility::editOnClick('', '', -1);
-                            $onClickArray = explode('?', $onClick, 2);
-                            $lastElement = array_pop($onClickArray);
-                            $onClickArray[] = $params . '&' . $lastElement;
-                            $onClick = implode('?', $onClickArray);
-                            $icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
-                                . '" title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
+                            $editUri = BackendUtility::getModuleUrl('record_edit')
+                                . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
+                                . '&columnsOnly=' . implode(',', $this->fieldArray)
+                                . '&returnUrl={T3_THIS_LOCATION}';
+                            $icon .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
+                                . ' data-uri="' . htmlspecialchars($editUri) . '"'
+                                . ' title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
                                 . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                             $icon = '<div class="btn-group" role="group">' . $icon . '</div>';
                         }
@@ -1261,20 +1270,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         // If the table can be edited, add link for editing THIS field for all
                         // listed records:
                         if ($this->isEditable($table) && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
-                            $editIdList = implode(',', $currentIdList);
+                            $entityIdentifiers = 'entityIdentifiers';
                             if ($this->clipNumPane()) {
-                                $editIdList = '\'+editList(' . GeneralUtility::quoteJSvalue($table) . ',' . GeneralUtility::quoteJSvalue($editIdList) . ')+\'';
+                                $entityIdentifiers .= ':editList';
                             }
-                            $params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol;
-                            // we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
-                            $onClick = BackendUtility::editOnClick('', '', -1);
-                            $onClickArray = explode('?', $onClick, 2);
-                            $lastElement = array_pop($onClickArray);
-                            $onClickArray[] = $params . '&' . $lastElement;
-                            $onClick = implode('?', $onClickArray);
+                            $editUri = BackendUtility::getModuleUrl('record_edit')
+                                . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
+                                . '&columnsOnly=' . $fCol
+                                . '&returnUrl={T3_THIS_LOCATION}';
                             $iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
-                            $theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
-                                . '" title="' . htmlspecialchars($iTitle) . '">'
+                            $theData[$fCol] .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
+                                . ' data-uri="' . htmlspecialchars($editUri) . '"'
+                                . ' title="' . htmlspecialchars($iTitle) . '">'
                                 . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
                         }
                         if (strlen($theData[$fCol]) > 0) {
