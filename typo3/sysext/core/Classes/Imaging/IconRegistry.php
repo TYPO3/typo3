@@ -2610,6 +2610,12 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-hidden.svg'
             ]
         ],
+        'overlay-endtime' => [
+            'provider' => SvgIconProvider::class,
+            'options' => [
+                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-endtime.svg'
+            ]
+        ],
         'overlay-includes-subpages' => [
             'provider' => SvgIconProvider::class,
             'options' => [

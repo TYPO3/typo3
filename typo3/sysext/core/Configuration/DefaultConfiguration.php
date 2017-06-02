@@ -260,7 +260,7 @@ return [
                 'hidden' => 'overlay-hidden',
                 'fe_group' => 'overlay-restricted',
                 'starttime' => 'overlay-scheduled',
-                'endtime' => 'overlay-scheduled',
+                'endtime' => 'overlay-endtime',
                 'futureendtime' => 'overlay-scheduled',
                 'readonly' => 'overlay-readonly',
                 'deleted' => 'overlay-deleted',
