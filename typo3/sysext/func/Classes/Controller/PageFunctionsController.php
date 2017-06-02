@@ -201,7 +201,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $viewButton = $buttonBar->makeLinkButton()
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                 ->setHref('#');
             $buttonBar->addButton($viewButton);
             // Shortcut

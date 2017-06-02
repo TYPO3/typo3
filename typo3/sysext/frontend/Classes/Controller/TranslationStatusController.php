@@ -155,7 +155,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             $viewPageLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
                     $data['row']['uid'], '', '', '', '', '&L=###LANG_UID###')
                 ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $status = GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : 'success';
             // Create links:
             $editUrl = BackendUtility::getModuleUrl('record_edit', [
@@ -166,7 +166,10 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ]);
-            $info = str_replace('###LANG_UID###', '0', $viewPageLink);
+            $info = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
+                    $data['row']['uid'], '', '', '', '', '')
+                ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+                $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
                     'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'

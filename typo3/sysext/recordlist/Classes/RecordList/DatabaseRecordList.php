@@ -397,7 +397,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setHref('#')
                     ->setOnClick($onClick)
                     ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // If edit permissions are set, see
@@ -1470,8 +1470,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         '',
                         ($table === 'tt_content' ? '#c' . $row['uid'] : '')
                     )
-                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
-                . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
+                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
+            if ($table === 'pages') {
+                $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
+            } else {
+                $viewAction .= $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render();
+            }
+            $viewAction .= '</a>';
             $this->addActionToCellGroup($cells, $viewAction, 'view');
         }
         // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)

@@ -53,7 +53,7 @@ class RecordProvider extends AbstractProvider
     protected $itemsConfiguration = [
         'view' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.view',
-            'iconIdentifier' => 'actions-document-view',
+            'iconIdentifier' => 'actions-view',
             'callbackAction' => 'viewRecord'
         ],
         'edit' => [

@@ -63,7 +63,7 @@ class ViewModuleController extends ActionController
             ->setHref($this->getTargetUrl())
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 
         $refreshButton = $buttonBar->makeLinkButton()

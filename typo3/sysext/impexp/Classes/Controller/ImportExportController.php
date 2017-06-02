@@ -325,7 +325,7 @@ class ImportExportController extends BaseScriptClass
                     $viewButton = $buttonBar->makeLinkButton()
                         ->setTitle($this->lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                         ->setHref('#')
-                        ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
+                        ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                         ->setOnClick($onClick);
                     $buttonBar->addButton($viewButton);
                 }

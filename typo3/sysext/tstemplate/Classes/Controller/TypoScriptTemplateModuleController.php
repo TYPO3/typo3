@@ -308,7 +308,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                 ))
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-view', Icon::SIZE_SMALL));
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
 
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
