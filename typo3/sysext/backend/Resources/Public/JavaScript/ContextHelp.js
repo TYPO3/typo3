@@ -36,17 +36,20 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($, Popover
 	 * Initialize context help trigger
 	 */
 	ContextHelp.initialize = function() {
-		ContextHelp.helpModuleUrl = (typeof top.TYPO3.settings.ContextHelp !== 'undefined') ? top.TYPO3.settings.ContextHelp.moduleUrl : null;
-		if (TYPO3.ShortcutMenu === undefined && top.TYPO3.ShortcutMenu === undefined) {
+		var backendWindow = ContextHelp.resolveBackend();
+		ContextHelp.helpModuleUrl = null;
+		if (typeof backendWindow.TYPO3.settings.ContextHelp !== 'undefined') {
+			ContextHelp.helpModuleUrl = backendWindow.TYPO3.settings.ContextHelp.moduleUrl;
+		}
+
+		if (TYPO3.ShortcutMenu === undefined && backendWindow.TYPO3.ShortcutMenu === undefined) {
 			// @FIXME: if we are in the popup... remove the bookmark / shortcut button
 			// @TODO: make it possible to use the bookmark button also in popup mode
 			$('.icon-actions-system-shortcut-new').closest('.btn').hide();
 		}
 		var title = '&nbsp;';
-		if (typeof top.TYPO3.LLL !== 'undefined') {
-			title = top.TYPO3.LLL.core.csh_tooltip_loading;
-		} else if (opener && typeof opener.top.TYPO3.LLL !== 'undefined') {
-			title = opener.top.TYPO3.LLL.core.csh_tooltip_loading;
+		if (typeof backendWindow.TYPO3.LLL !== 'undefined') {
+			title = backendWindow.TYPO3.LLL.core.csh_tooltip_loading;
 		}
 		var $element = $(this.selector);
 		$element
@@ -154,6 +157,19 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($, Popover
 				Popover.hide($trigger);
 			});
 		}
+	};
+
+	/**
+	 * @return {Window}
+	 */
+	ContextHelp.resolveBackend = function () {
+		var windowReference;
+		if (typeof window.opener !== 'undefined' && window.opener !== null) {
+			windowReference = window.opener.top;
+		} else {
+			windowReference = top;
+		}
+		return windowReference;
 	};
 
 	ContextHelp.initialize();
