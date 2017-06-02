@@ -135,6 +135,9 @@
 			<trans-unit id="colPos.I.3">
 				<source>Border</source>
 			</trans-unit>
+			<trans-unit id="colPos.I.unused">
+				<source>Unused</source>
+			</trans-unit>
 			<trans-unit id="date">
 				<source>Date</source>
 			</trans-unit>

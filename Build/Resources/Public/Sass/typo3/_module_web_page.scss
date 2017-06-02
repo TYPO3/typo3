@@ -21,6 +21,10 @@ $page-ce-header-bg-danger: $brand-danger;
 $page-ce-header-hover-bg-danger: darken($brand-danger, 10%);
 $page-ce-header-border-danger: $page-ce-header-bg-danger;
 $page-ce-header-hover-border-danger: $page-ce-header-hover-bg-danger;
+$page-ce-header-bg-warning: $brand-warning;
+$page-ce-header-hover-bg-warning: darken($brand-warning, 10%);
+$page-ce-header-border-warning: $page-ce-header-bg-warning;
+$page-ce-header-hover-border-warning: $page-ce-header-hover-bg-warning;
 $page-ce-dropzone-bg: $state-success-bg;
 $page-ce-dropzone-border: $state-success-border;
 $page-ce-dropzone-border-radius: $page-ce-border-radius;
@@ -87,6 +91,11 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     color: $page-column-header-color;
     text-align: left;
 
+    [data-colpos='unused'] & {
+        color: $state-warning-text;
+        padding-top: $grid-gutter-width*2;
+    }
+
     a {
         position: relative;
     }
@@ -139,11 +148,11 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     .t3-page-ce-body-inner {
         padding: $page-grid-spacing;
         word-wrap: break-word;
-    }
 
-    .t3-page-ce-body-inner img {
-        max-width: 100%;
-        height: auto;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     }
 
     .t3-page-ce-header {
@@ -234,6 +243,33 @@ $page-ce-dropzone-possible-border: $state-warning-border;
 
     .t3-page-ce-body {
         border-color: $page-ce-header-border-danger;
+    }
+}
+
+.t3-page-ce-warning {
+    &:hover {
+        .t3-page-ce-header {
+            background-color: $page-ce-header-hover-bg-warning;
+            border-color: $page-ce-header-hover-border-warning;
+        }
+
+        .t3-page-ce-body {
+            border-color: $page-ce-header-hover-border-warning;
+        }
+    }
+
+    .t3-page-ce-header {
+        background-color: $page-ce-header-bg-warning;
+        border-color: $page-ce-header-border-warning;
+
+        &:hover {
+            background-color: $page-ce-header-hover-bg-warning;
+            border-color: $page-ce-header-hover-border-warning;
+        }
+    }
+
+    .t3-page-ce-body {
+        border-color: $page-ce-header-border-warning;
     }
 }
 

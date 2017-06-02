@@ -524,12 +524,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             } else {
                 $showLanguage = $expressionBuilder->eq('sys_language_uid', $lP);
             }
-            $cList = explode(',', $this->tt_contentConfig['cols']);
             $content = [];
             $head = [];
 
+            $backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
+            $columns = $backendLayout['__colPosList'];
             // Select content records per column
-            $contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showLanguage);
+            $contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, $columns, $showLanguage);
+            $cList = array_keys($contentRecordsPerColumn);
             // For each column, render the content into a variable:
             foreach ($cList as $columnId) {
                 if (!isset($this->contentElementCache[$lP][$columnId])) {
@@ -587,7 +589,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                 }
-                if ($this->getBackendUser()->checkLanguageAccess($lP)) {
+                if ($this->getBackendUser()->checkLanguageAccess($lP) && $columnId !== 'unused') {
                     $content[$columnId] .= '
                     <div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
                         <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
@@ -616,7 +618,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $this->contentElementCache[$lP][$columnId][$row['uid']] = $row;
                         if ($this->tt_contentConfig['languageMode']) {
                             $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
-                            if (!$this->defLangBinding) {
+                            if (!$this->defLangBinding && $columnId !== 'unused') {
                                 $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
                                     $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
                                     $lP,
@@ -648,11 +650,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $isDisabled = $this->isDisabled('tt_content', $row);
                             $statusHidden = $isDisabled ? ' t3-page-ce-hidden t3js-hidden-record' : '';
                             $displayNone = !$this->tt_contentConfig['showHidden'] && $isDisabled ? ' style="display: none;"' : '';
-                            $highlightHeader = false;
+                            $highlightHeader = '';
                             if ($this->checkIfTranslationsExistInLanguage([], (int)$row['sys_language_uid']) && (int)$row['l18n_parent'] === 0) {
-                                $highlightHeader = true;
+                                $highlightHeader = ' t3-page-ce-danger';
+                            } elseif ($columnId === 'unused') {
+                                $highlightHeader = ' t3-page-ce-warning';
                             }
-                            $singleElementHTML = '<div class="t3-page-ce ' . ($highlightHeader ? 't3-page-ce-danger' : '') . ' t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
+                            $singleElementHTML = '<div class="t3-page-ce' . $highlightHeader . ' t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
                                 . $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                             if ($this->tt_contentConfig['languageMode']) {
@@ -665,6 +669,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 && $this->getPageLayoutController()->contentIsNotLockedForEditors()
                                 && $this->getBackendUser()->checkLanguageAccess($lP)
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
+                                && $columnId !== 'unused'
                             ) {
                                 // New content element:
                                 if ($this->option_newWizard) {
@@ -717,9 +722,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             $colTitle = $this->getLanguageService()->sL($item[0]);
                         }
                     }
-                    $editParam = $this->doEdit && !empty($rowArr)
-                        ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
-                        : '';
+                    if ($columnId === 'unused') {
+                        if (empty($unusedElementsMessage)) {
+                            $unusedElementsMessage = GeneralUtility::makeInstance(
+                                FlashMessage::class,
+                                $this->getLanguageService()->getLL('staleUnusedElementsWarning'),
+                                $this->getLanguageService()->getLL('staleUnusedElementsWarningTitle'),
+                                FlashMessage::WARNING
+                            );
+                            $service = GeneralUtility::makeInstance(FlashMessageService::class);
+                            $queue = $service->getMessageQueueByIdentifier();
+                            $queue->addMessage($unusedElementsMessage);
+                        }
+                        $colTitle = $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.unused');
+                        $editParam = '';
+                    } else {
+                        $editParam = $this->doEdit && !empty($rowArr)
+                            ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
+                            : '';
+                    }
                     $head[$columnId] .= $this->tt_content_drawColHeader($colTitle, $editParam);
                 }
             }
@@ -729,9 +750,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 // in language mode process the content elements, but only fill $languageColumn. output will be generated later
                 $sortedLanguageColumn = [];
                 foreach ($cList as $columnId) {
-                    if (GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnId)) {
+                    if (GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnId) || $columnId === 'unused') {
                         $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
-                        if (!$this->defLangBinding) {
+                        if (!$this->defLangBinding && $columnId !== 'unused') {
                             $languageColumn[$columnId][$lP] .= $this->newLanguageButton(
                                 $this->getNonTranslatedTTcontentUids($defaultLanguageElementsByColumn[$columnId], $id, $lP),
                                 $lP,
@@ -742,9 +763,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $sortedLanguageColumn[$columnId] = $languageColumn[$columnId];
                     }
                 }
+                if (!empty($languageColumn['unused'])) {
+                    $sortedLanguageColumn['unused'] = $languageColumn['unused'];
+                }
                 $languageColumn = $sortedLanguageColumn;
             } else {
-                $backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
                 // GRID VIEW:
                 $grid = '<div class="t3-grid-container"><table border="0" cellspacing="0" cellpadding="0" width="100%" class="t3-page-columns t3-grid-table t3js-page-columns">';
                 // Add colgroups
@@ -806,6 +829,23 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $grid .= '</td>';
                     }
                     $grid .= '</tr>';
+                }
+                if (!empty($content['unused'])) {
+                    $grid .= '<tr>';
+                    // Which tt_content colPos should be displayed inside this cell
+                    $columnKey = 'unused';
+                    // Render the grid cell
+                    $colSpan = (int)$backendLayout['__config']['backend_layout.']['colCount'];
+                    $grid .= '<td valign="top"' .
+                        ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
+                        ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
+                        ' data-colpos="unused" data-language-uid="' . $lP . '" class="t3js-page-lang-column-' . $lP . ' t3js-page-column t3-grid-cell t3-page-column t3-page-column-' . $columnKey .
+                        ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . '">';
+
+                    // Draw the pre-generated header with edit and new buttons if a colPos is assigned.
+                    // If not, a new header without any buttons will be generated.
+                    $grid .= $head[$columnKey] . $content[$columnKey];
+                    $grid .= '</td></tr>';
                 }
                 $out .= $grid . '</table></div>';
             }
@@ -957,7 +997,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             foreach ($languageColumn as $cKey => $cCont) {
                 $out .= '<tr>';
                 foreach ($cCont as $languageId => $columnContent) {
-                    $out .= '<td valign="top" class="t3-grid-cell t3-page-column t3js-page-column t3js-page-lang-column t3js-page-lang-column-' . $languageId . '">' . $columnContent . '</td>';
+                    $out .= '<td valign="top" data-colpos="' . $cKey . '" class="t3-grid-cell t3-page-column t3js-page-column t3js-page-lang-column t3js-page-lang-column-' . $languageId . '">' . $columnContent . '</td>';
                 }
                 $out .= '</tr>';
                 if ($this->defLangBinding) {
@@ -1195,30 +1235,30 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      */
     protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '')
     {
-        $columns = array_map('intval', $columns);
         $contentRecordsPerColumn = array_fill_keys($columns, []);
-
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tt_content')
-            ->expr();
-
+        $columns = array_flip($columns);
         $queryBuilder = $this->getQueryBuilder(
             'tt_content',
             $id,
             [
-                $expressionBuilder->in('colPos', $columns),
                 $additionalWhereClause
             ]
         );
 
         // Traverse any selected elements and render their display code:
         $results = $this->getResult($queryBuilder->execute());
-
+        $unused = [];
         foreach ($results as $record) {
-            $columnValue = $record['colPos'];
-            $contentRecordsPerColumn[$columnValue][] = $record;
+            if (isset($columns[$record['colPos']])) {
+                $columnValue = (string)$record['colPos'];
+                $contentRecordsPerColumn[$columnValue][] = $record;
+            } else {
+                $unused[] = $record;
+            }
         }
-
+        if (!empty($unused)) {
+            $contentRecordsPerColumn['unused'] = $unused;
+        }
         return $contentRecordsPerColumn;
     }
 
