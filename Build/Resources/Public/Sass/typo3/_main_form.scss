@@ -101,15 +101,17 @@ label {
         > .form-control-wrap {
             margin-bottom: 0;
         }
+    }
+}
 
-        .t3js-formengine-field-item {
-            position: relative;
+.form-group {
+    .t3js-formengine-field-item {
+        position: relative;
 
-            > .t3js-charcounter {
-                left: 0;
-                position: absolute;
-                top: 100%;
-            }
+        > .t3js-charcounter {
+            left: 0;
+            position: absolute;
+            top: 100%;
         }
     }
 }
