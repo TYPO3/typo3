@@ -185,6 +185,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
      * Test if count works with subproperties in multiple left join.
      *
      * @test
+     * @group not-mssql
      */
     public function subpropertyInMultipleLeftJoinCountTest()
     {

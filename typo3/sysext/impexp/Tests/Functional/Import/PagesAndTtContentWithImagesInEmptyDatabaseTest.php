@@ -171,6 +171,7 @@ class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExpor
     /**
      * @test
      * @group not-postgres
+     * @group not-mssql
      */
     public function importPagesAndRelatedTtContentWithImageWithForcedUids()
     {
