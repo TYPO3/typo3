@@ -22,23 +22,25 @@
 		</f:if>
 	</td>
 	<td class="col-control nowrap">
-		<div class="btn-group">
-			<f:if condition="{content.infoLink}">
+		<f:if condition="{content.infoLink}">
+			<div class="btn-group">
 				<a class="btn btn-default" href="#" onclick="{content.infoLink}"
 					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.info')}">
 					<f:format.raw>
 						<core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
 					</f:format.raw>
 				</a>
-			</f:if>
-			<f:if condition="{content.removeLink}">
+			</div>
+		</f:if>
+		<f:if condition="{content.removeLink}">
+			<div class="btn-group">
 				<a class="btn btn-default" href="{content.removeLink}#clip_head"
 					 title="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
 					<f:format.raw>
-						<core:icon identifier="actions-selection-delete" alternativeMarkupIdentifier="inline"/>
+						<core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
 					</f:format.raw>
 				</a>
-			</f:if>
-		</div>
+			</div>
+		</f:if>
 	</td>
 </tr>
