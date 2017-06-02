@@ -459,27 +459,33 @@ return [
                                                     <label>input_1</label>
                                                     <config>
                                                         <type>input</type>
+                                                        <default>foo</default>
                                                     </config>
                                                 </TCEforms>
+                                            </input_1>
+                                            <input_2>
                                                 <TCEforms>
                                                     <label>input_2</label>
                                                     <config>
                                                         <type>input</type>
+                                                        <default>bar</default>
                                                     </config>
                                                 </TCEforms>
+                                            </input_2>
+                                            <input_3>
                                                 <TCEforms>
-                                                    <label>input_3 (depends on input_1 AND input_2)</label>
+                                                    <label>input_3 (depends on input_1=foo AND input_2=bar)</label>
                                                     <displayCond>
                                                         <and>
-                                                            <value1>FIELD:sheet_3.input_1:REQ:true</value1>
-                                                            <value2>FIELD:sheet_3.input_2:REQ:true</value2>
+                                                            <value1>FIELD:sheet_3.input_1:=:foo</value1>
+                                                            <value2>FIELD:sheet_3.input_2:=:bar</value2>
                                                         </and>
                                                     </displayCond>
                                                     <config>
                                                         <type>input</type>
                                                     </config>
                                                 </TCEforms>
-                                            </input_1>
+                                            </input_3>
                                         </el>
                                     </ROOT>
                                 </sheet_3>
