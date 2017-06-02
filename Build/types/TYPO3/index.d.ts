@@ -31,6 +31,12 @@ declare namespace TYPO3 {
         public readonly: number;
       }
     }
+
+    export namespace RecordList {
+      export class LinkBrowser {
+        public getLinkAttributeValues(): {[key: string]: string};
+      }
+    }
   }
 }
 
@@ -52,6 +58,10 @@ declare module 'TYPO3/CMS/Backend/Modal' {
 
 declare module 'TYPO3/CMS/Backend/Severity' {
   export = new TYPO3.CMS.Backend.Severity();
+}
+
+declare module 'TYPO3/CMS/Recordlist/LinkBrowser' {
+  export = new TYPO3.CMS.RecordList.LinkBrowser();
 }
 
 // Type definition for global namespace object
