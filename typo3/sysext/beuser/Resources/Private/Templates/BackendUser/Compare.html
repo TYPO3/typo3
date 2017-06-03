@@ -19,6 +19,9 @@
 								<be:avatar backendUser="{compareUser.uid}" showIcon="true" />
 							</a>
 							{compareUser.userName}
+							<a class="btn btn-default pull-right" href="{bu:editRecord(parameters: 'edit[be_users][{compareUser.uid}]=edit&returnUrl={returnUrl}')}" title="edit">
+								<core:icon identifier="actions-open" />
+							</a>
 						</th>
 					</f:for>
 				</tr>

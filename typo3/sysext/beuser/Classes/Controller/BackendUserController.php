@@ -195,6 +195,14 @@ class BackendUserController extends BackendUserActionController
         $compareUserList = $this->moduleData->getCompareUserList();
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
+        $returnUrl = BackendUtility::getModuleUrl(
+            'system_BeuserTxBeuser',
+            [
+                'tx_beuser_system_beusertxbeuser[action]' => 'compare',
+                'tx_beuser_system_beusertxbeuser[controller]' => 'BackendUser'
+            ]
+        );
+        $this->view->assign('returnUrl', rawurlencode($returnUrl));
         $this->view->assign('compareUserList', !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '');
     }
 
