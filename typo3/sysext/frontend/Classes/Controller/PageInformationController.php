@@ -106,13 +106,15 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->start($this->pObj->id, 'pages', 0);
         $dblist->generateList();
         // CSH
-        $theOutput .= '<div>';
-        $theOutput .= BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', null, '<span class="btn btn-default btn-sm">|</span><br />')
-            . '<div class="form-inline form-inline-spaced">'
+        $optionKey = $this->pObj->MOD_SETTINGS['pages'];
+        $cshPagetreeOverview = BackendUtility::cshItem($dblist->descrTable, 'func_' . $optionKey, null, '<span class="btn btn-default btn-sm">|</span>');
+
+        $theOutput .= '<div class="form-inline form-inline-spaced">'
             . $h_func
+            . '<div class="form-group">' . $cshPagetreeOverview . '</div>'
             . '</div>'
             . $dblist->HTMLcode;
-        $theOutput .= '</div>';
+
         // Additional footer content
         $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
         if (is_array($footerContentHook)) {

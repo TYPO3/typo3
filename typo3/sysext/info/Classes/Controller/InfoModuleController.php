@@ -184,6 +184,12 @@ class InfoModuleController extends BaseScriptClass
             ])
             ->setSetVariables(array_keys($this->MOD_MENU));
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        // CSH
+        $cshButton = $buttonBar->makeHelpButton()
+          ->setModuleName('xMOD_csh_corebe')
+          ->setFieldName('pagetree_overview');
+        $buttonBar->addButton($cshButton);
     }
 
     /**

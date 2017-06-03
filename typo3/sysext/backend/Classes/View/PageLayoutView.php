@@ -410,19 +410,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         }
                 }
             }
-            // CSH:
-            $optionKey = $this->getPageLayoutController()->MOD_SETTINGS['pages'];
-            $out = BackendUtility::cshItem($this->descrTable, ('func_' . $optionKey), null, '<span class="btn btn-default btn-sm">|</span>') . '
-                <div class="table-fit">
-					<table class="table table-striped table-hover typo3-page-pages">' .
-                        '<thead>' .
-                            $this->addElement(1, '', $theData) .
-                        '</thead>' .
-                        '<tbody>' .
-                            $out .
-                        '</tbody>' .
-                    '</table>
-				</div>';
+            $out = '<div class="table-fit">'
+                . '<table class="table table-striped table-hover typo3-page-pages">'
+                    . '<thead>'
+                            . $this->addElement(1, '', $theData)
+                    . '</thead>'
+                    . '<tbody>'
+                        . $out
+                    . '</tbody>'
+                . '</table>'
+                . '</div>';
         }
         return $out;
     }

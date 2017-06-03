@@ -292,6 +292,26 @@ EXT:lang/Resources/Public/Images/cshimages/core_19.png,</source>
 				<source>The options checkboxes.
 Selecting "Extended view" will enable the control buttons in the record lists.</source>
 			</trans-unit>
+			<trans-unit id="pagetree_overview.alttitle">
+				<source>Pagetree Overview</source>
+			</trans-unit>
+			<trans-unit id="pagetree_overview.description">
+				<source>The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</source>
+			</trans-unit>
+			<trans-unit id="_pagetree_overview.seeAlso" xml:space="preserve">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="_pagetree_overview.image">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="pagetree_overview.image_descr">
+				<source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
+			</trans-unit>
 			<trans-unit id="new_regular.alttitle">
 				<source>Create new record</source>
 			</trans-unit>
