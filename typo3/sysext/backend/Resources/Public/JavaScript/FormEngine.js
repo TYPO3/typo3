@@ -33,16 +33,30 @@ var setFormValueOpenBrowser,
 define(['jquery',
 		'TYPO3/CMS/Backend/FormEngineValidation',
 		'TYPO3/CMS/Backend/Modal',
-		'TYPO3/CMS/Backend/Severity'
-	   ], function ($, FormEngineValidation, Modal, Severity) {
+		'TYPO3/CMS/Backend/Severity',
+		'TYPO3/CMS/Backend/BackendException',
+		'TYPO3/CMS/Backend/Event/InteractionRequestMap'
+	   ], function ($, FormEngineValidation, Modal, Severity, BackendException, InteractionRequestMap) {
 
 	/**
-	 *
-	 * @type {{Validation: object, formName: *, openedPopupWindow: window, legacyFieldChangedCb: Function, browserUrl: string}}
+	 * @param {InteractionRequest} interactionRequest
+	 * @param {boolean} response
+	 */
+	function handleConsumeResponse(interactionRequest, response) {
+		if (response) {
+			FormEngine.interactionRequestMap.resolveFor(interactionRequest);
+		} else {
+			FormEngine.interactionRequestMap.rejectFor(interactionRequest);
+		}
+	}
+
+	/**
 	 * @exports TYPO3/CMS/Backend/FormEngine
 	 */
 	var FormEngine = {
+		consumeTypes: ['typo3.setUrl', 'typo3.beforeSetUrl', 'typo3.refresh'],
 		Validation: FormEngineValidation,
+		interactionRequestMap: InteractionRequestMap,
 		formName: TYPO3.settings.FormEngine.formName,
 		openedPopupWindow: null,
 		legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); },
@@ -66,7 +80,6 @@ define(['jquery',
 		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1');
 		FormEngine.openedPopupWindow.focus();
 	};
-
 
 	/**
 	 * properly fills the select field from the popup window (element browser, link browser)
@@ -581,6 +594,12 @@ define(['jquery',
 	 * as it using deferrer methods only
 	 */
 	FormEngine.initializeEvents = function() {
+		if (top.TYPO3 && typeof top.TYPO3.Backend !== 'undefined') {
+			top.TYPO3.Backend.consumerScope.attach(FormEngine);
+			$(window).on('unload', function() {
+				top.TYPO3.Backend.consumerScope.detach(FormEngine);
+			});
+		}
 		$(document).on('click', '.t3js-btn-moveoption-top, .t3js-btn-moveoption-up, .t3js-btn-moveoption-down, .t3js-btn-moveoption-bottom, .t3js-btn-removeoption', function(evt) {
 			evt.preventDefault();
 
@@ -626,7 +645,9 @@ define(['jquery',
 			}
 		}).on('click', '.t3js-editform-close', function(e) {
 			e.preventDefault();
-			FormEngine.preventExitIfNotSaved();
+			FormEngine.preventExitIfNotSaved(
+				FormEngine.preventExitIfNotSavedCallback
+			);
 		}).on('click', '.t3js-editform-delete-record', function(e) {
 			e.preventDefault();
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
@@ -725,6 +746,45 @@ define(['jquery',
 			FormEngine.Validation.validate();
 			FormEngine.Validation.markFieldAsChanged($field);
 		});
+	};
+
+	/**
+	 * @param {InteractionRequest} interactionRequest
+	 * @return {jQuery.Deferred}
+	 */
+	FormEngine.consume = function(interactionRequest) {
+		if (!interactionRequest) {
+			throw new BackendException('No interaction request given', 1496589980);
+		}
+		if (interactionRequest.concernsTypes(FormEngine.consumeTypes)) {
+			var outerMostRequest = interactionRequest.outerMostRequest;
+			var deferred = $.Deferred();
+
+			FormEngine.interactionRequestMap.attachFor(
+				outerMostRequest,
+				deferred
+			);
+			// resolve or reject deferreds with previous user choice
+			if (outerMostRequest.isProcessed()) {
+				handleConsumeResponse(
+					outerMostRequest,
+					outerMostRequest.getProcessedData().response
+				);
+			// show confirmation dialog
+			} else if (FormEngine.hasChange()) {
+				FormEngine.preventExitIfNotSaved(function(response) {
+					outerMostRequest.setProcessedData(
+						{response: response}
+					);
+					handleConsumeResponse(outerMostRequest, response);
+				});
+			// resolve directly
+			} else {
+				FormEngine.interactionRequestMap.resolveFor(outerMostRequest);
+			}
+
+			return deferred;
+		}
 	};
 
 	/**
@@ -1052,10 +1112,30 @@ define(['jquery',
 	};
 
 	/**
-	 * Show modal to confirm closing the document without saving
+	 * @return {boolean}
 	 */
-	FormEngine.preventExitIfNotSaved = function() {
-		if ($('form[name="' + FormEngine.formName + '"] .has-change').length > 0) {
+	FormEngine.hasChange = function() {
+		return $('form[name="' + FormEngine.formName + '"] .has-change').length > 0;
+	};
+
+	/**
+	 * @param {boolean} response
+	 */
+	FormEngine.preventExitIfNotSavedCallback = function(response) {
+		if (response) {
+			FormEngine.closeDocument();
+		}
+	};
+
+	/**
+	 * Show modal to confirm closing the document without saving.
+	 *
+	 * @param {Function} callback
+	 */
+	FormEngine.preventExitIfNotSaved = function(callback) {
+		callback = callback || FormEngine.preventExitIfNotSavedCallback;
+
+		if (FormEngine.hasChange()) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
 			var $modal = Modal.confirm(title, content, Severity.warning, [
@@ -1074,13 +1154,14 @@ define(['jquery',
 			$modal.on('button.clicked', function(e) {
 				if (e.target.name === 'no') {
 					Modal.dismiss();
+					callback.call(null, false);
 				} else if (e.target.name === 'yes') {
 					Modal.dismiss();
-					FormEngine.closeDocument();
+					callback.call(null, true);
 				}
 			});
 		} else {
-			FormEngine.closeDocument();
+			callback.call(null, true);
 		}
 	};
 

@@ -21,11 +21,26 @@ define(
 	[
 		'jquery',
 		'TYPO3/CMS/Backend/Icons',
+		'TYPO3/CMS/Backend/Event/ConsumerScope',
+		'TYPO3/CMS/Backend/Event/TriggerRequest'
 	],
-	function ($, Icons) {
+	function ($, Icons, ConsumerScope, TriggerRequest) {
 		'use strict';
 
+		function resolveIFrameElement() {
+			var $iFrame = $('.t3js-scaffold-content-module-iframe:first');
+			if ($iFrame.length === 0) {
+				return null;
+			}
+			return $iFrame.get(0);
+		}
+
 		TYPO3.Backend = {
+			/**
+			 * @type {ConsumerScope}
+			 */
+			consumerScope: ConsumerScope,
+
 			initialize: function() {
 				TYPO3.Backend.doLayout();
 				$(window).on('resize', TYPO3.Backend.doLayout);
@@ -88,15 +103,29 @@ define(
 					$('.t3js-scaffold-content-navigation [data-component]').hide();
 					$('.t3js-scaffold-content-navigation [data-component=' + component + ']').show();
 				},
-				setUrl: function(urlToLoad) {
-					$('.t3js-scaffold').addClass('scaffold-content-navigation-expanded');
-					$('.t3js-scaffold-content-navigation-iframe').attr('src', urlToLoad);
+				/**
+				 * @param {string} urlToLoad
+				 * @param {InteractionRequest} [interactionRequest]
+				 * @return {jQuery.Deferred}
+				 */
+				setUrl: function(urlToLoad, interactionRequest) {
+					var deferred = TYPO3.Backend.consumerScope.invoke(
+						new TriggerRequest('typo3.setUrl', interactionRequest)
+					);
+					deferred.then(function() {
+						$('.t3js-scaffold').addClass('scaffold-content-navigation-expanded');
+						$('.t3js-scaffold-content-navigation-iframe').attr('src', urlToLoad);
+					});
+					return deferred;
 				},
 				getUrl: function() {
 					return $('.t3js-scaffold-content-navigation-iframe').attr('src');
 				},
-				refresh: function() {
-					$('.t3js-scaffold-content-navigation-iframe')[0].contentWindow.location.reload();
+				/**
+				 * @param {boolean} forceGet
+				 */
+				refresh: function(forceGet) {
+					$('.t3js-scaffold-content-navigation-iframe')[0].contentWindow.location.reload(forceGet);
 				},
 				calculateScrollbar: function (){
 					TYPO3.Backend.NavigationContainer.cleanup();
@@ -125,19 +154,66 @@ define(
 				get: function() {
 					return $('.t3js-scaffold-content-module-iframe')[0].contentWindow;
 				},
-				setUrl: function (urlToLoad) {
-					TYPO3.Backend.Loader.start();
-					$('.t3js-scaffold-content-module-iframe')
-						.attr('src', urlToLoad)
-						.one('load', function() {
-							TYPO3.Backend.Loader.finish();
-						});
+				/**
+				 * @param {InteractionRequest} [interactionRequest]
+				 * @return {jQuery.Deferred}
+				 */
+				beforeSetUrl: function(interactionRequest) {
+					return TYPO3.Backend.consumerScope.invoke(
+						new TriggerRequest('typo3.beforeSetUrl', interactionRequest)
+					);
+				},
+				/**
+				 * @param {String} urlToLoad
+				 * @param {InteractionRequest} [interactionRequest]
+				 * @return {jQuery.Deferred}
+				 */
+				setUrl: function (urlToLoad, interactionRequest) {
+					var deferred;
+					var iFrame = resolveIFrameElement();
+					// abort, if no IFRAME can be found
+					if (iFrame === null) {
+						deferred = $.Deferred();
+						deferred.reject();
+						return deferred;
+					}
+					deferred = TYPO3.Backend.consumerScope.invoke(
+						new TriggerRequest('typo3.setUrl', interactionRequest)
+					);
+					deferred.then(function() {
+						TYPO3.Backend.Loader.start();
+						$('.t3js-scaffold-content-module-iframe')
+							.attr('src', urlToLoad)
+							.one('load', function() {
+								TYPO3.Backend.Loader.finish();
+							});
+					});
+					return deferred;
 				},
 				getUrl: function() {
 					return $('.t3js-scaffold-content-module-iframe').attr('src');
 				},
-				refresh: function() {
-					$('.t3js-scaffold-content-module-iframe')[0].contentWindow.location.reload();
+				/**
+				 * @param {boolean} forceGet
+				 * @param {InteractionRequest} interactionRequest
+				 * @return {jQuery.Deferred}
+				 */
+				refresh: function(forceGet, interactionRequest) {
+					var deferred;
+					var iFrame = resolveIFrameElement();
+					// abort, if no IFRAME can be found
+					if (iFrame === null) {
+						deferred = $.Deferred();
+						deferred.reject();
+						return deferred;
+					}
+					deferred = TYPO3.Backend.consumerScope.invoke(
+						new TriggerRequest('typo3.refresh', interactionRequest)
+					);
+					deferred.then(function() {
+						iFrame.contentWindow.location.reload(forceGet);
+					});
+					return deferred;
 				},
 				getIdFromUrl: function() {
 					if(this.getUrl) {

@@ -20,12 +20,15 @@ require(
 		'jquery',
 		'TYPO3/CMS/Backend/Storage',
 		'TYPO3/CMS/Backend/Icons',
-		'TYPO3/CMS/Backend/Viewport'
+		'TYPO3/CMS/Backend/Viewport',
+		'TYPO3/CMS/Backend/Event/ClientRequest',
+		'TYPO3/CMS/Backend/Event/TriggerRequest'
 	],
-	function ($, Storage, Icons) {
+	function ($, Storage, Icons, Viewport, ClientRequest, TriggerRequest) {
 		if (typeof TYPO3.ModuleMenu !== 'undefined') {
 			return TYPO3.ModuleMenu.App;
 		}
+
 		TYPO3.ModuleMenu = {};
 		TYPO3.ModuleMenu.App = {
 			loadedModule: null,
@@ -35,42 +38,52 @@ require(
 			initialize: function () {
 				var me = this;
 
+				var deferred = $.Deferred();
+				deferred.resolve();
+
 				// load the start module
 				if (top.startInModule && top.startInModule[0] && $('#' + top.startInModule[0]).length > 0) {
-					me.showModule(top.startInModule[0], top.startInModule[1]);
+					deferred = me.showModule(
+						top.startInModule[0],
+						top.startInModule[1]
+					);
 				} else {
 					// fetch first module
 					if ($('.t3js-mainmodule:first').attr('id')) {
-						me.showModule($('.t3js-mainmodule:first').attr('id'));
+						deferred = me.showModule(
+							$('.t3js-mainmodule:first').attr('id')
+						);
 					}
 					// else case: the main module has no entries, this is probably a backend
 					// user with very little access rights, maybe only the logout button and
 					// a user settings module in topbar.
 				}
 
-				// check if module menu should be collapsed or not
-				var state = Storage.Persistent.get('BackendComponents.States.typo3-module-menu');
-				if (state && state.collapsed) {
-					TYPO3.ModuleMenu.App.toggleMenu(state.collapsed === 'true');
-				}
+				deferred.then(function() {
+					// check if module menu should be collapsed or not
+					var state = Storage.Persistent.get('BackendComponents.States.typo3-module-menu');
+					if (state && state.collapsed) {
+						TYPO3.ModuleMenu.App.toggleMenu(state.collapsed === 'true');
+					}
 
-				// check if there are collapsed items in the users' configuration
-				var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
-				$.each(collapsedMainMenuItems, function (key, itm) {
-					if (itm !== true) {
-						return;
-					}
-					var $group = $('#' + key);
-					if ($group.length > 0) {
-						var $groupContainer = $group.find('.modulemenu-group-container');
-						$group.addClass('collapsed').removeClass('expanded');
-						TYPO3.Backend.NavigationContainer.cleanup();
-						$groupContainer.hide().promise().done(function () {
-							TYPO3.Backend.doLayout();
-						});
-					}
+					// check if there are collapsed items in the users' configuration
+					var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
+					$.each(collapsedMainMenuItems, function (key, itm) {
+						if (itm !== true) {
+							return;
+						}
+						var $group = $('#' + key);
+						if ($group.length > 0) {
+							var $groupContainer = $group.find('.modulemenu-group-container');
+							$group.addClass('collapsed').removeClass('expanded');
+							TYPO3.Backend.NavigationContainer.cleanup();
+							$groupContainer.hide().promise().done(function () {
+								TYPO3.Backend.doLayout();
+							});
+						}
+					});
+					me.initializeEvents();
 				});
-				me.initializeEvents();
 			},
 
 			initializeEvents: function () {
@@ -98,8 +111,11 @@ require(
 				// register clicking on sub modules
 				$(document).on('click', '.modulemenu-item,.t3-menuitem-submodule', function (evt) {
 					evt.preventDefault();
-					me.showModule($(this).attr('id'));
-					TYPO3.Backend.doLayout();
+					me.showModule(
+						$(this).attr('id'),
+						null,
+						evt
+					);
 				});
 				$(document).on('click', '.t3js-topbar-button-modulemenu',
 					function (evt) {
@@ -163,33 +179,71 @@ require(
 				};
 			},
 
-			showModule: function (mod, params) {
+			/**
+			 * @param {string} mod
+			 * @param {string} params
+			 * @param {Event} [event]
+			 * @return {jQuery.Deferred}
+			 */
+			showModule: function (mod, params, event) {
 				params = params || '';
 				params = this.includeId(mod, params);
 				var record = this.getRecordFromName(mod);
-				this.loadModuleComponents(record, params);
+				return this.loadModuleComponents(
+					record,
+					params,
+					new ClientRequest('typo3.showModule', event)
+				);
 			},
 
-			loadModuleComponents: function (record, params) {
+			/**
+			 * @param {object} record
+			 * @param {string} params
+			 * @param {InteractionRequest} [interactionRequest]
+			 * @return {jQuery.Deferred}
+			 */
+			loadModuleComponents: function (record, params, interactionRequest) {
 				var mod = record.name;
-				if (record.navigationComponentId) {
-					this.loadNavigationComponent(record.navigationComponentId);
-				} else if (record.navigationFrameScript) {
-					TYPO3.Backend.NavigationContainer.show('typo3-navigationIframe');
-					this.openInNavFrame(record.navigationFrameScript, record.navigationFrameScriptParam);
-				} else {
-					TYPO3.Backend.NavigationContainer.hide();
-				}
 
-				this.highlightModuleMenuItem(mod);
-				this.loadedModule = mod;
-				this.openInContentFrame(record.link, params);
+				var deferred = TYPO3.Backend.ContentContainer.beforeSetUrl(interactionRequest);
+				deferred.then(
+					$.proxy(function() {
+						if (record.navigationComponentId) {
+							this.loadNavigationComponent(record.navigationComponentId);
+						} else if (record.navigationFrameScript) {
+							TYPO3.Backend.NavigationContainer.show('typo3-navigationIframe');
+							this.openInNavFrame(
+								record.navigationFrameScript,
+								record.navigationFrameScriptParam,
+								new TriggerRequest(
+									'typo3.loadModuleComponents',
+									interactionRequest
+								)
+							);
+						} else {
+							TYPO3.Backend.NavigationContainer.hide();
+						}
 
-				// compatibility
-				top.currentSubScript = record.link;
-				top.currentModuleLoaded = mod;
+						this.highlightModuleMenuItem(mod);
+						this.loadedModule = mod;
+						this.openInContentFrame(
+							record.link,
+							params,
+							new TriggerRequest(
+								'typo3.loadModuleComponents',
+								interactionRequest
+							)
+						);
 
-				TYPO3.Backend.doLayout();
+						// compatibility
+						top.currentSubScript = record.link;
+						top.currentModuleLoaded = mod;
+
+						TYPO3.Backend.doLayout();
+					}, this
+				));
+
+				return deferred;
 			},
 
 			includeId: function (mod, params) {
@@ -231,23 +285,55 @@ require(
 				this.availableNavigationComponents[componentId] = initCallback;
 			},
 
-			openInNavFrame: function (url, params) {
+			/**
+			 * @param {string} url
+			 * @param {string} params
+			 * @param {InteractionRequest} [interactionRequest]
+			 * @return {jQuery.Deferred}
+			 */
+			openInNavFrame: function (url, params, interactionRequest) {
 				var navUrl = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
 				var currentUrl = TYPO3.Backend.NavigationContainer.getUrl();
+				var deferred = TYPO3.Backend.NavigationContainer.setUrl(
+					url,
+					new TriggerRequest('typo3.openInNavFrame', interactionRequest)
+				);
 				if (currentUrl !== navUrl) {
-					TYPO3.Backend.NavigationContainer.refresh();
+					// if deferred is already resolved, execute directly
+					if (deferred.state() === 'resolved') {
+						TYPO3.Backend.NavigationContainer.refresh();
+					// otherwise hand in future callback
+					} else {
+						deferred.then(TYPO3.Backend.NavigationContainer.refresh);
+					}
 				}
-				TYPO3.Backend.NavigationContainer.setUrl(url);
+				return deferred;
 			},
 
-			openInContentFrame: function (url, params) {
+			/**
+			 * @param {string} url
+			 * @param {string} params
+			 * @param {InteractionRequest} [interactionRequest]
+			 * @return {jQuery.Deferred}
+			 */
+			openInContentFrame: function (url, params, interactionRequest) {
+				var deferred;
+
 				if (top.nextLoadModuleUrl) {
-					TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
+					deferred = TYPO3.Backend.ContentContainer.setUrl(
+						top.nextLoadModuleUrl,
+						new TriggerRequest('typo3.openInContentFrame', interactionRequest)
+					);
 					top.nextLoadModuleUrl = '';
 				} else {
 					var urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
-					TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+					deferred = TYPO3.Backend.ContentContainer.setUrl(
+						urlToLoad,
+						new TriggerRequest('typo3.openInContentFrame', interactionRequest)
+					);
 				}
+
+				return deferred;
 			},
 
 			highlightModuleMenuItem: function (module, mainModule) {

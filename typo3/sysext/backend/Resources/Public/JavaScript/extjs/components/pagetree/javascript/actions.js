@@ -313,7 +313,6 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	editPageProperties: function(node) {
-		node.select();
 		var returnUrl = TYPO3.Backend.ContentContainer.getUrl();
 		if (returnUrl.indexOf('returnUrl') !== -1) {
 			returnUrl = TYPO3.Utility.getParameterFromUrl(returnUrl, 'returnUrl');
@@ -329,6 +328,8 @@ TYPO3.Components.PageTree.Actions = {
 
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.FormEngine.moduleUrl + '&edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
+		).then(
+			node.select
 		);
 	},
 
@@ -339,9 +340,10 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	newPageWizard: function(node) {
-		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.NewRecord.moduleUrl + '&id=' + node.attributes.nodeData.id + '&pagesOnly=1'
+		).then(
+			node.select
 		);
 	},
 
@@ -362,9 +364,10 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	openHistoryPopUp: function(node) {
-		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.RecordHistory.moduleUrl + '&element=pages:' + node.attributes.nodeData.id
+		).then(
+			node.select
 		);
 	},
 
@@ -375,13 +378,14 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	exportT3d: function(node) {
-		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.ImportExport.moduleUrl +
 			'&tx_impexp[action]=export&' +
 			'id=0&tx_impexp[pagetree][id]=' + node.attributes.nodeData.id +
 			'&tx_impexp[pagetree][levels]=0' +
 			'&tx_impexp[pagetree][tables][]=_ALL'
+		).then(
+			node.select
 		);
 	},
 
@@ -392,11 +396,12 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	importT3d: function(node) {
-		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
 			TYPO3.settings.ImportExport.moduleUrl +
 			'&id=' + node.attributes.nodeData.id +
 			'&table=pages&tx_impexp[action]=import'
+		).then(
+			node.select
 		);
 	},
 
@@ -709,24 +714,22 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	singleClick: function(node, tree) {
-		tree.currentSelectedNode = node;
-
 		var separator = '?';
 		if (currentSubScript.indexOf('?') !== -1) {
 			separator = '&';
 		}
 
-		node.select();
-		if (tree.stateHash) {
-			tree.stateHash.lastSelectedNode = node.id;
-		}
-
-		fsMod.recentIds['web'] = node.attributes.nodeData.id;
-		fsMod.recentIds['system'] = node.attributes.nodeData.id;
-
 		TYPO3.Backend.ContentContainer.setUrl(
 			currentSubScript + separator + 'id=' + node.attributes.nodeData.id
-		);
+		).then(function() {
+			node.select();
+			tree.currentSelectedNode = node;
+			if (tree.stateHash) {
+				tree.stateHash.lastSelectedNode = node.id;
+			}
+			fsMod.recentIds['web'] = node.attributes.nodeData.id;
+			fsMod.recentIds['system'] = node.attributes.nodeData.id;
+		});
 	},
 
 	/**
@@ -742,13 +745,14 @@ TYPO3.Components.PageTree.Actions = {
 			return;
 		}
 
-		node.select();
 		var nodeId = node.attributes.nodeData.id,
 			idPattern = '###ID###';
 		TYPO3.Backend.ContentContainer.setUrl(
 			contextItem.customAttributes.contentUrl
 				.replace(idPattern, nodeId)
 				.replace(encodeURIComponent(idPattern), nodeId)
+		).then(
+			node.select
 		);
 	},
 

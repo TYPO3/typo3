@@ -145,7 +145,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
         url += '&CB[el][' + table + '%7C' + uid + ']=1'+ '&CB[setCopyMode]=1';
         $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
+            top.TYPO3.Backend.ContentContainer.refresh(true);
         });
     };
 
@@ -153,7 +153,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
         url += '&CB[el][' + table + '%7C' + uid + ']=0';
         $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
+            top.TYPO3.Backend.ContentContainer.refresh(true);
         });
     };
 
@@ -161,7 +161,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
         url += '&CB[el][' + table + '%7C' + uid + ']=1'+ '&CB[setCopyMode]=0';
         $.ajax(url).always(function () {
-            top.list_frame.location.reload(true);
+            top.TYPO3.Backend.ContentContainer.refresh(true);
         });
     };
 
