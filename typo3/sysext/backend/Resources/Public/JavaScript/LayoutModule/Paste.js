@@ -46,7 +46,7 @@ define(['jquery',
 	 */
 	Paste.activatePasteIcons = function () {
 		$('.t3-page-ce-wrapper-new-ce').each(function () {
-			if (!$(this).find('.icon-actions-document-new').length) {
+			if (!$(this).find('.icon-actions-add').length) {
 				return true;
 			}
 			$('.t3js-page-lang-column .t3-page-ce > .t3-page-ce').removeClass('t3js-page-ce');

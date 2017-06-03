@@ -893,7 +893,7 @@ class AdminPanelView
                 $params = '&sys_language_uid=' . $tsfe->sys_language_uid;
             }
             $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
-            $icon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+            $icon = $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
             $title = $this->extGetLL('edit_newContentElement');
             $output[] = '<a class="' . $classes . '" href="' . htmlspecialchars($link) . '" title="' . $title . '">';
             $output[] = '  ' . $icon;

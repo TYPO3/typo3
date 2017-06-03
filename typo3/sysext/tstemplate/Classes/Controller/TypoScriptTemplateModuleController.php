@@ -323,7 +323,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
                     ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-document-new',
+                        'actions-add',
                         Icon::SIZE_SMALL
                     ));
                 $buttonBar->addButton($newButton);

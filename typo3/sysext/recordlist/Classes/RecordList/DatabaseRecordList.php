@@ -270,7 +270,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
                 $buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
                     . htmlspecialchars($lang->getLL('newRecordGeneral')) . '">'
-                    . $this->iconFactory->getIcon('actions-add-placeholder', Icon::SIZE_SMALL)->render() . '</a>';
+                    . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -388,7 +388,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     ->setHref('#')
                     ->setOnClick($onClick)
                     ->setTitle($lang->getLL('newRecordGeneral'))
-                    ->setIcon($this->iconFactory->getIcon('actions-add-placeholder', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
             if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {

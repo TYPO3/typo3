@@ -43,7 +43,7 @@ class PageProvider extends RecordProvider
         ],
         'new' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new',
-            'iconIdentifier' => 'actions-document-new',
+            'iconIdentifier' => 'actions-page-new',
             'callbackAction' => 'newRecord'
         ],
         'info' => [

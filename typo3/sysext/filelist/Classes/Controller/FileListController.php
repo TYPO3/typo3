@@ -621,7 +621,7 @@ class FileListController extends ActionController
                     ]
                 ))
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.new'))
-                ->setIcon($iconFactory->getIcon('actions-add-placeholder', Icon::SIZE_SMALL));
+                ->setIcon($iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
 

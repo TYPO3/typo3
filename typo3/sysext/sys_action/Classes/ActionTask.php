@@ -293,7 +293,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 
             $content .= '<p>' .
                 '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->getLL('new-sys_action') . '">' .
-                $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . ' ' .
+                $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . ' ' .
                 $this->getLanguageService()->getLL('new-sys_action') .
                 '</a></p>';
         }

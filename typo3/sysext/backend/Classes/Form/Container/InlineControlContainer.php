@@ -363,7 +363,7 @@ class InlineControlContainer extends AbstractContainer
         switch ($type) {
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
-                $icon = 'actions-document-new';
+                $icon = 'actions-add';
                 $className = 'typo3-newRecordLink';
                 $attributes['class'] = 'btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
                 $attributes['onclick'] = 'return inline.createNewRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ')';
@@ -594,7 +594,7 @@ class InlineControlContainer extends AbstractContainer
             $item .= '
             <span class="input-group-btn">
                 <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText . '">
-                    ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
+                    ' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
                 </a>
             </span>';
         } else {

@@ -585,7 +585,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
                     $link = '<a href="' . htmlspecialchars($url) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="btn btn-default btn-sm">'
-                        . $this->iconFactory->getIcon('actions-add-placeholder', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                         . ' '
                         . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                 }
@@ -699,7 +699,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 $singleElementHTML .= '
 								<a href="' . htmlspecialchars($url) . '" title="'
                                     . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="btn btn-default btn-sm">'
-                                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                                    . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>
 							';
@@ -1086,7 +1086,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" '
                 . 'title="' . htmlspecialchars($this->getLanguageService()->getLL('new')) . '">'
-                . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
         }
         $out .= $this->addElement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
         // Render Items

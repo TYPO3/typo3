@@ -93,7 +93,7 @@ define(['jquery', 'jquery-ui/droppable'], function ($) {
 		// make the drop zones visible
 		$(DragDrop.dropZoneIdentifier).each(function () {
 			if (
-				$(this).parent().find('.icon-actions-document-new').length
+				$(this).parent().find('.icon-actions-add').length
 			) {
 				$(this).addClass(DragDrop.validDropZoneClass);
 			} else {
