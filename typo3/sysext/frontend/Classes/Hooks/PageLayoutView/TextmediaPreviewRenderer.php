@@ -53,7 +53,10 @@ class TextmediaPreviewRenderer implements PageLayoutViewDrawItemHookInterface
                     $linkedContent = '';
 
                     foreach ($fileReferences as $fileReference) {
-                        $linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
+                        $description = $fileReference->getDescription();
+                        if ($description !== null && $description !== '') {
+                            $linkedContent .= htmlspecialchars($description) . '<br />';
+                        }
                     }
 
                     $itemContent .= $parentObject->linkEditContent($linkedContent, $row);
