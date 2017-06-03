@@ -1524,7 +1524,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             if ($this->MOD_SETTINGS['function'] === 'scheduler' && !empty($this->getRegisteredClasses())) {
                 $addButton = $buttonBar->makeLinkButton()
                     ->setTitle($this->getLanguageService()->getLL('action.add'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL))
                     ->setHref($this->moduleUri . '&CMD=add');
                 $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }

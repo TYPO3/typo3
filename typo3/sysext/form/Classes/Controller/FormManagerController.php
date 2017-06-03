@@ -443,7 +443,7 @@ class FormManagerController extends AbstractBackendController
                 ->setDataAttributes(['identifier' => 'newForm'])
                 ->setHref('#')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
             $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
         }
     }

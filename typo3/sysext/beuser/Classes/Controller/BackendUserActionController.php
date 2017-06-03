@@ -134,7 +134,7 @@ class BackendUserActionController extends ActionController
                 $parameters = GeneralUtility::explodeUrl2Array('edit[be_users][0]=new&returnUrl=' . $returnUrl);
                 $addUserLink = BackendUtility::getModuleUrl('record_edit', $parameters);
                 $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
-                $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
+                $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL);
                 $addUserButton = $buttonBar->makeLinkButton()
                     ->setHref($addUserLink)
                     ->setTitle($title)
@@ -166,7 +166,7 @@ class BackendUserActionController extends ActionController
             $parameters = GeneralUtility::explodeUrl2Array('edit[be_groups][0]=new&returnUrl=' . $returnUrl);
             $addUserLink = BackendUtility::getModuleUrl('record_edit', $parameters);
             $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral');
-            $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL);
+            $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL);
             $addUserGroupButton = $buttonBar->makeLinkButton()
                 ->setHref($addUserLink)
                 ->setTitle($title)
