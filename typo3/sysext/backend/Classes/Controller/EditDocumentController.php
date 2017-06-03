@@ -455,7 +455,7 @@ class EditDocumentController
         $this->columnsOnly = GeneralUtility::_GP('columnsOnly');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         $this->closeDoc = (int)GeneralUtility::_GP('closeDoc');
-        $this->doSave = GeneralUtility::_GP('doSave');
+        $this->doSave = (bool)GeneralUtility::_GP('doSave');
         $this->returnEditConf = GeneralUtility::_GP('returnEditConf');
         $this->workspace = GeneralUtility::_GP('workspace');
         $this->uc = GeneralUtility::_GP('uc');
@@ -509,6 +509,7 @@ class EditDocumentController
             || isset($_POST['_saveandclosedok'])
             || isset($_POST['_savedokview'])
             || isset($_POST['_savedoknew'])
+            || isset($_POST['_duplicatedoc'])
             || isset($_POST['_translation_savedok'])
             || isset($_POST['_translation_savedokclear']);
         return $out;
@@ -559,9 +560,11 @@ class EditDocumentController
         }
 
         // Perform the saving operation with DataHandler:
-        $tce->process_uploads($_FILES);
-        $tce->process_datamap();
-        $tce->process_cmdmap();
+        if ($this->doSave === true) {
+            $tce->process_uploads($_FILES);
+            $tce->process_datamap();
+            $tce->process_cmdmap();
+        }
         // If pages are being edited, we set an instruction about updating the page tree after this operation.
         if ($tce->pagetreeNeedsRefresh
             && (isset($this->data['pages']) || $beUser->workspace != 0 && !empty($this->data))
@@ -665,6 +668,75 @@ class EditDocumentController
             $this->R_URL_getvars['edit'] = $this->editconf;
             // Re-compile the store* values since editconf changed...
             $this->compileStoreDat();
+        }
+        // If a document should be duplicated.
+        if (isset($_POST['_duplicatedoc']) && is_array($this->editconf)) {
+            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT);
+            // Finding the current table:
+            reset($this->editconf);
+            $nTable = key($this->editconf);
+            // Finding the first id, getting the records pid+uid
+            reset($this->editconf[$nTable]);
+            $nUid = key($this->editconf[$nTable]);
+            if (!MathUtility::canBeInterpretedAsInteger($nUid)) {
+                $nUid = $tce->substNEWwithIDs[$nUid];
+            }
+
+            $recordFields = 'pid,uid';
+            if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
+                $recordFields .= ',t3ver_oid';
+            }
+            $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
+
+            // Setting a blank editconf array for a new record:
+            $this->editconf = [];
+
+            if ($nRec['pid'] != -1) {
+                $relatedPageId = -$nRec['uid'];
+            } else {
+                $relatedPageId = -$nRec['t3ver_oid'];
+            }
+
+            /** @var $duplicateTce \TYPO3\CMS\Core\DataHandling\DataHandler */
+            $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
+
+            $duplicateCmd = [
+                $nTable => [
+                    $nUid => [
+                        'copy' => $relatedPageId
+                    ]
+                ]
+            ];
+
+            $duplicateTce->start([], $duplicateCmd);
+            $duplicateTce->process_cmdmap();
+
+            $duplicateMappingArray = $duplicateTce->copyMappingArray;
+            $duplicateUid = $duplicateMappingArray[$nTable][$nUid];
+
+            if ($nTable === 'pages') {
+                BackendUtility::setUpdateSignal('updatePageTree');
+            }
+
+            $this->editconf[$nTable][$duplicateUid] = 'edit';
+            // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+            $this->R_URL_getvars['edit'] = $this->editconf;
+            // Re-compile the store* values since editconf changed...
+            $this->compileStoreDat();
+
+            // Inform the user of the duplication
+            /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'),
+                '',
+                FlashMessage::OK
+            );
+            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            /** @var $defaultFlashMessageQueue FlashMessageQueue */
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
         }
         // If a preview is requested
         if (isset($_POST['_savedokview'])) {
@@ -1255,6 +1327,19 @@ class EditDocumentController
                 Icon::SIZE_SMALL
             ));
         $buttonBar->addButton($closeButton);
+        // DUPLICATE button:
+        if ($this->firstEl['cmd'] !== 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
+            $duplicateButton = $buttonBar->makeLinkButton()
+                ->setHref('#')
+                ->setClasses('t3js-editform-duplicate')
+                ->setShowLabelText(true)
+                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                    'actions-document-duplicates-select',
+                    Icon::SIZE_SMALL
+                ));
+            $buttonBar->addButton($duplicateButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        }
         // DELETE + UNDO buttons:
         if (!$this->errorC
             && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
@@ -1291,7 +1376,7 @@ class EditDocumentController
                             'uid' => $this->firstEl['uid'],
                             'table' => $this->firstEl['table']
                         ]);
-                    $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                    $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
                 }
                 // Undo:
                 if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {

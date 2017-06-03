@@ -42,11 +42,26 @@
 			<trans-unit id="noDocuments_listmodule">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
+			<trans-unit id="buttons.confirm.duplicate_record_changed.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="button.confirm.duplicate_record_changed.dismiss_and_duplicate">
+				<source>Dismiss changes and duplicate</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.duplicate_record_changed.save_and_duplicate">
+				<source>Save changes and duplicate</source>
+			</trans-unit>
 			<trans-unit id="buttons.confirm.close_without_save.yes">
 				<source>Yes, discard my changes</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.close_without_save.no">
 				<source>No, I will continue editing</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.duplicate_record_changed.title">
+				<source>Duplicate changed record?</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.duplicate_record_changed.content">
+				<source>Do you want to save your changes and duplicate the record?</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.close_without_save.title">
 				<source>Do you want to quit without saving?</source>

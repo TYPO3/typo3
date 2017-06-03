@@ -149,7 +149,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
     url += '&CB[el][' + table + '%7C' + uid + ']=1' + '&CB[setCopyMode]=1';
     $.ajax(url).always(function() {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      ContextMenuActions.triggerRefresh(top.TYPO3.Backend.ContentContainer.get().location.href);
     });
   };
 
@@ -157,7 +157,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
     url += '&CB[el][' + table + '%7C' + uid + ']=0';
     $.ajax(url).always(function() {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      ContextMenuActions.triggerRefresh(top.TYPO3.Backend.ContentContainer.get().location.href);
     });
   };
 
@@ -165,8 +165,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     var url = TYPO3.settings.ajaxUrls['contextmenu_clipboard'];
     url += '&CB[el][' + table + '%7C' + uid + ']=1' + '&CB[setCopyMode]=0';
     $.ajax(url).always(function() {
-      top.TYPO3.Backend.ContentContainer.refresh(true);
+      ContextMenuActions.triggerRefresh(top.TYPO3.Backend.ContentContainer.get().location.href);
     });
+  };
+
+  ContextMenuActions.triggerRefresh = function (iframeUrl) {
+    if (iframeUrl.indexOf("record%2Fedit") === -1) {
+      top.TYPO3.Backend.ContentContainer.refresh(true);
+    }
   };
 
   /**

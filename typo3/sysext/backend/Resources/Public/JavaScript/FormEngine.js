@@ -647,6 +647,50 @@ define(['jquery',
       FormEngine.preventExitIfNotSaved(
         FormEngine.preventExitIfNotSavedCallback
       );
+    }).on('click', '.t3js-editform-duplicate', function(e) {
+        e.preventDefault();
+        var $elem = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
+        if ($('form[name="' + FormEngine.formName + '"] .has-change').length > 0) {
+          var title = TYPO3.lang['label.confirm.duplicate_record_changed.title'] || 'Duplicate changed record?';
+          var content = TYPO3.lang['label.confirm.duplicate_record_changed.content'] || 'Do you want to save your changes and duplicate the record?';
+          var $modal = Modal.confirm(title, content, Severity.warning, [
+            {
+              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.cancel'] || 'Cancel',
+              active: true,
+              btnClass: 'btn-default',
+              name: 'cancel'
+            },
+            {
+              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.dismiss_and_duplicate'] || 'Dismiss changes and duplicate',
+              active: true,
+              btnClass: 'btn-default',
+              name: 'dismissDuplicate'
+            },
+            {
+              text: TYPO3.lang['buttons.confirm.duplicate_record_changed.save_and_duplicate'] || 'Save changes and duplicate',
+              btnClass: 'btn-success',
+              name: 'saveDuplicate'
+            }
+        ]);
+          $modal.on('button.clicked', function (e) {
+            if (e.target.name === 'cancel') {
+              Modal.dismiss();
+            } else if (e.target.name === 'dismissDuplicate') {
+              $('form[name=' + FormEngine.formName + ']').append($elem);
+              $('input[name=doSave]').val(0);
+              Modal.dismiss();
+              document.editform.submit();
+            } else if (e.target.name == 'saveDuplicate') {
+              $('form[name=' + FormEngine.formName + ']').append($elem);
+              $('input[name=doSave]').val(1);
+              Modal.dismiss();
+              document.editform.submit();
+            }
+          });
+        } else {
+          $('form[name=' + FormEngine.formName + ']').append($elem);
+          document.editform.submit();
+        }
     }).on('click', '.t3js-editform-delete-record', function(e) {
       e.preventDefault();
       var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
