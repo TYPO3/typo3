@@ -20,7 +20,6 @@
     "autosize": "^3.0.20",
     "bootstrap-sass": "^3.3.7",
     "bootstrap-slider": "^9.7.3",
-    "bower": "^1.8.0",
     "chosen-js": "^1.7.0",
     "ckeditor": "^4.6.2",
     "cropper": "^2.3.4",
@@ -30,16 +29,14 @@
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "font-awesome": "^4.7.0",
     "grunt": "~1.0.1",
-    "grunt-bower-just-install": "0.0.3",
-    "grunt-bowercopy": "^1.2.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "2.0.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-npm-install": "^0.3.1",
+    "grunt-npmcopy": "^0.1.0",
     "grunt-postcss": "^0.8.0",
     "grunt-sass": "^2.0.0",
     "grunt-stylelint": "^0.7.0",
-    "grunt-svgmin": "4.0.0",
     "grunt-ts": "^5.5.1",
     "grunt-tslint": "^3.2.1",
     "imagesloaded": "^4.1.1",
@@ -72,7 +69,6 @@
     "typescript": "^2.2.0"
   },
   "scripts": {
-    "bower": "./node_modules/.bin/bower install",
     "build-css": "./node_modules/.bin/grunt css",
     "lint": "./node_modules/.bin/grunt lint"
   }
