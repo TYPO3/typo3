@@ -1503,7 +1503,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $requireJsConfig['paths'] = [
             'jquery-ui' => $corePath . 'jquery-ui',
             'datatables' => $corePath . 'jquery.dataTables',
-            'matchheight' => $corePath . 'jquery.matchHeight-min',
             'nprogress' => $corePath . 'nprogress',
             'moment' => $corePath . 'moment',
             'cropper' => $corePath . 'cropper.min',

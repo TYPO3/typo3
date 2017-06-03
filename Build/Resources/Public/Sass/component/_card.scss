@@ -1,0 +1,112 @@
+//
+// Card
+// ====
+// Cards for typo3
+//
+//
+// Normal Usage
+// ------------
+//
+// <div class="card card-size-medium">
+// ... Content ...
+// </div>
+//
+//
+// Grid Usage
+// ----------
+//
+// <div class="card-container">
+//     <div class="card card-size-medium">
+//     ... Content ...
+//     </div>
+//     <div class="card card-size-medium">
+//     ... Content ...
+//     </div>
+//     <div class="card card-size-medium">
+//     ... Content ...
+//     </div>
+//     <div class="card card-size-medium">
+//     ... Content ...
+//     </div>
+// </div>
+//
+//
+// Sizes
+// -----
+//
+// card-size-small => 3 2 1
+// card-size-medium => 2 2 1
+// card-size-large => 1 1 1
+//
+
+//
+// Variables
+//
+$card-spacing: 10px;
+$card-base-color: #000;
+$card-border-color: lighten($card-base-color, 80);
+$card-border-hover-color: lighten($card-base-color, 70);
+$card-shadow-color: transparentize($card-base-color, 0.8);
+$card-shadow-hover-color: transparentize($card-base-color, 0.7);
+
+//
+// Component
+//
+.card {
+    display: flex;
+    padding: 15px;
+    box-shadow: 0 2px 0 $card-shadow-color;
+    border: 1px solid $card-border-color;
+    margin-bottom: ($card-spacing*2);
+    transition: all 0.2s ease-in-out;
+    transition-property: box-shadow, border, transform;
+
+    &:hover {
+        text-decoration: none;
+        border: 1px solid $card-border-hover-color;
+        transform: translate(0, -1px);
+        box-shadow: 0 3px 0 $card-shadow-hover-color;
+    }
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: $card-spacing #{-$card-spacing};
+
+    .card {
+        margin-left: $card-spacing;
+        margin-right: $card-spacing;
+    }
+}
+
+//
+// Sizes
+//
+.card-size-small,
+.card-size-medium,
+.card-size-large {
+    width: calc(100% - #{$card-spacing*2});
+}
+
+.card-size-small {
+    @media (min-width: $screen-sm-min) {
+        width: calc(50% - #{$card-spacing*2});
+    }
+
+    @media (min-width: $screen-md-min) {
+        width: calc(25% - #{$card-spacing*2});
+    }
+}
+
+.card-size-medium {
+    @media (min-width: $screen-sm-min) {
+        width: calc(50% - #{$card-spacing*2});
+    }
+}
+
+.card-size-large {
+    @media (min-width: $screen-sm-min) {
+        width: calc(100% - #{$card-spacing*2});
+    }
+}
