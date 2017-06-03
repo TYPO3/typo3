@@ -39,9 +39,6 @@
 			<trans-unit id="cache_clearLevels">
 				<source>Clear levels</source>
 			</trans-unit>
-			<trans-unit id="cache_cacheEntries">
-				<source>Cache entries</source>
-			</trans-unit>
 			<trans-unit id="publish">
 				<source>Publish</source>
 			</trans-unit>

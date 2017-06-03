@@ -214,6 +214,11 @@ return [
             'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\FrontendBackendUserAuthentication->extPageInTreeInfo' => [
+        'restFiles' => [
+            'Breaking-81460-DeprecateGetByTagOnCacheFrontends.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];

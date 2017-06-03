@@ -163,37 +163,4 @@ class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         $this->assertTrue($cache->remove($cacheIdentifier), 'remove() did not return TRUE');
     }
-
-    /**
-     * @test
-     */
-    public function getByTagRejectsInvalidTags()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1233058312);
-
-        $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class);
-        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $cache->getByTag('SomeInvalid\Tag');
-    }
-
-    /**
-     * @test
-     */
-    public function getByTagCallsBackend()
-    {
-        $tag = 'sometag';
-        $identifiers = ['one', 'two'];
-        $entries = ['one value', 'two value'];
-        $backend = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
-        $backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(serialize('one value'), serialize('two value')));
-
-        $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
-        $this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
-    }
 }

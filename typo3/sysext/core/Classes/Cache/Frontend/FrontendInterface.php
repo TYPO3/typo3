@@ -72,15 +72,6 @@ interface FrontendInterface
     public function get($entryIdentifier);
 
     /**
-     * Finds and returns all cache entries which are tagged by the specified tag.
-     *
-     * @param string $tag The tag to search for
-     * @return array An array with the content of all matching entries. An empty array if no entries matched
-     * @api
-     */
-    public function getByTag($tag);
-
-    /**
      * Checks if a cache entry with the specified identifier exists.
      *
      * @param string $entryIdentifier An identifier specifying the cache entry

@@ -155,7 +155,6 @@ class AdminPanelView
             unset($beUser->uc['TSFE_adminConfig']['action']);
             // Actions:
             if (($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) || isset($input['preview_showFluidDebug'])) {
-                $beUser->extPageInTreeInfo = [];
                 $theStartId = (int)$input['cache_clearCacheId'];
                 $this->getTypoScriptFrontendController()
                     ->clearPageCacheContent_pidList(
@@ -522,8 +521,7 @@ class AdminPanelView
     protected function getCacheModule()
     {
         $output = [];
-        $beUser = $this->getBackendUser();
-        if ($beUser->uc['TSFE_adminConfig']['display_cache']) {
+        if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_cache']) {
             $this->extNeedUpdate = true;
 
             $output[] = '<div class="typo3-adminPanel-form-group">';
@@ -536,7 +534,7 @@ class AdminPanelView
             $output[] = '  </div>';
             $output[] = '</div>';
 
-            $levels = $beUser->uc['TSFE_adminConfig']['cache_clearCacheLevels'];
+            $levels = $this->getBackendUser()->uc['TSFE_adminConfig']['cache_clearCacheLevels'];
             $output[] = '<div class="typo3-adminPanel-form-group">';
             $output[] = '  <label for="' . htmlspecialchars('cache_clearCacheLevels') . '">';
             $output[] = '    ' . $this->extGetLL('cache_clearLevels');
@@ -558,44 +556,6 @@ class AdminPanelView
             $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" />';
             $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-default" type="submit" value="' . $this->extGetLL('update') . '" />';
             $output[] = '</div>';
-
-            // Generating tree:
-            $depth = (int)$this->extGetFeAdminValue('cache', 'clearCacheLevels');
-            $outTable = '';
-            $tsfe = $this->getTypoScriptFrontendController();
-            $beUser->extPageInTreeInfo = [];
-            $beUser->extPageInTreeInfo[] = [
-                $tsfe->page['uid'],
-                htmlspecialchars($tsfe->page['title']),
-                $depth + 1
-            ];
-            $beUser->extGetTreeList(
-                $tsfe->id,
-                $depth,
-                0,
-                $beUser->getPagePermsClause(1)
-            );
-            $output[] = '<div class="typo3-adminPanel-table-overflow">';
-            $output[] = '<table class="typo3-adminPanel-table">';
-            $output[] = '  <thead>';
-            $output[] = '    <tr>';
-            $output[] = '      <th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th>';
-            $output[] = '    </tr>';
-            $output[] = '  </thead>';
-            $output[] = '  <tbody>';
-            foreach ($beUser->extPageInTreeInfo as $key => $row) {
-                $output[] = '<tr>';
-                $output[] = '  <td>';
-                $output[] = '    <span style="width: ' . ($depth + 1 - $row[2]) * 5 . 'px; height: 1px; display: inline-block;"></span>';
-                $output[] = '    ' . $this->iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL)->render() . htmlspecialchars($row[1]);
-                $output[] = '  </td>';
-                $output[] = '  <td>' . $beUser->extGetNumberOfCachedPages($row[0]) . '</td>';
-                $output[] = '</tr>';
-            }
-            $output[] = '  <tbody>';
-            $output[] = '</table>';
-            $output[] = '</div>';
-
             $output[] = '<div class="typo3-adminPanel-form-group">';
             $output[] = '  <input class="typo3-adminPanel-btn typo3-adminPanel-btn-default" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
             $output[] = '</div>';

@@ -1500,4 +1500,11 @@ return [
             'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->extGetNumberOfCachedPages' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-81460-DeprecateGetByTagOnCacheFrontends.rst',
+        ],
+    ],
 ];

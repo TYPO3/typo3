@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -65,13 +64,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * @var bool
      */
     public $writeAttemptLog = false;
-
-    /**
-     * Array of page related information (uid, title, depth).
-     *
-     * @var array
-     */
-    public $extPageInTreeInfo = [];
 
     /**
      * General flag which is set if the adminpanel is enabled at all.
@@ -266,7 +258,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             while ($row = $result->fetch()) {
                 if ($begin <= 0) {
                     $theList .= $row['uid'] . ',';
-                    $this->extPageInTreeInfo[] = [$row['uid'], htmlspecialchars($row['title'], $depth)];
                 }
                 if ($depth > 1) {
                     $theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
@@ -274,20 +265,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             }
         }
         return $theList;
-    }
-
-    /**
-     * Returns the number of cached pages for a page id.
-     *
-     * @param int $pageId The page id.
-     * @return int The number of pages for this page in the "cache_pages" cache
-     */
-    public function extGetNumberOfCachedPages($pageId)
-    {
-        /** @var FrontendInterface $pageCache */
-        $pageCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pages');
-        $pageCacheEntries = $pageCache->getByTag('pageId_' . (int)$pageId);
-        return count($pageCacheEntries);
     }
 
     /*****************************************************
