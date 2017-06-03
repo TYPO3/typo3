@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  * This file is a backport from FLOW3
  * @api
  */
-class PhpFrontend extends StringFrontend
+class PhpFrontend extends AbstractFrontend
 {
     /**
      * Constructs the cache
@@ -62,6 +62,45 @@ class PhpFrontend extends StringFrontend
         }
         $sourceCode = '<?php' . LF . $sourceCode . LF . '#';
         $this->backend->set($entryIdentifier, $sourceCode, $tags, $lifetime);
+    }
+
+    /**
+     * Finds and returns a variable value from the cache.
+     *
+     * @param string $entryIdentifier Identifier of the cache entry to fetch
+     * @return string The value
+     * @throws \InvalidArgumentException if the cache identifier is not valid
+     * @api
+     */
+    public function get($entryIdentifier)
+    {
+        if (!$this->isValidEntryIdentifier($entryIdentifier)) {
+            throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233057753);
+        }
+        return $this->backend->get($entryIdentifier);
+    }
+
+    /**
+     * Finds and returns all cache entries which are tagged by the specified tag.
+     *
+     * @param string $tag The tag to search for
+     * @return array An array with the content of all matching entries. An empty array if no entries matched
+     * @throws \InvalidArgumentException if the tag is not valid
+     * @api
+     * @deprecated since TYPO3 v9, Avoid using this method since it is not compliant to PSR-6
+     */
+    public function getByTag($tag)
+    {
+        trigger_error('This method will be removed in TYPO3 v10. Avoid using this method since it is not compliant to PSR-6.', E_USER_DEPRECATED);
+        if (!$this->isValidTag($tag)) {
+            throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057773);
+        }
+        $entries = [];
+        $identifiers = $this->backend->findIdentifiersByTag($tag);
+        foreach ($identifiers as $identifier) {
+            $entries[] = $this->backend->get($identifier);
+        }
+        return $entries;
     }
 
     /**

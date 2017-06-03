@@ -48,7 +48,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\TestingFramework\Core
      */
     public function executeCallsCollectGarbageOfConfiguredBackend()
     {
-        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class);
+        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
         $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
         $cache->expects($this->atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
@@ -56,7 +56,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\TestingFramework\Core
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
             'cache' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                 'backend' => \TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class,
             ]
         ];
@@ -74,7 +74,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\TestingFramework\Core
      */
     public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend()
     {
-        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class);
+        $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
         $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
         $cache->expects($this->never())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
@@ -82,7 +82,7 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\TestingFramework\Core
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = [
             'cache' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
+                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                 'backend' => \TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class,
             ]
         ];

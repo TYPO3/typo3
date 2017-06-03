@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 
 /**
@@ -21,9 +22,27 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  *
  * This file is a backport from FLOW3
  * @api
+ * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - use VariableFrontend instead.
  */
 class StringFrontend extends AbstractFrontend
 {
+    /**
+     * @param string $identifier
+     * @param BackendInterface $backend
+     */
+    public function __construct($identifier, BackendInterface $backend)
+    {
+        trigger_error(
+            sprintf(
+                'Usage of class %s will be removed in TYPO3 v10.0, use %s instead',
+                static::class,
+                VariableFrontend::class
+            ),
+            E_USER_DEPRECATED
+        );
+        parent::__construct($identifier, $backend);
+    }
+
     /**
      * Saves the value of a PHP variable in the cache.
      *

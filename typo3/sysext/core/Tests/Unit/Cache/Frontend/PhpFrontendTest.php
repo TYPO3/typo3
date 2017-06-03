@@ -28,9 +28,9 @@ class PhpFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setChecksIfTheIdentifierIsValid()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1233057566);
+        $this->expectExceptionCode(1264023823);
 
-        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class)
             ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Cache\Frontend;
 
 /*
  * This file is part of the TYPO3 CMS project.

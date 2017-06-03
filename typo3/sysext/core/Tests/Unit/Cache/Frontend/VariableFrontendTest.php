@@ -14,12 +14,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
- * Testcase for the variable cache frontend
- *
- * This file is a backport from FLOW3
+ * Test case
  */
-class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class VariableFrontendTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,9 +27,9 @@ class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function setChecksIfTheIdentifierIsValid()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1233057566);
+        $this->expectExceptionCode(1233058264);
 
-        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+        $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();

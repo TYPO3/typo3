@@ -71,7 +71,7 @@ class LocalizationFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $languageStore = $this->getMockBuilder(\TYPO3\CMS\Core\Localization\LanguageStore::class)
             ->setMethods(['hasData', 'setConfiguration', 'getData', 'setData'])
             ->getMock();
-        $cacheInstance = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class)
+        $cacheInstance = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
