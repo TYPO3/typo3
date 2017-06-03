@@ -340,15 +340,21 @@ class InlineRecordContainer extends AbstractContainer
                         $imageSetup['crop'] = $rec['crop'];
                     }
                     $imageSetup = array_merge(['width' => '45', 'height' => '45c'], $imageSetup);
-                    $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
-                    // Only use a thumbnail if the processing process was successful by checking if image width is set
-                    if ($processedImage->getProperty('width')) {
-                        $imageUrl = $processedImage->getPublicUrl(true);
-                        $thumbnail = '<img src="' . $imageUrl . '" ' .
-                            'width="' . $processedImage->getProperty('width') . '" ' .
-                            'height="' . $processedImage->getProperty('height') . '" ' .
-                            'alt="' . htmlspecialchars($altText) . '" ' .
-                            'title="' . htmlspecialchars($altText) . '">';
+
+                    if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
+                        && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getProperty('extension'))) {
+                        $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
+                        // Only use a thumbnail if the processing process was successful by checking if image width is set
+                        if ($processedImage->getProperty('width')) {
+                            $imageUrl = $processedImage->getPublicUrl(true);
+                            $thumbnail = '<img src="' . $imageUrl . '" ' .
+                                'width="' . $processedImage->getProperty('width') . '" ' .
+                                'height="' . $processedImage->getProperty('height') . '" ' .
+                                'alt="' . htmlspecialchars($altText) . '" ' .
+                                'title="' . htmlspecialchars($altText) . '">';
+                        }
+                    } else {
+                        $thumbnail = '';
                     }
                 }
             }

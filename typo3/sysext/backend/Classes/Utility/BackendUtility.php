@@ -1286,7 +1286,7 @@ class BackendUtility
                 // Preview web image or media elements
                 if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
                     && GeneralUtility::inList(
-                        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'],
+                        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                         $fileReferenceObject->getExtension()
                     )
                 ) {
