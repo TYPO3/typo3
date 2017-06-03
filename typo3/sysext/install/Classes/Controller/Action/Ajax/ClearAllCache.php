@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -16,46 +17,23 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\View\JsonView;
+use TYPO3\CMS\Install\Service\ClearCacheService;
+use TYPO3\CMS\Install\Status\OkStatus;
+use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Clear Cache
  *
  * This is an ajax wrapper for clearing all cache.
- *
- * @see \TYPO3\CMS\Install\Service\ClearCacheService
  */
 class ClearAllCache extends AbstractAjaxAction
 {
-
-    /**
-     * @var \TYPO3\CMS\Install\View\JsonView
-     */
-    protected $view;
-
-    /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
     /**
      * Executes the action
      *
      * @return array Rendered content
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $statusMessages[] = $this->clearAllCache();
         $statusMessages[] = $this->clearOpcodeCache();
@@ -70,14 +48,13 @@ class ClearAllCache extends AbstractAjaxAction
     /**
      * Clear all caches
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
-    protected function clearAllCache()
+    protected function clearAllCache(): StatusInterface
     {
-        /** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
-        $clearCacheService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ClearCacheService::class);
+        $clearCacheService = GeneralUtility::makeInstance(ClearCacheService::class);
         $clearCacheService->clearAll();
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = new OkStatus();
         $message->setTitle('Successfully cleared all caches');
         return $message;
     }
@@ -85,12 +62,12 @@ class ClearAllCache extends AbstractAjaxAction
     /**
      * Clear PHP opcode cache
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
-    protected function clearOpcodeCache()
+    protected function clearOpcodeCache(): StatusInterface
     {
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-        $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\OkStatus::class);
+        $message = new OkStatus();
         $message->setTitle('Successfully cleared all available opcode caches');
         return $message;
     }

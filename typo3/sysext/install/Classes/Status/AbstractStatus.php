@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Status;
 
 /*
@@ -25,6 +26,11 @@ abstract class AbstractStatus implements StatusInterface
     protected $severity = '';
 
     /**
+     * @var int Severity as number
+     */
+    protected $severityNumber = -2;
+
+    /**
      * @var string Title
      */
     protected $title = '';
@@ -35,17 +41,33 @@ abstract class AbstractStatus implements StatusInterface
     protected $message = '';
 
     /**
+     * Default constructor creates severity number from severity string
+     */
+    public function __construct()
+    {
+        $this->severityNumber = $this->getSeverityAsNumber($this->severity);
+    }
+
+    /**
      * @return string The severity
      */
-    public function getSeverity()
+    public function getSeverity(): string
     {
         return $this->severity;
     }
 
     /**
+     * @return int Severity as number
+     */
+    public function getSeverityNumber(): int
+    {
+        return $this->severityNumber;
+    }
+
+    /**
      * @return string The title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -55,7 +77,7 @@ abstract class AbstractStatus implements StatusInterface
      *
      * @param string $title The title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
     }
@@ -65,7 +87,7 @@ abstract class AbstractStatus implements StatusInterface
      *
      * @return string Status message
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -75,8 +97,56 @@ abstract class AbstractStatus implements StatusInterface
      *
      * @param string $message Status message
      */
-    public function setMessage($message)
+    public function setMessage(string $message)
     {
         $this->message = $message;
+    }
+
+    /**
+     * @return array Json representation of this status
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'severity' => $this->getSeverityNumber(),
+            'title' => $this->getTitle(),
+            'status' => $this->getMessage()
+        ];
+    }
+
+    /**
+     * Return the corresponding integer value for given severity string
+     *
+     * @param string $severity
+     * @return int
+     */
+    protected function getSeverityAsNumber($severity): int
+    {
+        $number = -2;
+        switch (strtolower($severity)) {
+            case 'loading':
+                $number = -3;
+                break;
+            case 'notice':
+                $number = -2;
+                break;
+            case 'info':
+                $number = -1;
+                break;
+            case 'ok':
+            case 'success':
+                $number = 0;
+                break;
+            case 'warning':
+                $number = 1;
+                break;
+            case 'error':
+            case 'danger':
+            case 'alert':
+            case 'fatal':
+                $number = 2;
+                break;
+        }
+        return $number;
     }
 }

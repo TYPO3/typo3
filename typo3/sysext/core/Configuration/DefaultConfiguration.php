@@ -1123,6 +1123,9 @@ return [
                 'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
             ],
         ],
+        'ext/install' => [
+            'update' => [],
+        ],
     ],
     'SVCONF' => []
 ];

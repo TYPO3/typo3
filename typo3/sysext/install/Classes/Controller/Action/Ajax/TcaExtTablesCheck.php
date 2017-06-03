@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -17,8 +18,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Install\Status\NoticeStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
-use TYPO3\CMS\Install\View\JsonView;
 
 /**
  * Check ext_tables.php files of loaded extensions for TCA changes.
@@ -31,42 +30,18 @@ use TYPO3\CMS\Install\View\JsonView;
  */
 class TcaExtTablesCheck extends AbstractAjaxAction
 {
-
-    /**
-     * @var \TYPO3\CMS\Install\View\JsonView
-     */
-    protected $view;
-
-    /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
     /**
      * Fetches all installed extensions that still mess with the TCA in a way they shouldn't
      *
      * @return array status list of extensions that still mess with the TCA
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $statusMessages = [];
         $tcaMessages = $this->checkTcaChangesInExtTables();
 
         foreach ($tcaMessages as $tcaMessage) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
+            $message = new NoticeStatus();
             $message->setTitle($tcaMessage);
             $statusMessages[] = $message;
         }
@@ -83,12 +58,12 @@ class TcaExtTablesCheck extends AbstractAjaxAction
      *
      * @return array list of extensions that still mess with the tca
      */
-    protected function checkTcaChangesInExtTables()
+    protected function checkTcaChangesInExtTables(): array
     {
         $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
         $loadTcaService->loadExtensionTablesWithoutMigration();
         $baseTca = $GLOBALS['TCA'];
-        $messages = [];
+        $extensions = [];
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionInformation) {
             if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess)
                 && $extensionInformation['ext_tables.php']
@@ -96,11 +71,11 @@ class TcaExtTablesCheck extends AbstractAjaxAction
                 $loadTcaService->loadSingleExtTablesFile($extensionKey);
                 $newTca = $GLOBALS['TCA'];
                 if ($newTca !== $baseTca) {
-                    $messages[] = $extensionKey;
+                    $extensions[] = $extensionKey;
                 }
                 $baseTca = $newTca;
             }
         }
-        return $messages;
+        return $extensions;
     }
 }

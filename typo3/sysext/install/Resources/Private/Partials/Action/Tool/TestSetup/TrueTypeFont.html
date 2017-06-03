@@ -1,9 +1,0 @@
-<form method="post">
-	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<f:if condition="{trueTypeFontTested}">
-		<f:for each="{testResults}" as="test">
-			<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
-		</f:for>
-	</f:if>
-	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testTrueTypeFont', text:'Test true type font'}"/>
-</form>

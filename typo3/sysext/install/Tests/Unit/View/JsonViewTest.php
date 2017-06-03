@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\View;
 
 /*
@@ -14,46 +15,21 @@ namespace TYPO3\CMS\Install\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Status\Exception;
+use TYPO3\CMS\Install\View\JsonView;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Tests for the custom json view class
  */
-class JsonViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class JsonViewTest extends UnitTestCase
 {
     /**
      * @test
      */
-    public function transformStatusArrayToArrayReturnsArray()
+    public function renderReturnsAssignedVariablesAsArray()
     {
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
-        $this->assertInternalType('array', $jsonView->_call('transformStatusMessagesToArray'));
-    }
-
-    /**
-     * @test
-     */
-    public function transformStatusArrayToArrayThrowsExceptionIfArrayContainsNotAMessageInterfaceMessage()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1381059600);
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
-        $jsonView->_call('transformStatusMessagesToArray', ['foo']);
-    }
-
-    /**
-     * @test
-     */
-    public function transformStatusToArrayCreatesArrayFromStatusMessage()
-    {
-        $status = $this->createMock(\TYPO3\CMS\Install\Status\StatusInterface::class);
-        $status->expects($this->once())->method('getSeverity')->will($this->returnValue(-2));
-        $status->expects($this->once())->method('getTitle')->will($this->returnValue('aTitle'));
-        $status->expects($this->once())->method('getMessage')->will($this->returnValue('aMessage'));
-        $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Install\View\JsonView::class, ['dummy']);
-        $return = $jsonView->_call('transformStatusToArray', $status);
-        $this->assertSame(-2, $return['severity']);
-        $this->assertSame('aTitle', $return['title']);
-        $this->assertSame('aMessage', $return['message']);
+        $jsonView = new JsonView();
+        $jsonView->assign('foo', 'bar');
+        $this->assertEquals(['foo' => 'bar'], $jsonView->render());
     }
 }

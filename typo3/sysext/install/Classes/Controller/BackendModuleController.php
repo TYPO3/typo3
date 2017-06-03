@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -41,17 +40,27 @@ class BackendModuleController
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function index(ServerRequestInterface $request, ResponseInterface $response)
     {
-        /** @var EnableFileService $enableFileService */
         $enableFileService = GeneralUtility::makeInstance(EnableFileService::class);
-        /** @var AbstractFormProtection $formProtection */
+
         $formProtection = FormProtectionFactory::get();
+
+        $targetUrl = 'install.php?install[context]=backend';
+        if (!empty($request->getQueryParams()['install']['action'])) {
+            $subAction = !empty($request->getQueryParams()['install']['action'])
+                ? $request->getQueryParams()['install']['action']
+                : '';
+            $targetUrl .= '&install[controller]=tool&install[action]=' . $subAction;
+        }
 
         if ($enableFileService->checkInstallToolEnableFile()) {
             // Install tool is open and valid, redirect to it
-            $response = $response->withStatus(303)->withHeader('Location', 'install.php?install[context]=backend');
+            $response = $response
+                ->withStatus(303)
+                ->withHeader('Location', $targetUrl);
         } elseif ($request->getMethod() === 'POST' && $request->getParsedBody()['action'] === 'enableInstallTool') {
             // Request to open the install tool
             $installToolEnableToken = $request->getParsedBody()['installToolEnableToken'];
@@ -59,22 +68,29 @@ class BackendModuleController
                 throw new \RuntimeException('Given form token was not valid', 1369161225);
             }
             $enableFileService->createInstallToolEnableFile();
+
             // Install tool is open and valid, redirect to it
-            $response = $response->withStatus(303)->withHeader('Location', 'install.php?install[context]=backend');
+            $response = $response
+                ->withStatus(303)
+                ->withHeader('Location', $targetUrl);
         } else {
             // Show the "create enable install tool" button
-            /** @var StandaloneView $view */
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html')
-            );
             $token = $formProtection->generateToken('installTool');
+
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setTemplatePathAndFilename(
+                GeneralUtility::getFileAbsFileName(
+                    'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html'
+                )
+            );
             $view->assign('installToolEnableToken', $token);
-            /** @var ModuleTemplate $moduleTemplate */
+
             $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
             $moduleTemplate->setContent($view->render());
+
             $response->getBody()->write($moduleTemplate->renderContent());
         }
+
         return $response;
     }
 }

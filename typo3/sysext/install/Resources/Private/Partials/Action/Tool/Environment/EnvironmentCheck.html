@@ -1,0 +1,17 @@
+<p>
+A series of PHP settings and database checks.
+</p>
+<button
+	class="btn btn-default t3js-environmentCheck-execute"
+	type="button"
+>
+	Run tests again
+</button>
+<hr>
+
+<div class="t3js-environmentCheck-output"></div>
+<f:for each="{systemStatusBySeverity}" as="statusMessages">
+	<f:for each="{statusMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}"/>
+	</f:for>
+</f:for>

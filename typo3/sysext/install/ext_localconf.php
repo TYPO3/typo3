@@ -57,3 +57,19 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegac
     = \TYPO3\CMS\Install\Updates\Typo3DbExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['funcExtension']
     = \TYPO3\CMS\Install\Updates\FuncExtractionUpdate::class;
+
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$icons = [
+    'module-install-environment' => 'EXT:install/Resources/Public/Icons/module-install-environment.svg',
+    'module-install-maintenance' => 'EXT:install/Resources/Public/Icons/module-install-maintenance.svg',
+    'module-install-settings' => 'EXT:install/Resources/Public/Icons/module-install-settings.svg',
+    'module-install-upgrade' => 'EXT:install/Resources/Public/Icons/module-install-upgrade.svg',
+];
+
+foreach ($icons as $iconIdentifier => $source) {
+    $iconRegistry->registerIcon(
+        $iconIdentifier,
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => $source]
+    );
+}

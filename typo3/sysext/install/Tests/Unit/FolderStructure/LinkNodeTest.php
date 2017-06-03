@@ -215,6 +215,7 @@ class LinkNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->once())->method('isLink')->will($this->returnValue(true));
         $node->expects($this->once())->method('isTargetCorrect')->will($this->returnValue(true));
+        $node->expects($this->once())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
         $statusArray = $node->getStatus();
         /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
         $status = $statusArray[0];

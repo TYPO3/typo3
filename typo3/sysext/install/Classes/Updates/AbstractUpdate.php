@@ -14,11 +14,9 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
 
 /**
  * Generic class that every update wizard class inherits from.
@@ -41,26 +39,11 @@ abstract class AbstractUpdate
     protected $identifier;
 
     /**
-     * Parent object
-     *
-     * @var UpgradeWizard
-     */
-    public $pObj;
-
-    /**
      * User input, set from outside
      *
      * @var string
      */
     public $userInput;
-
-    /**
-     * Current TYPO3 version number, set from outside
-     * Version number coming from \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger()
-     *
-     * @var int
-     */
-    public $versionNumber;
 
     /**
      * Returns the title attribute
@@ -123,28 +106,12 @@ abstract class AbstractUpdate
     }
 
     /**
-     * Simple wrapper function that helps to check whether (if)
-     * this feature is cool if you want to tell the user that the update wizard
-     * is working fine, just as output (useful for the character set / utf8 wizard)
-     *
-     * @return bool If the wizard should render the Next() button on the overview page
-     * @see checkForUpdate()
-     */
-    public function shouldRenderNextButton()
-    {
-        $showUpdate = 0;
-        $explanation = '';
-        $result = $this->checkForUpdate($explanation, $showUpdate);
-        return $showUpdate != 2 || $result;
-    }
-
-    /**
      * Check if given table exists
      *
      * @param string $table
      * @return bool
      */
-    public function checkIfTableExists($table)
+    protected function checkIfTableExists($table)
     {
         $tableExists = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($table)
@@ -208,18 +175,6 @@ abstract class AbstractUpdate
     protected function isWizardDone()
     {
         $wizardClassName = get_class($this);
-        $done = GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $wizardClassName, false);
-
-        // Fall back in case the wizard for migration of "wizard done" flags to system registry was not run yet
-        if (!$done) {
-            try {
-                GeneralUtility::makeInstance(ConfigurationManager::class)
-                    ->getLocalConfigurationValueByPath('INSTALL/wizardDone/' . $wizardClassName);
-                $done = true;
-            } catch (\RuntimeException $e) {
-            }
-        }
-
-        return $done;
+        return GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $wizardClassName, false);
     }
 }

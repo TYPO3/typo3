@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -17,7 +18,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Verify checksum of a downloaded core
  */
-class CoreUpdateVerifyChecksum extends AbstractCoreUpdate
+class CoreUpdateVerifyChecksum extends CoreUpdateAbstract
 {
     /**
      * Executes the action
@@ -26,12 +27,10 @@ class CoreUpdateVerifyChecksum extends AbstractCoreUpdate
      */
     protected function executeAction()
     {
-        $this->view->assignMultiple(
-            [
-                'success' => $this->coreUpdateService->verifyFileChecksum($this->getVersionToHandle()),
-                'status' => $this->coreUpdateService->getMessages(),
-            ]
-        );
+        $this->view->assignMultiple([
+            'success' => $this->coreUpdateService->verifyFileChecksum($this->getVersionToHandle()),
+            'status' => $this->coreUpdateService->getMessages(),
+        ]);
         return $this->view->render();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -15,18 +16,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Check if a younger version is available
  */
-class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
+class CoreUpdateIsUpdateAvailable extends CoreUpdateAbstract
 {
     /**
      * Executes the action
      *
      * @return array Rendered content
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $status = [];
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
@@ -59,7 +61,6 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
         if (isset($action)) {
             $this->view->assign('action', $action);
         }
-
         return $this->view->render();
     }
 
@@ -67,15 +68,14 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
      * @param string $severity
      * @param string $title
      * @param string $message
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return StatusInterface
      */
-    protected function getMessage($severity, $title, $message = '')
+    protected function getMessage($severity, $title, $message = ''): StatusInterface
     {
-        /** @var $statusMessage \TYPO3\CMS\Install\Status\StatusInterface */
+        /** @var $statusMessage StatusInterface */
         $statusMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Status\\' . ucfirst($severity) . 'Status');
         $statusMessage->setTitle($title);
         $statusMessage->setMessage($message);
-
         return $statusMessage;
     }
 
@@ -84,7 +84,7 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate
      * @param string $action
      * @return array
      */
-    protected function getAction($title, $action)
+    protected function getAction($title, $action): array
     {
         return [
             'title' => $title,

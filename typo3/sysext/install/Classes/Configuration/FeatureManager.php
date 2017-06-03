@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Install\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
+use TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature;
+use TYPO3\CMS\Install\Configuration\Image\ImageFeature;
+use TYPO3\CMS\Install\Configuration\Mail\MailFeature;
 
 /**
  * Instantiate and configure all known features and presets
@@ -25,20 +29,20 @@ class FeatureManager
      * @var array List of feature class names
      */
     protected $featureRegistry = [
-        \TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
-        \TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
-        \TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
-        \TYPO3\CMS\Install\Configuration\Mail\MailFeature::class,
+        ContextFeature::class,
+        ImageFeature::class,
+        ExtbaseObjectCacheFeature::class,
+        MailFeature::class,
     ];
 
     /**
      * Get initialized list of features with possible presets
      *
      * @param array $postValues List of $POST values
-     * @return array<FeatureInterface>
+     * @return FeatureInterface[]
      * @throws Exception
      */
-    public function getInitializedFeatures(array $postValues)
+    public function getInitializedFeatures(array $postValues = [])
     {
         $features = [];
         foreach ($this->featureRegistry as $featureClass) {

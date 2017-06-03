@@ -39,8 +39,8 @@ class InstallModuleCest
         $I->waitForText('Web Content Management System');
         $I->switchToIFrame();
 
-        $I->see('Install');
-        $I->click('Install');
+        $I->see('Maintenance');
+        $I->click('Maintenance');
 
         // switch to content iframe
         $I->switchToIFrame('list_frame');
@@ -103,12 +103,9 @@ class InstallModuleCest
             $I->fillField('#t3-install-form-password', $this->password);
             $I->click('//button[@type="submit"]');
             $I->waitForElement('//body[@class="backend"]');
-            $I->see('Important actions');
-            $I->waitForElement('.t3js-list-group-wrapper');
-            $I->see('Logout from Install Tool');
-            // can't click the link text
-            $I->seeElement('//*[@id="menuWrapper"]/div/div/a');
-            $I->click('//*[@id="menuWrapper"]/div/div/a[text()="Logout from Install Tool"]');
+            $I->see('Lock Install Tool');
+
+            $I->click('Lock Install Tool');
             $I->see('The Install Tool is locked');
         }
     }

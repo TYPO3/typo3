@@ -1,0 +1,100 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+<div class="panel panel-default panel-flat">
+	<div class="panel-heading" role="tab" id="heading{sectionName}">
+		<h3 class="panel-title">
+			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{sectionName}"
+				aria-expanded="true" aria-controls="collapse{sectionName}" class="collapsed"
+			>
+				<span class="caret"></span>
+				<strong>
+					<i:object.arrayValueByKey array="{localConfigurationSectionNames}" key="{sectionName}"/>
+				</strong> [{sectionName}]
+			</a>
+		</h3>
+	</div>
+	<div id="collapse{sectionName}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{sectionName}">
+		<f:for each="{sectionData}" as="item">
+			<a id="{sectionName}-{item.key}"></a>
+			<div class="item">
+				<div class="item-heading">
+					<strong>[{sectionName}][{item.key}] </strong>
+					<f:if condition="{item.type} == 'checkbox'">
+						<f:then>
+							=
+							<f:if condition="{item.value}">
+								<f:then>true</f:then>
+								<f:else>false</f:else>
+							</f:if>
+						</f:then>
+						<f:else>
+							<f:if condition="{item.value}">
+								= {item.value -> f:format.crop(maxCharacters: 40, respectWordBoundaries:0, respectHtml:0)}
+							</f:if>
+						</f:else>
+					</f:if>
+				</div>
+				<div class="item-body">
+					<f:if condition="{item.type} == 'checkbox'">
+						<div class="checkbox">
+							<label>
+								<input
+									type="checkbox"
+									value="1"
+									class="t3js-localConfiguration-pathValue"
+									data-path="{sectionName}/{item.key}"
+									{f:if(condition: item.checked, then:'checked="checked"')}
+								/>
+								{item.description -> f:format.raw()}
+							</label>
+						</div>
+					</f:if>
+
+					<f:if condition="{item.type} == 'input'">
+						<div class="form-group">
+							<span class="help-block">{item.description -> f:format.raw()}</span>
+							<input
+								type="text"
+								value="{item.value}"
+								data-path="{sectionName}/{item.key}"
+								class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+							/>
+						</div>
+					</f:if>
+
+					<f:if condition="{item.type} == 'number'">
+						<div class="form-group">
+							<span class="help-block">{item.description -> f:format.raw()}</span>
+							<input
+								type="number"
+								value="{item.value}"
+								data-path="{sectionName}/{item.key}"
+								class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+							/>
+						</div>
+					</f:if>
+
+					<f:if condition="{item.type} == 'textarea'">
+						<span class="help-block">{item.description -> f:format.raw()}</span>
+						<div class="form-group">
+							<textarea
+								rows="5"
+								cols="60"
+								data-path="{sectionName}/{item.key}"
+								class="form-control t3js-localConfiguration-pathValue"
+							>{item.value}</textarea>
+						</div>
+					</f:if>
+
+					<f:if condition="{item.phpErrorCode}">
+						<div class="fieldNote">
+							Current PHP error code <strong>{item.value}</strong> represents:<br/>
+							<code>
+								<i:format.phpErrorCode phpErrorCode="{item.value}"/>
+							</code>
+						</div>
+					</f:if>
+				</div>
+			</div>
+		</f:for>
+	</div>
+</div>

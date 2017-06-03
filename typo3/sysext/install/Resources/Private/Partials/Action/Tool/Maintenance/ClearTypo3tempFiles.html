@@ -1,0 +1,33 @@
+	<h4>About</h4>
+	<p>
+		TYPO3 stores processed files and cached images in a dedicated directory.
+		This directory is likely to grow quickly.
+	</p>
+	<p>
+		With this action you can delete the files in this folder. Afterwards, you
+		should also clear the cache database tables.
+	</p>
+	<p>
+		The File Abstraction Layer additionally stores a database record for every file
+		it needs to process. (e.g. image thumbnails). In case you modified some graphics
+		settings (All Configuration [GFX]) and you need all processed files to get regenerated,
+		you can use this tool to remove the "_processed_" ones.
+	</p>
+
+
+<div id="t3js-clearTypo3temp-delete-token" style="display:none;">{clearTypo3tempFilesToken}</div>
+
+<f:for each="{clearTypo3tempFilesStats}" as="folderStats" iteration="iterator">
+	<div class="t3js-clearTypo3temp-container t3js-clearTypo3temp-container-{folderStats.directory}">
+		<div class="t3js-clearTypo3temp-output"></div>
+		<button
+			class="btn btn-default t3js-clearTypo3temp-delete" data-folder="{folderStats.directory}"
+			type="button"
+		>
+			Delete {folderStats.numberOfFiles} in typo3temp/assets/{folderStats.directory}
+		</button>
+		<f:if condition="!{iterator.isLast}">
+			<hr />
+		</f:if>
+	</div>
+</f:for>

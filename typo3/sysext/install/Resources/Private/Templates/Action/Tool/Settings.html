@@ -1,0 +1,63 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<div>
+		<h1>Settings</h1>
+	</div>
+
+	<f:alias map="{actions: {
+		0: {partial: 'Action/Tool/Settings/ChangeInstallToolPassword',
+			require: 'TYPO3/CMS/Install/ChangeInstallToolPassword',
+			baseClass: 't3js-changeInstallToolPassword',
+			title: 'Change install tool password',
+			category: 'Access',
+			description: 'Set a new install tool password.'
+		},
+		1: {partial: 'Action/Tool/Settings/LocalConfiguration',
+			require: 'TYPO3/CMS/Install/LocalConfiguration',
+			baseClass: 't3js-localConfiguration',
+			title: 'Configure Global Settings',
+			category: 'LocalConfiguration',
+			description: 'Modify LocalConfiguration.php settings.'
+		},
+		2: {partial: 'Action/Tool/Settings/Presets',
+			require: 'TYPO3/CMS/Install/Presets',
+			baseClass: 't3js-presets',
+			title: 'Configure Presets',
+			category: 'LocalConfiguration',
+			description: 'Detect and select default LocalConfiguration.php settings.'
+		}
+	}}">
+		<div class="gridder">
+			<f:for each="{actions}" as="card" iteration="iterator">
+				<div
+					class="gridder-list {card.baseClass}-open {f:if(condition: '{card.require}', then: 't3js-require')}"
+					{f:if(condition: '{card.require}', then: 'data-require="{card.require}"')}
+				>
+					<div class="gridder-item">
+						<h3>
+							{card.title} <span class="label label-warning {card.baseClass}-badge" style="display:none"></span>
+							<br>
+							<small class="text-muted">{card.category}</small>
+							<br>
+						</h3>
+						<p>{card.description}</p>
+					</div>
+				</div>
+				<div class="gridder-content {f:if(condition: '{card.baseClass}', then: '{card.baseClass}')}">
+					<div class="gridder-padding">
+						<div class="gridder-title clearfix">
+							<h3 class="pull-left">{card.title}</h3>
+						</div>
+						<f:render partial="{card.partial}" arguments="{_all}" />
+					</div>
+				</div>
+			</f:for>
+		</div>
+	</f:alias>
+</f:section>
+
+
+

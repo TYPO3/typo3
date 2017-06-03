@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -16,10 +17,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\NoticeStatus;
 use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\View\JsonView;
+use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Ajax wrapper for dumping autoload.
@@ -27,47 +27,36 @@ use TYPO3\CMS\Install\View\JsonView;
 class DumpAutoload extends AbstractAjaxAction
 {
     /**
-     * @var \TYPO3\CMS\Install\View\JsonView
-     */
-    protected $view;
-
-    /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
-    /**
      * Executes the action
      *
      * @return array Rendered content
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
-        if (Bootstrap::usesComposerClassLoading()) {
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
-            $message->setTitle('Skipped generating additional class loading information in composer mode.');
-        } else {
-            ClassLoadingInformation::dumpClassLoadingInformation();
-            $message = GeneralUtility::makeInstance(OkStatus::class);
-            $message->setTitle('Successfully dumped class loading information for extensions.');
-        }
+        $statusMessages[] = $this->dumpAutoload();
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => [ $message ],
+            'status' => $statusMessages,
         ]);
         return $this->view->render();
+    }
+
+    /**
+     * Dumps Extension Autoload Information
+     *
+     * @return StatusInterface
+     */
+    protected function dumpAutoload(): StatusInterface
+    {
+        if (Bootstrap::usesComposerClassLoading()) {
+            $message = new NoticeStatus();
+            $message->setTitle('Skipped generating additional class loading information in composer mode.');
+        } else {
+            ClassLoadingInformation::dumpClassLoadingInformation();
+            $message = new OkStatus();
+            $message->setTitle('Successfully dumped class loading information for extensions.');
+        }
+        return $message;
     }
 }

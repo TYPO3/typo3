@@ -1,0 +1,26 @@
+<p>
+	Similar to the clear cache function found in TYPO3’s backend.
+	This utility directly clears all system caches including opcode cache.
+</p>
+<p>
+	A fatal error will be thrown if a broken extension is detected.
+	If this occurs, use the extension tester utility.
+</p>
+
+<ul>
+	<f:for each="{clearAllCacheOpcodeCaches}" as="opcodeCache" key="opcodeCacheName">
+		<li>{opcodeCacheName} ({opcodeCache.version}) -
+			<f:if condition="{opcodeCache.canReset}">
+				<f:then>reset is supported</f:then>
+				<f:else>reset is not supported</f:else>
+			</f:if>
+		</li>
+	</f:for>
+</ul>
+<div class="t3js-clearAllCache-output"></div>
+<button
+	class="btn btn-default t3js-clearAllCache-clear"
+	type="button"
+>
+	Clear all caches including PHP opcode cache
+</button>

@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\View\JsonView;
 
 /**
  * Return a list of files of an extension
@@ -26,34 +25,12 @@ use TYPO3\CMS\Install\View\JsonView;
 class ExtensionScannerFiles extends AbstractAjaxAction
 {
     /**
-     * @var JsonView
-     */
-    protected $view;
-
-    /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
-    /**
      * Get list of files of an extension for extension scanner
      *
-     * @return string
+     * @return array
      * @throws \RuntimeException
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         // Get and validate path
         $extension = $this->postValues['extension'];

@@ -1,0 +1,62 @@
+<p>
+	Automatically updates the TYPO3 CMS core to its latest minor release if these criterias are met:
+</p>
+<ul>
+	<li>
+		It only works under Unix and MacOS (needs symlink support).
+	</li>
+	<li>
+		typo3_src must be a symlink.
+	</li>
+	<li>
+		Symlink needs to be writable (and deletable) by the web
+		server user.
+	</li>
+	<li>
+		Document root needs to be writable.
+	</li>
+	<li>
+		One path above document root (../) needs to be writable (new directories need to be allowed to be created).
+	</li>
+	<li>
+		The tar command must be available for extracting the Source package.
+	</li>
+</ul>
+
+<div class="t3js-coreUpdate-output">
+	<f:if condition="!{coreUpdateComposerMode} && {coreUpdateEnabled} && {coreUpdateIsReleasedVersion} && {coreUpdateIsSymLinkedCore}">
+		<f:then>
+			<div class="t3js-coreUpdate-buttonTemplate">
+				<button class="btn btn-default t3js-coreUpdate-init" type="submit" name="coreUpdateCheckForUpdate"
+					data-action="checkForUpdate"
+				>
+					Check for core updates
+				</button>
+			</div>
+		</f:then>
+		<f:else>
+			<div class="typo3-message alert alert-notice">
+				<div class="header-container">
+					<div class="message-header">
+						<strong>Disabled</strong>
+					</div>
+				</div>
+				<div class="message-body">
+					This feature is disabled in this installation.<br/>
+					<f:if condition="{coreUpdateComposerMode}">
+						Composer Mode is active. Please update using composer commands.
+					</f:if>
+					<f:if condition="!{coreUpdateEnabled}">
+						The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.
+					</f:if>
+					<f:if condition="!{coreUpdateIsReleasedVersion}">
+						This system isn't a released TYPO3 version.
+					</f:if>
+					<f:if condition="!{coreUpdateIsSymLinkedCore}">
+						This action can only be used with a linked typo3_src.
+					</f:if>
+				</div>
+			</div>
+		</f:else>
+	</f:if>
+</div>

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Status;
 
 /*
@@ -23,11 +24,11 @@ class StatusUtility
     /**
      * Order status objects by severity
      *
-     * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects Status objects in random order
+     * @param StatusInterface[] $statusObjects Status objects in random order
      * @return array With sub arrays by severity
      * @throws Exception
      */
-    public function sortBySeverity(array $statusObjects = [])
+    public function sortBySeverity(array $statusObjects = []): array
     {
         $orderedStatus = [
             'alert' => $this->filterBySeverity($statusObjects, 'alert'),
@@ -43,15 +44,14 @@ class StatusUtility
     /**
      * Filter a list of status objects by severity
      *
-     * @param array $statusObjects Given list of status objects
+     * @param StatusInterface[] $statusObjects Given list of status objects
      * @param string $severity Severity identifier
      * @throws Exception
      * @return array List of status objects with given severity
      */
-    public function filterBySeverity(array $statusObjects = [], $severity = 'ok')
+    public function filterBySeverity(array $statusObjects = [], $severity = 'ok'): array
     {
         $filteredObjects = [];
-        /** @var $status StatusInterface */
         foreach ($statusObjects as $status) {
             if (!$status instanceof StatusInterface) {
                 throw new Exception(

@@ -1,0 +1,55 @@
+<p>
+	You should use this function only if there are no admin users in the database, for instance if this is a blank database.
+	After you've created the user, log in and add the rest of the user information, like email and real name.
+</p>
+
+<div style="display:none;">
+	<div id="t3js-createAdmin-token">{createAdminToken}</div>
+</div>
+
+
+
+<div class="form-horizontal">
+	<div class="form-group">
+		<label for="t3-install-admin-username" class="col-sm-3 control-label">Username:</label>
+		<div class="col-sm-9">
+			<input
+				id="t3-install-admin-username"
+				class="t3-install-form-input-text t3js-createAdmin-user form-control"
+				type="text"
+				autocomplete="off"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="t3-install-admin-password" class="col-sm-3 control-label">Password:</label>
+		<div class="col-sm-9">
+			<input
+				id="t3-install-admin-password"
+				class="t3-install-form-input-text t3-install-form-password-strength t3js-createAdmin-password form-control"
+				type="password"
+				autocomplete="off"
+			/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="t3-install-admin-password-repeat" class="col-sm-3 control-label">Repeat password:</label>
+		<div class="col-sm-9">
+			<input
+				id="t3-install-admin-password-repeat"
+				class="t3-install-form-input-text t3js-createAdmin-password-check form-control"
+				type="password"
+				autocomplete="off"
+			/>
+		</div>
+	</div>
+</div>
+
+<div class="t3js-createAdmin-output"></div>
+
+<button
+	class="btn btn-default t3js-createAdmin-create"
+	type="button"
+>
+	Create administrator user
+</button>

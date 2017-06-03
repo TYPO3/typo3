@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException;
 
 /**

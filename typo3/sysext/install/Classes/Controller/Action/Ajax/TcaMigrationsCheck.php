@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -18,8 +19,6 @@ use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Install\Status\NoticeStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
-use TYPO3\CMS\Install\View\JsonView;
 
 /**
  * Checks whether the current TCA needs migrations and displays applied migrations.
@@ -27,40 +26,17 @@ use TYPO3\CMS\Install\View\JsonView;
 class TcaMigrationsCheck extends AbstractAjaxAction
 {
     /**
-     * @var \TYPO3\CMS\Install\View\JsonView
-     */
-    protected $view;
-
-    /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
-    /**
      * Load all TCA Migrations and return if there are any todos
      *
      * @return array TCA status messages
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $statusMessages = [];
         $tcaMessages = $this->checkTcaMigrations();
 
         foreach ($tcaMessages as $tcaMessage) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
+            $message = new NoticeStatus();
             $message->setMessage($tcaMessage);
             $statusMessages[] = $message;
         }
@@ -77,7 +53,7 @@ class TcaMigrationsCheck extends AbstractAjaxAction
      *
      * @return array The TCA migration messages
      */
-    protected function checkTcaMigrations()
+    protected function checkTcaMigrations(): array
     {
         GeneralUtility::makeInstance(LoadTcaService::class)->loadExtensionTablesWithoutMigration();
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);

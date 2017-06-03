@@ -1,55 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-	<head>
-		<title>Install tool on site {siteName}</title>
-		<f:render partial="Action/Common/Headers" arguments="{_all}" />
-	</head>
-	<body class="{context}">
-	<div class="container">
-		<f:if condition="{contextService.backendContext}">
-			<f:then>
-				<div id="typo3-docheader">
-					<div class="typo3-docheader-functions"></div>
-					<div class="typo3-docheader-buttons"></div>
-				</div>
-			</f:then>
-			<f:else>
-				<div class="row">
-					<div class="col-sm-12">
-						<f:render partial="Action/Common/Head" arguments="{_all}" />
+<head>
+	<title>Install tool on site {siteName}</title>
+	<f:render partial="Action/Common/Headers" arguments="{_all}" />
+</head>
+<body class="{context}">
+<f:if condition="{contextService.backendContext}">
+	<f:then>
+		<div class="module" data-module-id="" data-module-name="">
+			<div class="module-docheader t3js-module-docheader" style="height: auto;">
+				<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row" style="height: auto;">
+					<div class="module-docheader-bar-column-left col-xs-12 col-sm-4 col-md-3">
+						<div class="form-inline row"></div>
+					</div>
+					<div class="module-docheader-bar-column-right col-xs-12 col-sm-8 col-md-9 text-right">
+						<div class="btn-toolbar" role="toolbar" aria-label="">
+							<div class="gridder-navigation btn-group pull-right">
+								<a href="#" class="gridder-nav-prev btn btn-default btn-sm">
+									<core:icon identifier="actions-move-left" alternativeMarkupIdentifier="inline" />
+								</a>
+								<a href="#" class="gridder-nav-next btn btn-default btn-sm">
+									<core:icon identifier="actions-move-right" alternativeMarkupIdentifier="inline" />
+								</a>
+								<a href="#" class="gridder-close btn btn-default btn-sm">
+									<core:icon identifier="actions-close" alternativeMarkupIdentifier="inline" />
+								</a>
+							</div>
+							<a href="{i:uri.action(action: 'logout')}" class="btn btn-default btn-sm pull-right">
+								<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-logout" data-identifier="actions-logout">
+									<span class="icon-markup">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
+									</span>
+								</span>
+								Lock Install Tool
+							</a>
+						</div>
+					</div>
+					<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons" style="height: auto;">
+						<div class="module-docheader-bar-column-left">
+							<div class="btn-toolbar" role="toolbar" aria-label=""></div>
+						</div>
+						<div class="module-docheader-bar-column-right"></div>
 					</div>
 				</div>
-			</f:else>
-		</f:if>
-		<div class="row">
-			<div class="col-sm-12">
-				<div id="install-menu-button" class="hidden-md hidden-lg">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mobileMenuWrapper">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-				</div>
 			</div>
-		</div>
-		<div class="row hidden-md hidden-lg">
-			<div class="col-sm-12">
-				<div id="mobileMenuWrapper" class="collapse">
-					<f:render partial="Action/Common/Left" arguments="{_all}" />
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 leftNavigation hidden-xs hidden-sm">
-				<div id="menuWrapper" data-spy="affix" data-offset-top="60" data-offset-bottom="190">
-					<f:render partial="Action/Common/Left" arguments="{_all}" />
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-9 content-area">
+			<div class="module-body t3js-module-body" style="padding-top: 89px;">
 				<f:render section="Content" />
 			</div>
 		</div>
-	</div>
-	</body>
+	</f:then>
+	<f:else>
+		<div class="scaffold t3js-scaffold scaffold-modulemenu-expanded">
+			<f:render partial="Action/Common/Topbar" arguments="{_all}" />
+			<div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+				<f:render partial="Action/Common/ModuleMenu" arguments="{_all}" />
+			</div>
+			<div class="scaffold-content t3js-scaffold-content" style="padding-top:25px; overflow: auto;">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12 content-area">
+							<f:render section="Content" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</f:else>
+</f:if>
+</body>
 </html>

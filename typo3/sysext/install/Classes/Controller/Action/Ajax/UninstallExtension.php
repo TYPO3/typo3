@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -16,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Status\ErrorStatus;
 
 /**
  * Uninstall Extensions
@@ -33,9 +35,9 @@ class UninstallExtension extends AbstractAjaxAction
      * Uninstall one or multiple extensions
      * Extension keys are read from get vars, more than one extension has to be comma separated
      *
-     * @return string "OK" on success, the error message otherwise
+     * @return array
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $getVars = GeneralUtility::_GET('install');
         if (isset($getVars['uninstallExtension']) && isset($getVars['uninstallExtension']['extensions'])) {
@@ -45,11 +47,18 @@ class UninstallExtension extends AbstractAjaxAction
                     try {
                         ExtensionManagementUtility::unloadExtension($extension);
                     } catch (\Exception $e) {
-                        return $e->getMessage();
+                        $message = new ErrorStatus();
+                        $message->setMessage($e->getMessage());
+                        return [
+                            'success' => true,
+                            'status' => [ $message ],
+                        ];
                     }
                 }
             }
         }
-        return 'OK';
+        return [
+            'success' => true,
+        ];
     }
 }

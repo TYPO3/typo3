@@ -17,11 +17,13 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller\Action\Ajax;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class ExtensionCompatibilityTesterTest extends UnitTestCase
 {
     /**
      * @var \TYPO3\CMS\Core\Package\UnitTestPackageManager A backup of unit test package manager
@@ -57,7 +59,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
             'news' => '',
             'info' => ''
         ];
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['getExtensionsToExclude'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['getExtensionsToExclude'], []);
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToExclude')->will($this->returnValue(['info']));
         $result = $extensionCompatibilityTesterMock->_call('getExtensionsToLoad');
         $this->assertEquals(['news' => ''], $result);
@@ -68,10 +70,10 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function executeActionReturnsStringOkIfAllIsWell()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['getExtensionsToLoad', 'tryToLoadExtLocalconfAndExtTablesOfExtensions', 'deleteProtocolFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['getExtensionsToLoad', 'tryToLoadExtLocalconfAndExtTablesOfExtensions', 'deleteProtocolFile'], []);
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToLoad')->will($this->returnValue([]));
         $result = $extensionCompatibilityTesterMock->_call('executeAction');
-        $this->assertEquals('OK', $result);
+        $this->assertEquals(['success' => true], $result);
     }
 
     /**
@@ -79,7 +81,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function executeActionCallsGetExtensionsToLoad()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['getExtensionsToLoad', 'deleteProtocolFile', 'tryToLoadExtLocalconfAndExtTablesOfExtensions'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['getExtensionsToLoad', 'deleteProtocolFile', 'tryToLoadExtLocalconfAndExtTablesOfExtensions'], []);
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToLoad')->will($this->returnValue([]));
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToLoad');
         $extensionCompatibilityTesterMock->_call('executeAction');
@@ -90,7 +92,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function executeActionCallsLoadExtensions()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['tryToLoadExtLocalconfAndExtTablesOfExtensions', 'getExtensionsToLoad', 'deleteProtocolFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['tryToLoadExtLocalconfAndExtTablesOfExtensions', 'getExtensionsToLoad', 'deleteProtocolFile'], []);
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToLoad')->will($this->returnValue([]));
         $extensionCompatibilityTesterMock->expects($this->once())->method('tryToLoadExtLocalconfAndExtTablesOfExtensions');
         $extensionCompatibilityTesterMock->_call('executeAction');
@@ -101,7 +103,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function executeActionCallsDeleteProtocolFileIfForceCheckIsSet()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['tryToLoadExtLocalconfAndExtTablesOfExtensions', 'getExtensionsToLoad', 'deleteProtocolFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['tryToLoadExtLocalconfAndExtTablesOfExtensions', 'getExtensionsToLoad', 'deleteProtocolFile'], []);
         $extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToLoad')->will($this->returnValue([]));
         $_GET['install']['extensionCompatibilityTester']['forceCheck'] = 1;
         $extensionCompatibilityTesterMock->expects($this->once())->method('deleteProtocolFile');
@@ -114,7 +116,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function deleteProtocolFileDeletesFile()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['dummy'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['dummy'], []);
         GeneralUtility::writeFile(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt', 'foobar');
         $extensionCompatibilityTesterMock->_call('deleteProtocolFile');
         $this->assertFalse(file_exists(PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt'));
@@ -138,7 +140,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
                 'ext_tables.php' => PATH_typo3 . 'sysext/install/Tests/Unit/Controller/Action/Ajax/Fixtures/demo1/ext_tables.php'
             ]
         ];
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
         $extensionCompatibilityTesterMock->expects($this->atLeastOnce())->method('loadExtTablesForExtension');
         $extensionCompatibilityTesterMock->_call('tryToLoadExtLocalconfAndExtTablesOfExtensions', $extension);
     }
@@ -161,7 +163,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
                 'ext_localconf.php' => PATH_typo3 . 'sysext/install/Tests/Unit/Controller/Action/Ajax/Fixtures/demo1/ext_localconf.php'
             ]
         ];
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
         $extensionCompatibilityTesterMock->expects($this->atLeastOnce())->method('loadExtLocalconfForExtension');
         $extensionCompatibilityTesterMock->_call('tryToLoadExtLocalconfAndExtTablesOfExtensions', $extension);
     }
@@ -177,7 +179,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
                 'ext_localconf.php' => PATH_typo3 . 'sysext/install/Tests/Unit/Controller/Action/Ajax/Fixtures/demo1/ext_localconf.php'
             ]
         ];
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['dummy'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['dummy'], []);
         $extensionCompatibilityTesterMock->_call('loadExtLocalconfForExtension', 'demo1', $extension['demo1']);
         $this->assertArrayHasKey('demo1_executed', $GLOBALS);
         $this->assertEquals('foobaz', $GLOBALS['demo1_executed']);
@@ -202,7 +204,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
                 'ext_tables.php' => PATH_typo3 . 'sysext/install/Tests/Unit/Controller/Action/Ajax/Fixtures/demo1/ext_tables.php'
             ]
         ];
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['loadExtLocalconfForExtension', 'writeCurrentExtensionToFile', 'loadExtTablesForExtension', 'removeCurrentExtensionFromFile'], []);
         $extensionCompatibilityTesterMock->expects($this->atLeastOnce())->method('writeCurrentExtensionToFile')->with('demo1');
         $extensionCompatibilityTesterMock->_call('tryToLoadExtLocalconfAndExtTablesOfExtensions', $extension);
     }
@@ -212,7 +214,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function writeCurrentExtensionToFileWritesExtensionKeyToFile()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['dummy'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['dummy'], []);
         $extensionCompatibilityTesterMock->_call('writeCurrentExtensionToFile', 'demo1');
         $fileContent = file_get_contents($extensionCompatibilityTesterMock->_get('protocolFile'));
         $this->assertEquals('demo1', $fileContent);
@@ -223,7 +225,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function getExtensionsToExcludeReturnsArray()
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['dummy'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['dummy'], []);
         $returnValue = $extensionCompatibilityTesterMock->_call('getExtensionsToExclude');
         $this->assertInternalType('array', $returnValue);
     }
@@ -260,7 +262,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\TestingFramework\Core\Unit
      */
     public function removeCurrentExtensionFromFileRemovesGivenExtension($extensionToRemove, $extensions, $expectedExtensions)
     {
-        $extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, ['dummy'], []);
+        $extensionCompatibilityTesterMock = $this->getAccessibleMock(ExtensionCompatibilityTester::class, ['dummy'], []);
         GeneralUtility::writeFile($extensionCompatibilityTesterMock->_get('protocolFile'), $extensions);
         $extensionCompatibilityTesterMock->_call('removeCurrentExtensionFromFile', $extensionToRemove);
 

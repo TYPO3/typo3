@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -20,34 +19,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status\OkStatus;
 use TYPO3\CMS\Install\Status\StatusInterface;
-use TYPO3\CMS\Install\View\JsonView;
 
 /**
- * ResetBackendUserUc
- *
- * This is an ajax wrapper for Reset backend user preferences
+ * Ajax wrapper to reset backend user preferences
  */
 class ResetBackendUserUc extends AbstractAjaxAction
 {
-
-    /**
-     * @param JsonView $view
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
     /**
      * Executes the action
      *
@@ -78,8 +55,7 @@ class ResetBackendUserUc extends AbstractAjaxAction
             ->update('be_users')
             ->set('uc', '')
             ->execute();
-        /** @var OkStatus $message */
-        $message = GeneralUtility::makeInstance(OkStatus::class);
+        $message = new OkStatus();
         $message->setTitle('Reset all backend users preferences');
         return $message;
     }

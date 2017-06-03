@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -16,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\View\JsonView;
 
 /**
  * Load Extensions
@@ -51,9 +53,12 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
     /**
      * Construct this class
      * set default protocol file location
+     *
+     * @param JsonView $view
      */
-    public function __construct()
+    public function __construct(JsonView $view = null)
     {
+        parent::__construct($view);
         $this->protocolFile = PATH_site . 'typo3temp/assets/ExtensionCompatibilityTester.txt';
         $this->errorProtocolFile = PATH_site . 'typo3temp/assets/ExtensionCompatibilityTesterErrors.json';
     }
@@ -63,9 +68,9 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * setting up the checks (deleting protocol), and returning
      * OK if process run through without errors
      *
-     * @return string "OK" if process ran through without errors
+     * @return array
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         register_shutdown_function([$this, 'logError']);
         $getVars = GeneralUtility::_GET('install');
@@ -73,7 +78,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
             $this->deleteProtocolFile();
         }
         $this->tryToLoadExtLocalconfAndExtTablesOfExtensions($this->getExtensionsToLoad());
-        return 'OK';
+        return ['success' => true];
     }
 
     /**
@@ -96,7 +101,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      *
      * @return array
      */
-    protected function getExtensionsToLoad()
+    protected function getExtensionsToLoad(): array
     {
         $extensionsToLoad = [];
         $extensionsToExclude = $this->getExtensionsToExclude();
@@ -115,7 +120,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      *
      * @return array
      */
-    protected function getExtensionsToExclude()
+    protected function getExtensionsToExclude(): array
     {
         if (is_file($this->protocolFile)) {
             $exclude = (string)file_get_contents($this->protocolFile);
@@ -152,7 +157,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * the original bootstrap method.
      *
      * @param string $extensionKey
-     * @param \ArrayAccess $extension
+     * @param array $extension
      */
     protected function loadExtTablesForExtension($extensionKey, array $extension)
     {
@@ -177,7 +182,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      * the original bootstrap method.
      *
      * @param string $extensionKey
-     * @param \ArrayAccess $extension
+     * @param array $extension
      */
     protected function loadExtLocalconfForExtension($extensionKey, array $extension)
     {

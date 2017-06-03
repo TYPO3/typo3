@@ -109,7 +109,20 @@ $callout-notice-border: $state-notice-border;
 }
 
 //
-// Variants
+// Size Variants
+//
+.callout-sm {
+    margin: 10px 0;
+    padding: $callout-padding/2;
+
+    .callout-title {
+        font-size: 1em;
+        margin: 0;
+    }
+}
+
+//
+// Color Variants
 //
 @mixin callout-variant($background, $border, $text-color, $icon-color) {
     background-color: $background;

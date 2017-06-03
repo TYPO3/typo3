@@ -39,18 +39,12 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyProtectedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyPublicMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\MatcherFactory;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
-use TYPO3\CMS\Install\View\JsonView;
 
 /**
  * Scan a single extension file for breaking / deprecated core code usages
  */
 class ExtensionScannerScanFile extends AbstractAjaxAction
 {
-    /**
-     * @var JsonView
-     */
-    protected $view;
-
     /**
      * @var array Node visitors that implement CodeScannerInterface
      */
@@ -110,29 +104,12 @@ class ExtensionScannerScanFile extends AbstractAjaxAction
     ];
 
     /**
-     * @param JsonView $view
-     */
-    public function __construct(JsonView $view = null)
-    {
-        $this->view = $view ?: GeneralUtility::makeInstance(JsonView::class);
-    }
-
-    /**
-     * Initialize the handle action, sets up fluid stuff and assigns default variables.
-     * @ToDo Refactor View Initialization for all Ajax Controllers
-     */
-    protected function initializeHandle()
-    {
-        // empty on purpose because AbstractAjaxAction still overwrites $this->view with StandaloneView
-    }
-
-    /**
      * Find code violations in a single file
      *
-     * @return string
+     * @return array
      * @throws \RuntimeException
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         // Get and validate path and file
         $extension = $this->postValues['extension'];

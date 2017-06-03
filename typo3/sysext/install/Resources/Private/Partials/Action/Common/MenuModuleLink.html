@@ -1,0 +1,14 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<li class="modulemenu-item t3js-mainmodule {f:if(condition:'{action} == {action_name}', then:' active')}">
+    <a class="modulemenu-item-link" href="{i:uri.action(action: action_name)}">
+      <span class="modulemenu-icon modulemenu-item-icon">
+        <span class="t3js-icon icon icon-size-default icon-state-default icon-module-system_extinstall" data-identifier="module-system_extinstall">
+            <span class="icon-markup">
+                <img src="{f:uri.resource(path: 'Icons/module-install-{action_name}.svg')}" width="32" height="32">
+            </span>
+        </span>
+    </span>
+		<span class="modulemenu-item-title">{label}</span>
+	</a>
+</li>

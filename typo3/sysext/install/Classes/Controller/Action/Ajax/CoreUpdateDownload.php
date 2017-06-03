@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -17,19 +18,19 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Download latest core version
  */
-class CoreUpdateDownload extends AbstractCoreUpdate
+class CoreUpdateDownload extends CoreUpdateAbstract
 {
     /**
      * Executes the action
      *
      * @return array Rendered content
      */
-    protected function executeAction()
+    protected function executeAction(): array
     {
         $this->view->assignMultiple([
-                'success' => $this->coreUpdateService->downloadVersion($this->getVersionToHandle()),
-                'status' => $this->coreUpdateService->getMessages(),
-            ]);
+            'success' => $this->coreUpdateService->downloadVersion($this->getVersionToHandle()),
+            'status' => $this->coreUpdateService->getMessages(),
+        ]);
         return $this->view->render();
     }
 }

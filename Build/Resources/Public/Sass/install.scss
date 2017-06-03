@@ -3,11 +3,11 @@
 // =========
 // Contains all needed styles for the TYPO3 Intall Tool.
 //
-
 //
 // Load global Variables
 //
 @import "variables/main";
+
 $grid-float-breakpoint: $screen-md-min;
 
 //
@@ -19,6 +19,18 @@ $grid-float-breakpoint: $screen-md-min;
 // Include chosen CSS file
 //
 @import "libs/chosen";
+@import "libs/gridder";
+@import "component/card";
+
+//
+// Include elements
+//
+
+@import "typo3/element_docheader";
+
+body.backend .module {
+    background: $gray-lighter;
+}
 
 .content-area {
     padding-bottom: 35px;
@@ -298,15 +310,15 @@ a[data-toggle="collapse"] {
     text-decoration: none;
 }
 
-.panel-group-rst,
-.panel-group-flat {
+.panel-group-flat,
+.panel-group-rst {
     .panel-body {
         padding-right: 0;
     }
 }
 
-.panel-rst,
 .panel-flat,
+.panel-rst,
 .panel-version {
     border: 0;
     border-left: 2px solid $gray-light;

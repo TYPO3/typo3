@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
 /**
  * Test case
  */
-class CoreUpdateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class CoreUpdateServiceTest extends UnitTestCase
 {
     /**
      * @test

@@ -29,18 +29,10 @@ class ToolController extends AbstractController
      * @var array List of valid action names that need authentication
      */
     protected $authenticationActions = [
-        'importantActions',
-        'systemEnvironment',
-        'configuration',
-        'folderStructure',
-        'testSetup',
-        'upgradeWizard',
-        'upgradeAnalysis',
-        'extensionScanner',
-        'allConfiguration',
-        'cleanUp',
-        'loadExtensions',
-        'about',
+        'environment',
+        'maintenance',
+        'settings',
+        'upgrade',
     ];
 
     /**
@@ -118,6 +110,7 @@ class ToolController extends AbstractController
                     // Add error to display a message what triggered the check
                     $errorEncoded = json_encode($error);
                     $parameters[] = 'install[lastError]=' . rawurlencode($errorEncoded);
+
                     // We do not use GeneralUtility here to be sure that hash generation works even if that class might not exist any more.
                     $parameters[] = 'install[lastErrorHash]=' . hash_hmac('sha1', $errorEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'InstallToolError');
 
@@ -168,7 +161,7 @@ class ToolController extends AbstractController
     {
         $action = $this->getAction();
         if ($action === '') {
-            $action = 'importantActions';
+            $action = 'maintenance';
         }
         $this->validateAuthenticationAction($action);
         $actionClass = ucfirst($action);

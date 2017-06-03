@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
+use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
  * Test case

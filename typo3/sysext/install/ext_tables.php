@@ -12,16 +12,75 @@ if (TYPO3_MODE === 'BE') {
     }
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-        'system',
-        'extinstall',
+        'tools',
+        'toolsmaintenance',
         '',
         '',
         [
             'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
+            'routeParameters' => [
+                'install' => [
+                    'action' => 'maintenance'
+                ]
+            ],
             'access' => 'admin',
-            'name' => 'system_extinstall',
-            'icon' => 'EXT:install/Resources/Public/Icons/module-install.svg',
-            'labels' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf'
+            'name' => 'tools_toolsmaintenance',
+            'iconIdentifier' => 'module-install-maintenance',
+            'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf'
+        ]
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'tools',
+        'toolssettings',
+        '',
+        '',
+        [
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
+            'routeParameters' => [
+                'install' => [
+                    'action' => 'settings'
+                ]
+            ],
+            'access' => 'admin',
+            'name' => 'tools_toolssettings',
+            'iconIdentifier' => 'module-install-settings',
+            'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf'
+        ]
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'tools',
+        'toolsupgrade',
+        '',
+        '',
+        [
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
+            'routeParameters' => [
+                'install' => [
+                    'action' => 'upgrade'
+                ]
+            ],
+            'access' => 'admin',
+            'name' => 'tools_toolsupgrade',
+            'iconIdentifier' => 'module-install-upgrade',
+            'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf'
+        ]
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'tools',
+        'toolsenvironment',
+        '',
+        '',
+        [
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
+            'routeParameters' => [
+                'install' => [
+                    'action' => 'environment'
+                ]
+            ],
+            'access' => 'admin',
+            'name' => 'tools_toolsenvironment',
+            'iconIdentifier' => 'module-install-environment',
+            'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf'
         ]
     );
 }

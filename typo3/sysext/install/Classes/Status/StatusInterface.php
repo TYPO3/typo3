@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Status;
 
 /*
@@ -17,40 +18,47 @@ namespace TYPO3\CMS\Install\Status;
 /**
  * Status interface
  */
-interface StatusInterface
+interface StatusInterface extends \JsonSerializable
 {
     /**
      * Get severity
      *
      * @return string The severity
      */
-    public function getSeverity();
+    public function getSeverity(): string;
+
+    /**
+     * Get severity as integer
+     *
+     * @return int The severity as int
+     */
+    public function getSeverityNumber(): int;
 
     /**
      * Get title
      *
      * @return string The title
      */
-    public function getTitle();
+    public function getTitle(): string;
 
     /**
      * Set title
      *
      * @param string $title The title
      */
-    public function setTitle($title);
+    public function setTitle(string $title);
 
     /**
      * Get status message
      *
      * @return string Status message
      */
-    public function getMessage();
+    public function getMessage(): string;
 
     /**
      * Set status message
      *
      * @param string $message Status message
      */
-    public function setMessage($message);
+    public function setMessage(string $message);
 }

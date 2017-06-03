@@ -1,0 +1,81 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<div>
+		<h1>Environment</h1>
+	</div>
+
+	<f:alias map="{actions: {
+		0: {partial: 'Action/Tool/Environment/SystemInformation',
+			require: '',
+			baseClass: 't3js-system',
+			title: 'Main System Information',
+			category: 'environment',
+			description: 'Gives a short overview of your system environment.'
+		},
+		1: {partial: 'Action/Tool/Environment/EnvironmentCheck',
+			require: 'TYPO3/CMS/Install/EnvironmentCheck',
+			baseClass: 't3js-environmentCheck',
+			title: 'Environment check',
+			category: 'php environment',
+			description: 'Perform a huge number of environment checks.'
+		},
+		2: {partial: 'Action/Tool/Environment/FolderStructure',
+			require: 'TYPO3/CMS/Install/FolderStructure',
+			baseClass: 't3js-folderStructure',
+			title: 'Check Folder Structure',
+			category: 'document structure',
+			description: 'Analyzes your folder structure by checking the permissions and whether files or folders are missing.'
+		},
+		3: {partial: 'Action/Tool/Environment/PhpInfo',
+			require: '',
+			baseClass: 't3js-phpinfo',
+			title: 'PHP Info',
+			category: 'environment',
+			description: 'Outputs a large amount of information about the current state of PHP.'
+		},
+		4: {partial: 'Action/Tool/Environment/MailTest',
+			require: 'TYPO3/CMS/Install/MailTest',
+			baseClass: 't3js-mailTest',
+			title: 'Test Mail Setup',
+			category: 'environment',
+			description: 'Checks the basic mail functionality by sending a test email.'
+		},
+		5: {partial: 'Action/Tool/Environment/ImageProcessing',
+			require: 'TYPO3/CMS/Install/ImageProcessing',
+			baseClass: 't3js-imageProcessing',
+			title: 'Image Processing',
+			category: 'environment',
+			description: 'Creates test images and compare with a reference.'
+		}
+	}}">
+		<div class="gridder">
+			<f:for each="{actions}" as="card" iteration="iterator">
+				<div
+					class="gridder-list {card.baseClass}-open {f:if(condition: '{card.require}', then: 't3js-require')}"
+					{f:if(condition: '{card.require}', then: 'data-require="{card.require}"')}
+				>
+					<div class="gridder-item">
+						<h3>
+							{card.title} <span class="label label-warning {card.baseClass}-badge" style="display:none"></span>
+							<br>
+							<small class="text-muted">{card.category}</small>
+							<br>
+						</h3>
+						<p>{card.description}</p>
+					</div>
+				</div>
+				<div class="gridder-content {f:if(condition: '{card.baseClass}', then: '{card.baseClass}')}">
+					<div class="gridder-padding">
+						<div class="gridder-title clearfix">
+							<h3 class="pull-left">{card.title}</h3>
+						</div>
+						<f:render partial="{card.partial}" arguments="{_all}" />
+					</div>
+				</div>
+			</f:for>
+		</div>
+	</f:alias>
+</f:section>

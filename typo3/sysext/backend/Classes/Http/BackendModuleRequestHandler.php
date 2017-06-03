@@ -141,7 +141,6 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
     {
         $moduleConfiguration = $this->getModuleConfiguration($moduleName);
 
-        /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class);
 
         // Check permissions and exit if the user has no permission for entry
@@ -165,6 +164,14 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
         if (isset($moduleConfiguration['routeTarget'])) {
             $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
             $this->request = $this->request->withAttribute('target', $moduleConfiguration['routeTarget']);
+            // @internal routeParameters are a helper construct for the install tool only.
+            // @todo: remove this, after sub-actions in install tool can be addressed directly
+            if (!empty($moduleConfiguration['routeParameters'])) {
+                $this->request = $this->request->withQueryParams(array_merge_recursive(
+                    $this->request->getQueryParams(),
+                    $moduleConfiguration['routeParameters']
+                ));
+            }
             $response = $dispatcher->dispatch($this->request, $response);
         } else {
             // extbase module

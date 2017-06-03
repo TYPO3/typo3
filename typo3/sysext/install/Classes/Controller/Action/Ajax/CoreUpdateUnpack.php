@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 /*
@@ -17,7 +18,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 /**
  * Unpack a downloaded core
  */
-class CoreUpdateUnpack extends AbstractCoreUpdate
+class CoreUpdateUnpack extends CoreUpdateAbstract
 {
     /**
      * Executes the action
@@ -27,9 +28,9 @@ class CoreUpdateUnpack extends AbstractCoreUpdate
     protected function executeAction()
     {
         $this->view->assignMultiple([
-                'success' => $this->coreUpdateService->unpackVersion($this->getVersionToHandle()),
-                'status' => $this->coreUpdateService->getMessages(),
-            ]);
+            'success' => $this->coreUpdateService->unpackVersion($this->getVersionToHandle()),
+            'status' => $this->coreUpdateService->getMessages(),
+        ]);
         return $this->view->render();
     }
 }
