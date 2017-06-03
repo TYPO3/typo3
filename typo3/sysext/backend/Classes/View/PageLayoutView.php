@@ -849,8 +849,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 }
                 $out .= $grid . '</table></div>';
             }
-            // CSH:
-            $out .= BackendUtility::cshItem($this->descrTable, 'columns_multi', null, '<span class="btn btn-default btn-sm">|</span>');
         }
         $elFromTable = $this->clipboard->elFromTable('tt_content');
         if (!empty($elFromTable) && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
@@ -1026,8 +1024,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						' . $out . '
                     </table>
 				</div>';
-            // CSH:
-            $out .= BackendUtility::cshItem($this->descrTable, 'language_list', null, '<span class="btn btn-default btn-sm">|</span>');
         }
 
         return $out;

@@ -97,20 +97,44 @@ xMOD_csh_corebe:new_ce</source>
 				<source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
 			</trans-unit>
 			<trans-unit id="columns_1.alttitle">
-				<source>Listing by Column</source>
+				<source>Listing by Columns</source>
 			</trans-unit>
 			<trans-unit id="columns_1.description">
-				<source>In the "Columns" view you can control the content of the web page as it is positioned in columns.</source>
+				<source>In the "Columns" view you can manage the content of a web page. If your web page supports multiple columns, you will be able to arrange your content elements in columns.</source>
+			</trans-unit>
+			<trans-unit id="_columns_1.seeAlso">
+				<source>_MOD_web_layout:columns_single</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="_columns_1.image">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="columns_1.image_descr">
+				<source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
 			</trans-unit>
 			<trans-unit id="columns_2.alttitle">
 				<source>Listing by Language</source>
 			</trans-unit>
 			<trans-unit id="columns_2.description">
-				<source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns.</source>
+				<source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
 			</trans-unit>
 			<trans-unit id="_columns_2.seeAlso">
-				<source>Article about localization | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/</source>
-			</trans-unit>
+        <source>sys_language</source>
+      </trans-unit>
+      <trans-unit id="_columns_2.image" xml:space="preserve">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
+        <note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_2.image_descr" xml:space="preserve">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+        This example shows how page content for three languages is shown side-by-side in the Page module.
+        In the top of the Page module you can also select between the available translations...
+        ... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+      </trans-unit>
 			<trans-unit id="columns_3.alttitle">
 				<source>Page Information</source>
 			</trans-unit>
@@ -124,28 +148,6 @@ You can also see the subtitle, keywords and descriptions. This information is of
 			<trans-unit id="_columns_3.image">
 				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="language_list.alttitle">
-				<source>Language view</source>
-			</trans-unit>
-			<trans-unit id="language_list.description">
-				<source>This view will display the available translations of the page content side-by-side. It enables users to create a new translation of a page.</source>
-			</trans-unit>
-			<trans-unit id="_language_list.seeAlso">
-				<source>sys_language</source>
-			</trans-unit>
-			<trans-unit id="_language_list.image" xml:space="preserve">
-				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
-EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
-EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
-EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="language_list.image_descr" xml:space="preserve">
-				<source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
-This example shows how page content for three languages is shown side-by-side in the Page module.
-In the top of the Page module you can also select between the available translations...
-... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
 			</trans-unit>
 			<trans-unit id="columns_single.alttitle">
 				<source>Page content elements in a single column</source>
@@ -168,23 +170,6 @@ Click the icon of a content element if you wish to access the context menu of th
 			</trans-unit>
 			<trans-unit id="columns_single.image_descr">
 				<source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
-			</trans-unit>
-			<trans-unit id="columns_multi.alttitle">
-				<source>Page content elements in a multiple columns</source>
-			</trans-unit>
-			<trans-unit id="columns_multi.description">
-				<source>The multiple column view will show the content of your website arranged in multiple columns. This is the case if your website supports more than one content zone and the content elements from each zone is arranged in "columns".</source>
-			</trans-unit>
-			<trans-unit id="_columns_multi.seeAlso">
-				<source>_MOD_web_layout:columns_single</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="_columns_multi.image">
-				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="columns_multi.image_descr">
-				<source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
 			</trans-unit>
 			<trans-unit id="button_panel.alttitle">
 				<source>The "Big Buttons"</source>
