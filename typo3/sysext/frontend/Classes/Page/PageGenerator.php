@@ -303,8 +303,9 @@ class PageGenerator
                                 empty($cssFileConfig['disableCompression']),
                                 (bool)$cssFileConfig['forceOnTop'],
                                 $cssFileConfig['allWrap'],
-                                (bool)$cssFileConfig['excludeFromConcatenation'],
-                                $cssFileConfig['allWrap.']['splitChar']
+                                (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
+                                $cssFileConfig['allWrap.']['splitChar'],
+                                $cssFileConfig['inline']
                             );
                             unset($cssFileConfig);
                         }
@@ -336,8 +337,9 @@ class PageGenerator
                                 empty($cssFileConfig['disableCompression']),
                                 (bool)$cssFileConfig['forceOnTop'],
                                 $cssFileConfig['allWrap'],
-                                (bool)$cssFileConfig['excludeFromConcatenation'],
-                                $cssFileConfig['allWrap.']['splitChar']
+                                (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
+                                $cssFileConfig['allWrap.']['splitChar'],
+                                $cssFileConfig['inline']
                             );
                             unset($cssFileConfig);
                         }

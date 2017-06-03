@@ -1354,8 +1354,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $allWrap
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
+     * @param bool $inline
      */
-    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
+    public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
     {
         if (!isset($this->cssFiles[$file])) {
             $this->cssFiles[$file] = [
@@ -1367,7 +1368,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'forceOnTop' => $forceOnTop,
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
-                'splitChar' => $splitChar
+                'splitChar' => $splitChar,
+                'inline' => $inline
             ];
         }
     }
@@ -1384,8 +1386,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $allWrap
      * @param bool $excludeFromConcatenation
      * @param string $splitChar The char used to split the allWrap value, default is "|"
+     * @param bool $inline
      */
-    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|')
+    public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $inline = false)
     {
         if (!isset($this->cssLibs[$file])) {
             $this->cssLibs[$file] = [
@@ -1397,7 +1400,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'forceOnTop' => $forceOnTop,
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
-                'splitChar' => $splitChar
+                'splitChar' => $splitChar,
+                'inline' => $inline
             ];
         }
     }
@@ -2191,17 +2195,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $cssFiles = '';
         if (!empty($this->cssLibs)) {
             foreach ($this->cssLibs as $file => $properties) {
-                $file = $this->getStreamlinedFileName($file);
-                $tag = '<link rel="' . htmlspecialchars($properties['rel'])
-                    . '" type="text/css" href="' . htmlspecialchars($file)
-                    . '" media="' . htmlspecialchars($properties['media']) . '"'
-                    . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
-                    . $this->endingSlash . '>';
-                if ($properties['allWrap']) {
-                    $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
-                    $tag = $wrapArr[0] . $tag . $wrapArr[1];
-                }
-                $tag .= LF;
+                $tag = $this->createCssTag($properties, $file);
                 if ($properties['forceOnTop']) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
@@ -2222,17 +2216,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $cssFiles = '';
         if (!empty($this->cssFiles)) {
             foreach ($this->cssFiles as $file => $properties) {
-                $file = $this->getStreamlinedFileName($file);
-                $tag = '<link rel="' . htmlspecialchars($properties['rel'])
-                    . '" type="text/css" href="' . htmlspecialchars($file)
-                    . '" media="' . htmlspecialchars($properties['media']) . '"'
-                    . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
-                    . $this->endingSlash . '>';
-                if ($properties['allWrap']) {
-                    $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
-                    $tag = $wrapArr[0] . $tag . $wrapArr[1];
-                }
-                $tag .= LF;
+                $tag = $this->createCssTag($properties, $file);
                 if ($properties['forceOnTop']) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
@@ -2241,6 +2225,34 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         return $cssFiles;
+    }
+
+    /**
+     * Create link (inline=0) or style (inline=1) tag
+     *
+     * @param array $properties
+     * @param string $file
+     * @return string
+     */
+    private function createCssTag(array $properties, string $file): string
+    {
+        if ($properties['inline'] && @is_file($file)) {
+            $tag = $this->createInlineCssTagFromFile($file, $properties);
+        } else {
+            $href = $this->getStreamlinedFileName($file);
+            $tag = '<link rel="' . htmlspecialchars($properties['rel'])
+                . '" type="text/css" href="' . htmlspecialchars($href)
+                . '" media="' . htmlspecialchars($properties['media']) . '"'
+                . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
+                . $this->endingSlash . '>';
+        }
+        if ($properties['allWrap']) {
+            $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
+            $tag = $wrapArr[0] . $tag . $wrapArr[1];
+        }
+        $tag .= LF;
+
+        return $tag;
     }
 
     /**
@@ -2782,5 +2794,25 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }
+    }
+
+    /**
+     * Creates an CSS inline tag
+     *
+     * @param string $file the filename to process
+     * @param array $properties
+     * @return string
+     */
+    protected function createInlineCssTagFromFile(string $file, array $properties): string
+    {
+        $cssInline = file_get_contents($file);
+
+        return '<style type="text/css"'
+            . ' media="' . htmlspecialchars($properties['media']) . '"'
+            . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
+            . '>' . LF
+            . '/*<![CDATA[*/' . LF . '<!-- ' . LF
+            . $cssInline
+            . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
     }
 }

@@ -4922,6 +4922,8 @@ Each file has optional properties:
 
 .excludeFromConcatenation - If config.concatenateCss is enabled, this prevents the file from being concatenated.
 
+.inline - Inline the contents of the CSS file using a <style> tag.
+
 Example:
 
 includeCSS {
