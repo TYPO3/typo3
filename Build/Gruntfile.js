@@ -59,7 +59,6 @@ module.exports = function (grunt) {
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
 			ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
 			core: '<%= paths.sysext %>core/Resources/',
-			bower: 'bower_components/',
 			npm: 'node_modules/',
 			t3icons: '<%= paths.npm %>@typo3/icons/dist/'
 		},
@@ -154,15 +153,15 @@ module.exports = function (grunt) {
 					}),
 					require('postcss-banner')({
 						banner: 'This file is part of the TYPO3 CMS project.\n' +
-						'\n' +
-						'It is free software; you can redistribute it and/or modify it under\n' +
-						'the terms of the GNU General Public License, either version 2\n' +
-						'of the License, or any later version.\n' +
-						'\n' +
-						'For the full copyright and license information, please read the\n' +
-						'LICENSE.txt file that was distributed with this source code.\n' +
-						'\n' +
-						'The TYPO3 project - inspiring people to share!',
+							'\n' +
+							'It is free software; you can redistribute it and/or modify it under\n' +
+							'the terms of the GNU General Public License, either version 2\n' +
+							'of the License, or any later version.\n' +
+							'\n' +
+							'For the full copyright and license information, please read the\n' +
+							'LICENSE.txt file that was distributed with this source code.\n' +
+							'\n' +
+							'The TYPO3 project - inspiring people to share!',
 						important: true,
 						inline: false
 					})
@@ -395,22 +394,21 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		bowercopy: {
+		npmcopy: {
 			options: {
 				clean: false,
 				report: false,
-				runBower: false,
-				srcPrefix: "bower_components/"
+				srcPrefix: "node_modules/"
 			},
 			ckeditor: {
 				options: {
 					destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
 				},
 				files: {
-					'ckeditor.js': '../node_modules/ckeditor/ckeditor.js',
-					'plugins/': '../node_modules/ckeditor/plugins/',
-					'skins/': '../node_modules/ckeditor/skins/',
-					'lang/': '../node_modules/ckeditor/lang/'
+					'ckeditor.js': 'ckeditor/ckeditor.js',
+					'plugins/': 'ckeditor/plugins/',
+					'skins/': 'ckeditor/skins/',
+					'lang/': 'ckeditor/lang/'
 				}
 			},
 			all: {
@@ -418,45 +416,45 @@ module.exports = function (grunt) {
 					destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
 				},
 				files: {
-					'nprogress.js': '../node_modules/nprogress/nprogress.js',
-					'jquery.matchHeight-min.js': '../node_modules/jquery-match-height/dist/jquery.matchHeight-min.js',
-					'jquery.dataTables.js': '../node_modules/datatables/media/js/jquery.dataTables.min.js',
-					'require.js': '../node_modules/requirejs/require.js',
-					'moment.js': '../node_modules/moment/min/moment-with-locales.min.js',
-					'moment-timezone.js': '../node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
-					'cropper.min.js': '../node_modules/cropper/dist/cropper.min.js',
-					'imagesloaded.pkgd.min.js': '../node_modules/imagesloaded/imagesloaded.pkgd.min.js',
-					'bootstrap-datetimepicker.js': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-					'autosize.js': '../node_modules/autosize/dist/autosize.min.js',
-					'taboverride.min.js': '../node_modules/taboverride/build/output/taboverride.min.js',
-					'bootstrap-slider.min.js': '../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js',
+					'nprogress.js': 'nprogress/nprogress.js',
+					'jquery.matchHeight-min.js': 'jquery-match-height/dist/jquery.matchHeight-min.js',
+					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
+					'require.js': 'requirejs/require.js',
+					'moment.js': 'moment/min/moment-with-locales.min.js',
+					'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
+					'cropper.min.js': 'cropper/dist/cropper.min.js',
+					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
+					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+					'autosize.js': 'autosize/dist/autosize.min.js',
+					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
+					'bootstrap-slider.min.js': 'bootstrap-slider/dist/bootstrap-slider.min.js',
 					/* disabled until events are not bound to document only
-					see https://github.com/claviska/jquery-minicolors/issues/192
-					see https://github.com/claviska/jquery-minicolors/issues/206
-					'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
-					'../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png'
-					 */
+					   see https://github.com/claviska/jquery-minicolors/issues/192
+					   see https://github.com/claviska/jquery-minicolors/issues/206
+					   'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
+					   '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png'
+					*/
 					/* disabled until autocomplete formatGroup is fixed to pass on the index too
 					   'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
-					 */
-					'd3/d3.js': '../node_modules/d3/build/d3.min.js',
+					*/
+					'd3/d3.js': 'd3/build/d3.min.js',
 					/**
 					 * copy needed parts of jquery
 					 */
-					'jquery/jquery-3.2.1.js': '../node_modules/jquery/dist/jquery.js',
-					'jquery/jquery-3.2.1.min.js': '../node_modules/jquery/dist/jquery.min.js',
+					'jquery/jquery-3.2.1.js': 'jquery/dist/jquery.js',
+					'jquery/jquery-3.2.1.min.js': 'jquery/dist/jquery.min.js',
 					/**
 					 * copy needed parts of jquery-ui
 					 */
-					'jquery-ui/core.js': '../node_modules/jquery-ui/ui/core.js',
-					'jquery-ui/draggable.js': '../node_modules/jquery-ui/ui/draggable.js',
-					'jquery-ui/droppable.js': '../node_modules/jquery-ui/ui/droppable.js',
-					'jquery-ui/mouse.js': '../node_modules/jquery-ui/ui/mouse.js',
-					'jquery-ui/position.js': '../node_modules/jquery-ui/ui/position.js',
-					'jquery-ui/resizable.js': '../node_modules/jquery-ui/ui/resizable.js',
-					'jquery-ui/selectable.js': '../node_modules/jquery-ui/ui/selectable.js',
-					'jquery-ui/sortable.js': '../node_modules/jquery-ui/ui/sortable.js',
-					'jquery-ui/widget.js': '../node_modules/jquery-ui/ui/widget.js'
+					'jquery-ui/core.js': 'jquery-ui/ui/core.js',
+					'jquery-ui/draggable.js': 'jquery-ui/ui/draggable.js',
+					'jquery-ui/droppable.js': 'jquery-ui/ui/droppable.js',
+					'jquery-ui/mouse.js': 'jquery-ui/ui/mouse.js',
+					'jquery-ui/position.js': 'jquery-ui/ui/position.js',
+					'jquery-ui/resizable.js': 'jquery-ui/ui/resizable.js',
+					'jquery-ui/selectable.js': 'jquery-ui/ui/selectable.js',
+					'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
+					'jquery-ui/widget.js': 'jquery-ui/ui/widget.js'
 				}
 			}
 		},
@@ -478,24 +476,15 @@ module.exports = function (grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
 				}
 			}
-		},
-		svgmin: {
-			options: {
-				plugins: [
-					{removeViewBox: false}
-				]
-			}
 		}
 	});
 
 	// Register tasks
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-bowercopy');
+	grunt.loadNpmTasks('grunt-npmcopy');
 	grunt.loadNpmTasks('grunt-npm-install');
-	grunt.loadNpmTasks('grunt-bower-just-install');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks("grunt-ts");
@@ -551,10 +540,9 @@ module.exports = function (grunt) {
 	 *
 	 * this task does the following things:
 	 * - npm install
-	 * - bower install
-	 * - copy some bower components to a specific destinations because they need to be included via PHP
+	 * - copy some components to a specific destinations because they need to be included via PHP
 	 */
-	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy']);
+	grunt.registerTask('update', ['npm-install', 'npmcopy']);
 
 	/**
 	 * grunt scripts task
@@ -586,5 +574,5 @@ module.exports = function (grunt) {
 	 * - minifies svg files
 	 * - compiles TypeScript files
 	 */
-	grunt.registerTask('build', ['update', 'scripts', 'copy', 'format', 'css', 'uglify', 'svgmin']);
+	grunt.registerTask('build', ['update', 'scripts', 'copy', 'format', 'css', 'uglify']);
 };
