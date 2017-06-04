@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -917,9 +918,9 @@ class QueryBuilder
      * @param mixed $input The parameter to be quoted.
      * @param string|null $type The type of the parameter.
      *
-     * @return string The quoted parameter.
+     * @return mixed Often string, but also int or float or similar depending on $input and platform
      */
-    public function quote($input, string $type = null): string
+    public function quote($input, string $type = null)
     {
         return $this->getConnection()->quote($input, $type);
     }
@@ -1018,13 +1019,18 @@ class QueryBuilder
      */
     protected function unquoteSingleIdentifier(string $identifier): string
     {
-        $quoteChar = $this->getConnection()
-            ->getDatabasePlatform()
-            ->getIdentifierQuoteCharacter();
-
-        $unquotedIdentifier = trim($identifier, $quoteChar);
-
-        return str_replace($quoteChar . $quoteChar, $quoteChar, $unquotedIdentifier);
+        $identifier = trim($identifier);
+        $platform = $this->getConnection()->getDatabasePlatform();
+        if ($platform instanceof SQLServerPlatform) {
+            // mssql quotes identifiers with [ and ], not a single character
+            $identifier = ltrim($identifier, '[');
+            $identifier = rtrim($identifier, ']');
+        } else {
+            $quoteChar = $platform->getIdentifierQuoteCharacter();
+            $identifier = trim($identifier, $quoteChar);
+            $identifier = str_replace($quoteChar . $quoteChar, $quoteChar, $identifier);
+        }
+        return $identifier;
     }
 
     /**

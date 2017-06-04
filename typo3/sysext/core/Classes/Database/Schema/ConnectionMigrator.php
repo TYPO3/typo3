@@ -199,10 +199,13 @@ class ConnectionMigrator
             if ($createOnly) {
                 // Ignore new indexes that work on columns that need changes
                 foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
-                    // Strip MySQL prefix length information to get real column names
                     $indexColumns = array_map(
                         function ($columnName) {
-                            return preg_replace('/\(\d+\)$/', '', $columnName);
+                            // Strip MySQL prefix length information to get real column names
+                            $columnName = preg_replace('/\(\d+\)$/', '', $columnName);
+                            // Strip mssql '[' and ']' from column names
+                            $columnName = ltrim($columnName, '[');
+                            return rtrim($columnName, ']');
                         },
                         $addedIndex->getColumns()
                     );

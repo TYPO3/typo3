@@ -495,9 +495,9 @@ class ExpressionBuilder
      * @param mixed $input The parameter to be quoted.
      * @param string|null $type The type of the parameter.
      *
-     * @return string
+     * @return mixed Often string, but also int or float or similar depending on $input and platform
      */
-    public function literal($input, string $type = null): string
+    public function literal($input, string $type = null)
     {
         return $this->connection->quote($input, $type);
     }

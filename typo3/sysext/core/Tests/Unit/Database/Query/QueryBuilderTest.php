@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -22,8 +26,9 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class QueryBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
+class QueryBuilderTest extends UnitTestCase
 {
     /**
      * @var Connection|\Prophecy\Prophecy\ObjectProphecy
@@ -31,7 +36,7 @@ class QueryBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $connection;
 
     /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform
+     * @var AbstractPlatform
      */
     protected $platform;
 
@@ -1107,6 +1112,54 @@ class QueryBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'aTable' => 'aTable',
             'aTable_alias' => 'aTable'
         ];
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @return array
+     */
+    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider()
+    {
+        return [
+            'mysql' => [
+                'platform' => MySqlPlatform::class,
+                'quoteChar' => '`',
+                'input' => '`anIdentifier`',
+                'expected' => 'anIdentifier',
+            ],
+            'mysql with spaces' => [
+                'platform' => MySqlPlatform::class,
+                'quoteChar' => '`',
+                'input' => ' `anIdentifier` ',
+                'expected' => 'anIdentifier',
+            ],
+            'postgres' => [
+                'platform' => PostgreSqlPlatform::class,
+                'quoteChar' => '"',
+                'input' => '"anIdentifier"',
+                'expected' => 'anIdentifier',
+            ],
+            'mssql' => [
+                'platform' => SQLServerPlatform::class,
+                'quoteChar' => '', // no single quote character, but [ and ]
+                'input' => '[anIdentifier]',
+                'expected' => 'anIdentifier',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatformsDataProvider
+     */
+    public function unquoteSingleIdentifierUnquotesCorrectlyOnDifferentPlatforms($platform, $quoteChar, $input, $expected)
+    {
+        $connectionProphecy = $this->prophesize(Connection::class);
+        $databasePlatformProphecy = $this->prophesize($platform);
+        $databasePlatformProphecy->getIdentifierQuoteCharacter()->willReturn($quoteChar);
+        $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy);
+        $subject = GeneralUtility::makeInstance(QueryBuilder::class, $connectionProphecy->reveal());
+        $result = $this->callInaccessibleMethod($subject, 'unquoteSingleIdentifier', $input);
         $this->assertEquals($expected, $result);
     }
 }
