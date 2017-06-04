@@ -146,7 +146,7 @@ class ReferenceIndex implements LoggerAwareInterface
     /**
      * Runtime Cache to store and retrieve data computed for a single request
      *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $runtimeCache = null;
 

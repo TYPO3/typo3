@@ -1512,7 +1512,7 @@ tt_content.' . $key . $suffix . ' {
     {
         if ($allowCaching) {
             $cacheIdentifier = self::getExtLocalconfCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->requireOnce($cacheIdentifier);
@@ -1611,7 +1611,7 @@ tt_content.' . $key . $suffix . ' {
     {
         if ($allowCaching) {
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = static::getCacheManager()->getCache('cache_core');
             $cacheData = $codeCache->requireOnce($cacheIdentifier);
             if ($cacheData) {
@@ -1731,7 +1731,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function createBaseTcaCacheFile()
     {
-        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
         $codeCache = self::getCacheManager()->getCache('cache_core');
         $codeCache->set(
             static::getBaseTcaCacheIdentifier(),
@@ -1767,7 +1767,7 @@ tt_content.' . $key . $suffix . ' {
         if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
             self::$extTablesWasReadFromCacheOnce = true;
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
-            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+            /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $codeCache = self::getCacheManager()->getCache('cache_core');
             if ($codeCache->has($cacheIdentifier)) {
                 $codeCache->requireOnce($cacheIdentifier);

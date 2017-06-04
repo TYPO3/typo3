@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\StringFrontend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $cacheInstance;
 

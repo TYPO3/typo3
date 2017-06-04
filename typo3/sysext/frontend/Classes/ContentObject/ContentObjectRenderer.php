@@ -815,7 +815,7 @@ class ContentObjectRenderer
         if ($cacheConfiguration !== null) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
-                /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+                /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $lifetime = $this->calculateCacheLifetime($cacheConfiguration);
@@ -2861,7 +2861,7 @@ class ContentObjectRenderer
         if (empty($key)) {
             return $content;
         }
-        /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+        /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
         $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
         $tags = $this->calculateCacheTags($conf['cache.']);
         $lifetime = $this->calculateCacheLifetime($conf['cache.']);
@@ -7084,7 +7084,7 @@ class ContentObjectRenderer
 
         $cacheKey = $this->calculateCacheKey($configuration);
         if (!empty($cacheKey)) {
-            /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+            /** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
             $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)
                 ->getCache('cache_hash');
             $content = $cacheFrontend->get($cacheKey);

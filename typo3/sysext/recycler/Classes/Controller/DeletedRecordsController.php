@@ -30,7 +30,7 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 class DeletedRecordsController
 {
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $runtimeCache = null;
 
@@ -199,7 +199,7 @@ class DeletedRecordsController
     /**
      * Gets an instance of the memory cache.
      *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected function getMemoryCache()
     {

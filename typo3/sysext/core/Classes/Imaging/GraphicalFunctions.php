@@ -2193,7 +2193,7 @@ class GraphicalFunctions
         $statusHash = $this->generateStatusHashForImageFile($filePath);
         $identifier = $this->generateCacheKeyForImageFile($filePath);
 
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_imagesizes');
         $imageDimensions = [
             'hash'        => $statusHash,
@@ -2217,7 +2217,7 @@ class GraphicalFunctions
     {
         $statusHash = $this->generateStatusHashForImageFile($filePath);
         $identifier = $this->generateCacheKeyForImageFile($filePath);
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_imagesizes');
         $cachedImageDimensions = $cache->get($identifier);
         if (!isset($cachedImageDimensions['hash'])) {

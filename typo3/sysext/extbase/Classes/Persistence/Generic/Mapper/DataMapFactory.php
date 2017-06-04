@@ -42,7 +42,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
     protected $cacheManager;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $dataMapCache;
 

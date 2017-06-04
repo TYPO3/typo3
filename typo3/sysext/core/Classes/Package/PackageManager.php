@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Package;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
@@ -37,7 +38,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     protected $dependencyResolver;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
+     * @var FrontendInterface
      */
     protected $coreCache;
 
@@ -110,9 +111,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache
+     * @param FrontendInterface $coreCache
      */
-    public function injectCoreCache(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache)
+    public function injectCoreCache(FrontendInterface $coreCache)
     {
         $this->coreCache = $coreCache;
     }

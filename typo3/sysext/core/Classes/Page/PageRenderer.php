@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Page;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1367,7 +1367,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
         $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
-        /** @var VariableFrontend $cache */
+        /** @var FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $this->requireJsConfig = $cache->get($cacheIdentifier);
 

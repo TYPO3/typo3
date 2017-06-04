@@ -24,7 +24,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
@@ -684,7 +684,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Runtime Cache to store and retrieve data computed for a single request
      *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $runtimeCache = null;
 
@@ -8947,7 +8947,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Gets an instance of the runtime cache.
      *
-     * @return VariableFrontend
+     * @return FrontendInterface
      */
     protected function getRuntimeCache()
     {

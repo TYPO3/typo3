@@ -838,7 +838,7 @@ class Bootstrap
         // See if the Routes.php from all active packages have been built together already
         $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((TYPO3_version . PATH_site . 'BackendRoutesFromPackages'));
 
-        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+        /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
         $codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
         $routesFromPackages = [];
         if ($codeCache->has($cacheIdentifier)) {
