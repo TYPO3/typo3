@@ -92,7 +92,7 @@ define(['jquery', 'jquery-ui/droppable'], function($) {
 
     $(DragDrop.dropZoneIdentifier).each(function() {
       var $me = $(this);
-      if ($me.parent().find('.icon-actions-add').length) {
+      if ($me.parent().find('.t3js-toggle-new-content-element-wizard').length) {
         $me.addClass(DragDrop.validDropZoneClass);
       } else {
         $me.closest(DragDrop.contentIdentifier).find('> ' + DragDrop.addContentIdentifier + ', > > ' + DragDrop.addContentIdentifier).show();
