@@ -49,8 +49,15 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->setBaseUrl($baseUrl);
         $expectedBaseUrlString = '<base href="' . $baseUrl . '" />';
 
-        $metaTag = $expectedMetaTagString = '<meta name="author" content="Anna Lyse">';
-        $subject->addMetaTag($metaTag);
+        $subject->setMetaTag('property', 'og:type', 'foobar');
+        $subject->setMetaTag('name', 'author', 'husel');
+        $subject->setMetaTag('name', 'author', 'foobar');
+        $subject->setMetaTag('http-equiv', 'refresh', '5');
+        $subject->setMetaTag('name', 'DC.Author', '<evil tag>');
+
+        // Unset meta tag
+        $subject->setMetaTag('NaMe', 'randomTag', 'foobar');
+        $subject->removeMetaTag('name', 'RanDoMtAg');
 
         $inlineComment = $this->getUniqueId('comment');
         $subject->addInlineComment($inlineComment);
@@ -94,7 +101,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertContains($expectedCharsetString, $renderedString);
         $this->assertContains($expectedFavouriteIconPartOne, $renderedString);
         $this->assertContains($expectedBaseUrlString, $renderedString);
-        $this->assertContains($expectedMetaTagString, $renderedString);
         $this->assertContains($expectedInlineCommentString, $renderedString);
         $this->assertContains($expectedHeaderData, $renderedString);
         $this->assertRegExp($expectedJsLibraryRegExp, $renderedString);
@@ -106,6 +112,12 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertContains($expectedCssInlineBlockOnTopString, $renderedString);
         $this->assertRegExp($expectedJqueryRegExp, $renderedString);
         $this->assertContains($expectedBodyContent, $renderedString);
+        $this->assertContains('<meta property="og:type" content="foobar" />', $renderedString);
+        $this->assertContains('<meta name="author" content="foobar" />', $renderedString);
+        $this->assertContains('<meta http-equiv="refresh" content="5" />', $renderedString);
+        $this->assertContains('<meta name="dc.author" content="&lt;evil tag&gt;" />', $renderedString);
+        $this->assertNotContains('<meta name="randomtag" content="foobar">', $renderedString);
+        $this->assertNotContains('<meta name="randomtag" content="foobar" />', $renderedString);
     }
 
     /**

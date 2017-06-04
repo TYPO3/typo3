@@ -262,4 +262,53 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
         $this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
     }
+
+    /**
+     * @test
+     */
+    public function getAddedMetaTag()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject->setMetaTag('nAme', 'Author', 'foobar');
+        $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
+        $expectedResult = [
+            'type' => 'name',
+            'name' => 'author',
+            'content' => 'foobar'
+        ];
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function overrideMetaTag()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
+        $subject->setMetaTag('nAme', 'Author', 'foobar');
+        $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
+        $expectedResult = [
+            'type' => 'name',
+            'name' => 'author',
+            'content' => 'foobar'
+        ];
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function unsetAddedMetaTag()
+    {
+        /** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, ['whatDoesThisDo'], [], '', false);
+        $subject->setMetaTag('nAme', 'Author', 'foobar');
+        $subject->removeMetaTag('naMe', 'AUTHOR');
+        $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
+        $expectedResult = [];
+        $this->assertSame($expectedResult, $actualResult);
+    }
 }

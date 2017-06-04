@@ -178,6 +178,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $metaTags = [];
 
     /**
+     * META Tags added via the API
+     *
+     * @var array
+     */
+    protected $metaTagsByAPI = [];
+
+    /**
      * @var array
      */
     protected $inlineComments = [];
@@ -440,6 +447,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->cssFiles = [];
         $this->cssInline = [];
         $this->metaTags = [];
+        $this->metaTagsByAPI = [];
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
@@ -978,14 +986,80 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*****************************************************/
     /**
      * Adds meta data
-     *
+     * @deprecated
      * @param string $meta Meta data (complete metatag)
      */
     public function addMetaTag($meta)
     {
+        trigger_error('Method pageRenderer->addMetaTag is deprecated in v9 and will be removed with v10. Use pageRenderer->setMetaTag instead.', E_USER_DEPRECATED);
         if (!in_array($meta, $this->metaTags)) {
             $this->metaTags[] = $meta;
         }
+    }
+
+    /**
+     * Sets a given meta tag
+     *
+     * @param string $type The type of the meta tag. Allowed values are property, name or http-equiv
+     * @param string $name The name of the property to add
+     * @param string $content The content of the meta tag
+     * @throws \InvalidArgumentException
+     */
+    public function setMetaTag(string $type, string $name, string $content)
+    {
+        /**
+         * Lowercase all the things
+         */
+        $type = strtolower($type);
+        $name = strtolower($name);
+        if (!in_array($type, ['property', 'name', 'http-equiv'], true)) {
+            throw new \InvalidArgumentException(
+                'When setting a meta tag the only types allowed are property, name or http-equiv. "' . $type . '" given.',
+                1496402460
+            );
+        }
+        $this->metaTagsByAPI[$type][$name] = $content;
+    }
+
+    /**
+     * Returns the requested meta tag
+     *
+     * @param string $type
+     * @param string $name
+     *
+     * @return array
+     */
+    public function getMetaTag(string $type, string $name): array
+    {
+        /**
+         * Lowercase all the things
+         */
+        $type = strtolower($type);
+        $name = strtolower($name);
+        if (isset($this->metaTagsByAPI[$type], $this->metaTagsByAPI[$type][$name])) {
+            return [
+                'type' => $type,
+                'name' => $name,
+                'content' => $this->metaTagsByAPI[$type][$name]
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * Unset the requested meta tag
+     *
+     * @param string $type
+     * @param string $name
+     */
+    public function removeMetaTag(string $type, string $name)
+    {
+        /**
+         * Lowercase all the things
+         */
+        $type = strtolower($type);
+        $name = strtolower($name);
+        unset($this->metaTagsByAPI[$type][$name]);
     }
 
     /**
@@ -1764,7 +1838,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->prepareRendering();
         list($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
-        $metaTags = implode(LF, $this->metaTags);
+        $metaTags = implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI()));
         $markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
         $template = $this->getTemplateForPart($part);
 
@@ -1774,6 +1848,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->reset();
         $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
+    }
+
+    /**
+     * Renders metaTags based on tags added via the API
+     *
+     * @return array
+     */
+    protected function renderMetaTagsFromAPI()
+    {
+        $metaTags = [];
+        foreach ($this->metaTagsByAPI as $metaTagType => $type) {
+            foreach ($type as $metaType => $content) {
+                $metaTags[] = '<meta ' . htmlspecialchars($metaTagType) . '="' . htmlspecialchars($metaType) . '" content="' . htmlspecialchars($content) . '"' . $this->endingSlash . '>';
+            }
+        }
+        return $metaTags;
     }
 
     /**
@@ -1814,7 +1904,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             '<!-- ###JS_INLINE' . $substituteHash . '### -->' => $jsInline,
             '<!-- ###JS_INCLUDE' . $substituteHash . '### -->' => $jsFiles,
             '<!-- ###JS_LIBS' . $substituteHash . '### -->' => $jsLibs,
-            '<!-- ###META' . $substituteHash . '### -->' => implode(LF, $this->metaTags),
+            '<!-- ###META' . $substituteHash . '### -->' => implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI())),
             '<!-- ###HEADERDATA' . $substituteHash . '### -->' => implode(LF, $this->headerData),
             '<!-- ###FOOTERDATA' . $substituteHash . '### -->' => implode(LF, $this->footerData),
             '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->' => $jsFooterLibs,

@@ -533,14 +533,10 @@ class PageGenerator
         }
         static::generatePageTitle();
 
-        $metaTagsHtml = static::generateMetaTagHtml(
+        static::generateMetaTagHtml(
             isset($tsfe->pSetup['meta.']) ? $tsfe->pSetup['meta.'] : [],
-            $tsfe->xhtmlVersion,
             $tsfe->cObj
         );
-        foreach ($metaTagsHtml as $metaTag) {
-            $pageRenderer->addMetaTag($metaTag);
-        }
 
         unset($tsfe->additionalHeaderData['JSCode']);
         if (is_array($tsfe->config['INTincScript'])) {
@@ -909,16 +905,10 @@ class PageGenerator
      * @param array $metaTagTypoScript TypoScript configuration for meta tags (e.g. $GLOBALS['TSFE']->pSetup['meta.'])
      * @param bool $xhtml Whether xhtml tag-style should be used. (e.g. pass $GLOBALS['TSFE']->xhtmlVersion here)
      * @param ContentObjectRenderer $cObj
-     * @return array Array of HTML meta tags
      */
-    protected static function generateMetaTagHtml(array $metaTagTypoScript, $xhtml, ContentObjectRenderer $cObj)
+    protected static function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)
     {
-        // Add ending slash only to documents rendered as xhtml
-        $endingSlash = $xhtml ? ' /' : '';
-
-        $metaTags = [
-            '<meta name="generator" content="TYPO3 CMS"' . $endingSlash . '>'
-        ];
+        $pageRenderer = static::getPageRenderer();
 
         /** @var TypoScriptService $typoScriptService */
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -947,11 +937,10 @@ class PageGenerator
             }
             foreach ($value as $subValue) {
                 if (trim($subValue) !== '') {
-                    $metaTags[] = '<meta ' . $attribute . '="' . $key . '" content="' . htmlspecialchars($subValue) . '"' . $endingSlash . '>';
+                    $pageRenderer->setMetaTag($attribute, $key, $subValue);
                 }
             }
         }
-        return $metaTags;
     }
 
     /**

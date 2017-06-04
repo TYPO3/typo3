@@ -1287,6 +1287,14 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-81217-TSFE-relatedLanguageMethods.rst',
+        ]
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->addMetaTag' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-81464-AddAPIForMetaTagManagement.rst',
+
         ],
     ],
     'TYPO3\CMS\Extbase\Reflection\PropertyReflection->isTaggedWith' => [

@@ -14,8 +14,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Tests\Unit\Page\Fixtures\PageGeneratorFixture;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageGenerator;
 
 /**
  * Test case
@@ -23,22 +28,20 @@ use TYPO3\CMS\Frontend\Tests\Unit\Page\Fixtures\PageGeneratorFixture;
 class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var PageGeneratorFixture
+     * @var array A backup of registered singleton instances
      */
-    protected $pageGeneratorFixture;
+    protected $singletonInstances = [];
 
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObjectRenderer;
-
-    /**
-     * Set up the helper objects
-     */
     protected function setUp()
     {
-        $this->pageGeneratorFixture = new PageGeneratorFixture();
-        $this->contentObjectRenderer = new ContentObjectRenderer();
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::purgeInstances();
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     /**
@@ -51,31 +54,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 [
                     'author' => 'Markus Klein',
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta name="author" content="Markus Klein">',
-                ]
-            ],
-            'simple meta xhtml' => [
-                [
-                    'author' => 'Markus Klein',
-                ],
-                true,
-                [
-                    '<meta name="generator" content="TYPO3 CMS" />',
-                    '<meta name="author" content="Markus Klein" />',
-                ]
-            ],
-            'meta with nested stdWrap' => [
-                [
-                    'author' => 'Markus ',
-                    'author.' => ['stdWrap.' => ['wrap' => '|Klein']]
-                ],
-                false,
-                [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta name="author" content="Markus Klein">',
+                    'type' => 'name',
+                    'name' => 'author',
+                    'content' => 'Markus Klein'
                 ]
             ],
             'httpEquivalent meta' => [
@@ -83,21 +66,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
                     'X-UA-Compatible.' => ['httpEquivalent' => 1]
                 ],
-                false,
+                'IE=edge,chrome=1',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
-                ]
-            ],
-            'httpEquivalent meta xhtml' => [
-                [
-                    'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => ['httpEquivalent' => 1]
-                ],
-                true,
-                [
-                    '<meta name="generator" content="TYPO3 CMS" />',
-                    '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
+                    'type' => 'http-equiv',
+                    'name' => 'X-UA-Compatible',
+                    'content' => 'IE=edge,chrome=1'
                 ]
             ],
             'httpEquivalent meta xhtml new notation' => [
@@ -105,20 +78,22 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
                     'X-UA-Compatible.' => ['attribute' => 'http-equiv']
                 ],
-                true,
+                'IE=edge,chrome=1',
                 [
-                    '<meta name="generator" content="TYPO3 CMS" />',
-                    '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
+                    'type' => 'http-equiv',
+                    'name' => 'X-UA-Compatible',
+                    'content' => 'IE=edge,chrome=1'
                 ]
             ],
             'refresh meta' => [
                 [
                     'refresh' => '10',
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta http-equiv="refresh" content="10">',
+                    'type' => 'http-equiv',
+                    'name' => 'refresh',
+                    'content' => '10'
                 ]
             ],
             'refresh meta new notation' => [
@@ -126,41 +101,33 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'refresh' => '10',
                     'refresh.' => ['attribute' => 'http-equiv']
                 ],
-                false,
+                '10',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta http-equiv="refresh" content="10">',
-                ]
-            ],
-            'refresh meta new notation wins form old' => [
-                [
-                    'refresh' => '10',
-                    'refresh.' => ['attribute' => 'http-equiv-new']
-                ],
-                false,
-                [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta http-equiv-new="refresh" content="10">',
+                    'type' => 'http-equiv',
+                    'name' => 'refresh',
+                    'content' => '10'
                 ]
             ],
             'meta with dot' => [
                 [
                     'DC.author' => 'Markus Klein',
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta name="DC.author" content="Markus Klein">',
+                        'type' => 'name',
+                        'name' => 'DC.author',
+                        'content' => 'Markus Klein'
                 ]
             ],
             'meta with colon' => [
                 [
                     'OG:title' => 'Magic Tests',
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta name="OG:title" content="Magic Tests">',
+                    'type' => 'name',
+                    'name' => 'OG:title',
+                    'content' => 'Magic Tests'
                 ]
             ],
             'different attribute name' => [
@@ -168,12 +135,138 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'og:site_title' => 'My TYPO3 site',
                     'og:site_title.' => ['attribute' => 'property'],
                 ],
-                false,
+                'My TYPO3 site',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta property="og:site_title" content="My TYPO3 site">',
+                    'type' => 'property',
+                    'name' => 'og:site_title',
+                    'content' => 'My TYPO3 site'
                 ]
             ],
+            'meta with 0 value' => [
+                [
+                    'custom:key' => '0',
+                ],
+                '',
+                [
+                    'type' => 'name',
+                    'name' => 'custom:key',
+                    'content' => '0'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function generateMetaTagExpectExceptionOnBogusTags()
+    {
+        $stdWrapResult = '10';
+
+        $typoScript = [
+            'refresh' => '10',
+            'refresh.' => ['attribute' => 'http-equiv-new']
+        ];
+
+        $expectedTags = [
+            'type' => 'http-equiv-new',
+            'name' => 'refresh',
+            'content' => '10'
+        ];
+
+        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
+        $tmpl = $this->prophesize(TemplateService::class);
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->cObj = $cObj->reveal();
+        $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->page = [
+            'title' => ''
+        ];
+        $tsfe->pSetup = [
+            'meta.' => $typoScript
+        ];
+        $GLOBALS['TSFE'] = $tsfe->reveal();
+
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
+
+        PageGenerator::renderContentWithHeader('');
+
+        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
+    }
+
+    /**
+     * @test
+     * @dataProvider generateMetaTagHtmlGeneratesCorrectTagsDataProvider
+     *
+     * @param array $typoScript
+     * @param string $stdWrapResult
+     * @param array $expectedTags
+     */
+    public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags)
+    {
+        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
+        $tmpl = $this->prophesize(TemplateService::class);
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->cObj = $cObj->reveal();
+        $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->page = [
+            'title' => ''
+        ];
+        $tsfe->pSetup = [
+            'meta.' => $typoScript
+        ];
+        $GLOBALS['TSFE'] = $tsfe->reveal();
+
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
+
+        PageGenerator::renderContentWithHeader('');
+
+        $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->shouldHaveBeenCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function generateMetaTagHtmlGenerateNoTagWithEmptyContent()
+    {
+        $stdWrapResult = '';
+
+        $typoScript = [
+            'custom:key' => '',
+        ];
+
+        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
+        $tmpl = $this->prophesize(TemplateService::class);
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->cObj = $cObj->reveal();
+        $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->page = [
+            'title' => ''
+        ];
+        $tsfe->pSetup = [
+            'meta.' => $typoScript
+        ];
+        $GLOBALS['TSFE'] = $tsfe->reveal();
+
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
+
+        PageGenerator::renderContentWithHeader('');
+
+        $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
+    }
+
+    public function generateMultipleMetaTagsDataProvider()
+    {
+        return [
             'multi value attribute name' => [
                 [
                     'og:locale:alternate.' => [
@@ -184,11 +277,18 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         ]
                     ],
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta property="og:locale:alternate" content="nl_NL">',
-                    '<meta property="og:locale:alternate" content="de_DE">',
+                    [
+                        'type' => 'property',
+                        'name' => 'og:locale:alternate',
+                        'content' => 'nl_NL'
+                    ],
+                    [
+                        'type' => 'property',
+                        'name' => 'og:locale:alternate',
+                        'content' => 'de_DE'
+                    ]
                 ]
             ],
             'multi value attribute name (empty values are skipped)' => [
@@ -202,46 +302,54 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         ]
                     ],
                 ],
-                false,
+                '',
                 [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta property="og:locale:alternate" content="nl_NL">',
-                    '<meta property="og:locale:alternate" content="de_DE">',
-                ]
-            ],
-            'meta with empty string value' => [
-                [
-                    'custom:key' => '',
+                    [
+                        'type' => 'property',
+                        'name' => 'og:locale:alternate',
+                        'content' => 'nl_NL'
+                    ],
+                    [
+                        'type' => 'property',
+                        'name' => 'og:locale:alternate',
+                        'content' => 'de_DE'
+                    ]
                 ],
-                false,
-                [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                ]
-            ],
-            'meta with 0 value' => [
-                [
-                    'custom:key' => '0',
-                ],
-                false,
-                [
-                    '<meta name="generator" content="TYPO3 CMS">',
-                    '<meta name="custom:key" content="0">',
-                ]
             ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider generateMetaTagHtmlGeneratesCorrectTagsDataProvider
+     * @dataProvider generateMultipleMetaTagsDataProvider
      *
      * @param array $typoScript
-     * @param bool $xhtml
+     * @param string $stdWrapResult
      * @param array $expectedTags
      */
-    public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, $xhtml, array $expectedTags)
+    public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags)
     {
-        $result = $this->pageGeneratorFixture->callGenerateMetaTagHtml($typoScript, $xhtml, $this->contentObjectRenderer);
-        $this->assertSame($expectedTags, $result);
+        $cObj = $this->prophesize(ContentObjectRenderer::class);
+        $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
+        $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
+        $tmpl = $this->prophesize(TemplateService::class);
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->cObj = $cObj->reveal();
+        $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->page = [
+            'title' => ''
+        ];
+        $tsfe->pSetup = [
+            'meta.' => $typoScript
+        ];
+        $GLOBALS['TSFE'] = $tsfe->reveal();
+
+        $pageRendererProphecy = $this->prophesize(PageRenderer::class);
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRendererProphecy->reveal());
+
+        PageGenerator::renderContentWithHeader('');
+
+        $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'])->shouldHaveBeenCalled();
+        $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'])->shouldHaveBeenCalled();
     }
 }

@@ -287,7 +287,7 @@ class ModuleTemplate
         $this->pageRenderer->setXmlPrologAndDocType('<!DOCTYPE html>');
         $this->pageRenderer->setCharSet('utf-8');
         $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
-        $this->pageRenderer->addMetaTag('<meta name="viewport" content="width=device-width, initial-scale=1">');
+        $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
     }
 
     /**

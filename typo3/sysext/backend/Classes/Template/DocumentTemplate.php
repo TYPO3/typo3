@@ -485,13 +485,12 @@ function jumpToUrl(URL) {
         $this->pageRenderer->setHeadTag('<head>' . LF . '<!-- TYPO3 Script ID: ' . htmlspecialchars($this->scriptID) . ' -->');
         header('Content-Type:text/html;charset=utf-8');
         $this->pageRenderer->setCharSet('utf-8');
-        $this->pageRenderer->addMetaTag($this->generator());
-        $this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow">');
-        $this->pageRenderer->addMetaTag('<meta charset="utf-8">');
-        $this->pageRenderer->addMetaTag('<meta name="viewport" content="width=device-width, initial-scale=1">');
+        $this->pageRenderer->setMetaTag('name', 'generator', $this->generator());
+        $this->pageRenderer->setMetaTag('name', 'robots', 'noindex,follow');
+        $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $this->pageRenderer->setFavIcon($this->getBackendFavicon());
         if ($this->useCompatibilityTag) {
-            $this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
+            $this->pageRenderer->setMetaTag('http-equiv', 'X-UA-Compatible', $this->xUaCompatibilityVersion);
         }
         $this->pageRenderer->setTitle($title);
         // add docstyles
@@ -705,18 +704,19 @@ function jumpToUrl(URL) {
      */
     public function generator()
     {
-        $str = 'TYPO3 CMS, ' . TYPO3_URL_GENERAL . ', &#169; Kasper Sk&#229;rh&#248;j ' . TYPO3_copyright_year . ', extensions are copyright of their respective owners.';
-        return '<meta name="generator" content="' . $str . '" />';
+        return 'TYPO3 CMS, ' . TYPO3_URL_GENERAL . ', &#169; Kasper Sk&#229;rh&#248;j ' . TYPO3_copyright_year . ', extensions are copyright of their respective owners.';
     }
 
     /**
      * Returns X-UA-Compatible meta tag
+     * @deprecated
      *
      * @param string $content Content of the compatible tag (default: IE-8)
      * @return string <meta http-equiv="X-UA-Compatible" content="???" />
      */
     public function xUaCompatible($content = 'IE=8')
     {
+        trigger_error('Method DocumentTemplate->xUaCompatible is deprecated and will be removed with v10. Use pageRenderer->setMetaTag instead.', E_USER_DEPRECATED);
         return '<meta http-equiv="X-UA-Compatible" content="' . $content . '" />';
     }
 
