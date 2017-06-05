@@ -15,12 +15,15 @@ namespace TYPO3\CMS\About\Controller;
  */
 
 use TYPO3\CMS\About\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
- * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number and so on.
+ * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number, available modules and so on.
  */
 class AboutController extends ActionController
 {
@@ -60,10 +63,75 @@ class AboutController extends ActionController
      */
     public function indexAction()
     {
-        $this->view
-            ->assign('currentVersion', TYPO3_version)
-            ->assign('copyrightYear', TYPO3_copyright_year)
-            ->assign('donationUrl', TYPO3_URL_DONATE)
-            ->assign('loadedExtensions', $this->extensionRepository->findAllLoaded());
+        $warnings = [];
+        // Hook for additional warnings
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
+                    $hookObj->displayWarningMessages_postProcess($warnings);
+                }
+            }
+        }
+
+        $this->view->assignMultiple([
+            'copyrightYear' => TYPO3_copyright_year,
+            'donationUrl' => TYPO3_URL_DONATE,
+            'currentVersion' => TYPO3_version,
+            'loadedExtensions' => $this->extensionRepository->findAllLoaded(),
+            'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
+            'warnings' => $warnings,
+            'modules' => $this->getModulesData()
+        ]);
+    }
+
+    /**
+     * Create array with data of all main modules (Web, File, ...)
+     * and its nested sub modules
+     *
+     * @return array
+     */
+    protected function getModulesData()
+    {
+        $loadedModules = GeneralUtility::makeInstance(ModuleLoader::class);
+        $loadedModules->observeWorkspaces = true;
+        $loadedModules->load($GLOBALS['TBE_MODULES']);
+        $mainModulesData = [];
+        foreach ($loadedModules->modules as $moduleName => $moduleInfo) {
+            $moduleLabels = $loadedModules->getLabelsForModule($moduleName);
+            $mainModuleData = [
+                'name'  => $moduleName,
+                'label' => $moduleLabels['title']
+            ];
+            if (is_array($moduleInfo['sub']) && !empty($moduleInfo['sub'])) {
+                $mainModuleData['subModules'] = $this->getSubModuleData($loadedModules, $moduleName);
+            }
+            $mainModulesData[] = $mainModuleData;
+        }
+        return $mainModulesData;
+    }
+
+    /**
+     * Create array with data of all subModules of a specific main module
+     *
+     * @param ModuleLoader $loadedModules the module loader instance
+     * @param string $moduleName Name of the main module
+     * @return array
+     */
+    protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName)
+    {
+        $subModulesData = [];
+        foreach ($loadedModules->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
+            $moduleLabels = $loadedModules->getLabelsForModule($moduleName . '_' . $subModuleName);
+            $subModuleData = [];
+            $subModuleData['name'] = $subModuleName;
+            $subModuleData['icon'] = $subModuleInfo['icon'];
+            $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'];
+            $subModuleData['label'] = $moduleLabels['title'];
+            $subModuleData['shortDescription'] = $moduleLabels['shortdescription'];
+            $subModuleData['longDescription'] = $moduleLabels['description'];
+            $subModulesData[] = $subModuleData;
+        }
+        return $subModulesData;
     }
 }

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Update backend user setting startModule if set to "help_aboutmodules"
  */
-class BackendUserStartModuleUpdate extends AbstractUpdate
+class StartModuleUpdate extends AbstractUpdate
 {
     /**
      * @var string
@@ -44,6 +44,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                 $userConfig = unserialize($backendUser['uc'], ['allowed_classes' => false]);
                 if ($userConfig['startModule'] === 'help_aboutmodules'
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
+                    || $userConfig['startModule'] === 'help_AboutAboutmodules'
                 ) {
                     $needsExecution = true;
                     break;
@@ -51,7 +52,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
             }
         }
         if ($needsExecution) {
-            $description = 'The backend user setting startModule is changed for the extension aboutmodules. Update all'
+            $description = 'The backend user setting startModule is changed for the extensions about/aboutmodules. Update all'
                 . ' backend users that use ext:aboutmodules as startModule.';
         }
         return $needsExecution;
@@ -74,8 +75,9 @@ class BackendUserStartModuleUpdate extends AbstractUpdate
                 $userConfig = unserialize($backendUser['uc'], ['allowed_classes' => false]);
                 if ($userConfig['startModule'] === 'help_aboutmodules'
                     || $userConfig['startModule'] === 'help_AboutmodulesAboutmodules'
+                    || $userConfig['startModule'] === 'help_AboutAboutmodules'
                 ) {
-                    $userConfig['startModule'] = 'help_AboutAboutmodules';
+                    $userConfig['startModule'] = 'help_AboutAbout';
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
                     $queryBuilder->update('be_users')
                         ->where(

@@ -23,8 +23,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\In
 // TYPO3 CMS 8
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\WizardDoneToRegistry::class]
     = \TYPO3\CMS\Install\Updates\WizardDoneToRegistry::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdate::class]
-    = \TYPO3\CMS\Install\Updates\BackendUserStartModuleUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\StartModuleUpdate::class]
+    = \TYPO3\CMS\Install\Updates\StartModuleUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\FrontendUserImageUpdateWizard::class]
     = \TYPO3\CMS\Install\Updates\FrontendUserImageUpdateWizard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class]
