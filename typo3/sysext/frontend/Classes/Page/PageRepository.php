@@ -201,7 +201,7 @@ class PageRepository
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['init'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!$hookObject instanceof PageRepositoryInitHookInterface) {
-                    throw new \UnexpectedValueException($hookObject . ' must implement interface ' . PageRepositoryInitHookInterface::class, 1379579812);
+                    throw new \UnexpectedValueException($classRef . ' must implement interface ' . PageRepositoryInitHookInterface::class, 1379579812);
                 }
                 $hookObject->init_postProcess($this);
             }
