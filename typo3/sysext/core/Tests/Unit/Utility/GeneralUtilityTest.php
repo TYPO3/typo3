@@ -1081,7 +1081,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'trailing carriage return' => ['test@example.com' . CR],
             'trailing linefeed' => ['test@example.com' . LF],
             'trailing carriage return linefeed' => ['test@example.com' . CRLF],
-            'trailing tab' => ['test@example.com' . TAB]
+            'trailing tab' => ['test@example.com' . TAB],
+            'prohibited input characters' => ['“mailto:test@example.com”'],
         ];
     }
 
@@ -2066,6 +2067,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'string array()' => ['array()'],
             'random string' => ['qwe'],
             'http directory umlauts' => ['http://www.oebb.at/äöü/'],
+            'prohibited input characters' => ['https://{$unresolved_constant}'],
         ];
     }
 
