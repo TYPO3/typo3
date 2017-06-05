@@ -76,9 +76,13 @@ class ImageCropUpdater implements RowUpdaterInterface
 
         foreach ($tablePayload['fields'] as $field) {
             if (strpos($inputRow[$field], '{"x":') === 0) {
-                $file = $this->getFile($inputRow, $tablePayload['fileReferenceField'] ?: 'uid_local');
                 $cropArray = json_decode($inputRow[$field], true);
                 if (is_array($cropArray)) {
+                    $file = $this->getFile($inputRow, $tablePayload['fileReferenceField'] ?: 'uid_local');
+                    if (null === $file) {
+                        continue;
+                    }
+
                     $cropArea = Area::createFromConfiguration(json_decode($inputRow[$field], true));
                     $cropVariantCollectionConfig = [
                         'default' => [
