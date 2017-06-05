@@ -914,7 +914,11 @@ class GeneralUtility
         $domain = substr($email, $atPosition + 1);
         $user = substr($email, 0, $atPosition);
         if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
-            $domain = self::idnaEncode($domain);
+            try {
+                $domain = self::idnaEncode($domain);
+            } catch (\InvalidArgumentException $exception) {
+                return false;
+            }
         }
         return filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== false;
     }
@@ -1018,7 +1022,11 @@ class GeneralUtility
             return false;
         }
         if (isset($parsedUrl['host']) && !preg_match('/^[a-z0-9.\\-]*$/i', $parsedUrl['host'])) {
-            $parsedUrl['host'] = self::idnaEncode($parsedUrl['host']);
+            try {
+                $parsedUrl['host'] = self::idnaEncode($parsedUrl['host']);
+            } catch (\InvalidArgumentException $exception) {
+                return false;
+            }
         }
         return filter_var(HttpUtility::buildUrl($parsedUrl), FILTER_VALIDATE_URL) !== false;
     }
