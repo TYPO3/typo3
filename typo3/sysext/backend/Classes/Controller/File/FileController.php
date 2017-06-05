@@ -92,8 +92,16 @@ class FileController
     protected function init()
     {
         // Set the GPvars from outside
-        $this->file = GeneralUtility::_GP('file');
+        $this->file = GeneralUtility::_GP('data');
+        if ($this->file === null) {
+            // This happens in clipboard mode only
+            $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
+        } else {
+            $mode = key($this->file);
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][0]['redirect']);
+        }
         $this->CB = GeneralUtility::_GP('CB');
+
         if (isset($this->file['rename'][0]['conflictMode'])) {
             $conflictMode = $this->file['rename'][0]['conflictMode'];
             unset($this->file['rename'][0]['conflictMode']);
@@ -101,7 +109,6 @@ class FileController
         } else {
             $this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
         }
-        $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
         $this->initClipboard();
         $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
     }

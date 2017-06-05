@@ -144,9 +144,9 @@ class FolderUtilityRenderer
             $markup[] = '<input type="file" multiple="multiple" name="upload_' . $a . '[]" size="50" />';
             $markup[] = '</span>';
             $markup[] = '</div>';
-            $markup[] = '<input type="hidden" name="file[upload][' . $a . '][target]" value="'
+            $markup[] = '<input type="hidden" name="data[upload][' . $a . '][target]" value="'
                 . htmlspecialchars($combinedIdentifier) . '" />';
-            $markup[] = '<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" />';
+            $markup[] = '<input type="hidden" name="data[upload][' . $a . '][data]" value="' . $a . '" />';
         }
         $redirectValue = $this->parameterProvider->getScriptUrl() . GeneralUtility::implodeArrayForUrl(
             '',

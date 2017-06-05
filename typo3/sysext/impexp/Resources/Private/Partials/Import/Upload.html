@@ -6,8 +6,8 @@
 </h4>
 <div class="form-group">
 	<f:form.upload name="upload_1" />
-	<f:form.hidden name="file[upload][1][target]" value="{tempFolder}" />
-	<f:form.hidden name="file[upload][1][data]" value="1" />
+	<f:form.hidden name="data[upload][1][target]" value="{tempFolder}" />
+	<f:form.hidden name="data[upload][1][data]" value="1" />
 </div>
 <div class="form-group">
 	<f:form.submit class="btn btn-default" name="_upload" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')}" />

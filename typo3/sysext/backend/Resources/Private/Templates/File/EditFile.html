@@ -1,14 +1,4 @@
 <form action="{moduleUrlTceFile}" method="post" id="EditFileController" name="editform">
     <h1><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.pagetitle" /> {fileName}</h1>
-    <div id="c-edit">
-        <textarea rows="30" name="file[editfile][0][data]" wrap="off" class="form-control text-monospace t3js-enable-tab">{fileContent}</textarea>
-        <input type="hidden" name="file[editfile][0][target]" value="{uid}" />
-        <input type="hidden" name="redirect" value="{hValue}" />
-    </div>
-    <br />
-    <f:if condition="{extList}">
-        <f:format.raw>
-            <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.coundNot" arguments="{0: extList}" />
-        </f:format.raw>
-    </f:if>
+    <f:format.raw>{form}</f:format.raw>
 </form>

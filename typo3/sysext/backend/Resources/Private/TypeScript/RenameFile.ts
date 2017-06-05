@@ -33,16 +33,16 @@ class RenameFile {
   private checkForDuplicate(e: any): void {
     e.preventDefault();
 
-    const form: any = $(e.currentTarget).closest('form');
-    const fileNameField: any = form.find('input[name="file[rename][0][target]"]');
-    const conflictModeField: any = form.find('input[name="file[rename][0][conflictMode]"]');
+    const form: any = $('#' + $(e.currentTarget).attr('form'));
+    const fileNameField: any = form.find('input[name="data[rename][0][target]"]');
+    const conflictModeField: any = form.find('input[name="data[rename][0][conflictMode]"]');
     const ajaxUrl: string = TYPO3.settings.ajaxUrls.file_exists;
 
     $.ajax({
       cache: false,
       data: {
         fileName: fileNameField.val(),
-        fileTarget: form.find('input[name="file[rename][0][destination]"]').val(),
+        fileTarget: form.find('input[name="data[rename][0][destination]"]').val(),
       },
       success: (response: any): void => {
         const fileExists: boolean = response !== false;

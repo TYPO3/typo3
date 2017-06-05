@@ -180,8 +180,8 @@ class FileUploadController extends AbstractModule
         // Adding 'size="50" ' for the sake of Mozilla!
         $content .= '
 				<input type="file" multiple="multiple" name="upload_1[]" />
-				<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
-				<input type="hidden" name="file[upload][1][data]" value="1" /><br />
+				<input type="hidden" name="data[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
+				<input type="hidden" name="data[upload][1][data]" value="1" /><br />
 			';
         $content .= '
 			</div>

@@ -28,7 +28,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 		}
 		var identifier = $anchorElement.data('identifier');
 		var deleteType = $anchorElement.data('deleteType');
-		var deleteUrl = $anchorElement.data('deleteUrl') + '&file[delete][0][data]=' + encodeURIComponent(identifier);
+		var deleteUrl = $anchorElement.data('deleteUrl') + '&data[delete][0][data]=' + encodeURIComponent(identifier);
 		if ($anchorElement.data('check')) {
 			var $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('content'), Severity.warning, [
 				{
@@ -48,11 +48,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 					Modal.dismiss();
 				} else if (e.target.name === 'yes') {
 					Modal.dismiss();
-					top.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
+					top.list_frame.location.href = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
 				}
 			});
 		} else {
-			top.list_frame.location.href = deleteUrl + '&redirect=' + redirectUrl;
+			top.list_frame.location.href = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
 		}
 	});
 

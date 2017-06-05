@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Hook;
 
 /*
@@ -14,8 +15,9 @@ namespace TYPO3\CMS\T3editor\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Controller\File\EditFileController;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\T3editor\Form\Element\T3editorElement;
 
 /**
  * File edit hook for t3editor
@@ -23,106 +25,55 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileEditHook
 {
     /**
-     * @var \TYPO3\CMS\T3editor\T3editor
+     * Editor mode to file extension mapping. This is just temporarily in place and will be removed after refactoring
+     * EXT:t3editor.
+     *
+     * @var array
      */
-    protected $t3editor = null;
-
-    /**
-     * @var string
-     */
-    protected $ajaxSaveType = 'TypoScriptTemplateInformationModuleFunctionController';
-
-    /**
-     * @return \TYPO3\CMS\T3editor\T3editor
-     */
-    protected function getT3editor()
-    {
-        if ($this->t3editor === null) {
-            $this->t3editor = GeneralUtility::makeInstance(\TYPO3\CMS\T3editor\T3editor::class)->setAjaxSaveType($this->ajaxSaveType);
-        }
-        return $this->t3editor;
-    }
+    protected $fileExtensions = [
+        T3editorElement::MODE_CSS => ['css'],
+        T3editorElement::MODE_HTML => ['htm', 'html'],
+        T3editorElement::MODE_JAVASCRIPT => ['js'],
+        T3editorElement::MODE_PHP => ['php', 'php5', 'php7', 'phps'],
+        T3editorElement::MODE_SPARQL => ['rq'],
+        T3editorElement::MODE_TYPOSCRIPT => ['ts', 'typoscript', 'txt'],
+        T3editorElement::MODE_XML => ['xml'],
+    ];
 
     /**
      * Hook-function: inject t3editor JavaScript code before the page is compiled
      * called in file_edit module
      *
      * @param array $parameters
-     * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj
+     * @param EditFileController $pObj
      */
-    public function preOutputProcessingHook($parameters, $pObj)
+    public function preOutputProcessingHook(array $parameters, EditFileController $pObj)
     {
-        $t3editor = $this->getT3editor();
-        $t3editor->setModeByFile($parameters['target']);
-        if (!$t3editor->getMode()) {
-            return;
+        $target = '';
+        if (isset($parameters['target']) && is_string($parameters['target'])) {
+            $target = $parameters['target'];
         }
-        $t3editor->getJavascriptCode();
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
+        $parameters['dataColumnDefinition']['config']['renderType'] = 't3editor';
+        $parameters['dataColumnDefinition']['config']['format'] = $this->determineFormatByExtension($target);
     }
 
     /**
-     * Hook-function: inject t3editor JavaScript code before the page is compiled
-     * called in \TYPO3\CMS\Backend\Template\DocumentTemplate:startPage
-     *
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
+     * @param string $fileIdentifier
+     * @return string
      */
-    public function preStartPageHook()
+    protected function determineFormatByExtension(string $fileIdentifier): string
     {
-        // @todo: this is a workaround. Ideally the document template holds the current request so we can match the route
-        // against the name of the route and not the GET parameter
-        if (GeneralUtility::_GET('route') === '/file/editcontent') {
-            $t3editor = $this->getT3editor();
-            $t3editor->getJavascriptCode();
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
+        $fileExtension = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileIdentifier)->getExtension();
+        if (empty($fileExtension)) {
+            return T3editorElement::MODE_MIXED;
         }
-    }
 
-    /**
-     * Hook-function:
-     * called in file_edit module
-     *
-     * @param array $parameters
-     * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj
-     */
-    public function postOutputProcessingHook($parameters, $pObj)
-    {
-        $t3editor = $this->getT3editor();
-        if (!$t3editor->getMode()) {
-            return;
+        foreach ($this->fileExtensions as $format => $extensions) {
+            if (in_array($fileExtension, $extensions, true)) {
+                return $format;
+            }
         }
-        $attributes = 'rows="30" wrap="off" style="width:98%;height:60%"';
-        $title = $GLOBALS['LANG']->getLL('file') . ' ' . htmlspecialchars($pObj->target);
-        $outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'text-monospace enable-tab', '$1', $attributes, $title, [
-            'target' => (int)$pObj->target
-        ]);
-        $parameters['pageContent'] = preg_replace('/\\<textarea .*name="file\\[editfile\\]\\[0\\]\\[data\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['pageContent']);
-    }
 
-    /**
-     * @param array $parameters
-     * @param mixed $pObj
-     *
-     * @return bool TRUE if successful
-     */
-    public function save($parameters, $pObj)
-    {
-        $savingsuccess = false;
-        if ($parameters['type'] === $this->ajaxSaveType) {
-            /** @var \TYPO3\CMS\Backend\Controller\File\FileController $tceFile */
-            $tceFile = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
-            $response = $tceFile->processAjaxRequest($parameters['request'], $parameters['response']);
-            $result = json_decode((string)$response->getBody(), true);
-            $savingsuccess = is_array($result) && $result['editfile'][0];
-        }
-        return $savingsuccess;
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return T3editorElement::MODE_MIXED;
     }
 }

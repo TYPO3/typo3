@@ -1,24 +1,27 @@
-<h1>
-    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.pagetitle"/>
-</h1>
-<div>
-    <form action="{moduleUrlTceFile}" method="post" name="editform" role="form">
-        <div class="form-group">
-            <input class="form-control" type="text" name="file[rename][0][target]" value="{fileName}"
-                   data-original="{fileName}" style="width:384px;"/>
-            <input type="hidden" name="file[rename][0][data]" value="{fileIdentifier}"/>
-            <f:if condition="{destination}">
-                <input type="hidden" name="file[rename][0][destination]" value="{destination}"/>
-                <input type="hidden" name="file[rename][0][conflictMode]" value="{conflictMode}"/>
-            </f:if>
+<form action="{moduleUrlTceFile}" method="post" name="editform" role="form" id="RenameFileController">
+    <fieldset class="form-section">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="t3js-formengine-label" for="rename_target">
+                    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:{fieldLabel}" />
+                </label>
+                <div class="formengine-field-item">
+                    <div class="form-control-wrap">
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-element">
+                                <input id="rename_target" class="form-control" type="text" name="data[rename][0][target]" value="{fileName}" data-original="{fileName}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <input class="btn btn-primary t3js-submit-file-rename" type="submit"
-                   value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.php.submit')}"/>
-            <input class="btn btn-danger" type="submit"
-                   value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
-                   onclick="backToList(); return false;"/>
-            <input type="hidden" name="redirect" value="{returnUrl}"/>
-        </div>
-    </form>
-</div>
+    </fieldset>
+
+    <f:if condition="{destination}">
+        <input type="hidden" name="data[rename][0][destination]" value="{destination}"/>
+        <input type="hidden" name="data[rename][0][conflictMode]" value="{conflictMode}"/>
+    </f:if>
+    <input type="hidden" name="data[rename][0][data]" value="{fileIdentifier}"/>
+    <input type="hidden" name="data[rename][0][redirect]" value="{returnUrl}"/>
+</form>

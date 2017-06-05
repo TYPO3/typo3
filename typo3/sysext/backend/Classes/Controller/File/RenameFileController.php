@@ -17,9 +17,12 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -46,7 +49,7 @@ class RenameFileController extends AbstractModule
     /**
      * The file or folder object that should be renamed
      *
-     * @var \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $fileOrFolderObject
+     * @var File|Folder $fileOrFolderObject
      */
     protected $fileOrFolderObject;
 
@@ -102,7 +105,7 @@ class RenameFileController extends AbstractModule
         // so the redirect will NOT end in an error message
         // this case only happens if you select the folder itself in the foldertree and then use the clickmenu to
         // rename the folder
-        if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+        if ($this->fileOrFolderObject instanceof Folder) {
             $parsedUrl = parse_url($this->returnUrl);
             $queryParts = GeneralUtility::explodeUrl2Array(urldecode($parsedUrl['query']));
             if ($queryParts['id'] === $this->fileOrFolderObject->getCombinedIdentifier()) {
@@ -138,16 +141,19 @@ class RenameFileController extends AbstractModule
         $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
         $assigns['returnUrl'] = $this->returnUrl;
 
-        if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+        if ($this->fileOrFolderObject instanceof Folder) {
             $fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
+            $targetLabel = 'file_rename.php.label.target.folder';
         } else {
             $fileIdentifier = $this->fileOrFolderObject->getUid();
+            $targetLabel = 'file_rename.php.label.target.file';
             $assigns['conflictMode'] = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
             $assigns['destination'] = substr($this->fileOrFolderObject->getCombinedIdentifier(), 0, -strlen($this->fileOrFolderObject->getName()));
         }
 
         $assigns['fileName'] = $this->fileOrFolderObject->getName();
         $assigns['fileIdentifier'] = $fileIdentifier;
+        $assigns['fieldLabel'] = $targetLabel;
 
         // Create buttons
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -163,9 +169,21 @@ class RenameFileController extends AbstractModule
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
+
+        // Save and Close button
+        $saveAndCloseButton = $buttonBar->makeInputButton()
+            ->setName('_saveandclose')
+            ->setValue('1')
+            ->setShowLabelText(true)
+            ->setClasses('t3js-submit-file-rename')
+            ->setForm('RenameFileController')
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.saveAndClose'))
+            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+
+        $buttonBar->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
 
         $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelArray([
             'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),

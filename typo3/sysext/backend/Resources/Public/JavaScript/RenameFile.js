@@ -26,15 +26,15 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Ba
         };
         RenameFile.prototype.checkForDuplicate = function (e) {
             e.preventDefault();
-            var form = $(e.currentTarget).closest('form');
-            var fileNameField = form.find('input[name="file[rename][0][target]"]');
-            var conflictModeField = form.find('input[name="file[rename][0][conflictMode]"]');
+            var form = $('#' + $(e.currentTarget).attr('form'));
+            var fileNameField = form.find('input[name="data[rename][0][target]"]');
+            var conflictModeField = form.find('input[name="data[rename][0][conflictMode]"]');
             var ajaxUrl = TYPO3.settings.ajaxUrls.file_exists;
             $.ajax({
                 cache: false,
                 data: {
                     fileName: fileNameField.val(),
-                    fileTarget: form.find('input[name="file[rename][0][destination]"]').val(),
+                    fileTarget: form.find('input[name="data[rename][0][destination]"]').val(),
                 },
                 success: function (response) {
                     var fileExists = response !== false;

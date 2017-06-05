@@ -16,14 +16,19 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -138,10 +143,21 @@ class EditFileController extends AbstractModule
     }
 
     /**
-     * Main function, redering the actual content of the editing page
+     * Main function, rendering the actual content of the editing page
      */
     public function main()
     {
+        $dataColumnDefinition = [
+            'label' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:file'))
+                . ' ' . htmlspecialchars($this->target),
+            'config' => [
+                'type' => 'text',
+                'cols' => 48,
+                'wrap' => 'OFF',
+            ],
+            'defaultExtras' => 'fixed-font: enable-tab'
+        ];
+
         $this->getButtons();
         // Hook: before compiling the output
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
@@ -149,7 +165,8 @@ class EditFileController extends AbstractModule
             if (is_array($preOutputProcessingHook)) {
                 $hookParameters = [
                     'content' => &$this->content,
-                    'target' => &$this->target
+                    'target' => &$this->target,
+                    'dataColumnDefinition' => &$dataColumnDefinition,
                 ];
                 foreach ($preOutputProcessingHook as $hookFunction) {
                     GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
@@ -164,22 +181,67 @@ class EditFileController extends AbstractModule
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
             if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
-                throw new \Exception('Files with that extension are not editable.', 1476050135);
+                throw new \Exception('Files with that extension are not editable. Allowed extensions are: ' . $extList, 1476050135);
             }
-
-            // Read file content to edit:
-            $fileContent = $this->fileObject->getContents();
 
             // Making the formfields
             $hValue = BackendUtility::getModuleUrl('file_edit', [
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
             ]);
-            $assigns['uid'] = $this->fileObject->getUid();
-            $assigns['fileContent'] = $fileContent;
-            $assigns['hValue'] = $hValue;
+
+            $formData = [
+                'databaseRow' => [
+                    'uid' => 0,
+                    'data' => $this->fileObject->getContents(),
+                    'target' => $this->fileObject->getUid(),
+                    'redirect' => $hValue,
+                ],
+                'tableName' => 'editfile',
+                'processedTca' => [
+                    'columns' => [
+                        'data' => $dataColumnDefinition,
+                        'target' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'hidden',
+                            ],
+                        ],
+                        'redirect' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'hidden',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        1 => [
+                            'showitem' => 'data,target,redirect',
+                        ],
+                    ],
+                ],
+                'recordTypeValue' => 1,
+                'inlineStructure' => [],
+                'renderType' => 'fullRecordContainer',
+            ];
+
+            $resultArray = GeneralUtility::makeInstance(NodeFactory::class)->create($formData)->render();
+            $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+            $formResultCompiler->mergeResult($resultArray);
+
+            $form = $formResultCompiler->addCssFiles()
+                . $resultArray['html']
+                . $formResultCompiler->printNeededJSFunctions();
+
+            $assigns['form'] = $form;
         } catch (\Exception $e) {
-            $assigns['extList'] = $extList;
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::ERROR, true);
+
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+
+            HttpUtility::redirect($this->returnUrl, HttpUtility::HTTP_STATUS_500);
         }
 
         // Rendering of the output via fluid
@@ -227,8 +289,6 @@ class EditFileController extends AbstractModule
 
     /**
      * Builds the buttons for the docheader and returns them as an array
-     *
-     * @return array
      */
     public function getButtons()
     {
@@ -246,6 +306,7 @@ class EditFileController extends AbstractModule
             ->setName('_save')
             ->setValue('1')
             ->setOnClick('document.editform.submit();')
+            ->setForm('EditFileController')
             ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.submit'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
@@ -253,6 +314,7 @@ class EditFileController extends AbstractModule
         $saveAndCloseButton = $buttonBar->makeInputButton()
             ->setName('_saveandclose')
             ->setValue('1')
+            ->setForm('EditFileController')
             ->setOnClick(
                 'document.editform.redirect.value='
                 . GeneralUtility::quoteJSvalue($this->returnUrl)

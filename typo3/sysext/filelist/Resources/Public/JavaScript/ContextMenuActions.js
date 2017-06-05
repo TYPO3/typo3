@@ -71,7 +71,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var $anchorElement = $(this);
         var performDelete = function () {
             top.TYPO3.Backend.ContentContainer.setUrl(
-                top.TYPO3.settings.FileCommit.moduleUrl + '&file[delete][0][data]=' + top.rawurlencode(uid) + '&redirect=' + ContextMenuActions.getReturnUrl()
+                top.TYPO3.settings.FileCommit.moduleUrl + '&data[delete][0][data]=' + top.rawurlencode(uid) + '&data[delete][0][redirect]=' + ContextMenuActions.getReturnUrl()
             );
         };
         if (!$anchorElement.data('title')) {
