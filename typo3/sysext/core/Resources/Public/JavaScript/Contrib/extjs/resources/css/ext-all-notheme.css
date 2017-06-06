@@ -1934,7 +1934,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     left:0;
     top:0;
     zoom:1;
-    overflow:hidden;
+    overflow:auto;
 }
 
 .x-toolbar-left {
