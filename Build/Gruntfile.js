@@ -202,7 +202,8 @@ module.exports = function (grunt) {
 			},
 			files: {
 				src: [
-					'<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts'
+					'<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts',
+					'./types/**/*.ts'
 				]
 			}
 		},
