@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Doctrine\DBAL\DBALException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -191,35 +192,35 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $stmt = $queryBuilder
-            ->select('uid', 'pid', $this->fieldToMigrate)
-            ->from($this->table)
-            ->where(
-                $queryBuilder->expr()->isNotNull($this->fieldToMigrate),
-                $queryBuilder->expr()->neq(
-                    $this->fieldToMigrate,
-                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->comparison(
-                    'CAST(CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS DECIMAL) AS CHAR)',
-                    ExpressionBuilder::NEQ,
-                    'CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS CHAR)'
+        try {
+            $result = $queryBuilder
+                ->select('uid', 'pid', $this->fieldToMigrate)
+                ->from($this->table)
+                ->where(
+                    $queryBuilder->expr()->isNotNull($this->fieldToMigrate),
+                    $queryBuilder->expr()->neq(
+                        $this->fieldToMigrate,
+                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                    ),
+                    $queryBuilder->expr()->comparison(
+                        'CAST(CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS DECIMAL) AS CHAR)',
+                        ExpressionBuilder::NEQ,
+                        'CAST(' . $queryBuilder->quoteIdentifier($this->fieldToMigrate) . ' AS CHAR)'
+                    )
                 )
-            )
-            ->orderBy('uid')
-            ->setFirstResult($limit)
-            ->execute();
+                ->orderBy('uid')
+                ->setFirstResult($limit)
+                ->execute();
 
-        $dbQueries[] = $queryBuilder->getSQL();
+            $dbQueries[] = $queryBuilder->getSQL();
 
-        if ($stmt->errorCode() > 0) {
+            return $result->fetchAll();
+        } catch (DBALException $e) {
             throw new \RuntimeException(
-                'Database query failed. Error was: ' . implode(CRLF, $stmt->errorInfo()),
+                'Database query failed. Error was: ' . $e->getPrevious()->getMessage(),
                 1476050084
             );
         }
-
-        return $stmt->fetchAll();
     }
 
     /**
