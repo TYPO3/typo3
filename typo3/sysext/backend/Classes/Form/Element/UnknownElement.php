@@ -27,8 +27,9 @@ class UnknownElement extends AbstractFormElement
     public function render()
     {
         $type = $this->data['parameterArray']['fieldConf']['config']['type'];
+        $renderType = $this->data['renderType'];
         $resultArray = $this->initializeResultArray();
-        $resultArray['html'] = 'Unknown type: ' . $type . '<br />';
+        $resultArray['html'] = 'Unknown type: ' . $type . ($renderType ? ', render type: ' . $renderType : '') . '<br />';
         return $resultArray;
     }
 }
