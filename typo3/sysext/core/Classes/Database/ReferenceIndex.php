@@ -207,7 +207,8 @@ class ReferenceIndex
             $tableRelationFields = $this->runtimeCache->get($cacheId);
         }
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable('sys_refindex');
 
         // Get current index from Database with hash as index using $uidIndexField
         // no restrictions are needed, since sys_refindex is not a TCA table
@@ -227,7 +228,7 @@ class ReferenceIndex
         }
 
         // If the table has fields which could contain relations and the record does exist (including deleted-flagged)
-        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll();
 
         $exists = $queryBuilder
