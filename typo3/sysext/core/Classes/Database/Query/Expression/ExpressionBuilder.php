@@ -270,7 +270,7 @@ class ExpressionBuilder
     /**
      * Returns a comparison that can find a value in a list field (CSV).
      *
-     * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
+     * @param string $fieldName The field name. Will be quoted according to database platform automatically.
      * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
      * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
      * @return string
@@ -297,7 +297,7 @@ class ExpressionBuilder
             case 'postgresql':
             case 'pdo_postgresql':
                 return $this->comparison(
-                    $isColumn ? $value . '::text' : $value,
+                    $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
                     self::EQ,
                     sprintf(
                         'ANY(string_to_array(%s, %s))',
@@ -315,11 +315,29 @@ class ExpressionBuilder
                 break;
             case 'sqlsrv':
             case 'pdo_sqlsrv':
-                throw new \RuntimeException(
-                    'FIND_IN_SET support for database platform "SQLServer" not yet implemented.',
-                    1459696681
-                );
-                break;
+            case 'mssql':
+                // See unit and functional tests for details
+                if ($isColumn) {
+                    $expression = $this->orX(
+                        $this->eq($fieldName, $value),
+                        $this->like($fieldName, $value . ' + \',%\''),
+                        $this->like($fieldName, '\'%,\' + ' . $value),
+                        $this->like($fieldName, '\'%,\' + ' . $value . ' + \',%\'')
+                    );
+                } else {
+                    $likeEscapedValue = str_replace(
+                        ['[', '%'],
+                        ['[[]', '[%]'],
+                        $this->unquoteLiteral($value)
+                    );
+                    $expression = $this->orX(
+                        $this->eq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
+                        $this->like($fieldName, $this->literal($likeEscapedValue . ',%')),
+                        $this->like($fieldName, $this->literal('%,' . $likeEscapedValue)),
+                        $this->like($fieldName, $this->literal('%,' . $likeEscapedValue . ',%'))
+                    );
+                }
+                return (string)$expression;
             case 'sqlite':
             case 'sqlite3':
             case 'pdo_sqlite':
