@@ -54,7 +54,7 @@
 	function openLinkBrowser(editor, element) {
 		var additionalParameters = '';
 
-		if (!element) {
+		if ($.isEmptyObject(element)) {
 			element = CKEDITOR.plugins.link.getSelectedLink(editor);
 		}
 		if (element) {
