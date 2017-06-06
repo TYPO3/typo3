@@ -12,6 +12,7 @@ Every change to the TYPO3 Core which might affect your site is documented here.
 .. toctree::
    :hidden:
 
+   Sitemap/Index
    Changelog/7.6.x/Index
    Changelog/7.6/Index
    Changelog/7.5/Index
