@@ -233,6 +233,26 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     /**
      * @test
      */
+    public function inSetThrowsExceptionWithEmptyValue()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1459696089);
+        $this->subject->inSet('aField', '');
+    }
+
+    /**
+     * @test
+     */
+    public function inSetThrowsExceptionWithInvalidValue()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1459696090);
+        $this->subject->inSet('aField', 'an,Invalid,Value');
+    }
+
+    /**
+     * @test
+     */
     public function inSetForMySQL()
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
@@ -256,8 +276,10 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote("'1'", null)->shouldBeCalled()->willReturn("'1'");
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             return '"' . $args[0] . '"';
         });
@@ -366,6 +388,30 @@ class ExpressionBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->expectExceptionCode(1476029421);
 
         $this->subject->inSet('aField', ':dcValue1');
+    }
+
+    /**
+     * @test
+     */
+    public function inSetForMssql()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mssql');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
+
+        $this->connectionProphet->quote('1', null)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphet->quote('1,%', null)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphet->quote('%,1', null)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphet->quote('%,1,%', null)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '[' . $args[0] . ']';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', "'1'");
+
+        $this->assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
     }
 
     /**

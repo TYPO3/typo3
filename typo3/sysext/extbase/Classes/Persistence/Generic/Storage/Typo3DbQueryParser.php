@@ -364,7 +364,7 @@ class Typo3DbQueryParser
                     } else {
                         return $this->queryBuilder->expr()->inSet(
                             $tableName . '.' . $columnName,
-                            $this->queryBuilder->createNamedParameter($value)
+                            $this->queryBuilder->quote($value)
                         );
                     }
                 } else {
