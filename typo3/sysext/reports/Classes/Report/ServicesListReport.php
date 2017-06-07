@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Sv\Report;
+namespace TYPO3\CMS\Reports\Report;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -40,7 +40,7 @@ class ServicesListReport implements ReportInterface
     public function __construct(ReportController $reportsModule)
     {
         $this->reportsModule = $reportsModule;
-        $this->getLanguageService()->includeLLFile('EXT:sv/Resources/Private/Language/locallang.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_servicereport.xlf');
     }
 
     /**
@@ -53,7 +53,7 @@ class ServicesListReport implements ReportInterface
         // Rendering of the output via fluid
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:sv/Resources/Private/Templates/ServicesListReport.html'
+            'EXT:reports/Resources/Private/Templates/ServicesListReport.html'
         ));
 
         $view->assignMultiple([

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\sv\Tests\Unit\Report;
+namespace TYPO3\Reports\Tests\Unit\Report;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\Controller\ReportController;
-use TYPO3\CMS\Sv\Report\ServicesListReport;
+use TYPO3\CMS\Reports\Report\ServicesListReport;
 
 /**
  * Test case for class ServicesListReport
@@ -68,7 +68,7 @@ class ServicesListReportTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     private function standaloneViewProphecy(): ObjectProphecy
     {
         $templatePath = GeneralUtility::getFileAbsFileName(
-            'EXT:sv/Resources/Private/Templates/ServicesListReport.html'
+            'EXT:reports/Resources/Private/Templates/ServicesListReport.html'
         );
         $standaloneViewProphecy = $this->prophesize(StandaloneView::class);
         $standaloneViewProphecy->setTemplatePathAndFilename($templatePath)->shouldBeCalled();
@@ -86,7 +86,7 @@ class ServicesListReportTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     {
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy
-            ->includeLLFile('EXT:sv/Resources/Private/Language/locallang.xlf')
+            ->includeLLFile('EXT:reports/Resources/Private/Language/locallang_servicereport.xlf')
             ->willReturn(null)
             ->shouldBeCalled();
         $languageServiceProphecy->getLL(Argument::any())->willReturn('translation string');
