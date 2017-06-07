@@ -67,7 +67,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 				'type': 'time',
 				'value': 0,
 				'config': [],
-				'result': '0:00'
+				'result': '00:00'
 			},
 			{
 				'description': 'works for type time with timestamp',

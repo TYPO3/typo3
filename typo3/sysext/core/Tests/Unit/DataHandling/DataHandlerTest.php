@@ -166,20 +166,12 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         // Three elements: input, timezone of input, expected output (UTC)
         return [
-            // German standard time (without DST) is one hour ahead of UTC
-            'date in 2016 in German timezone' => [
-                1457103519, 'Europe/Berlin', 1457103519 - 3600
+            'timestamp is passed through, as it is UTC' => [
+                1457103519, 'Europe/Berlin', 1457103519
             ],
-            'date in 1969 in German timezone' => [
-                -7200, 'Europe/Berlin', -10800
+            'ISO date is interpreted as local date and is output as correct timestamp' => [
+                '2017-06-07T00:10:00Z', 'Europe/Berlin', 1496787000
             ],
-            // Los Angeles is 8 hours behind UTC
-            'date in 2016 in Los Angeles timezone' => [
-                1457103519, 'America/Los_Angeles', 1457103519 + 28800
-            ],
-            'date in UTC' => [
-                1457103519, 'UTC', 1457103519
-            ]
         ];
     }
 
