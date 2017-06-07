@@ -221,7 +221,7 @@ class PermissionAjaxController
         $groupUid = (int)$groupUid;
 
         // Get usernames
-        $beGroupsO = $beGroups = BackendUtility::getGroupNames();
+        $beGroupsO = $beGroups = BackendUtility::getListGroupNames();
         // Group selector:
         $options = '';
         // flag: is set if the page-groupid equals one from the group-list
