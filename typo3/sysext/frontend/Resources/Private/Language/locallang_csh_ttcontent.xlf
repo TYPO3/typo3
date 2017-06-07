@@ -252,34 +252,11 @@ A Rich Text Editor is commonly used to add a visual editing interface for 'Text'
 If the type is "Bullet List" each line in this field is a bullet item.
 
 &lt;b&gt;Tables:&lt;/b&gt;
-If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.
-
-&lt;b&gt;Parameters:&lt;/b&gt;
-Types like "Form" and "Multimedia" use this field for parameters than can be passed to the Content Element. The "HTML" type expects raw HTML which is simply displayed on the website without any processing.
-
-&lt;b&gt;Making a mail form:&lt;/b&gt;
-When you have selected the "Form" Content Element you can enter form field and other options. This is a brief example:
-
-Your name: | *name=input,40 | [Enter name!]
-Your email: | *email=input,40
-Your address: | address=textarea,40,10
-Your haircolor: |hair=radio|Blue=blue, Red=red
-
-|formtype_mail = submit | Send Form
-|subject=hidden| Enter a subject here!
-|html_enabled=hidden | 1
-
-The first two lines makes input fields for name and email. Both are marked as "required" and are designated by the *, and the name field has a default value of "[Enter name!]".
-The third line is a text box and the fourth makes radio buttons to select a hair color.
-After the input fields, there are three important lines in the end. The first makes a submit button with the label "Send Form", the second line is the subject of the email the receiver gets, and the third line formats the email using HTML.
-Like the table wizard, it is easier to use the form wizard rather than hand coding the forms.
-
-&lt;b&gt;Note:&lt;/b&gt; For a form to work you must add an email address for the Recipient Email in its field.</source>
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
 			</trans-unit>
 			<trans-unit id="_bodytext.seeAlso" xml:space="preserve">
 				<source>tt_content:CType,
 tt_content:subheader,
-xMOD_csh_corebe:wizard_forms_wiz,
 xMOD_csh_corebe:wizard_table_wiz</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

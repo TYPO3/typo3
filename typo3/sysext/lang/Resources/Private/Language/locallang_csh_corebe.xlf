@@ -820,60 +820,6 @@ EXT:lang/Resources/Public/Images/cshimages/core_59.png,</source>
 				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
 In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.alttitle">
-				<source>Forms Wizard</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.description">
-				<source>The Form Wizard enables you to create form elements through a nice interface rather than "coding" a certain syntax for the elements.</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.details" xml:space="preserve">
-				<source>To the left in the form wizard you can add, delete and move items in the form around.
-In the Element Type column you can select between various kinds of form elements such as regular input fields, text areas, selector boxes, checkboxes etc. Each form element also has a label field where you can enter a title for the field. Some fields also provide the possibility of checking for "required" values.
-In the "Detailed" configuration column the options will depend on the form field type selected in the "Element type" column. The options here can be to enter elements for a selector box or enter the width of an input field. The "Field:" box is important since it defines the technical name of the form field. This is the name that people will see when they receive an email from the mail form.
-
-&lt;b&gt;Custom applications of the form wizard&lt;/b&gt;
-The most typical application of the Form wizard is with Content Elements of the type "Form" but the wizard can be used for other custom applications as well. Technical details about this is available in the links below.</source>
-			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz.seeAlso" xml:space="preserve">
-				<source>xMOD_csh_corebe:wizard_table_wiz,
-Form Wizard details [Technical]| https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/,</source>
-				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz.image" xml:space="preserve">
-				<source>EXT:lang/Resources/Public/Images/cshimages/core_60.png,
-EXT:lang/Resources/Public/Images/cshimages/core_69.png,</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.image_descr" xml:space="preserve">
-				<source>This is how the form wizard looks in action. Using the form fields for setting up forms rather than coding them is much easier.
-Usually you enter the Form Wizard by clicking the form wizard icon next for a text field like this. Notice the contents of the field to the left of the icon - this is the "raw codes" that the Form Wizard saves you from editing manually!</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_buttons.alttitle">
-				<source>Form Wizard buttons</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_buttons.description">
-				<source>Use the refresh button to update the form (without saving it), for instance if you changed a field type or so. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
-			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_buttons.image">
-				<source>EXT:lang/Resources/Public/Images/cshimages/core_62.png,</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.alttitle">
-				<source>Mailform Info Fields</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.description">
-				<source>These fields specifically apply to the usage of the form wizard with Content Elements of the type "Form". They allow you to enter information like the subject line of the email sent, the recipient address and whether the sent email should be in HTML or not.</source>
-			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.details">
-				<source>Notice: In order to enter a recipient address you need access to the "Subheader" field in the Content Elements. Yes, its quite strange, but so it is. Ask your administrator for access if you don't have it.</source>
-			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_formmail_info.seeAlso">
-				<source>How-to create Mail Forms | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EmailForm/</source>
-			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_formmail_info.image">
-				<source>EXT:lang/Resources/Public/Images/cshimages/core_61.png,</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="wizard_table_wiz.alttitle">
 				<source>Table wizard</source>
 			</trans-unit>
