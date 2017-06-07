@@ -21,7 +21,7 @@ define(['jquery', 'moment'], function ($, moment) {
 	/**
 	 * The main FormEngineValidation object
 	 *
-	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, refDate: Date, USmode: number, passwordDummy: string}}
+	 * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, USmode: number, passwordDummy: string}}
 	 * @exports TYPO3/CMS/Backend/FormEngineValidation
 	 */
 	var FormEngineValidation = {
@@ -34,7 +34,6 @@ define(['jquery', 'moment'], function ($, moment) {
 		lastYear: 0,
 		lastDate: 0,
 		lastTime: 0,
-		refDate: new Date(),
 		USmode: 0,
 		passwordDummy: '********'
 	};
@@ -58,7 +57,6 @@ define(['jquery', 'moment'], function ($, moment) {
 		FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
 		FormEngineValidation.lastDate = FormEngineValidation.getDate(today);
 		FormEngineValidation.lastTime = 0;
-		FormEngineValidation.refDate = today;
 		FormEngineValidation.USmode = 0;
 		FormEngineValidation.validate();
 	};
@@ -110,10 +108,10 @@ define(['jquery', 'moment'], function ($, moment) {
 			var value = $field.val();
 
 			for (var i = 0; i < evalList.length; i++) {
-				value = FormEngineValidation.formatValue(evalList[i], value, config)
+				value = FormEngineValidation.formatValue(evalList[i], value, config);
 			}
 			// Prevent password fields to be overwritten with original value
-			if (value.length && $humanReadableField.attr('type') != 'password') {
+			if (value.length && $humanReadableField.attr('type') !== 'password') {
 				$humanReadableField.val(value);
 			}
 		}
@@ -138,18 +136,19 @@ define(['jquery', 'moment'], function ($, moment) {
 	 */
 	FormEngineValidation.formatValue = function(type, value, config) {
 		var theString = '';
+		var parsedInt, theTime;
 		switch (type) {
 			case 'date':
 				// poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
 				if (value.toString().indexOf('-') > 0) {
-					var date = moment(value).utc();
+					var date = moment.utc(value);
 					if (FormEngineValidation.USmode) {
 						theString = date.format('MM-DD-YYYY');
 					} else {
 						theString = date.format('DD-MM-YYYY');
 					}
 				} else {
-					var parsedInt = parseInt(value);
+					parsedInt = parseInt(value);
 					if (!parsedInt) {
 						return '';
 					}
@@ -169,23 +168,20 @@ define(['jquery', 'moment'], function ($, moment) {
 				break;
 			case 'time':
 			case 'timesec':
+				var dateValue;
 				if (value.toString().indexOf('-') > 0) {
-					var date = moment(value).utc();
-					if (type == 'timesec') {
-						theString = date.format('HH:mm:ss');
-					} else {
-						theString = date.format('HH:mm');
-					}
+					dateValue = moment.utc(value);
 				} else {
-					var parsedInt = parseInt(value);
+					parsedInt = parseInt(value);
 					if (!parsedInt && value.toString() !== '0') {
 						return '';
 					}
-					var theTime = new Date(parsedInt * 1000);
-					var h = theTime.getUTCHours();
-					var m = theTime.getUTCMinutes();
-					var s = theTime.getUTCSeconds();
-					theString = h + ':' + ((m < 10) ? '0' : '') + m + ((type == 'timesec') ? ':' + ((s < 10) ? '0' : '') + s : '');
+					dateValue = moment.unix(parsedInt).utc();
+				}
+				if (type === 'timesec') {
+					theString = dateValue.format('HH:mm:ss');
+				} else {
+					theString = dateValue.format('HH:mm');
 				}
 				break;
 			case 'password':
@@ -655,7 +651,7 @@ define(['jquery', 'moment'], function ($, moment) {
 				break;
 			case '+':
 			case '-':
-				if (FormEngineValidation.lastTime == 0) {
+				if (FormEngineValidation.lastTime === 0) {
 					FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(today), 0);
 				}
 				if (values.valPol[1]) {
@@ -664,11 +660,9 @@ define(['jquery', 'moment'], function ($, moment) {
 				break;
 			default:
 				var index = value.indexOf(' ');
-				if (index != -1) {
+				if (index !== -1) {
 					var dateVal = FormEngineValidation.parseDate(value.substr(index, value.length), value.substr(0, 1));
-					// set refDate so that evalFunc_input on time will work with correct DST information
-					FormEngineValidation.refDate = new Date(dateVal * 1000);
-					FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0,index), value.substr(0, 1), 'time');
+					FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substr(0, index), value.substr(0, 1), 'time');
 				} else {
 					// only date, no time
 					FormEngineValidation.lastTime = FormEngineValidation.parseDate(value, value.substr(0, 1));
@@ -730,10 +724,11 @@ define(['jquery', 'moment'], function ($, moment) {
 				usMode = FormEngineValidation.USmode ? 2 : 1;
 				var day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
 
-				var theTime = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
 
-				// Substract timezone offset from client
-				FormEngineValidation.lastDate = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 0);
+				var theTime = moment.utc();
+				theTime.year(parseInt(year)).month(parseInt(month)-1).date(parseInt(day)).hour(0).minute(0).second(0);
+
+				FormEngineValidation.lastDate = theTime.unix();
 		}
 		FormEngineValidation.lastDate += add * 24 * 60 * 60;
 		return FormEngineValidation.lastDate;
@@ -770,7 +765,7 @@ define(['jquery', 'moment'], function ($, moment) {
 				}
 				break;
 			default:
-				var index = (type == 'timesec') ? 4 : 3;
+				var index = (type === 'timesec') ? 4 : 3;
 				if (values.valPol[index]) {
 					add = FormEngineValidation.pol(values.valPol[index], FormEngineValidation.parseInt(values.values[index]));
 				}
@@ -794,10 +789,10 @@ define(['jquery', 'moment'], function ($, moment) {
 					hour = 0;
 				}
 
-				var theTime = new Date(FormEngineValidation.getYear(FormEngineValidation.refDate), FormEngineValidation.refDate.getUTCMonth(), FormEngineValidation.refDate.getUTCDate(), hour, min, (( type == 'timesec' ) ? sec : 0));
+				var theTime = moment.utc();
+				theTime.year(1970).month(0).date(1).hour(hour).minute(min).second(type === 'timesec' ? sec : 0);
 
-				// Substract timezone offset from client
-				FormEngineValidation.lastTime = FormEngineValidation.convertClientTimestampToUTC(FormEngineValidation.getTimestamp(theTime), 1);
+				FormEngineValidation.lastTime = theTime.unix();
 		}
 		FormEngineValidation.lastTime += add * 60;
 		if (FormEngineValidation.lastTime < 0) {

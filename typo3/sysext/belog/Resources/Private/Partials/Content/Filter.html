@@ -111,7 +111,7 @@
 						value="{f:if(condition: constraint.startTimestamp, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.startTimestamp}')}\")}"
 						id="manualDateStart"
 						class="form-control input-sm t3js-datetimepicker t3js-clearable"
-						data="{date-type: 'datetime', date-offset: 0}"
+						data="{date-type: 'datetime'}"
 						/>
 				<f:form.hidden property="startTimestamp" value="{constraint.startTimestamp}" />
 				<span class="input-group-btn">
@@ -131,7 +131,7 @@
 						value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.endTimestamp}')}"
 						id="manualDateStop"
 						class="form-control input-sm t3js-datetimepicker t3js-clearable"
-						data="{date-type: 'datetime', date-offset: 0}"
+						data="{date-type: 'datetime'}"
 						/>
 				<f:form.hidden property="endTimestamp" />
 				<span class="input-group-btn">

@@ -135,14 +135,17 @@ class InputDateTimeElement extends AbstractFormElement
         }
 
         if ($format === 'datetime' || $format === 'date') {
-            // convert timestamp to proper ISO-8601 date so we get rid of timezone issues on the client.
-            // This only handles integer timestamps; if the field is a date(time), it already was converted to an
-            // ISO-8601 date by DatabaseRowDateTimeFields.
+            // This only handles integer timestamps; if the field is a SQL native date(time), it was already converted
+            // to an ISO-8601 date by the DatabaseRowDateTimeFields class. (those dates are stored as server local time)
             if (MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {
-                // output date as a ISO-8601 date; the stored value is the server time zone, so we need to treat it as such.
-                $timestamp = $itemValue;
-                $timestamp += date('Z', $timestamp);
-                $itemValue = gmdate('c', $timestamp);
+                // We store UTC timestamps in the database.
+                // Convert the timestamp to a proper ISO-8601 date so we get rid of timezone issues on the client.
+                // Details: As the JS side is not capable of handling dates in the server's timezone
+                // (moment.js can only handle UTC or browser's local timezone), we need to offset the value
+                // to eliminate the timezone. JS will receive all dates as if they were UTC, which we undo on save in DataHandler
+                $adjustedValue = $itemValue + date('Z', (int)$itemValue);
+                // output date as a ISO-8601 date
+                $itemValue = gmdate('c', $adjustedValue);
             }
             if (isset($config['range']['lower'])) {
                 $attributes['data-date-minDate'] = (int)$config['range']['lower'];
@@ -150,6 +153,11 @@ class InputDateTimeElement extends AbstractFormElement
             if (isset($config['range']['upper'])) {
                 $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
             }
+        }
+        if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {
+            // time(sec) is stored as elapsed seconds in DB, hence we interpret it as UTC time on 1970-01-01
+            // and pass on the ISO format to JS.
+            $itemValue = gmdate('c', (int)$itemValue);
         }
 
         $legacyWizards = $this->renderWizards();

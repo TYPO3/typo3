@@ -1812,7 +1812,7 @@ class DataHandler
         // Handle native date/time fields
         if ($isDateOrDateTimeField) {
             // Convert the timestamp back to a date/time
-            $res['value'] = $res['value'] ? date($format, $res['value']) : $emptyValue;
+            $res['value'] = $res['value'] ? gmdate($format, $res['value']) : $emptyValue;
         }
         return $res;
     }
@@ -2728,23 +2728,32 @@ class DataHandler
                     break;
                 case 'time':
                 case 'timesec':
+                    // If $value is a pure integer we have the number of seconds, we can store that directly
+                    if ($value !== '' && !MathUtility::canBeInterpretedAsInteger($value)) {
+                        // $value is an ISO 8601 date
+                        $value = (new \DateTime($value))->getTimestamp();
+                    }
+                    break;
                 case 'date':
                 case 'datetime':
-                    // a hyphen as first character indicates a negative timestamp
-                    if ((strpos($value, '-') === false && strpos($value, ':') === false) || strpos($value, '-') === 0) {
-                        $value = (int)$value;
-                    } else {
-                        // ISO 8601 dates
-                        $dateTime = new \DateTime($value);
-                        // The returned timestamp is always UTC
-                        $value = $dateTime->getTimestamp();
-                    }
-                    // $value is a UTC timestamp here.
-                    // The value will be stored in the server’s local timezone, but treated as UTC, so we brute force
-                    // subtract the offset here. The offset is subtracted instead of added because the value is stored
-                    // in the timezone, but interpreted as UTC, so if we switched the server to UTC, the correct
-                    // value would be returned.
-                    if ($value !== 0 && !$this->dontProcessTransformations) {
+                    // If $value is a pure integer we have the number of seconds, we can store that directly
+                    if ($value !== null && $value !== '' && !MathUtility::canBeInterpretedAsInteger($value)) {
+                        // The value we receive from JS is an ISO 8601 date, which is always in UTC. (the JS code works like that, on purpose!)
+                        // For instance "1999-11-11T11:11:11Z"
+                        // Since the user actually specifies the time in the server's local time, we need to mangle this
+                        // to reflect the server TZ. So we make this 1999-11-11T11:11:11+0200 (assuming Europe/Vienna here)
+                        // In the database we store the date in UTC (1999-11-11T09:11:11Z), hence we take the timestamp of this converted value.
+                        // For achieving this we work with timestamps only (which are UTC) and simply adjust it for the
+                        // TZ difference.
+                        try {
+                            // Make the date from JS a timestamp
+                            $value = (new \DateTime($value))->getTimestamp();
+                        } catch (\Exception $e) {
+                            // set the default timezone value to achieve the value of 0 as a result
+                            $value = (int)date('Z', 0);
+                        }
+
+                        // @todo this hacky part is problematic when it comes to times around DST switch! Add test to prove that this is broken.
                         $value -= date('Z', $value);
                     }
                     break;

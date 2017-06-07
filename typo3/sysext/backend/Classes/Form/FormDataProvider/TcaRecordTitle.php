@@ -332,11 +332,11 @@ class TcaRecordTitle implements FormDataProviderInterface
             }
         } elseif (GeneralUtility::inList($fieldConfig['eval'], 'time')) {
             if (!empty($value)) {
-                $title = BackendUtility::time((int)$value, false);
+                $title = gmdate('H:i', (int)$value);
             }
         } elseif (GeneralUtility::inList($fieldConfig['eval'], 'timesec')) {
             if (!empty($value)) {
-                $title = BackendUtility::time((int)$value);
+                $title = gmdate('H:i:s', (int)$value);
             }
         } elseif (GeneralUtility::inList($fieldConfig['eval'], 'datetime')) {
             // Handle native date/time field

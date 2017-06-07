@@ -101,7 +101,7 @@ class AbstractFormElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                 [
                     'format' => 'time',
                 ],
-                '1412358894',
+                '64440',
                 '17:54'
             ],
             'format to time with empty value' => [
@@ -122,7 +122,7 @@ class AbstractFormElementTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                 [
                     'format' => 'timesec',
                 ],
-                '1412358894',
+                '64494',
                 '17:54:54'
             ],
             'format to timesec with empty value' => [
