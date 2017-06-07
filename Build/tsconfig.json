@@ -14,9 +14,6 @@
         "baseUrl": ".",
         "rootDir": "../",
         "paths": {
-            "TYPO3/CMS/About/*": [
-                "../typo3/sysext/about/Resources/Public/JavaScript/*"
-            ],
             "TYPO3/CMS/Backend/*": [
                 "../typo3/sysext/backend/Resources/Public/JavaScript/*"
             ],
