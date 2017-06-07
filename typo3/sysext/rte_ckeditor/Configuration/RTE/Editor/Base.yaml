@@ -17,3 +17,4 @@ editor:
     # Ensure that special characters are not converted to HTML entities
     entities_latin: false
     entities: false
+    stylesSet: []
