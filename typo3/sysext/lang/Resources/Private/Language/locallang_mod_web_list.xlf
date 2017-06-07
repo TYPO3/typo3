@@ -154,7 +154,7 @@
 				<source>Missing TCA definition</source>
 			</trans-unit>
 			<trans-unit id="missingTcaColumnsMessage">
-				<source>Warning: No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+				<source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
 			</trans-unit>
 			<trans-unit id="noRecordsOnThisPage">
 				<source>There are no records on this page.</source>
