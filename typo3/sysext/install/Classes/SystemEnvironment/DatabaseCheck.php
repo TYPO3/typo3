@@ -95,16 +95,44 @@ class DatabaseCheck
                 $currentMysqlVersion = $result[1];
             }
         }
-        if (version_compare($currentMysqlVersion, $minimumMysqlVersion) < 0) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('MySQL version too low');
-            $status->setMessage(
-                'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run' .
-                ' with this version. Update to at least MySQL ' . $minimumMysqlVersion
-            );
+        if (strpos($currentMysqlVersion, 'MariaDB') !== false) {
+            $notSupportedVersion = '10.2.0';
+            if (version_compare($currentMysqlVersion, $minimumMysqlVersion) < 0) {
+                $status = new Status\ErrorStatus();
+                $status->setTitle('MariaDB version too low');
+                $status->setMessage(
+                    'Your MariaDB version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run' .
+                    ' with this version. Update to at least MariaDB ' . $minimumMysqlVersion
+                );
+            } elseif (version_compare($currentMysqlVersion, $notSupportedVersion) >= 0) {
+                $status = new Status\ErrorStatus();
+                $status->setTitle('MariaDB version too high');
+                $status->setMessage(
+                    'Your MariaDB version ' . $currentMysqlVersion . ' is too new. TYPO3 CMS does not run with this version.'
+                );
+            } else {
+                $status = new Status\OkStatus();
+                $status->setTitle('MariaDB version is fine');
+            }
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('MySQL version is fine');
+            $notSupportedVersion = '8.0.0';
+            if (version_compare($currentMysqlVersion, $minimumMysqlVersion) < 0) {
+                $status = new Status\ErrorStatus();
+                $status->setTitle('MySQL version too low');
+                $status->setMessage(
+                    'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run' .
+                    ' with this version. Update to at least MySQL ' . $minimumMysqlVersion
+                );
+            } elseif (version_compare($currentMysqlVersion, $notSupportedVersion) >= 0) {
+                $status = new Status\ErrorStatus();
+                $status->setTitle('MySQL version too high');
+                $status->setMessage(
+                    'Your MySQL version ' . $currentMysqlVersion . ' is too new. TYPO3 CMS does not run with this version.'
+                );
+            } else {
+                $status = new Status\OkStatus();
+                $status->setTitle('MySQL version is fine');
+            }
         }
 
         return $status;
