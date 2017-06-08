@@ -3536,8 +3536,13 @@ class ContentObjectRenderer
     }
 
     /**
-     * Implements the "insertData" property of stdWrap meaning that if strings matching {...} is found in the input string they will be substituted with the return value from getData (datatype) which is passed the content of the curly braces.
-     * Example: If input string is "This is the page title: {page:title}" then the part, '{page:title}', will be substituted with the current pages title field value.
+     * Implements the "insertData" property of stdWrap meaning that if strings matching {...} is found in the input string they
+     * will be substituted with the return value from getData (datatype) which is passed the content of the curly braces.
+     * If the content inside the curly braces starts with a hash sign {#...} it is a field name that must be quoted by Doctrine
+     * DBAL and is skipped here for later processing.
+     *
+     * Example: If input string is "This is the page title: {page:title}" then the part, '{page:title}', will be substituted with
+     * the current pages title field value.
      *
      * @param string $str Input value
      * @return string Processed input value
@@ -3554,6 +3559,12 @@ class ContentObjectRenderer
                 $len = strcspn(substr($str, $pointer), '{');
                 $newVal .= substr($str, $pointer, $len);
                 $inside = true;
+                if (substr($str, $pointer + $len + 1, 1) === '#') {
+                    $len2 = strcspn(substr($str, $pointer + $len), '}');
+                    $newVal .= substr($str, $pointer + $len, $len2);
+                    $len += $len2;
+                    $inside = false;
+                }
             } else {
                 $len = strcspn(substr($str, $pointer), '}') + 1;
                 $newVal .= $this->getData(substr($str, $pointer + 1, $len - 2), $this->data);
