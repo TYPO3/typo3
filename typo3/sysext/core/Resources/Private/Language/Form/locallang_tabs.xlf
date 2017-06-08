@@ -6,6 +6,9 @@
 			<trans-unit id="general">
 				<source>General</source>
 			</trans-unit>
+			<trans-unit id="Accesscapabilities">
+				<source>Accesscapabilities</source>
+			</trans-unit>
 			<trans-unit id="access">
 				<source>Access</source>
 			</trans-unit>
