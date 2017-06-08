@@ -5629,6 +5629,33 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     }
 
     /**
+     * Data provider for stdWrap_insertData
+     *
+     * @return array [$expect, $content]
+     */
+    public function stdWrap_insertDataProvider()
+    {
+        return [
+            'empty' => ['', ''],
+            'notFoundData' => ['any=1', 'any{$string}=1'],
+            'queryParameter' => ['any{#string}=1', 'any{#string}=1'],
+        ];
+    }
+
+    /**
+     * Check that stdWrap_insertData works properly with given input.
+     *
+     * @test
+     * @dataProvider stdWrap_insertDataProvider
+     * @param int $expect The expected output.
+     * @param string $content The given input.
+     */
+    public function stdWrap_insertDataAndInputExamples($expect, $content)
+    {
+        $this->assertSame($expect, $this->subject->stdWrap_insertData($content));
+    }
+
+    /**
      * Data provider for stdWrap_intval
      *
      * @return array [$expect, $content]
