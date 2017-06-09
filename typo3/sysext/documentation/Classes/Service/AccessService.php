@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cshmanual\Service;
+namespace TYPO3\CMS\Documentation\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

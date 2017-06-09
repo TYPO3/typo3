@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cshmanual\Domain\Repository;
+namespace TYPO3\CMS\Documentation\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,12 +18,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Tabble manual repository
+ * Table manual repository
  */
 class TableManualRepository
 {
     /**
-     * @var \TYPO3\CMS\Cshmanual\Service\AccessService
+     * @var \TYPO3\CMS\Documentation\Service\AccessService
      */
     protected $accessService;
 
@@ -32,7 +32,7 @@ class TableManualRepository
      */
     public function __construct()
     {
-        $this->accessService = GeneralUtility::makeInstance(\TYPO3\CMS\Cshmanual\Service\AccessService::class);
+        $this->accessService = GeneralUtility::makeInstance(\TYPO3\CMS\Documentation\Service\AccessService::class);
     }
 
     /**
@@ -139,7 +139,7 @@ class TableManualRepository
             }
         }
 
-        if ($mode === \TYPO3\CMS\Cshmanual\Controller\HelpController::TOC_ONLY) {
+        if ($mode === \TYPO3\CMS\Documentation\Controller\HelpController::TOC_ONLY) {
             return $tocArray;
         }
 

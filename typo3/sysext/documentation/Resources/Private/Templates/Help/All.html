@@ -1,7 +1,7 @@
-<f:layout name="Default" />
+<f:layout name="ContextSensitiveHelp" />
 
 <f:section name="content">
-	<f:render partial="TableOfContents" arguments="{toc:all.toc,all:1}" />
+	<f:render partial="TableOfContents" arguments="{toc:all.toc, all:1}" />
 
 	<f:for each="{all.content}" as="sections">
 		<f:for each="{sections.content}" as="item">

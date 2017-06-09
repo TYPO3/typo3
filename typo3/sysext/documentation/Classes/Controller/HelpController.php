@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cshmanual\Controller;
+namespace TYPO3\CMS\Documentation\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Cshmanual\Domain\Repository\TableManualRepository;
+use TYPO3\CMS\Documentation\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 

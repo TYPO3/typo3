@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cshmanual\Service;
+namespace TYPO3\CMS\Documentation\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -38,8 +38,8 @@ class JavaScriptService
         if ($beUser && !empty($beUser->user)) {
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', [
-                'tx_cshmanual_help_cshmanualcshmanual' => [
+            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_DocumentationCshmanual', [
+                'tx_documentation_help_documentationcshmanual' => [
                     'controller' => 'Help',
                     'action' => 'detail'
                 ]

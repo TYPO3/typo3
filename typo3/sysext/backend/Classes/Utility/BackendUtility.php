@@ -2431,7 +2431,7 @@ class BackendUtility
         // @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
         // the extension. The core provides an API for adding help and rendering help, but the rendering
         // should be up to the extension itself
-        if ((!empty($helpText) || $hasHelpTextOverload) && ExtensionManagementUtility::isLoaded('cshmanual')) {
+        if ((!empty($helpText) || $hasHelpTextOverload) && ExtensionManagementUtility::isLoaded('documentation')) {
             // If no text was given, just use the regular help icon
             if ($text == '') {
                 /** @var IconFactory $iconFactory */

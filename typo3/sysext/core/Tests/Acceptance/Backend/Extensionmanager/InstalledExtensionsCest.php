@@ -45,13 +45,13 @@ class InstalledExtensionsCest
         $I->canSeeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
 
         // Fill extension search field
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'cshmanual');
+        $I->fillField('Tx_Extensionmanager_extensionkey', 'documentation');
 
         // see 2 rows. 1 for the header and one for the result
         $I->canSeeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', 1);
 
         // Look for extension key
-        $I->canSee('cshmanual', '#typo3-extension-list tbody tr[role="row"] td');
+        $I->canSee('documentation', '#typo3-extension-list tbody tr[role="row"] td');
 
         // unset the filter
         $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 1);
