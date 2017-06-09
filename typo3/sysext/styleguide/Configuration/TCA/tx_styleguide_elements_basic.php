@@ -1194,6 +1194,81 @@ return [
                                     </ROOT>
                                 </sInput>
 
+                                <sInputDateTime>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>inputDateTime</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <inputDateTime_1>
+                                                <TCEforms>
+                                                    <label>inputDateTime_1 eval=date</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>date</eval>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_1>
+                                            <inputDateTime_2>
+                                                <TCEforms>
+                                                    <label>inputDateTime_2 dbType=date eval=date</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>date</eval>
+                                                        <dbType>date</dbType>
+                                                        <default>0000-00-00</default>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_2>
+                                            <inputDateTime_3>
+                                                <TCEforms>
+                                                    <label>inputDateTime_3 eval=datetime</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>datetime</eval>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_3>
+                                            <inputDateTime_4>
+                                                <TCEforms>
+                                                    <label>inputDateTime_4 dbType=datetime eval=datetime</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>date</eval>
+                                                        <dbType>datetime</dbType>
+                                                        <default>0000-00-00 00:00:00</default>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_4>
+                                            <inputDateTime_5>
+                                                <TCEforms>
+                                                    <label>inputDateTime_5 eval=time</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>time</eval>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_5>
+                                            <inputDateTime_6>
+                                                <TCEforms>
+                                                    <label>inputDateTime_6 eval=timesec</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <renderType>inputDateTime</renderType>
+                                                        <eval>timesec</eval>
+                                                    </config>
+                                                </TCEforms>
+                                            </inputDateTime_6>
+                                        </el>
+                                    </ROOT>
+                                </sInputDateTime>
+
                                 <sText>
                                     <ROOT>
                                         <type>array</type>
