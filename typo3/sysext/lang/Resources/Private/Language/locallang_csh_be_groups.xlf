@@ -287,13 +287,6 @@ EXT:lang/Resources/Public/Images/cshimages/be_groups_17.png</source>
 				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
 In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
 			</trans-unit>
-			<trans-unit id="hide_in_lists.description">
-				<source>This option will prevent the user group from showing up in lists, where user groups are selected.</source>
-			</trans-unit>
-			<trans-unit id="hide_in_lists.details" xml:space="preserve">
-				<source>This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
-The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</source>
-			</trans-unit>
 			<trans-unit id="subgroup.description">
 				<source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
 			</trans-unit>

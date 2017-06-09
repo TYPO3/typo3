@@ -171,9 +171,6 @@
 			<trans-unit id="be_groups.inc_access_lists">
 				<source>Include Access Lists:</source>
 			</trans-unit>
-			<trans-unit id="be_groups.hide_in_lists">
-				<source>Hide in lists:</source>
-			</trans-unit>
 			<trans-unit id="be_groups.subgroup">
 				<source>Inherit settings from groups:</source>
 			</trans-unit>

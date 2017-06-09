@@ -25,7 +25,6 @@ CREATE TABLE be_groups (
 	deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
 	subgroup text,
-	hide_in_lists tinyint(4) DEFAULT '0' NOT NULL,
 	workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
 	category_perms text,
 	PRIMARY KEY (uid),

@@ -98,11 +98,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $lockToDomain = '';
 
     /**
-     * @var bool
-     */
-    protected $hideInList = false;
-
-    /**
      * @var string
      */
     protected $tsConfig = '';
@@ -503,26 +498,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getLockToDomain()
     {
         return $this->lockToDomain;
-    }
-
-    /**
-     * Setter for hide in list
-     *
-     * @param bool $hideInList
-     */
-    public function setHideInList($hideInList)
-    {
-        $this->hideInList = $hideInList;
-    }
-
-    /**
-     * Getter for hide in list
-     *
-     * @return bool
-     */
-    public function getHideInList()
-    {
-        return $this->hideInList;
     }
 
     /**

@@ -62,7 +62,6 @@ config.tx_extbase {
 						db_mountpoints.mapOnProperty = databaseMounts
 						file_permissions.mapOnProperty = fileOperationPermissions
 						lockToDomain.mapOnProperty = lockToDomain
-						hide_in_lists.mapOnProperty = hideInList
 						TSconfig.mapOnProperty = tsConfig
 					}
 				}

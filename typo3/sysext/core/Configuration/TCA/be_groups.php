@@ -233,13 +233,6 @@ return [
                 'fixedFont' => true,
             ],
         ],
-        'hide_in_lists' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_groups.hide_in_lists',
-            'config' => [
-                'type' => 'check',
-                'default' => 0
-            ]
-        ],
         'subgroup' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup',
             'config' => [
@@ -283,7 +276,7 @@ return [
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.options,
                 lockToDomain, TSconfig,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
-                hidden,hide_in_lists,
+                hidden,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

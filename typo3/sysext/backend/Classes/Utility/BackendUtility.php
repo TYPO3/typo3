@@ -1012,13 +1012,15 @@ class BackendUtility
      *
      * @param string $fields Field list; $fields specify the fields selected (default: title,uid)
      * @return    array
+     * @deprecated since TYPO3 9, will be removed in TYPO3 10
      */
     public static function getListGroupNames($fields = 'title, uid')
     {
+        GeneralUtility::logDeprecatedFunction();
         $beUser = static::getBackendUserAuthentication();
-        $exQ = ' AND hide_in_lists=0';
+        $exQ = '';
         if (!$beUser->isAdmin()) {
-            $exQ .= ' AND uid IN (' . ($beUser->user['usergroup_cached_list'] ?: 0) . ')';
+            $exQ = ' AND uid IN (' . ($beUser->user['usergroup_cached_list'] ?: 0) . ')';
         }
         return self::getGroupNames($fields, $exQ);
     }

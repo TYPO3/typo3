@@ -38,7 +38,6 @@ class BackendGroupsVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functi
         'file_permissions',
         'category_perms',
         'lockToDomain',
-        'hide_in_lists',
         'TSconfig',
     ];
 

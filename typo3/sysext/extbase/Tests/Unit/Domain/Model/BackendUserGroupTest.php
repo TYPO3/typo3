@@ -444,23 +444,6 @@ class BackendUserGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
-    public function getHideInListInitiallyReturnsFalse()
-    {
-        $this->assertFalse($this->subject->getHideInList());
-    }
-
-    /**
-     * @test
-     */
-    public function setHideInListSetsHideInList()
-    {
-        $this->subject->setHideInList(true);
-        $this->assertTrue($this->subject->getHideInList());
-    }
-
-    /**
-     * @test
-     */
     public function getTsConfigInitiallyReturnsEmptyString()
     {
         $this->assertSame('', $this->subject->getTsConfig());

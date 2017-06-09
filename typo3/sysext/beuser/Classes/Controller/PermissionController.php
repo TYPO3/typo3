@@ -282,8 +282,8 @@ class PermissionController extends ActionController
                 FlashMessage::WARNING
             );
         }
-        // Get usernames and groupnames
-        $beGroupArray = BackendUtility::getListGroupNames('title,uid');
+        // Get user names and group names
+        $beGroupArray = BackendUtility::getGroupNames();
         $beUserArray  = BackendUtility::getUserNames();
 
         // Owner selector
