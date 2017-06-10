@@ -59,7 +59,7 @@ class AbstractController extends ActionController
     protected function initializeAction()
     {
         $this->pageRenderer = $this->getPageRenderer();
-        // @todo Evaluate how the intval() call can be used with Extbase validators/filters
+        // @todo Evaluate how the (int) typecast can be used with Extbase validators/filters
         $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();

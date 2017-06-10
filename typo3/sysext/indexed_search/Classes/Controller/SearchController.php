@@ -1312,7 +1312,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($row['data_page_mp']) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
-        $urlParameters['L'] = intval($row['sys_language_uid']);
+        $urlParameters['L'] = (int)$row['sys_language_uid'];
         // markup-GET vars:
         $urlParameters = array_merge($urlParameters, $markUpSwParams);
         // This will make sure that the path is retrieved if it hasn't been
@@ -1544,7 +1544,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function getNumberOfResults($numberOfResults)
     {
-        $numberOfResults = intval($numberOfResults);
+        $numberOfResults = (int)$numberOfResults;
 
         return (in_array($numberOfResults, $this->availableResultsNumbers)) ?
             $numberOfResults : $this->defaultResultNumber;
