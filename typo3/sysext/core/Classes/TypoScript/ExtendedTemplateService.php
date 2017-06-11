@@ -1199,7 +1199,7 @@ class ExtendedTemplateService extends TemplateService
                         case 'color':
                             $p_field = '
                                 <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
-                                '" name="' . $fN . '" value="' . $fV . '"' . $this->getDocumentTemplate()->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
+                                '" name="' . $fN . '" value="' . $fV . '" onChange="uFormUrl(' . $aname . ')" />';
 
                             if (empty($this->inlineJavaScript[$typeDat['type']])) {
                                 $this->inlineJavaScript[$typeDat['type']] = 'require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});';
@@ -1207,24 +1207,26 @@ class ExtendedTemplateService extends TemplateService
                             break;
                         case 'wrap':
                             $wArr = explode('|', $fV);
-                            $p_field = '<input class="form-control" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $this->getDocumentTemplate()->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
-                            $p_field .= ' | ';
-                            $p_field .= '<input class="form-control" type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $this->getDocumentTemplate()->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<div class="input-group">
+                                            <input class="form-control form-control-adapt" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '" onChange="uFormUrl(' . $aname . ')" />
+                                            <span class="input-group-addon input-group-icon">|</span>
+                                            <input class="form-control form-control-adapt" type="text" name="W' . $fN . '" value="' . $wArr[1] . '" onChange="uFormUrl(' . $aname . ')" />
+                                         </div>';
                             break;
                         case 'offset':
                             $wArr = explode(',', $fV);
                             $labels = GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-                            $p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $this->getDocumentTemplate()->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
-                            $p_field .= ' , ';
-                            $p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $this->getDocumentTemplate()->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<span class="input-group-addon input-group-icon">' . ($labels[0] ?: 'x') . '</span><input type="text" class="form-control form-control-adapt" name="' . $fN . '" value="' . $wArr[0] . '" onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field .= '<span class="input-group-addon input-group-icon">' . ($labels[1] ?: 'y') . '</span><input type="text" name="W' . $fN . '" value="' . $wArr[1] . '" class="form-control form-control-adapt" onChange="uFormUrl(' . $aname . ')" />';
                             $labelsCount = count($labels);
                             for ($aa = 2; $aa < $labelsCount; $aa++) {
                                 if ($labels[$aa]) {
-                                    $p_field .= ' , ' . $labels[$aa] . ':<input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '"' . $this->getDocumentTemplate()->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
+                                    $p_field .= '<span class="input-group-addon input-group-icon">' . $labels[$aa] . '</span><input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" class="form-control form-control-adapt" onChange="uFormUrl(' . $aname . ')" />';
                                 } else {
                                     $p_field .= '<input type="hidden" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" />';
                                 }
                             }
+                            $p_field = '<div class="input-group">' . $p_field . '</div>';
                             break;
                         case 'options':
                             if (is_array($typeDat['params'])) {
