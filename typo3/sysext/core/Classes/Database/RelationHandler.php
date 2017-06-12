@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
@@ -478,22 +479,23 @@ class RelationHandler
         } elseif (count($this->tableArray) === 1) {
             reset($this->tableArray);
             $table = key($this->tableArray);
-            $uidList = implode(',', current($this->tableArray));
-            if ($uidList) {
+            $connection = $this->getConnectionForTableName($table);
+            $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+
+            foreach (array_chunk(current($this->tableArray), $maxBindParameters - 10, true) as $chunk) {
+                if (empty($chunk)) {
+                    continue;
+                }
                 $this->itemArray = [];
                 $this->tableArray = [];
-                $queryBuilder = $this->getConnectionForTableName($table)
-                    ->createQueryBuilder();
+                $queryBuilder = $connection->createQueryBuilder();
                 $queryBuilder->getRestrictions()->removeAll();
                 $queryBuilder->select('uid')
                     ->from($table)
                     ->where(
                         $queryBuilder->expr()->in(
                             'uid',
-                            $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $uidList),
-                                Connection::PARAM_INT_ARRAY
-                            )
+                            $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                         )
                     );
                 foreach (QueryHelper::parseOrderBy((string)$sortby) as $orderPair) {
@@ -1206,10 +1208,12 @@ class RelationHandler
     public function getFromDB()
     {
         // Traverses the tables listed:
-        foreach ($this->tableArray as $table => $val) {
-            if (is_array($val)) {
-                $itemList = implode(',', $val);
-                if ($itemList) {
+        foreach ($this->tableArray as $table => $ids) {
+            if (is_array($ids) && !empty($ids)) {
+                $connection = $this->getConnectionForTableName($table);
+                $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+
+                foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
                     if ($this->fetchAllFields) {
                         $fields = '*';
                     } else {
@@ -1227,20 +1231,18 @@ class RelationHandler
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
                         }
                     }
-                    $queryBuilder = $this->getConnectionForTableName($table)
-                        ->createQueryBuilder();
+                    $queryBuilder = $connection->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll();
                     $queryBuilder->select(...(GeneralUtility::trimExplode(',', $fields, true)))
                         ->from($table)
                         ->where($queryBuilder->expr()->in(
                             'uid',
-                            $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $itemList),
-                                Connection::PARAM_INT_ARRAY
-                            )
+                            $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                         ));
                     if ($this->additionalWhere[$table]) {
-                        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table]));
+                        $queryBuilder->andWhere(
+                            QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table])
+                        );
                     }
                     $statement = $queryBuilder->execute();
                     while ($row = $statement->fetch()) {
@@ -1475,32 +1477,32 @@ class RelationHandler
     protected function purgeVersionedIds($tableName, array $ids)
     {
         $ids = array_combine($ids, $ids);
+        $connection = $this->getConnectionForTableName($tableName);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
-        $queryBuilder = $this->getConnectionForTableName($tableName)
-            ->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
-        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->in(
-                    't3ver_oid',
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                ),
-                $queryBuilder->expr()->neq(
-                    't3ver_wsid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+        foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()->removeAll();
+            $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
-            )
-            ->orderBy('t3ver_state', 'DESC')
-            ->execute()
-            ->fetchAll();
+                ->orderBy('t3ver_state', 'DESC')
+                ->execute();
 
-        if (!empty($versions)) {
-            foreach ($versions as $version) {
+            while ($version = $result->fetch()) {
                 $versionId = $version['uid'];
                 if (isset($ids[$versionId])) {
                     unset($ids[$versionId]);
@@ -1521,32 +1523,32 @@ class RelationHandler
     protected function purgeLiveVersionedIds($tableName, array $ids)
     {
         $ids = array_combine($ids, $ids);
+        $connection = $this->getConnectionForTableName($tableName);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
-        $queryBuilder = $this->getConnectionForTableName($tableName)
-            ->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
-        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->in(
-                    't3ver_oid',
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                ),
-                $queryBuilder->expr()->neq(
-                    't3ver_wsid',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+        foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()->removeAll();
+            $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
                 )
-            )
-            ->orderBy('t3ver_state', 'DESC')
-            ->execute()
-            ->fetchAll();
+                ->orderBy('t3ver_state', 'DESC')
+                ->execute();
 
-        if (!empty($versions)) {
-            foreach ($versions as $version) {
+            while ($version = $result->fetch()) {
                 $versionId = $version['uid'];
                 $liveId = $version['t3ver_oid'];
                 if (isset($ids[$liveId]) && isset($ids[$versionId])) {
@@ -1568,41 +1570,41 @@ class RelationHandler
     protected function purgeDeletePlaceholder($tableName, array $ids)
     {
         $ids = array_combine($ids, $ids);
+        $connection = $this->getConnectionForTableName($tableName);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
-        $queryBuilder = $this->getConnectionForTableName($tableName)
-            ->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
-        $versions = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->in(
-                    't3ver_oid',
-                    $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
-                ),
-                $queryBuilder->expr()->neq(
-                    't3ver_wsid',
-                    $queryBuilder->createNamedParameter(
-                        $this->getWorkspaceId(),
-                        \PDO::PARAM_INT
-                    )
-                ),
-                $queryBuilder->expr()->eq(
-                    't3ver_state',
-                    $queryBuilder->createNamedParameter(
-                        (string)VersionState::cast(VersionState::DELETE_PLACEHOLDER),
-                        \PDO::PARAM_INT
+        foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()->removeAll();
+            $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->in(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    ),
+                    $queryBuilder->expr()->neq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter(
+                            $this->getWorkspaceId(),
+                            \PDO::PARAM_INT
+                        )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_state',
+                        $queryBuilder->createNamedParameter(
+                            (string)VersionState::cast(VersionState::DELETE_PLACEHOLDER),
+                            \PDO::PARAM_INT
+                        )
                     )
                 )
-            )
-            ->execute()
-            ->fetchAll();
+                ->execute();
 
-        if (!empty($versions)) {
-            foreach ($versions as $version) {
+            while ($version = $result->fetch()) {
                 $liveId = $version['t3ver_oid'];
                 if (isset($ids[$liveId])) {
                     unset($ids[$liveId]);

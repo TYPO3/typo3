@@ -16,10 +16,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,64 +33,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var array
+     * @var \Doctrine\DBAL\Platforms\AbstractPlatform|\Prophecy\Prophecy\ObjectProphecy
      */
-    protected $tableAndFieldMaxNameLengthsPerDbPlatform = [
-        'default' => [
-            'tables' => 10,
-            'columns' => 10,
-        ],
-        'dbplatform_type1' => [
-            'tables' => 15,
-            'columns' => 15,
-        ],
-        'dbplatform_type2' => 'dbplatform_type1'
-    ];
+    protected $platform;
 
     /**
-     * Utility method to quickly create a 'ConnectionMigratorMock' instance for
-     * a specific database platform.
-     *
-     * @param string $databasePlatformName
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    private function getConnectionMigratorMock($databasePlatformName = 'default')
-    {
-        $platformMock = $this->getMockBuilder(\Doctrine\DBAL\Platforms\AbstractPlatform::class)->disableOriginalConstructor()->getMock();
-        $platformMock->method('getName')->willReturn($databasePlatformName);
-        $platformMock->method('quoteIdentifier')->willReturnArgument(0);
-
-        $connectionMock = $this->getMockBuilder(Connection::class)->setMethods(['getDatabasePlatform', 'quoteIdentifier'])->disableOriginalConstructor()->getMock();
-        $connectionMock->method('getDatabasePlatform')->willReturn($platformMock);
-        $connectionMock->method('quoteIdentifier')->willReturnArgument(0);
-
-        $connectionMigrator = $this->getAccessibleMock(ConnectionMigrator::class, null, [], '', false);
-        $connectionMigrator->_set('connection', $connectionMock);
-        $connectionMigrator->_set('tableAndFieldMaxNameLengthsPerDbPlatform', $this->tableAndFieldMaxNameLengthsPerDbPlatform);
-
-        return $connectionMigrator;
-    }
+    protected $subject;
 
     /**
-     * Utility method to create a table mock instance with a much too long
-     * table name in any case.
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var int
      */
-    private function getTableMock()
-    {
-        $ridiculouslyLongTableName = 'table_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
-        $tableMock = $this->getAccessibleMock(Table::class, ['getQuotedName', 'getName'], [$ridiculouslyLongTableName]);
-        $tableMock->expects($this->any())
-            ->method('getQuotedName')
-            ->withAnyParameters()
-            ->willReturn($ridiculouslyLongTableName);
-        $tableMock->expects($this->any())
-            ->method('getName')
-            ->withAnyParameters()
-            ->willReturn($ridiculouslyLongTableName);
+    protected $maxIdentifierLength = -1;
 
-        return $tableMock;
+    /**
+     * Set up the test subject
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $platformMock = $this->prophesize(MySqlPlatform::class);
+        $platformMock->quoteIdentifier(Argument::any())->willReturnArgument(0);
+        $this->platform = $platformMock->reveal();
+
+        $connectionMock = $this->prophesize(Connection::class);
+        $connectionMock->getDatabasePlatform()->willReturn($this->platform);
+        $connectionMock->quoteIdentifier(Argument::any())->willReturnArgument(0);
+
+        $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($this->platform);
+
+        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, [], '', false);
+        $this->subject->_set('connection', $connectionMock->reveal());
     }
 
     /**
@@ -94,49 +73,12 @@ class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
     {
-        $connectionMigrator = $this->getConnectionMigratorMock('dbplatform_type1');
-        $tableMock = $this->getTableMock();
-
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$tableMock]);
-        $renamedSchemaDiff = $connectionMigrator->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
+        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
+        $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
 
         $this->assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
-        $this->assertLessThanOrEqual(
-            $this->tableAndFieldMaxNameLengthsPerDbPlatform['dbplatform_type1']['tables'],
-            strlen($renamedSchemaDiff->changedTables[0]->newName)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function databasePlatformNamingRestrictionGetsResolved()
-    {
-        $connectionMigrator = $this->getConnectionMigratorMock('dbplatform_type2');
-        $tableMock = $this->getTableMock();
-
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$tableMock]);
-        $renamedSchemaDiff = $connectionMigrator->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
-
-        $this->assertLessThanOrEqual(
-            $this->tableAndFieldMaxNameLengthsPerDbPlatform['dbplatform_type1']['tables'],
-            strlen($renamedSchemaDiff->changedTables[0]->newName)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function whenPassingAnUnknownDatabasePlatformTheDefaultTableAndFieldNameRestrictionsApply()
-    {
-        $connectionMigrator = $this->getConnectionMigratorMock('dummydbplatformthatdoesntexist');
-        $tableMock = $this->getTableMock();
-
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$tableMock]);
-        $renamedSchemaDiff = $connectionMigrator->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
-
-        $this->assertLessThanOrEqual(
-            $this->tableAndFieldMaxNameLengthsPerDbPlatform['default']['tables'],
+        $this->assertEquals(
+            $this->maxIdentifierLength,
             strlen($renamedSchemaDiff->changedTables[0]->newName)
         );
     }
@@ -146,26 +88,51 @@ class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
     {
-        $connectionMigrator = $this->getConnectionMigratorMock('dbplatform_type1');
-        $tableMock = $this->getAccessibleMock(Table::class, ['getQuotedName'], ['test_table']);
-        $columnMock = $this->getAccessibleMock(
-            Column::class,
-            ['getQuotedName'],
-            [
-                'a_column_name_waaaaay_over_20_characters',
-                $this->getAccessibleMock(\Doctrine\DBAL\Types\StringType::class, [], [], '', false)
-            ]
+        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
+        $originalSchemaDiff->changedTables[0]->removedColumns[] = $this->getColumn();
+        $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
+
+        $this->assertStringStartsWith(
+            'zzz_deleted_',
+            $renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName()
         );
-        $columnMock->expects($this->any())->method('getQuotedName')->withAnyParameters()->will($this->returnValue('a_column_name_waaaaay_over_20_characters'));
-
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$tableMock]);
-        $originalSchemaDiff->changedTables[0]->removedColumns[] = $columnMock;
-        $renamedSchemaDiff = $connectionMigrator->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
-
-        $this->assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName());
-        $this->assertLessThanOrEqual(
-            $this->tableAndFieldMaxNameLengthsPerDbPlatform['dbplatform_type1']['columns'],
+        $this->assertEquals(
+            $this->maxIdentifierLength,
             strlen($renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName())
         );
+    }
+
+    /**
+     * Utility method to create a table instance with name that exceeds the identifier limits.
+     *
+     * @return Table
+     */
+    protected function getTable(): Table
+    {
+        $tableName = 'table_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
+        $table = GeneralUtility::makeInstance(
+            Table::class,
+            $tableName
+        );
+
+        return $table;
+    }
+
+    /**
+     * Utility method to create a column instance with name that exceeds the identifier limits.
+     *
+     *
+     * @return Column
+     */
+    protected function getColumn(): Column
+    {
+        $columnName = 'column_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
+        $column = GeneralUtility::makeInstance(
+            Column::class,
+            $columnName,
+            Type::getType('string')
+        );
+
+        return $column;
     }
 }
