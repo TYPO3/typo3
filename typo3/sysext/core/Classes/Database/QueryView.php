@@ -848,15 +848,15 @@ class QueryView
         switch ($fields['type']) {
             case 'date':
                 if ($fieldValue != -1) {
-                    $out = strftime('%e-%m-%Y', $fieldValue);
+                    $out = strftime('%d-%m-%Y', $fieldValue);
                 }
                 break;
             case 'time':
                 if ($fieldValue != -1) {
                     if ($splitString === '<br />') {
-                        $out = strftime('%H:%M' . $splitString . '%e-%m-%Y', $fieldValue);
+                        $out = strftime('%H:%M' . $splitString . '%d-%m-%Y', $fieldValue);
                     } else {
-                        $out = strftime('%H:%M %e-%m-%Y', $fieldValue);
+                        $out = strftime('%H:%M %d-%m-%Y', $fieldValue);
                     }
                 }
                 break;
