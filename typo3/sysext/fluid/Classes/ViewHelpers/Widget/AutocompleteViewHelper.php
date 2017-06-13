@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Simple paginate widget
@@ -49,6 +50,17 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
     protected $controller;
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('objects', QueryResultInterface::class, 'Objects to auto-complete', true);
+        $this->registerArgument('for', 'string', 'Property to fill', true);
+        $this->registerArgument('searchProperty', 'string', 'Property to search within when filtering list', true);
+    }
+
+    /**
      * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller
      */
     public function injectAutocompleteController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller)
@@ -57,12 +69,9 @@ class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects
-     * @param string $for
-     * @param string $searchProperty
      * @return string
      */
-    public function render(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects, $for, $searchProperty)
+    public function render()
     {
         return $this->initiateSubRequest();
     }
