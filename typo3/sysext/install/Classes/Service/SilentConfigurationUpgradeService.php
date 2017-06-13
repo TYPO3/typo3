@@ -127,6 +127,7 @@ class SilentConfigurationUpgradeService
         $this->migrateDatabaseConnectionCharset();
         $this->migrateDatabaseDriverOptions();
         $this->migrateLangDebug();
+        $this->migrateCacheHashOptions();
 
         // Should run at the end to prevent that obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -785,6 +786,61 @@ class SilentConfigurationUpgradeService
             }
         } catch (\RuntimeException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate single cache hash related options under "FE" into "FE/cacheHash"
+     */
+    protected function migrateCacheHashOptions()
+    {
+        $confManager = $this->configurationManager;
+        $removeSettings = [];
+        $newSettings = [];
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('FE/cHashOnlyForParameters');
+            $removeSettings[] = 'FE/cHashOnlyForParameters';
+            $newSettings['FE/cacheHash/cachedParametersWhiteList'] = GeneralUtility::trimExplode(',', $value, true);
+        } catch (\RuntimeException $e) {
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('FE/cHashExcludedParameters');
+            $removeSettings[] = 'FE/cHashExcludedParameters';
+            $newSettings['FE/cacheHash/excludedParameters'] = GeneralUtility::trimExplode(',', $value, true);
+        } catch (\RuntimeException $e) {
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('FE/cHashRequiredParameters');
+            $removeSettings[] = 'FE/cHashRequiredParameters';
+            $newSettings['FE/cacheHash/requireCacheHashPresenceParameters'] = GeneralUtility::trimExplode(',', $value, true);
+        } catch (\RuntimeException $e) {
+        }
+
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('FE/cHashExcludedParametersIfEmpty');
+            $removeSettings[] = 'FE/cHashExcludedParametersIfEmpty';
+            if (trim($value) === '*') {
+                $newSettings['FE/cacheHash/excludeAllEmptyParameters'] = true;
+            } else {
+                $newSettings['FE/cacheHash/excludedParametersIfEmpty'] = GeneralUtility::trimExplode(',', $value, true);
+            }
+        } catch (\RuntimeException $e) {
+        }
+
+        // Add new settings and remove old ones
+        if (!empty($newSettings)) {
+            $confManager->setLocalConfigurationValuesByPathValuePairs($newSettings);
+        }
+        if (!empty($removeSettings)) {
+            $confManager->removeLocalConfigurationKeysByPath($removeSettings);
+        }
+
+        // Throw redirect if something was changed
+        if (!empty($newSettings) || !empty($removeSettings)) {
+            $this->throwRedirectException();
         }
     }
 }

@@ -420,18 +420,24 @@ FE:
         disableNoCacheParameter:
             type: bool
             description: 'If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don''t use this parameter. However, using "&amp;no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).'
-        cHashExcludedParameters:
-            type: text
-            description: 'The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]'
-        cHashOnlyForParameters:
-            type: text
-            description: 'Only the given parameters will be evaluated in the cHash calculation. Example: tx_news_pi1[uid]'
-        cHashRequiredParameters:
-            type: text
-            description: 'Optional: Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour'
-        cHashExcludedParametersIfEmpty:
-            type: text
-            description: 'Optional: Configure Parameters that are only relevant for the chash if there''s an associated value available. And asterisk "*" can be used to skip all empty parameters.'
+        cacheHash:
+          type: container
+          items:
+              cachedParametersWhiteList:
+                  type: array
+                  description: 'Only the given parameters will be evaluated in the cHash calculation. Example: tx_news_pi1[uid]'
+              requireCacheHashPresenceParameters:
+                  type: array
+                  description: 'Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour'
+              excludedParameters:
+                  type: array
+                  description: 'The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]'
+              excludedParametersIfEmpty:
+                  type: array
+                  description: 'Configure Parameters that are only relevant for the cHash if there''s an associated value available. Set excludeAllEmptyParameters to true to skip all empty parameters.'
+              excludeAllEmptyParameters:
+                  type: bool
+                  description: 'If true, all parameters which are relevant for cHash are only considered if they are non-empty.'
         workspacePreviewLogoutTemplate:
             type: text
             description: 'If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: <code>fileadmin/templates/template_workspace_preview_logout.html</code>. Inside you can put the marker %1$s to insert the URL to go back to. Use this in <code>&lt;a href="%1$s"&gt;Go back...&lt;/a&gt;</code> links.'

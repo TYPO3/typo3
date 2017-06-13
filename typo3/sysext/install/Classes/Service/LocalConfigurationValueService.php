@@ -38,51 +38,89 @@ class LocalConfigurationValueService
     public function getCurrentConfigurationData(): array
     {
         $data = [];
-        $typo3ConfVars = array_keys($GLOBALS['TYPO3_CONF_VARS']);
-        sort($typo3ConfVars);
         $commentArray = $this->getDefaultConfigArrayComments();
-        foreach ($typo3ConfVars as $sectionName) {
-            $data[$sectionName] = [];
 
-            foreach ($GLOBALS['TYPO3_CONF_VARS'][$sectionName] as $key => $value) {
-                $descriptionInfo = $commentArray[$sectionName]['items'][$key];
-                $descriptionType = $descriptionInfo['type'];
-                if (!is_array($value) && (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline')) {
-                    $itemData = [];
-                    $itemData['key'] = $key;
-                    $itemData['fieldType'] = $descriptionInfo['type'];
-                    $itemData['description'] = $descriptionInfo['description'];
-                    $itemData['allowedValues'] = $descriptionInfo['allowedValues'];
-                    $itemData['key'] = $key;
-                    switch ($descriptionType) {
-                        case 'multiline':
-                            $itemData['type'] = 'textarea';
-                            $itemData['value'] = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
-                        break;
-                        case 'bool':
-                            $itemData['type'] = 'checkbox';
-                            $itemData['value'] = $value ? '1' : '0';
-                            $itemData['checked'] = (bool)$value;
-                        break;
-                        case 'int':
-                            $itemData['type'] = 'number';
-                            $itemData['value'] = (int)$value;
-                        break;
-                        // Check if the setting is a PHP error code, will trigger a view helper in fluid
-                        case 'errors':
-                            $itemData['type'] = 'input';
-                            $itemData['value'] = $value;
-                            $itemData['phpErrorCode'] = true;
-                        break;
-                        default:
-                            $itemData['type'] = 'input';
-                            $itemData['value'] = $value;
-                    }
-
-                    $data[$sectionName][] = $itemData;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS'] as $sectionName => $section) {
+            if (isset($commentArray[$sectionName])) {
+                $data[$sectionName] = $this->recursiveConfigurationFetching($section, $commentArray[$sectionName]);
             }
         }
+
+        ksort($data);
+
+        return $data;
+    }
+
+    /**
+     * Because configuration entries can be at any sub-array level, we need
+     * to check entries recursively.
+     *
+     * @param array $sections
+     * @param array $descriptions
+     * @param array $path
+     * @return array
+     */
+    protected function recursiveConfigurationFetching(array $sections, array $descriptions, array $path = []): array
+    {
+        $data = [];
+
+        foreach ($sections as $key => $value) {
+            if (!isset($descriptions['items'][$key])) {
+                // @todo should we do something here?
+                continue;
+            }
+
+            $descriptionInfo = $descriptions['items'][$key];
+            $descriptionType = $descriptionInfo['type'];
+
+            $newPath = $path;
+            $newPath[] = $key;
+
+            if ($descriptionType === 'container') {
+                $data = array_merge($data, $this->recursiveConfigurationFetching($value, $descriptionInfo, $newPath));
+            } elseif (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline') {
+                $itemData = [];
+                $itemData['key'] = implode('/', $newPath);
+                $itemData['path'] = '[' . implode('][', $newPath) . ']';
+                $itemData['fieldType'] = $descriptionInfo['type'];
+                $itemData['description'] = $descriptionInfo['description'];
+                $itemData['allowedValues'] = $descriptionInfo['allowedValues'];
+                switch ($descriptionType) {
+                    case 'multiline':
+                        $itemData['type'] = 'textarea';
+                        $itemData['value'] = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
+                        break;
+                    case 'bool':
+                        $itemData['type'] = 'checkbox';
+                        $itemData['value'] = $value ? '1' : '0';
+                        $itemData['checked'] = (bool)$value;
+                        break;
+                    case 'int':
+                        $itemData['type'] = 'number';
+                        $itemData['value'] = (int)$value;
+                        break;
+                    case 'array':
+                        $itemData['type'] = 'input';
+                        // @todo The line below should be improved when the array handling is introduced in the global settings manager.
+                        $itemData['value'] = is_array($value)
+                            ? implode(',', $value)
+                            : (string)$value;
+                        break;
+                    // Check if the setting is a PHP error code, will trigger a view helper in fluid
+                    case 'errors':
+                        $itemData['type'] = 'input';
+                        $itemData['value'] = $value;
+                        $itemData['phpErrorCode'] = true;
+                        break;
+                    default:
+                        $itemData['type'] = 'input';
+                        $itemData['value'] = $value;
+                }
+
+                $data[] = $itemData;
+            }
+        }
+
         return $data;
     }
 
@@ -101,7 +139,12 @@ class LocalConfigurationValueService
         foreach ($valueList as $path => $value) {
             $oldValue = $configurationManager->getConfigurationValueByPath($path);
             $pathParts = explode('/', $path);
-            $descriptionData = $commentArray[$pathParts[0]]['items'][$pathParts[1]];
+            $descriptionData = $commentArray[$pathParts[0]];
+
+            while ($part = next($pathParts)) {
+                $descriptionData = $descriptionData['items'][$part];
+            }
+
             $dataType = $descriptionData['type'];
 
             if ($dataType === 'multiline') {
@@ -120,6 +163,12 @@ class LocalConfigurationValueService
                 // Cast integer values to integers (but only for values that can not contain a string as well)
                 $value = (int)$value;
                 $valueHasChanged = (int)$oldValue !== $value;
+            } elseif ($dataType === 'array') {
+                $oldValueAsString = is_array($oldValue)
+                    ? implode(',', $oldValue)
+                    : (string)$oldValue;
+                $valueHasChanged = $oldValueAsString !== $value;
+                $value = GeneralUtility::trimExplode(',', $value, true);
             } else {
                 $valueHasChanged = (string)$oldValue !== (string)$value;
             }
@@ -127,11 +176,17 @@ class LocalConfigurationValueService
             // Save if value changed
             if ($valueHasChanged) {
                 $configurationPathValuePairs[$path] = $value;
+
                 if (is_bool($value)) {
                     $messageBody = 'New value = ' . ($value ? 'true' : 'false');
+                } elseif (empty($value)) {
+                    $messageBody = 'New value = <i>none</i>';
+                } elseif (is_array($value)) {
+                    $messageBody = "New value = ['" . implode("', '", $value) . "']";
                 } else {
                     $messageBody = 'New value = ' . $value;
                 }
+
                 $messageQueue->enqueue(new FlashMessage(
                     $messageBody,
                     $path

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
@@ -668,5 +669,76 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
         $silentConfigurationUpgradeServiceInstance->_call('migrateLangDebug');
+    }
+
+    /**
+     * @test
+     *
+     * @param array $oldValues
+     * @param array $newValues
+     *
+     * @dataProvider migrateCacheHashOptionsDataProvider
+     */
+    public function migrateCacheHashOptions(array $oldValues, array $newValues)
+    {
+        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+
+        foreach ($oldValues as $key => $value) {
+            $configurationManager->getLocalConfigurationValueByPath($key)
+                ->shouldBeCalled()
+                ->willReturn($value);
+        }
+
+        $configurationManager->setLocalConfigurationValuesByPathValuePairs($newValues)
+            ->shouldBeCalled();
+        $configurationManager->removeLocalConfigurationKeysByPath(array_keys($oldValues))
+            ->shouldBeCalled();
+
+        $this->expectException(RedirectException::class);
+
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+
+        $silentConfigurationUpgradeServiceInstance->_call('migrateCacheHashOptions');
+    }
+
+    /**
+     * @return array
+     */
+    public function migrateCacheHashOptionsDataProvider()
+    {
+        return [
+            [
+                'old' => [
+                    'FE/cHashOnlyForParameters' => 'foo,bar',
+                    'FE/cHashExcludedParameters' => 'bar,foo',
+                    'FE/cHashRequiredParameters' => 'bar,baz',
+                    'FE/cHashExcludedParametersIfEmpty' => '*'
+                ],
+                'new' => [
+                    'FE/cacheHash/cachedParametersWhiteList' => ['foo', 'bar'],
+                    'FE/cacheHash/excludedParameters' => ['bar', 'foo'],
+                    'FE/cacheHash/requireCacheHashPresenceParameters' => ['bar', 'baz'],
+                    'FE/cacheHash/excludeAllEmptyParameters' => true
+                ]
+            ],
+            [
+                'old' => [
+                    'FE/cHashExcludedParametersIfEmpty' => 'foo,bar'
+                ],
+                'new' => [
+                    'FE/cacheHash/excludedParametersIfEmpty' => ['foo', 'bar']
+                ]
+            ]
+        ];
     }
 }

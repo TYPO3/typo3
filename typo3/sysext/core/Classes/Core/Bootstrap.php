@@ -401,7 +401,6 @@ class Bootstrap
         $this->initializeCachingFramework()
             ->initializePackageManagement($packageManagerClassName)
             ->initializeRuntimeActivatedPackagesFromConfiguration()
-            ->setCacheHashOptions()
             ->setDefaultTimezone()
             ->initializeL10nLocales()
             ->setMemoryLimit();
@@ -528,26 +527,6 @@ class Bootstrap
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
         $this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
-        return $this;
-    }
-
-    /**
-     * Set cacheHash options
-     *
-     * @return Bootstrap
-     */
-    protected function setCacheHashOptions()
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = [
-            'cachedParametersWhiteList' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], true),
-            'excludedParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], true),
-            'requireCacheHashPresenceParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], true),
-        ];
-        if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty']) === '*') {
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludeAllEmptyParameters'] = true;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParametersIfEmpty'] = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty'], true);
-        }
         return $this;
     }
 

@@ -180,8 +180,8 @@ class CacheHashCalculatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
     }
 
     /**
-     * In case the cHashOnlyForParameters is set, other parameters should not
-     * incluence the cHash (except the encryption key of course)
+     * In case the $TYPO3_CONF_VARS[FE][cacheHash][cachedParametersWhiteList] is set, other parameters should not
+     * influence the cHash (except the encryption key of course)
      *
      * @dataProvider canWhitelistParametersDataProvider
      * @test
