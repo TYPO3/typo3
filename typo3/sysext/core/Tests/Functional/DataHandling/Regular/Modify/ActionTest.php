@@ -254,6 +254,51 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
     /**
      * @test
+     * @see DataSet/createLocalizedContent.csv
+     */
+    public function createLocalizedContent()
+    {
+        parent::createLocalizedContent();
+
+        $this->assertAssertionDataSet('createLocalizedContent');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Localized Testing'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/createLocalizedContentWSynchronization.csv
+     */
+    public function createLocalizedContentWithLanguageSynchronization()
+    {
+        parent::createLocalizedContentWithLanguageSynchronization();
+
+        $this->assertAssertionDataSet('createLocalizedContentWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/createLocalizedContentWExclude.csv
+     */
+    public function createLocalizedContentWithLocalizationExclude()
+    {
+        parent::createLocalizedContentWithLocalizationExclude();
+
+        $this->assertAssertionDataSet('createLocalizedContentWExclude');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing'));
+    }
+
+    /**
+     * @test
      * @see DataSet/changeContentRecordSorting.csv
      */
     public function changeContentSorting()
