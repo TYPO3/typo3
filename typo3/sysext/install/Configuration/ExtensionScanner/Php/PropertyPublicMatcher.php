@@ -139,6 +139,11 @@ return [
             'Breaking-81171-EditAbilityOfTypoScriptTemplateInEXTtstemplateRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->urltypes' => [
+        'restFiles' => [
+            'Breaking-71306-DroppedProtocolFieldFromPageTypeLinkToExternalURL.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];

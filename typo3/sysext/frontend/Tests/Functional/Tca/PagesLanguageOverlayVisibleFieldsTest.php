@@ -77,7 +77,6 @@ class PagesLanguageOverlayVisibleFieldsTest extends \TYPO3\TestingFramework\Core
         ],
         PageRepository::DOKTYPE_LINK => [
             'additionalFields' => [
-                'urltype',
                 'url',
             ],
             'hiddenFields' => [

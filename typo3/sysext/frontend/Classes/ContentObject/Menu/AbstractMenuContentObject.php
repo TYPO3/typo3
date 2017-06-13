@@ -1622,12 +1622,12 @@ abstract class AbstractMenuContentObject
         }
         // Override URL if using "External URL"
         if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_LINK) {
-            if ($this->menuArr[$key]['urltype'] == 3 && GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
-                // Create mailto-link using \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink (concerning spamProtectEmailAddresses):
-                $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $this->menuArr[$key]['url']]);
+            $externalUrl = $this->getSysPage()->getExtURL($this->menuArr[$key]);
+            // Create link using typolink (concerning spamProtectEmailAddresses) for email links
+            $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $externalUrl]);
+            // Links to emails should not have any target
+            if (stripos($externalUrl, 'mailto:') === 0) {
                 $LD['target'] = '';
-            } else {
-                $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $this->getSysPage()->getExtURL($this->menuArr[$key])]);
             }
         }
 

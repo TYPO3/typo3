@@ -39,11 +39,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class PageRepository
 {
     /**
-     * @var array
-     */
-    public $urltypes = ['', 'http://', 'ftp://', 'mailto:', 'https://'];
-
-    /**
      * This is not the final clauses. There will normally be conditions for the
      * hidden, starttime and endtime fields as well. You MUST initialize the object
      * by the init() function
@@ -948,21 +943,25 @@ class PageRepository
     }
 
     /**
-     * Returns the URL type for the input page row IF the doktype is set to 3.
+     * Returns the redirect URL for the input page row IF the doktype is set to 3.
      *
      * @param array $pagerow The page row to return URL type for
-     * @return string|bool The URL from based on the data from "urltype" and "url". False if not found.
+     * @return string|bool The URL from based on the data from "pages:url". False if not found.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initializeRedirectUrlHandlers()
      */
     public function getExtURL($pagerow)
     {
         if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK) {
-            $redirectTo = $this->urltypes[$pagerow['urltype']] . $pagerow['url'];
-            // If relative path, prefix Site URL:
+            $redirectTo = $pagerow['url'];
             $uI = parse_url($redirectTo);
-            // Relative path assumed now.
-            if (!$uI['scheme'] && $redirectTo[0] !== '/') {
-                $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+            // If relative path, prefix Site URL
+            // If it's a valid email without protocol, add "mailto:"
+            if (!$uI['scheme']) {
+                if (GeneralUtility::validEmail($redirectTo)) {
+                    $redirectTo = 'mailto:' . $redirectTo;
+                } elseif ($redirectTo[0] !== '/') {
+                    $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+                }
             }
             return $redirectTo;
         }

@@ -141,7 +141,6 @@ CREATE TABLE pages_language_overlay (
 	author_email varchar(80) DEFAULT '' NOT NULL,
 	l18n_diffsource mediumblob,
 	url varchar(255) DEFAULT '' NOT NULL,
-	urltype tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	shortcut_mode int(10) unsigned DEFAULT '0' NOT NULL,
 

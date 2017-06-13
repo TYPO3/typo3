@@ -57,6 +57,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegac
     = \TYPO3\CMS\Install\Updates\Typo3DbExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['funcExtension']
     = \TYPO3\CMS\Install\Updates\FuncExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesUrltypeField']
+    = \TYPO3\CMS\Install\Updates\MigrateUrlTypesInPagesUpdate::class;
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $icons = [

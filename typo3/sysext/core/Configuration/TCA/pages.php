@@ -351,36 +351,6 @@ return [
                 'softref' => 'url'
             ]
         ],
-        'urltype' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.automatic',
-                        '0'
-                    ],
-                    [
-                        'http://',
-                        '1'
-                    ],
-                    [
-                        'https://',
-                        '4'
-                    ],
-                    [
-                        'ftp://',
-                        '2'
-                    ],
-                    [
-                        'mailto:',
-                        '3'
-                    ]
-                ],
-                'default' => 1
-            ]
-        ],
         'lastUpdated' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated',
@@ -1003,7 +973,7 @@ return [
             'showitem' => 'mount_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_formlabel',
         ],
         'external' => [
-            'showitem' => 'urltype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
+            'showitem' => 'url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
         ],
         'title' => [
             'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle_formlabel',

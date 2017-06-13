@@ -200,16 +200,6 @@ return [
                 'softref' => 'url'
             ]
         ],
-        'urltype' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => $GLOBALS['TCA']['pages']['columns']['urltype']['config']['items'],
-                'default' => '1'
-            ]
-        ],
         'shortcut' => [
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.shortcut_page',
             'config' => [
@@ -401,7 +391,7 @@ return [
             'showitem' => 'shortcut;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_formlabel',
         ],
         'external' => [
-            'showitem' => 'urltype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
+            'showitem' => 'url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
         ],
         'title' => [
             'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle_formlabel',

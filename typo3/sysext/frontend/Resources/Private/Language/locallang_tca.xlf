@@ -171,9 +171,6 @@
 			<trans-unit id="pages.url_formlabel">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.urltype_formlabel">
-				<source>Protocol</source>
-			</trans-unit>
 			<trans-unit id="pages.lastUpdated">
 				<source>Last Updated:</source>
 			</trans-unit>

@@ -104,7 +104,6 @@ class PagesVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         ],
         PageRepository::DOKTYPE_LINK => [
             'additionalFields' => [
-                'urltype',
                 'url',
             ],
             'hiddenFields' => [

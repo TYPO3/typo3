@@ -58,24 +58,55 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3AndUrlType1AddsHttpSchemeToUrl()
+    public function getExtUrlForDokType3UsesTheSameValue()
     {
         $this->assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
             'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
-            'urltype' => 1,
-            'url' => 'www.example.com'
+            'url' => 'http://www.example.com'
         ]));
     }
 
     /**
      * @test
      */
-    public function getExtUrlForDokType3AndUrlType0PrependsSiteUrl()
+    public function getExtUrlForDokType3PrependsSiteUrl()
     {
         $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
-            'urltype' => 0,
             'url' => 'hello/world/'
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function getExtUrlForDokType3AssumesAbsoluteUrl()
+    {
+        $this->assertEquals('/hello/world/', $this->pageSelectObject->getExtURL([
+            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'url' => '/hello/world/'
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function getExtUrlForDokType3UsesEmailAsSameValue()
+    {
+        $this->assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
+            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'url' => 'mailto:mail@typo3-test.com'
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function getExtUrlForDokType3UsesValidEmailWithoutProtocolAsEmail()
+    {
+        $this->assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
+            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'url' => 'mail@typo3-test.com'
         ]));
     }
 }

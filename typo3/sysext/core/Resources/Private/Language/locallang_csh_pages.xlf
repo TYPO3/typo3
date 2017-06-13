@@ -213,14 +213,9 @@ As an example the template could be use this field to allow a logo to be attache
 				<source>Enter the URL this page redirects to.</source>
 			</trans-unit>
 			<trans-unit id="url.details" xml:space="preserve">
-				<source>For example, 'http://www.typo3.org' or just 'www.typo3.org' if the 'Protocol' selector is set to 'http://'.
-Use the 'Protocol' selector to select a prefix for the URL.
+				<source>For example, 'http://www.typo3.org'.
 
 This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
-			</trans-unit>
-			<trans-unit id="_url.seeAlso">
-				<source>pages:urltype</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcut.description">
 				<source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
@@ -330,9 +325,6 @@ If you insert a 'd' the current time and date is inserted. You can also append a
 			<trans-unit id="content_from_pid.description" xml:space="preserve">
 				<source>If set, this is an alternative page to select Content Elements from.
 Whether this field is used depends on the website's TypoScript template.</source>
-			</trans-unit>
-			<trans-unit id="urltype.description">
-				<source>Set the Protocol for the URL.</source>
 			</trans-unit>
 			<trans-unit id="shortcut_mode.description">
 				<source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
