@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -832,34 +830,6 @@ function jumpToUrl(URL) {
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         return $defaultFlashMessageQueue->renderFlashMessages();
-    }
-
-    /**
-     * Renders the FlashMessages from queue and returns them as AJAX.
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface
-     */
-    public function renderQueuedFlashMessages(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $flashMessages = $defaultFlashMessageQueue->getAllMessagesAndFlush();
-
-        $messages = [];
-        foreach ($flashMessages as $flashMessage) {
-            $messages[] = [
-                'title' => $flashMessage->getTitle(),
-                'message' => $flashMessage->getMessage(),
-                'severity' => $flashMessage->getSeverity()
-            ];
-        }
-
-        $response->getBody()->write(json_encode($messages));
-        return $response;
     }
 
     /**

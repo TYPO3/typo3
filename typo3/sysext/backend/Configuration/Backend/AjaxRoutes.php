@@ -165,7 +165,7 @@ return [
     // Render flash messages
     'flashmessages_render' => [
         'path' => '/flashmessages/render',
-        'target' => \TYPO3\CMS\Backend\Template\DocumentTemplate::class . '::renderQueuedFlashMessages'
+        'target' => \TYPO3\CMS\Backend\Controller\FlashMessageController::class . '::getQueuedFlashMessagesAction'
     ],
 
     // Load context menu for
