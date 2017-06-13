@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A Yaml file loader that allows to load YML files, based on the Symfony/Yaml component
+ * A Yaml file loader that allows to load YAML files, based on the Symfony/Yaml component
  *
  * In addition to just load a yaml file, it adds some special functionality.
  *
@@ -39,11 +39,16 @@ class YamlFileLoader
      *
      * @param string $fileName either relative to PATH_site or prefixed with EXT:...
      * @return array the configuration as array
+     * @throws \RuntimeException when the file is empty or is of invalid format
      */
     public function load(string $fileName): array
     {
         $content = $this->getFileContents($fileName);
         $content = Yaml::parse($content);
+
+        if (!is_array($content)) {
+            throw new \RuntimeException('YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?', 1497332874);
+        }
 
         $content = $this->processImports($content);
 
@@ -63,11 +68,11 @@ class YamlFileLoader
      */
     protected function getFileContents(string $fileName): string
     {
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        if (!$fileName) {
+        $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
+        if (!$streamlinedFileName) {
             throw new \RuntimeException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
         }
-        return file_get_contents($fileName);
+        return file_get_contents($streamlinedFileName);
     }
 
     /**
