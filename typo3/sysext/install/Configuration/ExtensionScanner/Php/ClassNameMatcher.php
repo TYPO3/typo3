@@ -364,6 +364,21 @@ return [
             'Breaking-82334-AbstractRecordList.rst',
         ],
     ],
+    'TYPO3\CMS\Belog\Domain\Model\HistoryEntry' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Belog\ViewHelpers\HistoryEntryViewHelper' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

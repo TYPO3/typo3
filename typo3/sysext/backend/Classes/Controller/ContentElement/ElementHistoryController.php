@@ -19,33 +19,45 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Script Class for showing the history module of TYPO3s backend
+ * Controller for showing the history module of TYPO3s backend
  * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
 class ElementHistoryController extends AbstractModule
 {
     /**
-     * @var string
+     * @var ServerRequestInterface
      */
-    public $content;
+    protected $request;
 
     /**
-     * Document template object
-     *
-     * @var DocumentTemplate
+     * @var StandaloneView
      */
-    public $doc;
+    protected $view;
+
+    /**
+     * @var RecordHistory
+     */
+    protected $historyObject;
+
+    /**
+     * Display diff or not (0-no diff, 1-inline)
+     *
+     * @var int
+     */
+    protected $showDiff = 1;
 
     /**
      * @var array
      */
-    protected $pageInfo;
+    protected $recordCache = [];
 
     /**
      * Constructor
@@ -53,10 +65,7 @@ class ElementHistoryController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf');
-        $GLOBALS['SOBE'] = $this;
-
-        $this->init();
+        $this->view = $this->initializeView();
     }
 
     /**
@@ -69,43 +78,68 @@ class ElementHistoryController extends AbstractModule
      */
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->main();
-
-        $response->getBody()->write($this->moduleTemplate->renderContent());
-        return $response;
-    }
-
-    /**
-     * Initialize the module output
-     */
-    protected function init()
-    {
-        // Create internal template object
-        // This is ugly, we need to remove the dependency-wiring via GLOBALS['SOBE']
-        // In this case, RecordHistory.php depends on GLOBALS[SOBE] being set in here
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-    }
-
-    /**
-     * Generate module output
-     */
-    public function main()
-    {
-        $this->content = '<h1>' . $this->getLanguageService()->getLL('title') . '</h1>';
+        $this->request = $request;
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
 
+        $lastHistoryEntry = (int)($request->getParsedBody()['historyEntry'] ?: $request->getQueryParams()['historyEntry']);
+        $rollbackFields = $request->getParsedBody()['rollbackFields'] ?: $request->getQueryParams()['rollbackFields'];
+        $element = $request->getParsedBody()['element'] ?: $request->getQueryParams()['element'];
+        $displaySettings = $this->prepareDisplaySettings();
+        $this->view->assign('currentSelection', $displaySettings);
+
+        $this->showDiff = (int)$displaySettings['showDiff'];
+
         // Start history object
-        $historyObj = GeneralUtility::makeInstance(RecordHistory::class);
+        $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element, $rollbackFields);
+        $this->historyObject->setShowSubElements((int)$displaySettings['showSubElements']);
+        $this->historyObject->setLastHistoryEntry($lastHistoryEntry);
+        if ($displaySettings['maxSteps']) {
+            $this->historyObject->setMaxSteps((int)$displaySettings['maxSteps']);
+        }
 
-        $elementData = GeneralUtility::trimExplode(':', $historyObj->element);
-        $this->setPagePath($elementData[0], $elementData[1]);
+        // Do the actual logic now (rollback, show a diff for certain changes,
+        // or show the full history of a page or a specific record)
+        $this->historyObject->createChangeLog();
+        if (!empty($this->historyObject->changeLog)) {
+            if ($this->historyObject->shouldPerformRollback()) {
+                $this->historyObject->performRollback();
+            } elseif ($lastHistoryEntry) {
+                $completeDiff = $this->historyObject->createMultipleDiff();
+                $this->displayMultipleDiff($completeDiff);
+                $this->view->assign('showDifferences', true);
+                $this->view->assign('fullViewUrl', $this->buildUrl(['historyEntry' => '']));
+            }
+            if ($this->historyObject->getElementData()) {
+                $this->displayHistory($this->historyObject->changeLog);
+            }
+        }
 
-        // Get content:
-        $this->content .= $historyObj->main();
+        $elementData = $this->historyObject->getElementData();
+        if ($elementData) {
+            $this->setPagePath($elementData[0], $elementData[1]);
+            // Get link to page history if the element history is shown
+            if ($elementData[0] !== 'pages') {
+                $this->view->assign('singleElement', true);
+                $parentPage = BackendUtility::getRecord($elementData[0], $elementData[1], '*', '', false);
+                if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $this->getBackendUser()->getPagePermsClause(1))) {
+                    $this->view->assign('fullHistoryUrl', $this->buildUrl([
+                        'element' => 'pages:' . $parentPage['pid'],
+                        'historyEntry' => '',
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    ]));
+                }
+            }
+        }
+
+        $this->view->assign('TYPO3_REQUEST_URI', GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+
         // Setting up the buttons and markers for docheader
         $this->getButtons();
         // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->content);
+        $this->moduleTemplate->setContent($this->view->render());
+
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
     }
 
     /**
@@ -133,8 +167,6 @@ class ElementHistoryController extends AbstractModule
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
@@ -154,6 +186,281 @@ class ElementHistoryController extends AbstractModule
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
+    }
+
+    /**
+     * Displays settings evaluation
+     */
+    protected function prepareDisplaySettings()
+    {
+        // Get current selection from UC, merge data, write it back to UC
+        $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
+            ? $this->getBackendUser()->uc['moduleData']['history']
+            : ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1];
+        $currentSelectionOverride = $this->request->getParsedBody()['settings'] ? $this->request->getParsedBody()['settings'] : $this->request->getQueryParams()['settings'];
+        if (is_array($currentSelectionOverride) && !empty($currentSelectionOverride)) {
+            $currentSelection = array_merge($currentSelection, $currentSelectionOverride);
+            $this->getBackendUser()->uc['moduleData']['history'] = $currentSelection;
+            $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
+        }
+        // Display selector for number of history entries
+        $selector['maxSteps'] = [
+            10 => [
+                'value' => 10
+            ],
+            20 => [
+                'value' => 20
+            ],
+            50 => [
+                'value' => 50
+            ],
+            100 => [
+                'value' => 100
+            ],
+            999 => [
+                'value' => 'maxSteps_all'
+            ]
+        ];
+        $selector['showDiff'] = [
+            0 => [
+                'value' => 'showDiff_no'
+            ],
+            1 => [
+                'value' => 'showDiff_inline'
+            ]
+        ];
+        $selector['showSubElements'] = [
+            0 => [
+                'value' => 'no'
+            ],
+            1 => [
+                'value' => 'yes'
+            ]
+        ];
+
+        $scriptUrl = GeneralUtility::linkThisScript();
+
+        foreach ($selector as $key => $values) {
+            foreach ($values as $singleKey => $singleVal) {
+                $selector[$key][$singleKey]['scriptUrl'] = htmlspecialchars(GeneralUtility::quoteJSvalue($scriptUrl . '&settings[' . $key . ']=' . $singleKey));
+            }
+        }
+        $this->view->assign('settings', $selector);
+        return $currentSelection;
+    }
+
+    /**
+     * Displays a diff over multiple fields including rollback links
+     *
+     * @param array $diff Difference array
+     */
+    protected function displayMultipleDiff(array $diff)
+    {
+        // Get all array keys needed
+        $arrayKeys = array_merge(array_keys($diff['newData']), array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
+        $arrayKeys = array_unique($arrayKeys);
+        if (!empty($arrayKeys)) {
+            $lines = [];
+            foreach ($arrayKeys as $key) {
+                $singleLine = [];
+                $elParts = explode(':', $key);
+                // Turn around diff because it should be a "rollback preview"
+                if ((int)$diff['insertsDeletes'][$key] === 1) {
+                    // insert
+                    $singleLine['insertDelete'] = 'delete';
+                } elseif ((int)$diff['insertsDeletes'][$key] === -1) {
+                    $singleLine['insertDelete'] = 'insert';
+                }
+                // Build up temporary diff array
+                // turn around diff because it should be a "rollback preview"
+                if ($diff['newData'][$key]) {
+                    $tmpArr = [
+                        'newRecord' => $diff['oldData'][$key],
+                        'oldRecord' => $diff['newData'][$key]
+                    ];
+                    $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], $elParts[1]);
+                }
+                $elParts = explode(':', $key);
+                $singleLine['revertRecordUrl'] = $this->buildUrl(['rollbackFields' => $key]);
+                $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
+                $lines[] = $singleLine;
+            }
+            $this->view->assign('revertAllUrl', $this->buildUrl(['rollbackFields' => 'ALL']));
+            $this->view->assign('multipleDiff', $lines);
+        }
+    }
+
+    /**
+     * Shows the full change log
+     *
+     * @param array $historyEntries
+     */
+    protected function displayHistory(array $historyEntries)
+    {
+        if (empty($historyEntries)) {
+            return;
+        }
+        $languageService = $this->getLanguageService();
+        $lines = [];
+        $beUserArray = BackendUtility::getUserNames();
+
+        // Traverse changeLog array:
+        foreach ($historyEntries as $entry) {
+            // Build up single line
+            $singleLine = [];
+
+            // Get user names
+            $singleLine['backendUserUid'] = $entry['userid'];
+            $singleLine['backendUserName'] = $entry['userid'] ? $beUserArray[$entry['userid']]['username'] : '';
+            // Executed by switch user
+            if (!empty($entry['originaluserid'])) {
+                $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'];
+            }
+
+            // Diff link
+            $singleLine['diffUrl'] = $this->buildUrl(['historyEntry' => $entry['uid']]);
+            // Add time
+            $singleLine['time'] = BackendUtility::datetime($entry['tstamp']);
+            // Add age
+            $singleLine['age'] = BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears'));
+
+            $singleLine['title'] = $this->generateTitle($entry['tablename'], $entry['recuid']);
+            $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
+            if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY) {
+                // show changes
+                if (!$this->showDiff) {
+                    // Display field names instead of full diff
+                    // Re-write field names with labels
+                    $tmpFieldList = array_keys($entry['newRecord']);
+                    foreach ($tmpFieldList as $key => $value) {
+                        $tmp = str_replace(':', '', $languageService->sL(BackendUtility::getItemLabel($entry['tablename'], $value)));
+                        if ($tmp) {
+                            $tmpFieldList[$key] = $tmp;
+                        } else {
+                            // remove fields if no label available
+                            unset($tmpFieldList[$key]);
+                        }
+                    }
+                    $singleLine['fieldNames'] = implode(',', $tmpFieldList);
+                } else {
+                    // Display diff
+                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename']);
+                }
+            }
+            // put line together
+            $lines[] = $singleLine;
+        }
+        $this->view->assign('history', $lines);
+    }
+
+    /**
+     * Renders HTML table-rows with the comparison information of an sys_history entry record
+     *
+     * @param array $entry sys_history entry record.
+     * @param string $table The table name
+     * @param int $rollbackUid If set to UID of record, display rollback links
+     * @return array array of records
+     */
+    protected function renderDiff($entry, $table, $rollbackUid = 0): array
+    {
+        $lines = [];
+        if (is_array($entry['newRecord'])) {
+            /* @var DiffUtility $diffUtility */
+            $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+            $diffUtility->stripTags = false;
+            $fieldsToDisplay = array_keys($entry['newRecord']);
+            $languageService = $this->getLanguageService();
+            foreach ($fieldsToDisplay as $fN) {
+                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
+                    // Create diff-result:
+                    $diffres = $diffUtility->makeDiffDisplay(
+                        BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, true),
+                        BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, true)
+                    );
+                    $rollbackUrl = '';
+                    if ($rollbackUid) {
+                        $rollbackUrl = $this->buildUrl(['rollbackFields' => ($table . ':' . $rollbackUid . ':' . $fN)]);
+                    }
+                    $lines[] = [
+                        'title' => $languageService->sL(BackendUtility::getItemLabel($table, $fN)),
+                        'rollbackUrl' => $rollbackUrl,
+                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
+                    ];
+                }
+            }
+        }
+        return $lines;
+    }
+
+    /**
+     * Generates the URL for a link to the current page
+     *
+     * @param array $overrideParameters
+     * @return string
+     */
+    protected function buildUrl($overrideParameters = []): string
+    {
+        $params = [];
+        // Setting default values based on GET parameters:
+        if ($this->historyObject->getElementData()) {
+            $params['element'] = $this->historyObject->getElementString();
+        }
+        $params['historyEntry'] = $this->historyObject->lastHistoryEntry;
+        // Merging overriding values:
+        $params = array_merge($params, $overrideParameters);
+        // Make the link:
+        return BackendUtility::getModuleUrl('record_history', $params);
+    }
+
+    /**
+     * Generates the title and puts the record title behind
+     *
+     * @param string $table
+     * @param string $uid
+     * @return string
+     */
+    protected function generateTitle($table, $uid): string
+    {
+        $title = $table . ':' . $uid;
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
+            $record = $this->getRecord($table, $uid);
+            $title .= ' (' . BackendUtility::getRecordTitle($table, $record, true) . ')';
+        }
+        return $title;
+    }
+
+    /**
+     * Gets a database record (cached).
+     *
+     * @param string $table
+     * @param int $uid
+     * @return array|NULL
+     */
+    protected function getRecord($table, $uid)
+    {
+        if (!isset($this->recordCache[$table][$uid])) {
+            $this->recordCache[$table][$uid] = BackendUtility::getRecord($table, $uid, '*', '', false);
+        }
+        return $this->recordCache[$table][$uid];
+    }
+
+    /**
+     * Returns a new standalone view, shorthand function
+     *
+     * @return StandaloneView
+     */
+    protected function initializeView()
+    {
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/RecordHistory/Main.html'));
+
+        $view->getRequest()->setControllerExtensionName('Backend');
+        return $view;
     }
 
     /**

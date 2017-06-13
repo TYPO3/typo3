@@ -530,19 +530,20 @@ CREATE TABLE sys_collection_entries (
 CREATE TABLE sys_history (
 	uid int(11) unsigned NOT NULL auto_increment,
 	pid int(11) unsigned DEFAULT '0' NOT NULL,
-	sys_log_uid int(11) DEFAULT '0' NOT NULL,
-	history_data mediumtext,
-	fieldlist text,
+	actiontype tinyint(3) DEFAULT '0' NOT NULL,
+	usertype varchar(2) DEFAULT 'BE' NOT NULL,
+	userid int(11) unsigned,
+	originaluserid int(11) unsigned,
 	recuid int(11) DEFAULT '0' NOT NULL,
 	tablename varchar(255) DEFAULT '' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
-	history_files mediumtext,
-	snapshot int(11) DEFAULT '0' NOT NULL,
+	history_data mediumtext,
+	workspace int(11) DEFAULT '0',
+
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY recordident_1 (tablename,recuid),
-	KEY recordident_2 (tablename,tstamp),
-	KEY sys_log_uid (sys_log_uid)
+	KEY recordident_2 (tablename,tstamp)
 ) ENGINE=InnoDB;
 
 #

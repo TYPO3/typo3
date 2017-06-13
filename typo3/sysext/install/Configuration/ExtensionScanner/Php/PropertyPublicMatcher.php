@@ -144,6 +144,41 @@ return [
             'Breaking-71306-DroppedProtocolFieldFromPageTypeLinkToExternalURL.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\History\RecordHistory->showInsertDelete' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->showDiff' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->lastSyslogId' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->returnUrl' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->showMarked' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController->content' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController->doc' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];

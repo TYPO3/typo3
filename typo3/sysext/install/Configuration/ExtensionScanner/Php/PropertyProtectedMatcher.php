@@ -37,4 +37,19 @@ return [
             'Deprecation-79441-ChangeVisibilityInternalCacheDatahandler.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\History\RecordHistory->maxSteps' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->showSubElements' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->element' => [
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
 ];

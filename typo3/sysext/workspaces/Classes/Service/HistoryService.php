@@ -31,7 +31,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $historyObjects = [];
+    protected $historyEntries = [];
 
     /**
      * @var \TYPO3\CMS\Core\Utility\DiffUtility
@@ -57,7 +57,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $history = [];
         $i = 0;
-        foreach ((array)$this->getHistoryObject($table, $id)->changeLog as $entry) {
+        foreach ((array)$this->getHistoryEntries($table, $id) as $entry) {
             if ($i++ > 20) {
                 break;
             }
@@ -84,11 +84,11 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
 
         /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
-        $beUserRecord = BackendUtility::getRecord('be_users', $entry['user']);
+        $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
 
         return [
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
-            'user' => htmlspecialchars($this->getUserName($entry['user'])),
+            'user' => htmlspecialchars($this->getUserName($entry['userid'])),
             'user_avatar' => $avatar->render($beUserRecord),
             'differences' => $differences
         ];
@@ -142,22 +142,20 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Gets an instance of the record history service.
+     * Gets an instance of the record history of a record.
      *
      * @param string $table Name of the table
      * @param int $id Uid of the record
-     * @return \TYPO3\CMS\Backend\History\RecordHistory
+     * @return array
      */
-    protected function getHistoryObject($table, $id)
+    protected function getHistoryEntries($table, $id)
     {
-        if (!isset($this->historyObjects[$table][$id])) {
+        if (!isset($this->historyEntries[$table][$id])) {
             /** @var $historyObject \TYPO3\CMS\Backend\History\RecordHistory */
             $historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
-            $historyObject->element = $table . ':' . $id;
-            $historyObject->createChangeLog();
-            $this->historyObjects[$table][$id] = $historyObject;
+            $this->historyEntries[$table][$id] = $historyObject->getHistoryDataForRecord($table, $id);
         }
-        return $this->historyObjects[$table][$id];
+        return $this->historyEntries[$table][$id];
     }
 
     /**

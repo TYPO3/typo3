@@ -1,14 +1,6 @@
-<f:if condition="{reloadPageFrame}">
-    <script type="text/javascript">
-        /*<![CDATA[*/
-        if (top.nav_frame && top.nav_frame.refresh_nav) {
-            top.nav_frame.refresh_nav();
-        }
-        /*]]>*/
-    </script>
-</f:if>
+<h1>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:title')}</h1>
 <f:render partial="RecordHistory/Settings" arguments="{_all}" />
-<f:if condition="{lastSyslogId}">
+<f:if condition="{showDifferences}">
     <f:render partial="RecordHistory/MultipleDiff" arguments="{_all}" />
 </f:if>
 <f:render partial="RecordHistory/History" arguments="{_all}" />

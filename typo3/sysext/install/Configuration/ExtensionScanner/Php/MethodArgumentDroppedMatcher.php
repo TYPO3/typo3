@@ -105,4 +105,10 @@ return [
             'Deprecation-81218-NoWSOLArgumentInPageRepository-getRawRecord.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\History\RecordHistory->performRollback' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-55298-DecoupledHistoryFunctionality.rst',
+        ],
+    ],
 ];

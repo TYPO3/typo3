@@ -62,7 +62,9 @@ class FormatDetailsViewHelper extends AbstractViewHelper
             $substitutes = self::stripPathFromFilenames($substitutes);
         }
         // Substitute
-        $detailString = vsprintf($detailString, $substitutes);
+        if (!empty($substitutes)) {
+            $detailString = vsprintf($detailString, $substitutes);
+        }
         // Remove possible pending other %s
         $detailString = str_replace('%s', '', $detailString);
         return $detailString;

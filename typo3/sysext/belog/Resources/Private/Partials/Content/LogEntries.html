@@ -203,7 +203,11 @@
 								</td>
 								<td class="col-word-break">
 									<belog:formatDetails logEntry="{logItem}"/>
-									<belog:historyEntry uid="{logItem.uid}"/>
+									<f:if condition="{logItem.logData.history}">
+										<a href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
+											<core:icon identifier="actions-document-history-open" />
+										</a>
+									</f:if>
 									<f:if condition="{logItem.detailsNumber} > 0">
 										(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
 									</f:if>

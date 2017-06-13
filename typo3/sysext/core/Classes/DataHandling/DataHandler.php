@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
+use TYPO3\CMS\Core\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -4459,6 +4460,8 @@ class DataHandler
                         $hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
                     }
                 }
+
+                $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields]);
                 if ($this->enableLogging) {
                     // Logging...
                     $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -4516,6 +4519,7 @@ class DataHandler
                                 $hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
                             }
                         }
+                        $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields]);
                         if ($this->enableLogging) {
                             // Logging...
                             $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -5269,6 +5273,14 @@ class DataHandler
                 $this->log($table, $uid, $state, 0, 100, $databaseErrorMessage);
             }
         }
+
+        // Add history entry
+        if ($undeleteRecord) {
+            $this->getRecordHistoryStore()->undeleteRecord($table, $uid);
+        } else {
+            $this->getRecordHistoryStore()->deleteRecord($table, $uid);
+        }
+
         // Update reference index:
         $this->updateRefIndex($table, $uid);
 
@@ -7077,6 +7089,11 @@ class DataHandler
                 if ($updateErrorMessage === '') {
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
+                    // Set History data
+                    $historyEntryId = 0;
+                    if (isset($this->historyRecords[$table . ':' . $id])) {
+                        $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id]);
+                    }
                     if ($this->enableLogging) {
                         if ($this->checkStoredRecords) {
                             $newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
@@ -7086,9 +7103,7 @@ class DataHandler
                         }
                         // Set log entry:
                         $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                        $theLogId = $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($propArr['_ORIG_pid'] == -1 ? ' (Offline version).' : ' (Online).'), 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
-                        // Set History data:
-                        $this->setHistory($table, $id, $theLogId);
+                        $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($propArr['_ORIG_pid'] == -1 ? ' (Offline version).' : ' (Online).'), 10, [$propArr['header'], $table . ':' . $id, 'history' => $historyEntryId], $propArr['event_pid']);
                     }
                     // Clear cache for relevant pages:
                     $this->registerRecordIdForPageCacheClearing($table, $id);
@@ -7177,6 +7192,10 @@ class DataHandler
                     }
                     // Update reference index:
                     $this->updateRefIndex($table, $id);
+
+                    // Store in history
+                    $this->getRecordHistoryStore()->addRecord($table, $id, $newRow);
+
                     if ($newVersion) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
@@ -7270,24 +7289,35 @@ class DataHandler
     /**
      * Setting sys_history record, based on content previously set in $this->historyRecords[$table . ':' . $id] (by compareFieldArrayWithCurrentAndUnset())
      *
+     * This functionality is now moved into the RecordHistoryStore and can be used instead.
+     *
      * @param string $table Table name
      * @param int $id Record ID
      * @param int $logId Log entry ID, important for linking between log and history views
      */
     public function setHistory($table, $id, $logId)
     {
-        if (isset($this->historyRecords[$table . ':' . $id]) && (int)$logId > 0) {
-            $fields_values = [];
-            $fields_values['history_data'] = serialize($this->historyRecords[$table . ':' . $id]);
-            $fields_values['fieldlist'] = implode(',', array_keys($this->historyRecords[$table . ':' . $id]['newRecord']));
-            $fields_values['tstamp'] = $GLOBALS['EXEC_TIME'];
-            $fields_values['tablename'] = $table;
-            $fields_values['recuid'] = $id;
-            $fields_values['sys_log_uid'] = $logId;
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_history')
-                ->insert('sys_history', $fields_values);
+        if (isset($this->historyRecords[$table . ':' . $id])) {
+            $this->getRecordHistoryStore()->modifyRecord(
+                $table,
+                $id,
+                $this->historyRecords[$table . ':' . $id]
+            );
         }
+    }
+
+    /**
+     * @return RecordHistoryStore
+     */
+    protected function getRecordHistoryStore(): RecordHistoryStore
+    {
+        return GeneralUtility::makeInstance(
+            RecordHistoryStore::class,
+            RecordHistoryStore::USER_BACKEND,
+            $this->BE_USER->user['uid'],
+            $this->BE_USER->user['ses_backuserid'] ?? null,
+            $this->BE_USER->workspace
+        );
     }
 
     /**

@@ -12,47 +12,57 @@
 			<th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:user')}</th>
 			<th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:tableUid')}</th>
 			<th>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differences')}</th>
-			<th>&nbsp;</th>
 		</tr>
 		</thead>
 		<tbody>
-		<f:for each="{history}" as="historyRow" key="key">
+		<f:for each="{history}" as="historyRow">
 			<tr>
 				<td><span><span title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:sumUpChanges')}">
-					{historyRow.rollbackLink -> f:format.raw()}
+					<a href="{historyRow.diffUrl}"><core:icon identifier="actions-document-history-open" /></a>
 				</span></span></td>
 				<td>{historyRow.time}</td>
 				<td>{historyRow.age}</td>
 				<td>
 					<be:avatar backendUser="{historyRow.backendUserUid}"/>
-					{historyRow.backendUserName}
-				</td>
-				<td>
-					{historyRow.tableUid -> f:format.raw()}
-				</td>
-				<td>
-					<f:if condition="{historyRow.action}">
-						<strong>
-							{historyRow.action -> f:format.raw()}
-						</strong>
+					<f:if condition="{historyRow.backendUserUid}">
+						<f:then>
+							{historyRow.backendUserName}
+						</f:then>
+						<f:else>
+							{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
+						</f:else>
 					</f:if>
+					<f:if condition="{historyRow.originalBackendUserName}"> ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {historyRow.originalBackendUserName})</f:if>
+				</td>
+				<td>
+					<a href="{elementUrl}" title="{f:translate('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title}</a>
+				</td>
+				<td>
+					<f:switch expression="{historyRow.actiontype}">
+						<f:case value="1">
+							<strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
+						</f:case>
+						<f:case value="4">
+							<strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong>
+						</f:case>
+						<f:case value="5">
+							<strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong>
+						</f:case>
+					</f:switch>
 					<f:if condition="{historyRow.fieldNames}">
-						{historyRow.fieldNames -> f:format.raw()}
+						{historyRow.fieldNames}
 					</f:if>
 					<f:if condition="{historyRow.differences}">
 						<f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
 					</f:if>
 				</td>
-				<td>
-					{historyRow.markState -> f:format.raw()}
-				</td>
 			</tr>
 		</f:for>
 		</tbody>
 	</table>
-	<f:if condition="{fullViewLink}">
+	<f:if condition="{fullViewUrl}">
 		<br/>
-		<f:format.raw><span class="btn btn-default">{fullViewLink}</span></f:format.raw>
+		<a href="{fullViewUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:fullView')}</a>
 	</f:if>
 	<br/>
 	<br/>

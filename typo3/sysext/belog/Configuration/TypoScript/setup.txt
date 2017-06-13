@@ -20,11 +20,6 @@ module.tx_belog {
 				tableName = sys_workspace
 			}
 		}
-		TYPO3\CMS\Belog\Domain\Model\HistoryEntry {
-			mapping {
-				tableName = sys_history
-			}
-		}
 	}
 
 	settings {
