@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\ForeignField;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Functional test for the DataHandler
  */
@@ -35,10 +37,12 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const TABLE_Content = 'tt_content';
     const TABLE_Hotel = 'tx_irretutorial_1nff_hotel';
     const TABLE_Offer = 'tx_irretutorial_1nff_offer';
+    const TABLE_Price = 'tx_irretutorial_1nff_price';
 
     const FIELD_PageHotel = 'tx_irretutorial_hotels';
     const FIELD_ContentHotel = 'tx_irretutorial_1nff_hotels';
     const FIELD_HotelOffer = 'offers';
+    const FIELD_OfferPrice = 'prices';
 
     /**
      * @var string
@@ -193,6 +197,22 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * @see DataSet/localizeParentContentSelectWSynchronization.csv
+     */
+    public function localizeParentContentInSelectModeWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'select';
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = false;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = false;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['localizeChildrenAtParentLocalization'] = false;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
      * @see DataSet/localizeParentContentWAllChildrenSelect.csv
      */
     public function localizeParentContentWithAllChildrenInSelectMode()
@@ -249,6 +269,41 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
                 self::TABLE_Hotel => ['uid' => '__NEW', 'title' => 'Hotel #2'],
             ]
         );
+    }
+
+    /**
+     * @see DataSet/Modify/localizeParentContentNCreateNestedChildrenWLanguageSynchronization.csv
+     */
+    public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['allowLanguageSynchronization'] = true;
+
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+
+        $newHotelId = StringUtility::getUniqueId('NEW');
+        $newOfferId = StringUtility::getUniqueId('NEW');
+        $newPriceId = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_Content => [
+                self::VALUE_ContentIdLast => [self::FIELD_ContentHotel => '5,' . $newHotelId],
+            ],
+            self::TABLE_Hotel => [
+                $newHotelId => ['pid' => self::VALUE_PageId, 'title' => 'New Hotel #1', 'offers' => $newOfferId],
+            ],
+            self::TABLE_Offer => [
+                $newOfferId => ['pid' => self::VALUE_PageId, 'title' => 'New Offer #1.1', 'prices' => $newPriceId],
+            ],
+            self::TABLE_Price => [
+                $newPriceId => ['pid' => self::VALUE_PageId, 'title' => 'New Price #1.1.1'],
+            ],
+        ];
+        $this->actionService->invoke($dataMap, []);
+        $this->recordIds['newHoteId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newHotelId];
+        $this->recordIds['newOfferId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newOfferId];
+        $this->recordIds['newPriceId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newPriceId];
     }
 
     /**

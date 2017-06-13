@@ -215,6 +215,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
     /**
      * @test
+     * @see DataSet/localizeParentContentSelectWSynchronization.csv
+     */
+    public function localizeParentContentInSelectModeWithLanguageSynchronization()
+    {
+        parent::localizeParentContentInSelectModeWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeParentContentSelectWSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeParentContentWAllChildrenSelect.csv
      */
     public function localizeParentContentWithAllChildrenInSelectMode()
@@ -256,6 +271,21 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Hotel #1', '[Translate to Deutsch:] [Translate to Dansk:] Hotel #2'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/Modify/localizeParentContentNCreateNestedChildrenWLanguageSynchronization.csv
+     */
+    public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization()
+    {
+        parent::localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization();
+        $this->assertAssertionDataSet('localizeParentContentNCreateNestedChildrenWLanguageSynchronization');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1', '[Translate to Dansk:] New Hotel #1'));
     }
 
     /**

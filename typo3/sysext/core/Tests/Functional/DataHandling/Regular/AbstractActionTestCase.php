@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Functional test for the DataHandler
  */
@@ -187,6 +189,33 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['l10n_state' => ['header' => 'source']]);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #1']);
+    }
+
+    public function createLocalizedContent()
+    {
+        $newContentIdDefault = StringUtility::getUniqueId('NEW');
+        $newContentIdLocalized = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_Content => [
+                $newContentIdDefault => ['pid' => self::VALUE_PageId, 'header' => 'Testing'],
+                $newContentIdLocalized => ['pid' => self::VALUE_PageId, 'header' => 'Localized Testing', 'sys_language_uid' => self::VALUE_LanguageId, 'l18n_parent' => $newContentIdDefault, 'l10n_source' => $newContentIdDefault],
+            ]
+        ];
+        $this->actionService->invoke($dataMap, []);
+        $this->recordIds['newContentIdDefault'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdDefault];
+        $this->recordIds['newContentIdLocalized'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdLocalized];
+    }
+
+    public function createLocalizedContentWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        self::createLocalizedContent();
+    }
+
+    public function createLocalizedContentWithLocalizationExclude()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
+        self::createLocalizedContent();
     }
 
     /**

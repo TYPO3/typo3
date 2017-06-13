@@ -76,6 +76,25 @@ class State
 
     /**
      * @param string $tableName
+     * @return array
+     */
+    public static function getFieldNames(string $tableName)
+    {
+        return array_keys(
+            array_filter(
+                $GLOBALS['TCA'][$tableName]['columns'],
+                function (array $fieldConfiguration) {
+                    return !empty(
+                        $fieldConfiguration['config']
+                            ['behaviour']['allowLanguageSynchronization']
+                    );
+                }
+            )
+        );
+    }
+
+    /**
+     * @param string $tableName
      * @return bool
      */
     protected static function hasColumns(string $tableName)
@@ -102,25 +121,6 @@ class State
     protected static function hasTranslationParentFieldName(string $tableName)
     {
         return !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']);
-    }
-
-    /**
-     * @param string $tableName
-     * @return array
-     */
-    protected static function getFieldNames(string $tableName)
-    {
-        return array_keys(
-            array_filter(
-                $GLOBALS['TCA'][$tableName]['columns'],
-                function (array $fieldConfiguration) {
-                    return !empty(
-                        $fieldConfiguration['config']
-                            ['behaviour']['allowLanguageSynchronization']
-                    );
-                }
-            )
-        );
     }
 
     /**

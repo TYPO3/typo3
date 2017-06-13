@@ -175,10 +175,7 @@ class DataMapProcessor
 
         $dependencies = $this->fetchDependencies(
             $forTableName,
-            $this->filterNewItemIds(
-                $forTableName,
-                $this->filterNumericIds(array_keys($idValues))
-            )
+            $this->filterNewItemIds($forTableName, $idValues)
         );
 
         foreach ($idValues as $id => $values) {
@@ -287,19 +284,25 @@ class DataMapProcessor
      *
      * @param DataMapItem $item
      * @param array $fieldNames
-     * @param int $fromId
+     * @param string|int $fromId
      */
-    protected function synchronizeTranslationItem(DataMapItem $item, array $fieldNames, int $fromId)
+    protected function synchronizeTranslationItem(DataMapItem $item, array $fieldNames, $fromId)
     {
         if (empty($fieldNames)) {
             return;
         }
+
         $fieldNameList = 'uid,' . implode(',', $fieldNames);
-        $fromRecord = BackendUtility::getRecordWSOL(
-            $item->getFromTableName(),
-            $fromId,
-            $fieldNameList
-        );
+
+        $fromRecord = ['uid' => $fromId];
+        if (MathUtility::canBeInterpretedAsInteger($fromId)) {
+            $fromRecord = BackendUtility::getRecordWSOL(
+                $item->getFromTableName(),
+                $fromId,
+                $fieldNameList
+            );
+        }
+
         $forRecord = [];
         if (!$item->isNew()) {
             $forRecord = BackendUtility::getRecordWSOL(
@@ -308,6 +311,7 @@ class DataMapProcessor
                 $fieldNameList
             );
         }
+
         foreach ($fieldNames as $fieldName) {
             $this->synchronizeFieldValues(
                 $item,
@@ -326,10 +330,6 @@ class DataMapProcessor
      */
     protected function populateTranslationItem(DataMapItem $item)
     {
-        if ($item->isNew()) {
-            return;
-        }
-
         foreach ([DataMapItem::SCOPE_PARENT, DataMapItem::SCOPE_SOURCE] as $scope) {
             foreach ($item->findDependencies($scope) as $dependentItem) {
                 // use suggested item, if it was submitted in data-map
@@ -389,10 +389,15 @@ class DataMapProcessor
         }
 
         $fromId = $fromRecord['uid'];
+        // retrieve value from in-memory data-map
         if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
             $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName];
-        } else {
+        // retrieve value from record
+        } elseif (array_key_exists($fieldName, $fromRecord)) {
             $fromValue = $fromRecord[$fieldName];
+        // otherwise abort synchronization
+        } else {
+            return;
         }
 
         // plain values
@@ -569,9 +574,9 @@ class DataMapProcessor
             return;
         }
         // In case only missing elements shall be created, re-use previously sanitized
-        // values IF child table cannot be translated, the relation parent item is new
-        // and the count of missing relations equals the count of previously sanitized
-        // relations. This is caused during copy processes, when the child relations
+        // values IF the relation parent item is new and the count of missing relations
+        // equals the count of previously sanitized relations.
+        // This is caused during copy processes, when the child relations
         // already have been cloned in DataHandler::copyRecord_procBasedOnFieldType()
         // without the possibility to resolve the initial connections at this point.
         // Otherwise child relations would superfluously be duplicated again here.
@@ -579,7 +584,7 @@ class DataMapProcessor
         $sanitizedValue = $this->sanitizationMap[$item->getTableName()][$item->getId()][$fieldName] ?? null;
         if (
             !empty($missingAncestorIds) && $item->isNew() && $sanitizedValue !== null
-            && count(GeneralUtility::trimExplode(',', $sanitizedValue)) === count($missingAncestorIds)
+            && count(GeneralUtility::trimExplode(',', $sanitizedValue, true)) === count($missingAncestorIds)
         ) {
             $this->modifyDataMap(
                 $item->getTableName(),
@@ -634,16 +639,17 @@ class DataMapProcessor
             foreach ($populateAncestorIds as $populateAncestorId) {
                 $newLocalizationId = StringUtility::getUniqueId('NEW');
                 $desiredIdMap[$populateAncestorId] = $newLocalizationId;
+                $duplicatedValues = $this->duplicateFromDataMap(
+                    $foreignTableName,
+                    $populateAncestorId,
+                    $item->getLanguage(),
+                    $fieldNames,
+                    !$isLocalizationModeExclude && $isTranslatable
+                );
                 $this->modifyDataMap(
                     $foreignTableName,
                     $newLocalizationId,
-                    $this->duplicateFromDataMap(
-                        $foreignTableName,
-                        $populateAncestorId,
-                        $item->getLanguage(),
-                        $fieldNames,
-                        !$isLocalizationModeExclude && $isTranslatable
-                    )
+                    $duplicatedValues
                 );
             }
         }
@@ -779,7 +785,7 @@ class DataMapProcessor
      * + [7]   -> []                               # since there's nothing
      *
      * @param string $tableName
-     * @param array $ids
+     * @param int[]|string[] $ids
      * @return DataMapItem[][]
      */
     protected function fetchDependencies(string $tableName, array $ids)
@@ -801,8 +807,22 @@ class DataMapProcessor
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['translationSource'])) {
             $fieldNames['source'] = $GLOBALS['TCA'][$tableName]['ctrl']['translationSource'];
         }
+        $fieldNamesMap = array_combine($fieldNames, $fieldNames);
 
-        $dependentElements = $this->fetchDependentElements($tableName, $ids, $fieldNames);
+        $persistedIds = $this->filterNumericIds(array_keys($ids), true);
+        $createdIds = $this->filterNumericIds(array_keys($ids), false);
+        $dependentElements = $this->fetchDependentElements($tableName, $persistedIds, $fieldNames);
+
+        foreach ($createdIds as $createdId) {
+            $data = $this->allDataMap[$tableName][$createdId] ?? null;
+            if ($data === null) {
+                continue;
+            }
+            $dependentElements[] = array_merge(
+                ['uid' => $createdId],
+                array_intersect_key($data, $fieldNamesMap)
+            );
+        }
 
         $dependencyMap = [];
         foreach ($dependentElements as $dependentElement) {
@@ -1026,7 +1046,7 @@ class DataMapProcessor
      *
      * @param string[]|int[] $ids
      * @param bool $numeric
-     * @return array
+     * @return int[]|string[]
      */
     protected function filterNumericIds(array $ids, bool $numeric = true)
     {
@@ -1153,6 +1173,10 @@ class DataMapProcessor
             // @todo Not sure, whether $id is resolved in DataHandler's remapStack
             $data[$fieldNames['source']] = $fromId;
         }
+        // unset field names that are expected to be handled in this processor
+        foreach ($this->getFieldNamesToBeHandled($tableName) as $fieldName) {
+            unset($data[$fieldName]);
+        }
 
         $prefixFieldNames = array_intersect(
             array_keys($data),
@@ -1239,6 +1263,21 @@ class DataMapProcessor
         }
 
         return $localizationExcludeFieldNames;
+    }
+
+    /**
+     * Gets a list of field names which have to be handled. Basically this
+     * includes fields using allowLanguageSynchronization or l10n_mode=exclude.
+     *
+     * @param string $tableName
+     * @return string[]
+     */
+    protected function getFieldNamesToBeHandled(string $tableName)
+    {
+        return array_merge(
+            State::getFieldNames($tableName),
+            $this->getLocalizationModeExcludeFieldNames($tableName)
+        );
     }
 
     /**

@@ -1682,6 +1682,56 @@ class DataHandler
             default:
                 // Do nothing
         }
+        $res = $this->checkValueForInternalReferences($res, $value, $tcaFieldConf, $table, $id, $field);
+        return $res;
+    }
+
+    /**
+     * Checks values that are used for internal references. If the provided $value
+     * is a NEW-identifier, the direct processing is stopped. Instead, the value is
+     * forwarded to the remap-stack to be post-processed and resolved into a proper
+     * UID after all data has been resolved.
+     *
+     * This method considers TCA types that cannot handle and resolve these internal
+     * values directly, like 'passthrough', 'none' or 'user'. Values are only modified
+     * here if the $field is used as 'transOrigPointerField' or 'translationSource'.
+     *
+     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int $id UID of record
+     * @param string $field The field name
+     * @return array The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForInternalReferences(array $res, $value, $tcaFieldConf, $table, $id, $field)
+    {
+        $relevantFieldNames = [
+            $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null,
+            $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null,
+        ];
+
+        if (
+            // in case the field is not relevant
+            !in_array($field, $relevantFieldNames)
+            // in case the 'value' index has been unset already
+            || !array_key_exists('value', $res)
+            // in case it's not a NEW-identifier
+            || strpos($value, 'NEW') === false
+        ) {
+            return $res;
+        }
+
+        $valueArray = [$value];
+        $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
+        $this->addNewValuesToRemapStackChildIds($valueArray);
+        $this->remapStack[] = [
+            'args' => [$valueArray, $tcaFieldConf, $id, $table, $field],
+            'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 3],
+            'field' => $field
+        ];
+        unset($res['value']);
+
         return $res;
     }
 
@@ -6149,7 +6199,9 @@ class DataHandler
                     $remapAction['args'][$remapAction['pos']['valueArray']] = $valueArray;
                 }
                 // Process the arguments with the defined function:
-                $newValue = call_user_func_array([$this, $remapAction['func']], $remapAction['args']);
+                if (!empty($remapAction['func'])) {
+                    $newValue = call_user_func_array([$this, $remapAction['func']], $remapAction['args']);
+                }
                 // If array is returned, check for maxitems condition, if string is returned this was already done:
                 if (is_array($newValue)) {
                     $newValue = implode(',', $this->checkValue_checkMax($tcaFieldConf, $newValue));
