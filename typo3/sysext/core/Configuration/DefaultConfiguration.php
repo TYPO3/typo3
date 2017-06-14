@@ -442,6 +442,7 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
                         'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
                         ],
                     ],

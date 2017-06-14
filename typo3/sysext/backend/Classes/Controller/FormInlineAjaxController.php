@@ -217,9 +217,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     ],
                 ],
             ],
-            'databaseRow' => [
-                'uid' => (int)$parent['uid'],
-            ],
             'tableName' => $parent['table'],
             'inlineFirstPid' => $inlineFirstPid,
         ];
@@ -300,10 +297,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 'vanillaUid' => (int)$parent['uid'],
                 'command' => 'edit',
                 'tableName' => $parent['table'],
-                'databaseRow' => [
-                    // TcaInlineExpandCollapseState needs this
-                    'uid' => (int)$parent['uid'],
-                ],
                 'processedTca' => $processedTca,
                 'inlineFirstPid' => $inlineFirstPid,
                 'columnsToProcess' => [
