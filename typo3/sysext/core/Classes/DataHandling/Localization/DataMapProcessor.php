@@ -175,7 +175,7 @@ class DataMapProcessor
 
         $dependencies = $this->fetchDependencies(
             $forTableName,
-            $this->filterNewItemIds($forTableName, $idValues)
+            $this->filterNewItemIds($forTableName, array_keys($idValues))
         );
 
         foreach ($idValues as $id => $values) {
@@ -809,8 +809,8 @@ class DataMapProcessor
         }
         $fieldNamesMap = array_combine($fieldNames, $fieldNames);
 
-        $persistedIds = $this->filterNumericIds(array_keys($ids), true);
-        $createdIds = $this->filterNumericIds(array_keys($ids), false);
+        $persistedIds = $this->filterNumericIds($ids, true);
+        $createdIds = $this->filterNumericIds($ids, false);
         $dependentElements = $this->fetchDependentElements($tableName, $persistedIds, $fieldNames);
 
         foreach ($createdIds as $createdId) {
