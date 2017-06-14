@@ -42,6 +42,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $queryParameters = $request->getParsedBody();
 
         $vanillaUid = (int)$queryParameters['vanillaUid'];
+        $databaseRowUid = $queryParameters['databaseRowUid'];
         $command = $queryParameters['command'];
         $tableName = $queryParameters['tableName'];
         $fieldName = $queryParameters['fieldName'];
@@ -76,6 +77,13 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'processedTca' => $processedTca,
             'flexSectionContainerPreparation' => $flexSectionContainerPreparation,
         ];
+        // A new container on a new record needs the 'NEW123' uid here, see comment
+        // in DatabaseUniqueUidNewRow for more information on that.
+        // @todo: Resolve, maybe with a redifinition of vanillaUid to transport the information more clean through this var?
+        // @see issue #80100 for a series of changes in this area
+        if ($command === 'new') {
+            $formDataCompilerInput['databaseRow']['uid'] = $databaseRowUid;
+        }
         $formData = $formDataCompiler->compile($formDataCompilerInput);
 
         $dataStructure = $formData['processedTca']['columns'][$fieldName]['config']['ds'];
