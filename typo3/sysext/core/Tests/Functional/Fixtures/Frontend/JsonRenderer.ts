@@ -235,6 +235,24 @@ page {
 		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Collector->attachSection
 		stdWrap.postUserFunc.as = Default
 	}
+	99999 = COA
+	99999 {
+		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderValues
+		stdWrap.postUserFunc.values {
+			page.children {
+				uid.data = page:uid
+				pid.data = page:pid
+				title.data = page:title
+			}
+			tsfe.children {
+				sys_language_uid.data = tsfe:sys_language_uid
+				sys_language_mode.data = tsfe:sys_language_mode
+				sys_language_content.data = tsfe:sys_language_content
+				sys_language_contentOL.data = tsfe:sys_language_contentOL
+			}
+		}
+		stdWrap.postUserFunc.as = Scope
+	}
 	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
 
@@ -243,4 +261,7 @@ config.sys_language_uid = 1
 [end]
 [globalVar = GP:L = 2]
 config.sys_language_uid = 2
+[end]
+[globalVar = GP:L = 3]
+config.sys_language_uid = 3
 [end]
