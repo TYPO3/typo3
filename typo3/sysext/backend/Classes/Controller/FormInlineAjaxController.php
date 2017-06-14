@@ -347,10 +347,6 @@ class FormInlineAjaxController
                 'vanillaUid' => (int)$parent['uid'],
                 'command' => 'edit',
                 'tableName' => $parent['table'],
-                'databaseRow' => [
-                    // TcaInlineExpandCollapseState needs this
-                    'uid' => (int)$parent['uid'],
-                ],
                 'inlineFirstPid' => $inlineFirstPid,
                 'columnsToProcess' => [
                     $parentFieldName
