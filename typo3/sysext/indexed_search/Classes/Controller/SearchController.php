@@ -456,7 +456,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
         $title = $resultData['item_title'] . $resultData['titleaddition'];
-        $title = $this->charsetConverter->crop('utf-8', $title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
+        $title = GeneralUtility::fixed_lgd_cs($title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
         // If external media, link to the media-file instead.
         if ($row['item_type']) {
             if ($row['show_resume']) {
@@ -712,7 +712,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 }
             }
             if (!trim($markedSW)) {
-                $outputStr = $this->charsetConverter->crop('utf-8', $row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
+                $outputStr = GeneralUtility::fixed_lgd_cs($row['item_description'], $length, $this->settings['results.']['summaryCropSignifier']);
                 $outputStr = htmlspecialchars($outputStr);
             }
             $output = $outputStr ?: $markedSW;
@@ -764,16 +764,16 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 if (!$k) {
                     // First entry at all (only cropped on the frontside)
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', GeneralUtility::fixed_lgd_cs($parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 } elseif ($summaryLgd > $summaryMax || !isset($parts[$k + 1])) {
                     // In case summary length is exceed OR if there are no more entries at all:
                     if ($strLen > $postPreLgd) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs($parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider;
                     }
                 } else {
                     if ($strLen > $postPreLgd * 2) {
-                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $this->charsetConverter->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $this->charsetConverter->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+                        $output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', GeneralUtility::fixed_lgd_cs($parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', GeneralUtility::fixed_lgd_cs($parts[$k], -($postPreLgd - $postPreLgd_offset)));
                     }
                 }
                 $summaryLgd += mb_strlen($output[$k], 'utf-8');
@@ -860,8 +860,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // shortening the string here is only a run-away feature!)
         $searchWords = substr($this->getSword(), 0, 200);
         // Convert to UTF-8 + conv. entities (was also converted during indexing!)
-        $searchWords = $this->charsetConverter->conv($searchWords, $GLOBALS['TSFE']->metaCharset, 'utf-8');
-        $searchWords = $this->charsetConverter->entities_to_utf8($searchWords);
+        if ($GLOBALS['TSFE']->metaCharset && $GLOBALS['TSFE']->metaCharset !== 'utf-8') {
+            $searchWords = mb_convert_encoding($searchWords, 'utf-8', $GLOBALS['TSFE']->metaCharset);
+            $searchWords = html_entity_decode($searchWords);
+        }
         $sWordArray = false;
         if ($hookObj = $this->hookRequest('getSearchWords')) {
             $sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);

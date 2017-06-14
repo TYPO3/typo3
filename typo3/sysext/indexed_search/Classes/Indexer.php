@@ -674,13 +674,12 @@ class Indexer
     {
         // Find charset:
         $charset = $charset ?: $this->getHTMLcharset($content);
-        $charset = $this->csObj->parse_charset($charset);
         // Convert charset:
         if ($charset && $charset !== 'utf-8') {
-            $content = $this->csObj->conv($content, $charset, 'utf-8');
+            $content = mb_convert_encoding($content, 'utf-8', $charset);
         }
         // Convert entities, assuming document is now UTF-8:
-        return $this->csObj->entities_to_utf8($content);
+        return html_entity_decode($content);
     }
 
     /**
@@ -1270,10 +1269,10 @@ class Indexer
         foreach ($contentArr as $key => $value) {
             if ((string)$contentArr[$key] !== '') {
                 if ($charset !== 'utf-8') {
-                    $contentArr[$key] = $this->csObj->conv($contentArr[$key], $charset, 'utf-8');
+                    $contentArr[$key] = mb_convert_encoding($contentArr[$key], 'utf-8', $charset);
                 }
                 // decode all numeric / html-entities in the string to real characters:
-                $contentArr[$key] = $this->csObj->entities_to_utf8($contentArr[$key]);
+                $contentArr[$key] = html_entity_decode($contentArr[$key]);
             }
         }
     }

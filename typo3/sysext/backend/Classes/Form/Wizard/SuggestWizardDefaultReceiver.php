@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -156,8 +155,6 @@ class SuggestWizardDefaultReceiver
             ->execute();
         $allRowsCount = $result->rowCount();
         if ($allRowsCount) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             while ($row = $result->fetch()) {
                 // check if we already have collected the maximum number of records
                 if (count($rows) > $this->maxItems) {
@@ -172,12 +169,12 @@ class SuggestWizardDefaultReceiver
                 $spriteIcon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
                 $uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
-                if (strlen($path) > 30) {
+                if (mb_strlen($path, 'utf-8') > 30) {
                     $croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
                         htmlspecialchars(
-                            $charsetConverter->crop('utf-8', $path, 10)
+                            mb_substr($path, 0, 10, 'utf-8')
                                 . '...'
-                                . $charsetConverter->crop('utf-8', $path, -20)
+                                . mb_substr($path, -20, null, 'utf-8')
                         ) .
                         '</abbr>';
                 } else {

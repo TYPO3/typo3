@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -136,10 +134,16 @@ class CaseViewHelper extends AbstractViewHelper
                 $output = mb_strtoupper($value, 'utf-8');
                 break;
             case self::CASE_CAPITAL:
-                $output = GeneralUtility::makeInstance(CharsetConverter::class)->convCaseFirst('utf-8', $value, 'toUpper');
+                $firstChar = mb_substr($value, 0, 1, 'utf-8');
+                $firstChar = mb_strtoupper($firstChar, 'utf-8');
+                $remainder = mb_substr($value, 1, null, 'utf-8');
+                $output = $firstChar . $remainder;
                 break;
             case self::CASE_UNCAPITAL:
-                $output = GeneralUtility::makeInstance(CharsetConverter::class)->convCaseFirst('utf-8', $value, 'toLower');
+                $firstChar = mb_substr($value, 0, 1, 'utf-8');
+                $firstChar = mb_strtolower($firstChar, 'utf-8');
+                $remainder = mb_substr($value, 1, null, 'utf-8');
+                $output = $firstChar . $remainder;
                 break;
             case self::CASE_CAPITAL_WORDS:
                 // @todo: Implement method once there is a proper solution with using the CharsetConverter
