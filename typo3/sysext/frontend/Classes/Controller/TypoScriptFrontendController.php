@@ -4426,9 +4426,7 @@ class TypoScriptFrontendController
 
         // Rendering charset of HTML page.
         if ($this->config['config']['metaCharset']) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $this->metaCharset = $charsetConverter->parse_charset($this->config['config']['metaCharset']);
+            $this->metaCharset = $this->config['config']['metaCharset'];
         }
     }
 
@@ -4479,10 +4477,25 @@ class TypoScriptFrontendController
     public function convPOSTCharset()
     {
         if ($this->metaCharset !== 'utf-8' && is_array($_POST) && !empty($_POST)) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $charsetConverter->convArray($_POST, $this->metaCharset, 'utf-8');
+            $this->convertCharsetRecursivelyToUtf8($_POST, $this->metaCharset);
             $GLOBALS['HTTP_POST_VARS'] = $_POST;
+        }
+    }
+
+    /**
+     * Small helper function to convert charsets for arrays to UTF-8
+     *
+     * @param mixed $data given by reference (string/array usually)
+     * @param string $fromCharset convert FROM this charset
+     */
+    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($data[$key])) {
+                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
+            } elseif (is_string($data[$key])) {
+                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
+            }
         }
     }
 

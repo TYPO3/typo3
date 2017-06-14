@@ -660,7 +660,7 @@ class FileContentParser
                 $fileContent = GeneralUtility::getUrl($absFile);
                 // Finding charset:
                 preg_match('/^[[:space:]]*<\\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i', substr($fileContent, 0, 200), $reg);
-                $charset = $reg[1] ? $this->pObj->csObj->parse_charset($reg[1]) : 'utf-8';
+                $charset = $reg[1] ?: 'utf-8';
                 // Converting content:
                 $fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<', ' <', $fileContent)), $charset);
                 $contentArr = $this->pObj->splitRegularContent($fileContent);

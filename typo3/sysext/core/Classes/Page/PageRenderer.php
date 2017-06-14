@@ -2091,9 +2091,24 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
         $this->inlineLanguageLabelFiles = [];
         // Convert settings back to UTF-8 since json_encode() only works with UTF-8:
-        if (TYPO3_MODE === 'FE' && $this->getCharSet() !== 'utf-8') {
-            if ($this->inlineSettings) {
-                $this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
+        if ($this->getCharSet() && $this->getCharSet() !== 'utf-8' && is_array($this->inlineSettings)) {
+            $this->convertCharsetRecursivelyToUtf8($this->inlineSettings, $this->getCharSet());
+        }
+    }
+
+    /**
+     * Small helper function to convert charsets for arrays into utf-8
+     *
+     * @param mixed $data given by reference (string/array usually)
+     * @param string $fromCharset convert FROM this charset
+     */
+    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($data[$key])) {
+                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
+            } elseif (is_string($data[$key])) {
+                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
             }
         }
     }

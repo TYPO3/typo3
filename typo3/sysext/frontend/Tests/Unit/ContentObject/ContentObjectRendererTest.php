@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File;
@@ -184,9 +183,8 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     protected function handleCharset(&$subject, &$expected)
     {
-        $charsetConverter = new CharsetConverter();
-        $subject = $charsetConverter->conv($subject, 'iso-8859-1', 'utf-8');
-        $expected = $charsetConverter->conv($expected, 'iso-8859-1', 'utf-8');
+        $subject = mb_convert_encoding($subject, 'utf-8', 'iso-8859-1');
+        $expected = mb_convert_encoding($expected, 'utf-8', 'iso-8859-1');
     }
 
     /////////////////////////////////////////////

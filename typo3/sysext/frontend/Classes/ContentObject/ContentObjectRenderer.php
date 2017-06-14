@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -2320,8 +2319,7 @@ class ContentObjectRenderer
     public function stdWrap_csConv($content = '', $conf = [])
     {
         if (!empty($conf['csConv'])) {
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $output = $charsetConverter->conv($content, $charsetConverter->parse_charset($conf['csConv']), 'utf-8');
+            $output = mb_convert_encoding($content, 'utf-8', $conf['csConv']);
             return $output !== false && $output !== '' ? $output : $content;
         } else {
             return $content;
@@ -2520,9 +2518,7 @@ class ContentObjectRenderer
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = $conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content);
         if (!empty($conf['strftime.']['charset'])) {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $output = $charsetConverter->conv($content, $charsetConverter->parse_charset($conf['strftime.']['charset']), 'utf-8');
+            $output = mb_convert_encoding($content, 'utf-8', $conf['strftime.']['charset']);
             return $output ?: $content;
         }
         return $content;
@@ -6308,7 +6304,6 @@ class ContentObjectRenderer
      */
     public function caseshift($theValue, $case)
     {
-        $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
         switch (strtolower($case)) {
             case 'upper':
                 $theValue = mb_strtoupper($theValue, 'utf-8');
@@ -6320,10 +6315,16 @@ class ContentObjectRenderer
                 $theValue = mb_convert_case($theValue, MB_CASE_TITLE, 'utf-8');
                 break;
             case 'ucfirst':
-                $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toUpper');
+                $firstChar = mb_substr($theValue, 0, 1, 'utf-8');
+                $firstChar = mb_strtoupper($firstChar, 'utf-8');
+                $remainder = mb_substr($theValue, 1, null, 'utf-8');
+                $theValue = $firstChar . $remainder;
                 break;
             case 'lcfirst':
-                $theValue = $charsetConverter->convCaseFirst('utf-8', $theValue, 'toLower');
+                $firstChar = mb_substr($theValue, 0, 1, 'utf-8');
+                $firstChar = mb_strtolower($firstChar, 'utf-8');
+                $remainder = mb_substr($theValue, 1, null, 'utf-8');
+                $theValue = $firstChar . $remainder;
                 break;
             case 'uppercamelcase':
                 $theValue = GeneralUtility::underscoredToUpperCamelCase($theValue);

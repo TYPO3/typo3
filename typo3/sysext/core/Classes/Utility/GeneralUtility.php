@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use GuzzleHttp\Exception\RequestException;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -279,9 +278,15 @@ class GeneralUtility
      */
     public static function fixed_lgd_cs($string, $chars, $appendString = '...')
     {
-        /** @var CharsetConverter $charsetConverter */
-        $charsetConverter = self::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-        return $charsetConverter->crop('utf-8', $string, $chars, $appendString);
+        if ((int)$chars === 0 || mb_strlen($string, 'utf-8') <= abs($chars)) {
+            return $string;
+        }
+        if ($chars > 0) {
+            $string = mb_substr($string, 0, $chars, 'utf-8') . $appendString;
+        } else {
+            $string = $appendString . mb_substr($string, $len, mb_strlen($string, 'utf-8'), 'utf-8');
+        }
+        return $string;
     }
 
     /**
