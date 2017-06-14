@@ -206,7 +206,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
         $incompatibleExtensions = $this->getExtensionsToExclude();
         $incompatibleExtensions = array_filter($incompatibleExtensions);
         $incompatibleExtensions = array_merge($incompatibleExtensions, [$extensionKey]);
-        GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
+        GeneralUtility::writeFileToTypo3tempDir($this->protocolFile, implode(', ', $incompatibleExtensions));
         $this->logError = true;
     }
 
@@ -231,14 +231,19 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
      */
     public function logError()
     {
+        $errors = [];
+
         // Logging is disabled.
         if (!$this->logError) {
+            // Create an empty file to avoid 404 errors
+            if (!is_file($this->errorProtocolFile)) {
+                GeneralUtility::writeFileToTypo3tempDir($this->errorProtocolFile, json_encode($errors));
+            }
             return;
         }
 
         // Fetch existing errors, add last one and write to file again.
         $lastError = error_get_last();
-        $errors = [];
 
         if (file_exists($this->errorProtocolFile)) {
             $errors = json_decode(file_get_contents($this->errorProtocolFile));
@@ -259,6 +264,6 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
         }
         $errors[] = $lastError;
 
-        GeneralUtility::writeFile($this->errorProtocolFile, json_encode($errors));
+        GeneralUtility::writeFileToTypo3tempDir($this->errorProtocolFile, json_encode($errors));
     }
 }
