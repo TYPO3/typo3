@@ -133,6 +133,11 @@ return [
                 'behaviour' => [
                     'localizeChildrenAtParentLocalization' => true,
                 ],
+                'appearance' => [
+                    'showSynchronizationLink' => true,
+                    'showAllLocalizationLink' => true,
+                    'showPossibleLocalizationRecords' => true,
+                ]
             ],
         ],
 
