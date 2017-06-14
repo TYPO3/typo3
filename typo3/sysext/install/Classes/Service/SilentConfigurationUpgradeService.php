@@ -97,6 +97,9 @@ class SilentConfigurationUpgradeService
         // #80711
         'FE/noPHPscriptInclude',
         'FE/maxSessionDataSize',
+        // #82162
+        'SYS/enable_errorDLOG',
+        'SYS/enable_exceptionDLOG',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
@@ -162,8 +165,10 @@ class SilentConfigurationUpgradeService
             }
         } catch (\RuntimeException $e) {
             // If an exception is thrown, the value is not set in LocalConfiguration
-            $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel',
-                $rsaauthLoaded ? 'rsa' : 'normal');
+            $this->configurationManager->setLocalConfigurationValueByPath(
+                'BE/loginSecurityLevel',
+                $rsaauthLoaded ? 'rsa' : 'normal'
+            );
             $this->throwRedirectException();
         }
     }
@@ -526,22 +531,28 @@ class SilentConfigurationUpgradeService
         if (!empty($changedSettings['GFX/im_noScaleUp'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noScaleUp');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowUpscaling',
-                $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath(
+                'GFX/processor_allowUpscaling',
+                $newProcessorValue
+            );
         }
 
         if (!empty($changedSettings['GFX/im_noFramePrepended'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noFramePrepended');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowFrameSelection',
-                $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath(
+                'GFX/processor_allowFrameSelection',
+                $newProcessorValue
+            );
         }
 
         if (!empty($changedSettings['GFX/im_mask_temp_ext_gif'])) {
             $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
             $newProcessorValue = !$currentProcessorValue;
-            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng',
-                $newProcessorValue);
+            $this->configurationManager->setLocalConfigurationValueByPath(
+                'GFX/processor_allowTemporaryMasksAsPng',
+                $newProcessorValue
+            );
         }
 
         if (!empty(array_filter($changedSettings))) {

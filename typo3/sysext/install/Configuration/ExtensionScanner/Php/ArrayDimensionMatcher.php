@@ -24,6 +24,16 @@ return [
             'Deprecation-80583-TYPO3_CONF_VARS_extensionAdded.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enable_errorDLOG\']' => [
+        'restFiles' => [
+            'Breaking-82162-GlobalErrorConstantsRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enable_exceptionDLOG\']' => [
+        'restFiles' => [
+            'Breaking-82162-GlobalErrorConstantsRemoved.rst',
+        ],
+    ],
 
     // Hooks
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'getFlexFormDSClass\']' => [

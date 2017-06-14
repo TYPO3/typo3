@@ -171,7 +171,6 @@ class Bootstrap
             ->loadConfigurationAndInitialize()
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
-            ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables()
             ->loadBaseTca();
 
@@ -701,20 +700,6 @@ class Bootstrap
     public function setFinalCachingFrameworkCacheConfiguration()
     {
         $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-        return $this;
-    }
-
-    /**
-     * Define logging and exception constants
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public function defineLoggingAndExceptionConstants()
-    {
-        define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
-        define('TYPO3_ERROR_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_errorDLOG']);
-        define('TYPO3_EXCEPTION_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_exceptionDLOG']);
         return $this;
     }
 

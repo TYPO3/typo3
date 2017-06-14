@@ -28,6 +28,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayGlobalMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassNameMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstantMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\InterfaceMethodChangedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\MethodArgumentDroppedStaticMatcher;
@@ -64,6 +65,10 @@ class ExtensionScannerScanFile extends AbstractAjaxAction
         [
             'class' => ClassNameMatcher::class,
             'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ClassNameMatcher.php',
+        ],
+        [
+            'class' => ConstantMatcher::class,
+            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ConstantMatcher.php',
         ],
         [
             'class' => InterfaceMethodChangedMatcher::class,

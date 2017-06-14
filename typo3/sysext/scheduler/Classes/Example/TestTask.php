@@ -37,8 +37,6 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $success = false;
         if (!empty($this->email)) {
             // If an email address is defined, send a message to it
-            // NOTE: the TYPO3_DLOG constant is not used in this case, as this is a test task
-            // and debugging is its main purpose anyway
             \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email . '"', 'scheduler', 0);
             // Get execution information
             $exec = $this->getExecution();

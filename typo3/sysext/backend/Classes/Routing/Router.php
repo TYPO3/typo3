@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
  *
  * Ideally, the Router is solely instantiated and accessed via the Bootstrap, the RequestHandler and the UriBuilder.
  *
- * See \TYPO3\CMS\Backend\RequestHandler for more details on route matching() and Bootstrap->initializeBackendRouting().
+ * See \TYPO3\CMS\Backend\Http\RequestHandler for more details on route matching() and Bootstrap->initializeBackendRouting().
  *
  * The architecture is inspired by the Symfony Routing Component.
  */

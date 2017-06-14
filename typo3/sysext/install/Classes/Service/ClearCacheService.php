@@ -71,7 +71,6 @@ class ClearCacheService
         // Use bootstrap to load all ext_localconf and ext_tables
         $bootstrap
             ->loadTypo3LoadedExtAndExtLocalconf(false)
-            ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables()
             ->loadBaseTca(false)
             ->loadExtTables(false);
