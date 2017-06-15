@@ -161,7 +161,8 @@ class CaseViewHelper extends AbstractViewHelper
                 $output = $firstChar . $remainder;
                 break;
             case self::CASE_CAPITAL_WORDS:
-                // @todo: Implement method once there is a proper solution with using the CharsetConverter
+                $output = mb_convert_case($value, MB_CASE_TITLE, 'utf-8');
+                break;
             default:
                 throw new InvalidVariableException('The case mode "' . $mode . '" supplied to Fluid\'s format.case ViewHelper is not supported.', 1358349150);
         }
