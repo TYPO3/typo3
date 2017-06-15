@@ -23,6 +23,7 @@ return [
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer' => \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer' => \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class,
+    'TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider' => \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider::class,
 
     // Semi API level classes; mainly used in unit tests
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder' => \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class

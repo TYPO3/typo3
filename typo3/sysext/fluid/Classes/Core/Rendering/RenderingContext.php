@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface;
-use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
@@ -28,6 +27,7 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -37,13 +37,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 {
-    /**
-     * Template Variable Container. Contains all variables available through object accessors in the template
-     *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
-     */
-    protected $templateVariableContainer;
-
     /**
      * Controller context being passed to the ViewHelper
      *
@@ -76,6 +69,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
             $this->setTemplateCompiler(new TemplateCompiler());
             $this->setViewHelperInvoker(new ViewHelperInvoker());
             $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
+            $this->setVariableProvider(new StandardVariableProvider());
             $this->setTemplateProcessors(
                 [
                     new EscapingModifierTemplateProcessor(),
@@ -88,7 +82,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
         $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
-        $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
 
         /** @var FluidTemplateCache $cache */
         $cache = $objectManager->get(CacheManager::class)->getCache('fluid_template');

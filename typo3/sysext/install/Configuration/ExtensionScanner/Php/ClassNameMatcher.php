@@ -344,6 +344,11 @@ return [
             'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
         ],
     ],
+    'TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider' => [
+        'restFiles' => [
+            'Important-82229-FluidImplementationOfCmsVariableProviderRemoved.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

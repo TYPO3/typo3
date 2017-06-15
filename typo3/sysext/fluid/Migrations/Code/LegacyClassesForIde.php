@@ -80,6 +80,12 @@ namespace TYPO3\CMS\Fluid\Core\Compiler {
     }
 }
 
+namespace TYPO3\CMS\Fluid\Core\Variables {
+    class CmsVariableProvider extends \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider
+    {
+    }
+}
+
 namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree {
     class RootNode extends \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode
     {
