@@ -4737,7 +4737,7 @@ class ContentObjectRenderer
                 if (!$attrib['align'] && $defaultAlign) {
                     $attrib['align'] = $defaultAlign;
                 }
-                $params = GeneralUtility::implodeAttributes($attrib, 1);
+                $params = GeneralUtility::implodeAttributes($attrib, true);
                 if (!($conf['removeWrapping'] && !($emptyTag && $conf['removeWrapping.']['keepSingleTag']))) {
                     if ($emptyTag) {
                         $str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . ' />';

@@ -2056,7 +2056,7 @@ abstract class AbstractMenuContentObject
     {
         $params = trim($this->I['val']['ATagParams']) . $this->I['accessKey']['code'];
         $params = $params !== '' ? ' ' . $params : '';
-        $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], 1) . $params . '>';
+        $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . $params . '>';
         $this->I['A2'] = '</a>';
     }
 
