@@ -473,7 +473,7 @@ class RteHtmlParser extends HtmlParser
                     if (GeneralUtility::isFirstPartOfStr($attribArray['src'], $siteUrl)) {
                         $attribArray['src'] = substr($attribArray['src'], strlen($siteUrl));
                     }
-                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, 1, 1) . ' />';
+                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, true, true) . ' />';
                 }
             }
         }
@@ -511,7 +511,7 @@ class RteHtmlParser extends HtmlParser
                     if (!isset($attribArray['alt'])) {
                         $attribArray['alt'] = '';
                     }
-                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, 1, 1) . ' />';
+                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, true, true) . ' />';
                 }
             }
         }

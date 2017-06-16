@@ -207,7 +207,7 @@ class LanguageService
             $GLOBALS['TCA_DESCR'][$table]['columns'] = [];
                 // Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
             foreach ($GLOBALS['TCA_DESCR'][$table]['refs'] as $llfile) {
-                $localLanguage = $this->includeLLFile($llfile, 0, 1);
+                $localLanguage = $this->includeLLFile($llfile, false, true);
                     // Traverse all keys
                 if (is_array($localLanguage['default'])) {
                     foreach ($localLanguage['default'] as $lkey => $lVal) {
