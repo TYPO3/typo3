@@ -397,7 +397,7 @@ class ImageManipulation {
      * The top.require is now inlined @see ImageManipulationElemen.php:143
      * TODO: Find a better solution for cross iframe communications
      */
-    this.cropper = (top.TYPO3.jQuery(image) as any).cropper($.extend(this.defaultOpts, {
+    this.cropper = (top.$(image) as any).cropper($.extend(this.defaultOpts, {
       built: this.cropBuiltHandler,
       crop: this.cropMoveHandler,
       cropend: this.cropEndHandler,

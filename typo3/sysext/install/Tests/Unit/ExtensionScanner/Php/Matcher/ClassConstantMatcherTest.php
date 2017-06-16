@@ -46,6 +46,11 @@ class ClassConstantMatcherTest extends UnitTestCase
                     'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
                 ],
             ],
+            'TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT' => [
+                'restFiles' => [
+                    'Breaking-82378-RemoveNamespacedJQuery.rst',
+                ],
+            ],
         ];
         $subject = new ClassConstantMatcher($configuration);
         $traverser->addVisitor($subject);
@@ -53,6 +58,7 @@ class ClassConstantMatcherTest extends UnitTestCase
         $expectedHitLineNumbers = [
             28,
             29,
+            30,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

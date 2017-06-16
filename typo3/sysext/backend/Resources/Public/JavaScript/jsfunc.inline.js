@@ -650,7 +650,7 @@ var inline = {
 				if (!records[i].length) {
 					continue;
 				}
-				$headerObj = TYPO3.jQuery('#' + partOfHeaderObj + records[i] + '_header');
+				$headerObj = $('#' + partOfHeaderObj + records[i] + '_header');
 				sortUp = $headerObj.find('.sortingUp');
 				iconIdentifier = 'actions-move-up';
 				if (sortUp) {

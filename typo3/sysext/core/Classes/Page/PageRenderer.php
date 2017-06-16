@@ -39,8 +39,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     const JQUERY_VERSION_LATEST = '3.2.1';
     // jQuery namespace options
     const JQUERY_NAMESPACE_NONE = 'none';
-    const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
-    const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
 
     /**
      * @var bool
@@ -1433,7 +1431,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
      * @throws \UnexpectedValueException
      */
-    public function loadJquery($version = null, $source = null, $namespace = self::JQUERY_NAMESPACE_DEFAULT)
+    public function loadJquery($version = null, $source = null, $namespace = self::JQUERY_NAMESPACE_NONE)
     {
         // Set it to the version that is shipped with the TYPO3 core
         if ($version === null || $version === 'latest') {
@@ -2168,19 +2166,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             default:
                 $jQueryFileName = $source;
         }
-        // Include the jQuery Core
         $scriptTag = '<script src="' . htmlspecialchars($jQueryFileName) . '" type="text/javascript"></script>' . LF;
-        // Set the noConflict mode to be available via "TYPO3.jQuery" in all installations
-        switch ($namespace) {
-            case self::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT:
-                $scriptTag .= GeneralUtility::wrapJS('jQuery.noConflict();') . LF;
-                break;
-            case self::JQUERY_NAMESPACE_NONE:
-                break;
-            case self::JQUERY_NAMESPACE_DEFAULT:
-
-            default:
-                $scriptTag .= GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true); var $ = TYPO3.' . $namespace . ';') . LF;
+        // Set the noConflict mode to be globally available via "jQuery"
+        if ($namespace !== self::JQUERY_NAMESPACE_NONE) {
+            $scriptTag .= GeneralUtility::wrapJS('jQuery.noConflict();') . LF;
         }
         return $scriptTag;
     }

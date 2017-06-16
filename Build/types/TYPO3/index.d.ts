@@ -60,6 +60,7 @@ declare module 'TYPO3/CMS/Backend/Severity' {
 // Type definition for global namespace object
 interface Window {
   TYPO3: any;
+  $: any;
 }
 
 /**

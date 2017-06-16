@@ -27,6 +27,7 @@ class ClassConstantMatcherFixture
         // Matches
         $foo = \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR;
         $foo = DocumentTemplate::STATUS_ICON_ERROR;
+        $foo = \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT;
 
         // No match
         $foo = \My\Project\AClass::MY_CONSTANT;
