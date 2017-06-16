@@ -462,11 +462,12 @@ class AdminPanelView
 
             // Simulate date
             $output[] = '<div class="typo3-adminPanel-form-group">';
-            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] . '" />';
             $output[] = '  <label for="' . htmlspecialchars('preview_simulateDate') . '">';
             $output[] = '    ' . $this->extGetLL('preview_simulateDate');
             $output[] = '  </label>';
             $output[] = '  <input type="text" id="preview_simulateDate" name="TSFE_ADMIN_PANEL[preview_simulateDate]_hr" onchange="TSFEtypo3FormFieldGet(\'TSFE_ADMIN_PANEL[preview_simulateDate]\', \'datetime\', \'\', 1,0);" />';
+            // the hidden field must be placed after the _hr field to avoid the timestamp being overridden by the date string
+            $output[] = '  <input type="hidden" name="TSFE_ADMIN_PANEL[preview_simulateDate]" value="' . $this->getBackendUser()->uc['TSFE_adminConfig']['preview_simulateDate'] . '" />';
             $output[] = '</div>';
             $this->extJSCODE .= 'TSFEtypo3FormFieldSet("TSFE_ADMIN_PANEL[preview_simulateDate]", "datetime", "", 0, 0);';
 
