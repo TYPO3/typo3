@@ -18,6 +18,7 @@ The following public methods within the Extbase persistence layer have been remo
  * `Typo3DbBackend->injectCacheManager()`
  * Interface definition in `QuerySettingsInterface->getUseQueryCache()`
 
+The TypoScript configuration `config.tx_extbase.persistence.useQueryCache` has no effect anymore.
 
 Impact
 ======
