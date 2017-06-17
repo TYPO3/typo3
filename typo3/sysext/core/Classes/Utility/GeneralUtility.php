@@ -284,7 +284,7 @@ class GeneralUtility
         if ($chars > 0) {
             $string = mb_substr($string, 0, $chars, 'utf-8') . $appendString;
         } else {
-            $string = $appendString . mb_substr($string, $len, mb_strlen($string, 'utf-8'), 'utf-8');
+            $string = $appendString . mb_substr($string, $chars, mb_strlen($string, 'utf-8'), 'utf-8');
         }
         return $string;
     }
