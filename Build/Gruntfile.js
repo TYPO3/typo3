@@ -193,7 +193,7 @@ module.exports = function (grunt) {
 			}
 		},
 		exec: {
-			ts: './node_modules/.bin/tsc --project tsconfig.json'
+			ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json'
 		},
 		tslint: {
 			options: {
@@ -202,6 +202,7 @@ module.exports = function (grunt) {
 			},
 			files: {
 				src: [
+					'<%= paths.sysext %>*/Tests/TypeScript/**/*.ts',
 					'<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts',
 					'./types/**/*.ts'
 				]
@@ -216,7 +217,7 @@ module.exports = function (grunt) {
 				tasks: 'css'
 			},
 			ts: {
-				files: '<%= paths.sysext %>*/Resources/Private/TypeScript/**/*.ts',
+				files: '<%= paths.sysext %>*/**/TypeScript/**/*.ts',
 				tasks: 'scripts'
 			}
 		},
@@ -231,7 +232,9 @@ module.exports = function (grunt) {
 					src: ['**/*.js', '**/*.js.map'],
 					dest: '<%= paths.sysext %>',
 					rename: function (dest, src) {
-						return dest + src.replace('Resources/Private/TypeScript', 'Resources/Public/JavaScript');
+						var srccleaned = src.replace('Resources/Private/TypeScript', 'Resources/Public/JavaScript');
+						srccleaned = srccleaned.replace('Tests/TypeScript', 'Tests/JavaScript');
+						return dest + srccleaned;
 					}
 				}]
 			},
@@ -597,8 +600,9 @@ module.exports = function (grunt) {
 					return match.charAt(1).toUpperCase();
 				});
 			var namespace = 'TYPO3/CMS/' + extname + '/*',
-				path = dir + "/*";
-			config.compilerOptions.paths[namespace] = [path];
+				path = dir + "/*",
+				typescriptPath = path.replace('Public/JavaScript', 'Private/TypeScript');
+			config.compilerOptions.paths[namespace] = [path, typescriptPath];
 		});
 
 		grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4));
