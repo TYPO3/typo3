@@ -228,7 +228,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->matching(
             $query->logicalAnd(
                 $query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
-                $query->equals('currentVersion', 1),
                 $query->logicalNot($query->equals('ownerusername', 'typo3v4'))
             )
         );
@@ -251,7 +250,6 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->matching(
             $query->logicalAnd(
                 $query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
-                $query->equals('currentVersion', 1),
                 $query->equals('ownerusername', 'typo3v4')
             )
         );
