@@ -227,15 +227,11 @@ class ListController extends AbstractModuleController
             $officialDistributions = $this->extensionRepository->findAllOfficialDistributions();
             $communityDistributions = $this->extensionRepository->findAllCommunityDistributions();
 
-            if (!$showUnsuitableDistributions) {
-                $suitableOfficialDistributions = $this->dependencyUtility->getExtensionsSuitableForTypo3Version($officialDistributions);
-                $this->view->assign('officialDistributions', $suitableOfficialDistributions);
-                $suitableCommunityDistributions = $this->dependencyUtility->getExtensionsSuitableForTypo3Version($communityDistributions);
-                $this->view->assign('communityDistributions', $suitableCommunityDistributions);
-            } else {
-                $this->view->assign('officialDistributions', $officialDistributions);
-                $this->view->assign('communityDistributions', $communityDistributions);
-            }
+            $officialDistributions = $this->dependencyUtility->filterYoungestVersionOfExtensionList($officialDistributions->toArray(), $showUnsuitableDistributions);
+            $communityDistributions = $this->dependencyUtility->filterYoungestVersionOfExtensionList($communityDistributions->toArray(), $showUnsuitableDistributions);
+
+            $this->view->assign('officialDistributions', $officialDistributions);
+            $this->view->assign('communityDistributions', $communityDistributions);
         }
         $this->view->assign('enableDistributionsView', $importExportInstalled);
         $this->view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
