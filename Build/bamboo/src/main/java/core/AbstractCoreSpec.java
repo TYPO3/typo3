@@ -114,7 +114,42 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for mysql based acceptance tests on a specific php version
+     * Job acceptance test installs system and introduction package on pgsql
+     *
+     * @param Requirement requirement
+     * @param String requirementIdentfier
+     */
+    protected Job getJobAcceptanceTestInstallPgsql(Requirement requirement, String requirementIdentifier) {
+        return new Job("Accept inst pg " + requirementIdentifier, new BambooKey("ACINSTPG" + requirementIdentifier))
+        .description("Install TYPO3 on pgsql and load introduction package " + requirementIdentifier)
+        .tasks(
+            this.getTaskGitCloneRepository(),
+            this.getTaskGitCherryPick(),
+            this.getTaskComposerInstall(),
+            this.getTaskPrepareAcceptanceTest(),
+            new CommandTask()
+                .description("Execute codeception AcceptanceInstallPgsql suite")
+                .executable("codecept")
+                .argument("run AcceptanceInstallPgsql -d -c " + this.testingFrameworkBuildPath + "AcceptanceTestsInstallPgsql.yml --xml reports.xml --html reports.html")
+                .environmentVariables(this.credentialsPgsql)
+        )
+        .finalTasks(
+            new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                .resultDirectories("typo3temp/var/tests/AcceptanceReportsInstallPgsql/reports.xml"),
+            this.getTaskDeletePgsqlDatabases(),
+            this.getTaskTearDownAcceptanceTestSetup()
+        )
+        .requirements(
+            requirement
+        )
+        .artifacts(new Artifact()
+            .name("Test Report")
+            .copyPattern("typo3temp/var/tests/AcceptanceReportsInstallPgsql/")
+            .shared(false));
+    }
+
+    /**
+     * Jobs for mysql based acceptance tests
      *
      * @param int numberOfChunks
      * @param Requirement requirement
@@ -165,7 +200,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for mysql based functional tests on a specific php version
+     * Jobs for mysql based functional tests
      *
      * @param int numberOfChunks
      * @param Requirement requirement
@@ -206,7 +241,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for mssql based functional tests on a specific php version
+     * Jobs for mssql based functional tests
      *
      * @param int numberOfChunks
      * @param Requirement requirement
@@ -247,7 +282,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for pgsql based functional tests on a specific php version
+     * Jobs for pgsql based functional tests
      *
      * @param int numberOfChunks
      * @param Requirement requirement
@@ -523,7 +558,7 @@ abstract public class AbstractCoreSpec {
                 "PATCHSET=${bamboo.patchset}\n" +
                 "\n" +
                 "if [[ $CHANGEURL ]]; then\n" +
-                "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET\n" +
+                "    gerrit-cherry-pick https://review.typo3.org/Packages/TYPO3.CMS $CHANGEURLID/$PATCHSET || exit 1\n" +
                 "fi\n"
             );
     }

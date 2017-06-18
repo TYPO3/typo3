@@ -77,30 +77,13 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion71(), "PHP71"));
 
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion71(), "PHP71"));
+
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion71(), "PHP71"));
 
-        // CGL check whole core
-        jobsMainStage.add(new Job("Integration CGL", new BambooKey("CGLCHECK"))
-            .description("Check coding guidelines of full core")
-            .tasks(
-                this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
-                new ScriptTask()
-                    .description("Execute cgl check")
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody(
-                        this.getScriptTaskBashInlineBody() +
-                        this.getScriptTaskBashPhpNoXdebug() +
-                        "php_no_xdebug ./bin/php-cs-fixer fix -v --dry-run --config=Build/.php_cs typo3/\n" +
-                        "exit $?\n"
-                    )
-            )
-            .requirements(
-                this.getRequirementPhpVersion70Or71()
-            )
-        );
+        jobsMainStage.add(this.getJobCglCheckFullCore());
 
         jobsMainStage.add(this.getJobIntegrationVarious());
 
@@ -153,6 +136,31 @@ public class NightlySpec extends AbstractCoreSpec {
                 new PlanBranchManagement()
                     .delete(new BranchCleanup())
                     .notificationForCommitters()
+            );
+    }
+
+    /**
+     * Job checking CGL of all core php files
+     */
+    protected Job getJobCglCheckFullCore() {
+        return new Job("Integration CGL", new BambooKey("CGLCHECK"))
+            .description("Check coding guidelines of full core")
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
+                new ScriptTask()
+                    .description("Execute cgl check")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        this.getScriptTaskBashPhpNoXdebug() +
+                        "php_no_xdebug ./bin/php-cs-fixer fix -v --dry-run --config=Build/.php_cs typo3/\n" +
+                        "exit $?\n"
+                    )
+            )
+            .requirements(
+                this.getRequirementPhpVersion70Or71()
             );
     }
 }

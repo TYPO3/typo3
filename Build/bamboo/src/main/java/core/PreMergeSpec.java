@@ -67,37 +67,9 @@ public class PreMergeSpec extends AbstractCoreSpec {
         // PREPARATION stage
         ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
 
-        // Label task
-        jobsPreparationStage.add(new Job("Create build labels", new BambooKey("CLFB"))
-            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
-            .tasks(
-                new ScriptTask()
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody("echo \"I'm just here for the labels!\"")
-            )
-        );
+        jobsPreparationStage.add(this.getJobBuildLabels());
 
-        // CGL check last commit
-        jobsPreparationStage.add(new Job("Integration CGL", new BambooKey("CGLCHECK"))
-            .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
-            .tasks(
-                this.getTaskGitCloneRepository(),
-                this.getTaskGitCherryPick(),
-                this.getTaskComposerInstall(),
-                new ScriptTask()
-                    .description("Execute cgl check script")
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody(
-                        this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/cglFixMyCommit.sh dryrun\n"
-                    )
-            )
-            .requirements(
-                new Requirement("system.phpVersion")
-                    .matchValue("7\\.0|7\\.1")
-                    .matchType(Requirement.MatchType.MATCHES)
-            )
-        );
+        jobsPreparationStage.add(this.getJobCglCheckGitCommit());
 
         jobsPreparationStage.add(this.getJobComposerValidate());
 
@@ -109,6 +81,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
 
@@ -163,4 +136,41 @@ public class PreMergeSpec extends AbstractCoreSpec {
             );
     }
 
+    /**
+     * Job creating labels needed for intercept communication
+     */
+    protected Job getJobBuildLabels() {
+        return new Job("Create build labels", new BambooKey("CLFB"))
+            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
+            .tasks(
+                new ScriptTask()
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody("echo \"I'm just here for the labels!\"")
+            );
+    }
+
+    /**
+     * Job checking CGL of last git commit
+     */
+    protected Job getJobCglCheckGitCommit() {
+        return new Job("Integration CGL", new BambooKey("CGLCHECK"))
+            .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
+                new ScriptTask()
+                    .description("Execute cgl check script")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/cglFixMyCommit.sh dryrun\n"
+                    )
+            )
+            .requirements(
+                new Requirement("system.phpVersion")
+                    .matchValue("7\\.0|7\\.1")
+                    .matchType(Requirement.MatchType.MATCHES)
+            );
+    }
 }
