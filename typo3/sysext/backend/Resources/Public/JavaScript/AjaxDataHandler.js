@@ -179,6 +179,7 @@ define(['jquery',
 		AjaxDataHandler._call(params).done(function(result) {
 			// revert to the old class
 			Icons.getIcon('actions-edit-delete', Icons.sizes.small).done(function(icon) {
+				$iconElement = $anchorElement.find(AjaxDataHandler.identifier.icon);
 				$iconElement.replaceWith(icon);
 			});
 			// print messages on errors
