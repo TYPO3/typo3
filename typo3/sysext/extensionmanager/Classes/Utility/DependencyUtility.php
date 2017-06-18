@@ -602,4 +602,36 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
         }
         return $suitableExtensions;
     }
+
+    /**
+     * Gets a list of various extensions in various versions and returns
+     * a filtered list containing the extension-version combination with
+     * the highest version number.
+     *
+     * @param Extension[] $extensions
+     * @param bool $showUnsuitable
+     *
+     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension[]
+     */
+    public function filterYoungestVersionOfExtensionList(array $extensions, $showUnsuitable)
+    {
+        if (!$showUnsuitable) {
+            $extensions = $this->getExtensionsSuitableForTypo3Version($extensions);
+        }
+        $filteredExtensions = [];
+        foreach ($extensions as $extension) {
+            $extensionKey = $extension->getExtensionKey();
+            if (!array_key_exists($extensionKey, $filteredExtensions)) {
+                $filteredExtensions[$extensionKey] = $extension;
+                continue;
+            } else {
+                $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
+                $newVersion = $extension->getVersion();
+                if (version_compare($newVersion, $currentVersion, '>')) {
+                    $filteredExtensions[$extensionKey] = $extension;
+                }
+            }
+        }
+        return $filteredExtensions;
+    }
 }
