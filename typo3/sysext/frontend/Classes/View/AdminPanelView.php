@@ -695,6 +695,13 @@ class AdminPanelView
             $output[] = '    </label>';
             $output[] = '  </div>';
             $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
+            $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" />';
+            $output[] = '    <label for="' . htmlspecialchars('tsdebug_displayMessages') . '">';
+            $output[] = '      <input type="checkbox" id="tsdebug_displayMessages" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_displayMessages'] ? ' checked="checked"' : '') . ' />';
+            $output[] = '      ' . $this->extGetLL('tsdebug_displayMessages');
+            $output[] = '    </label>';
+            $output[] = '  </div>';
+            $output[] = '  <div class="typo3-adminPanel-form-group-checkbox">';
             $output[] = '    <input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" />';
             $output[] = '    <label for="' . htmlspecialchars('tsdebug_LR') . '">';
             $output[] = '      <input type="checkbox" id="tsdebug_LR" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"' . ($this->getBackendUser()->uc['TSFE_adminConfig']['tsdebug_LR'] ? ' checked="checked"' : '') . ' />';
