@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -500,9 +501,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                     ->removeAll()
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                     ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+                $queryBuilder = $this->addPageIdConstraint($tableName, $queryBuilder);
                 $firstRow = $queryBuilder->select('uid')
                     ->from($tableName)
-                    ->where($this->getPageIdConstraint($tableName))
                     ->execute()
                     ->fetch();
                 if (!is_array($firstRow)) {
@@ -674,99 +675,89 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         array $additionalConstraints = [],
         array $fields = ['*']
     ): QueryBuilder {
-        $queryParameters = $this->buildQueryParameters($table, $pageId, $fields, $additionalConstraints);
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($queryParameters['table']);
+            ->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $queryBuilder
-            ->select(...$queryParameters['fields'])
-            ->from($queryParameters['table'])
-            ->where(...$queryParameters['where']);
+            ->select(...$fields)
+            ->from($table);
 
-        if (!empty($queryParameters['orderBy'])) {
-            foreach ($queryParameters['orderBy'] as $fieldNameAndSorting) {
-                list($fieldName, $sorting) = $fieldNameAndSorting;
-                $queryBuilder->addOrderBy($fieldName, $sorting);
-            }
+        if (!empty($additionalConstraints)) {
+            $queryBuilder->andWhere(...$additionalConstraints);
         }
 
-        if (!empty($queryParameters['firstResult'])) {
-            $queryBuilder->setFirstResult((int)$queryParameters['firstResult']);
-        }
-
-        if (!empty($queryParameters['maxResults'])) {
-            $queryBuilder->setMaxResults((int)$queryParameters['maxResults']);
-        }
-
-        if (!empty($queryParameters['groupBy'])) {
-            $queryBuilder->groupBy($queryParameters['groupBy']);
-        }
+        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, $fields, $additionalConstraints, $queryBuilder);
 
         return $queryBuilder;
     }
 
     /**
-     * Return the query parameters to select the records from a table $table with pid = $this->pidList
+     * Return the modified QueryBuilder object ($queryBuilder) which will be
+     * used to select the records from a table $table with pid = $this->pidList
      *
      * @param string $table Table name
      * @param int $pageId Page id Only used to build the search constraints, $this->pidList is used for restrictions
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
-     * @return array
+     * @param QueryBuilder $queryBuilder
+     * @return QueryBuilder
      */
-    protected function buildQueryParameters(
+    protected function prepareQueryBuilder(
         string $table,
         int $pageId,
         array $fieldList = ['*'],
-        array $additionalConstraints = []
-    ): array {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table)
-            ->expr();
-
+        array $additionalConstraints = [],
+        QueryBuilder $queryBuilder
+    ): QueryBuilder {
         $parameters = [
             'table' => $table,
             'fields' => $fieldList,
             'groupBy' => null,
             'orderBy' => null,
             'firstResult' => $this->firstElementNumber ?: null,
-            'maxResults' => $this->iLimit ? $this->iLimit : null,
+            'maxResults' => $this->iLimit ?: null
         ];
 
+        if ($this->iLimit !== null) {
+            $queryBuilder->setMaxResults($this->iLimit);
+        }
+
         if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
-            $parameters['orderBy'][] = $this->sortRev ? [$this->sortField, 'DESC'] : [$this->sortField, 'ASC'];
+            $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
         } else {
             $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-            $parameters['orderBy'] = QueryHelper::parseOrderBy((string)$orderBy);
+            $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
+            foreach ($orderBys as $orderBy) {
+                $queryBuilder->orderBy($orderBy[0], $orderBy[1]);
+            }
         }
 
         // Build the query constraints
-        $constraints = [
-            'pidSelect' => $this->getPageIdConstraint($table),
-            'search' => $this->makeSearchString($table, $pageId)
-        ];
+        $queryBuilder = $this->addPageIdConstraint($table, $queryBuilder);
+        $searchWhere = $this->makeSearchString($table, $pageId);
+        if (!empty($searchWhere)) {
+            $queryBuilder->andWhere($searchWhere);
+        }
 
         // Filtering on displayable pages (permissions):
         if ($table === 'pages' && $this->perms_clause) {
-            $constraints['pagePermsClause'] = $this->perms_clause;
+            $queryBuilder->andWhere($this->perms_clause);
         }
 
         // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-        if ((GeneralUtility::inList($this->hideTranslations, $table) || $this->hideTranslations === '*')
+        if (
+            $table !== 'pages_language_overlay'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-            && $table !== 'pages_language_overlay'
+            && (GeneralUtility::inList($this->hideTranslations, $table) || $this->hideTranslations === '*')
         ) {
-            $constraints['transOrigPointerField'] = $expressionBuilder->eq(
+            $queryBuilder->andWhere($queryBuilder->expr()->eq(
                 $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                 0
-            );
+            ));
         }
-
-        $parameters['where'] = array_merge($constraints, $additionalConstraints);
 
         $hookName = DatabaseRecordList::class;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
@@ -779,7 +770,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                         $pageId,
                         $additionalConstraints,
                         $fieldList,
-                        $this
+                        $this,
+                        $queryBuilder
                     );
                 }
             }
@@ -788,13 +780,40 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // array_unique / array_filter used to eliminate empty and duplicate constraints
         // the array keys are eliminated by this as well to facilitate argument unpacking
         // when used with the querybuilder.
-        $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
+        // @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+        if (!empty($parameters['where'])) {
+            $parameters['where'] = array_unique(array_filter(array_values($parameters['where'])));
+        }
+        if (!empty($parameters['where'])) {
+            $this->logDeprecation('where');
+            $queryBuilder->where(...$parameters['where']);
+        }
+        if (!empty($parameters['orderBy'])) {
+            $this->logDeprecation('orderBy');
+            foreach ($parameters['orderBy'] as $fieldNameAndSorting) {
+                list($fieldName, $sorting) = $fieldNameAndSorting;
+                $queryBuilder->addOrderBy($fieldName, $sorting);
+            }
+        }
+        if (!empty($parameters['firstResult'])) {
+            $this->logDeprecation('firstResult');
+            $queryBuilder->setFirstResult((int)$parameters['firstResult']);
+        }
+        if (!empty($parameters['maxResults']) && $parameters['maxResults'] !== $this->iLimit) {
+            $this->logDeprecation('maxResults');
+            $queryBuilder->setMaxResults((int)$parameters['maxResults']);
+        }
+        if (!empty($parameters['groupBy'])) {
+            $this->logDeprecation('groupBy');
+            $queryBuilder->groupBy($parameters['groupBy']);
+        }
 
-        return $parameters;
+        return $queryBuilder;
     }
 
     /**
-     * Set the total items for the record list
+     * Executed a query to set $this->totalItems to the number of total
+     * items, eg. for pagination
      *
      * @param string $table Table name
      * @param int $pageId Only used to build the search constraints, $this->pidList is used for restrictions
@@ -802,16 +821,21 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function setTotalItems(string $table, int $pageId, array $constraints)
     {
-        $queryParameters = $this->buildQueryParameters($table, $pageId, ['*'], $constraints);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($queryParameters['table']);
+            ->getQueryBuilderForTable($table);
+
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $queryBuilder
-            ->from($queryParameters['table'])
-            ->where(...$queryParameters['where']);
+            ->from($table);
+
+        if (!empty($constraints)) {
+            $queryBuilder->andWhere(...$constraints);
+        }
+
+        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder);
 
         $this->totalItems = (int)$queryBuilder->count('*')
             ->execute()
@@ -1114,7 +1138,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
     /**
      * Returns "requestUri" - which is basically listURL
-     *
      * @return string Content of ->listURL()
      */
     public function requestUri()
@@ -1320,13 +1343,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     }
 
     /**
-     * Build SQL fragment to limit a query to a list of page IDs based on
-     * the current search level setting.
+     * Add conditions to the QueryBuilder object ($queryBuilder) to limit a
+     * query to a list of page IDs based on the current search level setting.
      *
      * @param string $tableName
-     * @return string
+     * @param QueryBuilder $queryBuilder
+     * @return QueryBuilder Modified QueryBuilder object
      */
-    protected function getPageIdConstraint(string $tableName): string
+    protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder): QueryBuilder
     {
         // Set search levels:
         $searchLevels = $this->searchLevels;
@@ -1337,28 +1361,44 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $searchLevels = 999;
         }
 
-        // Default is to search everywhere
-        $constraint = '1=1';
-
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($tableName)
-            ->getExpressionBuilder();
-
         if ($searchLevels === 0) {
-            $constraint = $expressionBuilder->eq($tableName . '.pid', (int)$this->id);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $tableName . '.pid',
+                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                )
+            );
         } elseif ($searchLevels > 0) {
             $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
-            $constraint = $expressionBuilder->in($tableName . '.pid', array_map('intval', $allowedMounts));
-        }
-
-        if (!empty($this->getOverridePageIdList())) {
-            $constraint = $expressionBuilder->in(
-                $tableName . '.pid',
-                $this->getOverridePageIdList()
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $tableName . '.pid',
+                    $queryBuilder->createNamedParameter($allowedMounts, Connection::PARAM_INT_ARRAY)
+                )
             );
         }
 
-        return (string)$constraint;
+        if (!empty($this->getOverridePageIdList())) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $tableName . '.pid',
+                    $queryBuilder->createNamedParameter($this->getOverridePageIdList(), Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Method used to log deprecated usage of old buildQueryParametersPostProcess hook arguments
+     *
+     * @param string $index
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - see method usages
+     */
+    protected function logDeprecation(string $index)
+    {
+        GeneralUtility::deprecationLog('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead');
     }
 
     /**
