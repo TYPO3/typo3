@@ -1711,8 +1711,10 @@ class DataHandler
         ];
 
         if (
+            // in case field is empty
+            empty($field)
             // in case the field is not relevant
-            !in_array($field, $relevantFieldNames)
+            || !in_array($field, $relevantFieldNames)
             // in case the 'value' index has been unset already
             || !array_key_exists('value', $res)
             // in case it's not a NEW-identifier
