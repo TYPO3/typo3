@@ -69,6 +69,8 @@ class CommandRequestHandler implements RequestHandlerInterface
             // Make sure output is not buffered, so command-line output and interaction can take place
             ->endOutputBufferingAndCleanPreviousOutput();
 
+        $this->populateAvailableCommands();
+
         // Check if the command to run needs a backend user to be loaded
         $command = $this->getCommandToRun($input);
 
@@ -98,7 +100,6 @@ class CommandRequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(InputInterface $input)
     {
-        $this->populateAvailableCommands();
         return true;
     }
 
