@@ -102,6 +102,7 @@ class HtmlViewHelper extends AbstractViewHelper
         }
         $value = $renderChildrenClosure();
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObject->start([]);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
         if (TYPO3_MODE === 'BE') {
             self::resetFrontendEnvironment();
