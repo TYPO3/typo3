@@ -190,7 +190,6 @@ class ReferenceIndex
      */
     public function updateRefIndexTable($tableName, $uid, $testOnly = false)
     {
-
         // First, secure that the index table is not updated with workspace tainted relations:
         $this->WSOL = false;
 
@@ -200,6 +199,11 @@ class ReferenceIndex
             'deletedNodes' => 0,
             'addedNodes' => 0
         ];
+
+        $uid = $uid ? (int)$uid : 0;
+        if (!$uid) {
+            return $result;
+        }
 
         // If this table cannot contain relations, skip it
         if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
@@ -299,7 +303,7 @@ class ReferenceIndex
      *
      * @param string $tableName Table name from $GLOBALS['TCA']
      * @param int $uid Record UID
-     * @return array|NULL Index Rows
+     * @return array|null Index Rows
      */
     public function generateRefIndexData($tableName, $uid)
     {
@@ -309,8 +313,12 @@ class ReferenceIndex
 
         $this->relations = [];
 
-        // Get raw record from DB
-        $record = $this->getRecordRawCached($tableName, $uid);
+        $record = null;
+        $uid = $uid ? (int)$uid : 0;
+        if ($uid) {
+            // Get raw record from DB
+            $record = $this->getRecordRawCached($tableName, $uid);
+        }
 
         if (!is_array($record)) {
             return null;
@@ -399,18 +407,22 @@ class ReferenceIndex
      */
     public function createEntryData($table, $uid, $field, $flexPointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '')
     {
+        $uid = $uid ? (int)$uid : 0;
+        if (!$uid) {
+            return null;
+        }
         return $this->createEntryDataUsingRecord(
-            $table,
+            (string)$table,
             $this->getRecordRawCached($table, $uid),
-            $field,
-            $flexPointer,
-            (int)$deleted,
-            $ref_table,
-            $ref_uid,
-            $ref_string,
-            $sort,
-            $softref_key,
-            $softref_id
+            (string)$field,
+            (string)$flexPointer,
+            $deleted ? (int)$deleted : 0,
+            (string)$ref_table,
+            $ref_uid ? (int)$ref_uid : 0,
+            (string)$ref_string,
+            $sort ? (int)$sort : 0,
+            (string)$softref_key,
+            (string)$softref_id
         );
     }
 
@@ -468,13 +480,17 @@ class ReferenceIndex
      */
     public function createEntryData_dbRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
+        $uid = $uid ? (int)$uid : 0;
+        if (!$uid) {
+            return;
+        }
         $this->createEntryDataForDatabaseRelationsUsingRecord(
-            $table,
+            (string)$table,
             $this->getRecordRawCached($table, $uid),
-            $fieldName,
-            $flexPointer,
-            $deleted,
-            $items
+            (string)$fieldName,
+            (string)$flexPointer,
+            $deleted ? (int)$deleted : 0,
+            (array)$items
         );
     }
 
@@ -507,13 +523,17 @@ class ReferenceIndex
      */
     public function createEntryData_fileRels($table, $uid, $fieldName, $flexPointer, $deleted, $items)
     {
+        $uid = $uid ? (int)$uid : 0;
+        if (!$uid) {
+            return;
+        }
         $this->createEntryDataForFileRelationsUsingRecord(
-            $table,
+            (string)$table,
             $this->getRecordRawCached($table, $uid),
-            $fieldName,
-            $flexPointer,
-            $deleted,
-            $items
+            (string)$fieldName,
+            (string)$flexPointer,
+            $deleted ? (int)$deleted : 0,
+            (array)$items
         );
     }
 
@@ -560,16 +580,17 @@ class ReferenceIndex
      */
     public function createEntryData_softreferences($table, $uid, $fieldName, $flexPointer, $deleted, $keys)
     {
-        if (!is_array($keys)) {
+        $uid = $uid ? (int)$uid : 0;
+        if (!$uid || !is_array($keys)) {
             return;
         }
         $this->createEntryDataForSoftReferencesUsingRecord(
-            $table,
+            (string)$table,
             $this->getRecordRawCached($table, $uid),
-            $fieldName,
-            $flexPointer,
-            $deleted,
-            $keys
+            (string)$fieldName,
+            (string)$flexPointer,
+            $deleted ? (int)$deleted : 0,
+            (array)$keys
         );
     }
 
