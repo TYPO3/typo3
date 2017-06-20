@@ -522,7 +522,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
 
         $backendUserList = implode(',', GeneralUtility::intExplode(',', $backendUserList));
         $backendUsers = BackendUtility::getUserNames(
-            'username, uid, email, realName',
+            'username, uid, email, realName, lang, uc',
             'AND uid IN (' . $backendUserList . ')' . BackendUtility::BEenableFields('be_users')
         );
 
