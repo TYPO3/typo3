@@ -168,7 +168,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
                     throw new \TYPO3\CMS\Core\Cache\Exception('The given password was not accepted by the redis server.', 1279765134);
                 }
             }
-            if ($this->database > 0) {
+            if ($this->database >= 0) {
                 $success = $this->redis->select($this->database);
                 if (!$success) {
                     throw new \TYPO3\CMS\Core\Cache\Exception('The given database "' . $this->database . '" could not be selected.', 1279765144);
