@@ -2319,7 +2319,7 @@ class ContentObjectRenderer
     public function stdWrap_csConv($content = '', $conf = [])
     {
         if (!empty($conf['csConv'])) {
-            $output = mb_convert_encoding($content, 'utf-8', $conf['csConv']);
+            $output = mb_convert_encoding($content, 'utf-8', trim(strtolower($conf['csConv'])));
             return $output !== false && $output !== '' ? $output : $content;
         } else {
             return $content;
@@ -2518,7 +2518,7 @@ class ContentObjectRenderer
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = $conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content);
         if (!empty($conf['strftime.']['charset'])) {
-            $output = mb_convert_encoding($content, 'utf-8', $conf['strftime.']['charset']);
+            $output = mb_convert_encoding($content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
             return $output ?: $content;
         }
         return $content;

@@ -4426,7 +4426,7 @@ class TypoScriptFrontendController
 
         // Rendering charset of HTML page.
         if ($this->config['config']['metaCharset']) {
-            $this->metaCharset = $this->config['config']['metaCharset'];
+            $this->metaCharset = trim(strtolower($this->config['config']['metaCharset']));
         }
     }
 

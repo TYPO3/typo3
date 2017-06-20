@@ -674,6 +674,7 @@ class Indexer
     {
         // Find charset:
         $charset = $charset ?: $this->getHTMLcharset($content);
+        $charset = trim(strtolower($charset));
         // Convert charset:
         if ($charset && $charset !== 'utf-8') {
             $content = mb_convert_encoding($content, 'utf-8', $charset);
