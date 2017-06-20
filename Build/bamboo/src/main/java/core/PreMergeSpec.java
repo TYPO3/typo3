@@ -292,9 +292,9 @@ public class PreMergeSpec {
             jobsMainStage.add(jobFunctionalMysql);
         }
 
-        // Functional tests mssql php70
+        // Functional tests mssql php70 or php71
         for (int i=0; i<this.numberOfFunctionalMssqlJobs; i++) {
-            Job jobFunctionalMssql = new Job("Func mssql php70 0" + i, new BambooKey("FMS0" + i))
+            Job jobFunctionalMssql = new Job("Func mssql 0" + i, new BambooKey("FMS0" + i))
                 .description("Run functional tests on mssql DB")
                 .tasks(
                     this.getTaskGitCloneRepository(),
@@ -317,15 +317,15 @@ public class PreMergeSpec {
                 )
                 .requirements(
                     new Requirement("system.phpVersion")
-                        .matchValue("7.0")
-                        .matchType(Requirement.MatchType.EQUALS)
+                        .matchValue("7\\.0|7\\.1")
+                        .matchType(Requirement.MatchType.MATCHES)
                 );
             jobsMainStage.add(jobFunctionalMssql);
         }
 
-        // Functional tests postgres php71
+        // Functional tests postgres php70 or php71
         for (int i=0; i<this.numberOfFunctionalPgsqlJobs; i++) {
-            Job jobFunctionalPgsql = new Job("Func pgsql php71 0" + i, new BambooKey("FPG0" + i))
+            Job jobFunctionalPgsql = new Job("Func pgsql 0" + i, new BambooKey("FPG0" + i))
                 .description("Run functional tests on pgsql DB")
                 .tasks(
                     this.getTaskGitCloneRepository(),
@@ -348,8 +348,8 @@ public class PreMergeSpec {
                 )
                 .requirements(
                     new Requirement("system.phpVersion")
-                        .matchValue("7.1")
-                        .matchType(Requirement.MatchType.EQUALS)
+                    .matchValue("7\\.0|7\\.1")
+                    .matchType(Requirement.MatchType.MATCHES)
                 );
             jobsMainStage.add(jobFunctionalPgsql);
         }
