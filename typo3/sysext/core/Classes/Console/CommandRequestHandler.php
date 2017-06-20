@@ -68,6 +68,8 @@ class CommandRequestHandler implements RequestHandlerInterface
             // Make sure output is not buffered, so command-line output and interaction can take place
             ->endOutputBufferingAndCleanPreviousOutput();
 
+        $this->populateAvailableCommands();
+
         $exitCode = $this->application->run($input, $output);
         exit($exitCode);
     }
@@ -80,7 +82,6 @@ class CommandRequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(InputInterface $input)
     {
-        $this->populateAvailableCommands();
         return true;
     }
 
