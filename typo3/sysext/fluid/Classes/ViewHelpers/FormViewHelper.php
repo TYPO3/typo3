@@ -128,6 +128,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
         $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
         $this->registerTagAttribute('target', 'string', 'Target attribute of the form');
+        $this->registerTagAttribute('novalidate', 'bool', 'Indicate that the form is not to be validated on submit.');
         $this->registerUniversalTagAttributes();
     }
 
@@ -144,6 +145,11 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         } else {
             $this->tag->addAttribute('method', 'post');
         }
+
+        if ($this->arguments['novalidate'] === true) {
+            $this->tag->addAttribute('novalidate', 'novalidate');
+        }
+
         $this->addFormObjectNameToViewHelperVariableContainer();
         $this->addFormObjectToViewHelperVariableContainer();
         $this->addFieldNamePrefixToViewHelperVariableContainer();

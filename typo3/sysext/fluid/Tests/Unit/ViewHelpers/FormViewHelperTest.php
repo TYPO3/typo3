@@ -54,6 +54,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper->expects($this->at(2))->method('registerTagAttribute')->with('name', 'string', $this->anything());
         $viewHelper->expects($this->at(3))->method('registerTagAttribute')->with('onreset', 'string', $this->anything());
         $viewHelper->expects($this->at(4))->method('registerTagAttribute')->with('onsubmit', 'string', $this->anything());
+        $viewHelper->expects($this->at(6))->method('registerTagAttribute')->with('novalidate', 'bool', $this->anything());
         $viewHelper->expects($this->once())->method('registerUniversalTagAttributes');
         $viewHelper->initializeArguments();
     }
