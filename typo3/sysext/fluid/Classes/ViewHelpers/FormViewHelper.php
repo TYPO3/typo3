@@ -123,7 +123,8 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->registerArgument('objectName', 'string', 'name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName');
         $this->registerArgument('hiddenFieldClassName', 'string', 'hiddenFieldClassName');
         $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
-        $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
+	      $this->registerTagAttribute('novalidate', 'bool', 'Indicate that the form is not to be validated on submit.');
+	      $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
         $this->registerTagAttribute('name', 'string', 'Name of form');
         $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
         $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
