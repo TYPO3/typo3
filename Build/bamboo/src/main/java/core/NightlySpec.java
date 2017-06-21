@@ -24,24 +24,22 @@ import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.BranchCleanup;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.PlanBranchManagement;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
-import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
-import com.atlassian.bamboo.specs.builders.trigger.RemoteTrigger;
-import com.atlassian.bamboo.specs.builders.trigger.RepositoryPollingTrigger;
+import com.atlassian.bamboo.specs.builders.trigger.ScheduledTrigger;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 /**
- * Core master pre-merge test plan.
+ * Core master nightly test plan.
  */
 @BambooSpec
-public class PreMergeSpec extends AbstractCoreSpec {
+public class NightlySpec extends AbstractCoreSpec {
 
     protected int numberOfAcceptanceTestJobs = 8;
-    protected int numberOfFunctionalMysqlJobs = 10;
-    protected int numberOfFunctionalMssqlJobs = 10;
-    protected int numberOfFunctionalPgsqlJobs = 10;
-    protected int numberOfUnitRandomOrderJobs = 2;
+    protected int numberOfFunctionalMysqlJobs = 6;
+    protected int numberOfFunctionalMssqlJobs = 6;
+    protected int numberOfFunctionalPgsqlJobs = 6;
+    protected int numberOfUnitRandomOrderJobs = 4;
 
     /**
      * Run main to publish plan on Bamboo
@@ -49,7 +47,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer("https://bamboo.typo3.com:443");
-        Plan plan = new PreMergeSpec().createPlan();
+        Plan plan = new NightlySpec().createPlan();
         bambooServer.publish(plan);
     }
 
@@ -67,16 +65,6 @@ public class PreMergeSpec extends AbstractCoreSpec {
         // PREPARATION stage
         ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
 
-        // Label task
-        Job jobLabel = new Job("Create build labels", new BambooKey("CLFB"))
-            .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
-            .tasks(
-                new ScriptTask()
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody("echo \"I'm just here for the labels!\"")
-            );
-        jobsPreparationStage.add(jobLabel);
-
         jobsPreparationStage.add(this.getJobComposerValidate());
 
         Stage stagePreparation = new Stage("Preparation")
@@ -86,39 +74,44 @@ public class PreMergeSpec extends AbstractCoreSpec {
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion71(), "PHP71"));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion71(), "PHP71"));
 
-        // CGL check last commit
+        // CGL check whole core
         jobsMainStage.add(new Job("Integration CGL", new BambooKey("CGLCHECK"))
-            .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
+            .description("Check coding guidelines of full core")
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
                 this.getTaskComposerInstall(),
                 new ScriptTask()
-                    .description("Execute cgl check script")
+                    .description("Execute cgl check")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "./Build/Scripts/cglFixMyCommit.sh dryrun\n"
+                        this.getScriptTaskBashPhpNoXdebug() +
+                        "php_no_xdebug ./bin/php-cs-fixer fix -v --dry-run --config=Build/.php_cs typo3/\n" +
+                        "exit $?\n"
                     )
             )
             .requirements(
-                new Requirement("system.phpVersion")
-                    .matchValue("7\\.0|7\\.1")
-                    .matchType(Requirement.MatchType.MATCHES)
+                this.getRequirementPhpVersion70Or71()
             )
         );
 
         jobsMainStage.add(this.getJobIntegrationVarious());
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
 
         jobsMainStage.add(this.getJobUnitJavaScript());
 
@@ -138,20 +131,20 @@ public class PreMergeSpec extends AbstractCoreSpec {
 
 
         // Compile plan
-        return new Plan(project(), "Core master pre-merge", "GTC")
-            .description("Execute TYPO3 core master pre-merge tests. Auto generated! See Build/bamboo of core git repository.")
+        return new Plan(project(), "Core master nightly", "GTN")
+            .description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
             .stages(
                 stagePreparation,
                 stageMainStage
             )
             .linkedRepositories("git.typo3.org Core")
             .triggers(
-                new RepositoryPollingTrigger()
-                    .name("Repository polling for post-merge builds"),
-                new RemoteTrigger()
-                    .name("Remote trigger for pre-merge builds")
-                    .description("Gerrit")
-                    .triggerIPAddresses("5.10.165.218,91.184.35.13"))
+                new ScheduledTrigger()
+                    .name("Scheduled")
+                    .description("daily at night")
+                    // daily 03:23
+                    .cronExpression("0 23 3 ? * *")
+            )
             .variables(
                 new Variable("changeUrl", ""),
                 new Variable("patchset", "")
@@ -162,5 +155,4 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     .notificationForCommitters()
             );
     }
-
 }

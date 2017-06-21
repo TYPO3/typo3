@@ -19,10 +19,10 @@ import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.exceptions.PropertiesValidationException;
 import com.atlassian.bamboo.specs.api.util.EntityPropertiesBuilders;
 
-public class PreMergeSpecTest {
+public class NightlySpecTest {
     @Test
     public void checkYourPlanOffline() throws PropertiesValidationException {
-        Plan plan = new PreMergeSpec().createPlan();
+        Plan plan = new NightlySpec().createPlan();
 
         EntityPropertiesBuilders.build(plan);
     }
