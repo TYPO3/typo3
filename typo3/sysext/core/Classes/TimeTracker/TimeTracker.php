@@ -303,13 +303,15 @@ class TimeTracker implements SingletonInterface
     public function getParseTime(): int
     {
         // Compensates for the time consumed with Back end user initialization.
-        $processStart = isset($GLOBALS['TYPO3_MISC']['microtime_start']) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : null;
-        $processEnd = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : null;
-        $totalParseTime = $this->getMilliseconds($processEnd) - $this->getMilliseconds($processStart);
+        $processStart = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_start'] ?? null);
 
-        $beUserInitializationStart = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : null;
-        $beUserInitializationEnd = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : null;
-        $beUserInitialization = $this->getMilliseconds($beUserInitializationEnd) - $this->getMilliseconds($beUserInitializationStart);
+        $beUserInitializationStart = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] ?? null);
+        $beUserInitializationEnd = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] ?? null);
+        $beUserInitialization = $beUserInitializationEnd - $beUserInitializationStart;
+
+        $processEnd = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_end'] ?? null);
+        $totalParseTime = $processEnd - $processStart;
+
         if ($beUserInitialization > 0) {
             $totalParseTime -= $beUserInitialization;
         }
