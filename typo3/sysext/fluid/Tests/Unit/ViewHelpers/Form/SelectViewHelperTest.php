@@ -77,6 +77,33 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
+    public function selectShouldSetTheRequiredAttribute()
+    {
+        $this->tagBuilder->expects($this->exactly(2))->method('addAttribute')->withConsecutive(
+            ['required', 'required'],
+            ['name', 'myName']
+        );
+        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10));
+        $this->tagBuilder->expects($this->once())->method('render');
+
+        $this->arguments['options'] = [
+            'value1' => 'label1',
+            'value2' => 'label2'
+        ];
+        $this->arguments['value'] = 'value2';
+        $this->arguments['name'] = 'myName';
+        $this->arguments['required'] = '1';
+
+        $this->injectDependenciesIntoViewHelper($this->viewHelper);
+        $this->viewHelper->_set('tag', $this->tagBuilder);
+        $this->viewHelper->initialize();
+        $this->viewHelper->render();
+    }
+
+    /**
+     * @test
+     */
     public function selectCreatesExpectedOptionsWithArraysAndOptionValueFieldAndOptionLabelFieldSet()
     {
         $this->tagBuilder->expects($this->once())->method('setContent')->with(
