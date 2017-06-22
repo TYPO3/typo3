@@ -68,30 +68,17 @@ public class PreMergeSpec extends AbstractCoreSpec {
         ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
 
         // Label task
-        Job jobLabel = new Job("Create build labels", new BambooKey("CLFB"))
+        jobsPreparationStage.add(new Job("Create build labels", new BambooKey("CLFB"))
             .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
             .tasks(
                 new ScriptTask()
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody("echo \"I'm just here for the labels!\"")
-            );
-        jobsPreparationStage.add(jobLabel);
-
-        jobsPreparationStage.add(this.getJobComposerValidate());
-
-        Stage stagePreparation = new Stage("Preparation")
-            .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
-
-
-        // MAIN stage
-        ArrayList<Job> jobsMainStage = new ArrayList<Job>();
-
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
-
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+            )
+        );
 
         // CGL check last commit
-        jobsMainStage.add(new Job("Integration CGL", new BambooKey("CGLCHECK"))
+        jobsPreparationStage.add(new Job("Integration CGL", new BambooKey("CGLCHECK"))
             .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
             .tasks(
                 this.getTaskGitCloneRepository(),
@@ -111,6 +98,19 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     .matchType(Requirement.MatchType.MATCHES)
             )
         );
+
+        jobsPreparationStage.add(this.getJobComposerValidate());
+
+        Stage stagePreparation = new Stage("Preparation")
+            .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+
+
+        // MAIN stage
+        ArrayList<Job> jobsMainStage = new ArrayList<Job>();
+
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
+
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
 
         jobsMainStage.add(this.getJobIntegrationVarious());
 
