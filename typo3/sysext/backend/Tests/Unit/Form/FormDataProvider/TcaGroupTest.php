@@ -97,6 +97,42 @@ class TcaGroupTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function addDataSetsUploadFolderForFileReference()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'group',
+                            'internal_type' => 'file_reference',
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        $expected['processedTca']['columns']['aField']['config']['allowed'] = '*';
+        $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
+        $expected['processedTca']['columns']['aField']['config']['uploadfolder'] = '';
+
+        $clipboardProphecy = $this->prophesize(Clipboard::class);
+        GeneralUtility::addInstance(Clipboard::class, $clipboardProphecy->reveal());
+        $clipboardProphecy->initializeClipboard()->shouldBeCalled();
+        $clipboardProphecy->elFromTable('_FILE')->shouldBeCalled()->willReturn([]);
+
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function addDataSetsFileData()
     {
         $input = [
