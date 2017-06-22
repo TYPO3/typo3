@@ -110,7 +110,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             $signature = str_replace('_', '', $extensionKey);
             if ($this->isBackendMode() && isset($this->typoScript['module']['tx_' . $signature]['view'])) {
                 $configuredPaths = (array)$this->typoScript['module']['tx_' . $signature]['view'];
-            } elseif (isset($this->typoScript['plugin']['tx_' . $signature]['view'])) {
+            } elseif ($this->isFrontendMode() && isset($this->typoScript['plugin']['tx_' . $signature]['view'])) {
                 $configuredPaths = (array)$this->typoScript['plugin']['tx_' . $signature]['view'];
             }
         }
@@ -226,6 +226,14 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     protected function isBackendMode()
     {
         return TYPO3_MODE === 'BE';
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isFrontendMode()
+    {
+        return TYPO3_MODE === 'FE';
     }
 
     /**
