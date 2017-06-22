@@ -2121,7 +2121,7 @@ class DataHandler
             if (!$this->bypassFileHandling) {
                 // For logging..
                 $propArr = $this->getRecordProperties($table, $id);
-                // Get destrination path:
+                // Get destination path:
                 $dest = PATH_site . $tcaFieldConf['uploadfolder'];
                 // If we are updating:
                 if ($status === 'update') {

@@ -68,9 +68,9 @@ class TcaGroup implements FormDataProviderInterface
                 if (empty($fieldConfig['config']['allowed'])) {
                     $result['processedTca']['columns'][$fieldName]['config']['allowed'] = '*';
                 }
-                // Force uploadFolder for file_reference type
+                // Force empty uploadfolder for file_reference type
                 if ($internalType === 'file_reference') {
-                    $config['uploadfolder'] = '';
+                    $result['processedTca']['columns'][$fieldName]['config']['uploadfolder'] = '';
                 }
 
                 // Simple list of files
