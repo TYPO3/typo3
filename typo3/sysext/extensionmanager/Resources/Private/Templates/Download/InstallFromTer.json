@@ -1,1 +1,9 @@
-{result -> f:format.json() -> f:format.raw()}
+<f:format.raw><f:format.json value="{
+result: result,
+extension: extension.extensionKey,
+installationTypeLanguageKey: installationTypeLanguageKey,
+errorCount: '{f:count(subject: unresolvedDependencies)}',
+errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
+errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
+skipDependencyUri: '{f:uri.action(action: \'installExtensionWithoutSystemDependencyCheck\', format: \'json\', arguments: \'{extension: extension}\')}'
+}" /></f:format.raw>
