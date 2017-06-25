@@ -512,7 +512,7 @@ class NormalizeCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function normalizeMonthReturnsInteger($monthName, $expectedInteger)
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_INT, $result);
     }
 
     /**
@@ -615,7 +615,7 @@ class NormalizeCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger)
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_INT, $result);
     }
 
     /**

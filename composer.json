@@ -53,13 +53,13 @@
 		"doctrine/dbal": "~2.5.4"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "~1.0.3",
+		"typo3/testing-framework": "~1.1.0",
 		"codeception/codeception": "^2.3",
 		"se/selenium-server-standalone": "~3.4.0",
 		"enm1989/chromedriver": "~2.30",
 		"typo3/cms-styleguide": "~8.0.8",
 		"friendsofphp/php-cs-fixer": "^2.0",
-		"fiunchinho/phpunit-randomizer": "~2.0.3"
+		"fiunchinho/phpunit-randomizer": "~3.0.0"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",

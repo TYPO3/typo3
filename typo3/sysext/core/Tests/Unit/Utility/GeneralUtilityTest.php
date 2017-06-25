@@ -2270,7 +2270,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $path = PATH_typo3conf;
         $directories = GeneralUtility::get_dirs($path);
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $directories);
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $directories);
     }
 
     /**
@@ -3582,7 +3582,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $directoryCreated = is_dir($directory);
         rmdir($directory);
         $this->assertTrue($directoryCreated);
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $fileInfo);
         $this->assertEquals($directoryPath, $fileInfo['path']);
         $this->assertEquals($directoryName, $fileInfo['file']);
         $this->assertEquals($directoryName, $fileInfo['filebody']);
@@ -3597,7 +3597,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $testFile = 'fileadmin/media/someFile.png';
         $fileInfo = GeneralUtility::split_fileref($testFile);
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $fileInfo);
         $this->assertEquals('fileadmin/media/', $fileInfo['path']);
         $this->assertEquals('someFile.png', $fileInfo['file']);
         $this->assertEquals('someFile', $fileInfo['filebody']);
