@@ -300,15 +300,15 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      *
      * @param string $title The title of this system information
      * @param string $value The associated value
-     * @param string $icon The icon html
+     * @param string $iconIdentifier The icon identifier
      * @param string $status The status of this system information
      */
-    public function addSystemInformation($title, $value, $icon, $status = InformationStatus::STATUS_NOTICE)
+    public function addSystemInformation($title, $value, $iconIdentifier, $status = InformationStatus::STATUS_NOTICE)
     {
         $this->systemInformation[] = [
             'title' => $title,
             'value' => $value,
-            'icon' => $icon,
+            'iconIdentifier' => $iconIdentifier,
             'status' => $status
         ];
     }
