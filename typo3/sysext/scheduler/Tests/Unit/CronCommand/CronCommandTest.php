@@ -323,7 +323,7 @@ class CronCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getTimestampReturnsInteger()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $instance->getTimestamp());
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_INT, $instance->getTimestamp());
     }
 
     /**
@@ -332,6 +332,6 @@ class CronCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getCronCommandSectionsReturnsArray()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $instance->getCronCommandSections());
+        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $instance->getCronCommandSections());
     }
 }
