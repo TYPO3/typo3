@@ -16,6 +16,7 @@ addons:
   apt:
     packages:
       - parallel
+      - language-pack-de
 
 cache:
   directories:
