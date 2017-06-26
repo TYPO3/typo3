@@ -75,6 +75,7 @@ define(['jquery'], function ($) {
 		FormEngineValidation.lastTime = 0;
 		FormEngineValidation.refDate = today;
 		FormEngineValidation.USmode = 0;
+		FormEngineValidation.validate();
 	};
 
 	/**
