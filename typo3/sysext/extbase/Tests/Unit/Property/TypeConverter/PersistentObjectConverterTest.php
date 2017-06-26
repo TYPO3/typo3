@@ -61,7 +61,7 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
 
     /**
      * @throws \InvalidArgumentException
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @throws \RuntimeException
      */
     protected function setUp()

@@ -4030,7 +4030,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $locale = 'en_US.UTF-8';
         try {
             $this->setLocale(LC_NUMERIC, $locale);
-        } catch (\PHPUnit_Framework_Exception $e) {
+        } catch (\PHPUnit\Framework\Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
         $conf = ['bytes.' => $conf];

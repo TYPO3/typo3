@@ -40,7 +40,7 @@ class ProcessedFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $databaseRow = [];
 
     /**
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     protected function setUp()
     {
