@@ -466,7 +466,7 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
             $this->setLocale(LC_CTYPE, $locale);
             $this->setLocale(LC_MONETARY, $locale);
             $this->setLocale(LC_TIME, $locale);
-        } catch (\PHPUnit_Framework_Exception $e) {
+        } catch (\PHPUnit\Framework\Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
         }
         $this->setArgumentsUnderTest(

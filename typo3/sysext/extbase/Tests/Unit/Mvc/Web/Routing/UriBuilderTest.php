@@ -61,7 +61,7 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @throws \InvalidArgumentException
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     protected function setUp()
     {
