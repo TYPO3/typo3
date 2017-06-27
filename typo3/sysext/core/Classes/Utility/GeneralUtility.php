@@ -2213,7 +2213,7 @@ class GeneralUtility
         }
 
         $pathPrefix = $path . '/';
-        $extensionList = ',' . $extensionList . ',';
+        $extensionList = ',' . str_replace(' ', '', $extensionList) . ',';
         $files = [];
         foreach ($rawFileList as $entry) {
             $completePathToEntry = $pathPrefix . $entry;
