@@ -3500,14 +3500,39 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * Data provider for getFilesInDirByExtensionFindsFiles
+     *
+     * @return array
+     */
+    public function fileExtensionDataProvider()
+    {
+        return [
+            'no space' => [
+                'txt,js,css'
+            ],
+            'spaces' => [
+                'txt, js, css'
+            ],
+            'mixed' => [
+                'txt,js, css'
+            ],
+            'wild' => [
+                'txt,     js  ,         css'
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider fileExtensionDataProvider
      * @test
      */
-    public function getFilesInDirByExtensionFindsFiles()
+    public function getFilesInDirByExtensionFindsFiles($fileExtensions)
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $files = GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
+        $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
         $this->assertContains('testA.txt', $files);
         $this->assertContains('test.js', $files);
+        $this->assertContains('test.css', $files);
     }
 
     /**
