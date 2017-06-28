@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -27,7 +28,6 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Sv\AuthenticationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**

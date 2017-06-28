@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Sv\Tests\Functional;
+namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Sv\Tests\Functional;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Sv\AuthenticationService;
 
 /**
- * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
+ * Testcase for class \TYPO3\CMS\Core\Authentication\AuthenticationService
  */
 class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
@@ -31,7 +31,7 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\
     {
         $this->subject = new AuthenticationService();
         parent::setUp();
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/sv/Tests/Functional/Fixtures/be_users.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
     }
 
     /**

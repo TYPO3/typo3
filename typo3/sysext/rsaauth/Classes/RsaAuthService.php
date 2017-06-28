@@ -14,16 +14,17 @@ namespace TYPO3\CMS\Rsaauth;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service "RSA authentication" for the "rsaauth" extension. This service will
  * authenticate a user using hos password encoded with one time public key. It
  * uses the standard TYPO3 service to do all dirty work. Firsts, it will decode
- * the password and then pass it to the parent service ('sv'). This ensures that it
+ * the password and then pass it to the parent service ('core'). This ensures that it
  * always works, even if other TYPO3 internals change.
  */
-class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService
+class RsaAuthService extends AuthenticationService
 {
     /**
      * @var RsaEncryptionDecoder

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Sv\Tests\Unit;
+namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,9 +13,10 @@ namespace TYPO3\CMS\Sv\Tests\Unit;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 
 /**
- * Testcase for class \TYPO3\CMS\Sv\AuthenticationService
+ * Testcase for class \TYPO3\CMS\Core\Authentication\AuthenticationService
  */
 class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -64,8 +65,8 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData)
     {
-        /** @var $authenticationService \TYPO3\CMS\Sv\AuthenticationService */
-        $authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Sv\AuthenticationService::class);
+        /** @var $authenticationService AuthenticationService */
+        $authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(AuthenticationService::class);
         // Login data is modified by reference
         $authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
         $this->assertEquals($expectedProcessedData, $loginData);

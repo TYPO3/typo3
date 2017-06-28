@@ -31,7 +31,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['sv', 'extbase', 'fluid'];
+    protected $coreExtensionsToLoad = ['core', 'extbase', 'fluid'];
 
     /**
      * Sets up this test suite.

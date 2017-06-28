@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Sv\AuthenticationService;
 
 /**
  * Authentication of users in TYPO3
@@ -662,7 +661,6 @@ abstract class AbstractUserAuthentication
             // Use 'auth' service to find the user
             // First found user will be used
             $subType = 'getUser' . $this->loginType;
-            /** @var AuthenticationService $serviceObj */
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;

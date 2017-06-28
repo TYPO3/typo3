@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
@@ -102,3 +103,21 @@ unset($textExtractorRegistry);
 $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
 $extractorRegistry->registerExtractionService(\TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor::class);
 unset($extractorRegistry);
+
+// Register base authentication service
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+    'core',
+    'auth',
+    \TYPO3\CMS\Core\Authentication\AuthenticationService::class,
+    [
+        'title' => 'User authentication',
+        'description' => 'Authentication with username/password.',
+        'subtype' => 'getUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
+        'available' => true,
+        'priority' => 50,
+        'quality' => 50,
+        'os' => '',
+        'exec' => '',
+        'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class
+    ]
+);

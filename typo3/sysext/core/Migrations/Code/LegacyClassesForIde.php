@@ -14,3 +14,12 @@ namespace TYPO3\CMS\ContextHelp\Controller {
     {
     }
 }
+
+namespace TYPO3\CMS\Sv {
+    class AbstractAuthenticationService extends \TYPO3\CMS\Core\Authentication\AbstractAuthenticationService
+    {
+    }
+    class AuthenticationService extends \TYPO3\CMS\Core\Authentication\AuthenticationService
+    {
+    }
+}

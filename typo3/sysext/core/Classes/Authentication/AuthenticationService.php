@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Sv;
+namespace TYPO3\CMS\Core\Authentication;
 
 /*
  * This file is part of the TYPO3 CMS project.

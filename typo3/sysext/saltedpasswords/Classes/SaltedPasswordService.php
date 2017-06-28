@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Saltedpasswords;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class implements salted-password hashes authentication service.
  * Contains authentication service class for salted hashed passwords.
  */
-class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
+class SaltedPasswordService extends AbstractAuthenticationService
 {
     /**
      * Keeps class name.
