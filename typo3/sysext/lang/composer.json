@@ -9,7 +9,7 @@
 		"typo3/cms-core": "*"
 	},
 	"replace": {
-		"language": "*"
+		"lang": "*"
 	},
 	"extra": {
 		"typo3/cms": {
