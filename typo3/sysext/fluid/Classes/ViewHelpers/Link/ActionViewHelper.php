@@ -73,7 +73,7 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
         $controller = $this->arguments['controller'];
         $extensionName = $this->arguments['extensionName'];
         $pluginName = $this->arguments['pluginName'];
-        $pageUid = (int)$this->arguments['pageUid'];
+        $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)$this->arguments['pageType'];
         $noCache = (bool)$this->arguments['noCache'];
         $noCacheHash = (bool)$this->arguments['useCacheHash'];
