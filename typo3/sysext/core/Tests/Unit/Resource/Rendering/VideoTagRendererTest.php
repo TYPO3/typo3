@@ -104,6 +104,24 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 '//:path/myVideoFile',
                 ['data' => ['js-required' => 'yes', 'custom-id' => 'video-123']],
                 '<video data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                [
+                    'data' => [
+                        'js-required' => 'yes',
+                        'custom-id' => 'video-123'
+                    ],
+                    'additionalAttributes' => [
+                        'muted' => 'muted',
+                        'foo' => 'bar'
+                    ],
+                    'additionalConfig' => [
+                        'playsinline' => '1',
+                        'controls' => '1'
+                    ]
+                ],
+                '<video muted="muted" foo="bar" data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls playsinline><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ]
         ];
     }

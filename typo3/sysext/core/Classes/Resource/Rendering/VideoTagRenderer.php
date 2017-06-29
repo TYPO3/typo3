@@ -104,11 +104,22 @@ class VideoTagRenderer implements FileRendererInterface
         if (!empty($options['loop'])) {
             $attributes[] = 'loop';
         }
+        if (is_array($options['additionalConfig'])) {
+            foreach ($options['additionalConfig'] as $key => $value) {
+                if ((bool)$value) {
+                    $attributes[] = htmlspecialchars($key);
+                }
+            }
+        }
+
         foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'controlsList'] as $key) {
             if (!empty($options[$key])) {
                 $attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
             }
         }
+
+        // Clean up duplicate attributes
+        $attributes = array_unique($attributes);
 
         return sprintf(
             '<video%s><source src="%s" type="%s"></video>',
