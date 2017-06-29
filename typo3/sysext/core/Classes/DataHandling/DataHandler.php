@@ -3395,6 +3395,7 @@ class DataHandler
         $data = [];
         $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, -99, false);
+        $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
 
         // Initializing:
         $theNewID = StringUtility::getUniqueId('NEW');

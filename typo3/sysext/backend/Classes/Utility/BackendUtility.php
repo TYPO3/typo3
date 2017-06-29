@@ -181,6 +181,39 @@ class BackendUtility
     }
 
     /**
+     * Purges computed properties starting with underscore character ('_').
+     *
+     * @param array $record
+     * @return array
+     */
+    public static function purgeComputedPropertiesFromRecord(array $record): array
+    {
+        return array_filter(
+            $record,
+            function (string $propertyName): bool {
+                return $propertyName[0] !== '_';
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * Purges computed property names starting with underscore character ('_').
+     *
+     * @param array $propertyNames
+     * @return array
+     */
+    public static function purgeComputedPropertyNames(array $propertyNames): array
+    {
+        return array_filter(
+            $propertyNames,
+            function (string $propertyName): bool {
+                return $propertyName[0] !== '_';
+            }
+        );
+    }
+
+    /**
      * Makes an backwards explode on the $str and returns an array with ($table, $uid).
      * Example: tt_content_45 => array('tt_content', 45)
      *
@@ -3910,7 +3943,12 @@ class BackendUtility
                 $orig_pid = $row['pid'];
                 $movePldSwap = self::movePlhOL($table, $row);
             }
-            $wsAlt = self::getWorkspaceVersionOfRecord($wsid, $table, $row['uid'], implode(',', array_keys($row)));
+            $wsAlt = self::getWorkspaceVersionOfRecord(
+                $wsid,
+                $table,
+                $row['uid'],
+                implode(',', static::purgeComputedPropertyNames(array_keys($row)))
+            );
             // If version was found, swap the default record with that one.
             if (is_array($wsAlt)) {
                 // Check if this is in move-state:
@@ -3978,7 +4016,11 @@ class BackendUtility
             }
             // Find pointed-to record.
             if ($versionState->equals(VersionState::MOVE_PLACEHOLDER) && $moveID) {
-                if ($origRow = self::getRecord($table, $moveID, implode(',', array_keys($row)))) {
+                if ($origRow = self::getRecord(
+                    $table,
+                    $moveID,
+                    implode(',', static::purgeComputedPropertyNames(array_keys($row)))
+                )) {
                     $row = $origRow;
                     return true;
                 }

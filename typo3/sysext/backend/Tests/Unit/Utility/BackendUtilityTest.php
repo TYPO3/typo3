@@ -1176,4 +1176,36 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $return = BackendUtility::getTCAtypes($table, $rec, $useFieldNameAsKey);
         $this->assertSame($expected, $return);
     }
+
+    /**
+     * @test
+     */
+    public function purgeComputedPropertyNamesRemovesPropertiesStartingWithUnderscore()
+    {
+        $propertyNames = [
+            'uid',
+            'pid',
+            '_ORIG_PID'
+        ];
+        $computedPropertyNames = BackendUtility::purgeComputedPropertyNames($propertyNames);
+        self::assertSame(['uid', 'pid'], $computedPropertyNames);
+    }
+
+    /**
+     * @test
+     */
+    public function purgeComputedPropertiesFromRecordRemovesPropertiesStartingWithUnderscore()
+    {
+        $record = [
+            'uid'       => 1,
+            'pid'       => 2,
+            '_ORIG_PID' => 1
+        ];
+        $expected = [
+            'uid' => 1,
+            'pid' => 2
+        ];
+        $computedProperties = BackendUtility::purgeComputedPropertiesFromRecord($record);
+        self::assertSame($expected, $computedProperties);
+    }
 }
