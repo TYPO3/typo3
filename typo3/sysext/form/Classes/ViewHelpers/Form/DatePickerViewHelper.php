@@ -87,7 +87,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
 
-        $this->tag->addAttribute('type', 'input');
+        $this->tag->addAttribute('type', 'text');
         $this->tag->addAttribute('name', $name . '[date]');
 
         if ($this->hasArgument('id')) {
@@ -101,7 +101,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         }
 
         if ($enableDatePicker) {
-            $this->tag->addAttribute('readonly', true);
+            $this->tag->addAttribute('readonly', 'readonly');
             if (!$previewMode) {
                 $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
                 $this->renderInlineJavascript($id, $datePickerDateFormat);
