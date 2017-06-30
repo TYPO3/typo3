@@ -78,6 +78,20 @@ abstract class AbstractFinisher implements FinisherInterface
     }
 
     /**
+     * @param string $finisherIdentifier The identifier for this finisher
+     */
+    public function __construct(string $finisherIdentifier = '')
+    {
+        if (empty($finisherIdentifier)) {
+            $this->finisherIdentifier = (new \ReflectionClass($this))->getShortName();
+        } else {
+            $this->finisherIdentifier = $finisherIdentifier;
+        }
+
+        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier);
+    }
+
+    /**
      * @param array $options configuration options in the format ['option1' => 'value1', 'option2' => 'value2', ...]
      * @api
      */
@@ -106,8 +120,6 @@ abstract class AbstractFinisher implements FinisherInterface
      */
     final public function execute(FinisherContext $finisherContext)
     {
-        $this->finisherIdentifier = (new \ReflectionClass($this))->getShortName();
-        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier);
         $this->finisherContext = $finisherContext;
         $this->executeInternal();
     }
