@@ -91,7 +91,7 @@
 				<source>Recently updated pages</source>
 			</trans-unit>
 			<trans-unit id="menu_recently_updated.description">
-				<source>Menu of recenlty updated pages</source>
+				<source>Menu of recently updated pages</source>
 			</trans-unit>
 			<trans-unit id="menu_related_pages.title">
 				<source>Related pages</source>
