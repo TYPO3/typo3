@@ -500,7 +500,7 @@ class FormDefinition extends AbstractCompositeRenderable
             $defaultOptions = isset($this->finishersDefinition[$finisherIdentifier]['options']) ? $this->finishersDefinition[$finisherIdentifier]['options'] : [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
-            $finisher = $this->objectManager->get($implementationClassName);
+            $finisher = $this->objectManager->get($implementationClassName, $finisherIdentifier);
             $finisher->setOptions($defaultOptions);
             $this->addFinisher($finisher);
             return $finisher;
