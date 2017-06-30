@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Preparations\TcaPreparation;
 
 /**
  * Extension Management functions
@@ -1782,6 +1783,10 @@ tt_content.' . $key . $suffix . ' {
             array_unshift($messages, $context);
             GeneralUtility::deprecationLog(implode(LF, $messages));
         }
+
+        // TCA preparation
+        $tcaPreparation = GeneralUtility::makeInstance(TcaPreparation::class);
+        $GLOBALS['TCA'] = $tcaPreparation->prepare($GLOBALS['TCA']);
 
         static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);
     }

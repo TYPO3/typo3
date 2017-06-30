@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootExceptio
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -219,6 +220,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
             if ($key === 'el' && is_array($value)) {
                 $newSubStructure = [];
                 $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+                $tcaPreparation = GeneralUtility::makeInstance(TcaPreparation::class);
                 foreach ($value as $subKey => $subValue) {
                     // On-the-fly migration for flex form "TCA"
                     // @deprecated since TYPO3 CMS 7. Not removed in TYPO3 CMS 8 though. This call will stay for now to allow further TCA migrations in 8.
@@ -237,7 +239,8 @@ class TcaFlexPrepare implements FormDataProviderInterface
                         array_unshift($messages, $context);
                         GeneralUtility::deprecationLog(implode(LF, $messages));
                     }
-                    $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
+                    $preparedTca = $tcaPreparation->prepare($migratedTca);
+                    $newSubStructure[$subKey] = $preparedTca['dummyTable']['columns']['dummyField'];
                 }
                 $value = $newSubStructure;
             }
