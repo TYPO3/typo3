@@ -579,7 +579,7 @@ return [
                 'rows' => '15',
                 'softref' => 'typolink_tag,images,email[subst],url',
                 'search' => [
-                    'andWhere' => 'CType=\'text\' OR CType=\'textpic\' OR CType=\'textmedia\''
+                    'andWhere' => '{#CType}=\'text\' OR {#CType}=\'textpic\' OR {#CType}=\'textmedia\''
                 ]
             ]
         ],
@@ -1091,7 +1091,7 @@ return [
                     '
                 ],
                 'search' => [
-                    'andWhere' => 'CType=\'list\''
+                    'andWhere' => '{#CType}=\'list\''
                 ]
             ]
         ],
