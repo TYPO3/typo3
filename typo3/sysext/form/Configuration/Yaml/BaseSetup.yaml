@@ -401,7 +401,9 @@ TYPO3:
             #translation:
             #  language: 'default'
             # {@format} depends the 'format' value
-            templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
+            templateName: '{@format}.html'
+            templateRootPaths:
+              10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/'
             #partialRootPaths: []
             #layoutRootPaths: []
             #variables: {}

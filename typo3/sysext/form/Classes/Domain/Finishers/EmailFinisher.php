@@ -159,19 +159,29 @@ class EmailFinisher extends AbstractFinisher
      */
     protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
     {
-        if (!isset($this->options['templatePathAndFilename'])) {
-            throw new FinisherException('The option "templatePathAndFilename" must be set for the EmailFinisher.', 1327058829);
+        $format = ucfirst($this->parseOption('format'));
+        $standaloneView = $this->objectManager->get(StandaloneView::class);
+
+        if (isset($this->options['templatePathAndFilename'])) {
+            $this->options['templatePathAndFilename'] = strtr($this->options['templatePathAndFilename'], [
+                '{@format}' => $format
+            ]);
+            $standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
+        } else {
+            if (!isset($this->options['templateName'])) {
+                throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
+            }
+            $this->options['templateName'] = strtr($this->options['templateName'], [
+                '{@format}' => $format
+            ]);
+            $standaloneView->setTemplate($this->options['templateName']);
         }
 
-        $format = ucfirst($this->parseOption('format'));
-
-        $this->options['templatePathAndFilename'] = strtr($this->options['templatePathAndFilename'], [
-            '{@format}' => $format
-        ]);
-
-        $standaloneView = $this->objectManager->get(StandaloneView::class);
-        $standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
         $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
+
+        if (isset($this->options['templateRootPaths']) && is_array($this->options['templateRootPaths'])) {
+            $standaloneView->setTemplateRootPaths($this->options['templateRootPaths']);
+        }
 
         if (isset($this->options['partialRootPaths']) && is_array($this->options['partialRootPaths'])) {
             $standaloneView->setPartialRootPaths($this->options['partialRootPaths']);
