@@ -20,6 +20,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
@@ -396,6 +397,8 @@ class ConnectionMigrator
         $changedTables = [];
 
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
+            $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
+
             if (count($changedTable->addedColumns) !== 0) {
                 // Treat each added column with a new diff to get a dedicated suggestions
                 // just for this single column.
@@ -409,7 +412,7 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
                 }
             }
@@ -424,10 +427,10 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        [$addedIndex],
+                        [$this->buildQuotedIndex($addedIndex)],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
                 }
             }
@@ -446,9 +449,9 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
-                    $changedTables[$fkIndex]->addedForeignKeys = [$addedForeignKey];
+                    $changedTables[$fkIndex]->addedForeignKeys = [$this->buildQuotedForeignKey($addedForeignKey)];
                 }
             }
         }
@@ -535,12 +538,15 @@ class ConnectionMigrator
             if (count($changedTable->changedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                $fromTable = $schemaDiff->fromSchema->getTable($changedTable->name);
+                $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
+
                 foreach ($changedTable->changedColumns as $changedColumn) {
                     // Field has been renamed and will be handled separately
                     if ($changedColumn->getOldColumnName()->getName() !== $changedColumn->column->getName()) {
                         continue;
                     }
+
+                    $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
 
                     // Get the current SQL declaration for the column
                     $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
@@ -559,7 +565,7 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
 
                     $temporarySchemaDiff = GeneralUtility::makeInstance(
@@ -663,7 +669,7 @@ class ConnectionMigrator
 
                 foreach ($changedTable->changedForeignKeys as $changedForeignKey) {
                     $foreignKeyDiff = clone $tableDiff;
-                    $foreignKeyDiff->changedForeignKeys = [$changedForeignKey];
+                    $foreignKeyDiff->changedForeignKeys = [$this->buildQuotedForeignKey($changedForeignKey)];
 
                     $temporarySchemaDiff = GeneralUtility::makeInstance(
                         SchemaDiff::class,
@@ -763,7 +769,7 @@ class ConnectionMigrator
                     [],
                     [],
                     [],
-                    $schemaDiff->fromSchema->getTable($changedTable->name)
+                    $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
                 );
             }
         }
@@ -798,6 +804,8 @@ class ConnectionMigrator
         $changedTables = [];
 
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
+            $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
+
             if (count($changedTable->removedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
@@ -807,11 +815,11 @@ class ConnectionMigrator
                         $changedTable->name,
                         [],
                         [],
-                        [$removedColumn],
+                        [$this->buildQuotedColumn($removedColumn)],
                         [],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
                 }
             }
@@ -828,8 +836,8 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        [$removedIndex],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        [$this->buildQuotedIndex($removedIndex)],
+                        $fromTable
                     );
                 }
             }
@@ -848,9 +856,9 @@ class ConnectionMigrator
                         [],
                         [],
                         [],
-                        $schemaDiff->fromSchema->getTable($changedTable->name)
+                        $fromTable
                     );
-                    $changedTables[$fkIndex]->removedForeignKeys = [$removedForeignKey];
+                    $changedTables[$fkIndex]->removedForeignKeys = [$this->buildQuotedForeignKey($removedForeignKey)];
                 }
             }
         }
@@ -889,7 +897,7 @@ class ConnectionMigrator
                 SchemaDiff::class,
                 [],
                 [],
-                [$removedTable],
+                [$this->buildQuotedTable($removedTable)],
                 $schemaDiff->fromSchema
             );
 
@@ -934,13 +942,11 @@ class ConnectionMigrator
                 $addedIndexes = [],
                 $changedIndexes = [],
                 $removedIndexes = [],
-                $fromTable = $removedTable
+                $this->buildQuotedTable($removedTable)
             );
 
-            $tableDiff->newName = substr(
-                $this->deletedPrefix . $removedTable->getName(),
-                0,
-                $this->getMaxTableNameLength()
+            $tableDiff->newName = $this->connection->getDatabasePlatform()->quoteIdentifier(
+                substr($this->deletedPrefix . $removedTable->getName(), 0, $this->getMaxTableNameLength())
             );
             $schemaDiff->changedTables[$index] = $tableDiff;
             unset($schemaDiff->removedTables[$index]);
@@ -988,7 +994,7 @@ class ConnectionMigrator
                     $removedColumn->getQuotedName($this->connection->getDatabasePlatform()),
                     $renamedColumn,
                     $changedProperties = [],
-                    $removedColumn
+                    $this->buildQuotedColumn($removedColumn)
                 );
 
                 // Add the column with the required rename information to the changed column list
@@ -1278,5 +1284,97 @@ class ConnectionMigrator
         }
 
         return $tableOptions;
+    }
+
+    /**
+     * Helper function to build a table object that has the _quoted attribute set so that the SchemaManager
+     * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
+     * provide a method to set the flag after the object has been instantiated and there's no possibility to
+     * hook into the createSchema() method early enough to influence the original table object.
+     *
+     * @param \Doctrine\DBAL\Schema\Table $table
+     * @return \Doctrine\DBAL\Schema\Table
+     */
+    protected function buildQuotedTable(Table $table): Table
+    {
+        $databasePlatform = $this->connection->getDatabasePlatform();
+
+        return GeneralUtility::makeInstance(
+            Table::class,
+            $databasePlatform->quoteIdentifier($table->getName()),
+            $table->getColumns(),
+            $table->getIndexes(),
+            $table->getForeignKeys(),
+            0,
+            $table->getOptions()
+        );
+    }
+
+    /**
+     * Helper function to build a column object that has the _quoted attribute set so that the SchemaManager
+     * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
+     * provide a method to set the flag after the object has been instantiated and there's no possibility to
+     * hook into the createSchema() method early enough to influence the original column object.
+     *
+     * @param \Doctrine\DBAL\Schema\Column $column
+     * @return \Doctrine\DBAL\Schema\Column
+     */
+    protected function buildQuotedColumn(Column $column): Column
+    {
+        $databasePlatform = $this->connection->getDatabasePlatform();
+
+        return GeneralUtility::makeInstance(
+            Column::class,
+            $databasePlatform->quoteIdentifier($column->getName()),
+            $column->getType(),
+            array_diff_key($column->toArray(), ['name', 'type'])
+        );
+    }
+
+    /**
+     * Helper function to build an index object that has the _quoted attribute set so that the SchemaManager
+     * will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine doesn't
+     * provide a method to set the flag after the object has been instantiated and there's no possibility to
+     * hook into the createSchema() method early enough to influence the original column object.
+     *
+     * @param \Doctrine\DBAL\Schema\Index $index
+     * @return \Doctrine\DBAL\Schema\Index
+     */
+    protected function buildQuotedIndex(Index $index): Index
+    {
+        $databasePlatform = $this->connection->getDatabasePlatform();
+
+        return GeneralUtility::makeInstance(
+            Index::class,
+            $databasePlatform->quoteIdentifier($index->getName()),
+            $index->getColumns(),
+            $index->isUnique(),
+            $index->isPrimary(),
+            $index->getFlags(),
+            $index->getOptions()
+        );
+    }
+
+    /**
+     * Helper function to build a foreign key constraint object that has the _quoted attribute set so that the
+     * SchemaManager will use quoted identifiers when creating the final SQL statements. This is needed as Doctrine
+     * doesn't provide a method to set the flag after the object has been instantiated and there's no possibility to
+     * hook into the createSchema() method early enough to influence the original column object.
+     *
+     * @param \Doctrine\DBAL\Schema\ForeignKeyConstraint $index
+     * @return \Doctrine\DBAL\Schema\ForeignKeyConstraint
+     */
+    protected function buildQuotedForeignKey(ForeignKeyConstraint $index): ForeignKeyConstraint
+    {
+        $databasePlatform = $this->connection->getDatabasePlatform();
+
+        return GeneralUtility::makeInstance(
+            ForeignKeyConstraint::class,
+            $index->getLocalColumns(),
+            $databasePlatform->quoteIdentifier($index->getForeignTableName()),
+            $index->getForeignColumns(),
+            $databasePlatform->quoteIdentifier($index->getName()),
+            $index->getOptions()
+        );
     }
 }
