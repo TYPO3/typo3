@@ -50,10 +50,11 @@ class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      * @param string $databasePlatformName
      * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
      */
-    private function getConnectionMigratorMock($databasePlatformName='default')
+    private function getConnectionMigratorMock($databasePlatformName = 'default')
     {
         $platformMock = $this->getMockBuilder(\Doctrine\DBAL\Platforms\AbstractPlatform::class)->disableOriginalConstructor()->getMock();
         $platformMock->method('getName')->willReturn($databasePlatformName);
+        $platformMock->method('quoteIdentifier')->willReturnArgument(0);
 
         $connectionMock = $this->getMockBuilder(Connection::class)->setMethods(['getDatabasePlatform', 'quoteIdentifier'])->disableOriginalConstructor()->getMock();
         $connectionMock->method('getDatabasePlatform')->willReturn($platformMock);
@@ -74,9 +75,16 @@ class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     private function getTableMock()
     {
-        $ridiculouslyLongTableName = 'table_name_that_is_ridiculously_long_' . random_bytes(200);
-        $tableMock = $this->getAccessibleMock(Table::class, ['getQuotedName'], [$ridiculouslyLongTableName]);
-        $tableMock->expects($this->any())->method('getQuotedName')->withAnyParameters()->will($this->returnValue($ridiculouslyLongTableName));
+        $ridiculouslyLongTableName = 'table_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
+        $tableMock = $this->getAccessibleMock(Table::class, ['getQuotedName', 'getName'], [$ridiculouslyLongTableName]);
+        $tableMock->expects($this->any())
+            ->method('getQuotedName')
+            ->withAnyParameters()
+            ->willReturn($ridiculouslyLongTableName);
+        $tableMock->expects($this->any())
+            ->method('getName')
+            ->withAnyParameters()
+            ->willReturn($ridiculouslyLongTableName);
 
         return $tableMock;
     }
