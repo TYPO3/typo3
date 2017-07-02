@@ -27,3 +27,14 @@ if (TYPO3_MODE === 'BE') {
     // Register BackendLayoutDataProvider for PageTs
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = \TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider::class;
 }
+
+// "Sort sub pages" csh
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+    'pages_sort',
+    'EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf'
+);
+// "Create multiple pages" csh
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+    'pages_new',
+    'EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf'
+);

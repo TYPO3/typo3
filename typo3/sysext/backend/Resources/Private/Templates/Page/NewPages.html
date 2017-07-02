@@ -1,0 +1,150 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0:'TYPO3/CMS/Backend/ContextMenu',
+        1:'TYPO3/CMS/Backend/NewMultiplePages'
+    }"
+/>
+
+<h1>
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:title" />
+</h1>
+
+<f:if condition="!{canCreateNew}">
+    <f:then>
+        <f:be.infobox
+            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:canNotCreateNew.title')}"
+            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:canNotCreateNew.message')}"
+            state="-1"
+        />
+    </f:then>
+    <f:else>
+        <f:if condition="{hasNewPagesData}">
+            <f:then>
+                <f:if condition="{pagesCreated}">
+                    <f:then>
+                        <f:be.infobox
+                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:pagesCreated.title')}"
+                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:pagesCreated.message')}"
+                            state="-1"
+                        />
+                    </f:then>
+                    <f:else>
+                        <f:be.infobox
+                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:noPagesCreated.title')}"
+                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:noPagesCreated.message')}"
+                            state="1"
+                        />
+                    </f:else>
+                </f:if>
+                <f:if condition="{visiblePages}">
+                    <div class="form-group">
+                        <h2>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:newSubPages"/>
+                        </h2>
+                        <f:for each="{visiblePages}" as="page">
+                            <core:iconForRecord table="pages" row="{page}" />
+                            {page.title -> f:format.crop(maxCharacters: maxTitleLength)}
+                            <br />
+                        </f:for>
+                    </div>
+                </f:if>
+            </f:then>
+            <f:else>
+                <div class="t3js-newmultiplepages-newlinetemplate" style="display:none">
+                    <f:render section="FormLine" arguments="{line: {index: '[0]', label: '[1]', pageTypes: '{pageTypes}'}}" />
+                </div>
+
+                <form action="{be:moduleLink(route:'pages_new', arguments:'{id:pageUid}')}" method="post">
+                    <div class="form-group t3js-newmultiplepages-container">
+                        <f:render section="FormLine" arguments="{line: {index: '0', label: '1', pageTypes: '{pageTypes}'}}" />
+                        <f:render section="FormLine" arguments="{line: {index: '1', label: '2', pageTypes: '{pageTypes}'}}" />
+                        <f:render section="FormLine" arguments="{line: {index: '2', label: '3', pageTypes: '{pageTypes}'}}" />
+                        <f:render section="FormLine" arguments="{line: {index: '3', label: '4', pageTypes: '{pageTypes}'}}" />
+                        <f:render section="FormLine" arguments="{line: {index: '4', label: '5', pageTypes: '{pageTypes}'}}" />
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            class="btn btn-default t3js-newmultiplepages-createnewfields"
+                            type="button"
+                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:addMoreLines')}"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="createInListEnd">
+                                <input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:listEnd" />
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label for="hidePages">
+                                <input type="checkbox" name="hidePages" id="hidePages" value="1" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:hidePages" />
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label for="hidePagesInMenus">
+                                <input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:hidePagesInMenus" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            class="btn btn-default"
+                            type="submit"
+                            name="create"
+                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:create')}"
+                        />
+                        <input
+                            class="btn btn-default"
+                            type="reset"
+                            value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:reset')}"
+                        />
+                    </div>
+                </form>
+            </f:else>
+        </f:if>
+    </f:else>
+</f:if>
+
+<f:section name="FormLine">
+    <div class="form-section" id="form-line-{line.index}">
+        <div class="row">
+            <div class="form-group col-xs-8">
+                <label for="page_new_{line.index}">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:newPage"/> {line.label}:
+                </label>
+                <div class="form-control-wrap">
+                    <input class="form-control" type="text" id="page_new_{line.index}" name="pages[NEW{line.index}][title]" />
+                </div>
+            </div>
+            <div class="form-group col-xs-4">
+                <label for="page_new_select_{line.index}">
+                    <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type"/>
+                </label>
+                <div class="form-control-wrap">
+                    <div class="input-group">
+                        <div id="page_new_icon_{line.index}" class="input-group-addon input-group-icon">
+                            <core:iconForRecord table="pages" row="{id: '0'}" />
+                        </div>
+                        <select id="page_new_select_{line.index}" class="form-control form-control-adapt t3js-newmultiplepages-select-doktype" name="pages[NEW{line.index}][doktype]" data-target="#page_new_icon_{line.index}">
+                            <f:for each="{line.pageTypes}" as="typegroup" key="group">
+                                <optgroup label="{f:translate(key: '{group}')}">
+                                    <f:for each="{typegroup}" as="type">
+                                        <option data-icon='{core:icon(identifier: "{type.2}")}' value="{type.1}">{f:translate(key: '{type.0}')}</option>
+                                    </f:for>
+                                </optgroup>
+                            </f:for>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>

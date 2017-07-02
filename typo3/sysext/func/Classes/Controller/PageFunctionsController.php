@@ -74,7 +74,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_func.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:func/Resources/Private/Language/locallang_mod_web_func.xlf');
         $this->MCONF = [
             'name' => $this->moduleName,
         ];

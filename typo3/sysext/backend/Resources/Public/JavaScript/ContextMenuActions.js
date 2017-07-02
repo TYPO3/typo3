@@ -95,6 +95,20 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         top.TYPO3.ModuleMenu.App.showModule('web_list', 'id='.pageId);
     };
 
+    ContextMenuActions.pagesSort = function (table, uid) {
+        var pagesSortUrl = $(this).data('pages-sort-url');
+        if (pagesSortUrl) {
+            top.TYPO3.Backend.ContentContainer.setUrl(pagesSortUrl);
+        }
+    };
+
+    ContextMenuActions.pagesNewMultiple = function (table, uid) {
+        var pagesSortUrl = $(this).data('pages-new-multiple-url');
+        if (pagesSortUrl) {
+            top.TYPO3.Backend.ContentContainer.setUrl(pagesSortUrl);
+        }
+    };
+
     ContextMenuActions.disableRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
             top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()

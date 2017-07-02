@@ -133,8 +133,6 @@
 		"typo3/cms-typo3db-legacy": "self.version",
 		"typo3/cms-version": "self.version",
 		"typo3/cms-viewpage": "self.version",
-		"typo3/cms-wizard-crpages": "self.version",
-		"typo3/cms-wizard-sortpages": "self.version",
 		"typo3/cms-workspaces": "self.version"
 	},
 	"autoload": {
@@ -182,8 +180,6 @@
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
 			"TYPO3\\CMS\\Version\\": "typo3/sysext/version/Classes/",
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
-			"TYPO3\\CMS\\WizardCrpages\\": "typo3/sysext/wizard_crpages/Classes/",
-			"TYPO3\\CMS\\WizardSortpages\\": "typo3/sysext/wizard_sortpages/Classes/",
 			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},
 		"classmap": [

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
@@ -97,6 +98,16 @@ class PageProvider extends RecordProvider
                     'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_newWizard',
                     'iconIdentifier' => 'actions-page-new',
                     'callbackAction' => 'newPageWizard',
+                ],
+                'pagesSort' => [
+                    'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:title',
+                    'iconIdentifier' => 'actions-page-move',
+                    'callbackAction' => 'pagesSort',
+                ],
+                'pagesNewMultiple' => [
+                    'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:title',
+                    'iconIdentifier' => 'apps-pagetree-drag-move-between',
+                    'callbackAction' => 'pagesNewMultiple',
                 ],
                 'openListModule' => [
                     'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:CM_db_list',
@@ -181,6 +192,7 @@ class PageProvider extends RecordProvider
                 break;
             case 'new':
             case 'newWizard':
+            case 'pagesNewMultiple':
                 $canRender = $this->canBeCreated();
                 break;
             case 'info':
@@ -200,6 +212,9 @@ class PageProvider extends RecordProvider
                 break;
             case 'openListModule':
                 $canRender = $this->canOpenListModule();
+                break;
+            case 'pagesSort':
+                $canRender = $this->canBeSorted();
                 break;
             case 'mountAsTreeRoot':
                 $canRender = !$this->isRoot();
@@ -333,6 +348,19 @@ class PageProvider extends RecordProvider
     }
 
     /**
+     * Check if sub pages of given page can be sorted
+     *
+     * @return bool
+     */
+    protected function canBeSorted(): bool
+    {
+        return $this->backendUser->check('tables_modify', $this->table)
+            && $this->hasPagePermission(Permission::CONTENT_EDIT)
+            && !$this->isDeletePlaceholder()
+            && $this->backendUser->workspace === 0;
+    }
+
+    /**
      * Checks if the page is allowed to be removed
      *
      * @return bool
@@ -423,6 +451,16 @@ class PageProvider extends RecordProvider
         }
         if ($itemName === 'pasteAfter') {
             $attributes += $this->getPasteAdditionalAttributes('after');
+        }
+        if ($itemName === 'pagesSort') {
+            $attributes += [
+                'data-pages-sort-url' => BackendUtility::getModuleUrl('pages_sort', ['id' => $this->record['uid']]),
+            ];
+        }
+        if ($itemName === 'pagesNewMultiple') {
+            $attributes += [
+                'data-pages-new-multiple-url' => BackendUtility::getModuleUrl('pages_new', ['id' => $this->record['uid']]),
+            ];
         }
         return $attributes;
     }

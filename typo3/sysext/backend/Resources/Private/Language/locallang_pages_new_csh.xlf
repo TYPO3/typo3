@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1415815014" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="pages_new.alttitle">
+				<source>Create multiple pages</source>
+			</trans-unit>
+			<trans-unit id="pages_new.description" xml:space="preserve">
+				<source>Enables you to create a batch of new, empty pages for quickly building up a new page tree.
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+			</trans-unit>
+			<trans-unit id="pages_new.details" xml:space="preserve">
+				<source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</source>
+			</trans-unit>
+			<trans-unit id="_pages_new.image" xml:space="preserve">
+				<source>EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</source>
+			</trans-unit>
+			<trans-unit id="pages_new.image_descr" xml:space="preserve">
+				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

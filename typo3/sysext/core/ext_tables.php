@@ -107,8 +107,6 @@ $GLOBALS['TBE_STYLES'] = [];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/Resources/Private/Language/locallang_csh_corebe.xlf');
 // Web > Info
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/Resources/Private/Language/locallang_csh_web_info.xlf');
-// Web > Func
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/Resources/Private/Language/locallang_csh_web_func.xlf');
 
 if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
     // extJS theme

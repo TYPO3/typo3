@@ -125,6 +125,18 @@ return [
         'target' => Controller\NewRecordController::class . '::mainAction'
     ],
 
+    // Register sort pages
+    'pages_sort' => [
+        'path' => '/pages/sort',
+        'target' => Controller\Page\SortSubPagesController::class . '::mainAction'
+    ],
+
+    // Register create multiple pages
+    'pages_new' => [
+        'path' => '/pages/new',
+        'target' => Controller\Page\NewMultiplePagesController::class . '::mainAction'
+    ],
+
     // Register new content element module
     'new_content_element' => [
         'path' => '/record/content/new',

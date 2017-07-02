@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * In other words this class is used for backend modules which is not true
  * backend modules appearing in the menu but rather adds themselves as a new
  * entry in the function menu which typically exists for a backend
- * module (like Web>Functions, Web>Info or Tools etc...)
+ * module (like Web>Info or Tools etc...)
  * The magic that binds this together is stored in the global variable
  * $TBE_MODULES_EXT where extensions wanting to connect a module based on
  * this class to an existing backend module store configuration which consists
@@ -41,8 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * For more information about this, please see the large example comment for the
  * class \TYPO3\CMS\Backend\Module\BaseScriptClass. This will show the principle of a
  * 'level-1' connection. The more advanced example - having two layers as it is done
- * by the 'func_wizards' extension with the 'web_info' module - can be seen in the
- * comment above.
+ * with the 'web_info' module - can be seen in the comment above.
  *
  * EXAMPLE: One level.
  * This can be seen in the extension 'frontend' where the info module have a
@@ -55,53 +54,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page'
  * );
  *
- * EXAMPLE: Two levels.
- * This is the advanced example. You can see it with the extension 'func_wizards'
- * which is the first layer but then providing another layer for extensions to connect by.
- * The key used in TBE_MODULES_EXT is normally 'function' (for the 'function menu')
- * but the 'func_wizards' extension uses an alternative key for its configuration: 'wiz'.
- * In the 'ext_tables.php' file of an extension ('wizard_crpages') which uses the
- * framework provided by 'func_wizards' this looks like this:
- *
- * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
- * 'web_func',
- * \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController::class
- * NULL,
- * 'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
- * 'wiz'
- * );
- *
- * But for this two-level thing to work it also requires that the parent
+ * For this two-level thing to work it also requires that the parent
  * module (the real backend module) supports it.
- * This is the case for the modules web_func and web_info since they have two
- * times inclusion sections in their index.php scripts. For example (from web_func):
+ * This is the case for the modules web_info since it has two
+ * times inclusion sections in their index.php scripts.
  *
- * Make instance:
- * $GLOBALS['SOBE'] = GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
- * $GLOBALS['SOBE']->init();
- *
- * Anyways, the final interesting thing is to see what the framework
- * "func_wizard" actually does:
- *
- * class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
- * var $localLangFile = "locallang.xlf";
- * var $function_key = "wiz";
- * function init(&$pObj, $conf) {
- * OK, handles ordinary init. This includes setting up the
- * menu array with ->modMenu
- * parent::init($pObj,$conf);
- * $this->handleExternalFunctionValue();
- * }
- * }
- *
- * Notice that the handleExternalFunctionValue of this class
- * is called and that the ->function_key internal var is set!
- *
- * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages"
- * are totally normal "submodules".
  * @see \TYPO3\CMS\Backend\Module\BaseScriptClass
- * @see \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
- * @see \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
  */
 abstract class AbstractFunctionModule
 {

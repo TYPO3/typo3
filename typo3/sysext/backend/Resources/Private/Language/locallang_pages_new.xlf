@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1415815013" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Create multiple pages</source>
+			</trans-unit>
+
+			<trans-unit id="canNotCreateNew.title">
+				<source>Insufficient permissions</source>
+			</trans-unit>
+			<trans-unit id="canNotCreateNew.message">
+				<source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+			</trans-unit>
+
+			<trans-unit id="newPage">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="addMoreLines">
+				<source>Add more lines</source>
+			</trans-unit>
+			<trans-unit id="listEnd">
+				<source>Place new pages after the existing subpages</source>
+			</trans-unit>
+			<trans-unit id="hidePages">
+				<source>Hide new pages</source>
+			</trans-unit>
+			<trans-unit id="hidePagesInMenus">
+				<source>Hide new pages in menus</source>
+			</trans-unit>
+			<trans-unit id="create">
+				<source>Create pages</source>
+			</trans-unit>
+			<trans-unit id="reset">
+				<source>Clear fields</source>
+			</trans-unit>
+
+			<trans-unit id="newSubPages">
+				<source>New page structure</source>
+			</trans-unit>
+			<trans-unit id="noPagesCreated.title">
+				<source>No pages added</source>
+			</trans-unit>
+			<trans-unit id="noPagesCreated.message">
+				<source>No pages were created.</source>
+			</trans-unit>
+			<trans-unit id="pagesCreated.title">
+				<source>Pages added</source>
+			</trans-unit>
+			<trans-unit id="pagesCreated.message">
+				<source>The pages were created successfully.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

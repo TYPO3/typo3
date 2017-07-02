@@ -15,16 +15,15 @@
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info,
 More about the Web&gt;Functions module | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/FunctionsModule/,,
-_MOD_web_func:tx_funcwizards,
-_MOD_web_func:tx_wizardsortpages</source>
+_MOD_web_func:tx_funcwizards</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image">
-				<source>EXT:lang/Resources/Public/Images/cshimages/pagetree_overview_11.png</source>
+				<source>EXT:func/Resources/Public/Images/Csh/pagetree_overview_11.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
-				<source>The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</source>
+				<source>The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions.</source>
 			</trans-unit>
 		</body>
 	</file>

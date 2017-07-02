@@ -9,7 +9,7 @@
 		<languageKey index="default" type="array">
 			<label index=".alttitle">Blog Example</label>
 			<label index=".description">This is some dummy help. But it's context sensitive!</label>
-			<label index=".seeAlso">_MOD_web_func:tx_wizardcrpages, _MOD_web_func:tx_wizardsortpages</label>
+			<label index=".seeAlso">_MOD_web_layout:columns_single</label>
 		</languageKey>
 	</data>
 </T3locallang>

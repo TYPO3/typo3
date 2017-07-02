@@ -110,10 +110,6 @@
                 "../typo3/sysext/viewpage/Resources/Public/JavaScript/*",
                 "../typo3/sysext/viewpage/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/WizardCrpages/*": [
-                "../typo3/sysext/wizard_crpages/Resources/Public/JavaScript/*",
-                "../typo3/sysext/wizard_crpages/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/Workspaces/*": [
                 "../typo3/sysext/workspaces/Resources/Public/JavaScript/*",
                 "../typo3/sysext/workspaces/Resources/Private/TypeScript/*"
