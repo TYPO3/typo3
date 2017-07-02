@@ -171,6 +171,11 @@ cd ..
   cp typo3_src/_.htaccess .htaccess
 ```
 
+* In case you use IIS, install the URL Rewrite 2.x module and copy the web.config to your Document Root:
+```
+  cp typo3_src/_web.config web.config
+```
+
 You end up with the follow structure of files:
 
 ```
@@ -178,7 +183,8 @@ You end up with the follow structure of files:
   htdocs/typo3_src -> ../typo3_src-8.x.x/
   htdocs/typo3 -> typo3_src/typo3/
   htdocs/index.php -> typo3_src/index.php
-  htdocs/.htaccess
+  htdocs/.htaccess (only on Apache)
+  htdocs/web.config (only on IIS)
 ```
 
 This allows you to upgrade TYPO3 later by simply replacing the symlink
@@ -232,11 +238,13 @@ Please note that this is not a recommended setup!
 * Upload all files and subdirectories directly in your Document Root
   (where files that are served by your webserver are located).
 * In case your provider uses Apache, rename the file `_.htaccess` to `.htaccess`.
+* In case your provider uses IIS, rename the file `_web.config` to `web.config`.
 
 You end up with this files in your Document Root:
 
 ```
- .htaccess
+ .htaccess (only on Apache)
+ web.config (only on IIS)
  ChangeLog
  GPL.txt
  index.php
