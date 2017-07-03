@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\InlineParentRecord;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -131,20 +132,14 @@ class FormInlineAjaxController
         }
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
-        // Set language of new child record to the language of the parent record:
-        // @todo: To my understanding, the below case can't happen: With localizationMode select, lang overlays
-        // @todo: of children are only created with the "synchronize" button that will trigger a different ajax action.
-        // @todo: The edge case of new page overlay together with localized media field, this code won't kick in either.
-        /**
-        if ($parent['localizationMode'] === 'select' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
-            $parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
+        // Set language of new child record to the language of the parent record
+        if ($parent['localizationMode'] !== 'keep' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
+            $parentRecord = BackendUtility::getRecord($parent['table'], $parent['uid']);
             $parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
             $childLanguageField = $GLOBALS['TCA'][$child['table']]['ctrl']['languageField'];
-            if ($parentRecord[$parentLanguageField] > 0) {
-                $record[$childLanguageField] = $parentRecord[$parentLanguageField];
-            }
+            $childData['databaseRow'][$childLanguageField][0] = $parentRecord[$parentLanguageField];
         }
-         */
+
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
             // We have a foreign_selector. So, we just created a new record on an intermediate table in $childData.
             // Now, if a valid id is given as second ajax parameter, the intermediate row should be connected to an
