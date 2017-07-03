@@ -1784,6 +1784,8 @@ Full default configuration
               elementErrorClassAttribute: error
               renderAsHiddenField: false
               styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+            renderingOptions:
+              _isHiddenFormElement: true
           Hidden:
             formEditor:
               editors:
@@ -1836,6 +1838,8 @@ Full default configuration
               containerClassAttribute: input
               elementClassAttribute: ''
               elementErrorClassAttribute: error
+            renderingOptions:
+              _isHiddenFormElement: true
           Email:
             formEditor:
               editors:
