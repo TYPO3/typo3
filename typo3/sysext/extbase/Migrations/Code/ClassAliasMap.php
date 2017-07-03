@@ -1,5 +1,9 @@
 <?php
 return [
+    // TYPO3 v8 replacements
+    'TYPO3\\CMS\\Extbase\\Service\\TypoScriptService' => \TYPO3\CMS\Core\TypoScript\TypoScriptService::class,
+
+    // TYPO3 v9 replacements
     // Configuration
     'TYPO3\\CMS\\Extbase\\Configuration\\Exception\\ContainerIsLockedException' => \TYPO3\CMS\Extbase\Configuration\Exception::class,
     'TYPO3\\CMS\\Extbase\\Configuration\\Exception\\NoSuchFileException' => \TYPO3\CMS\Extbase\Configuration\Exception::class,
