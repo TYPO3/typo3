@@ -553,6 +553,7 @@ class FileIndexRepository implements SingletonInterface
     {
         /** @var $refIndexObj ReferenceIndex */
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $refIndexObj->enableRuntimeCache();
         $refIndexObj->updateRefIndexTable($this->table, $id);
     }
 

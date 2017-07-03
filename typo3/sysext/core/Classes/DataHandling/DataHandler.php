@@ -4145,6 +4145,7 @@ class DataHandler implements LoggerAwareInterface
                     if (@is_file($copyDestName)) {
                         /** @var ReferenceIndex $sysRefObj */
                         $sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                        $sysRefObj->enableRuntimeCache();
                         $error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], PathUtility::stripPathSitePrefix($copyDestName), false, true);
                         if ($error) {
                             $this->newlog(ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
@@ -5256,6 +5257,7 @@ class DataHandler implements LoggerAwareInterface
         // Use reference index object to find files in fields:
         /** @var ReferenceIndex $refIndexObj */
         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $refIndexObj->enableRuntimeCache();
         $files = $refIndexObj->getRelations_procFiles($dataValue, $dsArr['TCEforms']['config'], $PA['uid']);
         // Traverse files and delete them if the field is a regular file field (and not a file_reference field)
         if (is_array($files) && $dsArr['TCEforms']['config']['internal_type'] === 'file') {
@@ -7260,6 +7262,7 @@ class DataHandler implements LoggerAwareInterface
         if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $refIndexObj->setWorkspaceId($this->BE_USER->workspace);
         }
+        $refIndexObj->enableRuntimeCache();
         $refIndexObj->updateRefIndexTable($table, $id);
     }
 

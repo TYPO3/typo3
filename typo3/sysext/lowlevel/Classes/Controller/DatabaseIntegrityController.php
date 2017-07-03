@@ -318,6 +318,7 @@ class DatabaseIntegrityController
             $testOnly = (bool)GeneralUtility::_GP('_check');
             // Call the functionality
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+            $refIndexObj->enableRuntimeCache();
             list(, $bodyContent) = $refIndexObj->updateIndex($testOnly);
             $this->view->assign('content', str_replace('##LF##', '<br />', $bodyContent));
         }

@@ -56,6 +56,7 @@ class ReferenceIndexUpdateCommand extends Command
 
         /** @var ReferenceIndex $referenceIndex */
         $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $referenceIndex->enableRuntimeCache();
         $referenceIndex->updateIndex($isTestOnly, $isSilent);
     }
 }

@@ -148,6 +148,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     {
         $this->configurationManager = $configurationManager;
         $this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
+        $this->referenceIndex->enableRuntimeCache();
         $this->aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->deletedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->changedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();

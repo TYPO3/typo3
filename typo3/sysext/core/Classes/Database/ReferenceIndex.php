@@ -151,6 +151,12 @@ class ReferenceIndex implements LoggerAwareInterface
     protected $runtimeCache = null;
 
     /**
+     * Enables $runtimeCache and $recordCache
+     * @var bool
+     */
+    protected $useRuntimeCache = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -216,7 +222,7 @@ class ReferenceIndex implements LoggerAwareInterface
 
         // Fetch tableRelationFields and save them in cache if not there yet
         $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-        if (!$this->runtimeCache->has($cacheId)) {
+        if (!$this->useRuntimeCache || !$this->runtimeCache->has($cacheId)) {
             $tableRelationFields = $this->fetchTableRelationFields($tableName);
             $this->runtimeCache->set($cacheId, $tableRelationFields);
         } else {
@@ -1477,6 +1483,10 @@ class ReferenceIndex implements LoggerAwareInterface
      * - Relations may change during indexing, which is why only the origin record is cached and all relations are re-process even when repeating
      *   indexing of the same origin record
      *
+     * Please note that the cache is disabled by default but can be enabled using $this->enableRuntimeCaches()
+     * due to possible side-effects while handling references that were changed during one single
+     * request.
+     *
      * @param string $tableName
      * @param int $uid
      * @return array|false
@@ -1484,13 +1494,15 @@ class ReferenceIndex implements LoggerAwareInterface
     protected function getRecordRawCached(string $tableName, int $uid)
     {
         $recordCacheId = $tableName . ':' . $uid;
-        if (!isset($this->recordCache[$recordCacheId])) {
+        if (!$this->useRuntimeCache || !isset($this->recordCache[$recordCacheId])) {
 
             // Fetch fields of the table which might contain relations
             $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-            if (!$this->runtimeCache->has($cacheId)) {
+            if (!$this->useRuntimeCache || !$this->runtimeCache->has($cacheId)) {
                 $tableRelationFields = $this->fetchTableRelationFields($tableName);
-                $this->runtimeCache->set($cacheId, $tableRelationFields);
+                if ($this->useRuntimeCache) {
+                    $this->runtimeCache->set($cacheId, $tableRelationFields);
+                }
             } else {
                 $tableRelationFields = $this->runtimeCache->get($cacheId);
             }
@@ -1577,6 +1589,24 @@ class ReferenceIndex implements LoggerAwareInterface
         }
 
         return true;
+    }
+
+    /**
+     * Enables the runtime-based caches
+     * Could lead to side effects, depending if the reference index instance is run multiple times
+     * while records would be changed.
+     */
+    public function enableRuntimeCache()
+    {
+        $this->useRuntimeCache = true;
+    }
+
+    /**
+     * Disables the runtime-based cache
+     */
+    public function disableRuntimeCache()
+    {
+        $this->useRuntimeCache = false;
     }
 
     /**

@@ -324,6 +324,7 @@ class Export extends ImportExport
                         $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
                         // Initialize reference index object:
                         $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                        $refIndexObj->enableRuntimeCache();
                         // Yes to workspace overlays for exporting....
                         $refIndexObj->WSOL = true;
                         $relations = $refIndexObj->getRelations($table, $row);
