@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Test',
     'description' => 'DataHandler Test',
     'category' => 'example',
-    'version' => '0.4.0',
+    'version' => '8.7.3',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,9 +13,9 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '6.0.0-0.0.0',
+            'typo3' => '8.7.0-8.7.3',
             'workspaces' => '0.0.0-',
-            'version' => '0.0.0-',
+            'version' => '8.7.3',
         ],
         'conflicts' => [
         ],
