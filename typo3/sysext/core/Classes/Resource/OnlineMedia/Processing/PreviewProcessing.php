@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
@@ -79,12 +78,9 @@ class PreviewProcessing
             return;
         }
         $temporaryFileNameForResizedThumb = uniqid(PATH_site . 'typo3temp/var/transient/online_media_' . $file->getHashedIdentifier()) . '.jpg';
+        $configuration = $processedFile->getProcessingConfiguration();
         switch ($taskType) {
             case ProcessedFile::CONTEXT_IMAGEPREVIEW:
-                // Merge custom configuration with default configuration
-                $configuration = array_merge(['width' => 64, 'height' => 64], $configuration);
-                $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
-                $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
                 $this->resizeImage($temporaryFileName, $temporaryFileNameForResizedThumb, $configuration);
                 break;
 
