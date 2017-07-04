@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Benjamin Mack',
     'author_email' => 'mack@xnos.org',
     'author_company' => '',
-    'version' => '8.7.3',
+    'version' => '8.7.4',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-8.7.3',
+            'typo3' => '8.7.0-8.7.4',
         ],
         'conflicts' => [],
         'suggests' => [],
