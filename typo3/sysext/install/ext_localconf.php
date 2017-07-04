@@ -55,3 +55,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rtehtmlareaE
 // Add update wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegacyExtension']
     = \TYPO3\CMS\Install\Updates\Typo3DbExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['funcExtension']
+    = \TYPO3\CMS\Install\Updates\FuncExtractionUpdate::class;
