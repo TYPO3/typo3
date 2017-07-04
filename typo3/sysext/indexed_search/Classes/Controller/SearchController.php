@@ -37,7 +37,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @var string
      */
-    protected $sword = null;
+    protected $sword = '';
 
     /**
      * @var array
@@ -1558,7 +1558,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function setSword($sword)
     {
-        $this->sword = $sword;
+        $this->sword = (string)$sword;
     }
 
     /**
@@ -1567,6 +1567,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function getSword()
     {
-        return $this->sword;
+        return (string)$this->sword;
     }
 }
