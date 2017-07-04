@@ -793,7 +793,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * Write statistics information to database for the search operation
+     * Write statistics information to database for the search operation if there was at least one search word.
      *
      * @param array $searchParams search params
      * @param array $searchWords Search Word array
@@ -802,8 +802,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
     {
+        $searchWord = $this->getSword();
+        if (empty($searchWord) && empty($searchWords)) {
+            return;
+        }
+
         $insertFields = [
-            'searchstring' => $this->getSword(),
+            'searchstring' => $searchWord,
             'searchoptions' => serialize([$searchParams, $searchWords, $pt]),
             'feuser_id' => (int)$GLOBALS['TSFE']->fe_user->user['uid'],
             // cookie as set or retrieved. If people has cookies disabled this will vary all the time
