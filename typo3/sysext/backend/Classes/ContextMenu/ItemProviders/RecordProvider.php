@@ -416,7 +416,13 @@ class RecordProvider extends AbstractProvider
      */
     protected function getViewLink(): string
     {
-        $javascriptLink = BackendUtility::viewOnClick($this->getPreviewPid());
+        $anchorSection = $this->table === 'tt_content' ? '#c' . $this->record['uid'] : '';
+        $javascriptLink = BackendUtility::viewOnClick(
+            $this->getPreviewPid(),
+            '',
+            null,
+            $anchorSection
+        );
         $extractedLink = '';
         if (preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match)) {
             // Clean JSON-serialized ampersands ('&')
