@@ -42,6 +42,14 @@ class ProcessedFileRepository extends AbstractRepository
     protected $table = 'sys_file_processedfile';
 
     /**
+     * As determining the table columns is a costly operation this is done only once during runtime and cached then
+     *
+     * @var array
+     * @see cleanUnavailableColumns()
+     */
+    protected $tableColumns = [];
+
+    /**
      * Creates this object.
      */
     public function __construct()
@@ -291,11 +299,15 @@ class ProcessedFileRepository extends AbstractRepository
      */
     protected function cleanUnavailableColumns(array $data)
     {
-        $tableColumns = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->table)
-            ->getSchemaManager()
-            ->listTableColumns($this->table);
-        return array_intersect_key($data, $tableColumns);
+        // As determining the table columns is a costly operation this is done only once during runtime and cached then
+        if (empty($this->tableColumns[$this->table])) {
+            $this->tableColumns[$this->table] = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($this->table)
+                ->getSchemaManager()
+                ->listTableColumns($this->table);
+        }
+
+        return array_intersect_key($data, $this->tableColumns[$this->table]);
     }
 
     /**

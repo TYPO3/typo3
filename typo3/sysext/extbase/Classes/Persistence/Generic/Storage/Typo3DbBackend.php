@@ -79,6 +79,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected $objectManager;
 
     /**
+     * As determining the table columns is a costly operation this is done only once per table during runtime and cached then
+     *
+     * @var array
+     * @see clearPageCache()
+     */
+    protected $hasPidColumn = [];
+
+    /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
      */
     public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
@@ -678,11 +686,17 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         $pageIdsToClear = [];
         $storagePage = null;
-        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($tableName)
-            ->getSchemaManager()
-            ->listTableColumns($tableName);
-        if (array_key_exists('pid', $columns)) {
+
+        // As determining the table columns is a costly operation this is done only once per table during runtime and cached then
+        if (!isset($this->hasPidColumn[$tableName])) {
+            $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($tableName)
+                ->getSchemaManager()
+                ->listTableColumns($tableName);
+            $this->hasPidColumn[$tableName] = array_key_exists('pid', $columns);
+        }
+
+        if ($this->hasPidColumn[$tableName]) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
             $result = $queryBuilder
