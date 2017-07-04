@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -182,7 +183,7 @@ EOF;
             'frame' => $this->frame,
             'crop' => $this->crop,
         ];
-        return $this->file->process('Image.CropScaleMask', $processingConfiguration);
+        return $this->file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
     }
 
     /**
