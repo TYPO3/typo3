@@ -4723,7 +4723,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
                   __inheritances:
                     10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
                   renderingOptions:
-                    templateFileName: 'RadioButton'
+                    templateName: 'RadioButton'
                   properties:
                     options:
                       f: 'Female'

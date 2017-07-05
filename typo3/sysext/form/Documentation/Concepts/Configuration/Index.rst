@@ -388,7 +388,7 @@ element but also has its own properties.
                   __inheritances:
                     10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.RadioButton'
                   renderingOptions:
-                    templateFileName: 'RadioButton'
+                    templateName: 'RadioButton'
                   properties:
                     options:
                       f: 'Female'
