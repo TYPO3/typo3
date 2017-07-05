@@ -431,10 +431,10 @@
                 <source>Add finisher</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" xml:space="preserve">
-                <source>Email to sender</source>
+                <source>Email to sender (to website visitor)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" xml:space="preserve">
-                <source>Email to receiver</source>
+                <source>Email to receiver (to you)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" xml:space="preserve">
                 <source>Redirect to a page</source>
@@ -444,7 +444,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" xml:space="preserve">
-                <source>Send email (sender)</source>
+                <source>Send email (to website visitor)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
@@ -452,14 +452,26 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.label" xml:space="preserve">
                 <source>Recipient address</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.fieldExplanationText" xml:space="preserve">
+                <source>The email address of the website visitor to whom the email should be sent. You can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.label" xml:space="preserve">
                 <source>Recipient name</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.fieldExplanationText" xml:space="preserve">
+                <source>The name of the website visitor, which appears in the website visitor e-mail client. You can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText" xml:space="preserve">
+                <source>The email address of the sender (e.g. your company's email address), which appears in the website visitor e-mail client.</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" xml:space="preserve">
                 <source>Sender name</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText" xml:space="preserve">
+                <source>The name of the sender (e.g. your company's name), which appears in the website visitor e-mail client.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label" xml:space="preserve">
                 <source>Reply-to address</source>
@@ -484,7 +496,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve">
-                <source>Send email (receiver)</source>
+                <source>Send email (to you)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
@@ -492,14 +504,26 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label" xml:space="preserve">
                 <source>Recipient address</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.fieldExplanationText" xml:space="preserve">
+                <source>The email address of the recipient to whom the email should be sent (e.g. your company's email address).</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.label" xml:space="preserve">
                 <source>Recipient name</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.fieldExplanationText" xml:space="preserve">
+                <source>The name of the recipient, which appears in your e-mail client (e.g. your company's name).</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
             </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText" xml:space="preserve">
+                <source>The email address of the sender, which appears in your e-mail client. If you want, you can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" xml:space="preserve">
                 <source>Sender name</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText" xml:space="preserve">
+                <source>The name of the sender, which appears in your e-mail client. If you want, you can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label" xml:space="preserve">
                 <source>Reply-to address</source>
