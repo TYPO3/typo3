@@ -203,12 +203,16 @@ TYPO3:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label'
                         300:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientAddress.fieldExplanationText'
                         400:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.fieldExplanationText'
                         500:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText'
                         600:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label'
+                          fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText'
                         700:
                           label: 'formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label'
                         800:
@@ -1129,6 +1133,7 @@ TYPO3:
                 propertyValidators:
                   10: 'NaiveEmail'
                   20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientAddress.fieldExplanationText'
               400:
                 identifier: 'recipientName'
                 templateName: 'Inspector-TextEditor'
@@ -1137,6 +1142,7 @@ TYPO3:
                 enableFormelementSelectionButton: true
                 propertyValidators:
                   10: 'FormElementIdentifierWithinCurlyBracesInclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.fieldExplanationText'
               500:
                 identifier: 'senderAddress'
                 templateName: 'Inspector-TextEditor'
@@ -1147,6 +1153,7 @@ TYPO3:
                 propertyValidators:
                   10: 'NaiveEmail'
                   20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText'
               600:
                 identifier: 'senderName'
                 templateName: 'Inspector-TextEditor'
@@ -1155,6 +1162,7 @@ TYPO3:
                 enableFormelementSelectionButton: true
                 propertyValidators:
                   10: 'FormElementIdentifierWithinCurlyBracesInclusive'
+                fieldExplanationText: 'formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText'
               700:
                 identifier: 'replyToAddress'
                 templateName: 'Inspector-TextEditor'
