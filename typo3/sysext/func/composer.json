@@ -1,21 +1,31 @@
 {
 	"name": "typo3/cms-func",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "Advanced functions",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"php": ">=7.0.0 <=7.1.99",
+		"typo3/cms-core": "8.7.5"
 	},
 	"replace": {
 		"func": "*"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-TYPO3_8-7": "8.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true
-			}
+			},
+			"extension-key": "func"
 		}
 	},
 	"autoload": {

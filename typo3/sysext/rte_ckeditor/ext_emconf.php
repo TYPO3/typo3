@@ -8,11 +8,12 @@ $EM_CONF[$_EXTKEY] = [
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
-    'author_email' => 'info@typo3.org',
+    'author_email' => 'typo3cms@typo3.org',
     'version' => '8.7.5',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-8.7.5',
+            'php' => '7.0.0-7.1.99',
+            'typo3' => '8.7.5',
         ],
         'conflicts' => [],
         'suggests' => [

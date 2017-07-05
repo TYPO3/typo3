@@ -1,18 +1,32 @@
 {
 	"name": "typo3/cms-indexed-search",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be found in the extension \"doc_indexed_search\".",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"php": ">=7.0.0 <=7.1.99",
+		"typo3/cms-core": "8.7.5"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"replace": {
 		"indexed_search": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-TYPO3_8-7": "8.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "indexed_search"
+		}
 	},
 	"autoload": {
 		"psr-4": {

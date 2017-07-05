@@ -1,18 +1,33 @@
 {
 	"name": "typo3/cms-sys-action",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "Actions are 'programmed' admin tasks which can be performed by selected regular users from the Task Center. An action could be creation of backend users, fixed SQL SELECT queries, listing of records, direct edit access to selected records etc.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"php": ">=7.0.0 <=7.1.99",
+		"typo3/cms-core": "8.7.5",
+		"typo3/cms-taskcenter": "8.7.5"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"replace": {
 		"sys_action": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-TYPO3_8-7": "8.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "sys_action"
+		}
 	},
 	"autoload": {
 		"psr-4": {

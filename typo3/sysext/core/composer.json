@@ -1,12 +1,17 @@
 {
 	"name": "typo3/cms-core",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "The core library of TYPO3.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"php" : "^7.0",
+		"php": ">=7.0.0 <=7.1.99",
 		"typo3/cms-cli": "^1.0"
 	},
 	"conflict": {
@@ -16,12 +21,16 @@
 		"core": "*"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-TYPO3_8-7": "8.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"protected": true,
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true
-			}
+			},
+			"extension-key": "core"
 		},
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [

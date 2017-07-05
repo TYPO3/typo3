@@ -1,14 +1,20 @@
 {
 	"name": "typo3/cms-install",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "The Install Tool mounted as the module Tools>Install in TYPO3.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*",
-		"typo3/cms-fluid": "*",
-		"typo3/cms-extbase": "*"
+		"php": ">=7.0.0 <=7.1.99",
+		"typo3/cms-core": "8.7.5",
+		"typo3/cms-extbase": "8.7.5",
+		"typo3/cms-fluid": "8.7.5"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -17,12 +23,16 @@
 		"install": "*"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-TYPO3_8-7": "8.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"protected": true,
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true
-			}
+			},
+			"extension-key": "install"
 		}
 	},
 	"autoload": {
