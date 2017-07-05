@@ -205,7 +205,7 @@
                 <source>Redo</source>
             </trans-unit>
             <trans-unit id="formEditor.new_page_button" xml:space="preserve">
-                <source>Create new page</source>
+                <source>Create new step</source>
             </trans-unit>
             <trans-unit id="formEditor.structure" xml:space="preserve">
                 <source>Structure</source>
@@ -243,7 +243,7 @@
                 <source>Container elements</source>
             </trans-unit>
             <trans-unit id="formEditor.formElementGroups.page.label" xml:space="preserve">
-                <source>Page types</source>
+                <source>Step types</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" xml:space="preserve">
@@ -271,7 +271,7 @@
                 <source>New element</source>
             </trans-unit>
             <trans-unit id="formEditor.modals.newPages.dialogTitle" xml:space="preserve">
-                <source>New page</source>
+                <source>New step</source>
             </trans-unit>
 
             <trans-unit id="formEditor.modals.removeElement.dialogTitle" xml:space="preserve">
@@ -290,7 +290,7 @@
                 <source>Error</source>
             </trans-unit>
             <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" xml:space="preserve">
-                <source>There must be at least one page within your form.</source>
+                <source>There must be at least one step within your form.</source>
             </trans-unit>
 
             <trans-unit id="formEditor.modals.close.dialogMessage" xml:space="preserve">
@@ -307,7 +307,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.pagination.title" xml:space="preserve">
-                <source>Page {0} of {1}</source>
+                <source>Step {0} of {1}</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" xml:space="preserve">
@@ -592,41 +592,41 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Page.label" xml:space="preserve">
-                <source>Page</source>
+                <source>Step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.label.label" xml:space="preserve">
-                <source>Page name</source>
+                <source>Step name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" xml:space="preserve">
                 <source>Previous button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" xml:space="preserve">
-                <source>previous Page</source>
+                <source>previous Step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" xml:space="preserve">
                 <source>Next button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" xml:space="preserve">
-                <source>next Page</source>
+                <source>next Step</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.SummaryPage.label" xml:space="preserve">
-                <source>Summary page</source>
+                <source>Summary step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" xml:space="preserve">
-                <source>Page name</source>
+                <source>Step name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" xml:space="preserve">
                 <source>Previous button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" xml:space="preserve">
-                <source>previous Page</source>
+                <source>previous Step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" xml:space="preserve">
                 <source>Next button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" xml:space="preserve">
-                <source>next Page</source>
+                <source>next Step</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Fieldset.label" xml:space="preserve">
