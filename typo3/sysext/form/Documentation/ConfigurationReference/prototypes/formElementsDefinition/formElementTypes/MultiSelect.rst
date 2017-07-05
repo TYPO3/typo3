@@ -24,6 +24,12 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.properties.elementerrorclassattribute:
 .. include:: MultiSelect/properties/elementErrorClassAttribute.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.properties.prependOptionLabel:
+.. include:: MultiSelect/properties/prependOptionLabel.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.singleselect.properties.prependOptionValue:
+.. include:: MultiSelect/properties/prependOptionValue.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor:
 .. include:: MultiSelect/formEditor.rst
 
