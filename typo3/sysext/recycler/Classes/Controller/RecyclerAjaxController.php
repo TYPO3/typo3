@@ -43,6 +43,7 @@ class RecyclerAjaxController
         // Configuration, variable assignment
         $this->conf['action'] = GeneralUtility::_GP('action');
         $this->conf['table'] = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : '';
+        $modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
         if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
             $this->conf['limit'] = (int)$modTS['properties']['recordsPageLimit'];
         } else {
