@@ -1,10 +1,10 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Extbase Framework for Extensions',
-    'description' => 'A framework to build extensions in the style of TYPO3 Flow for TYPO3 CMS.',
+    'description' => 'A framework to build extensions for TYPO3 CMS.',
     'category' => 'misc',
-    'author' => 'Extbase Team',
-    'author_email' => '',
+    'author' => 'TYPO3 Core Team',
+    'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',
     'state' => 'stable',
     'uploadfolder' => 0,
