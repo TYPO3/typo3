@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Form\Element;
 
 /*
@@ -15,12 +16,14 @@ namespace TYPO3\CMS\T3editor\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\T3editor\Exception\InvalidModeException;
+use TYPO3\CMS\T3editor\Mode;
+use TYPO3\CMS\T3editor\Registry\AddonRegistry;
+use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 use TYPO3\CMS\T3editor\T3editor;
 
 /**
@@ -28,29 +31,6 @@ use TYPO3\CMS\T3editor\T3editor;
  */
 class T3editorElement extends AbstractFormElement
 {
-    const MODE_CSS = 'css';
-    const MODE_HTML = 'html';
-    const MODE_JAVASCRIPT = 'javascript';
-    const MODE_MIXED = 'mixed';
-    const MODE_PHP = 'php';
-    const MODE_SPARQL = 'sparql';
-    const MODE_TYPOSCRIPT = 'typoscript';
-    const MODE_XML = 'xml';
-
-    /**
-     * @var array
-     */
-    protected $allowedModes = [
-        self::MODE_CSS,
-        self::MODE_HTML,
-        self::MODE_JAVASCRIPT,
-        self::MODE_MIXED,
-        self::MODE_PHP,
-        self::MODE_SPARQL,
-        self::MODE_TYPOSCRIPT,
-        self::MODE_XML,
-    ];
-
     /**
      * @var array
      */
@@ -62,30 +42,11 @@ class T3editorElement extends AbstractFormElement
     protected $mode = '';
 
     /**
-     * Counts the editors on the current page
-     *
-     * @var int
-     */
-    protected $editorCounter = 0;
-
-    /**
      * Relative path to EXT:t3editor
      *
      * @var string
      */
     protected $extPath = '';
-
-    /**
-     * @var string
-     */
-    protected $codemirrorPath = 'Resources/Public/JavaScript/Contrib/codemirror/js/';
-
-    /**
-     * RequireJS modules loaded for code completion
-     *
-     * @var array
-     */
-    protected $codeCompletionComponents = ['TsRef', 'CompletionResult', 'TsParser', 'TsCodeCompletion'];
 
     /**
      * Default field wizards enabled for this element.
@@ -99,7 +60,7 @@ class T3editorElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -114,19 +75,35 @@ class T3editorElement extends AbstractFormElement
      * Render t3editor element
      *
      * @return array As defined in initializeResultArray() of AbstractNode
+     * @throws \TYPO3\CMS\T3editor\Exception\InvalidModeException
+     * @throws \InvalidArgumentException
+     * @throws \BadFunctionCallException
      */
-    public function render()
+    public function render(): array
     {
-        $this->getLanguageService()->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
         $this->extPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('t3editor'));
-        $this->codemirrorPath = $this->extPath . $this->codemirrorPath;
+        $codeMirrorPath = $this->extPath . 'Resources/Public/JavaScript/Contrib/cm';
 
         $this->resultArray = $this->initializeResultArray();
+        $this->resultArray['stylesheetFiles'][] = $codeMirrorPath . '/lib/codemirror.css';
+        $this->resultArray['stylesheetFiles'][] = $this->extPath . '/Resources/Public/Css/t3editor.css';
+        $this->resultArray['requireJsModules'][] = [
+            'TYPO3/CMS/T3editor/T3editor' => 'function(T3editor) {T3editor.findAndInitializeEditors()}'
+        ];
+
+        // Compile and register t3editor configuration
+        GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();
+
+        $registeredAddons = AddonRegistry::getInstance()->getForMode($this->getMode()->getFormatCode());
+        foreach ($registeredAddons as $addon) {
+            foreach ($addon->getCssFiles() as $cssFile) {
+                $this->resultArray['stylesheetFiles'][] = $cssFile;
+            }
+        }
 
         $parameterArray = $this->data['parameterArray'];
 
         $rows = MathUtility::forceIntegerInRange($parameterArray['fieldConf']['config']['rows'] ?: 10, 1, 40);
-        $this->setMode(isset($parameterArray['fieldConf']['config']['format']) ? $parameterArray['fieldConf']['config']['format'] : T3editor::MODE_MIXED);
 
         $attributes = [];
         $attributes['rows'] = $rows;
@@ -136,7 +113,7 @@ class T3editorElement extends AbstractFormElement
 
         $attributeString = '';
         foreach ($attributes as $param => $value) {
-            $attributeString .= $param . '="' . htmlspecialchars($value) . '" ';
+            $attributeString .= $param . '="' . htmlspecialchars((string)$value) . '" ';
         }
 
         $editorHtml = $this->getHTMLCodeForEditor(
@@ -182,47 +159,7 @@ class T3editorElement extends AbstractFormElement
 
         $this->resultArray['html'] = implode(LF, $html);
 
-        $this->resultArray['additionalJavaScriptPost'][] = 'require(["TYPO3/CMS/T3editor/T3editor"], function(T3editor) {T3editor.findAndInitializeEditors();});';
-
-        $this->initJavascriptCode();
         return $this->resultArray;
-    }
-
-    /**
-     * Sets the type of code to edit, use one of the predefined constants
-     *
-     * @param string $mode Expects one of the predefined constants
-     * @throws \InvalidArgumentException
-     */
-    public function setMode($mode)
-    {
-        if (!in_array($mode, $this->allowedModes, true)) {
-            throw new \InvalidArgumentException($mode . 'is not allowed', 1438352574);
-        }
-        $this->mode = $mode;
-    }
-
-    /**
-     * Get mode
-     *
-     * @return string
-     */
-    public function getMode()
-    {
-        return $this->mode;
-    }
-
-    /**
-     * Init the JavaScript code (header part) for editor
-     */
-    protected function initJavascriptCode()
-    {
-        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
-        if ($this->mode === self::MODE_TYPOSCRIPT) {
-            foreach ($this->codeCompletionComponents as $codeCompletionComponent) {
-                $this->resultArray['requireJsModules'][] = 'TYPO3/CMS/T3editor/Plugins/CodeCompletion/' . $codeCompletionComponent;
-            }
-        }
     }
 
     /**
@@ -234,136 +171,70 @@ class T3editorElement extends AbstractFormElement
      * @param string $additionalParams Any additional editor parameters
      * @param string $alt Alt attribute
      * @param array $hiddenfields
+     *
      * @return string Generated HTML code for editor
+     * @throws \TYPO3\CMS\T3editor\Exception\InvalidModeException
      */
-    protected function getHTMLCodeForEditor($name, $class = '', $content = '', $additionalParams = '', $alt = '', array $hiddenfields = [])
-    {
+    protected function getHTMLCodeForEditor(
+        string $name,
+        string $class = '',
+        string $content = '',
+        string $additionalParams = '',
+        string $alt = '',
+        array $hiddenfields = []
+    ): string {
         $code = [];
         $attributes = [];
+        $mode = $this->getMode();
+        $registeredAddons = AddonRegistry::getInstance()->getForMode($mode->getFormatCode());
+
         $attributes['class'] = $class . ' t3editor';
         $attributes['alt'] = $alt;
-        $attributes['id'] = 't3editor_' . $this->editorCounter;
+        $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
-        $attributes['data-labels'] = json_encode($this->getLanguageService()->getLabelsWithPrefix('js.', 'label_'));
-        $attributes['data-instance-number'] =  $this->editorCounter;
-        $attributes['data-editor-path'] =  $this->extPath;
-        $attributes['data-codemirror-path'] =  $this->codemirrorPath;
-        $attributes['data-ajaxsavetype'] = ''; // no ajax save in FormEngine at the moment
-        $attributes['data-parserfile'] = $this->getParserfileByMode($this->mode);
-        $attributes['data-stylesheet'] = $this->getStylesheetByMode($this->mode);
+
+        $settings = AddonRegistry::getInstance()->compileSettings($registeredAddons);
+        $addons = [];
+        foreach ($registeredAddons as $addon) {
+            $addons[] = $addon->getIdentifier();
+        }
+
+        $attributes['data-codemirror-config'] = json_encode([
+            'mode' => $mode->getIdentifier(),
+            'addons' => json_encode($addons),
+            'options' => json_encode($settings)
+        ]);
 
         $attributesString = '';
         foreach ($attributes as $attribute => $value) {
-            $attributesString .= $attribute . '="' . htmlspecialchars($value) . '" ';
+            $attributesString .= $attribute . '="' . htmlspecialchars((string)$value) . '" ';
         }
         $attributesString .= $additionalParams;
 
-        $code[] = '<div class="t3editor">';
-        $code[] =   '<div class="t3e_wrap">';
-        $code[] =       str_replace([CR, LF], '', file_get_contents(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')));
-        $code[] =   '</div>';
-        $code[] =   '<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
-        $code[] = '</div>';
+        $code[] = '<textarea ' . $attributesString . '>' . htmlspecialchars($content) . '</textarea>';
 
         if (!empty($hiddenfields)) {
-            foreach ($hiddenfields as $name => $value) {
-                $code[] = '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />';
+            foreach ($hiddenfields as $attributeName => $value) {
+                $code[] = '<input type="hidden" name="' . htmlspecialchars($attributeName) . '" value="' . htmlspecialchars((string)$value) . '" />';
             }
         }
-        $this->editorCounter++;
         return implode(LF, $code);
     }
 
     /**
-     * Determine the correct parser js file for given mode
-     *
-     * @param string $mode
-     * @return string Parser file name
+     * @return Mode
+     * @throws InvalidModeException
      */
-    protected function getParserfileByMode($mode)
+    protected function getMode(): Mode
     {
-        $parserfile = [];
-        switch ($mode) {
-            case self::MODE_TYPOSCRIPT:
-                $relPath = '../../../parse_typoscript/';
-                $parserfile = [$relPath . 'tokenizetyposcript.js', $relPath . 'parsetyposcript.js'];
-                break;
-            case self::MODE_JAVASCRIPT:
-                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js'];
-                break;
-            case self::MODE_CSS:
-                $parserfile = ['parsecss.js'];
-                break;
-            case self::MODE_XML:
-                $parserfile = ['parsexml.js'];
-                break;
-            case self::MODE_SPARQL:
-                $parserfile = ['parsesparql.js'];
-                break;
-            case self::MODE_HTML:
-                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', 'parsehtmlmixed.js'];
-                break;
-            case self::MODE_PHP:
-            case self::MODE_MIXED:
-                $parserfile = ['tokenizejavascript.js', 'parsejavascript.js', 'parsecss.js', 'parsexml.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js'];
-                break;
+        $config = $this->data['parameterArray']['fieldConf']['config'];
+
+        $identifier = $config['format'];
+        if (strpos($config['format'], '/') !== false) {
+            $parts = explode('/', $config['format']);
+            $identifier = end($parts);
         }
-        return json_encode($parserfile);
-    }
 
-    /**
-     * Determine the correct css file for given mode
-     *
-     * @param string $mode
-     * @return string css file name
-     */
-    protected function getStylesheetByMode($mode)
-    {
-        switch ($mode) {
-            case self::MODE_TYPOSCRIPT:
-                $stylesheet = [$this->extPath . 'Resources/Public/Css/t3editor_typoscript_colors.css'];
-                break;
-            case self::MODE_JAVASCRIPT:
-                $stylesheet = [$this->codemirrorPath . '../css/jscolors.css'];
-                break;
-            case self::MODE_CSS:
-                $stylesheet = [$this->codemirrorPath . '../css/csscolors.css'];
-                break;
-            case self::MODE_XML:
-                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css'];
-                break;
-            case self::MODE_HTML:
-                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css'];
-                break;
-            case self::MODE_SPARQL:
-                $stylesheet = [$this->codemirrorPath . '../css/sparqlcolors.css'];
-                break;
-            case self::MODE_PHP:
-                $stylesheet = [$this->codemirrorPath . '../contrib/php/css/phpcolors.css'];
-                break;
-            case self::MODE_MIXED:
-                $stylesheet = [$this->codemirrorPath . '../css/xmlcolors.css', $this->codemirrorPath . '../css/jscolors.css', $this->codemirrorPath . '../css/csscolors.css', $this->codemirrorPath . '../contrib/php/css/phpcolors.css'];
-                break;
-            default:
-                $stylesheet = [];
-        }
-        $stylesheet[] = $this->extPath . 'Resources/Public/Css/t3editor_inner.css';
-        return json_encode($stylesheet);
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
+        return ModeRegistry::getInstance()->getByFormatCode($identifier);
     }
 }

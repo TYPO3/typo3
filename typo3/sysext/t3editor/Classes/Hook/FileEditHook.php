@@ -17,7 +17,10 @@ namespace TYPO3\CMS\T3editor\Hook;
 
 use TYPO3\CMS\Backend\Controller\File\EditFileController;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\T3editor\Form\Element\T3editorElement;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\T3editor\Exception\InvalidModeException;
+use TYPO3\CMS\T3editor\Registry\ModeRegistry;
+use TYPO3\CMS\T3editor\T3editor;
 
 /**
  * File edit hook for t3editor
@@ -25,55 +28,33 @@ use TYPO3\CMS\T3editor\Form\Element\T3editorElement;
 class FileEditHook
 {
     /**
-     * Editor mode to file extension mapping. This is just temporarily in place and will be removed after refactoring
-     * EXT:t3editor.
-     *
-     * @var array
-     */
-    protected $fileExtensions = [
-        T3editorElement::MODE_CSS => ['css'],
-        T3editorElement::MODE_HTML => ['htm', 'html'],
-        T3editorElement::MODE_JAVASCRIPT => ['js'],
-        T3editorElement::MODE_PHP => ['php', 'php5', 'php7', 'phps'],
-        T3editorElement::MODE_SPARQL => ['rq'],
-        T3editorElement::MODE_TYPOSCRIPT => ['ts', 'typoscript', 'txt'],
-        T3editorElement::MODE_XML => ['xml'],
-    ];
-
-    /**
      * Hook-function: inject t3editor JavaScript code before the page is compiled
      * called in file_edit module
      *
      * @param array $parameters
      * @param EditFileController $pObj
+     *
+     * @throws \InvalidArgumentException
      */
     public function preOutputProcessingHook(array $parameters, EditFileController $pObj)
     {
+        // Compile and register t3editor configuration
+        GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();
+
         $target = '';
         if (isset($parameters['target']) && is_string($parameters['target'])) {
             $target = $parameters['target'];
         }
+
+        $fileExtension = ResourceFactory::getInstance()->retrieveFileOrFolderObject($target)->getExtension();
+        $modeRegistry = GeneralUtility::makeInstance(ModeRegistry::class);
+        try {
+            $mode = $modeRegistry->getByFileExtension($fileExtension);
+        } catch (InvalidModeException $e) {
+            $mode = $modeRegistry->getDefaultMode();
+        }
+
         $parameters['dataColumnDefinition']['config']['renderType'] = 't3editor';
-        $parameters['dataColumnDefinition']['config']['format'] = $this->determineFormatByExtension($target);
-    }
-
-    /**
-     * @param string $fileIdentifier
-     * @return string
-     */
-    protected function determineFormatByExtension(string $fileIdentifier): string
-    {
-        $fileExtension = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileIdentifier)->getExtension();
-        if (empty($fileExtension)) {
-            return T3editorElement::MODE_MIXED;
-        }
-
-        foreach ($this->fileExtensions as $format => $extensions) {
-            if (in_array($fileExtension, $extensions, true)) {
-                return $format;
-            }
-        }
-
-        return T3editorElement::MODE_MIXED;
+        $parameters['dataColumnDefinition']['config']['format'] = $mode->getFormatCode();
     }
 }

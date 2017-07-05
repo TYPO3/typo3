@@ -24,6 +24,7 @@
     "bootstrap-slider": "^9.8.0",
     "chosen-js": "^1.7.0",
     "ckeditor": "^4.7.1",
+    "codemirror": "^5.28.0",
     "cropper": "^2.3.4",
     "d3": "^4.9.1",
     "datatables": "^1.10.13",

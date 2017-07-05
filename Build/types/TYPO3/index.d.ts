@@ -69,3 +69,5 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
   import * as imagesloaded from 'imagesloaded';
   export = imagesloaded;
 }
+
+declare module 'cm/lib/codemirror';

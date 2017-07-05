@@ -126,9 +126,7 @@ module.exports = function (grunt) {
 			},
 			t3editor: {
 				files: {
-					'<%= paths.t3editor %>Public/Css/t3editor.css': '<%= paths.sass %>editor.scss',
-					'<%= paths.t3editor %>Public/Css/t3editor_inner.css': '<%= paths.sass %>editor_inner.scss',
-					'<%= paths.t3editor %>Public/Css/t3editor_typoscript_colors.css': '<%= paths.sass %>editor_typoscript_colors.scss'
+					'<%= paths.t3editor %>Public/Css/t3editor.css': '<%= paths.sass %>editor.scss'
 				}
 			}
 		},
@@ -186,7 +184,7 @@ module.exports = function (grunt) {
 				src: '<%= paths.linkvalidator %>Public/Css/*.css'
 			},
 			t3editor: {
-				src: '<%= paths.t3editor %>Public/Css/*.css'
+				src: '<%= paths.t3editor %>Public/Css/**/*.css'
 			},
 			workspaces: {
 				src: '<%= paths.workspaces %>Public/Css/*.css'
@@ -407,6 +405,14 @@ module.exports = function (grunt) {
 					'plugins/': 'ckeditor/plugins/',
 					'skins/': 'ckeditor/skins/',
 					'lang/': 'ckeditor/lang/'
+				}
+			},
+			t3editor: {
+				options: {
+					destPrefix: "<%= paths.t3editor %>Public/JavaScript/Contrib"
+				},
+				files: {
+					'cm/': 'codemirror/'
 				}
 			},
 			all: {

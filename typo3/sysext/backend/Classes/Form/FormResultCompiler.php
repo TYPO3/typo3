@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -266,10 +265,6 @@ class FormResultCompiler
             foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
                 $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
             }
-        }
-        // Load codemirror for T3Editor
-        if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $pageRenderer->addJsFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
         }
         // We want to load jQuery-ui inside our js. Enable this using requirejs.
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.inline.js');
