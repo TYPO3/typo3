@@ -41,4 +41,4 @@ rendering accordingly to the previous output.
 For managing content in the TYPO3 Backend and can be used transparently when migrating from CSS Styled
 Content to Fluid Styled Content.
 
-.. index:: Fluid, Frontend, PHP-API, TypoScript
+.. index:: Fluid, Frontend, PHP-API, TypoScript, NotScanned

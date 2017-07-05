@@ -46,4 +46,4 @@ If this kind of menu is needed it can be easily achieved with a TMENU as well:
       }
    }
 
-.. index:: Frontend, TypoScript
+.. index:: Frontend, TypoScript, NotScanned

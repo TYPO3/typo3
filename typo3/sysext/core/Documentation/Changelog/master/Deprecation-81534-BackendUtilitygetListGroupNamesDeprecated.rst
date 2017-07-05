@@ -32,4 +32,4 @@ Migration
 Use method :php:`BackendUtility::getGroupNames()` instead and keep an eye on the
 different non-admin use of the method if switching.
 
-.. index:: Database, PHP-API, TCA
+.. index:: Database, PHP-API, TCA, FullyScanned

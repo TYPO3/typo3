@@ -55,21 +55,43 @@ class UpgradeAnalysis extends AbstractAction
         ]);
         $documentationFiles = array_reverse($documentationFiles);
 
-        $filesMarkedAsShown = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_registry')
-            ->select(['*'], 'sys_registry', [
-                'entry_namespace' => 'upgradeAnalysisIgnoredFiles'
-            ])->fetchAll();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_registry');
+        $filesMarkedAsRead = $queryBuilder
+            ->select('*')
+            ->from('sys_registry')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'entry_namespace', $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles', \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
 
-        $hashes = [];
-        foreach ($filesMarkedAsShown as $file) {
-            $hashes[] = $file['entry_key'];
+        $hashesMarkedAsRead = [];
+        foreach ($filesMarkedAsRead as $file) {
+            $hashesMarkedAsRead[] = $file['entry_key'];
+        }
+
+        $fileMarkedAsNotAffected = $queryBuilder
+            ->select('*')
+            ->from('sys_registry')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'entry_namespace', $queryBuilder->createNamedParameter('extensionScannerNotAffected', \PDO::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+
+        $hashesMarkedAsNotAffected = [];
+        foreach ($fileMarkedAsNotAffected as $file) {
+            $hashesMarkedAsNotAffected[] = $file['entry_key'];
         }
 
         $readFiles = [];
         foreach ($documentationFiles as $section => &$files) {
             foreach ($files as $fileId => $fileData) {
-                if (in_array($fileData['file_hash'], $hashes, true)) {
+                if (in_array($fileData['file_hash'], $hashesMarkedAsRead, true)) {
                     $fileData['section'] = $section;
                     $readFiles[$fileId] = $fileData;
                     unset($files[$fileId]);
@@ -77,8 +99,20 @@ class UpgradeAnalysis extends AbstractAction
             }
         }
 
+        $notAffectedFiles = [];
+        foreach ($documentationFiles as $section => &$files) {
+            foreach ($files as $fileId => $fileData) {
+                if (in_array($fileData['file_hash'], $hashesMarkedAsNotAffected, true)) {
+                    $fileData['section'] = $section;
+                    $notAffectedFiles[$fileId] = $fileData;
+                    unset($files[$fileId]);
+                }
+            }
+        }
+
         $this->view->assign('files', $documentationFiles);
         $this->view->assign('shownFiles', $readFiles);
+        $this->view->assign('notAffectedFiles', $notAffectedFiles);
         return $this->view->render();
     }
 }

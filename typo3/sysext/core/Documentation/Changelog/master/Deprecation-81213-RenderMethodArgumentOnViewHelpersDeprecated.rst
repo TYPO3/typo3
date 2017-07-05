@@ -30,4 +30,4 @@ Migration
 Switch to ``initializeArguments`` method (override this from parent) and call ``registerArgument`` to register each
 argument supported by the ViewHelper.
 
-.. index:: Fluid
+.. index:: Fluid, NotScanned

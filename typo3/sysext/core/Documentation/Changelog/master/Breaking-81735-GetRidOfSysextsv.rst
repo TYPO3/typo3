@@ -15,7 +15,8 @@ The AuthenticationService has been moved into sysext:core. Class aliases are in 
 Impact
 ======
 
-The namespace of the classes :php:`AbstractAuthenticationService` and :php:`AuthenticationService` changed from :php:`\TYPO3\CMS\Sv` to :php:`\TYPO3\CMS\Core\Authentication`.
+The namespace of the classes :php:`AbstractAuthenticationService` and :php:`AuthenticationService` changed
+from :php:`\TYPO3\CMS\Sv` to :php:`\TYPO3\CMS\Core\Authentication`.
 
 
 Affected Installations
@@ -29,4 +30,4 @@ Migration
 
 Use the new namespaces as mentioned above.
 
-.. index:: Backend, PHP-API
+.. index:: Backend, PHP-API, FullyScanned

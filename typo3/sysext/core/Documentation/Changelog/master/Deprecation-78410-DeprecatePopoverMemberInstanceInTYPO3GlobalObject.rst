@@ -39,4 +39,4 @@ To use popovers in a amd module, add it as a dependency and a corresponding argu
 
 	define('TYPO3\CMS\Extension\Module', ['jquery', 'TYPO3\CMS\Backend\Popover', 'bootstrap'], function($, Popover) {});
 
-.. index:: Backend, JavaScript
+.. index:: Backend, JavaScript, NotScanned

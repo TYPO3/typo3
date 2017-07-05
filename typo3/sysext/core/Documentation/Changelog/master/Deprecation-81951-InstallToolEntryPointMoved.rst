@@ -31,4 +31,4 @@ Migration
 
 Change bookmarks or scripts from the old entry point(s) to the new one.
 
-.. index:: Backend
+.. index:: Backend, NotScanned

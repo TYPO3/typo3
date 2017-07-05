@@ -32,57 +32,13 @@ The following PHP classes that have been previously deprecated for v8 have been 
 * TYPO3\CMS\Frontend\Page\FramesetRenderer
 * TYPO3\CMS\Lowlevel\CleanerCommand
 
-
 The following PHP interfaces have been dropped:
 * TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface
 
 The following PHP interface signatures have been changed:
 * TYPO3\CMS\Extbase\Persistence\Generic\QueryInterface->like() - Third argument dropped
 
-The following PHP class methods that have been previously deprecated for v8 have been removed:
-* TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg()
-* TYPO3\CMS\Backend\Controller\BackendController->addCssFile()
-* TYPO3\CMS\Backend\Controller\BackendController->addJavascript()
-* TYPO3\CMS\Backend\Controller\BackendController->addJavascriptFile()
-* TYPO3\CMS\Backend\Controller\BackendController->includeLegacyBackendItems()
-* TYPO3\CMS\Backend\Controller\Page\LocalizationController->getRecordUidsToCopy()
-* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->printContent()
-* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getAllowedLanguagesForBackendUser()
-* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getExcludeQueryPart()
-* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getPreviousLocalizedRecordUid()
-* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getRecordLocalization()
-* TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->sanitizeMaxItems()
-* TYPO3\CMS\Backend\Module\AbstractFunctionModule->getBackPath()
-* TYPO3\CMS\Backend\Module\AbstractFunctionModule->getDatabaseConnection()
-* TYPO3\CMS\Backend\Module\AbstractFunctionModule->incLocalLang()
-* TYPO3\CMS\Backend\Module\BaseScriptClass->getDatabaseConnection()
-* TYPO3\CMS\Backend\Form\AbstractFormElement->isWizardsDisabled()
-* TYPO3\CMS\Backend\Form\AbstractFormElement->renderWizards()
-* TYPO3\CMS\Backend\Form\AbstractNode->getValidationDataAsDataAttribute()
-* TYPO3\CMS\Backend\Form\FormResultCompiler->JStop()
-* TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->divider()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->funcMenu()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getContextMenuCode()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getDragDropCode()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getHeader()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getResourceHeader()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenu()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenuRaw()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->header()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->icons()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->loadJavascriptLib()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->section()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionBegin()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionEnd()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionHeader()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->t3Button()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->getVersionSelector()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->viewPageIcon()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapInCData()
-* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapScriptTags()
-* TYPO3\CMS\Backend\Template\ModuleTemplate->getVersionSelector()
-* TYPO3\CMS\Backend\View\PageLayoutView->pages_getTree()
+The following PHP static class methods that have been previously deprecated for v8 have been removed:
 * TYPO3\CMS\Backend\Utility\BackendUtility::getAjaxUrl()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
 * TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink()
@@ -96,38 +52,9 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Backend\Utility\BackendUtility::processParams()
 * TYPO3\CMS\Backend\Utility\BackendUtility::replaceL10nModeFields()
 * TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup()
-* TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->veriCode()
-* TYPO3\CMS\Core\Charset\CharsetConverter->convCapitalize()
-* TYPO3\CMS\Core\Charset\CharsetConverter->conv_case()
-* TYPO3\CMS\Core\Charset\CharsetConverter->euc_char2byte_pos()
-* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strlen()
-* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strtrunc()
-* TYPO3\CMS\Core\Charset\CharsetConverter->euc_substr()
-* TYPO3\CMS\Core\Charset\CharsetConverter->getPreferredClientLanguage()
-* TYPO3\CMS\Core\Charset\CharsetConverter->strlen()
-* TYPO3\CMS\Core\Charset\CharsetConverter->strtrunc()
-* TYPO3\CMS\Core\Charset\CharsetConverter->substr()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_byte2char_pos()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strlen()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strpos()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
-* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
-* TYPO3\CMS\Core\Core\Bootstrap->loadExtensionTables()
-* TYPO3\CMS\Core\Database\RelationHandler->readyForInterface()
-* TYPO3\CMS\Core\Database\QueryView->tableWrap()
 * TYPO3\CMS\Core\DataHandling\DataHandler::rmComma()
 * TYPO3\CMS\Core\DataHandling\DataHandler::destPathFromUploadFolder()
 * TYPO3\CMS\Core\DataHandling\DataHandler::noRecordsFromUnallowedTables()
-* TYPO3\CMS\Core\Imaging\GraphicalFunctions->createTempSubDir()
-* TYPO3\CMS\Core\Imaging\GraphicalFunctions->prependAbsolutePath()
-* TYPO3\CMS\Core\Imaging\IconRegistry->getDeprecationSettings()
-* TYPO3\CMS\Core\Messaging\FlashMessage->getClass()
-* TYPO3\CMS\Core\Messaging\FlashMessage->getIconName()
-* TYPO3\CMS\Core\TypoScript\TemplateService->splitConfArray()
-* TYPO3\CMS\Core\TypoScript\TemplateService->fileContent()
-* TYPO3\CMS\Core\TypoScript\TemplateService->removeQueryString()
-* TYPO3\CMS\Core\TypoScript\TemplateService->sortedKeyList()
 * TYPO3\CMS\Core\Utility\ArrayUtility::inArray()
 * TYPO3\CMS\Core\Utility\ClientUtility::getDeviceType()
 * TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addExtJSModule()
@@ -159,8 +86,85 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Utility\GeneralUtility::strtolower()
 * TYPO3\CMS\Core\Utility\GeneralUtility::strtoupper()
 * TYPO3\CMS\Core\Utility\GeneralUtility::xmlGetHeaderAttribs()
-* TYPO3\CMS\Extbase\Domain\Model\Category->getIcon()
-* TYPO3\CMS\Extbase\Domain\Model\Category->setIcon()
+* TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit()
+* TYPO3\CMS\Frontend\Page\PageRepository::getHash()
+* TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
+
+The following PHP class methods that have been previously deprecated for v8 have been removed:
+* TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg()
+* TYPO3\CMS\Backend\Controller\BackendController->addCssFile()
+* TYPO3\CMS\Backend\Controller\BackendController->addJavascript()
+* TYPO3\CMS\Backend\Controller\BackendController->addJavascriptFile()
+* TYPO3\CMS\Backend\Controller\BackendController->includeLegacyBackendItems()
+* TYPO3\CMS\Backend\Controller\Page\LocalizationController->getRecordUidsToCopy()
+* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->printContent()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getAllowedLanguagesForBackendUser()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getExcludeQueryPart()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getPreviousLocalizedRecordUid()
+* TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository->getRecordLocalization()
+* TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->sanitizeMaxItems()
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->getBackPath()
+* [NotScanned] TYPO3\CMS\Backend\Module\AbstractFunctionModule->getDatabaseConnection()
+* TYPO3\CMS\Backend\Module\AbstractFunctionModule->incLocalLang()
+* [NotScanned] TYPO3\CMS\Backend\Module\BaseScriptClass->getDatabaseConnection()
+* TYPO3\CMS\Backend\Form\AbstractFormElement->isWizardsDisabled()
+* TYPO3\CMS\Backend\Form\AbstractFormElement->renderWizards()
+* TYPO3\CMS\Backend\Form\AbstractNode->getValidationDataAsDataAttribute()
+* TYPO3\CMS\Backend\Form\FormResultCompiler->JStop()
+* TYPO3\CMS\Backend\Routing\UriBuilder->buildUriFromAjaxId()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->divider()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->funcMenu()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getContextMenuCode()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getDragDropCode()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getResourceHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenu()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getTabMenuRaw()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->header()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->icons()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->loadJavascriptLib()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->section()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionBegin()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionEnd()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->sectionHeader()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->t3Button()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->getVersionSelector()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->viewPageIcon()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapInCData()
+* TYPO3\CMS\Backend\Template\DocumentTemplate->wrapScriptTags()
+* TYPO3\CMS\Backend\Template\ModuleTemplate->getVersionSelector()
+* TYPO3\CMS\Backend\View\PageLayoutView->pages_getTree()
+* TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->veriCode()
+* TYPO3\CMS\Core\Charset\CharsetConverter->convCapitalize()
+* TYPO3\CMS\Core\Charset\CharsetConverter->conv_case()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_char2byte_pos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->euc_substr()
+* TYPO3\CMS\Core\Charset\CharsetConverter->getPreferredClientLanguage()
+* TYPO3\CMS\Core\Charset\CharsetConverter->strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->substr()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_byte2char_pos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strlen()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strpos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
+* TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
+* TYPO3\CMS\Core\Core\Bootstrap->loadExtensionTables()
+* TYPO3\CMS\Core\Database\RelationHandler->readyForInterface()
+* TYPO3\CMS\Core\Database\QueryView->tableWrap()
+* TYPO3\CMS\Core\Imaging\GraphicalFunctions->createTempSubDir()
+* TYPO3\CMS\Core\Imaging\GraphicalFunctions->prependAbsolutePath()
+* TYPO3\CMS\Core\Imaging\IconRegistry->getDeprecationSettings()
+* [NotScanned] TYPO3\CMS\Core\Messaging\FlashMessage->getClass()
+* TYPO3\CMS\Core\Messaging\FlashMessage->getIconName()
+* TYPO3\CMS\Core\TypoScript\TemplateService->splitConfArray()
+* TYPO3\CMS\Core\TypoScript\TemplateService->fileContent()
+* TYPO3\CMS\Core\TypoScript\TemplateService->removeQueryString()
+* TYPO3\CMS\Core\TypoScript\TemplateService->sortedKeyList()
+* [NotScanned] TYPO3\CMS\Extbase\Domain\Model\Category->getIcon()
+* [NotScanned] TYPO3\CMS\Extbase\Domain\Model\Category->setIcon()
 * TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison->getParameterIdentifier()
 * TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison->setParameterIdentifier()
 * TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getUsePreparedStatement()
@@ -211,10 +215,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_whichScript()
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->includeLibraries()
 * TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setParseTime()
-* TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit()
 * TYPO3\CMS\Frontend\Page\PageRepository->getPathFromRootline()
-* TYPO3\CMS\Frontend\Page\PageRepository::getHash()
-* TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
 * TYPO3\CMS\IndexedSearch\Indexer->includeCrawlerClass()
 * TYPO3\CMS\Lang\LanguageService->addModuleLabels()
 * TYPO3\CMS\Lang\LanguageService->getParserFactory()
@@ -224,42 +225,55 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList->makeQueryArray()
 * TYPO3\CMS\Taskcenter\Controller\TaskModuleController->printContent()
 
-The following methods changed signature according to previous deprecations in v8:
+The following methods changed signature according to previous deprecations in v8 at the end of the argument list:
 * TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping() - Third and fourth argument dropped
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping() - Second and third argument dropped
 * TYPO3\CMS\Core\DataHandling\DataHandler->extFileFunctions() - Fourth argument dropped
-* TYPO3\CMS\Core\Html\HtmlParser->RTE_transform() - Second argument unused
 * TYPO3\CMS\Core\Localization\LanguageStore->setConfiguration() - Third argument dropped
-* TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData() - Third and fourth argument unused
 * TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser->getParsedData() - Third argument dropped
 * TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface->getParsedData() - Third argument dropped
 * TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser->getParsedData() - Third argument dropped
 * TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageLabelFile() - Fourth argument dropped
 * TYPO3\CMS\Core\Page\PageRenderer->includeLanguageFileForInline() - Fourth argument dropped
-* TYPO3\CMS\Core\TypoScript\TemplateService->linkData() - Fourth argument unused
-* TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction() - Persistent or file prefix in first argument removed
-* \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule - Fifth argument ignores  [labels][tabs_images][tab]
-* TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and third argument dropped
-* TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj() - File reference prefix in first argument removed
-* TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS() - Second argument dropped
-* TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement - support for \TYPO3\CMS\Core\Database\PreparedStatement as argument dropped
-* TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->askAndValidate() - support for boolean as fourth argument removed
-* TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->select() - support for boolean as fifth argument removed
 * TYPO3\CMS\Extbase\Persistence\Generic\Query->like() - Third argument dropped
-* TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->searchWhere() - Third parameter is now mandatory
-* TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace() - First argument removed
-* TYPO3\CMS\Frontend\Plugin\AbstractPlugin->__constructor() - First argument unused
+* TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getLL() - Third argument dropped
 * TYPO3\CMS\Lang\LanguageService->getLL() - Second argument dropped
 * TYPO3\CMS\Lang\LanguageService->getLLL() - Third argument dropped
-* TYPO3\CMS\Lang\LanguageService->getsL() - Second argument dropped
-* TYPO3\CMS\Recycler\Utility\RecyclerUtility->getRecordPath() - Second, third and fourth argument dropped
+* TYPO3\CMS\Lang\LanguageService->sL() - Second argument dropped
+
+The following static methods changed signature according to previous deprecations in v8 at the end of the argument list:
+* TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and third argument dropped
+* TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS() - Second argument dropped
+* TYPO3\CMS\Recycler\Utility\RecyclerUtility::getRecordPath() - Second, third and fourth argument dropped
+
+The following methods changed signature according to previous deprecations in v8 which should be
+given as null if further arguments are added after the unused ones:
+* TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform() - Second argument unused
+* TYPO3\CMS\Core\Localization\LocalizationFactory->getParsedData() - Third and fourth argument unused
+* TYPO3\CMS\Core\TypoScript\TemplateService->linkData() - Fourth argument unused
+* TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->whichWorkspace() - First argument removed
+
+The following constructor arguments are unused and should be given as null if additional arguments are
+given after the unused one:
+* [NotScanned] TYPO3\CMS\Frontend\Plugin\AbstractPlugin->__constructor() - First argument unused
+
+The following methods changed single argument details:
+* [NotScanned] TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule - Fifth argument ignores [labels][tabs_images][tab]
+* [NotScanned] TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction() - Persistent or file prefix in first argument removed
+* [NotScanned] TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement - support for \TYPO3\CMS\Core\Database\PreparedStatement as argument dropped
+* [NotScanned] TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj() - File reference prefix in first argument removed
+* [NotScanned] TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->askAndValidate() - support for boolean as fourth argument removed
+* [NotScanned] TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput->select() - support for boolean as fifth argument removed
+
+The following methods have additional arguments:
+* TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->searchWhere() - Third parameter is now mandatory
 
 The following public class properties have been dropped:
 * TYPO3\CMS\Backend\Controller\EditDocumentController->localizationMode
-* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->edit_record
-* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->new_unique_uid
-* TYPO3\CMS\Backend\Controller\Page\PageLayoutController->externalTables
+* TYPO3\CMS\Backend\Controller\PageLayoutController->edit_record
+* TYPO3\CMS\Backend\Controller\PageLayoutController->new_unique_uid
+* TYPO3\CMS\Backend\Controller\PageLayoutController->externalTables
 * TYPO3\CMS\Backend\Module\AbstractFunctionModule->thisPath
 * TYPO3\CMS\Backend\Template\DocumentTemplate->extJScode
 * TYPO3\CMS\Backend\Template\DocumentTemplate->form_largeComp
@@ -295,21 +309,22 @@ The following public class constants have been dropped:
 * TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_OK
 
 The following configuration options are not evaluated anymore:
-* $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
-* $TYPO3_CONF_VARS[FE][noPHPscriptInclude]
-* $TYPO3_CONF_VARS[FE][maxSessionDataSize]
+* $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL][cliKeys']
+* $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude']
+* $GLOBALS['TYPO3_CONF_VARS']['FE']['maxSessionDataSize']
 * $GLOBALS['TYPO3_CONF_VARS_extensionAdded']
-
-The following entry points have been removed:
-* typo3/cli_dispatch.phpsh
 
 The following hooks have been removed:
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass']
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']
 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray']
 
+The following entry points have been removed:
+* [NotScanned] typo3/cli_dispatch.phpsh
+
 The following functionality has been removed:
-* Support for legacy prepared statements within Extbase Persistence within Qom\Statement
+* [NotScanned] Support for legacy prepared statements within Extbase Persistence within Qom\Statement
+
 
 The following TypoScript options have been removed:
 * stdWrap.fontTag
@@ -378,4 +393,4 @@ Instantiating or requiring the PHP classes, will result in PHP fatal errors.
 
 Calling the entry points via CLI will result in a file not found error.
 
-.. index:: PHP-API
+.. index:: Backend, CLI, FlexForm, Fluid, Frontend, JavaScript, LocalConfiguration, PHP-API, TCA, TSConfig, TypoScript, PartiallyScanned

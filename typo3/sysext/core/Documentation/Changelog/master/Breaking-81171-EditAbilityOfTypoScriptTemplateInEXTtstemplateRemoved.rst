@@ -19,8 +19,8 @@ Impact
 Rendering the edit form for the fields "Constants" and "Setup" is now done by FormEngine, triggered
 by EditDocumentController. The following code has been removed without substitution:
 
-* Public method :php:`TypoScriptTemplateInformationModuleFunctionController:: processTemplateRowAfterLoading()`
-* Public method :php:`TypoScriptTemplateInformationModuleFunctionController:: processTemplateRowBeforeSaving()`
+* Public method :php:`TypoScriptTemplateInformationModuleFunctionController->processTemplateRowAfterLoading()`
+* Public method :php:`TypoScriptTemplateInformationModuleFunctionController->processTemplateRowBeforeSaving()`
 * Hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postTCEProcessingHook']`
 * Hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook']`
 * Public property :php:`TypoScriptTemplateModuleController::$e`
@@ -44,4 +44,4 @@ Migration
 As the hooks `postTCEProcessingHook` and `postOutputProcessingHook` were removed without
 substitution, any functionality may be migrated to custom FormEngine render types.
 
-.. index:: Backend
+.. index:: Backend, FullyScanned

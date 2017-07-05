@@ -89,4 +89,4 @@ Use TYPO3\CMS\Extbase\Validation\Exception instead of
 Use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException instead of
 * TYPO3\CMS\Extbase\Mvc\Exception\InvalidTemplateResourceException
 
-.. index:: PHP-API
+.. index:: PHP-API, FullyScanned

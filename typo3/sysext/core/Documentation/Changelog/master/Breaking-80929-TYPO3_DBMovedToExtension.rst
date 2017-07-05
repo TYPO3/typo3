@@ -38,4 +38,4 @@ Migration
 Migrate affected extensions to doctrine or load extension typo3db_legacy as backwards compatible
 layer to :php:`$GLOBALS['TYPO3_DB']`.
 
-.. index:: Database, PHP-API
+.. index:: Database, PHP-API, FullyScanned

@@ -32,4 +32,4 @@ Migration
 As the form is based on FormEngine now, you may want to adjust the newly introduced hook parameter :php:`$dataColumnDefinition`,
 representing the definition of the `data` field which contains the file content. An example can be found in EXT:t3editor.
 
-.. index:: Backend
+.. index:: Backend, NotScanned

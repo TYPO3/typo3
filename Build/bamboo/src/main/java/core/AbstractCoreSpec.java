@@ -332,6 +332,7 @@ abstract public class AbstractCoreSpec {
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
                 new ScriptTask()
                     .description("Run duplicate exception code check script")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -376,7 +377,19 @@ abstract public class AbstractCoreSpec {
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
                         "./Build/Scripts/maxFilePathLength.sh"
+                    ),
+                new ScriptTask()
+                    .description("Run extension scanner ReST file reference tester")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/extensionScannerRstFileReferences.php"
                     )
+            )
+            .requirements(
+                new Requirement("system.phpVersion")
+                    .matchValue("7\\.0|7\\.1")
+                    .matchType(Requirement.MatchType.MATCHES)
             );
     }
 

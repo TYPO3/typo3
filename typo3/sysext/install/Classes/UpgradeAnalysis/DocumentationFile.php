@@ -87,7 +87,7 @@ class DocumentationFile
     /**
      * Get main information from a .rst file
      *
-     * @param string $file
+     * @param string $file Absolute path to documentation file
      * @return array
      */
     public function getListEntry(string $file): array

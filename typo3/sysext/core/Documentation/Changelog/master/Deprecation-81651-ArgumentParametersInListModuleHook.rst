@@ -31,4 +31,4 @@ Migration
 Use new argument :php:`$queryBuilder` that hands over the query builder instance
 to modify the list module query.
 
-.. index:: Backend, Database, PHP-API
+.. index:: Backend, Database, PHP-API, NotScanned

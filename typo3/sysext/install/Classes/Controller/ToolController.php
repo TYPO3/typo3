@@ -36,6 +36,7 @@ class ToolController extends AbstractController
         'testSetup',
         'upgradeWizard',
         'upgradeAnalysis',
+        'extensionScanner',
         'allConfiguration',
         'cleanUp',
         'loadExtensions',

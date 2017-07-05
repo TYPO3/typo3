@@ -29,4 +29,4 @@ Migration
 
 Remove the checks.
 
-.. index:: Backend
+.. index:: Backend, NotScanned

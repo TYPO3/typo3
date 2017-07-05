@@ -32,4 +32,4 @@ The version constraint depends on which core version the extension supports,
 the func extension did not change much between core v8 and its extraction to TER
 in v9.
 
-.. index:: Backend, PHP-API
+.. index:: Backend, PHP-API, NotScanned

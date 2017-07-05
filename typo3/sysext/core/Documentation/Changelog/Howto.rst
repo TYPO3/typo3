@@ -90,7 +90,7 @@ are in dearly need to introduce a new tag, you must also add it to the list (and
 for everyone.
 
 The tag list should be located at the end of a ReST file prefixed with the index keyword,
-example:: ``.. index:: Backend, JavaScript``.
+example:: ``.. index:: Backend, JavaScript, NotScanned``.
 
 List of all possible tags:
 
@@ -124,3 +124,13 @@ List of all possible tags:
 - RTE - Changes to RTE functionality.
 
 - ext:xyz - Changes on extension xyz. Please refer to this tag only when changing system extensions.
+
+Furthermore, exactly one of the following tags *must* be added for all "Deprecation" and "Breaking" ReST files since core v9 and above:
+
+- NotScanned - If this ReST file is not covered by the extension scanner at all.
+
+- PartiallyScanned - If some parts of the deprecated / removed functionality can be found by the extension scanner.
+
+- FullyScanned - If usages of all deprecated / removed functionality this ReST file is about can be found by the
+  extension scanner. This tag is used by the extension scanner to mark a ReST file as "You are not affected by this in your codebase"
+  if it does not find a match in extensions.

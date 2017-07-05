@@ -15,7 +15,10 @@ The service list report has been moved from EXT:sv to EXT:reports.
 Impact
 ======
 
-Because of the new location the namespace of the class :php:`ServicesListReport` has been changed from :php:`TYPO3\CMS\Sv\Report` to :php:`TYPO3\CMS\Reports\Report`. Additionally the relevant language file has been moved from :file:`EXT:/sv/Resources/Private/Language/locallang.xlf` to :file:`EXT:/reports/Resources/Private/Language/serviceReport.xlf`.
+Because of the new location the namespace of the class :php:`ServicesListReport` has been
+changed from :php:`TYPO3\CMS\Sv\Report` to :php:`TYPO3\CMS\Reports\Report`. Additionally the
+relevant language file has been moved from :file:`EXT:/sv/Resources/Private/Language/locallang.xlf`
+to :file:`EXT:/reports/Resources/Private/Language/serviceReport.xlf`.
 
 
 Affected Installations
@@ -38,4 +41,4 @@ Use the new namespace :php:`TYPO3\CMS\Reports\Report\ServicesListReport` and the
 - :file:`EXT:reports/Resources/Private/Templates/ServicesListReport.html`
 - :file:`EXT:reports/Resources/Public/Images/service-reports.png`
 
-.. index:: Backend
+.. index:: Backend, PartiallyScanned

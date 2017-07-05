@@ -37,4 +37,4 @@ The field usage should be dropped. If that is not possible and a special functio
 field it should be mimicked by extending TCA, declaring the database field in an extension and maybe extending
 the extbase model.
 
-.. index:: Database, TCA
+.. index:: Database, TCA, PartiallyScanned

@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 =========================================
-Deprecation: #81201 - EidUtility::loadTCA
+Deprecation: #81201 - EidUtility::initTCA
 =========================================
 
 See :issue:`81201`
@@ -9,7 +9,7 @@ See :issue:`81201`
 Description
 ===========
 
-The static PHP method :php:`EidUtility::loadTCA()` has been marked as deprecated, because the full
+The static PHP method :php:`EidUtility::initTCA()` has been marked as deprecated, because the full
 global TCA array is available at any eID request already.
 
 
@@ -30,4 +30,4 @@ Migration
 
 The method call is superfluous and can be removed from the caller script.
 
-.. index:: Frontend, PHP-API, TCA
+.. index:: Frontend, PHP-API, TCA, FullyScanned

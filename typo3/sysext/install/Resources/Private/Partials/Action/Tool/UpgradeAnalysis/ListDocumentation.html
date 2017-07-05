@@ -33,7 +33,7 @@
 			<div class="panel-heading" role="tab" id="heading-read">
 				<h2 class="panel-title">
 					<a href="#collapseRead" class="collapsed" data-toggle="collapse" aria-expanded="false"
-						 aria-controls="collapseRead}">
+						 aria-controls="collapseRead">
 						<span class="caret"></span>
 						Files marked as read
 					</a>
@@ -44,6 +44,27 @@
 					<f:for each="{shownFiles}" as="fileArray" key="issueNumber">
 						<f:render partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
 											arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"/>
+					</f:for>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default panel-version">
+			<div class="panel-heading" role="tab" id="heading-not-affected">
+				<h2 class="panel-title">
+					<a href="#collapseNotAffected" class="collapsed" data-toggle="collapse">
+						<span class="caret"></span>
+						Files marked as not affected by extension scanner
+					</a>
+				</h2>
+			</div>
+			<div class="collapse" id="collapseNotAffected" role="tabpanel">
+				<div class="panel-body panel-body-not-affected" role="tablist" aria-multiselectable="false">
+					<f:for each="{notAffectedFiles}" as="fileArray" key="issueNumber">
+						<f:render
+							partial="Action/Tool/UpgradeAnalysis/PanelItem" section="Main"
+							arguments="{issueNumber:issueNumber, fileArray:fileArray, version:fileArray.section, read:'true'}"
+						/>
 					</f:for>
 				</div>
 			</div>

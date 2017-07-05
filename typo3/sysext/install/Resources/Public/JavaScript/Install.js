@@ -1068,6 +1068,269 @@ TYPO3.Install.ResetBackendUserUc = {
 	}
 };
 
+TYPO3.Install.ExtensionScanner = {
+	listOfAffectedRestFileHashes: [],
+	selectorExtensionContainer: '.t3js-extensionscanner-extension',
+	selectorNumberOfFiles: '.t3js-extensionscanner-number-of-files',
+
+	/**
+	 *
+	 * @param {string} extension
+	 * @returns {string}
+	 */
+	getExtensionSelector: function(extension) {
+		return this.selectorExtensionContainer + '-' + extension;
+	},
+
+	/**
+	 *
+	 * @param {JQuery} $extensions
+	 */
+	scanAll: function($extensions) {
+		var self = this;
+		$(this.selectorExtensionContainer)
+			.removeClass('panel-danger panel-warning panel-success')
+			.find('.panel-progress-bar')
+			.css('width', 0)
+			.attr('aria-valuenow', 0)
+			.find('span')
+			.text('0%');
+		self.setProgressForAll();
+		$extensions.each(function () {
+			var extension = $(this).data('extension');
+			self.scanSingleExtension(extension);
+		});
+	},
+
+	/**
+	 *
+	 * @param {string} extension
+	 * @param {number} doneFiles
+	 * @param {number} numberOfFiles
+	 */
+	setStatusMessageForScan: function(extension, doneFiles, numberOfFiles) {
+		$(this.getExtensionSelector(extension))
+			.find(this.selectorNumberOfFiles)
+			.text('Checked ' + doneFiles + ' of ' + numberOfFiles + ' files');
+	},
+
+	/**
+	 *
+	 * @param {string} extension
+	 * @param {number} doneFiles
+	 * @param {number} numberOfFiles
+	 */
+	setProgressForScan: function(extension, doneFiles, numberOfFiles) {
+		var percent = (doneFiles / numberOfFiles) * 100;
+		$(this.getExtensionSelector(extension))
+			.find('.panel-progress-bar')
+			.css('width', percent + '%')
+			.attr('aria-valuenow', percent)
+			.find('span')
+			.text(percent + '%');
+	},
+
+	/**
+	 *
+	 */
+	setProgressForAll: function() {
+		var self = this;
+		var numberOfExtensions = $(this.selectorExtensionContainer).length;
+		var numberOfSuccess = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-success').length;
+		var numberOfWarning = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-warning').length;
+		var numberOfError = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
+		var numberOfScannedExtensions = numberOfSuccess + numberOfWarning + numberOfError;
+		var percent = (numberOfScannedExtensions / numberOfExtensions) * 100;
+		var markFullyScannedFilesToken = $('#t3js-extensionscanner-mark-fully-scanned-rest-files-token').text();
+		var url = location.href + '&install[controller]=ajax';
+		$('.t3js-progress-all-extension .progress-bar')
+			.css('width', percent+'%')
+			.attr('aria-valuenow', percent)
+			.find('span')
+			.text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
+		if (numberOfScannedExtensions === numberOfExtensions) {
+			top.TYPO3.Notification.success('Scan finished', 'All extensions has been scanned');
+			var postData = {
+				'install': {
+					'action': 'extensionScannerMarkFullyScannedRestFiles',
+					'token': markFullyScannedFilesToken,
+					'hashes': self.uniqueArray(TYPO3.Install.ExtensionScanner.listOfAffectedRestFileHashes)
+				}
+			};
+			$.ajax({
+				method: 'POST',
+				data: postData,
+				url: url,
+				cache: false,
+				success: function (data) {
+					if (data.success === true) {
+						top.TYPO3.Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
+					}
+				}
+			});
+		}
+	},
+
+	/**
+	 *
+	 * @param {Array} anArray
+	 * @returns {Array}
+	 */
+	uniqueArray: function(anArray) {
+		return anArray.filter(function(value, index, self) {
+			return self.indexOf(value) === index;
+		});
+	},
+
+	/**
+	 *
+	 * @param {string} extension
+	 */
+	scanSingleExtension: function(extension) {
+		var $extensionContainer = $(this.getExtensionSelector(extension));
+		var filesToken = $('#t3js-extensionscanner-files-token').text();
+		var hitTemplate = $('#t3js-extensionscanner-file-hit-template').html();
+		var restTemplate = $('#t3js-extensionscanner-file-hit-rest-template').html();
+		var scanFileToken = $('#t3js-extensionscanner-scan-file-token').text();
+		var hitFound = false;
+		var self = this;
+		var url = location.href + '&install[controller]=ajax';
+		var postData = {
+			'install': {
+				'action': 'extensionScannerFiles',
+				'token': filesToken,
+				'extension': extension
+			}
+		};
+		$extensionContainer.removeClass('panel-danger panel-warning panel-success t3js-extensionscan-finished');
+		$extensionContainer.data('hasRun', 'true');
+		$extensionContainer.find('.t3js-extensionscanner-scan-single').text('Scanning...').attr('disabled','disabled');
+		$extensionContainer.find('.t3js-extensionscanner-extension-body-loc').empty().text('0');
+		$extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-files').empty().text('0');
+		$extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-lines').empty().text('0');
+		this.setProgressForAll();
+		$.ajax({
+			method: 'POST',
+			data: postData,
+			url: url,
+			cache: false,
+			success: function(data) {
+				if (data.success === true && Array.isArray(data.files)) {
+					var numberOfFiles = data.files.length;
+					if (numberOfFiles > 0) {
+						self.setStatusMessageForScan(extension, 0, numberOfFiles);
+						$extensionContainer.find('.t3js-extensionscanner-extension-body').text('');
+						var doneFiles = 0;
+						data.files.forEach(function (file) {
+							var postData = {
+								'install': {
+									'action': 'extensionScannerScanFile',
+									'token': scanFileToken,
+									'extension': extension,
+									'file': file
+								}
+							};
+							$.ajax({
+								method: 'POST',
+								data: postData,
+								url: url,
+								cache: false,
+								success: function (fileData) {
+									doneFiles = doneFiles + 1;
+									self.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
+									self.setProgressForScan(extension, doneFiles, numberOfFiles);
+									if (fileData.success && $.isArray(fileData.matches)) {
+										$(fileData.matches).each(function () {
+											hitFound = true;
+											var match = this;
+											var aMatch = $(hitTemplate).clone();
+											aMatch.find('.t3js-extensionscanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
+											aMatch.find('.t3js-extensionscanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
+											aMatch.find('.t3js-extensionscanner-hit-filename').html(file);
+											aMatch.find('.t3js-extensionscanner-hit-message').html(match.message);
+											if (match.indicator === 'strong') {
+												aMatch.find('.t3js-extensionscanner-hit-file-panel-head .badges')
+													.append('<span class="badge" title="Reliable match, false positive unlikely">strong</span>');
+											} else {
+												aMatch.find('.t3js-extensionscanner-hit-file-panel-head .badges')
+													.append('<span class="badge" title="Probable match, but can be a false positive">weak</span>');
+											}
+											if (match.silenced === true) {
+												aMatch.find('.t3js-extensionscanner-hit-file-panel-head .badges')
+													.append('<span class="badge" title="Match has been annotated by extension author as false positive match">silenced</span>');
+											}
+											aMatch.find('.t3js-extensionscanner-hit-file-lineContent').empty().text(match.lineContent);
+											aMatch.find('.t3js-extensionscanner-hit-file-line').empty().text(match.line + ': ');
+											if ($.isArray(match.restFiles)) {
+												$(match.restFiles).each(function () {
+													var restFile = this;
+													var aRest = $(restTemplate).clone();
+													aRest.find('.t3js-extensionscanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);
+													aRest.find('.t3js-extensionscanner-hit-rest-panel-head .badge').empty().text(restFile.version);
+													aRest.find('.t3js-extensionscanner-hit-rest-panel-body').attr('id', 'collapse' + restFile.uniqueId);
+													aRest.find('.t3js-extensionscanner-hit-rest-headline').html(restFile.headline);
+													aRest.find('.t3js-extensionscanner-hit-rest-body').html(restFile.content);
+													aRest.addClass('panel-' + restFile.class);
+													aMatch.find('.t3js-extensionscanner-hit-file-rest-container').append(aRest);
+													TYPO3.Install.ExtensionScanner.listOfAffectedRestFileHashes.push(restFile.file_hash);
+												});
+											}
+											var panelClass =
+												aMatch.find('.panel-breaking', '.t3js-extensionscanner-hit-file-rest-container').length > 0
+													? 'panel-danger'
+													: 'panel-warning';
+											aMatch.addClass(panelClass);
+											$extensionContainer.find('.t3js-extensionscanner-extension-body').removeClass('hide').append(aMatch);
+											if (panelClass === 'panel-danger') {
+												$extensionContainer.removeClass('panel-warning').addClass(panelClass);
+											}
+											if (panelClass === 'panel-warning' && !$extensionContainer.hasClass('panel-danger')) {
+												$extensionContainer.addClass(panelClass);
+											}
+										});
+									}
+									if (fileData.success) {
+										var currentLinesOfCode = parseInt($extensionContainer.find('.t3js-extensionscanner-extension-body-loc').text());
+										$extensionContainer.find('.t3js-extensionscanner-extension-body-loc').empty().text(currentLinesOfCode + parseInt(fileData.effectiveCodeLines));
+										if (fileData.isFileIgnored) {
+											var currentIgnoredFiles = parseInt($extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-files').text());
+											$extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-files').empty().text(currentIgnoredFiles + 1);
+										}
+										var currentIgnoredLines = parseInt($extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-lines').text());
+										$extensionContainer.find('.t3js-extensionscanner-extension-body-ignored-lines').empty().text(currentIgnoredLines + parseInt(fileData.ignoredLines));
+									}
+									if (doneFiles === numberOfFiles) {
+										if (!hitFound) {
+											$extensionContainer.addClass('panel-success');
+										}
+										$extensionContainer.addClass('t3js-extensionscan-finished');
+										self.setProgressForAll();
+										$extensionContainer.find('.t3js-extensionscanner-scan-single').text('Rescan').attr('disabled', null);
+									}
+								},
+								error: function(data) {
+									doneFiles = doneFiles + 1;
+									self.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
+									self.setProgressForScan(extension, doneFiles, numberOfFiles);
+									self.setProgressForAll();
+									top.TYPO3.Notification.error('Oops, an error occurred', 'please look the console output for details');
+									console.error(data);
+								}
+							});
+						});
+					} else {
+						top.TYPO3.Notification.warning('No files found', 'the extension EXT:' + extension + ' contains no files we can scan');
+					}
+				}
+			},
+			error: function(data) {
+				top.TYPO3.Notification.error('Oops, an error occurred', 'please look the console output for details');
+				console.error(data);
+			}
+		});
+	}
+};
+
 $(function () {
 	// Used in database compare section to select/deselect checkboxes
 	$('.checkall').on('click', function () {
@@ -1211,6 +1474,30 @@ $(function () {
 		$resetBackendUserUcSection.on('click', 'button', (function(e) {
 			TYPO3.Install.ResetBackendUserUc.resetBackendUserUc('resetBackendUserUc');
 			e.preventDefault();
+			return false;
+		}));
+	}
+
+	// Extension scanner - single extension
+	$('.t3js-extensionscanner-scan-single').on('click', function (e) {
+		var extension = $(e.target).data('extension');
+		e.preventDefault();
+		TYPO3.Install.ExtensionScanner.scanSingleExtension(extension);
+		return false;
+	});
+	$('.t3js-extensionscanner-extension').on('show.bs.collapse', function(e) {
+		if ($(e.target).closest('.t3js-extensionscanner-extension').data('hasRun') !== 'true') {
+			$(this).find('.t3js-extensionscanner-scan-single').click();
+		}
+	});
+
+	// Extension scanner - all extensions
+	var $extensionScannerScanAll = $('.t3js-extensionscanner-scan-all');
+	if ($extensionScannerScanAll) {
+		$extensionScannerScanAll.on('click', '', (function (e) {
+			e.preventDefault();
+			var $extensions = $('.t3js-extensionscanner-extension');
+			TYPO3.Install.ExtensionScanner.scanAll($extensions);
 			return false;
 		}));
 	}

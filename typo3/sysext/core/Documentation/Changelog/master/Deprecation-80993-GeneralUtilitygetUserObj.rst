@@ -30,4 +30,4 @@ Migration
 
 Use :php:`GeneralUtility::makeInstance()` instead, which acts as a simple drop-in replacement.
 
-.. index:: PHP-API
+.. index:: PHP-API, FullyScanned

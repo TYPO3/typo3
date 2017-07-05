@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ==========================================================================================
-Deprecation: #57385 - Deprecate parameter $caseSensitive of Extbase Query::like comparison
+Deprecation: #57385 - Deprecate parameter $caseSensitive of Extbase Query->like comparison
 ==========================================================================================
 
 See :issue:`57385`
@@ -9,7 +9,7 @@ See :issue:`57385`
 Description
 ===========
 
-The argument :php:`$caseSensitive` of the method :php:`Query::like` has been marked as deprecated.
+The argument :php:`$caseSensitive` of the method :php:`Query->like` has been marked as deprecated.
 
 
 Impact
@@ -21,7 +21,7 @@ Using the argument will trigger a deprecation log entry.
 Affected Installations
 ======================
 
-Any TYPO3 installation using custom calls to :php:`Query::like` using the mentioned argument.
+Any TYPO3 installation using custom calls to :php:`Query->like` using the mentioned argument.
 
 
 Migration

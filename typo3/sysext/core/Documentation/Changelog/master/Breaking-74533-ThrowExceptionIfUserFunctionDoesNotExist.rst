@@ -9,8 +9,9 @@ See :issue:`74533`
 Description
 ===========
 
-:php:`GeneralUtility::callUserFunction()` does now always throw an exception if the passed user function does not
-exist or is not callable. The parameter `$errorMode` has been removed, exceptions are now always thrown.
+:php:`GeneralUtility::callUserFunction()` does now always throw an exception if the passed
+user function does not exist or is not callable. The parameter `$errorMode` has been removed,
+exceptions are now always thrown. The method should not be called with more than three arguments.
 
 
 Impact
@@ -31,4 +32,4 @@ Migration
 Remove or fix invalid `userFunc` calls registered in TypoScript and/or `ext_localconf.php`. Catch exceptions properly
 with try/catch.
 
-.. index:: PHP-API
+.. index:: PHP-API, PartiallyScanned

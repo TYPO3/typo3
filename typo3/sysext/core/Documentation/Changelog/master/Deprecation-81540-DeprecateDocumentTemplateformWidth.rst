@@ -29,4 +29,4 @@ Migration
 
 Use CSS classes from Bootstrap or if needed inline styles directly.
 
-.. index:: Backend, PHP-API
+.. index:: Backend, PHP-API, FullyScanned

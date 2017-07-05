@@ -33,4 +33,4 @@ Migration
 Remove the fourth parameter if set to false, if just a simple SQL call is needed, implement the SQL
 call directly in your PHP code.
 
-.. index:: Frontend, PHP-API
+.. index:: Frontend, PHP-API, FullyScanned

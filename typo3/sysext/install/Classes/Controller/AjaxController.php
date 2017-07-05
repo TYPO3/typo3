@@ -51,6 +51,9 @@ class AjaxController extends AbstractController
         'filterManager',
         'saveIgnoredItems',
         'removeIgnoredItems',
+        'extensionScannerFiles',
+        'extensionScannerScanFile',
+        'extensionScannerMarkFullyScannedRestFiles',
     ];
 
     /**
