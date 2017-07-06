@@ -57,15 +57,16 @@ define(['jquery',
 		var me = this;
 		me.$body = $('body');
 		me.$element = $(element);
-		me.$trigger = $(me.$element.data('dropzone-trigger'));
+		me.$trigger = $(me.$element.data('dropzoneTrigger'));
 		me.$dropzone = $('<div />').addClass('dropzone').hide();
-		me.irreObjectUid = me.$element.data('file-irre-object');
-		if (me.irreObjectUid && me.$element.nextAll(me.$element.data('dropzone-target')).length !== 0) {
+		me.irreObjectUid = me.$element.data('fileIrreObject');
+		var dropZoneEscapedTarget = me.$element.data('dropzoneTarget');
+		if (me.irreObjectUid && me.$element.nextAll(dropZoneEscapedTarget).length !== 0) {
 			me.dropZoneInsertBefore = true;
-			me.$dropzone.insertBefore(me.$element.data('dropzone-target'));
+			me.$dropzone.insertBefore(dropZoneEscapedTarget);
 		} else {
 			me.dropZoneInsertBefore = false;
-			me.$dropzone.insertAfter(me.$element.data('dropzone-target'));
+			me.$dropzone.insertAfter(dropZoneEscapedTarget);
 		}
 		me.$dropzoneMask = $('<div />').addClass('dropzone-mask').appendTo(me.$dropzone);
 		me.$fileInput = $('<input type="file" multiple name="files[]" />').addClass('upload-file-picker').appendTo(me.$body);

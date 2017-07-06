@@ -93,4 +93,18 @@ class StringUtility
         $uniqueId = uniqid($prefix, true);
         return str_replace('.', '', $uniqueId);
     }
+
+    /**
+     * Escape a CSS selector to be used for DOM queries
+     *
+     * This method takes care to escape any CSS selector meta character.
+     * The result may be used to query the DOM like $('#' + escapedSelector)
+     *
+     * @param string $selector
+     * @return string
+     */
+    public static function escapeCssSelector(string $selector) : string
+    {
+        return preg_replace('([#:.\\[\\],=@])', '\\$1', $selector);
+    }
 }
