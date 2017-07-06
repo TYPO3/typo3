@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Inline element entry container.
@@ -438,8 +439,9 @@ class InlineControlContainer extends AbstractContainer
 
         $foreign_table = $inlineConfiguration['foreign_table'];
         $allowed = $groupFieldConfiguration['allowed'];
-        $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $foreign_table;
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . $foreign_table;
+        $nameObject = $currentStructureDomObjectIdPrefix;
         $mode = 'db';
         $showUpload = false;
         $elementBrowserEnabled = true;
@@ -501,7 +503,7 @@ class InlineControlContainer extends AbstractContainer
                 $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
                 $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 					' . $buttonStyle . '
-					data-dropzone-target="#' . htmlspecialchars($this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid'])) . '"
+					data-dropzone-target="#' . htmlspecialchars(StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix)) . '"
 					data-insert-dropzone-before="1"
 					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 					data-file-allowed="' . htmlspecialchars($allowed) . '"

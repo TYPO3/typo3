@@ -217,4 +217,28 @@ class StringUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $this->assertNotContains('.', StringUtility::getUniqueId());
     }
+
+    /**
+     * @param string $selector
+     * @param string $expectedValue
+     * @dataProvider escapeCssSelectorDataProvider
+     */
+    public function escapeCssSelector(string $selector, string $expectedValue)
+    {
+        $this->assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
+    }
+
+    /**
+     * @return array
+     */
+    public function escapeCssSelectorDataProvider() : array
+    {
+        return [
+            ['data.field', 'data\\.field'],
+            ['#theId', '\\#theId'],
+            ['.theId:hover', '\\.theId\\:hover'],
+            ['.theId:hover', '\\.theId\\:hover'],
+            ['input[name=foo]', 'input\\[name\\=foo\\]'],
+        ];
+    }
 }
