@@ -1092,4 +1092,14 @@ class QueryBuilder
 
         return $originalWhereConditions;
     }
+
+    /**
+     * Deep clone of the QueryBuilder
+     * @see \Doctrine\DBAL\Query\QueryBuilder::__clone()
+     */
+    public function __clone()
+    {
+        $this->concreteQueryBuilder = clone $this->concreteQueryBuilder;
+        $this->restrictionContainer = clone $this->restrictionContainer;
+    }
 }

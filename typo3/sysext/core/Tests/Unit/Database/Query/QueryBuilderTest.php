@@ -1162,4 +1162,74 @@ class QueryBuilderTest extends UnitTestCase
         $result = $this->callInaccessibleMethod($subject, 'unquoteSingleIdentifier', $input);
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function cloningQueryBuilderClonesConcreteQueryBuilder()
+    {
+        $clonedQueryBuilder = clone $this->subject;
+        self::assertNotSame($this->subject->getConcreteQueryBuilder(), $clonedQueryBuilder->getConcreteQueryBuilder());
+    }
+
+    /**
+     * @test
+     */
+    public function changingClonedQueryBuilderDoesNotInfluenceSourceOne()
+    {
+        $GLOBALS['TCA']['pages']['ctrl'] = [
+            'tstamp' => 'tstamp',
+            'versioningWS' => true,
+            'delete' => 'deleted',
+            'crdate' => 'crdate',
+            'enablecolumns' => [
+                'disabled' => 'hidden',
+            ],
+        ];
+
+        $this->connection->quoteIdentifier(Argument::cetera())
+            ->willReturnArgument(0);
+        $this->connection->quoteIdentifiers(Argument::cetera())
+            ->willReturnArgument(0);
+        $this->connection->getExpressionBuilder()
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection->reveal()));
+
+        $concreteQueryBuilder = GeneralUtility::makeInstance(
+            \Doctrine\DBAL\Query\QueryBuilder::class,
+            $this->connection->reveal()
+        );
+
+        $subject = GeneralUtility::makeInstance(
+            QueryBuilder::class,
+            $this->connection->reveal(),
+            null,
+            $concreteQueryBuilder
+        );
+
+        $subject->select('*')
+            ->from('pages')
+            ->where('uid=1');
+
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $this->assertSame($expectedSQL, $subject->getSQL());
+
+        $clonedQueryBuilder = clone $subject;
+        //just after cloning both query builders should return the same sql
+        $this->assertSame($expectedSQL, $clonedQueryBuilder->getSQL());
+
+        //change cloned QueryBuilder
+        $clonedQueryBuilder->count('*');
+        $expectedCountSQL = 'SELECT COUNT(*) FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
+        $this->assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
+
+        //check if the original QueryBuilder has not changed
+        $this->assertSame($expectedSQL, $subject->getSQL());
+
+        //change restrictions in the original QueryBuilder and check if cloned has changed
+        $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
+        $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
+        $this->assertSame($expectedSQL, $subject->getSQL());
+
+        $this->assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
+    }
 }
