@@ -158,26 +158,27 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
      */
     protected function getCollectedRecords()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::$storageTableName);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::$storageTableName);
         $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder->select($this->getItemTableName() . '.*')
             ->from(self::$storageTableName)
             ->join(
                 self::$storageTableName,
                 'sys_collection_entries',
-                'sys_collection_entries_join',
+                'sys_collection_entries',
                 $queryBuilder->expr()->eq(
-                    'sys_collection_entries_join.uid_local',
+                    'sys_collection_entries.uid_local',
                     $queryBuilder->quoteIdentifier(self::$storageTableName . '.uid')
                 )
             )
             ->join(
-                'sys_collection_entries_join',
+                'sys_collection_entries',
                 $this->getItemTableName(),
-                $this->getItemTableName() . '_join',
+                $this->getItemTableName(),
                 $queryBuilder->expr()->eq(
-                    'sys_collection_entries_join.uid_local',
-                    $queryBuilder->quoteIdentifier($this->getItemTableName() . '_join.uid')
+                    'sys_collection_entries.uid_foreign',
+                    $queryBuilder->quoteIdentifier($this->getItemTableName() . '.uid')
                 )
             )
             ->where(
