@@ -27,7 +27,7 @@ class VideoTagRenderer implements FileRendererInterface
      *
      * @var array
      */
-    protected $possibleMimeTypes = ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg'];
+    protected $possibleMimeTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/x-m4v', 'application/ogg'];
 
     /**
      * Returns the priority of the renderer
