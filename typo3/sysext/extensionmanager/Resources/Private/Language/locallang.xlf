@@ -168,6 +168,9 @@
 			<trans-unit id="extensionList.header.extensionState">
 				<source>State</source>
 			</trans-unit>
+			<trans-unit id="extensionList.header.extensionType">
+				<source>Type</source>
+			</trans-unit>
 			<trans-unit id="extensionList.header.uploadComment">
 				<source>Upload Comment</source>
 			</trans-unit>

@@ -67,6 +67,7 @@ define([
 					}, {
 						orderable: false
 					},
+					null,
 					null
 				]
 			});
