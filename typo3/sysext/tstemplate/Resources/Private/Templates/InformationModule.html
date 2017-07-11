@@ -1,8 +1,5 @@
 <h3><f:translate key="{LLPrefix}templateInformation"/></h3>
 <div>
-    <a href="#" class="t3js-contextmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}">
-        <core:iconForRecord table="sys_template" row="{templateRecord}" />
-    </a><strong>&nbsp;{title}</strong>
     <f:if condition="{siteTitle}">({siteTitle})</f:if>
     <f:if condition="{manyTemplatesMenu}">
         <div>
@@ -14,6 +11,15 @@
     <f:format.raw>{formResult}</f:format.raw>
     <div class="table-fit">
         <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <td colspan="3">
+                        <a href="#" class="t3js-contextmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}">
+                            <core:iconForRecord table="sys_template" row="{templateRecord}"/>
+                        </a><strong>{title}</strong>
+                    </td>
+                </tr>
+            </thead>
             <f:for each="{tableRows}" as="line">
                 <f:render section="TemplateTableRow" arguments="{line: line}" />
             </f:for>
