@@ -107,6 +107,7 @@
 		"typo3/cms-form": "self.version",
 		"typo3/cms-frontend": "self.version",
 		"typo3/cms-func": "self.version",
+		"typo3-ter/func": "*",
 		"typo3/cms-func-wizards": "self.version",
 		"typo3/cms-impexp": "self.version",
 		"typo3/cms-indexed-search": "self.version",
