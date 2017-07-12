@@ -2926,8 +2926,7 @@ Will overrule any setting for ".useLargestItemY"]]></description>
 
 .params is the list of parameters sent to the JavaScript open-window function, eg:
 width=200,height=300,status=0,menubar=0
-
-NOTE: Does not work with JSMENU's]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3247,8 +3246,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 
 .params is the list of parameters sent to the JavaScript open-window function, eg:
 width=200,height=300,status=0,menubar=0
-
-NOTE: Does not work with JSMENU's]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -3440,119 +3438,6 @@ In the future TypoScript may provide better ways to position GIFBUILDER-objects 
 ]]></default>
 		</property>
 	</type>
-	<type id="JSMENU">
-		<property name="1" type="JSMENUITEM">
-			<description><![CDATA[levels-config]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="2" type="JSMENUITEM">
-			<description><![CDATA[levels-config]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="3" type="JSMENUITEM">
-			<description><![CDATA[levels-config]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="4" type="JSMENUITEM">
-			<description><![CDATA[levels-config]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="SPC" type="boolean">
-			<description><![CDATA[If set, spacer can go into the menu, else not.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="firstLabelGeneral" type="string">
-			<description><![CDATA[General firstlabel. May be overridden by the one set in each JSMENUITEM]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="forceTypeValue" type="int">
-			<description><![CDATA[If set, the &type parameter of the link is forced to this value regardless of target.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="levels" type="int">
-			<description><![CDATA[int, 1-5
-			How many levels there are]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="menuName" type="string">
-			<description><![CDATA[JavaScript menu name.
-If you have more than one JSMENU on the page, you should set this value for each one.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="target" type="string">
-			<description><![CDATA[target
-			Decides target of the menu-links]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[wrap around the selector-boxes]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="wrapAfterTags" type="wrap">
-			<description><![CDATA[wrap around the selector-boxes with wrap and form-tags og JS-code.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="JSMENUITEM">
-		<property name="additionalParams" type="string">
-			<description><![CDATA[Additional parameters to the <select> box. Eg, you could set the width with a style-parameter like this:
-style="width: 200px;"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="alwaysLink" type="boolean">
-			<description><![CDATA[If set an item in the menu selector will always link. This takes precedence over "noLink".]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="elements" type="int">
-			<description><![CDATA[int+
-			Initial number of elements in the menu.  This is of course overruled by the actual menu item texts.]]></description>
-			<default><![CDATA[5]]></default>
-		</property>
-		<property name="firstLabel" type="string">
-			<description><![CDATA[First label in top of the menu (default is blank)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="noLink" type="boolean">
-			<description><![CDATA[Normally the selection of a menu item in the selector box will update the selector on the next level (if there is a next level) and if there are no items for that selector (because there were no subpages), then the link jumps to the page of itself.
-If this flag is set, however, no menuitems in the selector box will ever link to anything. Only update the content of the next selector box on next level.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="showActive" type="boolean">
-			<description><![CDATA[if set, the active level will be selected, if present]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="showFirst" type="boolean">
-			<description><![CDATA[if set, the first link will be shown when the menu is updated.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="width" type="int">
-			<description><![CDATA[int+
-			Initial width of the boxes set by a number of _ (underscores)]]></description>
-			<default><![CDATA[14]]></default>
-		</property>
-		<property name="wrap" type="wrap">
-			<description><![CDATA[wraps the selectorbox]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="TMENU" extends="mObj">
 		<property name="ACT" type="TMENUITEM">
 			<description><![CDATA[Boolean / (config)
@@ -3711,8 +3596,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 
 .params is the list of parameters sent to the JavaScript open-window function, eg:
 width=200,height=300,status=0,menubar=0
-
-NOTE: Does not work with JSMENU's]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

@@ -33,7 +33,6 @@ class MenuContentObjectFactory implements SingletonInterface
         'GMENU' => GraphicalMenuContentObject::class,
         'TMENU' => TextMenuContentObject::class,
         'IMGMENU' => ImageMenuContentObject::class,
-        'JSMENU' => JavaScriptMenuContentObject::class,
     ];
 
     /**

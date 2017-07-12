@@ -392,10 +392,6 @@ class TypoScriptFrontendController
      *
      * Keys in use:
      *
-     * JSFormValidate: <script type="text/javascript" src="'.$GLOBALS["TSFE"]->absRefPrefix.'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.validateform.js"></script>
-     * JSMenuCode, JSMenuCode_menu: JavaScript for the JavaScript menu
-     * JSCode: reserved
-     *
      * used to accumulate additional HTML-code for the header-section,
      * <head>...</head>. Insert either associative keys (like
      * additionalHeaderData['myStyleSheet'], see reserved keys above) or num-keys
