@@ -21,7 +21,7 @@
 						</f:then>
 						<f:else>
 							<f:if condition="{item.value}">
-								= {item.value -> i:format.crop(maxCharacters: 40)}
+								= {item.value -> f:format.crop(maxCharacters: 40, respectWordBoundaries:0, respectHtml:0)}
 							</f:if>
 						</f:else>
 					</f:if>
