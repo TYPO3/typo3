@@ -57,7 +57,7 @@ promise is rejected as well.
 Creating interaction requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Currently there are two types of reuqests, `ClientRequest` that is based on some
+Currently there are two types of requests, `ClientRequest` that is based on some
 client event (e.g. `click` event) and `TriggerRequest` which may be based on some
 parent request of type `InteractionRequest` - this is used to cascade actions.
 

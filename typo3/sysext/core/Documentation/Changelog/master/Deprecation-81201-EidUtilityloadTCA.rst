@@ -9,7 +9,7 @@ See :issue:`81201`
 Description
 ===========
 
-The static PHP method php:`EidUtility::loadTCA()` has been marked as deprecated, because the full
+The static PHP method :php:`EidUtility::loadTCA()` has been marked as deprecated, because the full
 global TCA array is available at any eID request already.
 
 

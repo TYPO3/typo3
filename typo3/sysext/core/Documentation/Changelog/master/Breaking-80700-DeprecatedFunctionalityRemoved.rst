@@ -240,7 +240,7 @@ The following methods changed signature according to previous deprecations in v8
 * TYPO3\CMS\Core\TypoScript\TemplateService->linkData() - Fourth argument unused
 * TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction() - Persistent or file prefix in first argument removed
 * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule - Fifth argument ignores  [labels][tabs_images][tab]
-* TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and thrird argument dropped
+* TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() - Second and third argument dropped
 * TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj() - File reference prefix in first argument removed
 * TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS() - Second argument dropped
 * TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement - support for \TYPO3\CMS\Core\Database\PreparedStatement as argument dropped

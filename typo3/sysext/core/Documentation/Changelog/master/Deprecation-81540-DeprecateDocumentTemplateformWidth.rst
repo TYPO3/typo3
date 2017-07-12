@@ -9,7 +9,7 @@ See :issue:`81540`
 Description
 ===========
 
-The method php:`DocumentTemplate::formWidth()` has been marked as deprecated.
+The method :php:`DocumentTemplate::formWidth()` has been marked as deprecated.
 
 
 Impact

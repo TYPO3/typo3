@@ -9,7 +9,7 @@ See :issue:`81218`
 Description
 ===========
 
-The method `PageRepository->getRawRecord()` has a fourth parameter called php:`$noWSOL` which allowed
+The method `PageRepository->getRawRecord()` has a fourth parameter called :php:`$noWSOL` which allowed
 to disable the logic for getting the workspace-related record. This method argument was previously
 only used internally within PageRepository, and using this argument left the functionality of this
 method to only do a simple SQL statement, which can be implemented itself without using this API call.
