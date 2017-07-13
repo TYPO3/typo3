@@ -26,6 +26,7 @@ use TYPO3\CMS\Install\Status\ErrorStatus;
 use TYPO3\CMS\Install\Status\NoticeStatus;
 use TYPO3\CMS\Install\Status\OkStatus;
 use TYPO3\CMS\Install\Status\StatusInterface;
+use TYPO3\CMS\Install\Status\WarningStatus;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 
@@ -90,8 +91,12 @@ class UpgradeWizard extends Action\AbstractAction
 
         // Perform silent cache framework table upgrade
         $this->silentCacheFrameworkTableSchemaMigration();
+        if (isset($this->postValues['set']['markAsDone'])) {
+            $actionMessages[] = $this->markWizardAsDone();
 
-        if (isset($this->postValues['set']['getUserInput'])) {
+            $this->listUpdates();
+            $this->view->assign('updateAction', 'listUpdates');
+        } elseif (isset($this->postValues['set']['getUserInput'])) {
             $actionMessages[] = $this->getUserInputForUpdate();
             $this->view->assign('updateAction', 'getUserInput');
         } elseif (isset($this->postValues['set']['performUpdate'])) {
@@ -101,7 +106,7 @@ class UpgradeWizard extends Action\AbstractAction
             $actionMessages[] = $this->recheckWizardsAndRowUpdaters();
             if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
                 /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message = GeneralUtility::makeInstance(WarningStatus::class);
                 $message->setTitle('No update wizards registered');
                 $actionMessages[] = $message;
             }
@@ -110,7 +115,7 @@ class UpgradeWizard extends Action\AbstractAction
         } else {
             if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
                 /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\WarningStatus::class);
+                $message = GeneralUtility::makeInstance(WarningStatus::class);
                 $message->setTitle('No update wizards registered');
                 $actionMessages[] = $message;
             }
@@ -232,6 +237,28 @@ class UpgradeWizard extends Action\AbstractAction
         /** @var $message StatusInterface */
         $message = GeneralUtility::makeInstance(OkStatus::class);
         $message->setTitle('Show wizard options');
+        return $message;
+    }
+
+    /**
+     * Marks a wizard as being "seen" so that it is not shown again.
+     *
+     * @return StatusInterface
+     * @throws \InvalidArgumentException
+     */
+    protected function markWizardAsDone()
+    {
+        $wizardIdentifier = $this->postValues['values']['identifier'];
+        $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier] ?? null;
+        if ($className === null) {
+            throw new \InvalidArgumentException('No class name found for upgrade wizard "' . $wizardIdentifier . '"', 1499980374);
+        }
+
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', $className, '1');
+
+        $wizardTitle = GeneralUtility::makeInstance($className)->getTitle();
+        $message = GeneralUtility::makeInstance(OkStatus::class);
+        $message->setTitle('Successfully marked "' . $wizardTitle . '" as done');
         return $message;
     }
 
