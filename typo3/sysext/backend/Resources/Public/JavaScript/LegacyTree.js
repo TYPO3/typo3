@@ -107,7 +107,7 @@ define(['jquery'], function($) {
 	};
 
 	Tree = {
-		ajaxID: 'sc_alt_file_navframe_expandtoggle',
+		ajaxRoute: 'sc_alt_file_navframe_expandtoggle',
 		frameSetModule: null,
 		activateDragDrop: true,
 		highlightClass: 'active',
@@ -133,7 +133,7 @@ define(['jquery'], function($) {
 				$obj.css({cursor: 'wait'});
 			}
 			$.ajax({
-				url: TYPO3.settings.ajaxUrls[this.ajaxID],
+				url: TYPO3.settings.ajaxUrls[this.ajaxRoute],
 				data: {
 					PM: params,
 					scopeData: scopeData,

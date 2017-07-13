@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * AJAX dispatcher
  *
- * Main entry point for AJAX calls in the TYPO3 Backend. Based on ?ajaxId of the outside application.
+ * Main entry point for AJAX calls in the TYPO3 Backend. Based on ?route=/ajax/* of the outside application.
  * Before doing the basic BE-related set up of this request (see the additional calls on $this->bootstrap inside
  * handleRequest()), some AJAX-calls can be made without a valid user, which is determined here.
  *
@@ -44,7 +44,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * List of requests that don't need a valid BE user
      * @var array
      */
-    protected $publicAjaxIds = [
+    protected $publicAjaxRoutes = [
         '/ajax/login',
         '/ajax/logout',
         '/ajax/login/refresh',
@@ -70,10 +70,11 @@ class AjaxRequestHandler implements RequestHandlerInterface
      */
     public function handleRequest(ServerRequestInterface $request)
     {
-        // First get the ajaxID
-        $ajaxID = isset($request->getParsedBody()['ajaxID']) ? $request->getParsedBody()['ajaxID'] : $request->getQueryParams()['ajaxID'];
-        $request = $request->withAttribute('routePath', $ajaxID);
-        $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($ajaxID);
+        // First get the name of the route
+        $routePath = isset($request->getParsedBody()['route']) ? $request->getParsedBody()['route'] : $request->getQueryParams()['route'];
+        $request = $request->withAttribute('routePath', $routePath);
+
+        $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($routePath);
         $this->boot($proceedIfNoUserIsLoggedIn);
 
         // Backend Routing - check if a valid route is there, and dispatch
@@ -82,14 +83,15 @@ class AjaxRequestHandler implements RequestHandlerInterface
 
     /**
      * This request handler can handle any backend request having
-     * an ajaxID as parameter (see Application.php in EXT:backend)
+     * an /ajax/ request
      *
      * @param ServerRequestInterface $request
      * @return bool If the request is an AJAX backend request, TRUE otherwise FALSE
      */
     public function canHandleRequest(ServerRequestInterface $request)
     {
-        return $request->getAttribute('isAjaxRequest', false);
+        $routePath = isset($request->getParsedBody()['route']) ? $request->getParsedBody()['route'] : $request->getQueryParams()['route'];
+        return strpos($routePath, '/ajax/') === 0;
     }
 
     /**
@@ -106,12 +108,12 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * Check if the user is required for the request
      * If we're trying to do an ajax login, don't require a user
      *
-     * @param string $ajaxId the Ajax ID to check against
+     * @param string $routePath the Route path to check against, something like '
      * @return bool whether the request can proceed without a login required
      */
-    protected function isLoggedInBackendUserRequired($ajaxId)
+    protected function isLoggedInBackendUserRequired($routePath)
     {
-        return in_array($ajaxId, $this->publicAjaxIds, true);
+        return in_array($routePath, $this->publicAjaxRoutes, true);
     }
 
     /**

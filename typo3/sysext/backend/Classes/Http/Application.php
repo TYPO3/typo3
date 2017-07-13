@@ -59,7 +59,7 @@ class Application implements ApplicationInterface
 
         $this->bootstrap = Bootstrap::getInstance()
             ->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | (!empty($_GET['ajaxID']) ? TYPO3_REQUESTTYPE_AJAX : 0))
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | (isset($_REQUEST['route']) && strpos($_REQUEST['route'], '/ajax/') === 0 ? TYPO3_REQUESTTYPE_AJAX : 0))
             ->baseSetup($this->entryPointLevel);
 
         // Redirect to install tool if base configuration is not found
@@ -82,10 +82,7 @@ class Application implements ApplicationInterface
     public function run(callable $execute = null)
     {
         $this->request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
-        // see below when this option is set and Bootstrap::defineTypo3RequestTypes() for more details
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-            $this->request = $this->request->withAttribute('isAjaxRequest', true);
-        } elseif (isset($this->request->getQueryParams()['M'])) {
+        if (isset($this->request->getQueryParams()['M'])) {
             $this->request = $this->request->withAttribute('isModuleRequest', true);
         }
 

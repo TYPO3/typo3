@@ -57,7 +57,7 @@ class UriBuilderTest extends UnitTestCase
                 [ 'route' => new Route('/test/route', [ 'ajax' => true ]) ],
                 'route',
                 [],
-                '/typo3/index.php?ajaxID=%2Ftest%2Froute&ajaxToken=dummyToken',
+                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken',
             ],
             'plain route with default parameters' => [
                 [ 'route' => new Route('/test/route', [ 'parameters' => [ 'key' => 'value' ] ]) ],
@@ -69,7 +69,7 @@ class UriBuilderTest extends UnitTestCase
                 [ 'route' => new Route('/test/route', [ 'ajax' => true, 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 [],
-                '/typo3/index.php?ajaxID=%2Ftest%2Froute&ajaxToken=dummyToken&key=value',
+                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=value',
             ],
             'plain route with overridden parameters' => [
                 [ 'route' => new Route('/test/route', [ 'parameters' => [ 'key' => 'value' ] ]) ],
@@ -81,7 +81,7 @@ class UriBuilderTest extends UnitTestCase
                 [ 'route' => new Route('/test/route', [ 'ajax' => true, 'parameters' => [ 'key' => 'value' ] ]) ],
                 'route',
                 ['key' => 'overridden'],
-                '/typo3/index.php?ajaxID=%2Ftest%2Froute&ajaxToken=dummyToken&key=overridden',
+                '/typo3/index.php?route=%2Ftest%2Froute&token=dummyToken&key=overridden',
             ],
         ];
     }
