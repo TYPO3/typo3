@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1499934742" source-language="en" datatype="plaintext" original="messages" date="2017-07-13T10:32:32Z" product-name="rsaauth">
+		<header/>
+		<body>
+			<trans-unit id="report.title">
+				<source>Usage of EXT:rsaauth</source>
+			</trans-unit>
+			<trans-unit id="report.description">
+				<source>The extension rsaauth is marked as deprecated.</source>
+			</trans-unit>
+			<trans-unit id="report.sslActive">
+				<source>You are already using SSL/TLS, there is no need to use the extension "rsaauth", you can safely disable it.</source>
+			</trans-unit>
+			<trans-unit id="report.sslInactive">
+				<source>Please enable SSL/TLS and disable the extension "rsaauth".</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
