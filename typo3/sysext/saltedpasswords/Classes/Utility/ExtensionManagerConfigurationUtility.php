@@ -375,7 +375,7 @@ class ExtensionManagerConfigurationUtility
                 $pField .= '<option value="' . htmlspecialchars($class) . '"' . $sel . '>' . $GLOBALS['LANG']->getLL($label) . '</option>';
             }
         }
-        $pField = '<select id="' . $propertyName . '" name="' . $params['fieldName'] .
+        $pField = '<select class="form-control" id="' . $propertyName . '" name="' . $params['fieldName'] .
             '" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $pField . '</select>';
         return $pField;
     }
