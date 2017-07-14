@@ -3017,18 +3017,6 @@ class IconRegistry implements SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/en_us-gb.png'
             ]
         ],
-        'flags-scotland' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/scotland.png'
-            ]
-        ],
-        'flags-wales' => [
-            'provider' => BitmapIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/wales.png'
-            ]
-        ],
     ];
 
     /**
