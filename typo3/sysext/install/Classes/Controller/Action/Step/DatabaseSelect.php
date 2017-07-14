@@ -85,11 +85,17 @@ class DatabaseSelect extends AbstractStepAction
      */
     protected function executeAction()
     {
+        $errors = [];
         /** @var $configurationManager ConfigurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $isInitialInstallationInProgress = $configurationManager
             ->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
-        $this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
+        try {
+            $this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
+        } catch (\Exception $exception) {
+            $errors[] = $exception->getMessage();
+        }
+        $this->view->assign('errors', $errors);
         $this->view->assign('isInitialInstallationInProgress', $isInitialInstallationInProgress);
         $this->assignSteps();
         return $this->view->render();
