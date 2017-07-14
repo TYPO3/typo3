@@ -23,10 +23,10 @@ class InfoModuleHook
      * Add sys_notes as additional content to the footer of the info module
      *
      * @param array $params
-     * @param \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject
+     * @param \TYPO3\CMS\Info\Controller\PageInformationController $parentObject
      * @return string
      */
-    public function render(array $params = [], \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject)
+    public function render(array $params = [], \TYPO3\CMS\Info\Controller\PageInformationController $parentObject)
     {
         /** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
         $noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Controller;
+namespace TYPO3\CMS\Info\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -55,7 +55,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
      */
     public function main()
     {
-        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
+        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
         $dblist->thumbs = 0;
