@@ -33,13 +33,14 @@
 							<f:for each="{result.affectedSections}" as="sectionData" key="sectionId">
 								<tr>
 									<td width="100%">--&gt;&nbsp;
-										<a href="#anchor_{sectionId}">
+										<f:link.page section="anchor_{sectionId}" addQueryString="1" noCacheHash="1"
+																 argumentsToBeExcludedFromQueryString="{0: 'id'}">
 											<f:if condition="{sectionData.0}">
 												<f:then>{sectionData.0}</f:then>
 												<f:else><f:translate key="unnamedSection" /></f:else>
 											</f:if>
 											&nbsp;({sectionData.1}&nbsp;<f:translate key="{f:if(condition: '{sectionData.1} > 1', then: 'result.pages', else: 'result.page')}" />)
-										</a>
+										</f:link.page>
 									</td>
 								</tr>
 							</f:for>
