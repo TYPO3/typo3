@@ -134,7 +134,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $this->parameters['recordType'],
             ['richtext' => true]
         );
-        $this->buttonConfig = $this->thisConfig['buttons.']['link.'] ?? [];
+        $this->buttonConfig = $this->thisConfig['buttons']['link'] ?? [];
     }
 
     /**
@@ -189,21 +189,20 @@ class BrowseLinksController extends AbstractLinkBrowserController
     public function renderLinkAttributeFields()
     {
         // Processing the classes configuration
-        if (!empty($this->buttonConfig['properties.']['class.']['allowedClasses'])) {
-            $classesAnchorArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], true);
+        if (!empty($this->buttonConfig['properties']['class']['allowedClasses'])) {
+            $classesAnchorArray = is_array($this->buttonConfig['properties']['class']['allowedClasses']) ? $this->buttonConfig['properties']['class']['allowedClasses'] : GeneralUtility::trimExplode(',', $this->buttonConfig['properties']['class']['allowedClasses'], true);
             // Collecting allowed classes and configured default values
             $classesAnchor = [
                 'all' => []
             ];
-            $titleReadOnly = $this->buttonConfig['properties.']['title.']['readOnly']
-                || $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
-            if (is_array($this->thisConfig['classesAnchor.'])) {
-                foreach ($this->thisConfig['classesAnchor.'] as $label => $conf) {
+
+            if (is_array($this->thisConfig['classesAnchor'])) {
+                foreach ($this->thisConfig['classesAnchor'] as $label => $conf) {
                     if (in_array($conf['class'], $classesAnchorArray, true)) {
                         $classesAnchor['all'][] = $conf['class'];
                         if ($conf['type'] === $this->displayedLinkHandlerId) {
                             $classesAnchor[$conf['type']][] = $conf['class'];
-                            if ($this->buttonConfig[$conf['type'] . '.']['properties.']['class.']['default'] == $conf['class']) {
+                            if ($this->buttonConfig[$conf['type']]['properties']['class']['default'] == $conf['class']) {
                                 $this->classesAnchorDefault[$conf['type']] = $conf['class'];
                                 if ($conf['titleText']) {
                                     $this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText']));
@@ -213,7 +212,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                                 }
                             }
                         }
-                        if ($titleReadOnly && $conf['titleText']) {
+                        if ($conf['titleText']) {
                             $this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText'])));
                         }
                     }
@@ -232,16 +231,21 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     if ($this->linkAttributeValues['class'] === $class || !$this->linkAttributeValues['class'] && $this->classesAnchorDefault[$this->displayedLinkHandlerId] == $class) {
                         $selected = 'selected="selected"';
                     }
-                    $classLabel = !empty($this->thisConfig['classes.'][$class . '.']['name'])
-                        ? $this->getPageConfigLabel($this->thisConfig['classes.'][$class . '.']['name'], 0)
+                    $classLabel = !empty($this->thisConfig['classes'][$class]['name'])
+                        ? $this->getPageConfigLabel($this->thisConfig['classes'][$class]['name'], 0)
                         : $class;
-                    $classStyle = !empty($this->thisConfig['classes.'][$class . '.']['value'])
-                        ? $this->thisConfig['classes.'][$class . '.']['value']
+                    $classStyle = !empty($this->thisConfig['classes'][$class]['value'])
+                        ? $this->thisConfig['classes'][$class]['value']
                         : '';
-                    $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . $class . '"' . ($classStyle ? ' style="' . $classStyle . '"' : '') . '>' . $classLabel . '</option>';
+                    $title = $this->classesAnchorClassTitle[$class] ?? $this->classesAnchorDefaultTitle[$class] ?? '';
+                    $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . htmlspecialchars($class) . '"'
+                        . ($classStyle ? ' style="' . htmlspecialchars($classStyle) . '"' : '')
+                        . 'data-link-title="' . htmlspecialchars($title) . '"'
+                        . '>' . htmlspecialchars($classLabel)
+                        . '</option>';
                 }
             }
-            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties.']['class.']['required'] || $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['class.']['required'])) {
+            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties']['class']['required'] || $this->buttonConfig[$this->displayedLinkHandlerId]['properties']['class']['required'])) {
                 $selected = '';
                 if (!$this->linkAttributeValues['class'] && !$this->classesAnchorDefault[$this->displayedLinkHandlerId]) {
                     $selected = 'selected="selected"';
@@ -252,10 +256,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         // Default target
         $this->defaultLinkTarget = $this->classesAnchorDefault[$this->displayedLinkHandlerId] && $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
             ? $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
-            : (isset($this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['target.']['default'])
-                ? $this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['target.']['default']
-                : (isset($this->buttonConfig['properties.']['target.']['default'])
-                    ? $this->buttonConfig['properties.']['target.']['default']
+            : (isset($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default'])
+                ? $this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default']
+                : (isset($this->buttonConfig['properties']['target']['default'])
+                    ? $this->buttonConfig['properties']['target']['default']
                     : ''));
 
         // todo: find new name for this option
@@ -316,8 +320,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
             : [];
         $allowedItems = array_diff($allowedItems, $blindLinkOptions);
 
-        if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-            $allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], true));
+        if (is_array($this->buttonConfig['options']) && $this->buttonConfig['options']['removeItems']) {
+            $allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options']['removeItems'], true));
         }
 
         return $allowedItems;
@@ -352,7 +356,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $fieldRenderingDefinitions['class'] = $this->getClassField();
         $fieldRenderingDefinitions['target'] = $this->getTargetField();
         $fieldRenderingDefinitions['rel'] = $this->getRelField();
-        if (empty($this->buttonConfig['queryParametersSelector.']['enabled'])) {
+        if (empty($this->buttonConfig['queryParametersSelector']['enabled'])) {
             unset($fieldRenderingDefinitions['params']);
         }
         return $fieldRenderingDefinitions;
@@ -365,7 +369,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getRelField()
     {
-        if (empty($this->buttonConfig['relAttribute.']['enabled'])) {
+        if (empty($this->buttonConfig['relAttribute']['enabled'])) {
             return '';
         }
 
@@ -380,7 +384,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                         htmlspecialchars($this->getLanguageService()->getLL('linkRelationship')) .
                     '</label>
                     <div class="col-xs-8">
-                        <input type="text" name="lrel" class="form-control" value="' . $currentRel . '" />
+                        <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
                     </div>
                 </div>
             </form>
@@ -395,8 +399,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function getTargetField()
     {
         $targetSelectorConfig = [];
-        if (is_array($this->buttonConfig['targetSelector.'])) {
-            $targetSelectorConfig = $this->buttonConfig['targetSelector.'];
+        if (is_array($this->buttonConfig['targetSelector'])) {
+            $targetSelectorConfig = $this->buttonConfig['targetSelector'];
         }
         $target = $this->linkAttributeValues['target'] ?: $this->defaultLinkTarget;
         $lang = $this->getLanguageService();
@@ -440,11 +444,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
         } else {
             $title = $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?: '';
         }
-        if (isset($this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'])) {
-            $readOnly = (bool)$this->buttonConfig[$this->displayedLinkHandlerId . '.']['properties.']['title.']['readOnly'];
+        if (isset($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['title']['readOnly'])) {
+            $readOnly = (bool)$this->buttonConfig[$this->displayedLinkHandlerId]['properties']['title']['readOnly'];
         } else {
-            $readOnly = isset($this->buttonConfig['properties.']['title.']['readOnly'])
-                ? (bool)$this->buttonConfig['properties.']['title.']['readOnly']
+            $readOnly = isset($this->buttonConfig['properties']['title']['readOnly'])
+                ? (bool)$this->buttonConfig['properties']['title']['readOnly']
                 : false;
         }
 
@@ -455,7 +459,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
             $title = $currentClass
                 ? $this->classesAnchorClassTitle[$currentClass]
-                : $this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId];
+                : ($this->classesAnchorDefaultTitle[$this->displayedLinkHandlerId] ?? '');
         }
         return '
                 <form action="" name="ltitleform" id="ltitleform" class="t3js-dummyform form-horizontal">
@@ -464,13 +468,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
                             ' . htmlspecialchars($this->getLanguageService()->getLL('title')) . '
                          </label>
                          <div class="col-xs-8">
-                                <span style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
-                                    <input type="text" name="ltitle" class="form-control"
+                                <input ' . ($readOnly ? 'disabled' : '') . ' type="text" name="ltitle" class="form-control t3js-linkTitle"
                                         value="' . htmlspecialchars($title) . '" />
-                                </span>
-                                <span id="rte-ckeditor-browse-links-title-readonly"
-                                    style="display: ' . ($readOnly ? 'inline' : 'none') . ';">
-                                    ' . htmlspecialchars($title) . '</span>
                         </div>
                     </div>
                 </form>
