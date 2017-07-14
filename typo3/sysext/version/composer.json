@@ -11,6 +11,13 @@
 	"replace": {
 		"version": "*"
 	},
+	"extra": {
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		}
+	},
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\Version\\": "Classes/"

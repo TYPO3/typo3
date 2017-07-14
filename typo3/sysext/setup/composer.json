@@ -22,5 +22,10 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Setup\\": "Classes/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Setup\\Tests\\": "Tests/"
+		}
 	}
 }
