@@ -259,6 +259,9 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function isExtListUpdateNecessary()
     {
+        if ($this->repository === null) {
+            throw new ExtensionManagerException('No extension repository was found.', 1500060252);
+        }
         $updateNecessity = 0;
         if ($this->extensionRepository->countByRepository($this->repository->getUid()) <= 0) {
             $updateNecessity |= self::PROBLEM_NO_VERSIONS_IN_DATABASE;
