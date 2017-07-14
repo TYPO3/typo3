@@ -77,19 +77,7 @@ EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
 				<source>The "Cache and Age" view.
 Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
 			</trans-unit>
-			<trans-unit id="stat.alttitle">
-				<source>Page Hit statistics</source>
-			</trans-unit>
-			<trans-unit id="stat.description">
-				<source>Displays website hit statistics for a branch of the page tree. Based on the simple, internal MySQL statistics table which records page impressions and sessions only.</source>
-			</trans-unit>
-			<trans-unit id="stat.details">
-				<source>&lt;b&gt;Notice:&lt;/b&gt; This function requires the extension "Simple hit statistics" (sys_stat) to be installed. Also you must configure TypoScript to register page hits in the statistics database table.</source>
-			</trans-unit>
-			<trans-unit id="_stat.image">
-				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_3.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
+
 			<trans-unit id="lang.details" xml:space="preserve">
 				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
 &lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
@@ -116,31 +104,6 @@ EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source
 			<trans-unit id="lang.image_descr" xml:space="preserve">
 				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
 The "Localization settings" that affect availability of pages in the various languages.</source>
-			</trans-unit>
-			<trans-unit id="func_hits.alttitle">
-				<source>Statistic Views</source>
-			</trans-unit>
-			<trans-unit id="func_hits.description">
-				<source>You can select between three views of the statistics in the selector box; "Page hits", "Total hits", "Hits in main sections". Use the right selector box to select the depth of the overview in the pagetree.</source>
-			</trans-unit>
-			<trans-unit id="func_hits.details" xml:space="preserve">
-				<source>You can view the page hit statistics 30 days back. Each day is shown in its own column.
-For each page in the page tree you can see the page hits each day as a number formatted like [page hits]/[user sessions]. So if the number is "286/34" it means that the page had 286 page hits that day and that there were at least 34 unique visitors (measured by at least two hits by a user accepting a cookie from the site).
-
-This is an overview of the meaning of each view mode:
-
-&lt;b&gt;Page hits&lt;/b&gt;
-This shows page hits/sessions for each page.
-
-&lt;b&gt;Total hits&lt;/b&gt;
-This will show statistics for only pages that have a Template Record (with Root-flag set) on it. This means that page hits are shown as totals for a whole website.
-
-&lt;b&gt;Hits in main sections&lt;/b&gt;
-Will show the total number of page hits/sessions within main sections of a website. A "main section" is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set)</source>
-			</trans-unit>
-			<trans-unit id="_func_hits.image">
-				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_2.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.alttitle">
 				<source>Localization overview</source>
