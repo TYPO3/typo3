@@ -978,6 +978,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.cut">
 				<source>Cut</source>
 			</trans-unit>
+			<trans-unit id="cm.cutrelease">
+				<source>Cut release</source>
+			</trans-unit>
 			<trans-unit id="cm.view">
 				<source>Show</source>
 			</trans-unit>
