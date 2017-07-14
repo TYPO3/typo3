@@ -99,7 +99,7 @@ class UpdateFromTerController extends AbstractController
         $repository = $this->repositoryRepository->findByUid((int)$this->settings['repositoryUid']);
 
         $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');
-        $lastUpdateTime = $repository->getLastUpdate();
+        $lastUpdateTime = $repository ? $repository->getLastUpdate() : null;
         if (null === $lastUpdateTime) {
             $lastUpdatedSince = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never');
             $lastUpdateTime = date($timeFormat);
