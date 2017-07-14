@@ -94,6 +94,16 @@ class VideoTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 '//:path/myVideoFile',
                 ['controls' => 1, 'controlsList' => 'nodownload'],
                 '<video width="300" height="200" controls controlsList="nodownload"><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['additionalAttributes' => ['muted' => 'muted', 'foo' => 'bar']],
+                '<video muted="muted" foo="bar" width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
+            [
+                '//:path/myVideoFile',
+                ['data' => ['js-required' => 'yes', 'custom-id' => 'video-123']],
+                '<video data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ]
         ];
     }

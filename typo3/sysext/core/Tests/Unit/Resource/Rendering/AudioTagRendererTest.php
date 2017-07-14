@@ -91,6 +91,22 @@ class AudioTagRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 '//:path/myAudioFile',
                 ['controls' => 1, 'controlsList' => 'nodownload'],
                 '<audio controls controlsList="nodownload"><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['additionalAttributes' => ['muted' => 'muted', 'foo' => 'bar']],
+                '<audio muted="muted" foo="bar" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ],
+            [
+                '//:path/myAudioFile',
+                ['data' => ['js-required' => 'yes', 'custom-id' => 'audio-123']],
+                '<audio data-js-required="yes" data-custom-id="audio-123" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+            ]
+            ,
+            [
+                '//:path/myAudioFile',
+                ['data' => ['js-required' => 'yes', 'custom-id' => 'audio-123'], 'additionalAttributes' => ['muted' => 'muted', 'foo' => 'bar']],
+                '<audio muted="muted" foo="bar" data-js-required="yes" data-custom-id="audio-123" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
             ]
         ];
     }

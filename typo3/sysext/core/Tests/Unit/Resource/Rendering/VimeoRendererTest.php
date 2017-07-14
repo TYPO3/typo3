@@ -155,4 +155,46 @@ class VimeoRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithAdditionalAttributes()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithDataAttributesForCustomization()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen data-player-handler="vimeo" data-custom-playerId="player-123" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123']])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithCombinationOfDataAndAdditionalAttributes()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="vimeo" data-custom-playerId="player-123" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+        );
+    }
 }

@@ -243,4 +243,46 @@ class YouTubeRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $this->subject->render($fileResourceMock, '300m', '200', ['relatedVideos' => 0])
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithAdditionalAttributes()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithDataAttributesForCustomization()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123']])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithCombinationOfDataAndAdditionalAttributes()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org&amp;showinfo=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+        );
+    }
 }
