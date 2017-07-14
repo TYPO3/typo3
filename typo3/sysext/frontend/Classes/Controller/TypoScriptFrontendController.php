@@ -2783,7 +2783,12 @@ class TypoScriptFrontendController
     public function calculateLinkVars()
     {
         $this->linkVars = '';
-        $linkVars = GeneralUtility::trimExplode(',', (string)$this->config['config']['linkVars']);
+        if (empty($this->config['config']['linkVars'])) {
+            return;
+        }
+
+        $linkVars = $this->splitLinkVarsString((string)$this->config['config']['linkVars']);
+
         if (empty($linkVars)) {
             return;
         }
@@ -2813,6 +2818,28 @@ class TypoScriptFrontendController
             }
             $this->linkVars .= $value;
         }
+    }
+
+    /**
+     * Split the link vars string by "," but not if the "," is inside of braces
+     *
+     * @param $string
+     *
+     * @return array
+     */
+    protected function splitLinkVarsString(string $string): array
+    {
+        $tempCommaReplacementString = '###KASPER###';
+
+        // replace every "," wrapped in "()" by a "unique" string
+        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', function ($result) use ($tempCommaReplacementString) {
+            return str_replace(',', $tempCommaReplacementString, $result[0]);
+        }, $string);
+
+        $string = GeneralUtility::trimExplode(',', $string);
+
+        // replace all "unique" strings back to ","
+        return str_replace($tempCommaReplacementString, ',', $string);
     }
 
     /**

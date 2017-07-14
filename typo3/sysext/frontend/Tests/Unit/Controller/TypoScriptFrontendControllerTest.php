@@ -287,4 +287,123 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit
         $this->subject->preparePageContentGeneration();
         $this->assertEquals($this->subject->sWordRegEx, $expectedRegex);
     }
+
+    /**
+     * @test
+     * @dataProvider splitLinkVarsDataProvider
+     *
+     * @param $string
+     * @param $expected
+     */
+    public function splitLinkVarsStringSplitsStringByComma($string, $expected)
+    {
+        $this->assertEquals($expected, $this->subject->_callRef('splitLinkVarsString', $string));
+    }
+
+    /**
+     * @return array
+     */
+    public function splitLinkVarsDataProvider()
+    {
+        return [
+            [
+                'L',
+                ['L']
+            ],
+            [
+                'L,a',
+                [
+                    'L',
+                    'a'
+                ]
+            ],
+            [
+                'L, a',
+                [
+                    'L',
+                    'a'
+                ]
+            ],
+            [
+                'L , a',
+                [
+                    'L',
+                    'a'
+                ]
+            ],
+            [
+                ' L, a ',
+                [
+                    'L',
+                    'a'
+                ]
+            ],
+            [
+                'L(1)',
+                [
+                    'L(1)'
+                ]
+            ],
+            [
+                'L(1),a',
+                [
+                    'L(1)',
+                    'a'
+                ]
+            ],
+            [
+                'L(1) ,  a',
+                [
+                    'L(1)',
+                    'a'
+                ]
+            ],
+            [
+                'a,L(1)',
+                [
+                    'a',
+                    'L(1)'
+                ]
+            ],
+            [
+                'L(1),a(2-3)',
+                [
+                    'L(1)',
+                    'a(2-3)'
+                ]
+            ],
+            [
+                'L(1),a((2-3))',
+                [
+                    'L(1)',
+                    'a((2-3))'
+                ]
+            ],
+            [
+                'L(1),a(a{2,4})',
+                [
+                    'L(1)',
+                    'a(a{2,4})'
+                ]
+            ],
+            [
+                'L(1),a(/a{2,4}\,()/)',
+                [
+                    'L(1)',
+                    'a(/a{2,4}\,()/)'
+                ]
+            ],
+            [
+                'L,a , b(c) , dd(/g{1,2}/), eee(, ()f) , 2',
+                [
+                    'L',
+                    'a',
+                    'b(c)',
+                    'dd(/g{1,2}/)',
+                    'eee(, ()f)',
+                    '2'
+                ]
+            ]
+        ];
+    }
 }
