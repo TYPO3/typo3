@@ -54,6 +54,12 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 		// siteUrl etc are added as data attributes to the body tag
 		$.extend(RteLinkBrowser, $('body').data());
 
+		$('.t3js-class-selector').on('change', function () {
+			if ($('option:selected', this).data('linkTitle')) {
+				$('.t3js-linkTitle').val($('option:selected', this).data('linkTitle'));
+			}
+		});
+
 		$('.t3js-removeCurrentLink').on('click', function (event) {
 			event.preventDefault();
 			RteLinkBrowser.CKEditor.execCommand('unlink');
