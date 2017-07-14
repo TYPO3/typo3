@@ -105,6 +105,8 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $enableClickMenu = $this->arguments['enableClickMenu'];
         $clickTitleMode = $this->arguments['clickTitleMode'];
 
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
         /** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
         $dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
@@ -130,6 +132,10 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $dblist->sortRev = $sortDescending;
         $dblist->script = $_SERVER['REQUEST_URI'];
         $dblist->generateList();
-        return $dblist->HTMLcode;
+
+        $js = 'var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
+        $html = GeneralUtility::wrapJS($js) . $dblist->HTMLcode;
+
+        return $html;
     }
 }
