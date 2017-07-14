@@ -1738,12 +1738,12 @@ class PageLayoutView implements LoggerAwareInterface
             switch ($field) {
                 case 'title':
                     $pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-                    $theData[$field] = $row['treeIcons'] . $theIcon . $pTitle . '&nbsp;&nbsp;';
+                    $theData[$field] = $row['treeIcons'] . $theIcon . $pTitle;
                     break;
                 case 'php_tree_stop':
                     // Intended fall through
                 case 'TSconfig':
-                    $theData[$field] = $row[$field] ? '&nbsp;<strong>x</strong>' : '&nbsp;';
+                    $theData[$field] = $row[$field] ? '<strong>x</strong>' : '&nbsp;';
                     break;
                 case 'uid':
                     if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
@@ -1757,13 +1757,22 @@ class PageLayoutView implements LoggerAwareInterface
                         ];
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
-                            . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('editThisPage')) . '">'
-                            . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
+                        $onClick = BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']));
+
+                        $eI =
+                            '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="btn btn-default" title="' .
+                            $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+                            $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
+                            '</a>';
+                        $eI .=
+                            '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
+                            htmlspecialchars($this->getLanguageService()->getLL('editThisPage')) . '">' .
+                            $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
+                            '</a>';
                     } else {
                         $eI = '';
                     }
-                    $theData[$field] = $eI . '<span align="right">' . $row['uid'] . '</span>';
+                    $theData[$field] = '<div class="btn-group" role="group">' . $eI . '</div>';
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
@@ -1776,7 +1785,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $f2 = substr($field, 6);
                         if ($GLOBALS['TCA'][$f2]) {
                             $c = $this->numberOfRecords($f2, $row['uid']);
-                            $theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
+                            $theData[$field] = ($c ? $c : '');
                         }
                     } else {
                         $theData[$field] = $this->getPagesTableFieldValue($field, $row);
@@ -1797,7 +1806,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function getPagesTableFieldValue($field, array $row)
     {
-        return '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+        return htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
     }
 
     /**********************************
