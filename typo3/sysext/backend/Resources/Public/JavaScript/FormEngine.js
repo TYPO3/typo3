@@ -566,7 +566,7 @@ define(['jquery',
 
 		$selected.each(function() {
 			$availableFieldEl
-				.find('option[value="' + $(this).attr('value') + '"]')
+				.find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]')
 				.removeClass('hidden')
 				.prop('disabled', false);
 		});
