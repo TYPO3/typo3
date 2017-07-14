@@ -7,6 +7,15 @@
 
 	<h3>Select database</h3>
 
+	<f:if condition="{errors -> f:count()}">
+		<f:for each="{errors}" as="error">
+			<div class="alert alert-danger">
+				<h4>Exception</h4>
+				<p>{error}</p>
+			</div>
+		</f:for>
+	</f:if>
+
 	<f:if condition="{isInitialInstallationInProgress}">
 		<f:then>
 			You have two options:
