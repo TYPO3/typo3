@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Backend\View;
 
 /*
@@ -169,11 +170,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
      */
     protected $clipboard;
-
-    /**
-     * @var array
-     */
-    protected $plusPages = [];
 
     /**
      * User permissions
@@ -1280,11 +1276,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     );
                 }
             }
-        } else {
-            $count = (int)$queryBuilder->count('uid')->execute()->fetchColumn(0);
-            if ($count) {
-                $this->plusPages[$pid] = $count;
-            }
         }
 
         return $rows;
@@ -1362,14 +1353,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         foreach ($fieldArr as $field) {
             switch ($field) {
                 case 'title':
-                    $red = $this->plusPages[$row['uid']] ? '<span class="text-danger"><strong>+</strong></span>' : '';
                     $pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-                    if ($red) {
-                        $pTitle = '<a href="'
-                            . htmlspecialchars($this->script . ((strpos($this->script, '?') !== false) ? '&' : '?')
-                            . 'id=' . $row['uid']) . '">' . $pTitle . '</a>';
-                    }
-                    $theData[$field] = $row['treeIcons'] . $theIcon . $red . $pTitle . '&nbsp;&nbsp;';
+                    $theData[$field] = $row['treeIcons'] . $theIcon . $pTitle . '&nbsp;&nbsp;';
                     break;
                 case 'php_tree_stop':
                     // Intended fall through
