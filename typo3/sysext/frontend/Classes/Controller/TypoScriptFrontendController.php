@@ -578,7 +578,10 @@ class TypoScriptFrontendController
      * Site content overlay flag; If set - and sys_language_content is > 0 - ,
      * records selected will try to look for a translation pointing to their uid. (If
      * configured in [ctrl][languageField] / [ctrl][transOrigP...]
-     * @var int
+     * Possible values: [0,1,hideNonTranslated]
+     * This flag is set based on TypoScript config.sys_language_overlay setting
+     *
+     * @var int|string
      */
     public $sys_language_contentOL = 0;
 
