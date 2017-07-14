@@ -46,6 +46,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFolders');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
             DragDrop.table = "folders";
+            Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
             Tree.registerDragDropHandlers();
         }');
     }
