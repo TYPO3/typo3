@@ -77,7 +77,7 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
      */
     public function render()
     {
-        $pageUid = (int)$this->arguments['pageUid'];
+        $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)$this->arguments['pageType'];
         $noCache = (bool)$this->arguments['noCache'];
         $noCacheHash = (bool)$this->arguments['useCacheHash'];
