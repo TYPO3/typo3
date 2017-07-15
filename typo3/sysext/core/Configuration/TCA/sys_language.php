@@ -130,7 +130,7 @@ return [
                     ['es', 'es', 'flags-es'],
                     ['et', 'et', 'flags-et'],
                     ['eu', 'eu', 'flags-eu'],
-                    ['fam', 'fam', 'flags-fam'],
+                    ['fm', 'fm', 'flags-fm'],
                     ['fi', 'fi', 'flags-fi'],
                     ['fj', 'fj', 'flags-fj'],
                     ['fk', 'fk', 'flags-fk'],
