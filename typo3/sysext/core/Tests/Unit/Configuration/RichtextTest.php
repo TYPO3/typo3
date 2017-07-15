@@ -207,12 +207,22 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'classes.' => [
                         'aClass.' => 'anotherConfig',
                     ],
+                    'editor.' => [
+                        'config.' => [
+                            'contentsCss' => 'my.css'
+                        ]
+                    ],
                 ],
             ],
         ];
         $expected = [
             'classes.' => [
                 'aClass.' => 'anotherConfig',
+            ],
+            'editor' => [
+                'config' => [
+                    'contentsCss' => 'my.css'
+                ]
             ],
             'proc.' => [
                 'overruleMode' => 'default',
@@ -251,6 +261,11 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'classes.' => [
                                 'aClass.' => 'aThirdConfig',
                             ],
+                            'editor.' => [
+                                'config.' => [
+                                    'contentsCss' => 'my.css'
+                                ]
+                            ],
                         ],
                     ],
                 ],
@@ -259,6 +274,12 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expected = [
             'classes.' => [
                 'aClass.' => 'aThirdConfig',
+            ],
+            // editor config without pagets dots
+            'editor' => [
+                'config' => [
+                    'contentsCss' => 'my.css'
+                ]
             ],
             'proc.' => [
                 'overruleMode' => 'default',
@@ -297,10 +318,20 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'classes.' => [
                                 'aClass.' => 'aThirdConfig',
                             ],
+                            'editor.' => [
+                                'config.' => [
+                                    'contentsCss' => 'my.css'
+                                ]
+                            ],
                             'types.' => [
                                 'textmedia.' => [
                                     'classes.' => [
                                         'aClass.' => 'aTypeSpecifcConfig',
+                                    ],
+                                    'editor.' => [
+                                        'config.' => [
+                                            'contentsCss' => 'your.css'
+                                        ]
                                     ],
                                 ]
                             ]
@@ -312,6 +343,12 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expected = [
             'classes.' => [
                 'aClass.' => 'aTypeSpecifcConfig',
+            ],
+            // editor config without pagets dots
+            'editor' => [
+                'config' => [
+                    'contentsCss' => 'your.css'
+                ]
             ],
             'proc.' => [
                 'overruleMode' => 'default',
