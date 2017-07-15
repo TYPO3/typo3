@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Configuration;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -72,23 +73,32 @@ class Richtext
         unset($fullPageTsConfig['default.'], $fullPageTsConfig['config.']);
         // RTE.* (used for RTE.classesAnchor or similar in RTEHtmlArea)
         if (!empty($fullPageTsConfig)) {
-            ArrayUtility::mergeRecursiveWithOverrule($configuration, $fullPageTsConfig);
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $configuration,
+                $this->cleanDotsFromEditorConfigKeys($fullPageTsConfig)
+            );
         }
         // RTE.default.*
         if (is_array($defaultPageTsConfigOverrides)) {
-            ArrayUtility::mergeRecursiveWithOverrule($configuration, $defaultPageTsConfigOverrides);
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $configuration,
+                $this->cleanDotsFromEditorConfigKeys($defaultPageTsConfigOverrides)
+            );
         }
         // RTE.config.tt_content.bodytext and based on type as well
         if (is_array($fieldSpecificPageTsConfigOverrides)) {
             $fieldSpecificPageTsConfigOverridesWithoutType = $fieldSpecificPageTsConfigOverrides;
             unset($fieldSpecificPageTsConfigOverridesWithoutType['types.']);
-            ArrayUtility::mergeRecursiveWithOverrule($configuration, $fieldSpecificPageTsConfigOverridesWithoutType);
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $configuration,
+                $this->cleanDotsFromEditorConfigKeys($fieldSpecificPageTsConfigOverridesWithoutType)
+            );
             if ($recordType
                 && isset($fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.'])
                 && is_array($fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.'])) {
                 ArrayUtility::mergeRecursiveWithOverrule(
                     $configuration,
-                    $fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.']
+                    $this->cleanDotsFromEditorConfigKeys($fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.'])
                 );
             }
         }
@@ -172,5 +182,23 @@ class Richtext
     protected function getBackendUser() : BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Strip dots from the 'editor.' part of a given TypoScript array
+     *
+     * @param array $typoScriptArray TypoScriptArray (with dots) that may contain an 'editor.' subarray
+     * @return array array with dots stripped from the editor subarray
+     */
+    protected function cleanDotsFromEditorConfigKeys(array $typoScriptArray): array
+    {
+        if (isset($typoScriptArray['editor.'])) {
+            /** @var TypoScriptService $typoScriptService */
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $typoScriptArray['editor'] = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray['editor.']);
+            unset($typoScriptArray['editor.']);
+        }
+
+        return $typoScriptArray;
     }
 }
