@@ -194,6 +194,15 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </rte_1>
+                                            <rte.2>
+                                                <TCEforms>
+                                                    <label>rte.2</label>
+                                                    <config>
+                                                        <type>text</type>
+                                                        <enableRichtext>1</enableRichtext>
+                                                    </config>
+                                                </TCEforms>
+                                            </rte.2>
                                         </el>
                                     </ROOT>
                                 </sGeneral>
