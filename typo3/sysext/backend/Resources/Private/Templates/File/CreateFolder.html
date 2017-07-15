@@ -47,9 +47,9 @@
                         <div class="form-group">
                             <label for="newMedia"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label> {cshFileNewMedia -> f:format.raw()}
                             <div class="form-control-wrap">
-                                <input class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
+                                <input class="form-control" type="text" id="newMedia" name="file[newMedia][0][url]"
                                        placeholder="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
-                                <input type="hidden" name="data[newMedia][0][target]" value="{target}" />
+                                <input type="hidden" name="file[newMedia][0][target]" value="{target}" />
                             </div>
                             <div class="help-block">
                                 <f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="form-group">
                     <input class="btn btn-default" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit')}" />
-                    <input type="hidden" name="data[newMedia][0][redirect]" value="{returnUrl}" />
+                    <input type="hidden" name="redirect" value="{returnUrl}" />
                 </div>
             </div>
         </form>
