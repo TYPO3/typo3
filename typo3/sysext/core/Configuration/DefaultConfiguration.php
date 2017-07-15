@@ -407,20 +407,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
                         ],
                     ],
@@ -439,8 +433,6 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
-                            // As the ctrl.type can hold a nested key we need to resolve all relations
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => [
@@ -535,6 +527,12 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
@@ -542,8 +540,8 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
@@ -773,15 +771,10 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
@@ -806,10 +799,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
@@ -915,27 +912,20 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
                         'depends' => [
-                            // As the ctrl.type can hold a nested key we need to resolve all relations
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => [
@@ -1016,9 +1006,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
