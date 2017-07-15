@@ -62,6 +62,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
     public function tableRowData($label, $data, $field, $id)
     {
         $urlParameters = [
+            'id' => $this->pObj->id,
             'edit' => [
                 'sys_template' => [
                     $id => 'edit'
