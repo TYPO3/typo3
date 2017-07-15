@@ -82,7 +82,7 @@ class ObjectAccess
         if ($subject === null || is_scalar($subject)) {
             return null;
         } elseif (!$forceDirectAccess && ($subject instanceof \SplObjectStorage || $subject instanceof ObjectStorage)) {
-            $subject = iterator_to_array($subject, false);
+            $subject = iterator_to_array(clone $subject, false);
         }
 
         // value get based on data type of $subject (possibly converted above)
