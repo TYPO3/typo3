@@ -361,4 +361,57 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
         $this->assertSame($expected, $output);
     }
+
+    /**
+     * @test
+     */
+    public function getConfigurationPageTsOverridesPreset()
+    {
+        $pageId = 42;
+        $presetKey = 'default';
+
+        $preset = [
+            'editor' => [
+                'config' => [
+                    'width' => 100
+                ],
+            ],
+        ];
+
+        $pageTsConfigArray = [
+            'properties' => [
+                'preset' => $presetKey,
+                'editor.' => [
+                    'config.' => [
+                        'width' => 200
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = $this->getAccessibleMock(Richtext::class,
+            ['loadConfigurationFromPreset', 'getRtePageTsConfigOfPid'],
+            [],
+            '',
+            false
+            );
+        $subject->expects($this->once())->method('loadConfigurationFromPreset')->with($presetKey)->willReturn($preset);
+        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with($pageId)->willReturn($pageTsConfigArray);
+
+        $output = $subject->getConfiguration('tt_content', 'bodytext', $pageId, 'textmedia', $pageTsConfigArray);
+
+        $expected = [
+            'editor' => [
+                'config' => [
+                    'width' => 200
+                ],
+            ],
+            'preset' => 'default',
+            'proc.' => [
+                'overruleMode' => 'default',
+            ],
+        ];
+
+        $this->assertSame($expected, $output);
+    }
 }
