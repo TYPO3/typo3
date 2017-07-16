@@ -22,8 +22,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
@@ -131,8 +131,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
         $this->templateService->init();
 
         // Gets the rootLine
-        $sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $rootLine = $sys_page->getRootLine($pageId);
+        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
+        $rootLine = $rootlineUtility->get();
         // This generates the constants/config + hierarchy info for the template.
         $this->templateService->runThroughTemplates($rootLine, $template_uid);
 

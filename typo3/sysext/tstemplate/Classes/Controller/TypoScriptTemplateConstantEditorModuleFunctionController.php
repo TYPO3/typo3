@@ -19,8 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * TypoScript Constant editor
@@ -68,8 +68,8 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
         // IF there was a template...
         if (is_array($this->templateRow)) {
             // Gets the rootLine
-            $sys_page = GeneralUtility::makeInstance(PageRepository::class);
-            $rootLine = $sys_page->getRootLine($pageId);
+            $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
+            $rootLine = $rootlineUtility->get();
             // This generates the constants/config + hierarchy info for the template.
             $this->templateService->runThroughTemplates($rootLine, $template_uid);
             // The editable constants are returned in an array.
