@@ -11,3 +11,9 @@ namespace TYPO3\CMS\Frontend\Controller {
     {
     }
 }
+
+namespace TYPO3\CMS\InfoPagetsconfig\Controller {
+    class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController
+    {
+    }
+}

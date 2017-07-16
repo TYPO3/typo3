@@ -1,0 +1,25 @@
+<div class="nowrap">
+    <f:if condition="{overviewOfPagesUsingTSConfig}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped table-hover" id="tsconfig-overview">
+                    <thead>
+                        <tr>
+                            <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:pagetitle')}</th>
+                            <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:included_tsconfig_files')}</th>
+                            <th>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:written_tsconfig_lines')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{overviewOfPagesUsingTSConfig}" as="line">
+                            <f:render partial="PageTsConfig/PageZeroTableRow" arguments="{line: line}" />
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox message="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_noPageTSconfig')}" state="-1" />
+        </f:else>
+    </f:if>
+</div>

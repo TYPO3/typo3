@@ -1,0 +1,8 @@
+<f:if condition="{editIcon}">
+    <a href="{editIcon -> f:format.raw()}" title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:{editTitle}')}" class="btn btn-default">
+        <core:icon identifier="actions-document-open" />
+        <f:if condition="{editAll}">
+            <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_all" />
+        </f:if>
+    </a>
+</f:if>

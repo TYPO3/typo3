@@ -1,8 +1,8 @@
-<h1>{f:translate(key: 'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:tsconf_title')}</h1>
+<h1>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang.xlf:tsconf_title')}</h1>
 <f:if condition="{csh}">
   <span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
 </f:if>
-<f:render partial="Menu" arguments="{_all}"/>
+<f:render partial="PageTsConfig/Menu" arguments="{_all}"/>
 <f:if condition="{tsconfParts99}">
     <f:then>
         <f:for each="{lines}" as="line">
@@ -10,7 +10,7 @@
                 <div class="panel-heading">
                     <f:if condition="{line.defaultPageTSconfig}">
                         <f:then>
-                          <f:translate key="LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:editTSconfig_default" />
+                          <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default" />
                         </f:then>
                         <f:else>
                             <f:format.raw>{line.title}</f:format.raw>
@@ -21,11 +21,11 @@
                     <f:if condition="{line.content -> f:format.stripTags() -> f:spaceless()}">
                         <f:format.raw>{line.content}</f:format.raw>
                     </f:if>
-                    <f:render partial="EditIcon" arguments="{editIcon: line.editIcon, editTitle: line.editTitle}" />
+                    <f:render partial="PageTsConfig/EditIcon" arguments="{editIcon: line.editIcon, editTitle: line.editTitle}" />
                 </div>
             </div>
         </f:for>
-        <f:render partial="EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
+        <f:render partial="PageTsConfig/EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
     </f:then>
     <f:else>
         <div class="nowrap">
