@@ -439,7 +439,15 @@ abstract class AbstractFile implements FileInterface
     public function delete()
     {
         // The storage will mark this file as deleted
-        return $this->getStorage()->deleteFile($this);
+        $wasDeleted = $this->getStorage()->deleteFile($this);
+
+        // Unset all properties when deleting the file, as they will be stale anyway
+        // This needs to happen AFTER the storage deleted the file, because the storage
+        // emits a signal, which passes the file object to the slots, which may need
+        // all file properties of the deleted file.
+        $this->properties = [];
+
+        return $wasDeleted;
     }
 
     /**
@@ -448,8 +456,6 @@ abstract class AbstractFile implements FileInterface
      */
     public function setDeleted()
     {
-        // Unset all properties when deleting the file, as they will be stale anyway
-        $this->properties = null;
         $this->deleted = true;
     }
 
