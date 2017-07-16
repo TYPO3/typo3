@@ -53,7 +53,7 @@ class ElementHistoryController extends AbstractModule
     public function __construct()
     {
         parent::__construct();
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_show_rechis.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();

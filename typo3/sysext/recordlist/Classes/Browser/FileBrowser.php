@@ -408,7 +408,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     $addParams,
                     'id="checkDisplayThumbs"'
                 )
-                . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')) . '</label></div>';
+                . htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')) . '</label></div>';
             $out .= $thumbNailCheck;
         } else {
             $out .= '<div style="padding-top: 15px;"></div>';

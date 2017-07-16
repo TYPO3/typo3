@@ -5,10 +5,10 @@
 		<el>
 			<basePath>
 				<TCEforms>
-					<label>LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_basePath</label>
+					<label>LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_basePath</label>
 					<config>
 						<type>input</type>
-						<placeholder>LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_basePath_placeholder</placeholder>
+						<placeholder>LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_basePath_placeholder</placeholder>
 						<eval>required</eval>
 						<size>30</size>
 					</config>
@@ -16,16 +16,16 @@
 			</basePath>
 			<pathType>
 				<TCEforms>
-					<label>LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType</label>
+					<label>LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType</label>
 					<config>
 						<type>radio</type>
 						<items type="array">
 							<numIndex index="0" type="array">
-								<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType_relative</numIndex>
+								<numIndex index="0">LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType_relative</numIndex>
 								<numIndex index="1">relative</numIndex>
 							</numIndex>
 							<numIndex index="1" type="array">
-								<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType_absolute</numIndex>
+								<numIndex index="0">LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_pathType_absolute</numIndex>
 								<numIndex index="1">absolute</numIndex>
 							</numIndex>
 						</items>
@@ -35,7 +35,7 @@
 			</pathType>
 			<caseSensitive>
 				<TCEforms>
-					<label>LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_caseSensitive</label>
+					<label>LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:localDriverFlexform_caseSensitive</label>
 					<config>
 						<type>check</type>
 						<default>1</default>

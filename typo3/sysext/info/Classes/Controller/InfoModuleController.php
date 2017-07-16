@@ -71,7 +71,7 @@ class InfoModuleController extends BaseScriptClass
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->languageService = $GLOBALS['LANG'];
-        $this->languageService->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_web_info.xlf');
+        $this->languageService->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
 
         $this->backendUser = $GLOBALS['BE_USER'];
 

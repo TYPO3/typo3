@@ -1107,7 +1107,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     break;
                 case '_REF_':
                     // References
-                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:c__REF_')) . ']</i>';
+                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:c__REF_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_':
                     // Path

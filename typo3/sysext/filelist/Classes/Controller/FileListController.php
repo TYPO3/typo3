@@ -157,7 +157,7 @@ class FileListController extends ActionController
     public function initializeObject()
     {
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
 
         // Setting GPvars:

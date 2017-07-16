@@ -44,34 +44,34 @@ $GLOBALS['TBE_MODULES'] = [
     'help' => '',
     '_configuration' => [
         'web' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
             'name' => 'web',
             'iconIdentifier' => 'module-web'
         ],
         'file' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_file.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
             'navigationFrameModule' => 'file_navframe',
             'name' => 'file',
             'workspaces' => 'online,custom',
             'iconIdentifier' => 'module-file'
         ],
         'user' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_usertools.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
             'name' => 'user',
             'iconIdentifier' => 'status-user-backend'
         ],
         'tools' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_admintools.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
             'name' => 'tools',
             'iconIdentifier' => 'module-tools'
         ],
         'system' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_system.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
             'name' => 'system',
             'iconIdentifier' => 'module-system'
         ],
         'help' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_help.xlf',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
             'name' => 'help',
             'iconIdentifier' => 'module-help'
         ]
@@ -96,17 +96,15 @@ $GLOBALS['TBE_STYLES'] = [];
  */
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:core/Resources/Private/Language/locallang_csh_pages.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages_language_overlay', 'EXT:core/Resources/Private/Language/locallang_csh_pageslol.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:lang/Resources/Private/Language/locallang_csh_be_users.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:lang/Resources/Private/Language/locallang_csh_be_groups.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/Resources/Private/Language/locallang_csh_sysfilem.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_reference', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_storage', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:lang/Resources/Private/Language/locallang_csh_syslang.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:lang/Resources/Private/Language/locallang_csh_sysnews.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf');
 // General Core
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/Resources/Private/Language/locallang_csh_corebe.xlf');
-// Web > Info
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/Resources/Private/Language/locallang_csh_web_info.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf');
 
 if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
     // extJS theme
