@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -79,12 +80,15 @@ class TcaGroup implements FormDataProviderInterface
                 foreach ($fileList as $uidOrPath) {
                     $item = [
                         'uidOrPath' => $uidOrPath,
+                        'title' => $uidOrPath,
                     ];
-                    if (MathUtility::canBeInterpretedAsInteger($uidOrPath)) {
-                        $fileObject = $fileFactory->getFileObject($uidOrPath);
-                        $item['title'] = $fileObject->getName();
-                    } else {
-                        $item['title'] = $uidOrPath;
+                    try {
+                        if (MathUtility::canBeInterpretedAsInteger($uidOrPath)) {
+                            $fileObject = $fileFactory->getFileObject($uidOrPath);
+                            $item['title'] = $fileObject->getName();
+                        }
+                    } catch (Exception $exception) {
+                        continue;
                     }
                     $items[] = $item;
                 }
@@ -180,13 +184,18 @@ class TcaGroup implements FormDataProviderInterface
                 // Simple list of folders
                 $folderList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
                 foreach ($folderList as $folder) {
-                    if ($folder) {
+                    if (empty($folder)) {
+                        continue;
+                    }
+                    try {
                         $folderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folder);
                         if ($folderObject instanceof Folder) {
                             $items[] = [
                                 'folder' => $folder,
                             ];
                         }
+                    } catch (Exception $exception) {
+                        continue;
                     }
                 }
             } else {
