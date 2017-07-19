@@ -906,6 +906,12 @@ class RelationHandler
 
         $key = 0;
         $uid = (int)$uid;
+        // skip further processing if $uid does not
+        // point to a valid parent record
+        if ($uid === 0) {
+            return;
+        }
+
         $foreign_table = $conf['foreign_table'];
         $foreign_table_field = $conf['foreign_table_field'];
         $useDeleteClause = !$this->undeleteRecord;
