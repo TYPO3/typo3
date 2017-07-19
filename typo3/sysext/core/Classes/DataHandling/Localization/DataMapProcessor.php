@@ -494,11 +494,9 @@ class DataMapProcessor
      */
     protected function synchronizeInlineRelations(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord)
     {
-        $fromId = $fromRecord['uid'];
         $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
         $isLocalizationModeExclude = ($configuration['l10n_mode'] ?? null) === 'exclude';
         $foreignTableName = $configuration['config']['foreign_table'];
-        $manyToManyTable = ($configuration['config']['MM'] ?? '');
 
         $fieldNames = [
             'language' => ($GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'] ?? null),
@@ -507,38 +505,17 @@ class DataMapProcessor
         ];
         $isTranslatable = (!empty($fieldNames['language']) && !empty($fieldNames['parent']));
 
-        // determine suggested elements of either translation parent or source record
-        // from data-map, in case the accordant language parent/source record was modified
-        if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
-            $suggestedAncestorIds = GeneralUtility::trimExplode(
-                ',',
-                $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName],
-                true
-            );
-        // determine suggested elements of either translation parent or source record from storage
-        } else {
-            $relationHandler = $this->createRelationHandler();
-            $relationHandler->start(
-                $fromRecord[$fieldName],
-                $foreignTableName,
-                $manyToManyTable,
-                $fromId,
-                $item->getFromTableName(),
-                $configuration['config']
-            );
-            $suggestedAncestorIds = $this->mapRelationItemId($relationHandler->itemArray);
-        }
-        // determine persisted elements for the current data-map item
-        $relationHandler = $this->createRelationHandler();
-        $relationHandler->start(
-            $forRecord[$fieldName] ?? '',
-            $foreignTableName,
-            $manyToManyTable,
-            $item->getId(),
-            $item->getTableName(),
-            $configuration['config']
+        $suggestedAncestorIds = $this->resolveSuggestedInlineRelations(
+            $item,
+            $fieldName,
+            $fromRecord
         );
-        $persistedIds = $this->mapRelationItemId($relationHandler->itemArray);
+        $persistedIds = $this->resolvePersistedInlineRelations(
+            $item,
+            $fieldName,
+            $forRecord
+        );
+
         // The dependent ID map points from language parent/source record to
         // localization, thus keys: parents/sources & values: localizations
         $dependentIdMap = $this->fetchDependentIdMap($foreignTableName, $suggestedAncestorIds, $item->getLanguage());
@@ -659,6 +636,81 @@ class DataMapProcessor
             $item->getId(),
             [$fieldName => implode(',', array_values($desiredIdMap))]
         );
+    }
+
+    /**
+     * Determines suggest inline relations of either translation parent or
+     * source record from data-map or storage in case records have been
+     * persisted already.
+     *
+     * @param DataMapItem $item
+     * @param string $fieldName
+     * @param array $fromRecord
+     * @return int[]|string[]
+     */
+    protected function resolveSuggestedInlineRelations(DataMapItem $item, string $fieldName, array $fromRecord): array
+    {
+        $suggestedAncestorIds = [];
+        $fromId = $fromRecord['uid'];
+        $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
+        $foreignTableName = $configuration['config']['foreign_table'];
+        $manyToManyTable = ($configuration['config']['MM'] ?? '');
+
+        // determine suggested elements of either translation parent or source record
+        // from data-map, in case the accordant language parent/source record was modified
+        if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
+            $suggestedAncestorIds = GeneralUtility::trimExplode(
+                ',',
+                $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName],
+                true
+            );
+        // determine suggested elements of either translation parent or source record from storage
+        } elseif (MathUtility::canBeInterpretedAsInteger($fromId)) {
+            $relationHandler = $this->createRelationHandler();
+            $relationHandler->start(
+                $fromRecord[$fieldName],
+                $foreignTableName,
+                $manyToManyTable,
+                $fromId,
+                $item->getFromTableName(),
+                $configuration['config']
+            );
+            $suggestedAncestorIds = $this->mapRelationItemId($relationHandler->itemArray);
+        }
+
+        return $suggestedAncestorIds;
+    }
+
+    /**
+     * Determine persisted inline relations for current data-map-item.
+     *
+     * @param DataMapItem $item
+     * @param string $fieldName
+     * @param array $forRecord
+     * @return int[]
+     */
+    private function resolvePersistedInlineRelations(DataMapItem $item, string $fieldName, array $forRecord): array
+    {
+        $persistedIds = [];
+        $configuration = $GLOBALS['TCA'][$item->getFromTableName()]['columns'][$fieldName];
+        $foreignTableName = $configuration['config']['foreign_table'];
+        $manyToManyTable = ($configuration['config']['MM'] ?? '');
+
+        // determine persisted elements for the current data-map item
+        if (!$item->isNew()) {
+            $relationHandler = $this->createRelationHandler();
+            $relationHandler->start(
+                $forRecord[$fieldName] ?? '',
+                $foreignTableName,
+                $manyToManyTable,
+                $item->getId(),
+                $item->getTableName(),
+                $configuration['config']
+            );
+            $persistedIds = $this->mapRelationItemId($relationHandler->itemArray);
+        }
+
+        return $persistedIds;
     }
 
     /**
