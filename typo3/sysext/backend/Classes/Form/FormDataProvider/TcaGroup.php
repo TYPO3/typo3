@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -79,12 +80,17 @@ class TcaGroup implements FormDataProviderInterface
                 // Simple list of folders
                 $folderList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
                 foreach ($folderList as $folder) {
-                    if ($folder) {
+                    if (empty($folder)) {
+                        continue;
+                    }
+                    try {
                         $folderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folder);
                         if ($folderObject instanceof Folder) {
                             $folderName = PathUtility::basename($folderObject->getIdentifier());
                             $folders[] = rawurlencode($folder) . '|' . rawurlencode($folderName);
                         }
+                    } catch (Exception $exception) {
+                        continue;
                     }
                 }
                 $result['databaseRow'][$fieldName] = implode(',', $folders);
