@@ -74,7 +74,7 @@ class TypoScriptFrontendControllerHook
                     $urlForStoppingPreview = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=LOGOUT&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
                     $text .= '<br><a style="color: #000;" href="' . $urlForStoppingPreview . '">Stop preview</a>';
                 }
-                $content .= '<div id="typo3-previewInfo" style="position: absolute; top: 20px; right: 20px; border: 2px solid #000; padding: 5px; background: #f00; font: 1em Verdana; color: #000; font-weight: bold; z-index: 10001">' . $text . '</div>';
+                $content .= '<div id="typo3-previewInfo" style="position: absolute; top: 0; border-bottom: 2px solid #ff8800; padding: 5px; background: #ffaa00; font: 1em Verdana; color: #fff; letter-spacing: 2px; z-index: 20000; width: 100%; text-align: center;"><span style="overflow: hidden; display: block; height: 16px;">... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... </span></div>';
             }
         }
         return $content;
