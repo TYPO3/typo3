@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
+
 /**
  * Configuration utility test
  */
@@ -24,8 +26,8 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
      */
     public function getCurrentConfigurationReturnsExtensionConfigurationAsValuedConfiguration()
     {
-        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $configurationUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)
+        /** @var $configurationUtility ConfigurationUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $configurationUtility = $this->getMockBuilder(ConfigurationUtility::class)
             ->setMethods(['getDefaultConfigurationFromExtConfTemplateAsValuedArray'])
             ->getMock();
         $configurationUtility
@@ -53,6 +55,59 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($currentConfiguration);
         $actual = $configurationUtility->getCurrentConfiguration($extensionKey);
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentConfigurationReturnsExtensionConfigurationWithExtconfBasedConfigurationPrioritized()
+    {
+        /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $configurationUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class)
+            ->setMethods(['getDefaultConfigurationFromExtConfTemplateAsValuedArray'])
+            ->getMock();
+        $configurationUtility
+            ->expects($this->once())
+            ->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
+            ->will($this->returnValue([]));
+        $extensionKey = $this->getUniqueId('some-extension');
+
+        $serializedConfiguration = [
+            'key1' => 'value1',
+            'key2.' => [
+                'subkey1' => 'somevalue'
+            ]
+        ];
+        $currentExtconfConfiguration = [
+            'key1' => 'value1',
+            'key2.' => [
+                'subkey1' => 'overwritten'
+            ]
+        ];
+
+        $expected = [
+            'key1' => [
+                'value' => 'value1',
+            ],
+            'key2.subkey1' => [
+                'value' => 'overwritten',
+            ],
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($serializedConfiguration);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey] = $currentExtconfConfiguration;
+        $actual = $configurationUtility->getCurrentConfiguration($extensionKey);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function mergeDefaultConfigurationReturnsEmptyArrayIfNoConfigurationForExtensionExists()
+    {
+        $configurationUtility = new ConfigurationUtility();
+        $result = $configurationUtility->getCurrentConfiguration('not_existing_extension');
+        self::assertSame([], $result);
     }
 
     /**

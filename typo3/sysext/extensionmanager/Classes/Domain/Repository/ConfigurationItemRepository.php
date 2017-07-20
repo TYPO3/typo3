@@ -57,12 +57,11 @@ class ConfigurationItemRepository
     {
         /** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
         $configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
-        $defaultConfiguration = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
+        $configuration = $configurationUtility->getCurrentConfiguration($extensionKey);
 
         $resultArray = [];
-        if (!empty($defaultConfiguration)) {
-            $metaInformation = $this->addMetaInformation($defaultConfiguration);
-            $configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extensionKey);
+        if (!empty($configuration)) {
+            $metaInformation = $this->addMetaInformation($configuration);
             $hierarchicConfiguration = [];
             foreach ($configuration as $configurationOption) {
                 $originalConfiguration = $this->buildConfigurationArray($configurationOption, $extensionKey);
@@ -165,35 +164,6 @@ class ConfigurationItemRepository
         $metaInformation = $configuration['__meta__'] ?: [];
         unset($configuration['__meta__']);
         return $metaInformation;
-    }
-
-    /**
-     * Merge current local configuration over default configuration
-     *
-     * @param array $defaultConfiguration Default configuration from ext_conf_template.txt
-     * @param string $extensionKey the extension information
-     * @return array
-     */
-    protected function mergeWithExistingConfiguration(array $defaultConfiguration, $extensionKey)
-    {
-        try {
-            $currentExtensionConfig = unserialize(
-                $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
-                    ->getConfigurationValueByPath('EXT/extConf/' . $extensionKey)
-            );
-            if (!is_array($currentExtensionConfig)) {
-                $currentExtensionConfig = [];
-            }
-        } catch (\RuntimeException $e) {
-            $currentExtensionConfig = [];
-        }
-        $flatExtensionConfig = ArrayUtility::flatten($currentExtensionConfig);
-        $valuedCurrentExtensionConfig = [];
-        foreach ($flatExtensionConfig as $key => $value) {
-            $valuedCurrentExtensionConfig[$key]['value'] = $value;
-        }
-        ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $valuedCurrentExtensionConfig);
-        return $defaultConfiguration;
     }
 
     /**

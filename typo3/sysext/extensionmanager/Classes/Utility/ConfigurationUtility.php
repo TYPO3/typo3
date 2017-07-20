@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  */
 
 use TYPO3\CMS\Core\TypoScript\ConfigurationForm;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Utility for dealing with ext_emconf and ext_conf_template settings
@@ -66,6 +67,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($configuration));
+        $configurationManager->setLocalConfigurationValueByPath('EXTCONF/' . $extensionKey, $configuration);
     }
 
     /**
@@ -74,17 +76,21 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey
      * @return array
      */
-    public function getCurrentConfiguration($extensionKey)
+    public function getCurrentConfiguration(string $extensionKey): array
     {
         $mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
+
+        // @deprecated loading serialized configuration is deprecated and will be removed in v10 - use EXTCONF array instead
         // No objects allowed in extConf at all - it is safe to deny that during unserialize()
-        $currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
-        $currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : [];
-        $currentExtensionConfig = $this->convertNestedToValuedConfiguration($currentExtensionConfig);
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-            $mergedConfiguration,
-            $currentExtensionConfig
-        );
+        $legacyCurrentExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
+        $legacyCurrentExtensionConfiguration = is_array($legacyCurrentExtensionConfiguration) ? $legacyCurrentExtensionConfiguration : [];
+        $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $legacyCurrentExtensionConfiguration);
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey])) {
+            $currentExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey];
+            $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $currentExtensionConfiguration);
+        }
+
         return $mergedConfiguration;
     }
 
@@ -190,7 +196,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         $nestedConfiguration = [];
         foreach ($valuedConfiguration as $name => $section) {
             $path = str_replace('.', './', $name);
-            $nestedConfiguration = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($nestedConfiguration, $path, $section['value'], '/');
+            $nestedConfiguration = ArrayUtility::setValueByPath($nestedConfiguration, $path, $section['value'], '/');
         }
         return $nestedConfiguration;
     }
@@ -206,11 +212,35 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function convertNestedToValuedConfiguration(array $nestedConfiguration)
     {
-        $flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($nestedConfiguration);
+        $flatExtensionConfig = ArrayUtility::flatten($nestedConfiguration);
         $valuedCurrentExtensionConfig = [];
         foreach ($flatExtensionConfig as $key => $value) {
             $valuedCurrentExtensionConfig[$key]['value'] = $value;
         }
         return $valuedCurrentExtensionConfig;
+    }
+
+    /**
+     * Merges two existing configuration arrays,
+     * expects configuration as valued flat structure
+     * and overrides as nested array
+     *
+     * @see convertNestedToValuedConfiguration
+     *
+     * @param array $configuration
+     * @param array $configurationOverride
+     *
+     * @return array
+     */
+    private function mergeExtensionConfigurations(array $configuration, array $configurationOverride): array
+    {
+        $configurationOverride = $this->convertNestedToValuedConfiguration(
+            $configurationOverride
+        );
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $configuration,
+            $configurationOverride
+        );
+        return $configuration;
     }
 }

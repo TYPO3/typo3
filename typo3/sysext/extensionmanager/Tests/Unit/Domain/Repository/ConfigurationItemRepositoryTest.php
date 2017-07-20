@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
 /**
  * Tests for ConfigurationItemRepository
  */
@@ -90,7 +92,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
 
         $configurationItemRepository = $this->getAccessibleMock(
             \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,
-            ['mergeWithExistingConfiguration', 'translate']
+            ['translate']
         );
         $configurationItemRepository->_set(
             'objectManager',
@@ -99,16 +101,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
         $configurationUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
         $configurationUtilityMock
             ->expects($this->once())
-            ->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
+            ->method('getCurrentConfiguration')
             ->will($this->returnValue($flatConfigurationItemArray));
+
         $this->injectedObjectManagerMock
             ->expects($this->any())
             ->method('get')
             ->will($this->returnValue($configurationUtilityMock));
-        $configurationItemRepository
-            ->expects($this->any())
-            ->method('mergeWithExistingConfiguration')
-            ->will($this->returnValue($flatConfigurationItemArray));
 
         $expectedArray = [
             'basic' => [
@@ -314,123 +313,5 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
         $this->assertArrayHasKey('label', $optionModified);
         $this->assertEquals($option['genericComparisonValue'], $optionModified['generic']);
         $this->assertEquals($option['typeComparisonValue'], $optionModified['type']);
-    }
-
-    /**
-     * @test
-     */
-    public function mergeDefaultConfigurationCatchesExceptionOfConfigurationManagerIfNoLocalConfigurationExists()
-    {
-        $exception = $this->getMockBuilder('RuntimeException')->getMock();
-        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
-        $configurationManagerMock
-            ->expects($this->once())
-            ->method('getConfigurationValueByPath')
-            ->will($this->throwException($exception));
-        $this->injectedObjectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($configurationManagerMock));
-
-        $this->configurationItemRepository->_call(
-            'mergeWithExistingConfiguration',
-            [],
-            $this->getUniqueId('not_existing_extension')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration()
-    {
-        $exception = $this->getMockBuilder('RuntimeException')->getMock();
-        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
-        $configurationManagerMock
-            ->expects($this->once())
-            ->method('getConfigurationValueByPath')
-            ->will($this->throwException($exception));
-        $this->injectedObjectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($configurationManagerMock));
-        $defaultConfiguration = [
-            'foo' => 'bar'
-        ];
-        $configuration = $this->configurationItemRepository->_call(
-            'mergeWithExistingConfiguration',
-            $defaultConfiguration,
-            $this->getUniqueId('not_existing_extension')
-        );
-        $this->assertEquals($defaultConfiguration, $configuration);
-    }
-
-    /**
-     * @test
-     */
-    public function mergeWithExistingConfigurationOverwritesDefaultKeysWithCurrent()
-    {
-        $localConfiguration = serialize([
-            'FE.' => [
-                'enabled' => '1',
-                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
-            ],
-            'CLI.' => [
-                'enabled' => '0'
-            ]
-        ]);
-
-        $configurationManagerMock = $this->getMockBuilder(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getMock();
-        $configurationManagerMock
-            ->expects($this->once())
-            ->method('getConfigurationValueByPath')
-            ->with('EXT/extConf/testextensionkey')
-            ->will($this->returnValue($localConfiguration));
-
-        $this->injectedObjectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($configurationManagerMock));
-
-        $defaultConfiguration = [
-            'FE.enabled' => [
-                'value' => '0'
-            ],
-            'FE.saltedPWHashingMethod' => [
-                'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            ],
-            'BE.enabled' => [
-                'value' => '1'
-            ],
-            'BE.saltedPWHashingMethod' => [
-                'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            ]
-        ];
-
-        $expectedResult = [
-            'FE.enabled' => [
-                'value' => '1'
-            ],
-            'FE.saltedPWHashingMethod' => [
-                'value' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
-            ],
-            'BE.enabled' => [
-                'value' => '1'
-            ],
-            'BE.saltedPWHashingMethod' => [
-                'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
-            ],
-            'CLI.enabled' => [
-                'value' => '0'
-            ]
-        ];
-
-        $actualResult = $this->configurationItemRepository->_call(
-            'mergeWithExistingConfiguration',
-            $defaultConfiguration,
-            'testextensionkey'
-        );
-
-        $this->assertEquals($expectedResult, $actualResult);
     }
 }
