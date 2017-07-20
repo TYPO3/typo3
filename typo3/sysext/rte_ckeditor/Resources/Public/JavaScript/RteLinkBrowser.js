@@ -33,18 +33,23 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 	 * @param {String} editorId Id of CKEditor
 	 */
 	RteLinkBrowser.initialize = function (editorId) {
-		var callerWindow;
-		if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.get() !== 'undefined') {
-			callerWindow = top.TYPO3.Backend.ContentContainer.get();
+		var editor = Modal.currentModal.data('ckeditor');
+		if (typeof editor !== 'undefined') {
+			RteLinkBrowser.CKEditor = editor;
 		} else {
-			callerWindow = window.parent;
-		}
-
-		$.each(callerWindow.CKEDITOR.instances, function (name, editor) {
-			if (editor.id === editorId) {
-				RteLinkBrowser.CKEditor = editor;
+			var callerWindow;
+			if (typeof top.TYPO3.Backend !== 'undefined' && typeof top.TYPO3.Backend.ContentContainer.get() !== 'undefined') {
+				callerWindow = top.TYPO3.Backend.ContentContainer.get();
+			} else {
+				callerWindow = window.parent;
 			}
-		});
+
+			$.each(callerWindow.CKEDITOR.instances, function (name, editor) {
+				if (editor.id === editorId) {
+					RteLinkBrowser.CKEditor = editor;
+				}
+			});
+		}
 
 		// siteUrl etc are added as data attributes to the body tag
 		$.extend(RteLinkBrowser, $('body').data());

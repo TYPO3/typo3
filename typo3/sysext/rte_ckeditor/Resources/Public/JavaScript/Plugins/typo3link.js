@@ -126,6 +126,8 @@
 				content: url,
 				size: Modal.sizes.large,
 				callback: function(currentModal) {
+					// Add the instance to the iframe itself
+					currentModal.data('ckeditor', editor);
 					currentModal.find('.t3js-modal-body')
 						.addClass('rte-ckeditor-window')
 						.attr('id', editor.id);
