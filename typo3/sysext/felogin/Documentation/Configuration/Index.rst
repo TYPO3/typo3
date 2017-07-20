@@ -1,16 +1,12 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+﻿﻿.. include:: ../Includes.txt
 
 
 
 .. _configuration:
 
+=============
 Configuration
--------------
+=============
 
 All configuration options are available in the FlexForm or TypoScript,
 with the FlexForm settings taking precedence.
@@ -19,12 +15,12 @@ with the FlexForm settings taking precedence.
 .. _plugin-tx-felogin-pi1:
 
 plugin.tx\_felogin\_pi1
-^^^^^^^^^^^^^^^^^^^^^^^
+=======================
 
 .. _storagepid:
 
 storagePid
-""""""""""
+----------
 
 .. container:: table-row
 
@@ -34,19 +30,19 @@ storagePid
    Data type
          string
 
+   Default
+         {$styles.content.loginform.pid}
+
    Description
          Define the Storage Folder with the Website User Records, using a comma
          separated list or single value
-
-   Default
-         {$styles.content.loginform.pid}
 
 
 
 .. _recursive:
 
 recursive
-"""""""""
+---------
 
 .. container:: table-row
 
@@ -64,7 +60,7 @@ recursive
 .. _templatefile:
 
 templateFile
-""""""""""""
+------------
 
 .. container:: table-row
 
@@ -74,6 +70,9 @@ templateFile
    Data type
          string
 
+   Default
+         EXT:felogin/Resources/Private/Templates/FrontendLogin.html
+
    Description
          The Template File
 
@@ -82,15 +81,12 @@ templateFile
          template in TypoScript constants:
          :code:`styles.content.loginform.templateFile = EXT:felogin/template.html`
 
-   Default
-         EXT:felogin/Resources/Private/Templates/FrontendLogin.html
-
 
 
 .. _feloginbaseurl:
 
 feloginBaseURL
-""""""""""""""
+--------------
 
 .. container:: table-row
 
@@ -108,7 +104,7 @@ feloginBaseURL
 .. _wrapcontentinbaseclass:
 
 wrapContentInBaseClass
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -118,18 +114,18 @@ wrapContentInBaseClass
    Data type
          bool
 
-   Description
-         If set, plugin is wrapped by Standard Base Class-Wrap
-
    Default
          true
+
+   Description
+         If set, plugin is wrapped by Standard Base Class-Wrap
 
 
 
 .. _linkconfig:
 
 linkConfig
-""""""""""
+----------
 
 .. container:: table-row
 
@@ -147,7 +143,7 @@ linkConfig
 .. _preservegetvars:
 
 preserveGETvars
-"""""""""""""""
+---------------
 
 .. container:: table-row
 
@@ -175,7 +171,7 @@ preserveGETvars
 .. _showforgotpasswordlink:
 
 showForgotPasswordLink
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -200,7 +196,7 @@ showForgotPasswordLink
 .. _showpermalogin:
 
 showPermaLogin
-""""""""""""""
+--------------
 
 .. container:: table-row
 
@@ -219,7 +215,7 @@ showPermaLogin
 .. _forgetlinkhashvalidtime:
 
 forgetLinkHashValidTime
-"""""""""""""""""""""""
+-----------------------
 
 .. container:: table-row
 
@@ -229,18 +225,18 @@ forgetLinkHashValidTime
    Data type
          integer
 
-   Description
-         How many hours the link for forget password is valid
-
    Default
          12
+
+   Description
+         How many hours the link for forget password is valid
 
 
 
 .. _newpasswordminlength:
 
 newPasswordMinLength
-""""""""""""""""""""
+--------------------
 
 .. container:: table-row
 
@@ -250,18 +246,18 @@ newPasswordMinLength
    Data type
          integer
 
-   Description
-         Minimum length of the new password a user sets
-
    Default
          6
+
+   Description
+         Minimum length of the new password a user sets
 
 
 
 .. _showlogoutformafterlogin:
 
 showLogoutFormAfterLogin
-""""""""""""""""""""""""
+------------------------
 
 .. container:: table-row
 
@@ -285,7 +281,7 @@ showLogoutFormAfterLogin
 .. _welcomeheader-stdwrap:
 
 welcomeHeader\_stdWrap
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -295,18 +291,18 @@ welcomeHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Welcome Header
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Welcome Header
 
 
 
 .. _welcomemessage-stdwrap:
 
 welcomeMessage\_stdWrap
-"""""""""""""""""""""""
+-----------------------
 
 .. container:: table-row
 
@@ -316,18 +312,18 @@ welcomeMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Welcome Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Welcome Message
 
 
 
 .. _successheader-stdwrap:
 
 successHeader\_stdWrap
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -337,18 +333,18 @@ successHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Login SuccessHeader
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Login SuccessHeader
 
 
 
 .. _successmessage-stdwrap:
 
 successMessage\_stdWrap
-"""""""""""""""""""""""
+-----------------------
 
 .. container:: table-row
 
@@ -358,18 +354,18 @@ successMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Login Success Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Login Success Message
 
 
 
 .. _logoutheader-stdwrap:
 
 logoutHeader\_stdWrap
-"""""""""""""""""""""
+---------------------
 
 .. container:: table-row
 
@@ -379,18 +375,18 @@ logoutHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Logout Header
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Logout Header
 
 
 
 .. _logoutmessage-stdwrap:
 
 logoutMessage\_stdWrap
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -400,18 +396,18 @@ logoutMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Logout Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Logout Message
 
 
 
 .. _errorheader-stdwrap:
 
 errorHeader\_stdWrap
-""""""""""""""""""""
+--------------------
 
 .. container:: table-row
 
@@ -421,18 +417,18 @@ errorHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Error Header
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Error Header
 
 
 
 .. _errormessage-stdwrap:
 
 errorMessage\_stdWrap
-"""""""""""""""""""""
+---------------------
 
 .. container:: table-row
 
@@ -442,18 +438,18 @@ errorMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Error Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Error Message
 
 
 
 .. _forgotheader-stdwrap:
 
 forgotHeader\_stdWrap
-"""""""""""""""""""""
+---------------------
 
 .. container:: table-row
 
@@ -463,18 +459,18 @@ forgotHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Forgot Header
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Forgot Header
 
 
 
 .. _forgotmessage-stdwrap:
 
 forgotMessage\_stdWrap
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -484,18 +480,18 @@ forgotMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Forgot Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Forgot Message
 
 
 
 .. _forgoterrormessage-stdwrap:
 
 forgotErrorMessage\_stdWrap
-"""""""""""""""""""""""""""
+---------------------------
 
 .. container:: table-row
 
@@ -505,18 +501,18 @@ forgotErrorMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for error message in forgot password form
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for error message in forgot password form
 
 
 
 .. _forgotresetmessageemailsentmessage-stdwrap:
 
 forgotResetMessageEmailSentMessage\_stdWrap
-"""""""""""""""""""""""""""""""""""""""""""
+-------------------------------------------
 
 .. container:: table-row
 
@@ -526,18 +522,18 @@ forgotResetMessageEmailSentMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for message that password reset mail was sent
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for message that password reset mail was sent
 
 
 
 .. _changepasswordnotvalidmessage-stdwrap:
 
 changePasswordNotValidMessage\_stdWrap
-""""""""""""""""""""""""""""""""""""""
+--------------------------------------
 
 .. container:: table-row
 
@@ -547,18 +543,18 @@ changePasswordNotValidMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for message that changed password was not valid
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for message that changed password was not valid
 
 
 
 .. _changepasswordtooshortmessage-stdwrap:
 
 changePasswordTooShortMessage\_stdWrap
-""""""""""""""""""""""""""""""""""""""
+--------------------------------------
 
 .. container:: table-row
 
@@ -568,18 +564,18 @@ changePasswordTooShortMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for message that new password was too short
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for message that new password was too short
 
 
 
 .. _changepasswordnotequalmessage-stdwrap:
 
 changePasswordNotEqualMessage\_stdWrap
-""""""""""""""""""""""""""""""""""""""
+--------------------------------------
 
 .. container:: table-row
 
@@ -589,18 +585,18 @@ changePasswordNotEqualMessage\_stdWrap
    Data type
 
 
-   Description
-         stdWrap for message that new passwords were not equal
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for message that new passwords were not equal
 
 
 
 .. _changepasswordheader-stdwrap:
 
 changePasswordHeader\_stdWrap
-"""""""""""""""""""""""""""""
+-----------------------------
 
 .. container:: table-row
 
@@ -610,18 +606,18 @@ changePasswordHeader\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Change Password Header
-
    Default
          wrap = <h3>\|</h3>
+
+   Description
+         stdWrap for Change Password Header
 
 
 
 .. _changepasswordmessage-stdwrap:
 
 changePasswordMessage\_stdWrap
-""""""""""""""""""""""""""""""
+------------------------------
 
 .. container:: table-row
 
@@ -631,18 +627,18 @@ changePasswordMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for Change Password Message
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for Change Password Message
 
 
 
 .. _changepassworddonemessage-stdwrap:
 
 changePasswordDoneMessage\_stdWrap
-""""""""""""""""""""""""""""""""""
+----------------------------------
 
 .. container:: table-row
 
@@ -652,18 +648,18 @@ changePasswordDoneMessage\_stdWrap
    Data type
          array
 
-   Description
-         stdWrap for message that password was changed
-
    Default
          wrap = <div>\|</div>
+
+   Description
+         stdWrap for message that password was changed
 
 
 
 .. _userfields:
 
 userfields
-""""""""""
+----------
 
 .. container:: table-row
 
@@ -678,8 +674,9 @@ userfields
          stdWrap configuration. These fields can be used as markers in the
          template (e.g. ###FEUSER\_USERNAME###)
 
-   Default
-         ::
+         Example:
+
+         .. code-block:: typoscript
 
             username {
                 htmlSpecialChars = 1
@@ -691,7 +688,7 @@ userfields
 .. _redirectmode:
 
 redirectMode
-""""""""""""
+------------
 
 .. container:: table-row
 
@@ -714,7 +711,7 @@ redirectMode
 .. _redirectfirstmethod:
 
 redirectFirstMethod
-"""""""""""""""""""
+-------------------
 
 .. container:: table-row
 
@@ -733,7 +730,7 @@ redirectFirstMethod
 .. _redirectpagelogin:
 
 redirectPageLogin
-"""""""""""""""""
+-----------------
 
 .. container:: table-row
 
@@ -751,7 +748,7 @@ redirectPageLogin
 .. _redirectpageloginerror:
 
 redirectPageLoginError
-""""""""""""""""""""""
+----------------------
 
 .. container:: table-row
 
@@ -769,7 +766,7 @@ redirectPageLoginError
 .. _redirectpagelogout:
 
 redirectPageLogout
-""""""""""""""""""
+------------------
 
 .. container:: table-row
 
@@ -787,7 +784,7 @@ redirectPageLogout
 .. _redirectdisable:
 
 redirectDisable
-"""""""""""""""
+---------------
 
 .. container:: table-row
 
@@ -805,7 +802,7 @@ redirectDisable
 .. _email-from:
 
 email\_from
-"""""""""""
+-----------
 
 .. container:: table-row
 
@@ -823,7 +820,7 @@ email\_from
 .. _email-fromname:
 
 email\_fromName
-"""""""""""""""
+---------------
 
 .. container:: table-row
 
@@ -841,7 +838,7 @@ email\_fromName
 .. _replyto:
 
 replyTo
-"""""""
+-------
 
 .. container:: table-row
 
@@ -859,7 +856,7 @@ replyTo
 .. _domains:
 
 domains
-"""""""
+-------
 
 .. container:: table-row
 
@@ -878,7 +875,7 @@ domains
 .. _dateformat:
 
 dateFormat
-""""""""""
+----------
 
 .. container:: table-row
 
@@ -888,18 +885,18 @@ dateFormat
    Data type
          date-conf
 
-   Description
-         Format for the link is valid until message (forget password email)
-
    Default
          Y-m-d H:i
+
+   Description
+         Format for the link is valid until message (forget password email)
 
 
 
 .. _linkprefix:
 
 linkPrefix
-""""""""""
+----------
 
 .. container:: table-row
 
@@ -917,7 +914,7 @@ linkPrefix
 .. _exposenonexistentuserinforgotpassworddialog:
 
 exposeNonexistentUserInForgotPasswordDialog
-"""""""""""""""""""""""""""""""""""""""""""
+-------------------------------------------
 
 .. container:: table-row
 
@@ -926,6 +923,9 @@ exposeNonexistentUserInForgotPasswordDialog
 
    Data type
          bool
+
+   Default
+         0
 
    Description
          If set and the user account cannot be found in the forgot password
@@ -938,15 +938,12 @@ exposeNonexistentUserInForgotPasswordDialog
             email address is actually used for a frontend user account! Visitors
             can find out if a user is known as frontend user.
 
-   Default
-         0
-
 
 
 .. _css-default-style:
 
 \_CSS\_DEFAULT\_STYLE
-"""""""""""""""""""""
+---------------------
 
 .. container:: table-row
 
@@ -959,8 +956,9 @@ exposeNonexistentUserInForgotPasswordDialog
    Description
          CSS included in the page containing the login form
 
-   Default
-         ::
+         Example:
+
+         .. code-block:: typoscript
 
             .tx-felogin-pi1 label {
                 display: block;
@@ -970,7 +968,7 @@ exposeNonexistentUserInForgotPasswordDialog
 .. _default-pi-vars:
 
 \_DEFAULT\_PI\_VARS
-"""""""""""""""""""
+-------------------
 
 .. container:: table-row
 
@@ -987,7 +985,7 @@ exposeNonexistentUserInForgotPasswordDialog
 .. _local-lang:
 
 \_LOCAL\_LANG
-"""""""""""""
+-------------
 
 .. container:: table-row
 
@@ -1042,4 +1040,3 @@ exposeNonexistentUserInForgotPasswordDialog
          ll\_enter\_your\_data                       Form field label
          oLabel\_header\_welcome                     Legend
          =========================================== =================================
-
