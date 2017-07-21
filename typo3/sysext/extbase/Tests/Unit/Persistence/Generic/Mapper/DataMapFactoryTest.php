@@ -153,6 +153,30 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function setRelationsDetectsSelectRenderTypeSingleAsNonRelational()
+    {
+        $columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('foo', 'foo');
+        $columnConfiguration = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'items' => [
+                ['One', 1],
+                ['Two', 2],
+                ['Three', 3],
+            ],
+        ];
+        $propertyMetaData = [];
+        $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
+        $mockDataMapFactory->expects($this->never())->method('setOneToOneRelation');
+        $mockDataMapFactory->expects($this->never())->method('setOneToManyRelation');
+        $mockDataMapFactory->expects($this->never())->method('setManyToManyRelation');
+        $actualColumnMap = $mockDataMapFactory->_callRef('setRelations', $columnMap, $columnConfiguration, $propertyMetaData);
+        $this->assertSame($columnMap::RELATION_NONE, $actualColumnMap->getTypeOfRelation());
+    }
+
+    /**
+     * @test
+     */
     public function setRelationsDetectsManyToManyRelationOfTypeSelect()
     {
         $mockColumnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
