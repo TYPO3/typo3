@@ -68,7 +68,7 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['languageId'])) {
-            $response = $response->withStatus(500);
+            $response = $response->withStatus(400);
             return $response;
         }
 
@@ -123,7 +123,7 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['colPos'], $params['destLanguageId'], $params['languageId'])) {
-            $response = $response->withStatus(500);
+            $response = $response->withStatus(400);
             return $response;
         }
 
@@ -157,13 +157,13 @@ class LocalizationController
     {
         $params = $request->getQueryParams();
         if (!isset($params['pageId'], $params['srcLanguageId'], $params['destLanguageId'], $params['action'], $params['uidList'])) {
-            $response = $response->withStatus(500);
+            $response = $response->withStatus(400);
             return $response;
         }
 
         if ($params['action'] !== static::ACTION_COPY && $params['action'] !== static::ACTION_LOCALIZE) {
             $response->getBody()->write('Invalid action "' . $params['action'] . '" called.');
-            $response = $response->withStatus(500);
+            $response = $response->withStatus(400);
             return $response;
         }
 
