@@ -18,5 +18,6 @@ call_user_func(function () {
     // We ensure that possible notices from Core code do not kill our redirect due to PHP output
     error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 
-    \TYPO3\CMS\Core\Utility\HttpUtility::redirect('../sysext/install/Start/Install.php', \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307);
+    // @deprecated in 9.x will be removed in 10.0
+    \TYPO3\CMS\Core\Utility\HttpUtility::redirect('../install.php', \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307);
 });

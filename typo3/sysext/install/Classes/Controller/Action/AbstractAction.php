@@ -80,6 +80,7 @@ abstract class AbstractAction implements ActionInterface
         $controllerActionDirectoryName = ucfirst($this->controller);
         $mainTemplate = ucfirst($this->action);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->getRequest()->setControllerExtensionName('Install');
         $this->view->setTemplatePathAndFilename($viewRootPath . 'Templates/Action/' . $controllerActionDirectoryName . '/' . $mainTemplate . '.html');
         $this->view->setLayoutRootPaths([$viewRootPath . 'Layouts/']);
         $this->view->setPartialRootPaths([$viewRootPath . 'Partials/']);

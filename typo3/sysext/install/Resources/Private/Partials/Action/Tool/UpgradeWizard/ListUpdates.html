@@ -1,3 +1,4 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
 <p>
 	If you upgrade your TYPO3 installation from one major version to another (e.g. 6.2 to 7 LTS),
 	then the Upgrade Wizards guide you through the necessary steps to upgrade your database
@@ -88,6 +89,6 @@
 	When all updates are done you can check the database for tables and fields no longer required.
 	Perform the Database Analyzer steps until no more changes are required.
 </p>
-<a href="Install.php?install[action]=importantActions&amp;install[context]={context}&amp;install[controller]=tool" class="btn btn-default">
+<a href="{i:uri.action(action: 'importantActions')}" class="btn btn-default">
 	Go to Database Analyzer
 </a>

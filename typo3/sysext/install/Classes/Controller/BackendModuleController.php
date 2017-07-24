@@ -51,7 +51,7 @@ class BackendModuleController
 
         if ($enableFileService->checkInstallToolEnableFile()) {
             // Install tool is open and valid, redirect to it
-            $response = $response->withStatus(303)->withHeader('Location', 'sysext/install/Start/Install.php?install[context]=backend');
+            $response = $response->withStatus(303)->withHeader('Location', 'install.php?install[context]=backend');
         } elseif ($request->getMethod() === 'POST' && $request->getParsedBody()['action'] === 'enableInstallTool') {
             // Request to open the install tool
             $installToolEnableToken = $request->getParsedBody()['installToolEnableToken'];
@@ -60,7 +60,7 @@ class BackendModuleController
             }
             $enableFileService->createInstallToolEnableFile();
             // Install tool is open and valid, redirect to it
-            $response = $response->withStatus(303)->withHeader('Location', 'sysext/install/Start/Install.php?install[context]=backend');
+            $response = $response->withStatus(303)->withHeader('Location', 'install.php?install[context]=backend');
         } else {
             // Show the "create enable install tool" button
             /** @var StandaloneView $view */

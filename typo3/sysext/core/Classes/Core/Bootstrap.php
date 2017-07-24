@@ -240,7 +240,7 @@ class Bootstrap
      */
     public function redirectToInstallTool($entryPointLevel = 0)
     {
-        $path = TYPO3_mainDir . 'sysext/install/Start/Install.php';
+        $path = TYPO3_mainDir . 'install.php';
         if ($entryPointLevel > 0) {
             $path = str_repeat('../', $entryPointLevel) . $path;
         }

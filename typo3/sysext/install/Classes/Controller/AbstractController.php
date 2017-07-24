@@ -525,7 +525,7 @@ class AbstractController
             $parameters[] = 'install[action]=' . $action;
         }
 
-        $redirectLocation = 'Install.php?' . implode('&', $parameters);
+        $redirectLocation = GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT') . '?' . implode('&', $parameters);
 
         \TYPO3\CMS\Core\Utility\HttpUtility::redirect(
             $redirectLocation,

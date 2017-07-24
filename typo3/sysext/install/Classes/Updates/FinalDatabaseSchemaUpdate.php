@@ -54,7 +54,7 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate
         $description = 'There are tables or fields in the database which need to be changed.<br /><br />' .
         'This update wizard can be run only when there are no other update wizards left to make sure they have ' .
         'all needed fields unchanged.<br /><br />If you want to apply changes selectively, ' .
-        '<a href="Install.php?install[action]=importantActions&amp;install[context]=' .
+        '<a href="' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT') . '?install[action]=importantActions&amp;install[context]=' .
         $contextService->getContextString() .
         '&amp;install[controller]=tool">go to Database Analyzer</a>.';
 

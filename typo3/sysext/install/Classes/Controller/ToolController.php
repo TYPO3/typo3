@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
@@ -119,7 +120,7 @@ class ToolController extends AbstractController
                     // We do not use GeneralUtility here to be sure that hash generation works even if that class might not exist any more.
                     $parameters[] = 'install[lastErrorHash]=' . hash_hmac('sha1', $errorEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'InstallToolError');
 
-                    $redirectLocation = 'Install.php?' . implode('&', $parameters);
+                    $redirectLocation = GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT') . '?' . implode('&', $parameters);
 
                     if (!headers_sent()) {
                         \TYPO3\CMS\Core\Utility\HttpUtility::redirect(
