@@ -969,7 +969,7 @@ class QueryBuilder
     public function quoteIdentifiersForSelect(array $input): array
     {
         foreach ($input as &$select) {
-            list($fieldName, $alias, $suffix) = GeneralUtility::trimExplode(' AS ', $select, 3);
+            list($fieldName, $alias, $suffix) = GeneralUtility::trimExplode(' AS ', str_ireplace(' as ', ' AS ', $select), 3);
             if (!empty($suffix)) {
                 throw new \InvalidArgumentException(
                     'QueryBuilder::quoteIdentifiersForSelect() could not parse the input "' . $input . '"',
