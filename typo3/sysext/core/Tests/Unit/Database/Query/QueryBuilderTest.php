@@ -282,6 +282,9 @@ class QueryBuilderTest extends UnitTestCase
         $this->subject->select('aField', 'anotherField');
     }
 
+    /**
+     * @return array
+     */
     public function quoteIdentifiersForSelectDataProvider()
     {
         return [
@@ -311,6 +314,30 @@ class QueryBuilderTest extends UnitTestCase
             ],
             'tableName.fieldName AS anotherTable.anotherFieldName' => [
                 'tableName.fieldName AS anotherTable.anotherFieldName',
+                '"tableName"."fieldName" AS "anotherTable"."anotherFieldName"',
+            ],
+            'fieldName as anotherFieldName' => [
+                'fieldName as anotherFieldName',
+                '"fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName as anotherFieldName' => [
+                'tableName.fieldName as anotherFieldName',
+                '"tableName"."fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName as anotherTable.anotherFieldName' => [
+                'tableName.fieldName as anotherTable.anotherFieldName',
+                '"tableName"."fieldName" AS "anotherTable"."anotherFieldName"',
+            ],
+            'fieldName aS anotherFieldName' => [
+                'fieldName aS anotherFieldName',
+                '"fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName aS anotherFieldName' => [
+                'tableName.fieldName aS anotherFieldName',
+                '"tableName"."fieldName" AS "anotherFieldName"',
+            ],
+            'tableName.fieldName aS anotherTable.anotherFieldName' => [
+                'tableName.fieldName aS anotherTable.anotherFieldName',
                 '"tableName"."fieldName" AS "anotherTable"."anotherFieldName"',
             ],
         ];
