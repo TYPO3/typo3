@@ -30,7 +30,7 @@ class Application implements ApplicationInterface
      * Number of subdirectories where the entry script is located, relative to PATH_site
      * @var int
      */
-    protected $entryPointLevel = 4;
+    protected $entryPointLevel = 1;
 
     /**
      * All available request handlers that can handle an install tool request

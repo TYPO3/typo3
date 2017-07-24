@@ -1,4 +1,4 @@
-<div class="t3js-list-group-wrapper" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<div class="t3js-list-group-wrapper" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" >
 	<ul class="list-group">
 		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'importantActions', label: 'Important actions'}" />
 		<f:render partial="Action/Common/MenuLink" arguments="{action: action, context: context, action_name: 'configuration', label: 'Configuration Presets'}" />
@@ -13,12 +13,11 @@
 	</ul>
 
 	<div>
-		<a href="Install.php?install[action]=logout&install[context]={context}&install[controller]=tool" class="btn btn-warning btn-block">Logout from Install Tool</a>
+		<a href="{i:uri.action(action: 'logout')}" class="btn btn-warning btn-block">Logout from Install Tool</a>
 		<f:if condition="{contextService.backendContext}">
-			<f:then></f:then>
 			<f:else>
-			<a href="../../../index.php" class="btn btn-default btn-block">Backend admin</a>
-			<a href="../../../../index.php" class="btn btn-default btn-block">Frontend website</a>
+			<a href="{i:uri.action(action: 'backend')}" class="btn btn-default btn-block">Backend admin</a>
+			<a href="{i:uri.action(action: 'frontend')}" class="btn btn-default btn-block">Frontend website</a>
 			</f:else>
 		</f:if>
 	</div>
