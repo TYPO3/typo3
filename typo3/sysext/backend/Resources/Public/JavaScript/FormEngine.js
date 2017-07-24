@@ -565,8 +565,9 @@ define(['jquery',
 		var $selected = $fieldEl.find(':selected');
 
 		$selected.each(function() {
+			var $value = $(this).attr('value').replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
 			$availableFieldEl
-				.find('option[value="' + $(this).attr('value') + '"]')
+				.find('option[value="' + $value + '"]')
 				.removeClass('hidden')
 				.prop('disabled', false);
 		});
