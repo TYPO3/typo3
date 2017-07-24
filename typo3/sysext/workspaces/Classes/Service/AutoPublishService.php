@@ -50,8 +50,8 @@ class AutoPublishService
                     'pid',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
-                $queryBuilder->orWhere(
-                    $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->neq(
                             'publish_time',
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -61,7 +61,7 @@ class AutoPublishService
                             $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                         )
                     ),
-                    $queryBuilder->andWhere(
+                    $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq(
                             'publish_time',
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
