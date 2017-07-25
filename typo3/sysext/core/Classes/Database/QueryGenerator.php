@@ -1541,7 +1541,7 @@ class QueryGenerator
      * @param string $permClause
      * @return string
      */
-    public function getTreeList($id, $depth, $begin = 0, $permClause)
+    public function getTreeList($id, $depth, $begin = 0, $permClause = '')
     {
         $depth = (int)$depth;
         $begin = (int)$begin;
@@ -1557,13 +1557,13 @@ class QueryGenerator
         if ($id && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $statement = $queryBuilder->select('uid')
+            $queryBuilder->select('uid')
                 ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    QueryHelper::stripLogicalOperatorPrefix($permClause)
-                )
-                ->execute();
+                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)));
+            if ($permClause !== '') {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
+            }
+            $statement = $queryBuilder->execute();
             while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
