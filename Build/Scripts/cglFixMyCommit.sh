@@ -36,6 +36,7 @@ fi
 
 php_no_xdebug ./bin/php-cs-fixer fix \
     -v ${DRYRUN} \
+    --path-mode intersection \
     --config=Build/.php_cs \
     `echo ${DETECTED_FILES} | xargs ls -d 2>/dev/null`
 

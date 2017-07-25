@@ -37,6 +37,8 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->exclude('typo3conf')
     ->exclude('typo3temp')
+    ->notName('install.php')
+    ->notName('index.php')
     ->in(__DIR__ . '/../');
 // Return a Code Sniffing configuration using
 // all sniffers needed for PSR-2
@@ -76,7 +78,6 @@ return PhpCsFixer\Config::create()
         'no_short_bool_cast' => true,
         'no_unneeded_control_parentheses' => true,
         'phpdoc_no_empty_return' => true,
-        'no_blank_lines_after_phpdoc' => true,
         'phpdoc_trim' => true
     ])
     ->setFinder($finder);

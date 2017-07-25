@@ -39,8 +39,11 @@ typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 phantomjsdriver.log
 #
 # Ignore composer stuff
-bin/*
-vendor/*
+/bin/*
+/vendor/*
+/index.php
+/typo3/index.php
+/typo3/install.php
 #
 # Ignore common TYPO3 CMS files/directories
 typo3temp/*

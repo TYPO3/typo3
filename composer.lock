@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c18ec8225643a1e9e1aae0108629cd38",
+    "content-hash": "cb6c37b20dd41e36057e0b54cbb338cb",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1295,20 +1295,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.3.1",
+            "version": "1.4.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "cb25a053cdba0fcc43a9f56f5e086f77eed6b916"
+                "reference": "07c6fe266b829ada1ea11a84926142fbb37b4069"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/cb25a053cdba0fcc43a9f56f5e086f77eed6b916",
-                "reference": "cb25a053cdba0fcc43a9f56f5e086f77eed6b916",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/07c6fe266b829ada1ea11a84926142fbb37b4069",
+                "reference": "07c6fe266b829ada1ea11a84926142fbb37b4069",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0.0"
+                "composer-plugin-api": "^1.0.0",
+                "php": ">=7.0.0 <7.2"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -1318,13 +1319,13 @@
                 "netresearch/composer-installers": "*"
             },
             "require-dev": {
-                "composer/composer": "1.*"
+                "composer/composer": "^1.2"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -1359,7 +1360,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2016-07-05T09:38:42+00:00"
+            "time": "2017-07-26T14:34:07+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -3825,7 +3826,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "typo3/cms-composer-installers": 5
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
