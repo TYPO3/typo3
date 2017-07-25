@@ -314,7 +314,7 @@ tt_content.image.20 {
                 10 = TEXT
                 10 {
                     if {
-                        isTrue.data = file:current:description
+                        isTrue.data = register:allImageCaptions
                         value = 1
                         equals.data = register:imageCount
                     }
