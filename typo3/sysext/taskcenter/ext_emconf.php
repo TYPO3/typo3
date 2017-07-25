@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [
-            'sys_action' => '8.7.0-8.7.99',
+            'sys_action' => '8.7.0-8.7.4',
         ],
     ],
 ];
