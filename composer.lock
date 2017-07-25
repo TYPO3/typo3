@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb6c37b20dd41e36057e0b54cbb338cb",
+    "content-hash": "98366fdfe4963beffbf64598a5cbe464",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1292,6 +1292,41 @@
                 "composer"
             ],
             "time": "2015-10-06T10:25:44+00:00"
+        },
+        {
+            "name": "typo3/cms-cli",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3/cms-cli.git",
+                "reference": "b728de7e8b993745ff78bdd38634ed0c44706a28"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3/cms-cli/zipball/b728de7e8b993745ff78bdd38634ed0c44706a28",
+                "reference": "b728de7e8b993745ff78bdd38634ed0c44706a28",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "typo3/cms-core": "^8.7 || ^9.0"
+            },
+            "bin": [
+                "typo3"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\Cli\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "TYPO3 command line binary",
+            "homepage": "https://typo3.org",
+            "time": "2017-07-25T17:43:19+00:00"
         },
         {
             "name": "typo3/cms-composer-installers",

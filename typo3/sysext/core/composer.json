@@ -11,7 +11,8 @@
 		}],
 
 	"require": {
-		"php" : "^7.0"
+		"php" : "^7.0",
+		"typo3/cms-cli": "^1.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -19,9 +20,6 @@
 	"replace": {
 		"core": "*"
 	},
-	"bin": [
-		"bin/typo3"
-	],
 	"extra": {
 		"branch-alias": {
 			"dev-master": "9.x-dev"
