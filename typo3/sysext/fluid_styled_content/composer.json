@@ -9,6 +9,9 @@
 		"typo3/cms-core": "*",
 		"typo3/cms-frontend": "*"
 	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
 	"replace": {
 		"fluid_styled_content": "*"
 	},

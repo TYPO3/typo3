@@ -10,6 +10,9 @@
 		"typo3/cms-fluid": "*",
 		"typo3/cms-extbase": "*"
 	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
 	"replace": {
 		"install": "*"
 	},
