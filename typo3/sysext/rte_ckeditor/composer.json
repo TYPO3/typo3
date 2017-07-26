@@ -15,6 +15,9 @@
 		"typo3/cms-setup": "*"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-master": "9.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true

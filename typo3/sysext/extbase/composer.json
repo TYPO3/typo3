@@ -12,6 +12,9 @@
 		"extbase": "*"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-master": "9.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"protected": true,
@@ -20,13 +23,9 @@
 			}
 		},
 		"typo3/class-alias-loader": {
-			"always-add-alias-loader": true,
 			"class-alias-maps": [
 				"Migrations/Code/ClassAliasMap.php"
 			]
-		},
-		"branch-alias": {
-			"dev-master": "8.x-dev"
 		}
 	},
 	"autoload": {

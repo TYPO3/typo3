@@ -11,6 +11,11 @@
 	"replace": {
 		"linkvalidator": "*"
 	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "9.x-dev"
+		}
+	},
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\Linkvalidator\\": "Classes/"

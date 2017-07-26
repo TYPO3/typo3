@@ -15,6 +15,9 @@
 		"bin/typo3"
 	],
 	"extra": {
+		"branch-alias": {
+			"dev-master": "9.x-dev"
+		},
 		"typo3/cms": {
 			"Package": {
 				"protected": true,
