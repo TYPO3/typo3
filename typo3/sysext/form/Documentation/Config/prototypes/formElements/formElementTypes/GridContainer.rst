@@ -25,13 +25,13 @@ Properties
 .. include:: GridContainer/properties/elementErrorClassAttribute.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.gridcontainer.properties.gridcolumnclassautoconfiguration.gridsize:
-.. include:: GridContainer/properties/gridColumnClassAutoConfiguration/gridSize.rst
+.. include:: GridContainer/properties/gridColumnClassAutoConf/gridSize.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.gridcontainer.properties.gridcolumnclassautoconfiguration.viewports:
-.. include:: GridContainer/properties/gridColumnClassAutoConfiguration/viewPorts.rst
+.. include:: GridContainer/properties/gridColumnClassAutoConf/viewPorts.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.gridcontainer.properties.gridcolumnclassautoconfiguration.viewports.*.classpattern:
-.. include:: GridContainer/properties/gridColumnClassAutoConfiguration/viewPorts/classPattern.rst
+.. include:: GridContainer/properties/gridColumnClassAutoConf/viewPorts/classPattern.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.gridcontainer.renderingoptions._iscompositeformelement:
 .. include:: GridContainer/renderingOptions/_isCompositeFormElement.rst

@@ -345,7 +345,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     public function createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent()
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent();
-        $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildrenNDiscardCopiedParent');
+        $this->assertAssertionDataSet('createNCopyParentNHotelNOfferChildrenNDiscardCopiedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -394,12 +394,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 
     /**
      * @test
-     * @see DataSet/createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent.csv
+     * @see DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent();
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardCreatedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -413,7 +413,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent()
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardLocalizedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
