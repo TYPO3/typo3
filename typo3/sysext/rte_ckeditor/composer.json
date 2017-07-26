@@ -8,6 +8,9 @@
 	"require": {
 		"typo3/cms-core": "*"
 	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
 	"replace": {
 		"rte_ckeditor": "*"
 	},

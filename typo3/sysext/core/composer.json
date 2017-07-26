@@ -8,6 +8,9 @@
 	"require": {
 		"php" : "^7.0"
 	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
 	"replace": {
 		"core": "*"
 	},
