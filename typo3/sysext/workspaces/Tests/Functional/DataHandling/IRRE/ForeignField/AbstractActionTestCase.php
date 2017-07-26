@@ -81,7 +81,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent.csv
+     * @see DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
     {

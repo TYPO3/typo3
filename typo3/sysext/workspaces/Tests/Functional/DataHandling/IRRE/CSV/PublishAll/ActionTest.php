@@ -369,7 +369,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildrenNDiscardCopiedParent');
+        $this->assertAssertionDataSet('createNCopyParentNHotelNOfferChildrenNDiscardCopiedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -399,13 +399,13 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 
     /**
      * @test
-     * @see DataSet/createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent.csv
+     * @see DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardCreatedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -420,7 +420,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardLocalizedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()

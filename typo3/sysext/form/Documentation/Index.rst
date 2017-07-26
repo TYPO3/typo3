@@ -50,6 +50,6 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
 
    Introduction/Index
    Concepts/Index
-   ConfigurationReference/Index
+   Config/Index
    ApiReference/Index
    FAQ/Index

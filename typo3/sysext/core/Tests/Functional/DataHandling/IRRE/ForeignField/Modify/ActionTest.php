@@ -296,7 +296,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
     public function localizeChildrenHavingStandaloneChildrenInSelectModeAndLanguageSynchronization()
     {
         parent::localizeChildrenHavingStandaloneChildrenInSelectModeAndLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeChildrenHStandaloneChildrenWAllChildrenSelectNLanguageSynchronization');
+        $this->assertAssertionDataSet('locChildrenHStandaloneChildrenWAllChildrenSelectNLanguageSynch');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()

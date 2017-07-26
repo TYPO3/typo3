@@ -187,6 +187,8 @@ be found in the Install Tool.
 
 ### Windows specifics
 
+#### Symlinks
+
 On Windows Vista and newer you can create symbolic links using the `mklink` tool:
 ```
   mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-8.x.x
@@ -199,6 +201,24 @@ for files.
 
 TYPO3 Core upgrades through the Install Tool is not supported under
 Windows.
+
+#### Path length
+
+Up until PHP 7.0 Windows has had problems with lengths of a path.
+The TYPO3 core enforces a maximum path length of 160 characters in itself, leaving
+100 characters for your installation directory. Please note that these 100 characters
+are counted including the drive identifier (C:\ for example).
+
+In case you use composer to install your TYPO3 instance, be aware that composer will
+try to unpack TYPO3 into composer's cache dir first and then move the files to your
+target directory.
+Because composer's cache dir defaults to C:\Users\<user>\AppData\Local\Composer it is
+possible your full path becomes more than the 100 characters you're allowed to use.
+
+You can use the `cache-dir` directive to set a shorter directory specifically for
+your TYPO3 instance.
+
+See: https://getcomposer.org/doc/06-config.md#cache-dir
 
 ### No SSH and symlinks possible (not recommended)
 

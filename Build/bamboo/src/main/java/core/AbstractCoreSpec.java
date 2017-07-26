@@ -369,6 +369,13 @@ abstract public class AbstractCoreSpec {
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
                         "./Build/Scripts/validateRstFiles.sh"
+                    ),
+                new ScriptTask()
+                    .description("Run path length check")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/maxFilePathLength.sh"
                     )
             );
     }

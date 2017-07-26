@@ -384,7 +384,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         // Actually this is not required, since there's nothing to publish... but it's a test case!
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId'], false);
-        $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildrenNDiscardCopiedParent');
+        $this->assertAssertionDataSet('createNCopyParentNHotelNOfferChildrenNDiscardCopiedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -415,14 +415,14 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 
     /**
      * @test
-     * @see DataSet/createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent.csv
+     * @see DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent();
         // Actually this is not required, since there's nothing to publish... but it's a test case!
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId'], false);
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardCreatedParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
@@ -439,7 +439,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         // Actually this is not required, since there's nothing to publish... but it's a test case!
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], false);
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardLocalizedParent');
+        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
