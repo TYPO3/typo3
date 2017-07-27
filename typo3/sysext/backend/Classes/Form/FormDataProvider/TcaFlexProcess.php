@@ -139,7 +139,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                             }
                         }
                     }
-                } elseif (isset($dataStructureFieldDefinition['type']) || isset($dataStructureFieldDefinition['section'])) {
+                } elseif (isset($dataStructureFieldDefinition['type']) xor isset($dataStructureFieldDefinition['section'])) {
                     // type without section is not ok
                     throw new \UnexpectedValueException(
                         'Broken data structure on field name ' . $fieldName . '. section without type or vice versa is not allowed',
