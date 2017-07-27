@@ -74,9 +74,11 @@ define([
 			success: function(data) {
 				$menuContainer.html(data);
 				SystemInformationMenu.updateCounter();
-				$(SystemInformationMenu.identifier.toolbarIconSelector, SystemInformationMenu.identifier.containerSelector).replaceWith($existingIcon);
 
 				SystemInformationMenu.initialize();
+			},
+			complete: function() {
+				$(SystemInformationMenu.identifier.toolbarIconSelector, SystemInformationMenu.identifier.containerSelector).replaceWith($existingIcon);
 			}
 		}).done(function(){
 			// reload error data every five minutes
