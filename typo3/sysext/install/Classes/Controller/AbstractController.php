@@ -212,7 +212,7 @@ class AbstractController
         if ($action === 'login') {
             $password = '';
             $validPassword = false;
-            if (isset($postValues['values']['password'])) {
+            if (isset($postValues['values']['password']) && $postValues['values']['password'] !== '') {
                 $password = $postValues['values']['password'];
                 $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
                 $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
@@ -235,13 +235,18 @@ class AbstractController
                 $this->sendLoginSuccessfulMail();
                 $this->redirect();
             } else {
-                $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
-                $hashedPassword = $saltFactory->getHashedPassword($password);
+                if (!isset($postValues['values']['password']) || $postValues['values']['password'] === '') {
+                    $messageText = 'Please enter the install tool password';
+                } else {
+                    $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
+                    $hashedPassword = $saltFactory->getHashedPassword($password);
+                    $messageText = 'Given password does not match the install tool login password. ' .
+                        'Calculated hash: ' . $hashedPassword;
+                }
                 /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
                 $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
                 $message->setTitle('Login failed');
-                $message->setMessage('Given password does not match the install tool login password. ' .
-                    'Calculated hash: ' . $hashedPassword);
+                $message->setMessage($messageText);
                 $this->sendLoginFailedMail();
                 $this->output($this->loginForm($message));
             }
