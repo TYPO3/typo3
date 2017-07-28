@@ -1,16 +1,6 @@
 //
 // Extensionmanager
 //
-
-// Extension list
-.typo3-extensionmanager-headerRowLeft {
-    float: left;
-}
-
-.typo3-extensionmanager-headerRowRight {
-    float: right;
-}
-
 .ui-toolbar {
     margin-bottom: 5px;
 
@@ -59,103 +49,38 @@
     }
 }
 
-// Distributions list
-.distribution {
-    border: 1px solid darken($gray-lighter, 15%);
-    background-color: $gray-lighter;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    width: 300px;
-    float: left;
-
-    &:hover {
-        background-color: darken($gray-lighter, 3%);
-
-        .distribution-hover {
-            top: 0;
-            opacity: 1;
-        }
-
-        .distribution-more {
-            text-decoration: underline;
-        }
-    }
-
-    .typo3-dependency-version {
-        position: absolute;
-        right: 0;
-    }
-}
-
-.distribution-holder {
-    @extend .clearfix;
-
-    margin-top: 1em;
+// Distributions List
+.distribution-official-badge {
+    position: absolute;
     bottom: 0;
-    margin-left: -20px;
+    right: 0.75em;
+    transform: translate(0, 25%);
+
+    img {
+        width: 50px;
+        display: block;
+
+        @media (min-width: $screen-sm-min) {
+            width: 64px;
+        }
+    }
 }
 
-.distribution-image {
-    position: relative;
-    width: 300px;
-    height: 225px;
-    overflow: hidden;
+// Distribution Detail
+.distribution-detail-previewpane {
+    margin-bottom: 2em;
+    max-width: 100%;
 
     img {
         display: block;
-        height: 100%;
-        width: 100%;
-    }
-}
-
-.distribution-hover {
-    background-color: $gray-lighter;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 300px;
-    height: 225px;
-    overflow: hidden;
-    opacity: 0;
-
-    @include transition(all 0.2s ease-in-out);
-}
-
-.distribution-hover-inner {
-    padding: 15px;
-}
-
-.distribution-meta {
-    border-top: 1px solid darken($gray-lighter, 10%);
-    padding: 15px;
-
-    .distribution-title {
-        margin: 0;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 14px;
+        max-width: 100%;
+        height: auto;
     }
 
-    .distribution-install {
-        margin-top: 0.5em;
+    @media (min-width: $screen-sm-min) {
+        float: left;
+        margin-right: 3em;
     }
-}
-
-.distribution-detail {
-    @extend .clearfix;
-
-    min-width: 750px;
-}
-
-.distribution-detail-previewpane {
-    float: left;
-    margin-right: 30px;
-}
-
-.distribution-detail-preview {
-    display: block;
-    border: 1px solid darken($gray-lighter, 15%);
 }
 
 .distribution-detail-body {
@@ -177,17 +102,18 @@
     margin-bottom: 2.5em;
 }
 
+.distribution-detail-actions {
+    list-style: none;
+    padding: 0;
+
+    li {
+        margin: 0.25em 0;
+    }
+}
+
 .distribution-detail-summary {
     margin-top: 2.5em;
     margin-bottom: 2.5em;
-}
-
-.distribution-installed {
-    hr {
-        margin: 2.5em 0;
-        border: 0;
-        border-top: 1px solid darken($gray-lighter, 15%);
-    }
 }
 
 // Misc

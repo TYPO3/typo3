@@ -17,29 +17,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Render an img tag for given image src. If $src doesn't exist and
- * $fallbackImage is given check if that file exists and render img tag.
- *
- * If no existing file is found no tag is rendered.
- *
- * = Examples =
- *
- * <code title="Default">
- *     <em:image src="EXT:myext/Resources/Public/typo3_logo.png" alt="alt text" />
- * </code>
- * <output>
- *     <img alt="alt text" src="../typo3conf/ext/myext/Resources/Public/typo3_logo.png" />
- * </output>
- *
- * <code title="non existing image">
- *     <f:image src="NonExistingImage.png" alt="foo" />
- * </code>
- * <output>
- * </output>
+ * Renders the distribution image
  *
  * @internal
  */
-class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class DistributionImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
     /**
      * @var string
@@ -52,32 +34,27 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('src', 'string', '', true);
+        $this->registerArgument('extensionkey', 'string', '', true);
         $this->registerArgument('width', 'int', 'width of the image');
         $this->registerArgument('height', 'int', 'height of the image');
-        $this->registerArgument('fallbackImage', 'string', 'an optional fallback image if the $src image cannot be loaded', false, '');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
     }
 
     /**
-     * Resizes a given image (if required) and renders the respective img tag
+     * Renders the destribution preview image for the given extension
      *
      * @return string rendered tag.
      */
     public function render()
     {
-        $src = $this->arguments['src'];
+        $extensionKey = $this->arguments['extensionkey'];
         $width = $this->arguments['width'];
         $height = $this->arguments['height'];
-        $fallbackImage = $this->arguments['fallbackImage'];
-
         $content = '';
-        $uri = $this->getImageUri($src);
 
-        if (empty($uri) && $fallbackImage !== '') {
-            $uri = $this->getImageUri($fallbackImage);
-        }
+        $src = $this->findImage($extensionKey);
+        $uri = $this->getImageUri($src);
 
         if (!empty($uri)) {
             if ($width) {
@@ -91,6 +68,29 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
         }
 
         return $content;
+    }
+
+    /**
+     * Find the distrubution image
+     *
+     * @param string $extensionKey
+     * @return string
+     */
+    protected function findImage($extensionKey)
+    {
+        $paths = [];
+        $paths[] = 'EXT:' . $extensionKey . '/Resources/Public/Images/Distribution.svg';
+        $paths[] = 'EXT:' . $extensionKey . '/Resources/Public/Images/Distribution.png';
+        $paths[] = 'EXT:extensionmanager/Resources/Public/Images/Distribution.svg';
+
+        foreach ($paths as $path) {
+            $absFileName = GeneralUtility::getFileAbsFileName($path);
+            if (file_exists($absFileName)) {
+                return $absFileName;
+            }
+        }
+
+        return '';
     }
 
     /**

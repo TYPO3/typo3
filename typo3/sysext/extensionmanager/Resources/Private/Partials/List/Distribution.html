@@ -1,60 +1,50 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<div class="distribution">
-	<div class="distribution-image">
+<div class="card card-size-fixed-small">
+
+	<div class="card-image">
+		<f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
+			<em:distributionImage extensionkey="{distribution.extensionKey}" alt="{distribution.title}" height="225" width="300" />
+		</f:link.action>
 		<f:if condition="{distribution.dependencies}">
-			<div class="typo3-dependency-version">
+			<div class="card-image-badge">
 				<em:typo3Dependency extension="{distribution}" />
 			</div>
 		</f:if>
 		<f:if condition="{official}">
-			<f:then>
-				<em:image
-						src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
-						fallbackImage="EXT:extensionmanager/Resources/Public/Images/OfficialDistribution.png"
-						height="225"
-						width="300"
-						/>
-			</f:then>
-			<f:else>
-				<em:image
-						src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
-						fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
-						height="225"
-						width="300"
-						/>
-			</f:else>
-		</f:if>
-		<div class="distribution-hover">
-			<div class="distribution-hover-inner">
-				<dl class="dl-horizontal">
-					<dt><f:translate key="extensionList.distribution.title" /></dt>
-					<dd>{distribution.title}</dd>
-					<dt><f:translate key="extensionList.distribution.key" /></dt>
-					<dd>{distribution.extensionKey}</dd>
-					<dt><f:translate key="extensionList.distribution.version" /></dt>
-					<dd>{distribution.version} (<f:format.date format="d.m.Y">{distribution.lastUpdated}</f:format.date>)</dd>
-					<dt><f:translate key="extensionList.distribution.author" /></dt>
-					<dd>{distribution.authorName}</dd>
-				</dl>
-				<div class="distributionDescription">{distribution.description}</div>
+			<div class="distribution-official-badge">
+				<f:image
+					src="EXT:extensionmanager/Resources/Public/Images/OfficialBadge.svg" alt="{distribution.title}"
+					height="64"
+					width="64"
+				/>
 			</div>
-		</div>
+		</f:if>
 	</div>
-	<div class="distribution-meta">
-		<h2 class="distribution-title">
-			<f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="distribution-more">
+
+	<div class="card-header">
+		<h3 class="card-title">
+			<f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
 				{distribution.title}
 			</f:link.action>
-		</h2>
-		<div class="distribution-install">
-			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="btn btn-default t3-button-action-installdistribution">
-				<span class="fa fa-cloud-download">&nbsp;</span><f:translate key="extensionList.installDistribution">Install</f:translate>
-			</f:link.action>
-			<f:if condition="{official}">
-				<span class="label label-success">
-					<f:translate key="extensionList.officialDistribution">Official Distribution</f:translate>
-				</span>
-			</f:if>
-		</div>
+		</h3>
+		<span class="card-subtitle">
+			{distribution.extensionKey}
+		</span>
 	</div>
+
+	<div class="card-content">
+		<p class="card-text">
+			{distribution.description -> f:format.crop(maxCharacters: 150) -> f:format.raw()}
+		</p>
+	</div>
+
+	<div class="card-footer">
+		<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="btn btn-default t3-button-action-installdistribution">
+			<core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
+		</f:link.action>
+		<f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="btn btn-link">
+			<f:translate key="button.details">Show Details</f:translate>
+		</f:link.action>
+	</div>
+
 </div>

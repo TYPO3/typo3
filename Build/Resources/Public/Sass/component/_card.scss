@@ -1,48 +1,214 @@
 //
 // Card
-// ====
-// Cards for typo3
 //
+// Cards are flexible content containers that are meant to be used for organizing groups of elements.
+// Each card is a collection of the container and corresponding child elements, that can be used as needed.
+// Child Elements are optional but combinung those will bring the best experience.
 //
-// Normal Usage
-// ------------
+// Styleguide component.card
 //
-// <div class="card card-size-medium">
-// ... Content ...
-// </div>
+
 //
+// Examples
 //
-// Grid Usage
-// ----------
-//
+// Markup:
 // <div class="card-container">
 //     <div class="card card-size-medium">
-//     ... Content ...
+//         <div class="card-header">
+//             <h1 class="card-title">Simple Card</h1>
+//             <span class="card-subtitle">Subtitle</span>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Nulla at mattis lectus. Duis pulvinar sollicitudin aliquam. Praesent id convallis ante, id auctor sem. Duis vestibulum nisl sit amet feugiat blandit. Cras in neque sit amet eros iaculis dapibus sed sit amet tortor.
+//             </p>
+//         </div>
 //     </div>
 //     <div class="card card-size-medium">
-//     ... Content ...
+//         <div class="card-header">
+//             <div class="card-icon">
+//                 <img src="http://via.placeholder.com/32x32" height="32" width="32">
+//             </div>
+//             <div class="card-header-body">
+//                 <h1 class="card-title">Icon Card</h1>
+//                 <span class="card-subtitle">Subtitle</span>
+//                 <div class="card-longdesc">
+//                     <p class="card-text">
+//                         Nulla at mattis lectus. Duis pulvinar sollicitudin aliquam. Praesent id convallis ante, id auctor sem. Duis vestibulum nisl sit amet feugiat blandit. Cras in neque sit amet eros iaculis dapibus sed sit amet tortor.
+//                     </p>
+//                 </div>
+//             </div>
+//         </div>
 //     </div>
 //     <div class="card card-size-medium">
-//     ... Content ...
+//         <div class="card-header">
+//             <h1 class="card-title">Action Card</h1>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Etiam posuere tristique arcu, a elementum justo semper eget. Etiam malesuada consectetur risus nec hendrerit. Mauris velit arcu, efficitur at erat eget, luctus consequat felis.
+//             </p>
+//         </div>
+//         <div class="card-footer">
+//             <a class="btn btn-primary" href="#">
+//                 Action 1
+//             </a>
+//             <a class="btn btn-default" href="#">
+//                 Action 2
+//             </a>
+//         </div>
 //     </div>
+//     <a href="#" class="card card-size-medium">
+//         <div class="card-header">
+//             <h1 class="card-title">Linked Card</h1>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Etiam posuere tristique arcu, a elementum justo semper eget. Etiam malesuada consectetur risus nec hendrerit. Mauris velit arcu, efficitur at erat eget, luctus consequat felis.
+//             </p>
+//         </div>
+//     </a>
 //     <div class="card card-size-medium">
-//     ... Content ...
+//         <div class="card-image">
+//             <img src="http://via.placeholder.com/300x120" height="120" width="300">
+//         </div>
+//         <div class="card-header">
+//             <h1 class="card-title">Product Card</h1>
+//             <span class="card-subtitle">Subtitle</span>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse erat justo, hendrerit vitae arcu eget.
+//             </p>
+//         </div>
+//         <div class="card-footer">
+//             <a class="btn btn-default" href="#">
+//                 Action 1
+//             </a>
+//             <a class="btn btn-link" href="#">
+//                 Link 2
+//             </a>
+//         </div>
 //     </div>
 // </div>
 //
+// Styleguide component.card.1
 //
-// Sizes
-// -----
+
 //
-// card-size-small => 3 2 1
-// card-size-medium => 2 2 1
-// card-size-large => 1 1 1
+// Flexible Sizes
+//
+// .card-size-small            - Small
+// .card-size-medium           - Medium
+// .card-size-large            - Large
+//
+// Markup:
+// <div class="card $modifierClass">
+//     <div class="card-image">
+//         <img src="http://via.placeholder.com/300x225" height="225" width="300">
+//     </div>
+//     <div class="card-header">
+//         <h1 class="card-title">The official Introduction Package</h1>
+//         <span class="card-subtitle">introduction</span>
+//     </div>
+//     <div class="card-content">
+//         <p class="card-text">
+//             This package delivers a new website (page tree) and shows all out-of-the-box features of TYPO3, and includes a theme based on Twitter Bootstrap 3, and...
+//         </p>
+//     </div>
+//     <div class="card-footer">
+//         <a class="btn btn-default" href="#">
+//             Install
+//         </a>
+//         <a class="btn btn-link" href="#">
+//             Show Details
+//         </a>
+//     </div>
+// </div>
+//
+// Styleguide component.card.2
+//
+
+//
+// Fixed Sizes
+//
+// .card-size-fixed-small      - Small
+//
+// Markup:
+// <div class="card $modifierClass">
+//     <div class="card-image">
+//         <img src="http://via.placeholder.com/300x225" height="225" width="300">
+//     </div>
+//     <div class="card-header">
+//         <h1 class="card-title">The official Introduction Package</h1>
+//         <span class="card-subtitle">introduction</span>
+//     </div>
+//     <div class="card-content">
+//         <p class="card-text">
+//             This package delivers a new website (page tree) and shows all out-of-the-box features of TYPO3, and includes a theme based on Twitter Bootstrap 3, and...
+//         </p>
+//     </div>
+//     <div class="card-footer">
+//         <a class="btn btn-default" href="#">
+//             Install
+//         </a>
+//         <a class="btn btn-link" href="#">
+//             Show Details
+//         </a>
+//     </div>
+// </div>
+//
+// Styleguide component.card.3
+//
+
+//
+// Collection
+//
+// The card container groups multiple card elements and ensures that these elements always share
+// the same height for elements in a row. Each group is wrapped with `<div class="card-container">|</div>`
+//
+// Markup:
+// <div class="card-container">
+//     <div class="card card-size-medium">
+//         <div class="card-image">
+//             <img src="http://via.placeholder.com/300x100" height="100" width="300">
+//         </div>
+//         <div class="card-header">
+//             <h1 class="card-title">Card with a lot of content</h1>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Curabitur semper tellus ac odio dignissim, maximus ornare eros tempor. Integer tempus vestibulum leo, elementum cursus arcu euismod non. Aenean quam nisi, laoreet vitae diam eget, posuere efficitur eros. Curabitur id arcu purus. Suspendisse ullamcorper dictum neque ut pellentesque. Integer pharetra dui eu justo rutrum accumsan. Aenean vehicula dictum purus, sit amet consequat ante malesuada vitae. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+//             </p>
+//         </div>
+//     </div>
+//     <div class="card card-size-medium">
+//         <div class="card-image">
+//             <img src="http://via.placeholder.com/300x100" height="100" width="300">
+//         </div>
+//         <div class="card-header">
+//             <h1 class="card-title">Card with little to none content</h1>
+//         </div>
+//         <div class="card-content">
+//             <p class="card-text">
+//                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+//             </p>
+//         </div>
+//     </div>
+// </div>
+//
+// Styleguide component.card.4
+//
+
+//
+// Header
 //
 
 //
 // Variables
 //
 $card-spacing: 10px;
+$card-padding: 1.5em;
 $card-base-color: #000;
 $card-border-color: lighten($card-base-color, 80);
 $card-border-hover-color: lighten($card-base-color, 70);
@@ -53,20 +219,22 @@ $card-shadow-hover-color: transparentize($card-base-color, 0.7);
 // Component
 //
 .card {
+    overflow: hidden;
+    border-radius: 2px;
     display: flex;
-    padding: 15px;
-    box-shadow: 0 2px 0 $card-shadow-color;
+    flex-direction: column;
+    box-shadow: 0 1px 1px $card-shadow-color;
     border: 1px solid $card-border-color;
     margin-bottom: ($card-spacing*2);
     transition: all 0.2s ease-in-out;
     transition-property: box-shadow, border, transform;
+}
 
-    &:hover {
-        text-decoration: none;
-        border: 1px solid $card-border-hover-color;
-        transform: translate(0, -1px);
-        box-shadow: 0 3px 0 $card-shadow-hover-color;
-    }
+a.card:hover {
+    text-decoration: none;
+    border: 1px solid $card-border-hover-color;
+    transform: translate(0, -1px);
+    box-shadow: 0 2px 1px $card-shadow-hover-color;
 }
 
 .card-container {
@@ -109,4 +277,118 @@ $card-shadow-hover-color: transparentize($card-base-color, 0.7);
     @media (min-width: $screen-sm-min) {
         width: calc(100% - #{$card-spacing*2});
     }
+}
+
+//
+// Fixed sizes
+//
+.card-size-fixed-small {
+    width: calc(100% - #{$card-spacing*2});
+
+    @media (min-width: $screen-ms-min) {
+        width: calc(50% - #{$card-spacing*2});
+    }
+
+    @media (min-width: $screen-sm-min) {
+        width: 300px;
+    }
+}
+
+//
+// Components
+//
+.card-image,
+.card-header,
+.card-content,
+.card-footer {
+    padding: $card-padding $card-padding 0 $card-padding;
+
+    &:last-child {
+        padding-bottom: $card-padding;
+    }
+
+    *:first-child {
+        margin-top: 0;
+    }
+
+    *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+//
+// Image
+//
+.card-image {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:first-child {
+        padding-top: 0;
+
+        .card-image-badge {
+            top: $card-padding / 2;
+        }
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+
+    .card-image-badge {
+        position: absolute;
+        top: $card-padding;
+        right: $card-padding / 2;
+    }
+
+    img {
+        display: block;
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+//
+// Header
+//
+.card-header {
+    .card-icon {
+        float: left;
+        margin-right: $card-padding / 2;
+    }
+
+    .card-header-body {
+        display: block;
+        overflow: hidden;
+    }
+
+    .card-title {
+        font-family: inherit;
+        font-weight: 500;
+        display: block;
+        font-size: 1.35em;
+        line-height: 1.2em;
+        margin: 0;
+    }
+
+    .card-subtitle {
+        display: block;
+        margin-top: 0.5em;
+        font-size: 1em;
+        line-height: 1.2em;
+        opacity: 0.5;
+    }
+
+    .card-longdesc {
+        margin-top: 1em;
+    }
+}
+
+//
+// Content
+//
+.card-content {
+    height: 100%;
 }

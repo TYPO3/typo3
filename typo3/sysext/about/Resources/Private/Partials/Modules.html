@@ -14,25 +14,27 @@
 					title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
 					class="card card-size-medium"
 				>
-					<div class="media">
-						<div class="media-left">
-							<span class="media-object" title="{f:if(condition: subModule.label, then: '{f:translate(key: subModule.label)}')}">
-								<core:icon identifier="{subModule.iconIdentifier}" size="default" />
-							</span>
+					<div class="card-header">
+						<div class="card-icon">
+							<core:icon identifier="{subModule.iconIdentifier}" size="default" />
 						</div>
-						<div class="media-body">
-							<f:if condition="{subModule.label}">
-								<h3 class="h4 media-heading">
+						<f:if condition="{subModule.label}">
+							<div class="card-header-body">
+								<h3 class="card-title">
 									{f:translate(key: subModule.label)}
-									<f:if condition="{subModule.shortDescription}">
-										<br><small class="text-muted"><f:translate key="{subModule.shortDescription}" /></small><br>
-									</f:if>
 								</h3>
-							</f:if>
-							<f:if condition="{subModule.longDescription}">
-								{f:translate(key: subModule.longDescription) -> f:format.raw()}
-							</f:if>
-						</div>
+								<f:if condition="{subModule.shortDescription}">
+									<span class="card-subtitle">
+										<f:translate key="{subModule.shortDescription}" />
+									</span>
+								</f:if>
+								<f:if condition="{subModule.longDescription}">
+									<div class="card-longdesc">
+										{f:translate(key: subModule.longDescription) -> f:format.raw()}
+									</div>
+								</f:if>
+							</div>
+						</f:if>
 					</div>
 				</a>
 			</f:for>

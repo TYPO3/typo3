@@ -78,6 +78,9 @@
 			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="button.details">
+				<source>Show Details</source>
+			</trans-unit>
 			<trans-unit id="button.remove">
 				<source>Remove extension</source>
 			</trans-unit>
