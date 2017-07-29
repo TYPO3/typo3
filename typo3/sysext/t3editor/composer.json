@@ -1,12 +1,17 @@
 {
 	"name": "typo3/cms-t3editor",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "JavaScript-driven editor with syntax highlighting and codecompletion. Based on CodeMirror.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": ">=9.0.0 <=9.0.99"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -21,7 +26,8 @@
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true
-			}
+			},
+			"extension-key": "t3editor"
 		}
 	},
 	"autoload": {

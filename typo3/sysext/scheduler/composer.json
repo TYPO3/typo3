@@ -1,12 +1,17 @@
 {
 	"name": "typo3/cms-scheduler",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "The TYPO3 Scheduler let's you register tasks to happen at a specific time",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": ">=9.0.0 <=9.0.99"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -17,6 +22,9 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "9.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "scheduler"
 		}
 	},
 	"autoload": {

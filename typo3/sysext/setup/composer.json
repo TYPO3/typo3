@@ -1,12 +1,17 @@
 {
 	"name": "typo3/cms-setup",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "Allows users to edit a limited set of options for their user profile, eg. preferred language and their name and email address.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": ">=9.0.0 <=9.0.99"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -21,7 +26,8 @@
 		"typo3/cms": {
 			"Package": {
 				"partOfFactoryDefault": true
-			}
+			},
+			"extension-key": "setup"
 		}
 	},
 	"autoload": {

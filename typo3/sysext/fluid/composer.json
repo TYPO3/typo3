@@ -1,12 +1,19 @@
 {
 	"name": "typo3/cms-fluid",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Core",
+	"description": "Fluid is a next-generation templating engine which makes the life of extension authors a lot easier!",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0+"],
+	"authors": [{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}],
 
 	"require": {
-		"typo3/cms-core": "*"
+		"typo3/cms-core": ">=9.0.0 <=9.0.99",
+		"typo3/cms-extbase": ">=9.0.0 <=9.0.99",
+		"typo3fluid/fluid": "^2.3"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -23,7 +30,8 @@
 				"protected": true,
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true
-			}
+			},
+			"extension-key": "fluid"
 		},
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [
