@@ -19,8 +19,10 @@ declare namespace TYPO3 {
       export class Modal {
         public readonly sizes: {[key: string]: string};
         public readonly styles: {[key: string]: string};
+        public currentModal: JQuery;
         public advanced(configuration: object): any;
         public confirm(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
+        public show(title: string, content: any, severity: number, buttons: any[], additionalCssClasses?: string[]): JQuery; // tslint:disable-line:max-line-length
         public dismiss(): void;
       }
       export class Severity {
@@ -29,6 +31,7 @@ declare namespace TYPO3 {
         public readonly ok: number;
         public readonly warning: number;
         public readonly: number;
+        public getCssClass(severity: number): string;
       }
     }
   }
