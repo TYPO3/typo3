@@ -255,35 +255,35 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'sys_language_mode' => '',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'sys_language_mode' => 'ignore',
                 'sys_language_contentOL' => 0
             ],
@@ -434,7 +434,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language'],
+                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
@@ -792,13 +792,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             'Regular Element #1',
             'Regular Element #2',
             'Regular Element #3',
+            'Hidden Element #4',
             '[Translate to Dansk:] Regular Element #1',
             '[Translate to Dansk:] Regular Element #3',
             '[DK] Without default language',
+            '[DK] UnHidden Element #4',
             '[DE] Without default language',
             '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
             '[Translate to Polski:] Regular Element #1',
-            '[PL] Without default language'
+            '[PL] Without default language',
+            '[PL] Hidden Regular Element #2'
         ];
         return array_diff($allElements, $visibleHeaders);
     }
