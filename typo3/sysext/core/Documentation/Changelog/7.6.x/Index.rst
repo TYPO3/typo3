@@ -40,3 +40,13 @@ Important breaking changes after the 7.6 release.
 
    Breaking-72931-SearchFormControllerpi_list_browseresultsHasBeenRenamed
 
+
+7.6.x Important Change
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+   Important-17904-ShowAccessRestrictedPagesDoesNotWorkWithSpecialMenus
+   Important-75400-NewDataHandlerCommandCopyToLanguage
