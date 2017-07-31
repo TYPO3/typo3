@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "98366fdfe4963beffbf64598a5cbe464",
+    "content-hash": "a9792165f18b82770f8f89cc20836590",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1295,21 +1295,21 @@
         },
         {
             "name": "typo3/cms-cli",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/cms-cli.git",
-                "reference": "b728de7e8b993745ff78bdd38634ed0c44706a28"
+                "reference": "713666d40ee56c1a362d1ce7c3f929613fc033b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/cms-cli/zipball/b728de7e8b993745ff78bdd38634ed0c44706a28",
-                "reference": "b728de7e8b993745ff78bdd38634ed0c44706a28",
+                "url": "https://api.github.com/repos/TYPO3/cms-cli/zipball/713666d40ee56c1a362d1ce7c3f929613fc033b9",
+                "reference": "713666d40ee56c1a362d1ce7c3f929613fc033b9",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
-                "typo3/cms-core": "^8.7 || ^9.0"
+                "typo3/cms-core": "^8.7 || ^9.0@dev"
             },
             "bin": [
                 "typo3"
@@ -1326,20 +1326,20 @@
             ],
             "description": "TYPO3 command line binary",
             "homepage": "https://typo3.org",
-            "time": "2017-07-25T17:43:19+00:00"
+            "time": "2017-07-28T09:15:35+00:00"
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.4.0-rc1",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "07c6fe266b829ada1ea11a84926142fbb37b4069"
+                "reference": "e26b0562150a378727af6b3d9c6b935214292ff3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/07c6fe266b829ada1ea11a84926142fbb37b4069",
-                "reference": "07c6fe266b829ada1ea11a84926142fbb37b4069",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/e26b0562150a378727af6b3d9c6b935214292ff3",
+                "reference": "e26b0562150a378727af6b3d9c6b935214292ff3",
                 "shasum": ""
             },
             "require": {
@@ -1395,7 +1395,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2017-07-26T14:34:07+00:00"
+            "time": "2017-07-31T21:22:29+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -3861,9 +3861,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "typo3/cms-composer-installers": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
