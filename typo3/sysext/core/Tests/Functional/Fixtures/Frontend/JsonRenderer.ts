@@ -12,10 +12,10 @@ config {
 
 	watcher {
 		tableFields {
-			pages = uid,_ORIG_uid,pid,sorting,title
+			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_irretutorial_hotels
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
-			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,downloadname,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
+			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
 			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_irretutorial_1nff_hotels
 			tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 			tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
@@ -66,6 +66,19 @@ page {
 			}
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.__pages/pages:{field:uid}
+		}
+		15 = CONTENT
+		15 {
+			if.isTrue.field = tx_irretutorial_hotels
+			table = tx_irretutorial_1nff_hotel
+			select {
+				orderBy = sorting
+				where.field = uid
+				where.intval = 1
+				where.wrap = parenttable='pages' AND parentid=|
+			}
+			renderObj < lib.watcherDataObject
+			renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_hotels/tx_irretutorial_1nff_hotel:{field:uid}
 		}
 		20 = CONTENT
 		20 {
@@ -222,6 +235,24 @@ page {
 		stdWrap.postUserFunc = TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Collector->attachSection
 		stdWrap.postUserFunc.as = Default
 	}
+	99999 = COA
+	99999 {
+		stdWrap.postUserFunc = TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Renderer->renderValues
+		stdWrap.postUserFunc.values {
+			page.children {
+				uid.data = page:uid
+				pid.data = page:pid
+				title.data = page:title
+			}
+			tsfe.children {
+				sys_language_uid.data = tsfe:sys_language_uid
+				sys_language_mode.data = tsfe:sys_language_mode
+				sys_language_content.data = tsfe:sys_language_content
+				sys_language_contentOL.data = tsfe:sys_language_contentOL
+			}
+		}
+		stdWrap.postUserFunc.as = Scope
+	}
 	stdWrap.postUserFunc = TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Renderer->renderSections
 }
 
@@ -230,4 +261,7 @@ config.sys_language_uid = 1
 [end]
 [globalVar = GP:L = 2]
 config.sys_language_uid = 2
+[end]
+[globalVar = GP:L = 3]
+config.sys_language_uid = 3
 [end]
