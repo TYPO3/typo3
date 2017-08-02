@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Class FileDumpController
@@ -73,20 +72,22 @@ class FileDumpController
             }
 
             if ($file === null) {
-                HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
+                return (new Response)->withStatus(404);
             }
 
-            // Hook: allow some other process to do some security/access checks. Hook should issue 403 if access is rejected
+            // Hook: allow some other process to do some security/access checks. Hook should return 403 response if access is rejected, void otherwise
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] ?? [] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 if (!$hookObject instanceof FileDumpEIDHookInterface) {
                     throw new \UnexpectedValueException($className . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
                 }
-                $hookObject->checkFileAccess($file);
+                $response = $hookObject->checkFileAccess($file);
+                if ($response instanceof ResponseInterface) {
+                    return $response;
+                }
             }
-            $file->getStorage()->dumpFileContents($file);
-            // @todo Refactor FAL to not echo directly, but to implement a stream for output here and use response
-            return null;
+
+            return $file->getStorage()->streamFile($file);
         }
         return (new Response)->withStatus(403);
     }

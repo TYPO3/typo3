@@ -3824,4 +3824,11 @@ return [
             'Deprecation-86461-MarkVariousTypoScriptParsingFunctionalityAsInternal.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceStorage->dumpFileContents' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-83793-FALResourceStorage-dumpFileContents.rst'
+        ],
+    ],
 ];

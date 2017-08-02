@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Interface for FileDumpEID Hook to perform some custom security/access checks
  * when accessing file thought FileDumpEID
@@ -27,6 +29,7 @@ interface FileDumpEIDHookInterface
      * A 401 header must be accompanied by a www-authenticate header!
      *
      * @param \TYPO3\CMS\Core\Resource\ResourceInterface $file
+     * @return ResponseInterface|null
      */
     public function checkFileAccess(\TYPO3\CMS\Core\Resource\ResourceInterface $file);
 }

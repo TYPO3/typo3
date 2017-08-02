@@ -59,7 +59,7 @@ abstract class AbstractApplication implements ApplicationInterface
      */
     protected function sendResponse(ResponseInterface $response)
     {
-        if ($response instanceof \TYPO3\CMS\Core\Http\NullResponse) {
+        if ($response instanceof NullResponse) {
             return;
         }
 
@@ -77,7 +77,13 @@ abstract class AbstractApplication implements ApplicationInterface
                 header($name . ': ' . implode(', ', $values));
             }
         }
-        echo $response->getBody()->__toString();
+        $body = $response->getBody();
+        if ($body instanceof SelfEmittableStreamInterface) {
+            // Optimization for streams that use php functions like readfile() as fastpath for serving files.
+            $body->emit();
+        } else {
+            echo $body->__toString();
+        }
     }
 
     /**

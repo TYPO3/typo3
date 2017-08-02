@@ -14,10 +14,14 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Resource\Driver\StreamableDriverInterface;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -1639,9 +1643,12 @@ class ResourceStorage implements ResourceStorageInterface
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
+     * @deprecated since TYPO3 v9.5, will be removed in TYPO3 v10.0.
      */
     public function dumpFileContents(FileInterface $file, $asDownload = false, $alternativeFilename = null, $overrideMimeType = null)
     {
+        trigger_error('ResourceStorage->dumpFileContents() will be removed in TYPO3 v10.0. Use streamFile() instead.', E_USER_DEPRECATED);
+
         $downloadName = $alternativeFilename ?: $file->getName();
         $contentDisposition = $asDownload ? 'attachment' : 'inline';
         header('Content-Disposition: ' . $contentDisposition . '; filename="' . $downloadName . '"');
@@ -1663,6 +1670,65 @@ class ResourceStorage implements ResourceStorageInterface
             ob_end_clean();
         }
         $this->driver->dumpFileContents($file->getIdentifier());
+    }
+
+    /**
+     * Returns a PSR-7 Response which can be used to stream the requested file
+     *
+     * @param FileInterface $file
+     * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
+     * @param string $alternativeFilename the filename for the download (if $asDownload is set)
+     * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
+     * @return ResponseInterface
+     */
+    public function streamFile(
+        FileInterface $file,
+        bool $asDownload = false,
+        string $alternativeFilename = null,
+        string $overrideMimeType = null
+    ): ResponseInterface {
+        if (!$this->driver instanceof StreamableDriverInterface) {
+            return $this->getPseudoStream($file, $asDownload, $alternativeFilename, $overrideMimeType);
+        }
+
+        $properties = [
+            'as_download' => $asDownload,
+            'filename_overwrite' => $alternativeFilename,
+            'mimetype_overwrite' => $overrideMimeType,
+        ];
+        return $this->driver->streamFile($file->getIdentifier(), $properties);
+    }
+
+    /**
+     * Wrap DriverInterface::dumpFileContents into a SelfEmittableStreamInterface
+     *
+     * @param FileInterface $file
+     * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
+     * @param string $alternativeFilename the filename for the download (if $asDownload is set)
+     * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
+     * @return ResponseInterface
+     */
+    protected function getPseudoStream(
+        FileInterface $file,
+        bool $asDownload = false,
+        string $alternativeFilename = null,
+        string $overrideMimeType = null
+    ) {
+        $downloadName = $alternativeFilename ?: $file->getName();
+        $contentDisposition = $asDownload ? 'attachment' : 'inline';
+
+        $stream = new FalDumpFileContentsDecoratorStream($file->getIdentifier(), $this->driver, $file->getSize());
+        $headers = [
+            'Content-Disposition' => $contentDisposition . '; filename="' . $downloadName . '"',
+            'Content-Type' => $overrideMimeType ?: $file->getMimeType(),
+            'Content-Length' => (string)$file->getSize(),
+            'Last-Modified' => gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), ['mtime']))) . ' GMT',
+            // Cache-Control header is needed here to solve an issue with browser IE8 and lower
+            // See for more information: http://support.microsoft.com/kb/323308
+            'Cache-Control' => '',
+        ];
+
+        return new Response($stream, 200, $headers);
     }
 
     /**

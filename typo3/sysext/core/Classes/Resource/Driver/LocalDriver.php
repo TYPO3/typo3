@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\SelfEmittableLazyOpenStream;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -26,7 +29,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Driver for the local file system
  */
-class LocalDriver extends AbstractHierarchicalFilesystemDriver
+class LocalDriver extends AbstractHierarchicalFilesystemDriver implements StreamableDriverInterface
 {
     /**
      * @var string
@@ -1379,6 +1382,37 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function dumpFileContents($identifier)
     {
         readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), 0);
+    }
+
+    /**
+     * Stream file using a PSR-7 Response object.
+     *
+     * @param string $identifier
+     * @param array $properties
+     * @return ResponseInterface
+     */
+    public function streamFile(string $identifier, array $properties): ResponseInterface
+    {
+        $fileInfo = $this->getFileInfoByIdentifier($identifier, ['name', 'mimetype', 'mtime', 'size']);
+        $downloadName = $properties['filename_overwrite'] ?? $fileInfo['name'] ?? '';
+        $mimeType = $properties['mimetype_overwrite'] ?? $fileInfo['mimetype'] ?? '';
+        $contentDisposition = ($properties['as_download'] ?? false) ? 'attachment' : 'inline';
+
+        $filePath = $this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier));
+
+        return new Response(
+            new SelfEmittableLazyOpenStream($filePath),
+            200,
+            [
+                'Content-Disposition' => $contentDisposition . '; filename="' . $downloadName . '"',
+                'Content-Type' => $mimeType,
+                'Content-Length' => (string)$fileInfo['size'],
+                'Last-Modified' => gmdate('D, d M Y H:i:s', $fileInfo['mtime']) . ' GMT',
+                // Cache-Control header is needed here to solve an issue with browser IE8 and lower
+                // See for more information: http://support.microsoft.com/kb/323308
+                'Cache-Control' => '',
+            ]
+        );
     }
 
     /**
