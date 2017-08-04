@@ -32,6 +32,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         return [
             'Live, no preview' => [
                 'tableName' => 'aTable',
+                'tableAlias' => 'aTable',
                 'workspaceId' => 0,
                 'workspacePreview' => false,
                 'hiddenPagePreview' => false,
@@ -41,6 +42,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Live, with hidden record preview' => [
                 'tableName' => 'aTable',
+                'tableAlias' => 'aTable',
                 'workspaceId' => 0,
                 'workspacePreview' => false,
                 'hiddenPagePreview' => true,
@@ -50,6 +52,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Workspace, with WS preview' => [
                 'tableName' => 'aTable',
+                'tableAlias' => 'aTable',
                 'workspaceId' => 1,
                 'workspacePreview' => true,
                 'hiddenPagePreview' => false,
@@ -59,6 +62,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Workspace, with WS preview and hidden record preview' => [
                 'tableName' => 'aTable',
+                'tableAlias' => 'aTable',
                 'workspaceId' => 1,
                 'workspacePreview' => true,
                 'hiddenPagePreview' => true,
@@ -68,6 +72,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Live page, no preview' => [
                 'tableName' => 'pages',
+                'tableAlias' => 'pages',
                 'workspaceId' => 0,
                 'workspacePreview' => false,
                 'hiddenPagePreview' => false,
@@ -77,6 +82,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Live page, with hidden page preview' => [
                 'tableName' => 'pages',
+                'tableAlias' => 'pages',
                 'workspaceId' => 0,
                 'workspacePreview' => false,
                 'hiddenPagePreview' => true,
@@ -86,6 +92,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Workspace page, with WS preview' => [
                 'tableName' => 'pages',
+                'tableAlias' => 'pages',
                 'workspaceId' => 1,
                 'workspacePreview' => true,
                 'hiddenPagePreview' => false,
@@ -95,6 +102,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
             'Workspace page, with WS preview and hidden pages preview' => [
                 'tableName' => 'pages',
+                'tableAlias' => 'pages',
                 'workspaceId' => 1,
                 'workspacePreview' => true,
                 'hiddenPagePreview' => true,
@@ -102,11 +110,22 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 'feGroupList' => '0,-1',
                 'expectedSQL' => '("pages"."deleted" = 0) AND ("pages"."pid" <> -1) AND ("pages"."starttime" <= 42) AND (("pages"."endtime" = 0) OR ("pages"."endtime" > 42)) AND (("pages"."fe_group" IS NULL) OR ("pages"."fe_group" = \'\') OR ("pages"."fe_group" = \'0\') OR (FIND_IN_SET(\'0\', "pages"."fe_group")) OR (FIND_IN_SET(\'-1\', "pages"."fe_group")))'
             ],
+            'Live, no preview with alias' => [
+                'tableName' => 'aTable',
+                'tableAlias' => 'a',
+                'workspaceId' => 0,
+                'workspacePreview' => false,
+                'hiddenPagePreview' => false,
+                'hiddenRecordPreview' => false,
+                'feGroupList' => '0,-1',
+                'expectedSQL' => '("a"."deleted" = 0) AND (("a"."t3ver_state" <= 0) AND ("a"."pid" <> -1)) AND ("a"."myHiddenField" = 0) AND ("a"."myStartTimeField" <= 42) AND (("a"."myEndTimeField" = 0) OR ("a"."myEndTimeField" > 42)) AND (("a"."myGroupField" IS NULL) OR ("a"."myGroupField" = \'\') OR ("a"."myGroupField" = \'0\') OR (FIND_IN_SET(\'0\', "a"."myGroupField")) OR (FIND_IN_SET(\'-1\', "a"."myGroupField")))'
+            ],
         ];
     }
 
     /**
      * @param string $tableName
+     * @param string $tableAlias
      * @param int $workspaceId
      * @param bool $workspacePreview
      * @param bool $hiddenPagePreview
@@ -119,6 +138,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
      */
     public function buildExpressionAddsCorrectClause(
         string $tableName,
+        string $tableAlias,
         int $workspaceId,
         bool $workspacePreview,
         bool $hiddenPagePreview,
@@ -173,7 +193,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
 
         $subject = new FrontendRestrictionContainer();
-        $expression = $subject->buildExpression([$tableName => $tableName], $this->expressionBuilder);
+        $expression = $subject->buildExpression([$tableAlias => $tableName], $this->expressionBuilder);
         $this->assertSame($expectedSQL, (string)$expression);
     }
 }

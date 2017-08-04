@@ -69,7 +69,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
                     $disableRestriction = $tableName === 'pages' ? $typoScriptFrontendController->showHiddenPage : $typoScriptFrontendController->showHiddenRecords;
                 }
                 if (!$disableRestriction) {
-                    $constraints[] = $restriction->buildExpression([$tableName => $tableAlias], $expressionBuilder);
+                    $constraints[] = $restriction->buildExpression([$tableAlias => $tableName], $expressionBuilder);
                 }
             }
         }
