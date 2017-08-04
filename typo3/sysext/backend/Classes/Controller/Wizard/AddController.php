@@ -198,22 +198,30 @@ class AddController extends AbstractWizardController
                     // If the field is a flexForm field, work with the XML structure instead:
                     if ($this->P['flexFormPath']) {
                         // Current value of flexForm path:
-                        $currentFlexFormData = GeneralUtility::xml2array($currentParentRow[$this->P['field']]);
+                        $currentFlexFormData = $currentParentRow[$this->P['field']];
                         /** @var FlexFormTools $flexFormTools */
                         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                        $currentFlexFormValue = $flexFormTools->getArrayValueByPath(
+                        $currentFlexFormValueByPath = $flexFormTools->getArrayValueByPath(
                             $this->P['flexFormPath'],
                             $currentFlexFormData
                         );
+
+                        // Compile currentFlexFormData to functional string
+                        $currentFlexFormValues = [];
+                        foreach ($currentFlexFormValueByPath as $value) {
+                            $currentFlexFormValues[] = $value['table'] . '_' . $value['uid'];
+                        }
+                        $currentFlexFormValue = implode(',', $currentFlexFormValues);
+
                         $insertValue = '';
                         switch ((string)$this->P['params']['setValue']) {
                             case 'set':
                                 $insertValue = $recordId;
                                 break;
-                            case 'prepend':
+                            case 'append':
                                 $insertValue = $currentFlexFormValue . ',' . $recordId;
                                 break;
-                            case 'append':
+                            case 'prepend':
                                 $insertValue = $recordId . ',' . $currentFlexFormValue;
                                 break;
                         }
@@ -236,10 +244,10 @@ class AddController extends AbstractWizardController
                             case 'set':
                                 $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId;
                                 break;
-                            case 'prepend':
+                            case 'append':
                                 $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $currentValue . ',' . $recordId;
                                 break;
-                            case 'append':
+                            case 'prepend':
                                 $data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentValue;
                                 break;
                         }
