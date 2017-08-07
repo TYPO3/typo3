@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Lang\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Lang\Exception;
+
 /**
  * An exception when something is wrong within parsing the xml
  */
-class XmlParser extends \TYPO3\CMS\Core\Exception
+class XmlParser extends Exception
 {
 }
