@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Extensionmanager\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Exception;
+
 /**
  * An exception when something is wrong within the extension manager
  */
-class ExtensionManagerException extends \TYPO3\CMS\Core\Exception
+class ExtensionManagerException extends Exception
 {
 }

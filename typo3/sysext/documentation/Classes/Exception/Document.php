@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Documentation\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Documentation\Exception;
+
 /**
  * An exception when something is wrong within the document
  */
-class Document extends \TYPO3\CMS\Core\Exception
+class Document extends Exception
 {
 }

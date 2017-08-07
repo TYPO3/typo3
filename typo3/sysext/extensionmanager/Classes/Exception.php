@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend;
+namespace TYPO3\CMS\Extensionmanager;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend;
 use TYPO3\CMS\Core\Exception as CoreException;
 
 /**
- * A generic Frontend exception
+ * A generic Extensionmanager exception
  */
 class Exception extends CoreException
 {
