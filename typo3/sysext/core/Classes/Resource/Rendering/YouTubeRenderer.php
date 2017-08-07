@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * YouTube renderer class
@@ -106,9 +107,10 @@ class YouTubeRenderer implements FileRendererInterface
         $videoId = $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
 
         $urlParams = ['autohide=1'];
-        if (!isset($options['controls']) || !empty($options['controls'])) {
-            $urlParams[] = 'controls=2';
-        }
+
+        $options['controls'] = MathUtility::canBeInterpretedAsInteger($options['controls']) ? (int)$options['controls'] : 2;
+        $options['controls'] = MathUtility::forceIntegerInRange($options['controls'], 0, 2);
+        $urlParams[] = 'controls=' . $options['controls'];
         if (!empty($options['autoplay'])) {
             $urlParams[] = 'autoplay=1';
         }
