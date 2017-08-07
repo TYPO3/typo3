@@ -45,6 +45,9 @@ class RequestFactory
      */
     protected function getClient(): ClientInterface
     {
-        return GeneralUtility::makeInstance(Client::class, $GLOBALS['TYPO3_CONF_VARS']['HTTP']);
+        $httpOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
+        $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
+
+        return GeneralUtility::makeInstance(Client::class, $httpOptions);
     }
 }
