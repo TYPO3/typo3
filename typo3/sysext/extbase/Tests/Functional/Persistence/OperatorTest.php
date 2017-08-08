@@ -79,7 +79,7 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
     /**
      * @test
      */
-    public function equalsCorrectlyHandlesCaseSensivity()
+    public function equalsCorrectlyHandlesCaseSensitivity()
     {
         $query = $this->postRepository->createQuery();
 

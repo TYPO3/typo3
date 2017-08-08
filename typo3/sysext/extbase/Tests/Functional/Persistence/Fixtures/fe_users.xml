@@ -19,10 +19,19 @@
 	<fe_users>
 		<uid>3</uid>
 		<pid>0</pid>
-		<username>administrator</username>
+		<username>administratora</username>
 		<deleted>0</deleted>
 		<usergroup>1,2</usergroup>
 		<disable>0</disable>
-		<tx_extbase_type>Tx_BlogExample_Domain_Model_Administrator</tx_extbase_type>
+		<tx_extbase_type>ExtbaseTeam\BlogExample\Domain\Model\Administrator</tx_extbase_type>
+	</fe_users>
+	<fe_users>
+		<uid>4</uid>
+		<pid>0</pid>
+		<username>administratorb</username>
+		<deleted>0</deleted>
+		<usergroup>1,2</usergroup>
+		<disable>0</disable>
+		<tx_extbase_type>ExtbaseTeam\BlogExample\Domain\Model\Administrator</tx_extbase_type>
 	</fe_users>
 </dataset>
