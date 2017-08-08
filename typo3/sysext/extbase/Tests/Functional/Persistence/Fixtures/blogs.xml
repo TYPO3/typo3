@@ -19,6 +19,7 @@
 		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<posts>1</posts>
+		<administrator>4</administrator>
 	</tx_blogexample_domain_model_blog>
 	<tx_blogexample_domain_model_blog>
 		<uid>3</uid>
@@ -29,6 +30,7 @@
 		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<posts>1</posts>
+		<administrator>3</administrator>
 	</tx_blogexample_domain_model_blog>
 	<tx_blogexample_domain_model_blog>
 		<uid>4</uid>

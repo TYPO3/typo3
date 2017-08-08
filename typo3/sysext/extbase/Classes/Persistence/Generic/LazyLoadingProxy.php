@@ -91,6 +91,15 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
     }
 
     /**
+     * @return string
+     */
+    public function _getTypeAndUidString()
+    {
+        $type = $this->dataMapper->getType(get_class($this->parentObject), $this->propertyName);
+        return $type . ':' . $this->fieldValue;
+    }
+
+    /**
      * Magic method call implementation.
      *
      * @param string $methodName The name of the property to get

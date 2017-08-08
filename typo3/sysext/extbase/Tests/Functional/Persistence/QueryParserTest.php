@@ -116,7 +116,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         );
 
         $result = $query->execute()->toArray();
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
     }
 
     /**
@@ -185,7 +185,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $result = $query->matching($query->contains('usergroup', 1))
             ->execute();
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
     }
 
     /**
