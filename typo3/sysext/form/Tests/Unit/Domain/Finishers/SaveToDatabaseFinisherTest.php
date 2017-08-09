@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
+use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 
 /**
  * Test case
@@ -41,5 +42,29 @@ class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         ]);
 
         $mockSaveToDatabaseFinisher->_call('throwExceptionOnInconsistentConfiguration');
+    }
+
+    /**
+     * @test
+     */
+    public function prepareDataConvertsArrayValuesToCsv()
+    {
+        $elementsConfiguration = [
+            'foo' => [
+                'mapOnDatabaseColumn' => 'bar'
+            ]
+        ];
+
+        $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
+        $saveToDatabaseFinisher->method('getFormValues')->willReturn([
+            'foo' => [
+                'one',
+                'two'
+            ]
+        ]);
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
+
+        self::assertSame('one,two', $databaseData['bar']);
     }
 }

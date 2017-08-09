@@ -209,33 +209,14 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     }
 
     /**
-     * Perform the current database operation
+     * Prepare data for saving to database
      *
-     * @param int $iterationCount
+     * @param array $elementsConfiguration
+     * @param array $databaseData
+     * @return mixed
      */
-    protected function process(int $iterationCount)
+    protected function prepareData(array $elementsConfiguration, array $databaseData)
     {
-        $this->throwExceptionOnInconsistentConfiguration();
-
-        $table = $this->parseOption('table');
-        $elementsConfiguration = $this->parseOption('elements');
-        $databaseColumnMappingsConfiguration = $this->parseOption('databaseColumnMappings');
-
-        $this->databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-
-        $databaseData = [];
-        foreach ($databaseColumnMappingsConfiguration as $databaseColumnName => $databaseColumnConfiguration) {
-            $value = $this->parseOption('databaseColumnMappings.' . $databaseColumnName . '.value');
-            if (
-                empty($value)
-                && $databaseColumnConfiguration['skipIfValueIsEmpty'] === true
-            ) {
-                continue;
-            }
-
-            $databaseData[$databaseColumnName] = $value;
-        }
-
         foreach ($this->getFormValues() as $elementIdentifier => $elementValue) {
             if (
                 $elementValue === null
@@ -267,9 +248,43 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 } else {
                     $elementValue = $elementValue->getOriginalResource()->getProperty('uid_local');
                 }
+            } elseif (is_array($elementValue)) {
+                $elementValue = implode(',', $elementValue);
             }
             $databaseData[$elementsConfiguration[$elementIdentifier]['mapOnDatabaseColumn']] = $elementValue;
         }
+        return $databaseData;
+    }
+
+    /**
+     * Perform the current database operation
+     *
+     * @param int $iterationCount
+     */
+    protected function process(int $iterationCount)
+    {
+        $this->throwExceptionOnInconsistentConfiguration();
+
+        $table = $this->parseOption('table');
+        $elementsConfiguration = $this->parseOption('elements');
+        $databaseColumnMappingsConfiguration = $this->parseOption('databaseColumnMappings');
+
+        $this->databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+
+        $databaseData = [];
+        foreach ($databaseColumnMappingsConfiguration as $databaseColumnName => $databaseColumnConfiguration) {
+            $value = $this->parseOption('databaseColumnMappings.' . $databaseColumnName . '.value');
+            if (
+                empty($value)
+                && $databaseColumnConfiguration['skipIfValueIsEmpty'] === true
+            ) {
+                continue;
+            }
+
+            $databaseData[$databaseColumnName] = $value;
+        }
+
+        $databaseData = $this->prepareData($elementsConfiguration, $databaseData);
 
         $this->saveToDatabase($databaseData, $table, $iterationCount);
     }
