@@ -12,6 +12,7 @@ tt_content.uploads {
             references.fieldName = media
             collections.field = file_collections
             sorting.field = filelink_sorting
+            sorting.direction.field = filelink_sorting_direction
         }
     }
     stdWrap {

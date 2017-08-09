@@ -451,22 +451,37 @@
 				<source>Show File Size:</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting">
-				<source>Sort Filelist:</source>
+				<source>Sort file list:</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.none">
-					<source>none</source>
+					<source>no sorting</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.extension">
-					<source>by Fileextension</source>
+					<source>by file extension</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.name">
-					<source>by Filename</source>
+					<source>by filename</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.type">
-					<source>by Filetype</source>
+					<source>by file type</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting.size">
-					<source>by Filesize</source>
+					<source>by file size</source>
+			</trans-unit>
+			<trans-unit id="filelink_sorting.creation_date">
+					<source>by file creation date</source>
+			</trans-unit>
+			<trans-unit id="filelink_sorting.modification_date">
+					<source>by file modification date</source>
+			</trans-unit>
+			<trans-unit id="filelink_sorting_direction">
+				<source>Sorting direction:</source>
+			</trans-unit>
+			<trans-unit id="filelink_sorting_direction.ascending">
+					<source>Ascending (default)</source>
+			</trans-unit>
+			<trans-unit id="filelink_sorting_direction.descending">
+					<source>Descending</source>
 			</trans-unit>
 			<trans-unit id="filelink_size_formlabel">
 				<source>Display File Size Information</source>
