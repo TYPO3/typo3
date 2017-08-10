@@ -49,6 +49,7 @@ plugin.tx_indexedsearch {
 			markupSW_postPreLgd_offset = 5
 			markupSW_divider = ...
 			markupSW_divider.noTrimWrap = | | |
+			pathExcludeDoktypes =
 		}
 
 		# Blinding of option-selectors / values in these (advanced search)

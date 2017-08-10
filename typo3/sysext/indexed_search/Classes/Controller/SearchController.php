@@ -1408,10 +1408,18 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $path = '';
             $pageCount = count($rl);
             if (is_array($rl) && !empty($rl)) {
+                $excludeDoktypesFromPath = GeneralUtility::trimExplode(
+                    ',',
+                    $this->settings['results']['pathExcludeDoktypes'] ?? '',
+                    true
+                );
                 $breadcrumbWrap = isset($this->settings['breadcrumbWrap']) ? $this->settings['breadcrumbWrap'] : '/';
                 $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
                     ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
                 foreach ($rl as $k => $v) {
+                    if (in_array($v['doktype'], $excludeDoktypesFromPath, false)) {
+                        continue;
+                    }
                     // Check fe_user
                     if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
                         $this->requiredFrontendUsergroups[$id][] = $v['fe_group'];

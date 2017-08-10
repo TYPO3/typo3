@@ -603,6 +603,33 @@ results\_markupSW_divider
          Divider for highlighted searchwords in the summary
          Defaults to "..."
 
+.. _results-pathExcludeDoktypes:
+
+results\_pathExcludeDoktypes
+""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         results\_pathExcludeDoktypes
+
+   Data type
+         string
+
+   Description
+         Excludes doktypes in path.
+         Defaults to ""
+
+         **Example:**
+         pathExcludeDoktypes = 254
+         Exclude sys_folder (doktype: 254) in path for result.
+
+         "/Footer(254)/Navi(254)/Imprint(1)" -> "/Imprint".
+
+         pathExcludeDoktypes = 254,4
+         Exclude sys_folder (doktype: 254) and shortcuts (doktype:4) in path for result.
+         "/About-Us(254)/Company(4)/Germany(1)" -> "/Germany".
+
 
 .. _linkSectionTitles-stdWrap:
 
