@@ -703,6 +703,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
      * @param QueryBuilder $queryBuilder
+     * @paran bool $addSorting
      * @return QueryBuilder
      */
     protected function prepareQueryBuilder(
@@ -710,7 +711,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         int $pageId,
         array $fieldList = ['*'],
         array $additionalConstraints = [],
-        QueryBuilder $queryBuilder
+        QueryBuilder $queryBuilder,
+        bool $addSorting = true
     ): QueryBuilder {
         $parameters = [
             'table' => $table,
@@ -725,13 +727,15 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $queryBuilder->setMaxResults($this->iLimit);
         }
 
-        if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
-            $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
-        } else {
-            $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-            $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
-            foreach ($orderBys as $orderBy) {
-                $queryBuilder->orderBy($orderBy[0], $orderBy[1]);
+        if ($addSorting) {
+            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
+                $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
+            } else {
+                $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+                $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
+                foreach ($orderBys as $orderBy) {
+                    $queryBuilder->orderBy($orderBy[0], $orderBy[1]);
+                }
             }
         }
 
@@ -835,7 +839,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $queryBuilder->andWhere(...$constraints);
         }
 
-        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder);
+        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder, false);
 
         $this->totalItems = (int)$queryBuilder->count('*')
             ->execute()
