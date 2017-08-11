@@ -88,6 +88,10 @@ class WebDirectory implements InstallerScript
     {
         $webDir = $this->filesystem->normalizePath($this->pluginConfig->get('web-dir'));
         $backendDir = $webDir . self::$typo3Dir;
+        // Ensure we delete a previously existing symlink to typo3 folder in web directory
+        if ($this->filesystem->isSymlinkedDirectory($backendDir)) {
+            $this->filesystem->removeDirectory($backendDir);
+        }
         $this->filesystem->ensureDirectoryExists($backendDir);
         $localRepository = $this->composer->getRepositoryManager()->getLocalRepository();
         $package = $localRepository->findPackage('typo3/cms', new EmptyConstraint());
