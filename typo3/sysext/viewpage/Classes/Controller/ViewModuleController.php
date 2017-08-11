@@ -284,7 +284,7 @@ class ViewModuleController extends ActionController
                     $queryBuilder->createNamedParameter($pageIdToShow, \PDO::PARAM_INT)
                 )
             )
-            ->groupBy('sys_language.uid', 'sys_language.title')
+            ->groupBy('sys_language.uid', 'sys_language.title', 'sys_language.sorting')
             ->orderBy('sys_language.sorting')
             ->execute();
 

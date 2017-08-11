@@ -1706,7 +1706,7 @@ class EditDocumentController extends AbstractModule
 
         $queryBuilder->select('s.uid', 's.pid', 's.hidden', 's.title', 's.flag')
             ->from('sys_language', 's')
-            ->groupBy('s.uid', 's.pid', 's.hidden', 's.title', 's.flag')
+            ->groupBy('s.uid', 's.pid', 's.hidden', 's.title', 's.flag', 's.sorting')
             ->orderBy('s.sorting');
 
         if ($id) {
