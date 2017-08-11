@@ -2111,7 +2111,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 )
                 ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
                     'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
-                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag')
+                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag',
+                    'sys_language.sorting')
                 ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
                 $queryBuilder->andWhere(

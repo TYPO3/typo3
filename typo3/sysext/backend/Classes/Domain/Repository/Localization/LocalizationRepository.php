@@ -155,7 +155,7 @@ class LocalizationRepository
             ->from('tt_content')
             ->from('sys_language')
             ->where(...$constraints)
-            ->groupBy('sys_language.uid')
+            ->groupBy('sys_language.uid', 'sys_language.sorting')
             ->orderBy('sys_language.sorting');
 
         $result = $queryBuilder->execute()->fetchAll();
