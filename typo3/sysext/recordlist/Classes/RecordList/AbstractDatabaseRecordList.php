@@ -790,13 +790,15 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param int $pageId Page id Only used to build the search constraints, $this->pidList is used for restrictions
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
+     * @param bool $addSorting Add sorting fields to query
      * @return array
      */
     protected function buildQueryParameters(
         string $table,
         int $pageId,
         array $fieldList = ['*'],
-        array $additionalConstraints = []
+        array $additionalConstraints = [],
+        bool $addSorting = true
     ): array {
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table)
@@ -811,11 +813,13 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             'maxResults' => $this->iLimit ? $this->iLimit : null,
         ];
 
-        if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
-            $parameters['orderBy'][] = $this->sortRev ? [$this->sortField, 'DESC'] : [$this->sortField, 'ASC'];
-        } else {
-            $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-            $parameters['orderBy'] = QueryHelper::parseOrderBy((string)$orderBy);
+        if ($addSorting === true) {
+            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
+                $parameters['orderBy'][] = $this->sortRev ? [$this->sortField, 'DESC'] : [$this->sortField, 'ASC'];
+            } else {
+                $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+                $parameters['orderBy'] = QueryHelper::parseOrderBy((string)$orderBy);
+            }
         }
 
         // Build the query constraints
@@ -876,7 +880,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     public function setTotalItems(string $table, int $pageId, array $constraints)
     {
-        $queryParameters = $this->buildQueryParameters($table, $pageId, ['*'], $constraints);
+        $queryParameters = $this->buildQueryParameters($table, $pageId, ['*'], $constraints, false);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($queryParameters['table']);
         $queryBuilder->getRestrictions()
