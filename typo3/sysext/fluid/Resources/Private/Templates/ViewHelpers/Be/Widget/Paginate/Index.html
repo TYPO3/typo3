@@ -7,8 +7,8 @@
 		function goToPage(formObject) {
 			var formField = formObject.elements['paginator-target-page'];
 			var url = formField.dataset.url;
-			var numberOfPages = formField.dataset.numberOfPages;
-			var page = formField.value;
+			var numberOfPages = parseInt(formField.dataset.numberOfPages);
+			var page = parseInt(formField.value);
 			if (page > numberOfPages) {
 				page = numberOfPages;
 			} else if (page < 1) {
