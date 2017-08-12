@@ -1586,7 +1586,15 @@ class DataHandler
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
                 $onlyAllowedTables = isset($GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables']) ? $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] : $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
                 if ($onlyAllowedTables) {
-                    $theWrongTables = $this->doesPageHaveUnallowedTables($id, $value);
+                    // use the real page id (default language)
+                    if ($table !== 'pages_language_overlay') {
+                        $recordId = $id;
+                    } elseif ($realPid >= 0) {
+                        $recordId = $realPid;
+                    } else {
+                        $recordId = $tscPID;
+                    }
+                    $theWrongTables = $this->doesPageHaveUnallowedTables($recordId, $value);
                     if ($theWrongTables) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
