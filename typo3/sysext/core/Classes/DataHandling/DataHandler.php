@@ -1614,7 +1614,9 @@ class DataHandler implements LoggerAwareInterface
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
                 $onlyAllowedTables = $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
                 if ($onlyAllowedTables) {
-                    $theWrongTables = $this->doesPageHaveUnallowedTables($id, $value);
+                    // use the real page id (default language)
+                    $recordId = $this->getDefaultLanguagePageId($id);
+                    $theWrongTables = $this->doesPageHaveUnallowedTables($recordId, $value);
                     if ($theWrongTables) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
