@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -52,13 +52,13 @@ class PreviewProcessing
      * Create static image preview for Online Media item when possible
      *
      * @param FileProcessingService $fileProcessingService
-     * @param AbstractDriver $driver
+     * @param DriverInterface $driver
      * @param ProcessedFile $processedFile
      * @param File $file
      * @param string $taskType
      * @param array $configuration
      */
-    public function processFile(FileProcessingService $fileProcessingService, AbstractDriver $driver, ProcessedFile $processedFile, File $file, $taskType, array $configuration)
+    public function processFile(FileProcessingService $fileProcessingService, DriverInterface $driver, ProcessedFile $processedFile, File $file, $taskType, array $configuration)
     {
         if ($taskType !== ProcessedFile::CONTEXT_IMAGEPREVIEW && $taskType !== ProcessedFile::CONTEXT_IMAGECROPSCALEMASK) {
             return;
