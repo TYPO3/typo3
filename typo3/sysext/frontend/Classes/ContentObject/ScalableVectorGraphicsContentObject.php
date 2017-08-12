@@ -23,9 +23,53 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      * Rendering the cObject, SVG
      *
      * @param array $conf Array of TypoScript properties
-     * @return string Empty string (the cObject only sets internal data!)
+     * @return string
      */
-    public function render($conf = [])
+    public function render($conf = []) : string
+    {
+        $renderMode = isset($conf['renderMode.'])
+            ? $this->cObj->stdWrap($conf['renderMode'], $conf['renderMode.'])
+            : $conf['renderMode'];
+
+        if ($renderMode === 'inline') {
+            return $this->renderInline($conf);
+        }
+
+        return $this->renderObject($conf);
+    }
+
+    /**
+     * @param array $conf
+     *
+     * @return string
+     */
+    protected function renderInline(array $conf) : string
+    {
+        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
+
+        if (!file_exists($src)) {
+            return '';
+        }
+
+        $svgContent = file_get_contents($src);
+        $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+        $svgElement = simplexml_load_string($svgContent);
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
+
+        // remove xml version tag
+        $domXml = dom_import_simplexml($svgElement);
+        return $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
+    }
+
+    /**
+     * Render the SVG as <object> tag
+     * @param array $conf
+     *
+     * @return string
+     */
+    protected function renderObject(array $conf) : string
     {
         $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
         if (!$width) {
@@ -39,36 +83,31 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         if (!$src) {
             $src = null;
         }
+
         $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
         $noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
+
+        $content = [];
         if ($src) {
-            $content = '
-
-					<!--[if IE]>
-					<object src="' . $src . '" classid="image/svg+xml" width="' . $width . '" height="' . $height . '">
-					<![endif]-->
-					<!--[if !IE]>-->
-					<object data="' . $src . '" type="image/svg+xml" width="' . $width . '" height="' . $height . '">
-					<!--<![endif]-->
-					' . $noscript . '
-					</object>
-
-			';
+            $content[] = '<!--[if IE]>';
+            $content[] = '  <object src="' . htmlspecialchars($src) . '" classid="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
+            $content[] = '<![endif]-->';
+            $content[] = '<!--[if !IE]>-->';
+            $content[] = '  <object data="' . htmlspecialchars($src) . '" type="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
+            $content[] = '<!--<![endif]-->';
+            $content[] = $noscript;
+            $content[] = '</object>';
         } else {
-            $content = '
-				<script type="image/svg+xml">
-					<svg xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
-					width="' . $width . '"
-					height="' . $height . '">
-			' . $value . '
-				</svg>
-				</script>
-				<noscript>
-			' . $noscript . '
-				</noscript>
-			';
+            $content[] = '<script type="image/svg+xml">';
+            $content[] = '  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . (int)$width . '" height="' . (int)$height . '">';
+            $content[] = $value;
+            $content[] = '  </svg>';
+            $content[] = '</script>';
+            $content[] = '<noscript>';
+            $content[] = $noscript;
+            $content[] = '</noscript>';
         }
+        $content = implode(LF, $content);
         if (isset($conf['stdWrap.'])) {
             $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
