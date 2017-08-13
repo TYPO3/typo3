@@ -9,45 +9,50 @@
 #
 ########################
 #
-# Ignore temporary files (left by editors)
+# Ignore temporary files (left by editors and OS)
 *~
 *.bak
 *.swp
+.DS_Store
 #
 # Ignore by common IDEs used directories/files
 nbproject
 *.idea
 *.project
 .buildpath
-.project
 .settings
 .TemporaryItems
 .webprj
-.php_cs.cache
 #
-# Ignore build stuff
-Build/bower_components/*
-Build/node_modules/*
-Build/JavaScript
-Build/typings/*
-!Build/typings/no-def*
+# Temporary files and folders
 .cache
+.php_cs.cache
 .sass-cache
 .session
-typo3/sysext/*/Resources/Private/TypeScript/*.js
-typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 phantomjsdriver.log
 #
-# Ignore composer stuff
-bin/*
-vendor/*
+# Ignore build stuff
+/Build/bower_components/*
+/Build/node_modules/*
+/Build/JavaScript
+/Build/typings/*
+!/Build/typings/no-def*
+/typo3/sysext/*/Resources/Private/TypeScript/*.js
+/typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 #
-# Ignore common TYPO3 CMS files/directories
-typo3temp/*
-typo3conf/*
-fileadmin/*
-uploads/*
-/.htaccess
 # TypeScript stuff
 .baseDir.ts
 .tscache
+#
+# Ignore composer stuff
+/bin/*
+/vendor/*
+#
+# Ignore common TYPO3 CMS files/directories
+/typo3temp/*
+/typo3conf/*
+/fileadmin/*
+/uploads/*
+#
+# root .htaccess file
+/.htaccess
