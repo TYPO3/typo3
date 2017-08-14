@@ -12,11 +12,13 @@
 					<f:if condition="{page.content}">
 						<ul>
 							<f:for each="{page.content}" as="element">
+								<f:if condition="{element.data.header}">
 								<li>
 									<a href="{page.link}#c{element.data.uid}" target="{page.target}" title="{element.data.header}">
 										<span>{element.data.header}</span>
 									</a>
 								</li>
+								</f:if>
 							</f:for>
 						</ul>
 					</f:if>
