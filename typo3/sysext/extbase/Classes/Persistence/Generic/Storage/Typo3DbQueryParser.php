@@ -138,6 +138,11 @@ class Typo3DbQueryParser
         $this->tableAliasMap = [];
         $this->unionTableAliasCache = [];
         $this->tableName = '';
+
+        if ($query->getStatement() && $query->getStatement()->getStatement() instanceof QueryBuilder) {
+            $this->queryBuilder = clone $query->getStatement()->getStatement();
+            return $this->queryBuilder;
+        }
         // Find the right table name
         $source = $query->getSource();
         $this->initializeQueryBuilder($source);

@@ -353,12 +353,19 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     public function getObjectDataByQuery(QueryInterface $query)
     {
         $statement = $query->getStatement();
-        if ($statement instanceof Qom\Statement) {
+        if ($statement instanceof Qom\Statement
+            && !$statement->getStatement() instanceof QueryBuilder
+        ) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
             $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
-            $queryBuilder = $queryParser
-                ->convertQueryToDoctrineQueryBuilder($query);
+            if ($statement instanceof Qom\Statement
+                && $statement->getStatement() instanceof QueryBuilder
+            ) {
+                $queryBuilder = $statement->getStatement();
+            } else {
+                $queryBuilder = $queryParser->convertQueryToDoctrineQueryBuilder($query);
+            }
             $selectParts = $queryBuilder->getQueryPart('select');
             if ($queryParser->isDistinctQuerySuggested() && !empty($selectParts)) {
                 $selectParts[0] = 'DISTINCT ' . $selectParts[0];
