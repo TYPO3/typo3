@@ -76,6 +76,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         // Test part: getConstraint returns no constraint object, andWhere() should not be called
         $queryProphecy->getConstraint()->willReturn(null);
@@ -102,6 +103,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         // Test part: getConstraint returns not implemented object
         $constraintProphecy = $this->prophesize(ConstraintInterface::class);
@@ -130,6 +132,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         // Test part: getConstraint returns simple constraint, and should push to andWhere()
         $constraintProphecy = $this->prophesize(ComparisonInterface::class);
@@ -158,6 +161,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         $constraintProphecy = $this->prophesize(NotInterface::class);
         $subConstraintProphecy = $this->prophesize(ComparisonInterface::class);
@@ -187,6 +191,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         $constraintProphecy = $this->prophesize(AndInterface::class);
         $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
@@ -224,6 +229,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         $constraintProphecy = $this->prophesize(AndInterface::class);
         $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
@@ -256,6 +262,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         $constraintProphecy = $this->prophesize(OrInterface::class);
         $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
@@ -293,6 +300,7 @@ class Typo3DbQueryParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $sourceProphecy = $this->prophesize(SourceInterface::class);
         $queryProphecy->getSource()->willReturn($sourceProphecy->reveal());
         $queryProphecy->getOrderings()->willReturn([]);
+        $queryProphecy->getStatement()->willReturn(null);
 
         $constraintProphecy = $this->prophesize(OrInterface::class);
         $queryProphecy->getConstraint()->willReturn($constraintProphecy->reveal());
