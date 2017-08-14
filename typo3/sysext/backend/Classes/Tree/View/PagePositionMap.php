@@ -172,7 +172,8 @@ class PagePositionMap
                     // 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
                         end($lines);
-                        $lines[] = '<li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li>';
+                        $margin = 'style="margin-left: ' . (($dat['invertedDepth'] - 1) * 16 + 9) . 'px;"';
+                        $lines[] = '<ul class="list-tree" ' . $margin . '><li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
                     }
                 }
                 // If going down
