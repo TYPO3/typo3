@@ -54,6 +54,9 @@
 			<trans-unit id="tasks.error.invalidEmailTemplateFile">
 				<source>The email template file is not existing!</source>
 			</trans-unit>
+			<trans-unit id="tasks.error.invalidPageUid">
+				<source>The given page id %d is invalid!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
