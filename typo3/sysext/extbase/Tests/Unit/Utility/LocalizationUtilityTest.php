@@ -195,6 +195,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $expected = [
             'key1' => 'value1',
             'key2' => 'value2',
+            'key3' => 'value3',
             'key3.subkey1' => 'subvalue1',
             'key3.subkey2.subsubkey' => 'val'
         ];
@@ -202,6 +203,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => [
+                '_typoScriptNodeValue' => 'value3',
                 'subkey1' => 'subvalue1',
                 'subkey2' => [
                     'subsubkey' => 'val'
