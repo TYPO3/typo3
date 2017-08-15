@@ -255,7 +255,11 @@ class LocalizationUtility
         $result = [];
         foreach ($labelValues as $key => $labelValue) {
             if (!empty($parentKey)) {
-                $key = $parentKey . '.' . $key;
+                if ($key === '_typoScriptNodeValue') {
+                    $key = $parentKey;
+                } else {
+                    $key = $parentKey . '.' . $key;
+                }
             }
             if (is_array($labelValue)) {
                 $labelValue = self::flattenTypoScriptLabelArray($labelValue, $key);
