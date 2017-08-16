@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Contains RESTORE_REGISTER class object.
  */
@@ -45,7 +48,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     protected function renderInline(array $conf) : string
     {
-        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
+        $src = $this->resolveAbsoluteSourcePath($conf);
 
         if (!file_exists($src)) {
             return '';
@@ -79,10 +82,8 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         if (!$height) {
             $height = 400;
         }
-        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
-        if (!$src) {
-            $src = null;
-        }
+        $src = $this->resolveAbsoluteSourcePath($conf);
+        $src = $src === '' ? null : PathUtility::getAbsoluteWebPath($src);
 
         $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
         $noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
@@ -112,5 +113,16 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
         return $content;
+    }
+
+    /**
+     * @param array $conf
+     *
+     * @return string
+     */
+    protected function resolveAbsoluteSourcePath(array $conf) : string
+    {
+        $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
+        return GeneralUtility::getFileAbsFileName($src);
     }
 }
