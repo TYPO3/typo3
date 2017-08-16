@@ -49,21 +49,37 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     protected function renderInline(array $conf) : string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
+        list($width, $height, $isDefaultWidth, $isDefaultHeight) = $this->getDimensions($conf);
 
-        if (!file_exists($src)) {
-            return '';
+        $content = '';
+        if (file_exists($src)) {
+            $svgContent = file_get_contents($src);
+            $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
+            // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+            $previousValueOfEntityLoader = libxml_disable_entity_loader();
+            $svgElement = simplexml_load_string($svgContent);
+            libxml_disable_entity_loader($previousValueOfEntityLoader);
+
+            $domXml = dom_import_simplexml($svgElement);
+            if (!$isDefaultWidth) {
+                $domXml->setAttribute('width', $width);
+            }
+            if (!$isDefaultHeight) {
+                $domXml->setAttribute('height', $height);
+            }
+            // remove xml version tag
+            $content = $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
+        } else {
+            $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
+            if (!empty($value)) {
+                $content = [];
+                $content[] = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . (int)$width . '" height="' . (int)$height . '">';
+                $content[] = $value;
+                $content[] = '</svg>';
+                $content = implode(LF, $content);
+            }
         }
-
-        $svgContent = file_get_contents($src);
-        $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        $svgElement = simplexml_load_string($svgContent);
-        libxml_disable_entity_loader($previousValueOfEntityLoader);
-
-        // remove xml version tag
-        $domXml = dom_import_simplexml($svgElement);
-        return $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
+        return $content;
     }
 
     /**
@@ -74,15 +90,9 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     protected function renderObject(array $conf) : string
     {
-        $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
-        if (!$width) {
-            $width = 600;
-        }
-        $height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
-        if (!$height) {
-            $height = 400;
-        }
         $src = $this->resolveAbsoluteSourcePath($conf);
+        list($width, $height) = $this->getDimensions($conf);
+
         $src = $src === '' ? null : PathUtility::getAbsoluteWebPath($src);
 
         $value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
@@ -124,5 +134,29 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     {
         $src = isset($conf['src.']) ? $this->cObj->stdWrap($conf['src'], $conf['src.']) : $conf['src'];
         return GeneralUtility::getFileAbsFileName($src);
+    }
+
+    /**
+     * @param array $conf
+     *
+     * @return array
+     */
+    protected function getDimensions(array $conf) : array
+    {
+        $isDefaultWidth = false;
+        $isDefaultHeight = false;
+        $width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
+        $height = isset($conf['height.']) ? $this->cObj->stdWrap($conf['height'], $conf['height.']) : $conf['height'];
+
+        if (empty($width)) {
+            $isDefaultWidth = true;
+            $width = 600;
+        }
+        if (empty($height)) {
+            $isDefaultHeight = true;
+            $height = 400;
+        }
+
+        return [$width, $height, $isDefaultWidth, $isDefaultHeight];
     }
 }
