@@ -34,7 +34,6 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $statuses = [
             'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
             'adminUserAccount' => $this->getAdminAccountStatus(),
-            'encryptionKeyEmpty' => $this->getEncryptionKeyStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
             'saltedpasswords' => $this->getSaltedPasswordsStatus(),
@@ -122,27 +121,6 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         $GLOBALS['TYPO3_DB']->sql_free_result($res);
         return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
             $GLOBALS['LANG']->getLL('status_adminUserAccount'), $value, $message, $severity);
-    }
-
-    /**
-     * Checks whether the encryption key is empty.
-     *
-     * @return \TYPO3\CMS\Reports\Status An object representing whether the encryption key is empty or not
-     */
-    protected function getEncryptionKeyStatus()
-    {
-        $value = $GLOBALS['LANG']->getLL('status_ok');
-        $message = '';
-        $severity = \TYPO3\CMS\Reports\Status::OK;
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-            $value = $GLOBALS['LANG']->getLL('status_insecure');
-            $severity = \TYPO3\CMS\Reports\Status::ERROR;
-            $url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-            $message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_encryption'),
-                '<a href="' . $url . '">', '</a>');
-        }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
-            $GLOBALS['LANG']->getLL('status_encryptionKey'), $value, $message, $severity);
     }
 
     /**
