@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -4933,9 +4934,6 @@ class ContentObjectRenderer
                 $fileObject = $file;
             } elseif ($file instanceof FileReference) {
                 $fileObject = $file->getOriginalFile();
-                if (!isset($fileArray['crop'])) {
-                    $fileArray['crop'] = $this->getCropArea($file, $fileArray['cropVariant'] ?: 'default');
-                }
             } else {
                 try {
                     if ($fileArray['import.']) {
@@ -4948,11 +4946,8 @@ class ContentObjectRenderer
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
                         $treatIdAsReference = isset($fileArray['treatIdAsReference.']) ? $this->stdWrap($fileArray['treatIdAsReference'], $fileArray['treatIdAsReference.']) : $fileArray['treatIdAsReference'];
                         if (!empty($treatIdAsReference)) {
-                            $fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
-                            $fileObject = $fileReference->getOriginalFile();
-                            if (!isset($fileArray['crop'])) {
-                                $fileArray['crop'] = $this->getCropArea($fileReference, $fileArray['cropVariant'] ?: 'default');
-                            }
+                            $file = $this->getResourceFactory()->getFileReferenceObject($file);
+                            $fileObject = $file->getOriginalFile();
                         } else {
                             $fileObject = $this->getResourceFactory()->getFileObject($file);
                         }
@@ -4983,9 +4978,12 @@ class ContentObjectRenderer
                 $processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
                 $processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
                 $processingConfiguration['frame'] = isset($fileArray['frame.']) ? (int)$this->stdWrap($fileArray['frame'], $fileArray['frame.']) : (int)$fileArray['frame'];
-                $processingConfiguration['crop'] = isset($fileArray['crop.'])
-                    ? $this->stdWrap($fileArray['crop'], $fileArray['crop.'])
-                    : (isset($fileArray['crop']) ? $fileArray['crop'] : null);
+                if ($file instanceof FileReference) {
+                    $processingConfiguration['crop'] = $this->getCropAreaFromFileReference($file, $fileArray);
+                } else {
+                    $processingConfiguration['crop'] = $this->getCropAreaFromFromTypoScriptSettings($fileObject, $fileArray);
+                }
+
                 // Possibility to cancel/force profile extraction
                 // see $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand']
                 if (isset($fileArray['stripProfile'])) {
@@ -5055,17 +5053,89 @@ class ContentObjectRenderer
     }
 
     /**
+     * Returns an ImageManipulation\Area object for the given cropVariant (or 'default')
+     * or null if the crop settings or crop area is empty.
+     *
+     * The cropArea from file reference is used, if not set in TypoScript.
+     *
+     * Example TypoScript settings:
+     * file.crop =
+     * OR
+     * file.crop = 50,50,100,100
+     * OR
+     * file.crop.data = file:current:crop
+     *
      * @param FileReference $fileReference
-     * @param string $cropVariant
-     * @return \TYPO3\CMS\Core\Imaging\ImageManipulation\Area|null
+     * @param array $fileArray TypoScript properties for the imgResource type
+     * @return Area|null
      */
-    protected function getCropArea(FileReference $fileReference, string $cropVariant)
+    protected function getCropAreaFromFileReference(FileReference $fileReference, array $fileArray)
     {
-        $cropVariantCollection = CropVariantCollection::create(
-            (string)$fileReference->getProperty('crop')
-        );
-        $cropArea = $cropVariantCollection->getCropArea($cropVariant);
-        return $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($fileReference);
+        /** @var Area $cropArea */
+        $cropArea = null;
+        // Use cropping area from file reference if nothing is configured in TypoScript.
+        if (!isset($fileArray['crop']) && !isset($fileArray['crop.'])) {
+            // Set crop variant from TypoScript settings. If not set, use default.
+            $cropVariant = $fileArray['cropVariant'] ?? 'default';
+            $fileCropArea = $this->createCropAreaFromJsonString((string)$fileReference->getProperty('crop'), $cropVariant);
+            return $fileCropArea->isEmpty() ? null : $fileCropArea->makeAbsoluteBasedOnFile($fileReference);
+        }
+
+        return $this->getCropAreaFromFromTypoScriptSettings($fileReference, $fileArray);
+    }
+
+    /**
+     * Returns an ImageManipulation\Area object for the given cropVariant (or 'default')
+     * or null if the crop settings or crop area is empty.
+     *
+     * @param FileInterface $file
+     * @param array $fileArray
+     * @return Area|null
+     */
+    protected function getCropAreaFromFromTypoScriptSettings(FileInterface $file, array $fileArray)
+    {
+        /** @var Area $cropArea */
+        $cropArea = null;
+        // Resolve TypoScript configured cropping.
+        $cropSettings = isset($fileArray['crop.'])
+            ? $this->stdWrap($fileArray['crop'], $fileArray['crop.'])
+            : ($fileArray['crop'] ?? null);
+
+        if (is_string($cropSettings)) {
+            // Set crop variant from TypoScript settings. If not set, use default.
+            $cropVariant = $fileArray['cropVariant'] ?? 'default';
+            // Get cropArea from CropVariantCollection, if cropSettings is a valid json.
+            // CropVariantCollection::create does json_decode.
+            $jsonCropArea = $this->createCropAreaFromJsonString($cropSettings, $cropVariant);
+            $cropArea = $jsonCropArea->isEmpty() ? null : $jsonCropArea->makeAbsoluteBasedOnFile($file);
+
+            // Cropping is configured in TypoScript in the following way: file.crop = 50,50,100,100
+            if ($jsonCropArea->isEmpty() && preg_match('/^[0-9]+,[0-9]+,[0-9]+,[0-9]+$/', $cropSettings)) {
+                $cropSettings = explode(',', $cropSettings);
+                if (count($cropSettings) === 4) {
+                    $stringCropArea = GeneralUtility::makeInstance(
+                        Area::class,
+                        ...$cropSettings
+                    );
+                    $cropArea = $stringCropArea->isEmpty() ? null : $stringCropArea;
+                }
+            }
+        }
+
+        return $cropArea;
+    }
+
+    /**
+     * Takes a JSON string and creates CropVariantCollection and fetches the corresponding
+     * CropArea for that.
+     *
+     * @param string $cropSettings
+     * @param string $cropVariant
+     * @return Area
+     */
+    protected function createCropAreaFromJsonString(string $cropSettings, string $cropVariant): Area
+    {
+        return CropVariantCollection::create($cropSettings)->getCropArea($cropVariant);
     }
 
     /***********************************************
