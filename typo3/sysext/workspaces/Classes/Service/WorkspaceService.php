@@ -769,7 +769,7 @@ class WorkspaceService implements SingletonInterface
 
         // Directly use determined direct page id
         if ($table === 'pages_language_overlay' || $table === 'tt_content') {
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', '', '', '', $additionalParameters);
+            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
         // Analyze Page TSconfig options.workspaces.previewPageId
         } elseif (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
             if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table])) {
@@ -784,7 +784,7 @@ class WorkspaceService implements SingletonInterface
             } else {
                 $previewPageId = (int)$previewConfiguration;
             }
-            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', '', '', '', $additionalParameters);
+            $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
         // Call user function to render the single record view
         } elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
             $_params = [

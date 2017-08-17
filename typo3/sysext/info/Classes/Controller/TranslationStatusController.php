@@ -153,7 +153,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             // DEFAULT language:
             // "View page" link is created:
             $viewPageLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
-                    $data['row']['uid'], '', '', '', '', '&L=###LANG_UID###')
+                    $data['row']['uid'], '', null, '', '', '&L=###LANG_UID###')
                 ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $status = GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : 'success';
@@ -167,7 +167,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ]);
             $info = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
-                    $data['row']['uid'], '', '', '', '', '')
+                    $data['row']['uid'], '', null, '', '', '')
                 ) . '" class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
             $info .= '<a href="' . htmlspecialchars($editUrl)
