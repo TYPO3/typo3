@@ -547,8 +547,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     protected function saveNewBackendUser($record, $vars)
     {
-        // Check if the db mount is a page the current user is allowed to.);
-        $vars['db_mountpoints'] = $this->fixDbMount($vars['db_mountpoints']);
         // Check if the usergroup is allowed
         $vars['usergroup'] = $this->fixUserGroup($vars['usergroup'], $record);
         $key = $vars['key'];
@@ -571,7 +569,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $data['be_users'][$key]['disable'] = (int)$vars['disable'];
                 $data['be_users'][$key]['admin'] = 0;
                 $data['be_users'][$key]['usergroup'] = $vars['usergroup'];
-                $data['be_users'][$key]['db_mountpoints'] = $vars['db_mountpoints'];
                 $data['be_users'][$key]['createdByAction'] = $record['uid'];
             }
         } else {
@@ -588,7 +585,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 $data['be_users'][$key]['disable'] = (int)$vars['disable'];
                 $data['be_users'][$key]['admin'] = 0;
                 $data['be_users'][$key]['usergroup'] = $vars['usergroup'];
-                $data['be_users'][$key]['db_mountpoints'] = $vars['db_mountpoints'];
                 $newUserId = $key;
             }
         }
@@ -649,33 +645,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $appliedUsergroups = $cleanGroupList;
         }
         return $appliedUsergroups;
-    }
-
-    /**
-     * Clean the to be applied DB-Mounts from not allowed ones
-     *
-     * @param string $appliedDbMounts List of pages like pages_123,pages456
-     * @return string Cleaned list
-     */
-    protected function fixDbMount($appliedDbMounts)
-    {
-        // Admins can see any page, no need to check there
-        if (!empty($appliedDbMounts) && !$this->getBackendUser()->isAdmin()) {
-            $cleanDbMountList = [];
-            $dbMounts = GeneralUtility::trimExplode(',', $appliedDbMounts, true);
-            // Walk through every wanted DB-Mount and check if it allowed for the current user
-            foreach ($dbMounts as $dbMount) {
-                $uid = (int)substr($dbMount, strrpos($dbMount, '_') + 1);
-                $page = BackendUtility::getRecord('pages', $uid);
-                // Check rootline and access rights
-                if ($this->checkRootline($uid) && $this->getBackendUser()->calcPerms($page)) {
-                    $cleanDbMountList[] = 'pages_' . $uid;
-                }
-            }
-            // Build the clean list
-            $appliedDbMounts = implode(',', $cleanDbMountList);
-        }
-        return $appliedDbMounts;
     }
 
     /**
