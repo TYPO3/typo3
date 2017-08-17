@@ -173,7 +173,12 @@ class Bootstrap
             ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables()
             ->loadBaseTca();
-
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+            throw new \RuntimeException(
+                'TYPO3 Encryption is empty. $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'encryptionKey\'] needs to be set for TYPO3 to work securely',
+                1502987245
+            );
+        }
         return $this;
     }
 
