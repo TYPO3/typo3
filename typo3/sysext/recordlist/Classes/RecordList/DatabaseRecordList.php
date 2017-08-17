@@ -1467,7 +1467,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                     BackendUtility::viewOnClick(
                         ($table === 'tt_content' ? $this->id : $row['uid']),
                         '',
-                        '',
+                        null,
                         ($table === 'tt_content' ? '#c' . $row['uid'] : '')
                     )
                 ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
