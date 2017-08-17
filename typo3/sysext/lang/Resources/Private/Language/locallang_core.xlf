@@ -1155,9 +1155,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="warning.install_trustedhosts">
 				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_encryption">
-				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
-			</trans-unit>
 			<trans-unit id="warning.install_update">
 				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>

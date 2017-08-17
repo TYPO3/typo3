@@ -42,7 +42,6 @@ class SecurityStatus implements StatusProviderInterface
         $statuses = [
             'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
             'adminUserAccount' => $this->getAdminAccountStatus(),
-            'encryptionKeyEmpty' => $this->getEncryptionKeyStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
             'saltedpasswords' => $this->getSaltedPasswordsStatus(),
@@ -127,29 +126,6 @@ class SecurityStatus implements StatusProviderInterface
             }
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_adminUserAccount'), $value, $message, $severity);
-    }
-
-    /**
-     * Checks whether the encryption key is empty.
-     *
-     * @return \TYPO3\CMS\Reports\Status An object representing whether the encryption key is empty or not
-     */
-    protected function getEncryptionKeyStatus()
-    {
-        $value = $this->getLanguageService()->getLL('status_ok');
-        $message = '';
-        $severity = ReportStatus::OK;
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = ReportStatus::ERROR;
-            $url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-            $message = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_encryption'),
-                '<a href="' . $url . '">',
-                '</a>'
-            );
-        }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_encryptionKey'), $value, $message, $severity);
     }
 
     /**
