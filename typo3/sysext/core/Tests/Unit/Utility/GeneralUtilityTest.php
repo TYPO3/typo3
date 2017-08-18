@@ -4003,6 +4003,31 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function makeInstanceWithUnknownClassThrowsException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1503060454);
+
+        GeneralUtility::makeInstance('UnknownClass' . time());
+    }
+
+    /**
+     * @test
+     */
+    public function makeInstanceWithUnknownClassImplementationThrowsException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1503060454);
+
+        GeneralUtilityFixture::resetFinalClassNameCache();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => 'UnknownClass' . time()];
+
+        GeneralUtility::makeInstance(OriginalClassFixture::class);
+    }
+
+    /**
+     * @test
+     */
     public function makeInstanceWithBeginningSlashInClassNameThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);

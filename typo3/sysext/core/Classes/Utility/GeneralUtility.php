@@ -3898,6 +3898,9 @@ class GeneralUtility
         ) {
             return array_shift(self::$nonSingletonInstances[$finalClassName]);
         }
+        if (!class_exists($finalClassName)) {
+            throw new \InvalidArgumentException('Class "' . $className . '" not found', 1503060454);
+        }
         // Create new instance and call constructor with parameters
         $instance = new $finalClassName(...$constructorArguments);
         // Register new singleton instance
