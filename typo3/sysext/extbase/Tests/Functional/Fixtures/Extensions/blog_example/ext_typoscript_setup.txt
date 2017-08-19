@@ -14,6 +14,16 @@ config.tx_extbase {
 					recordType = ExtbaseTeam\BlogExample\Domain\Model\Administrator
 				}
 			}
+			ExtbaseTeam\BlogExample\Domain\Model\TtContent {
+				mapping {
+					tableName = tt_content
+					columns {
+						uid.mapOnProperty = uid
+						pid.mapOnProperty = pid
+						header.mapOnProperty = header
+					}
+				}
+			}
 		}
 	}
 }
