@@ -110,7 +110,7 @@ abstract class AbstractStatus implements StatusInterface
         return [
             'severity' => $this->getSeverityNumber(),
             'title' => $this->getTitle(),
-            'status' => $this->getMessage()
+            'message' => $this->getMessage(),
         ];
     }
 

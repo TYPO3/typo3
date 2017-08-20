@@ -43,7 +43,7 @@ class AbstractStatusTest extends UnitTestCase
         $expected = [
             'severity' => 1,
             'title' => 'aTitle',
-            'status' => 'aMessage',
+            'message' => 'aMessage',
         ];
         $this->assertEquals($expected, $status->jsonSerialize());
     }

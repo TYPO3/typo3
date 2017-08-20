@@ -64,7 +64,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 					$outputContainer.empty();
 					if (data.success === true && Array.isArray(data.status)) {
 						data.status.forEach(function(element) {
-							var message = InfoBox.render(element.severity, element.title, element.status);
+							var message = InfoBox.render(element.severity, element.title, element.message);
 							$outputContainer.append(message);
 						});
 					}
