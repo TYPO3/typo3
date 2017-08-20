@@ -18,14 +18,14 @@ use Doctrine\DBAL\DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\ProgressListenerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -1061,15 +1061,25 @@ class ReferenceIndex implements LoggerAwareInterface
      * Updating Index (External API)
      *
      * @param bool $testOnly If set, only a test
-     * @param bool $cli_echo If set, output CLI status
+     * @param bool $cli_echo If set, output CLI status - but can now be of type ProgressListenerInterface, which should be used instead.
      * @return array Header and body status content
      */
-    public function updateIndex($testOnly, $cli_echo = false)
+    public function updateIndex($testOnly, $cli_echo = null)
     {
+        $progressListener = null;
+        if ($cli_echo instanceof ProgressListenerInterface) {
+            $progressListener = $cli_echo;
+            $cli_echo = null;
+        }
+        if ($cli_echo !== null) {
+            trigger_error('The second argument of ReferenceIndex->updateIndex() will not work in TYPO3 v11 anymore. Use the ProgressListener to show detailled results', E_USER_DEPRECATED);
+        } else {
+            // default value for now
+            $cli_echo = false;
+        }
         $errors = [];
         $tableNames = [];
         $recCount = 0;
-        $tableCount = 0;
         $headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, remove the "--check" argument)' : 'Reference Index being Updated';
         if ($cli_echo) {
             echo '*******************************************' . LF . $headerContent . LF . '*******************************************' . LF;
@@ -1109,9 +1119,14 @@ class ReferenceIndex implements LoggerAwareInterface
                 continue;
             }
 
+            if ($progressListener) {
+                $progressListener->start($queryResult->rowCount(), $tableName);
+            }
             $tableNames[] = $tableName;
-            $tableCount++;
             while ($record = $queryResult->fetch()) {
+                if ($progressListener) {
+                    $progressListener->advance();
+                }
                 $refIndexObj = GeneralUtility::makeInstance(self::class);
                 if (isset($record['t3ver_wsid'])) {
                     $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
@@ -1121,10 +1136,16 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ($result['addedNodes'] || $result['deletedNodes']) {
                     $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
                     $errors[] = $error;
+                    if ($progressListener) {
+                        $progressListener->log($error, LogLevel::WARNING);
+                    }
                     if ($cli_echo) {
                         echo $error . LF;
                     }
                 }
+            }
+            if ($progressListener) {
+                $progressListener->finish();
             }
 
             // Subselect based queries only work on the same connection
@@ -1166,6 +1187,9 @@ class ReferenceIndex implements LoggerAwareInterface
             if ($lostIndexes > 0) {
                 $error = 'Table ' . $tableName . ' has ' . $lostIndexes . ' lost indexes which are now deleted';
                 $errors[] = $error;
+                if ($progressListener) {
+                    $progressListener->log($error, LogLevel::WARNING);
+                }
                 if ($cli_echo) {
                     echo $error . LF;
                 }
@@ -1185,6 +1209,42 @@ class ReferenceIndex implements LoggerAwareInterface
         }
 
         // Searching lost indexes for non-existing tables
+        $lostTables = $this->getAmountOfUnusedTablesInReferenceIndex($tableNames);
+        if ($lostTables > 0) {
+            $error = 'Index table hosted ' . $lostTables . ' indexes for non-existing tables, now removed';
+            $errors[] = $error;
+            if ($progressListener) {
+                $progressListener->log($error, LogLevel::WARNING);
+            }
+            if ($cli_echo) {
+                echo $error . LF;
+            }
+            if (!$testOnly) {
+                $this->removeReferenceIndexDataFromUnusedDatabaseTables($tableNames);
+            }
+        }
+        $errorCount = count($errors);
+        $recordsCheckedString = $recCount . ' records from ' . count($tableNames) . ' tables were checked/updated.' . LF;
+        if ($progressListener) {
+            if ($errorCount) {
+                $progressListener->log($recordsCheckedString . 'Updates: ' . $errorCount, LogLevel::WARNING);
+            } else {
+                $progressListener->log($recordsCheckedString . 'Index Integrity was perfect!', LogLevel::INFO);
+            }
+        }
+        if ($cli_echo) {
+            echo $recordsCheckedString . ($errorCount ? 'Updates: ' . $errorCount : 'Index Integrity was perfect!') . LF;
+        }
+        if (!$testOnly) {
+            $registry = GeneralUtility::makeInstance(Registry::class);
+            $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
+        }
+        return [$headerContent, trim($recordsCheckedString), $errorCount, $errors];
+    }
+
+    protected function getAmountOfUnusedTablesInReferenceIndex(array $tableNames): int
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
         $lostTables = $queryBuilder
@@ -1197,43 +1257,20 @@ class ReferenceIndex implements LoggerAwareInterface
                 )
             )->execute()
             ->fetchColumn(0);
+        return (int)$lostTables;
+    }
 
-        if ($lostTables > 0) {
-            $error = 'Index table hosted ' . $lostTables . ' indexes for non-existing tables, now removed';
-            $errors[] = $error;
-            if ($cli_echo) {
-                echo $error . LF;
-            }
-            if (!$testOnly) {
-                $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
-                $queryBuilder->delete('sys_refindex')
-                    ->where(
-                        $queryBuilder->expr()->notIn(
-                            'tablename',
-                            $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
-                        )
-                    )->execute();
-            }
-        }
-        $errorCount = count($errors);
-        $recordsCheckedString = $recCount . ' records from ' . $tableCount . ' tables were checked/updated.' . LF;
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $errorCount ? implode('##LF##', $errors) : 'Index Integrity was perfect!',
-            $recordsCheckedString,
-            $errorCount ? FlashMessage::ERROR : FlashMessage::OK
-        );
-
-        $flashMessageRenderer = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();
-        $bodyContent = $flashMessageRenderer->render([$flashMessage]);
-        if ($cli_echo) {
-            echo $recordsCheckedString . ($errorCount ? 'Updates: ' . $errorCount : 'Index Integrity was perfect!') . LF;
-        }
-        if (!$testOnly) {
-            $registry = GeneralUtility::makeInstance(Registry::class);
-            $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
-        }
-        return [$headerContent, $bodyContent, $errorCount];
+    protected function removeReferenceIndexDataFromUnusedDatabaseTables(array $tableNames): void
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->delete('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->notIn(
+                    'tablename',
+                    $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
+                )
+            )->execute();
     }
 
     /**

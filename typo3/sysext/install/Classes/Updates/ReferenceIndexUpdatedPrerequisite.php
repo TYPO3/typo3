@@ -16,7 +16,10 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Backend\Command\ProgressListener\ReferenceIndexProgressListener;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,13 +64,12 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
      */
     public function ensure(): bool
     {
+        $this->output->writeln('Reference Index is being updated');
+        $progressListener = GeneralUtility::makeInstance(ReferenceIndexProgressListener::class);
+        $progressListener->initialize(new SymfonyStyle(new ArrayInput([]), $this->output));
         $this->referenceIndex->enableRuntimeCache();
-        ob_clean();
-        ob_start();
-        $result = $this->referenceIndex->updateIndex(false, true);
-        $output = ob_get_clean();
-        $this->output->write($output);
-        return $result[2] === 0;
+        $result = $this->referenceIndex->updateIndex(false, $progressListener);
+        return count($result[3]) === 0;
     }
 
     /**
@@ -78,8 +80,8 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
     public function isFulfilled(): bool
     {
         $this->referenceIndex->enableRuntimeCache();
-        $result = $this->referenceIndex->updateIndex(true, false);
-        return $result[2] === 0;
+        $result = $this->referenceIndex->updateIndex(true);
+        return count($result[3]) === 0;
     }
 
     /**

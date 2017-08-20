@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -309,11 +311,20 @@ class DatabaseIntegrityController
 
         if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
             $testOnly = (bool)GeneralUtility::_GP('_check');
-            // Call the functionality
             $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
             $refIndexObj->enableRuntimeCache();
-            [, $bodyContent] = $refIndexObj->updateIndex($testOnly);
-            $this->view->assign('content', str_replace('##LF##', '<br />', $bodyContent));
+            [, $recordsCheckedString, , $errors] = $refIndexObj->updateIndex($testOnly);
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                !empty($errors) ? implode("\n", $errors) : 'Index Integrity was perfect!',
+                $recordsCheckedString,
+                !empty($errors) ? FlashMessage::ERROR : FlashMessage::OK
+            );
+
+            $flashMessageRenderer = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();
+            $bodyContent = $flashMessageRenderer->render([$flashMessage]);
+
+            $this->view->assign('content', nl2br($bodyContent));
         }
     }
 
