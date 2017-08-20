@@ -32,7 +32,8 @@ class AjaxController extends AbstractController
     protected $authenticationActions = [
         'changeInstallToolPassword',
         'clearAllCache',
-        'clearTable',
+        'clearTablesClear',
+        'clearTablesStats',
         'clearTypo3tempFiles',
 
         'coreUpdateActivate',

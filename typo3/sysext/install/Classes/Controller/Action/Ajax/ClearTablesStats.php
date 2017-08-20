@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Install\Service\ClearTableService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
- * Truncate a given table via ClearTableService
+ * Get "clear table" stats
  */
-class ClearTable extends AbstractAjaxAction
+class ClearTablesStats extends AbstractAjaxAction
 {
     /**
      * Executes the action
@@ -31,23 +30,10 @@ class ClearTable extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        if (empty($this->postValues['table'])) {
-            throw new \RuntimeException(
-                'No table name given',
-                1501944076
-            );
-        }
-
-        (new ClearTableService())->clearSelectedTable($this->postValues['table']);
-        $message = new OkStatus();
-        $message->setTitle('Cleared table');
-        $messages[] = $message;
-
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'stats' => (new ClearTableService())->getTableStatistics(),
         ]);
-
         return $this->view->render();
     }
 }

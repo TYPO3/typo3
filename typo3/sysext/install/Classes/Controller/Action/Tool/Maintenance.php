@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Install\Controller\Action\AbstractAction;
-use TYPO3\CMS\Install\Service\ClearTableService;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
 
 /**
@@ -37,8 +36,7 @@ class Maintenance extends AbstractAction
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $this->view->assignMultiple([
             'clearAllCacheOpcodeCaches' => (new OpcodeCacheService())->getAllActive(),
-            'clearTableStats' => (new ClearTableService())->getTableStatistics(),
-            'clearTableToken' => $formProtection->generateToken('installTool', 'clearTable'),
+            'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
             'clearTypo3tempFilesStats' => (new Typo3tempFileService())->getDirectoryStatistics(),
             'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
