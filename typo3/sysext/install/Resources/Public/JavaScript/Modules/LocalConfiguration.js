@@ -18,7 +18,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 	'use strict';
 
 	return {
-		selectorToggleAllTrigger: '.gridder-show .t3js-localConfiguration-toggleAll',
+		selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
 		selectorWriteTrigger: '.t3js-localConfiguration-write',
 		selectorSearchTrigger: '.t3js-localConfiguration-search',
 		selectorWriteToken: '#t3js-localConfiguration-write-token',
@@ -33,7 +33,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 
 			// Expand / collapse "Toggle all" button
 			$(document).on('click', this.selectorToggleAllTrigger, function() {
-				var $panels = $('.panel-collapse', '.gridder-show .t3js-localConfiguration');
+				var $panels = $('.t3js-localConfiguration .panel-collapse');
 				var action = ($panels.eq(0).hasClass('in')) ? 'hide' : 'show';
 				$panels.collapse(action);
 			});
