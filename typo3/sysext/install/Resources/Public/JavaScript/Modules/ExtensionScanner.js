@@ -19,9 +19,9 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 
 	return {
 		listOfAffectedRestFileHashes: [],
-		selectorExtensionContainer: '.gridder-show .t3js-extensionScanner-extension',
-		selectorNumberOfFiles: '.gridder-show .t3js-extensionScanner-number-of-files',
-		selectorScanSingleTrigger: '.gridder-show .t3js-extensionScanner-scan-single',
+		selectorExtensionContainer: '.t3js-extensionScanner-extension',
+		selectorNumberOfFiles: '.t3js-extensionScanner-number-of-files',
+		selectorScanSingleTrigger: '.t3js-extensionScanner-scan-single',
 
 		initialize: function() {
 			var self = this;
@@ -34,7 +34,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 			});
 			$(document).on('show.bs.collapse', this.selectorExtensionContainer, function(e) {
 				// Trigger extension scan on opening a extension collapsible
-				if ($(e.target).closest('').data('hasRun') !== 'true') {
+				if ($(e.target).closest(self.selectorExtensionContainer).data('hasRun') !== 'true') {
 					$(this).find(self.selectorScanSingleTrigger).click();
 				}
 			});
