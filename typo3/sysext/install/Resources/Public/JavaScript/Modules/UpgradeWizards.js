@@ -36,7 +36,7 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 		selectorWizardsBlockingCharsetFix: '.t3js-upgradeWizards-blocking-charset-fix',
 		selectorWizardsDoneBodyTemplate: '.t3js-upgradeWizards-done-body-template',
 		selectorWizardsDoneRows: '.t3js-upgradeWizards-done-rows',
-		selectorWizardsDoneRowTemplate: '.t3js-upgradeWizards-done-row-template table',
+		selectorWizardsDoneRowTemplate: '.t3js-upgradeWizards-done-row-template table tbody',
 		selectorWizardsDoneRowMarkUndone: '.t3js-upgradeWizards-done-markUndone',
 		selectorWizardsDoneRowTitle: '.t3js-upgradeWizards-done-title',
 		selectorWizardsListTemplate: '.gridder-show .t3js-upgradeWizards-list-template',
@@ -425,13 +425,14 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						}
 						var body = $(bodyTemplate).clone();
 						var hasBodyContent = false;
+						var $wizardsDoneContainer = body.find(self.selectorWizardsDoneRows);
 						if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
 							data.wizardsDone.forEach(function(element) {
 								hasBodyContent = true;
 								var aRow = $(rowTemplate).clone();
 								aRow.find(self.selectorWizardsDoneRowMarkUndone).data('identifier', element.identifier);
-								aRow.find(self.selectorWizardsDoneRowTitle).html(element.title);
-								body.find(self.selectorWizardsDoneRows).append(aRow);
+								aRow.find(self.selectorWizardsDoneRowTitle).text(element.title);
+								$wizardsDoneContainer.append(aRow);
 							});
 						}
 						if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
@@ -440,7 +441,7 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 								var aRow = $(rowTemplate).clone();
 								aRow.find(self.selectorWizardsDoneRowMarkUndone).data('identifier', element.identifier);
 								aRow.find(self.selectorWizardsDoneRowTitle).html(element.title);
-								body.find(self.selectorWizardsDoneRows).append(aRow);
+								$wizardsDoneContainer.append(aRow);
 							});
 						}
 						if (hasBodyContent === true) {
