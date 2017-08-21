@@ -116,10 +116,9 @@ abstract class AbstractUpdate
      */
     public function shouldRenderWizard()
     {
-        $showUpdate = 0;
         $explanation = '';
-        $result = $this->checkForUpdate($explanation, $showUpdate);
-        return $showUpdate > 0 || $result == true;
+        $result = $this->checkForUpdate($explanation);
+        return (bool)$result === true;
     }
 
     /**
