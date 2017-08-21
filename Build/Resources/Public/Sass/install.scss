@@ -27,6 +27,7 @@ $grid-float-breakpoint: $screen-md-min;
 //
 
 @import "typo3/element_docheader";
+@import "typo3/element_message";
 
 body.backend .module {
     background: $gray-lighter;

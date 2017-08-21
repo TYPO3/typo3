@@ -217,7 +217,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Severity'], function ($) {
 
 
 	// attach to global frame
-	TYPO3.Notification = Notification;
+	if (typeof TYPO3 !== 'undefined') {
+		TYPO3.Notification = Notification;
+	}
 
 	return Notification;
 });

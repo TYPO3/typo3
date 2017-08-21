@@ -14,7 +14,7 @@
 /**
  * Module: TYPO3/CMS/Install/ExtensionScanner
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, Severity) {
+define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 	'use strict';
 
 	return {
@@ -119,7 +119,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 				.find('span')
 				.text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
 			if (numberOfScannedExtensions === numberOfExtensions) {
-				top.TYPO3.Notification.success('Scan finished', 'All extensions has been scanned');
+				Notification.success('Scan finished', 'All extensions have been scanned');
 				var postData = {
 					'install': {
 						'action': 'extensionScannerMarkFullyScannedRestFiles',
@@ -134,7 +134,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 					cache: false,
 					success: function(data) {
 						if (data.success === true) {
-							top.TYPO3.Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
+							Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
 						}
 					}
 				});
@@ -285,18 +285,18 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 										self.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
 										self.setProgressForScan(extension, doneFiles, numberOfFiles);
 										self.setProgressForAll();
-										top.TYPO3.Notification.error('Oops, an error occurred', 'please look the console output for details');
+										Notification.error('Oops, an error occurred', 'Please look at the console output for details');
 										console.error(data);
 									}
 								});
 							});
 						} else {
-							top.TYPO3.Notification.warning('No files found', 'the extension EXT:' + extension + ' contains no files we can scan');
+							Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
 						}
 					}
 				},
 				error: function(data) {
-					top.TYPO3.Notification.error('Oops, an error occurred', 'please look the console output for details');
+					Notification.error('Oops, an error occurred', 'Please look at the console output for details');
 					console.error(data);
 				}
 			});

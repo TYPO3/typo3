@@ -83,7 +83,9 @@ define(function () {
 	};
 
 	// attach to global frame
-	TYPO3.Severity = Severity;
+	if (typeof TYPO3 !== 'undefined') {
+		TYPO3.Severity = Severity;
+	}
 
 	return Severity;
 });
