@@ -52,7 +52,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $validPassword = true;
         $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
         $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
-        if (is_object($saltFactory)) {
+        if ($installToolPassword !== '' && is_object($saltFactory)) {
             $validPassword = !$saltFactory->checkPassword('joh316', $installToolPassword);
         } elseif ($installToolPassword === md5('joh316')) {
             $validPassword = false;
