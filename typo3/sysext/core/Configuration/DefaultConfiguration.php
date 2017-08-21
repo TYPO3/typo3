@@ -312,9 +312,14 @@ return [
             'formDataGroup' => [ // Array: Registry of form data providers for form data groups
                 'tcaDatabaseRecord' => [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class => [],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ]
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => [
@@ -325,6 +330,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [
@@ -349,14 +355,9 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => [
@@ -572,9 +573,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [

@@ -164,6 +164,11 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
                 'pid' => 321,
                 'doktype' => 1,
             ],
+            'processedTca' => [
+                'ctrl' => [
+                    'type' => 'doktype'
+                ]
+            ]
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
@@ -191,6 +196,11 @@ class DatabaseUserPermissionCheckTest extends \TYPO3\TestingFramework\Core\Unit\
                 'pid' => 321,
                 'doktype' => 1,
             ],
+            'processedTca' => [
+                'ctrl' => [
+                    'type' => 'doktype'
+                ]
+            ]
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
