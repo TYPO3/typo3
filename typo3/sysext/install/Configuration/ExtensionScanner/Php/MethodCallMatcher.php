@@ -1079,4 +1079,11 @@ return [
             'Deprecation-81540-DeprecateDocumentTemplateformWidth.rst',
         ],
     ],
+    'TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility->sendSqlDumpFileToBrowserAndDelete' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
+        ],
+    ]
 ];

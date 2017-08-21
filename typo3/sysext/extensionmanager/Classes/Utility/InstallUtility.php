@@ -33,11 +33,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     public $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
-     */
-    public $installToolSqlParser;
-
-    /**
      * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
      */
     protected $dependencyUtility;
@@ -51,11 +46,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
      */
     protected $listUtility;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility
-     */
-    protected $databaseUtility;
 
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
@@ -91,14 +81,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $installToolSqlParser
-     */
-    public function injectInstallToolSqlParser(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService $installToolSqlParser)
-    {
-        $this->installToolSqlParser = $installToolSqlParser;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
      */
     public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility)
@@ -120,14 +102,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility
-     */
-    public function injectDatabaseUtility(\TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility)
-    {
-        $this->databaseUtility = $databaseUtility;
     }
 
     /**
@@ -520,38 +494,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             throw new ExtensionManagerException('No valid extension path given.', 1342875724);
         }
-    }
-
-    /**
-     * Get the data dump for an extension
-     *
-     * @param string $extension
-     * @return array
-     */
-    public function getExtensionSqlDataDump($extension)
-    {
-        $extension = $this->enrichExtensionWithDetails($extension);
-        $filePrefix = PATH_site . $extension['siteRelPath'];
-        $sqlData['extTables'] = $this->getSqlDataDumpForFile($filePrefix . 'ext_tables.sql');
-        $sqlData['staticSql'] = $this->getSqlDataDumpForFile($filePrefix . 'ext_tables_static+adt.sql');
-        return $sqlData;
-    }
-
-    /**
-     * Gets the sql data dump for a specific sql file (for example ext_tables.sql)
-     *
-     * @param string $sqlFile
-     * @return string
-     */
-    protected function getSqlDataDumpForFile($sqlFile)
-    {
-        $sqlData = '';
-        if (file_exists($sqlFile)) {
-            $sqlContent = file_get_contents($sqlFile);
-            $fieldDefinitions = $this->installToolSqlParser->getFieldDefinitions_fileContent($sqlContent);
-            $sqlData = $this->databaseUtility->dumpStaticTables($fieldDefinitions);
-        }
-        return $sqlData;
     }
 
     /**

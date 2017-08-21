@@ -515,27 +515,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Sends the sql dump file to the browser and deletes it afterwards
-     *
-     * @param string $fileName
-     * @param string $downloadName
-     */
-    public function sendSqlDumpFileToBrowserAndDelete($fileName, $downloadName = '')
-    {
-        if ($downloadName === '') {
-            $downloadName = basename($fileName, '.sql');
-        } else {
-            $downloadName = basename($downloadName, '.sql');
-        }
-        header('Content-Type: text');
-        header('Content-Length: ' . filesize($fileName));
-        header('Content-Disposition: attachment; filename="' . $downloadName . '.sql"');
-        readfile($fileName);
-        unlink($fileName);
-        die;
-    }
-
-    /**
      * @param string $extensionKey
      */
     protected function reloadPackageInformation($extensionKey)

@@ -158,26 +158,6 @@ class ActionController extends AbstractController
     }
 
     /**
-     * Download data of an extension as sql statements
-     *
-     * @param string $extension
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-     */
-    protected function downloadExtensionDataAction($extension)
-    {
-        $error = null;
-        $sqlData = $this->installUtility->getExtensionSqlDataDump($extension);
-        $dump = $sqlData['extTables'] . $sqlData['staticSql'];
-        $fileName = $extension . '_sqlDump.sql';
-        $filePath = PATH_site . 'typo3temp/var/ExtensionManager/' . $fileName;
-        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($filePath, $dump);
-        if (is_string($error)) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($error, 1343048718);
-        }
-        $this->fileHandlingUtility->sendSqlDumpFileToBrowserAndDelete($filePath, $fileName);
-    }
-
-    /**
      * Reloads the static SQL data of an extension
      *
      * @param string $extension

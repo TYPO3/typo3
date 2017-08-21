@@ -324,6 +324,26 @@ return [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',
         ],
     ],
+    'TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility' => [
+        'restFiles' => [
+            'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\ViewHelpers\DownloadExtensionDataViewHelper' => [
+        'restFiles' => [
+            'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Service\SqlExpectedSchemaService' => [
+        'restFiles' => [
+            'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Service\SqlSchemaMigrationService' => [
+        'restFiles' => [
+            'Breaking-82148-DownloadSQLDumpDroppedInEM.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [
