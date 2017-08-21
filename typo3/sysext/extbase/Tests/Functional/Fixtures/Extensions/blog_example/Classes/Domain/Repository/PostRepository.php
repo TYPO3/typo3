@@ -14,22 +14,24 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * A repository for blog posts
  *
- * @method \ExtbaseTeam\BlogExample\Domain\Model\Post findByUid($uid)
+ * @method Post findByUid($uid)
  */
 class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    protected $defaultOrderings = ['date' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING];
+    protected $defaultOrderings = ['date' => QueryInterface::ORDER_DESCENDING];
 
     /**
      * Finds all posts by the specified blog
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The posts
+     * @return QueryResultInterface The posts
      */
     public function findAllByBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
     {
@@ -46,7 +48,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @param string $tag
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The posts
+     * @return QueryResultInterface The posts
      */
     public function findByTagAndBlog($tag, \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog)
     {
@@ -64,10 +66,10 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds all remaining posts of the blog
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $post The reference post
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The posts
+     * @param Post $post The reference post
+     * @return QueryResultInterface The posts
      */
-    public function findRemaining(\ExtbaseTeam\BlogExample\Domain\Model\Post $post)
+    public function findRemaining(Post $post)
     {
         $blog = $post->getBlog();
         $query = $this->createQuery();
@@ -86,10 +88,10 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the previous of the given post
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $post The reference post
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Post
+     * @param Post $post The reference post
+     * @return Post
      */
-    public function findPrevious(\ExtbaseTeam\BlogExample\Domain\Model\Post $post)
+    public function findPrevious(Post $post)
     {
         $query = $this->createQuery();
         return $query
@@ -103,10 +105,10 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the post next to the given post
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $post The reference post
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Post
+     * @param Post $post The reference post
+     * @return Post
      */
-    public function findNext(\ExtbaseTeam\BlogExample\Domain\Model\Post $post)
+    public function findNext(Post $post)
     {
         $query = $this->createQuery();
         return $query
@@ -122,7 +124,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
      * @param int $limit The number of posts to return at max
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The posts
+     * @return QueryResultInterface The posts
      */
     public function findRecentByBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog, $limit = 5)
     {
@@ -139,7 +141,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Find posts by category
      *
      * @param int $categoryUid
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findByCategory($categoryUid)
     {

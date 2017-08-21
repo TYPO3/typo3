@@ -50,6 +50,7 @@ CREATE TABLE tx_blogexample_domain_model_post (
 	title varchar(255) DEFAULT '' NOT NULL,
 	date int(11) DEFAULT '0' NOT NULL,
 	author int(255) DEFAULT '0' NOT NULL,
+	reviewer int(255) DEFAULT '0' NOT NULL,
 	content text NOT NULL,
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
 	comments int(11) unsigned DEFAULT '0' NOT NULL,

@@ -41,6 +41,11 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $author = null;
 
     /**
+     * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
+     */
+    protected $reviewer = null;
+
+    /**
      * @var string
      * @validate StringLength(minimum = 3)
      */
@@ -249,6 +254,22 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
+     */
+    public function getReviewer()
+    {
+        return $this->reviewer;
+    }
+
+    /**
+     * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $reviewer
+     */
+    public function setReviewer(\ExtbaseTeam\BlogExample\Domain\Model\Person $reviewer)
+    {
+        $this->reviewer = $reviewer;
     }
 
     /**

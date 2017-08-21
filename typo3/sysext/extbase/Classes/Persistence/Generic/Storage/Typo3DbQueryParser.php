@@ -92,6 +92,11 @@ class Typo3DbQueryParser
     protected $tableName = '';
 
     /**
+     * @var bool
+     */
+    protected $suggestDistinctQuery = false;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
      */
     public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
@@ -105,6 +110,18 @@ class Typo3DbQueryParser
     public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
+    }
+
+    /**
+     * Whether using a distinct query is suggested.
+     * This information is defined during parsing of the current query
+     * for RELATION_HAS_MANY & RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     *
+     * @return bool
+     */
+    public function isDistinctQuerySuggested(): bool
+    {
+        return $this->suggestDistinctQuery;
     }
 
     /**
@@ -988,6 +1005,7 @@ class Typo3DbQueryParser
             $this->queryBuilder->andWhere(
                 $this->getAdditionalMatchFieldsStatement($this->queryBuilder->expr(), $columnMap, $childTableAlias, $realTableName)
             );
+            $this->suggestDistinctQuery = true;
         } elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
             $relationTableName = $columnMap->getRelationTableName();
             $relationTableAlias = $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
@@ -1008,7 +1026,7 @@ class Typo3DbQueryParser
             );
             $this->queryBuilder->leftJoin($relationTableAlias, $childTableName, $childTableAlias, $joinConditionExpression);
             $this->unionTableAliasCache[] = $childTableAlias;
-            $this->queryBuilder->addGroupBy($this->tableName . '.uid');
+            $this->suggestDistinctQuery = true;
         } else {
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
         }

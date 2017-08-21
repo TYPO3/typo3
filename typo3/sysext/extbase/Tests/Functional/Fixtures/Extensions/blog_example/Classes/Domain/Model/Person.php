@@ -52,6 +52,9 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->setFirstname($firstname);
         $this->setLastname($lastname);
         $this->setEmail($email);
+
+        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tagsSpecial = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -122,5 +125,69 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|\ExtbaseTeam\BlogExample\Domain\Model\Tag[]
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag> $tags
+     */
+    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    {
+        $this->tags = $tags;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags->attach($tag);
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->detach($tag);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage|\ExtbaseTeam\BlogExample\Domain\Model\Tag[]
+     */
+    public function getTagsSpecial()
+    {
+        return $this->tagsSpecial;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag> $tagsSpecial
+     */
+    public function setTagsSpecial(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial)
+    {
+        $this->tagsSpecial = $tagsSpecial;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTagSpecial(Tag $tag)
+    {
+        $this->tagsSpecial->attach($tag);
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function removeTagSpecial(Tag $tag)
+    {
+        $this->tagsSpecial->detach($tag);
     }
 }

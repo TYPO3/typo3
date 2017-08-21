@@ -14,16 +14,23 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
+use ExtbaseTeam\BlogExample\Domain\Model\Tag;
+use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
+use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
+use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Blog
+     * @var Blog
      */
     protected $blog;
 
@@ -51,7 +58,9 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/persons.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags-mm.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
@@ -59,7 +68,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->persistentManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
         /* @var $blogRepository \TYPO3\CMS\Extbase\Persistence\Repository */
-        $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        $blogRepository = $this->objectManager->get(BlogRepository::class);
         $this->blog = $blogRepository->findByUid(1);
     }
 
@@ -84,8 +93,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->fetchColumn(0);
 
         $newPostTitle = 'sdufhisdhuf';
-        /** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $newPost */
-        $newPost = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Post::class);
+        /** @var Post $newPost */
+        $newPost = $this->objectManager->get(Post::class);
         $newPost->setBlog($this->blog);
         $newPost->setTitle($newPostTitle);
         $newPost->setContent('Bla Bla Bla');
@@ -215,8 +224,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
         ->execute()
         ->fetchColumn(0);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $newPost */
-        $newPost = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Post::class);
+        /** @var Post $newPost */
+        $newPost = $this->objectManager->get(Post::class);
 
         $posts = clone $this->blog->getPosts();
         $this->blog->getPosts()->removeAll($posts);
@@ -420,11 +429,11 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
 
         $newTagTitle = 'sdufhisdhuf';
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Model\Tag $newTag */
+        /** @var Tag $newTag */
         $newTag = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Tag', $newTagTitle);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $post->addTag($newTag);
 
@@ -472,8 +481,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetchColumn(0);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = $post->getTags();
         $tagsArray = $tags->toArray();
@@ -550,14 +559,14 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetchColumn(0);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $post->setTags(new ObjectStorage());
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Model\Tag $newTag */
-        $newTag = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Tag::class, 'INSERTED TAG at position 6 : ' . strftime(''));
+        /** @var Tag $newTag */
+        $newTag = $this->objectManager->get(Tag::class, 'INSERTED TAG at position 6 : ' . strftime(''));
 
         $counter = 1;
         foreach ($tags as $tag) {
@@ -634,8 +643,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->fetchColumn(0);
         $this->assertEquals(10, $countTags);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $counter = 1;
@@ -713,8 +722,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->fetchColumn(0);
         $this->assertEquals(10, $countTags);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $tags = clone $post->getTags();
         $tagsArray = $tags->toArray();
@@ -805,8 +814,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetch();
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $post->setTitle('newTitle');
 
@@ -832,8 +841,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
      */
     public function mmRelationWithoutMatchFieldIsResolved()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
         $this->assertCount(1, $posts);
     }
@@ -866,8 +875,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->fetchColumn(0);
         $this->assertEquals(3, $countCategories);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
         $this->assertSame(3, count($post->getCategories()));
     }
@@ -879,8 +888,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
      */
     public function mmRelationWithMatchFieldIsResolvedFromForeignSide()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $posts = $postRepository->findByCategory(1);
         $this->assertSame(2, count($posts));
 
@@ -916,8 +925,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->fetchColumn(0);
         $this->assertEquals(3, $countCategories);
 
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
 
         /** @var \TYPO3\CMS\Extbase\Domain\Model\Category $newCategory */
@@ -958,9 +967,9 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
      */
     public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-        $postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
-        /** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $post */
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->objectManager->get(PostRepository::class);
+        /** @var Post $post */
         $post = $postRepository->findByUid(1);
         // Move category down
         foreach ($post->getCategories() as $category) {
@@ -1001,13 +1010,373 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
     }
 
     /**
+     * @return array
+     */
+    public function distinctDataProvider()
+    {
+        return [
+            'order default' => [
+                []
+            ],
+            'order default, offset 0' => [
+                [
+                    'offset' => 0
+                ]
+            ],
+            'order default, limit 100' => [
+                [
+                    'limit' => 100
+                ]
+            ],
+            'order default, offset 0, limit 100' => [
+                [
+                    'offset' => 0,
+                    'limit' => 100
+                ]
+            ],
+            'order false' => [
+                [
+                    'order' => false
+                ]
+            ],
+            'order false, offset 0' => [
+                [
+                    'order' => false,
+                    'offset' => 0
+                ]
+            ],
+            'order false, limit 100' => [
+                [
+                    'order' => false, 'limit' => 100
+                ]
+            ],
+            'order false, offset 0, limit 100' => [
+                [
+                    'order' => false,
+                    'offset' => 0,
+                    'limit' => 100
+                ]
+            ],
+            'order uid, offset 0' => [
+                [
+                    'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
+                    'offset' => 0
+                ]
+            ],
+            'order uid, limit 100' => [
+                [
+                    'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
+                    'limit' => 100
+                ]
+            ],
+            'order uid, offset 0, limit 100' => [
+                [
+                    'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
+                    'offset' => 0,
+                    'limit' => 100
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @param QueryInterface $query
+     * @param array $queryRequest
+     */
+    protected function applyQueryRequest(QueryInterface $query, array $queryRequest)
+    {
+        if (isset($queryRequest['order']) && !$queryRequest['order']) {
+            $query->setOrderings([]);
+        } elseif (!empty($queryRequest['order'])) {
+            $query->setOrderings($queryRequest['order']);
+        }
+        if (isset($queryRequest['offset'])) {
+            $query->setOffset($queryRequest['offset']);
+        }
+        if (isset($queryRequest['limit'])) {
+            $query->setLimit($queryRequest['limit']);
+        }
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_ONE relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPersonEntitiesAreFoundByPublisher(array $queryRequest)
+    {
+        $query = $this->provideFindPostsByPublisherQuery(1);
+        $this->applyQueryRequest($query, $queryRequest);
+        $posts = $query->execute();
+        $postCount = $posts->count();
+
+        $postIds = $this->resolveEntityIds($posts->toArray());
+
+        $this->assertEquals($this->countDistinctIds($postIds), $postCount);
+        $this->assertDistinctIds($postIds);
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_ONE relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPersonRecordsAreFoundByPublisher(array $queryRequest)
+    {
+        $query = $this->provideFindPostsByPublisherQuery(1);
+        $this->applyQueryRequest($query, $queryRequest);
+        $postRecords = $query->execute(true);
+        $postIds = $this->resolveRecordIds($postRecords);
+
+        $this->assertDistinctIds($postIds);
+    }
+
+    /**
+     * @param int $publisherId
+     * @return QueryInterface
+     */
+    protected function provideFindPostsByPublisherQuery(int $publisherId)
+    {
+        $postRepository = $this->objectManager->get(PostRepository::class);
+        $query = $postRepository->createQuery();
+        $query->matching(
+            $query->logicalOr([
+                $query->equals('author.uid', $publisherId),
+                $query->equals('reviewer.uid', $publisherId)
+            ])
+        );
+        return $query;
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctBlogEntitiesAreFoundByPostsSince(array $queryRequest)
+    {
+        $query = $this->provideFindBlogsByPostsSinceQuery(
+            new \DateTime('2017-08-01')
+        );
+        $this->applyQueryRequest($query, $queryRequest);
+        $blogs = $query->execute();
+        $blogCount = $blogs->count();
+
+        $blogIds = $this->resolveEntityIds($blogs->toArray());
+
+        $this->assertEquals($this->countDistinctIds($blogIds), $blogCount);
+        $this->assertDistinctIds($blogIds);
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctBlogRecordsAreFoundByPostsSince(array $queryRequest)
+    {
+        $query = $this->provideFindBlogsByPostsSinceQuery(
+            new \DateTime('2017-08-01')
+        );
+        $this->applyQueryRequest($query, $queryRequest);
+        $blogRecords = $query->execute(true);
+        $blogIds = $this->resolveRecordIds($blogRecords);
+
+        $this->assertDistinctIds($blogIds);
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return QueryInterface
+     */
+    protected function provideFindBlogsByPostsSinceQuery(\DateTime $date)
+    {
+        $blogRepository = $this->objectManager->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->matching(
+            $query->greaterThanOrEqual('posts.date', $date)
+        );
+        return $query;
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPersonEntitiesAreFoundByTagNameAreFiltered(array $queryRequest)
+    {
+        $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
+        $this->applyQueryRequest($query, $queryRequest);
+        $persons = $query->execute();
+        $personCount = $persons->count();
+
+        $personIds = $this->resolveEntityIds($persons->toArray());
+
+        $this->assertEquals($this->countDistinctIds($personIds), $personCount);
+        $this->assertDistinctIds($personIds);
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPersonRecordsAreFoundByTagNameAreFiltered(array $queryRequest)
+    {
+        $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
+        $this->applyQueryRequest($query, $queryRequest);
+        $personRecords = $query->execute(true);
+        $personIds = $this->resolveRecordIds($personRecords);
+
+        $this->assertDistinctIds($personIds);
+    }
+
+    /**
+     * @param string $tagName
+     * @return QueryInterface
+     */
+    protected function provideFindPersonsByTagNameQuery(string $tagName)
+    {
+        $personRepository = $this->objectManager->get(PersonRepository::class);
+        $query = $personRepository->createQuery();
+        $query->matching(
+            $query->logicalOr([
+                $query->equals('tags.name', $tagName),
+                $query->equals('tagsSpecial.name', $tagName)
+            ])
+        );
+        return $query;
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPostEntitiesAreFoundByAuthorTagNameAreFiltered(array $queryRequest)
+    {
+        $query = $this->provideFindPostsByAuthorTagName('SharedTag');
+        $this->applyQueryRequest($query, $queryRequest);
+        $posts = $query->execute();
+        $postCount = $posts->count();
+
+        $postsIds = $this->resolveEntityIds($posts->toArray());
+
+        $this->assertEquals($this->countDistinctIds($postsIds), $postCount);
+        $this->assertDistinctIds($postsIds);
+    }
+
+    /**
+     * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
+     *
+     * @param $queryRequest
+     *
+     * @test
+     * @dataProvider distinctDataProvider
+     */
+    public function distinctPostRecordsAreFoundByAuthorTagNameAreFiltered(array $queryRequest)
+    {
+        $query = $this->provideFindPostsByAuthorTagName('SharedTag');
+        $this->applyQueryRequest($query, $queryRequest);
+        $postRecords = $query->execute(true);
+        $postsIds = $this->resolveRecordIds($postRecords);
+
+        $this->assertDistinctIds($postsIds);
+    }
+
+    /**
+     * @param string $tagName
+     * @return QueryInterface
+     */
+    protected function provideFindPostsByAuthorTagName(string $tagName)
+    {
+        $postRepository = $this->objectManager->get(PostRepository::class);
+        $query = $postRepository->createQuery();
+        $query->matching(
+            $query->logicalOr([
+                $query->equals('author.tags.name', $tagName),
+                $query->equals('author.tagsSpecial.name', $tagName)
+            ])
+        );
+        return $query;
+    }
+
+    /**
      * Helper method for persisting blog
      */
     protected function updateAndPersistBlog()
     {
-        /** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
-        $blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+        /** @var BlogRepository $blogRepository */
+        $blogRepository = $this->objectManager->get(BlogRepository::class);
         $blogRepository->update($this->blog);
         $this->persistentManager->persistAll();
+    }
+
+    /**
+     * @param AbstractEntity[] $entities
+     * @return int[]
+     */
+    protected function resolveEntityIds(array $entities)
+    {
+        return array_map(
+            function (AbstractEntity $entity) {
+                return $entity->getUid();
+            },
+            $entities
+        );
+    }
+
+    /**
+     * @param array $records
+     * @return int[]
+     */
+    protected function resolveRecordIds(array $records)
+    {
+        return array_column($records, 'uid');
+    }
+
+    /**
+     * Counts amount of distinct IDS.
+     *
+     * @param array $ids
+     * @return int
+     */
+    protected function countDistinctIds(array $ids)
+    {
+        return count(array_count_values($ids));
+    }
+
+    /**
+     * Asserts distinct IDs by comparing the sum of the occurrence of
+     * a particular ID to the amount of existing distinct IDs.
+     *
+     * @param array $ids
+     */
+    protected function assertDistinctIds(array $ids)
+    {
+        $counts = array_count_values($ids);
+        $this->assertEquals(count($counts), array_sum($counts));
     }
 }

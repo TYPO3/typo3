@@ -63,7 +63,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
-     * @group not-mssql
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery()
     {
@@ -88,7 +87,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      * Test ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
      *
      * @test
-     * @group not-mssql
      */
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult()
     {
@@ -125,7 +123,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      * Test ColumnMap::RELATION_HAS_ONE, ColumnMap::ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY
      *
      * @test
-     * @group not-mssql
      */
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
@@ -136,12 +133,12 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             $query->equals('author.firstname', 'Author')
         );
         $result = $query->execute()->toArray();
-        $this->assertCount(2, $result);
+        // there are 16 post in total, 2 without author, 1 hidden, 1 deleted => 12 posts
+        $this->assertCount(12, $result);
     }
 
     /**
      * @test
-     * @group not-mssql
      */
     public function orReturnsExpectedResult()
     {
@@ -160,7 +157,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
-     * @group not-mssql
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery()
     {
@@ -180,7 +176,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
     /**
      * @test
-     * @group not-mssql
      */
     public function queryWithFindInSetReturnsExpectedResult()
     {

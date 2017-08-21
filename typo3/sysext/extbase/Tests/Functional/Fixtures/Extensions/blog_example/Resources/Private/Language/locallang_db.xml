@@ -33,6 +33,7 @@
 			<label index="tx_blogexample_domain_model_comment">Comment</label>
 			<label index="tx_blogexample_domain_model_comment.date">Date</label>
 			<label index="tx_blogexample_domain_model_comment.author">Author</label>
+			<label index="tx_blogexample_domain_model_comment.reviewer">Reviewer</label>
 			<label index="tx_blogexample_domain_model_comment.email">Email</label>
 			<label index="tx_blogexample_domain_model_comment.content">Content</label>
 			<label index="tx_blogexample_domain_model_tag">Tag</label>
