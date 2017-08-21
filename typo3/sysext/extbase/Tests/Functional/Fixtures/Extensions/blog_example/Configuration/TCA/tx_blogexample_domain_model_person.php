@@ -60,8 +60,7 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
-                'foreign_table_field' => 'tablenames',
-                'foreign_match_fields' => [
+                'MM_match_fields' => [
                     'fieldname' => 'tags'
                 ],
                 'appearance' => [
@@ -79,8 +78,7 @@ return [
                 'type' => 'inline',
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
-                'foreign_table_field' => 'tablenames',
-                'foreign_match_fields' => [
+                'MM_match_fields' => [
                     'fieldname' => 'tags_special'
                 ],
                 'appearance' => [

@@ -5,7 +5,10 @@
 		<pid>0</pid>
 		<tstamp>121319</tstamp>
 		<blog>1</blog>
+		<author>3</author>
+		<reviewer>2</reviewer>
 		<tags>10</tags>
+		<date>1502275450</date>
 		<categories>3</categories>
 		<title>Post1</title>
 		<content>Lorem ipsum...</content>
@@ -18,7 +21,10 @@
 		<uid>2</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>2</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post2</title>
 		<content>Lorem ipsum...</content>
@@ -30,7 +36,10 @@
 		<uid>3</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>2</author>
+		<reviewer>1</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post3</title>
 		<content>Lorem ipsum...</content>
@@ -42,7 +51,10 @@
 		<uid>4</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post4</title>
 		<content>Lorem ipsum...</content>
@@ -54,7 +66,10 @@
 		<uid>5</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>0</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post5</title>
 		<content>Lorem ipsum...</content>
@@ -66,7 +81,10 @@
 		<uid>6</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>0</author>
+		<reviewer>0</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post6</title>
 		<content>Lorem ipsum...</content>
@@ -78,7 +96,10 @@
 		<uid>7</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post7</title>
 		<content>Lorem ipsum...</content>
@@ -90,7 +111,10 @@
 		<uid>8</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post8</title>
 		<content>Lorem ipsum...</content>
@@ -102,7 +126,10 @@
 		<uid>9</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<content>Lorem ipsum...</content>
 		<l18n_diffsource></l18n_diffsource>
@@ -114,7 +141,10 @@
 		<uid>10</uid>
 		<pid>0</pid>
 		<blog>1</blog>
+		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>Post10</title>
 		<content>Lorem ipsum...</content>
@@ -126,7 +156,10 @@
 		<uid>11</uid>
 		<pid>0</pid>
 		<blog>2</blog>
+		<author>2</author>
+		<reviewer>1</reviewer>
 		<tags>0</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post1</title>
 		<content>Lorem ipsum...</content>
@@ -139,7 +172,9 @@
 		<pid>0</pid>
 		<blog>3</blog>
 		<author>0</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post with tag</title>
 		<content>Lorem ipsum...</content>
@@ -153,7 +188,9 @@
 		<pid>0</pid>
 		<blog>3</blog>
 		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>0</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post with tagged author</title>
 		<content>Lorem ipsum...</content>
@@ -167,7 +204,9 @@
 		<pid>0</pid>
 		<blog>3</blog>
 		<author>1</author>
+		<reviewer>2</reviewer>
 		<tags>1</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post with tag and tagged author</title>
 		<content>Lorem ipsum...</content>
@@ -180,7 +219,10 @@
 		<uid>20</uid>
 		<pid>0</pid>
 		<blog>3</blog>
+		<author>1</author>
+		<reviewer>3</reviewer>
 		<tags>0</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post20 hidden</title>
 		<content>Lorem ipsum...</content>
@@ -193,7 +235,10 @@
 		<uid>30</uid>
 		<pid>0</pid>
 		<blog>3</blog>
+		<author>1</author>
+		<reviewer>3</reviewer>
 		<tags>0</tags>
+		<date>1502275450</date>
 		<categories>0</categories>
 		<title>post30 deleted</title>
 		<content>Lorem ipsum...</content>

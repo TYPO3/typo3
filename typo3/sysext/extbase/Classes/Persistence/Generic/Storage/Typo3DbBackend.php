@@ -356,8 +356,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($statement instanceof Qom\Statement) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
-            $queryBuilder = $this->objectManager->get(Typo3DbQueryParser::class)
-                    ->convertQueryToDoctrineQueryBuilder($query);
+            $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+            $queryBuilder = $queryParser
+                ->convertQueryToDoctrineQueryBuilder($query);
+            $selectParts = $queryBuilder->getQueryPart('select');
+            if ($queryParser->isDistinctQuerySuggested() && !empty($selectParts)) {
+                $selectParts[0] = 'DISTINCT ' . $selectParts[0];
+                $queryBuilder->selectLiteral(...$selectParts);
+            }
             if ($query->getOffset()) {
                 $queryBuilder->setFirstResult($query->getOffset());
             }
@@ -434,17 +440,18 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
-        $queryBuilder = $this->objectManager->get(Typo3DbQueryParser::class)
+        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+        $queryBuilder = $queryParser
             ->convertQueryToDoctrineQueryBuilder($query)
             ->resetQueryPart('orderBy');
 
-        if (count($queryBuilder->getQueryPart('groupBy')) !== 0) {
+        if ($queryParser->isDistinctQuerySuggested()) {
             $source = $queryBuilder->getQueryPart('from')[0];
             // Tablename is already quoted for the DBMS, we need to treat table and field names separately
             $tableName = $source['alias'] ?: $source['table'];
             $fieldName = $queryBuilder->quoteIdentifier('uid');
             $queryBuilder->resetQueryPart('groupBy')
-                ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+             ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
         } else {
             $queryBuilder->count('*');
         }

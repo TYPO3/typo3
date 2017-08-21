@@ -91,4 +91,11 @@
 		<name>SpecialTagForAuthor1</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
+	<tx_blogexample_domain_model_tag>
+		<uid>14</uid>
+		<pid>0</pid>
+		<posts>0</posts>
+		<name>SharedTag</name>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_tag>
 </dataset>
