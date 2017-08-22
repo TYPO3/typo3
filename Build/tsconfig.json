@@ -42,10 +42,6 @@
                 "../typo3/sysext/form/Resources/Public/JavaScript/*",
                 "../typo3/sysext/form/Resources/Private/TypeScript/*"
             ],
-            "TYPO3/CMS/Frontend/*": [
-                "../typo3/sysext/frontend/Resources/Public/JavaScript/*",
-                "../typo3/sysext/frontend/Resources/Private/TypeScript/*"
-            ],
             "TYPO3/CMS/Impexp/*": [
                 "../typo3/sysext/impexp/Resources/Public/JavaScript/*",
                 "../typo3/sysext/impexp/Resources/Private/TypeScript/*"
