@@ -571,7 +571,7 @@ class ArrayUtility
         $level++;
         $allKeysAreNumeric = true;
         foreach ($array as $key => $_) {
-            if (is_numeric($key) === false) {
+            if (is_numeric($key) === false || (is_string($key) && StringUtility::endsWith($key, '.'))) {
                 $allKeysAreNumeric = false;
                 break;
             }

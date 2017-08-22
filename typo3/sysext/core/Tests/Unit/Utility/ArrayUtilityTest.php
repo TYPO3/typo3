@@ -1516,6 +1516,10 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 [0 => 'Zero', '1' => 'One', 'Two' => 'Two'],
                 [0 => 'Zero', '1' => 'One', 'Two' => 'Two'],
             ],
+            'returns unchanged if keys end with a dot' => [
+                ['2.' => 'Two', '1.' => 'One', '0.' => 'Zero'],
+                ['2.' => 'Two', '1.' => 'One', '0.' => 'Zero'],
+            ],
             'return self with nested numerically keyed array' => [
                 [
                     'One',
