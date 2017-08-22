@@ -54,7 +54,7 @@ class ExtensionScannerFiles extends AbstractAjaxAction
         $relativeFileNames = [];
         foreach ($files as $file) {
             /** @var $file SplFileInfo */
-            $relativeFileNames[] = $file->getRelativePathname();
+            $relativeFileNames[] = GeneralUtility::fixWindowsFilePath($file->getRelativePathname());
         }
 
         $this->view->assignMultiple([

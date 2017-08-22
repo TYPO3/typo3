@@ -201,7 +201,7 @@ class ExtensionScannerScanFile extends AbstractAjaxAction
                     $restFileLocation = $restFile->getPathname();
                     break;
                 }
-                $parsedRestFile = array_pop($documentationFile->getListEntry(realpath($restFileLocation)));
+                $parsedRestFile = array_pop($documentationFile->getListEntry(strtr(realpath($restFileLocation), '\\', '/')));
                 $version = GeneralUtility::trimExplode('/', $restFileLocation);
                 array_pop($version);
                 // something like "8.2" .. "8.7" .. "master"

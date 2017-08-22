@@ -57,7 +57,7 @@ class ExtensionScannerMarkFullyScannedRestFiles extends AbstractAjaxAction
             }
 
             // Build array of file (hashes) not affected by current scan, if they are tagged as "FullyScanned"
-            $parsedRestFile = array_pop($documentationFile->getListEntry(realpath($restFile->getPathname())));
+            $parsedRestFile = array_pop($documentationFile->getListEntry(strtr(realpath($restFile->getPathname()), '\\', '/')));
             if (!in_array($parsedRestFile['file_hash'], $foundRestFileHashes, true)
                 && in_array('FullyScanned', $parsedRestFile['tags'], true)
             ) {
