@@ -288,10 +288,6 @@ module.exports = function (grunt) {
 						src: '<%= paths.t3icons %>module/module-form.svg'
 					},
 					{
-						dest: '<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg',
-						src: '<%= paths.t3icons %>module/module-func.svg'
-					},
-					{
 						dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg',
 						src: '<%= paths.t3icons %>module/module-indexed_search.svg'
 					},
