@@ -296,6 +296,7 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 									list.find(self.selectorWizardsListRows).append(aRow);
 								}
 							});
+							list.find(self.selectorWizardsListRows + ' hr:last').remove();
 						}
 						var percent = 100;
 						if (numberOfWizardsTodo > 0) {
