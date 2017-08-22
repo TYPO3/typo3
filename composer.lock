@@ -4020,16 +4020,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "ff0e86564aef38de93d3d6f0b3d245ac5b4891b3"
+                "reference": "782b97f5475a590a8c933d6c4351fcbb8b306a6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ff0e86564aef38de93d3d6f0b3d245ac5b4891b3",
-                "reference": "ff0e86564aef38de93d3d6f0b3d245ac5b4891b3",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/782b97f5475a590a8c933d6c4351fcbb8b306a6f",
+                "reference": "782b97f5475a590a8c933d6c4351fcbb8b306a6f",
                 "shasum": ""
             },
             "require": {
@@ -4079,7 +4079,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2017-06-25T19:58:57+00:00"
+            "time": "2017-08-22T15:46:33+00:00"
         },
         {
             "name": "webmozart/assert",
