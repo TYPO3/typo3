@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
 /*
@@ -53,9 +54,10 @@ class Avatar
         }
 
         $cacheId = 'avatar_' . md5(
-                $backendUser['uid'] . '/' .
-                (string)$size . '/' .
-                (string)$showIcon);
+            $backendUser['uid'] . '/' .
+            (string)$size . '/' .
+            (string)$showIcon
+        );
 
         $avatar = static::getCache()->get($cacheId);
 
@@ -142,10 +144,19 @@ class Avatar
         $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'];
         foreach ($providers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException('Missing configuration for avatar provider "' . $identifier . '".', 1439317801);
+                throw new \RuntimeException(
+                    'Missing configuration for avatar provider "' . $identifier . '".',
+                    1439317801
+                );
             }
-            if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of($configuration['provider'], AvatarProviderInterface::class)) {
-                throw new \RuntimeException('The avatar provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . AvatarProviderInterface::class . '".', 1439317802);
+            if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of(
+                $configuration['provider'],
+                    AvatarProviderInterface::class
+            )) {
+                throw new \RuntimeException(
+                    'The avatar provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . AvatarProviderInterface::class . '".',
+                    1439317802
+                );
             }
         }
 

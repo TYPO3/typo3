@@ -443,8 +443,8 @@ class RelationHandler
                 foreach ($this->itemArray as &$item) {
                     $item['id'] = $this->getLiveDefaultId($item['table'], $item['id']);
                 }
-            // Directly overlay workspace data
             } else {
+                // Directly overlay workspace data
                 $this->itemArray = [];
                 $foreignTable = $configuration['foreign_table'];
                 $ids = $this->getResolver($foreignTable, $this->tableArray[$foreignTable])->get();
@@ -1270,7 +1270,8 @@ class RelationHandler
             $theRow = $this->results[$val['table']][$val['id']];
             if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
                 $label = GeneralUtility::fixed_lgd_cs(strip_tags(
-                        BackendUtility::getRecordTitle($val['table'], $theRow)), $titleLen);
+                        BackendUtility::getRecordTitle($val['table'], $theRow)
+                ), $titleLen);
                 $label = $label ? $label : '[...]';
                 $output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));
             }
@@ -1411,8 +1412,8 @@ class RelationHandler
         // Ensure, only live relations are in the items Array
         if ($workspaceId === 0) {
             $purgeCallback = 'purgeVersionedIds';
-        // Otherwise, ensure that live relations are purged if version exists
         } else {
+            // Otherwise, ensure that live relations are purged if version exists
             $purgeCallback = 'purgeLiveVersionedIds';
         }
 

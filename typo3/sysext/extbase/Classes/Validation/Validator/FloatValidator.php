@@ -38,7 +38,9 @@ class FloatValidator extends AbstractValidator
                 $this->translateErrorMessage(
                 'validator.float.notvalid',
                 'extbase'
-                ), 1221560288);
+                ),
+                1221560288
+            );
         }
     }
 }

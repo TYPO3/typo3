@@ -217,7 +217,7 @@ class IndexSearchRepository
             );
         }
 
-            // Getting SQL result pointer:
+        // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
         if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
             $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);

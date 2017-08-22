@@ -55,7 +55,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         $this->registerArgument('name', 'string', 'Name of input tag');
         $this->registerArgument('value', 'mixed', 'Value of input tag');
         $this->registerArgument(
-            'property', 'string',
+            'property',
+            'string',
             'Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.'
         );
     }
@@ -113,7 +114,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $this->viewHelperVariableContainer->get(
-                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObjectName'
+                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+                'formObjectName'
             );
             if (!empty($formObjectName)) {
                 $propertySegments = explode('.', $this->arguments['property']);
@@ -230,7 +232,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()), '.');
         $value = ObjectAccess::getPropertyPath(
-            $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest()->getArguments(), $propertyPath
+            $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest()->getArguments(),
+            $propertyPath
         );
         return $value;
     }
@@ -246,7 +249,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         }
 
         if (!$this->viewHelperVariableContainer->exists(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObject'
         )
         ) {
             return;
@@ -257,10 +261,12 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             return;
         }
         $formObject = $this->viewHelperVariableContainer->get(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObject'
         );
         $objectName = $this->viewHelperVariableContainer->get(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObjectName'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObjectName'
         );
         // If count == 2 -> we need to go through the for-loop exactly once
         for ($i = 1; $i < count($propertySegments); $i++) {
@@ -269,11 +275,13 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             $hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
             // Add the hidden identity field to the ViewHelperVariableContainer
             $additionalIdentityProperties = $this->viewHelperVariableContainer->get(
-                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'additionalIdentityProperties'
+                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+                'additionalIdentityProperties'
             );
             $additionalIdentityProperties[$objectName] = $hiddenIdentityField;
             $this->viewHelperVariableContainer->addOrUpdate(
-                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'additionalIdentityProperties',
+                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+                'additionalIdentityProperties',
                 $additionalIdentityProperties
             );
         }
@@ -287,13 +295,15 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function getPropertyValue()
     {
         if (!$this->viewHelperVariableContainer->exists(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObject'
         )
         ) {
             return null;
         }
         $formObject = $this->viewHelperVariableContainer->get(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObject'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObject'
         );
         return ObjectAccess::getPropertyPath($formObject, $this->arguments['property']);
     }
@@ -306,7 +316,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function isObjectAccessorMode()
     {
         return $this->hasArgument('property') && $this->viewHelperVariableContainer->exists(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObjectName'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObjectName'
         );
     }
 
@@ -344,7 +355,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         }
         $originalRequestMappingResults = $this->getRequest()->getOriginalRequestMappingResults();
         $formObjectName = $this->viewHelperVariableContainer->get(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'formObjectName'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'formObjectName'
         );
         return $originalRequestMappingResults->forProperty($formObjectName)->forProperty($this->arguments['property']);
     }
@@ -359,11 +371,13 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         $hiddenFieldNames = [];
         if ($this->viewHelperVariableContainer->exists(
-            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'renderedHiddenFields'
+            \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+            'renderedHiddenFields'
         )
         ) {
             $hiddenFieldNames = $this->viewHelperVariableContainer->get(
-                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'renderedHiddenFields'
+                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+                'renderedHiddenFields'
             );
         }
         $fieldName = $this->getName();
@@ -373,7 +387,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         if (!in_array($fieldName, $hiddenFieldNames)) {
             $hiddenFieldNames[] = $fieldName;
             $this->viewHelperVariableContainer->addOrUpdate(
-                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'renderedHiddenFields', $hiddenFieldNames
+                \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class,
+                'renderedHiddenFields',
+                $hiddenFieldNames
             );
             return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="" />';
         }

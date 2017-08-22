@@ -823,14 +823,18 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     protected function getBrowseButton($fieldID, array $fieldInfo)
     {
         if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
-            $url = BackendUtility::getModuleUrl('wizard_element_browser',
-                ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']);
+            $url = BackendUtility::getModuleUrl(
+                'wizard_element_browser',
+                ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']
+            );
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
             return '
                 <div><a href="#" data-url=' . htmlspecialchars($url) . ' class="btn btn-default t3js-pageBrowser" title="' . $title . '">
                     <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
-                        <span class="icon-markup">' . $this->iconFactory->getIcon('actions-insert-record',
-                    Icon::SIZE_SMALL)->render() . '</span>
+                        <span class="icon-markup">' . $this->iconFactory->getIcon(
+                'actions-insert-record',
+                    Icon::SIZE_SMALL
+            )->render() . '</span>
                     </span>
                 </a><span id="page_' . $fieldID . '">&nbsp;' . htmlspecialchars($fieldInfo['pageTitle']) . '</span></div>';
         } else {
@@ -1350,8 +1354,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 $this->submittedData['end'] = (int)$this->submittedData['end'];
             }
             if ($this->submittedData['end'] < $this->submittedData['start']) {
-                $this->addMessage($this->getLanguageService()->getLL('msg.endDateSmallerThanStartDate'),
-                    FlashMessage::ERROR);
+                $this->addMessage(
+                    $this->getLanguageService()->getLL('msg.endDateSmallerThanStartDate'),
+                    FlashMessage::ERROR
+                );
                 $result = false;
             }
         }

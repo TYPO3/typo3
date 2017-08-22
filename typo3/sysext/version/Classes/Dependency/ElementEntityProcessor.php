@@ -199,8 +199,8 @@ class ElementEntityProcessor
             // Set the original uid from the version record
             if (!empty($versionRecord['t3ver_oid']) && (int)$versionRecord['pid'] === -1 && (int)$versionRecord['t3ver_wsid'] === $this->getWorkspace()) {
                 $caller->setDataValue('liveId', $versionRecord['t3ver_oid']);
-            // The current version record is actually a live record or an accordant placeholder for live
             } elseif ((int)$versionRecord['t3ver_wsid'] === 0 || (int)$versionRecord['pid'] !== -1) {
+                // The current version record is actually a live record or an accordant placeholder for live
                 $caller->setDataValue('liveId', $caller->getId());
                 $versionRecord = BackendUtility::getWorkspaceVersionOfRecord(
                     $this->getWorkspace(),
@@ -212,13 +212,13 @@ class ElementEntityProcessor
                 // for a child record that is not recognized in the reference index
                 if (!empty($versionRecord['uid'])) {
                     $caller->setId($versionRecord['uid']);
-                // If no version could be determined, mark record as invalid
-                // (thus, it will be removed from the command map)
                 } else {
+                    // If no version could be determined, mark record as invalid
+                    // (thus, it will be removed from the command map)
                     $caller->setInvalid(true);
                 }
-            // In case of an unexpected record state, mark the record as invalid
             } else {
+                // In case of an unexpected record state, mark the record as invalid
                 $caller->setInvalid(true);
             }
         }

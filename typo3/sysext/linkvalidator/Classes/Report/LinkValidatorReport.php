@@ -655,7 +655,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
                         $hookSectionContent .= $this->templateService->substituteMarkerArray(
                             $hookSectionTemplate,
-                            $hookSectionMarker, '###|###',
+                            $hookSectionMarker,
+                            '###|###',
                             true,
                             true
                         );

@@ -148,7 +148,9 @@ return [
         'media' => [
             'exclude' => true,
             'label' => $GLOBALS['TCA']['pages']['columns']['media']['label'],
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', [
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'media',
+                [
                     // Use the imageoverlayPalette instead of the basicoverlayPalette
                     'overrideChildTca' => [
                         'types' => [

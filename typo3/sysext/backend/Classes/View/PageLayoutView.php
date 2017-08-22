@@ -895,7 +895,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
                     $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                    $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+                    $editLink = (
+                        $this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
                         ? '<a href="' . htmlspecialchars($url) . '" class="btn btn-default btn-sm"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">'
                         . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
@@ -913,7 +914,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $recordIcon = '';
                     if ($this->getBackendUser()->checkLanguageAccess(0)) {
                         $recordIcon = BackendUtility::wrapClickMenuOnIcon(
-                            $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(), 'pages', $this->id);
+                            $this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
+                            'pages',
+                            $this->id
+                        );
                         $urlParameters = [
                             'edit' => [
                                 'pages' => [
@@ -923,7 +927,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
                         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-                        $editLink = ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+                        $editLink = (
+                            $this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
                             ? '<a href="' . htmlspecialchars($url) . '" class="btn btn-default btn-sm"'
                             . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">'
                             . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>'
@@ -1324,8 +1329,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $theRows[] = $row;
                     // Get the branch
                     $spaceOutIcons = '<span class="treeline-icon treeline-icon-' . ($rc === $c ? 'clear' : 'line') . '"></span>';
-                    $theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons,
-                        $row['php_tree_stop'] ? 0 : $depth);
+                    $theRows = $this->pages_getTree(
+                        $theRows,
+                        $row['uid'],
+                        $qWhere,
+                        $treeIcons . $spaceOutIcons,
+                        $row['php_tree_stop'] ? 0 : $depth
+                    );
                 }
             }
         } else {
@@ -1471,7 +1481,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
             . ' title="' . htmlspecialchars($this->getLanguageService()->getLL($title)) . '">'
             . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-            . '</a>');
+            . '</a>'
+        );
         return $pasteIcon;
     }
 
@@ -1494,7 +1505,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $info[] = htmlspecialchars($row[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']]);
         }
 
-            // Call drawFooter hooks
+        // Call drawFooter hooks
         $drawFooterHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'];
         if (is_array($drawFooterHooks)) {
             foreach ($drawFooterHooks as $hookClass) {
@@ -2103,7 +2114,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 )
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pages_language_overlay.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        'pages_language_overlay.deleted',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         'pages_language_overlay.pid',
@@ -2123,10 +2135,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         )
                     )
                 )
-                ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
-                    'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
-                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag',
-                    'sys_language.sorting')
+                ->groupBy(
+                    'pages_language_overlay.sys_language_uid',
+                    'sys_language.uid',
+                    'sys_language.pid',
+                    'sys_language.tstamp',
+                    'sys_language.hidden',
+                    'sys_language.title',
+                    'sys_language.language_isocode',
+                    'sys_language.static_lang_isocode',
+                    'sys_language.flag',
+                    'sys_language.sorting'
+                )
                 ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
                 $queryBuilder->andWhere(
@@ -2423,7 +2443,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         foreach ($theTables as $tName) {
             // Check access and whether the proper extensions are loaded:
             if ($this->getBackendUser()->check('tables_select', $tName)
-                && (isset($this->externalTables[$tName])
+                && (
+                    isset($this->externalTables[$tName])
                     || $tName === 'fe_users' || $tName === 'tt_content'
                     || \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tName)
                 )

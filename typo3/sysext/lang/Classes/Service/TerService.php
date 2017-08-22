@@ -65,10 +65,10 @@ class TerService extends TerUtility implements SingletonInterface
         $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-            // Parse content
+        // Parse content
         xml_parse_into_struct($parser, $string, $values, $index);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
-            // If error, return error message
+        // If error, return error message
         if (xml_get_error_code($parser)) {
             $line = xml_get_current_line_number($parser);
             $error = xml_error_string(xml_get_error_code($parser));
@@ -81,14 +81,14 @@ class TerService extends TerUtility implements SingletonInterface
             $current = [];
             $tagName = '';
             $documentTag = '';
-                // Traverse the parsed XML structure:
+            // Traverse the parsed XML structure:
             foreach ($values as $val) {
                 // First, process the tag-name (which is used in both cases, whether "complete" or "close")
                 $tagName = (string)($val['tag'] === 'languagepack' && $val['type'] === 'open') ? $val['attributes']['language'] : $val['tag'];
                 if (!$documentTag) {
                     $documentTag = $tagName;
                 }
-                    // Setting tag-values, manage stack:
+                // Setting tag-values, manage stack:
                 switch ($val['type']) {
                         // If open tag it means there is an array stored in sub-elements.
                         // Therefore increase the stackpointer and reset the accumulation array
@@ -226,7 +226,8 @@ class TerService extends TerUtility implements SingletonInterface
                         $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
                         if (trim($absoluteTargetPath) !== '') {
                             $return = GeneralUtility::writeFile(
-                                $absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
+                                $absoluteTargetPath,
+                                zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
                             );
                             if ($return === false) {
                                 throw new LanguageException('Could not write file ' . $zipEntryName, 1345304560);

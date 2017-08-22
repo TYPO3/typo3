@@ -88,7 +88,9 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     {
         return GeneralUtility::makeInstance(
             \TYPO3\CMS\Version\Dependency\EventCallback::class,
-            $this->getElementEntityProcessor(), $method, $targetArguments
+            $this->getElementEntityProcessor(),
+            $method,
+            $targetArguments
         );
     }
 

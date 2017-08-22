@@ -273,7 +273,9 @@ class PagePositionMap
         $TSconfig = BackendUtility::getModTSconfig($newPagePID, 'mod.newPageWizard');
         $TSconfig = $TSconfig['properties'];
         if (isset($TSconfig['override']) && !empty($TSconfig['override'])) {
-            $url = BackendUtility::getModuleUrl($TSconfig['override'], [
+            $url = BackendUtility::getModuleUrl(
+                $TSconfig['override'],
+                [
                 'positionPid' => $pid,
                 'newPageId'   => $newPagePID,
                 'cmd'         => 'crPage',

@@ -62,13 +62,19 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
     {
         parent::initializeArguments();
         $this->registerArgument(
-            'errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error'
+            'errorClass',
+            'string',
+            'CSS class to set if there are errors for this view helper',
+            false,
+            'f3-form-error'
         );
         $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', true);
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute(
-            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+            'disabled',
+            'string',
+            'Specifies that the input element should be disabled when the page loads'
         );
     }
 

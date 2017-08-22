@@ -812,7 +812,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         }
         $res = $this->storageBackend->updateRelationTableRow(
             $relationTableName,
-            $row);
+            $row
+        );
         return $res;
     }
 
@@ -915,7 +916,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $result = $this->storageBackend->getMaxValueFromTable(
             $tableName,
             $matchFields,
-            $sortByFieldName);
+            $sortByFieldName
+        );
         return $result;
     }
 

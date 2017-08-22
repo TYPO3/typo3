@@ -3877,7 +3877,8 @@ class GeneralUtility
         // Never instantiate with a beginning backslash, otherwise things like singletons won't work.
         if ($className[0] === '\\') {
             throw new \InvalidArgumentException(
-                '$className "' . $className . '" must not start with a backslash.', 1420281366
+                '$className "' . $className . '" must not start with a backslash.',
+                1420281366
             );
         }
         if (isset(static::$finalClassNameCache[$className])) {
@@ -4484,7 +4485,7 @@ class GeneralUtility
         if (preg_match('/@deprecated\\s+(.*)/', $function->getDocComment(), $match)) {
             $msg = $match[1];
         }
-            // Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
+        // Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
         $logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
         $logMsg .= '() - ' . $msg . ' - ' . DebugUtility::debugTrail();
         $logMsg .= ' (' . PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';

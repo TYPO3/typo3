@@ -34,7 +34,9 @@ class IntegerValidator extends AbstractValidator
                 $this->translateErrorMessage(
                 'validator.integer.notvalid',
                 'extbase'
-                ), 1221560494);
+                ),
+                1221560494
+            );
         }
     }
 }

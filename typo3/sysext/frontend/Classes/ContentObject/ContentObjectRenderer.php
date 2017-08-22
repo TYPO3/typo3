@@ -5548,8 +5548,8 @@ class ContentObjectRenderer
                 // Resource was not found
                 return $linkText;
             }
-        // Disallow direct javascript: or data: links
         } elseif (in_array(strtolower(trim($linkHandlerKeyword)), ['javascript', 'data'], true)) {
+            // Disallow direct javascript: or data: links
             return $linkText;
         } else {
             $linkParameter = $linkParameterParts['url'];
@@ -5683,8 +5683,8 @@ class ContentObjectRenderer
         // Target attribute
         if (!empty($target)) {
             $tagAttributes['target'] = htmlspecialchars($target);
-        // Create TARGET-attribute only if the right doctype is used
         } elseif ($JSwindowParams && !in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
+            // Create TARGET-attribute only if the right doctype is used
             $tagAttributes['target'] = 'FEopenLink';
         }
 
@@ -6861,9 +6861,16 @@ class ContentObjectRenderer
                             $theList = array_merge(
                                 GeneralUtility::intExplode(
                                     ',',
-                                    $this->getTreeList($next_id, $depth - 1, $begin - 1,
-                                        $dontCheckEnableFields, $addSelectFields, $moreWhereClauses,
-                                        $prevId_array, $recursionLevel + 1),
+                                    $this->getTreeList(
+                                        $next_id,
+                                        $depth - 1,
+                                        $begin - 1,
+                                        $dontCheckEnableFields,
+                                        $addSelectFields,
+                                        $moreWhereClauses,
+                                        $prevId_array,
+                                        $recursionLevel + 1
+                                    ),
                                     true
                                 ),
                                 $theList
@@ -7045,7 +7052,8 @@ class ContentObjectRenderer
             'where'
         ];
         foreach ($properties as $property) {
-            $conf[$property] = trim(isset($conf[$property . '.'])
+            $conf[$property] = trim(
+                isset($conf[$property . '.'])
                 ? $this->stdWrap($conf[$property], $conf[$property . '.'])
                 : $conf[$property]
             );

@@ -560,8 +560,11 @@ class RecordList extends AbstractModule
                 ->setClasses('t3js-toggle-search-toolbox')
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
-            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton,
-                ButtonBar::BUTTON_POSITION_LEFT, 90);
+            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton(
+                $searchButton,
+                ButtonBar::BUTTON_POSITION_LEFT,
+                90
+            );
         }
 
         if ($this->pageinfo) {

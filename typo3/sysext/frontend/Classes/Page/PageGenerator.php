@@ -134,7 +134,8 @@ class PageGenerator
             if (in_array(
                 (string)$tsfe->config['config']['doctype'],
                 ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'],
-                true)
+                true
+            )
             ) {
                 $tsfe->dtdAllowsFrames = true;
             }

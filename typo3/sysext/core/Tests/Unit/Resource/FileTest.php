@@ -172,7 +172,7 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertSame($mockedNewStorage, $subject->getStorage());
     }
 
-/**
+    /**
      * @test
      */
     public function copyToCallsCopyOperationOnTargetFolderStorage()
@@ -215,11 +215,13 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename)
     {
-        $fixture = new \TYPO3\CMS\Core\Resource\File([
+        $fixture = new \TYPO3\CMS\Core\Resource\File(
+            [
             'name' => $originalFilename,
             'identifier' => '/' . $originalFilename
         ],
-        $this->storageMock);
+        $this->storageMock
+        );
         $this->assertSame($expectedBasename, $fixture->getNameWithoutExtension());
     }
 

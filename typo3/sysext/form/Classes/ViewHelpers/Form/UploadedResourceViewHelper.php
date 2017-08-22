@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
  */
 
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
 

@@ -957,7 +957,8 @@ class RecordHistory
 
         if (!isset($this->pageAccessCache[$pageId])) {
             $this->pageAccessCache[$pageId] = BackendUtility::readPageAccess(
-                $pageId, $this->getBackendUser()->getPagePermsClause(1)
+                $pageId,
+                $this->getBackendUser()->getPagePermsClause(1)
             );
         }
 

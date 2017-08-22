@@ -1886,9 +1886,14 @@ class DataHandler
         if ($tcaFieldConf['itemsProcFunc']) {
             /** @var ItemProcessingService $processingService */
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $items = $processingService->getProcessingItems($table, $realPid, $field,
+            $items = $processingService->getProcessingItems(
+                $table,
+                $realPid,
+                $field,
                 $this->checkValue_currentRecord,
-                $tcaFieldConf, $tcaFieldConf['items']);
+                $tcaFieldConf,
+                $tcaFieldConf['items']
+            );
         }
 
         $itemC = count($items);
@@ -1960,8 +1965,14 @@ class DataHandler
         // if no value was found and an itemsProcFunc is defined, check that for the value
         if ($tcaFieldConf['itemsProcFunc'] && empty($res['value'])) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $processedItems = $processingService->getProcessingItems($table, $pid, $field, $this->checkValue_currentRecord,
-                $tcaFieldConf, $tcaFieldConf['items']);
+            $processedItems = $processingService->getProcessingItems(
+                $table,
+                $pid,
+                $field,
+                $this->checkValue_currentRecord,
+                $tcaFieldConf,
+                $tcaFieldConf['items']
+            );
 
             foreach ($processedItems as $set) {
                 if ((string)$set[1] === (string)$value) {
@@ -2915,7 +2926,8 @@ class DataHandler
 
         $set = false;
         /** @var FlashMessage $message */
-        $message = GeneralUtility::makeInstance(FlashMessage::class,
+        $message = GeneralUtility::makeInstance(
+            FlashMessage::class,
             sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value),
             '', // header is optional
             FlashMessage::ERROR,
@@ -3028,7 +3040,8 @@ class DataHandler
                             $dataStructure['sheets'][$sKey]['ROOT']['el'],
                             $pParams,
                             $callBackFunc,
-                            $sKey . '/' . $lKey . '/', $workspaceOptions
+                            $sKey . '/' . $lKey . '/',
+                            $workspaceOptions
                         );
                     }
                 }
@@ -3596,9 +3609,11 @@ class DataHandler
                     $queryBuilder
                         ->select(...$fields)
                         ->from($table)
-                        ->where($queryBuilder->expr()->eq(
+                        ->where(
+                            $queryBuilder->expr()->eq(
                             'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        )
                         );
                     if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
                         // Table is workspace enabled, user is in default ws -> add t3ver_wsid=0 restriction
@@ -3713,8 +3728,14 @@ class DataHandler
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
             if ($this->enableLogging) {
-                $this->log($table, $uid, 3, 0, 1,
-                    'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read');
+                $this->log(
+                    $table,
+                    $uid,
+                    3,
+                    0,
+                    1,
+                    'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read'
+                );
             }
             return null;
         }
@@ -3924,9 +3945,19 @@ class DataHandler
      * @param string $inlineSubType
      * @return mixed
      */
-    protected function copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language,
-                                                array $workspaceOptions, $localizationMode, $inlineSubType)
-    {
+    protected function copyRecord_processInline(
+        $table,
+        $uid,
+        $field,
+        $value,
+        $row,
+        $conf,
+        $realDestPid,
+        $language,
+                                                array $workspaceOptions,
+        $localizationMode,
+        $inlineSubType
+    ) {
         // Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
         if ($language > 0 && $localizationMode === 'keep') {
             $value = $inlineSubType === 'field' ? 0 : '';
@@ -3956,7 +3987,8 @@ class DataHandler
                             // id is the original live default child record
                             $newId = $v['id'];
                             $this->versionizeRecord(
-                                $v['table'], $v['id'],
+                                $v['table'],
+                                $v['id'],
                                 (isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
                                 (isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : false)
                             );
@@ -4713,7 +4745,8 @@ class DataHandler
             && $table !== 'pages') {
             $localizationParentRecord = BackendUtility::getRecord(
                 $table,
-                $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+                $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
+            );
             if ((int)$localizationParentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== 0) {
                 if ($this->enableLogging) {
                     $this->newlog('Localization failed; Source record contained a reference to an original record that is not a default record (which is strange)!', 1);
@@ -5676,8 +5709,10 @@ class DataHandler
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
             if ($this->enableLogging) {
-                $this->newlog('The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "' . $table . ':' . $id . '"',
-                    1);
+                $this->newlog(
+                    'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "' . $table . ':' . $id . '"',
+                    1
+                );
             }
             return null;
         }
@@ -6203,8 +6238,8 @@ class DataHandler
                 // Update in database (list of children (csv) or number of relations (foreign_field)):
                 if (!empty($field)) {
                     $this->updateDB($table, $id, [$field => $newValue]);
-                // Collect data to update FlexForms
                 } elseif (!empty($additionalData['flexFormId']) && !empty($additionalData['flexFormPath'])) {
+                    // Collect data to update FlexForms
                     $flexFormId = $additionalData['flexFormId'];
                     $flexFormPath = $additionalData['flexFormPath'];
 
@@ -6302,7 +6337,9 @@ class DataHandler
         // Do recursive processing of the XML data:
         foreach ($modifications as $path => $value) {
             $valueStructure['data'] = ArrayUtility::setValueByPath(
-                $valueStructure['data'], $path, $value
+                $valueStructure['data'],
+                $path,
+                $value
             );
         }
 
@@ -6518,8 +6555,8 @@ class DataHandler
         $res = false;
         if ($insertTable === 'pages') {
             $perms = $this->pMap['new'];
-        // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
         } elseif (($insertTable === 'sys_file_reference') && array_key_exists('pages', $this->datamap)) {
+            // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
             $perms = $this->pMap['edit'];
         } else {
             $perms = $this->pMap['editcontent'];
@@ -6606,8 +6643,10 @@ class DataHandler
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
     {
-        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode('_',
-                $columns) . '_' . (string)$this->admin);
+        $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode(
+            '_',
+                $columns
+        ) . '_' . (string)$this->admin);
 
         // If result is cached, return it
         $cachedResult = $this->runtimeCache->get($cacheId);
@@ -7714,14 +7753,14 @@ class DataHandler
         // Thus, check whether strings are the same or whether integer values are empty ("0" or "").
         if (!$allowNull) {
             $result = (string)$submittedValue === (string)$storedValue || $storedType === 'int' && (int)$storedValue === (int)$submittedValue;
-        // Null values are allowed, but currently there's a real (not NULL) value.
+            // Null values are allowed, but currently there's a real (not NULL) value.
         // Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
         } elseif ($storedValue !== null) {
             $result = (
                 $submittedValue !== null
                 && $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, false)
             );
-        // Null values are allowed, and currently there's a NULL value.
+            // Null values are allowed, and currently there's a NULL value.
         // Thus, check whether a NULL value was submitted.
         } else {
             $result = ($submittedValue === null);
@@ -9093,9 +9132,9 @@ class DataHandler
                     $value,
                     $haystack[$key]
                 );
-            // Field has not been activated in the user interface,
-            // thus a NULL value shall be stored in the database
             } elseif ($value == 0) {
+                // Field has not been activated in the user interface,
+                // thus a NULL value shall be stored in the database
                 $haystack[$key] = null;
             }
         }

@@ -42,7 +42,9 @@ class NumberRangeValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.numberrange.notvalid',
                     'extbase'
-                ), 1221563685);
+                ),
+                1221563685
+            );
             return;
         }
 

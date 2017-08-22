@@ -66,7 +66,7 @@ class PersistentObjectConverter extends ObjectConverter
      */
     protected $persistenceManager;
 
-        /**
+    /**
      * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
      */
     public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager)

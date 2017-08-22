@@ -169,9 +169,11 @@ class DeletedRecordsCommand extends Command
             $result = $queryBuilder
                 ->select('uid', $deletedField)
                 ->from($tableName)
-                ->where($queryBuilder->expr()->eq(
+                ->where(
+                    $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
                 )
                 ->execute();
 
@@ -181,8 +183,13 @@ class DeletedRecordsCommand extends Command
                     $deletedRecords[$tableName][$recordOnPage['uid']] = $recordOnPage['uid'];
                 }
                 // Add any versions of those records
-                $versions = BackendUtility::selectVersionsOfRecord($tableName, $recordOnPage['uid'],
-                    'uid,t3ver_wsid,t3ver_count,' . $deletedField, null, true) ?: [];
+                $versions = BackendUtility::selectVersionsOfRecord(
+                    $tableName,
+                    $recordOnPage['uid'],
+                    'uid,t3ver_wsid,t3ver_count,' . $deletedField,
+                    null,
+                    true
+                ) ?: [];
                 if (is_array($versions)) {
                     foreach ($versions as $verRec) {
                         // Mark as deleted

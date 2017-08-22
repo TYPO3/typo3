@@ -98,7 +98,8 @@ class RequestHandler implements RequestHandlerInterface
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_force']
             && !GeneralUtility::cmpIP(
                 GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
+            )
         ) {
             $this->controller->pageUnavailableAndExit('This page is temporarily unavailable.');
         }

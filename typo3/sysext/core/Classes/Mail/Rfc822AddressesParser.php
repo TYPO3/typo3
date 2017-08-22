@@ -335,6 +335,7 @@ class Rfc822AddressesParser
                     if ($slashes % 2 == 0) {
                         $in_quote = !$in_quote;
                     }
+                    // no break
                 default:
                     $slashes = 0;
             }

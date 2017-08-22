@@ -5,7 +5,9 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TYPO3.CMS.Extensionmanager',
         'tools',
-        'extensionmanager', '', [
+        'extensionmanager',
+        '',
+        [
             'List' => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
             'Action' => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,downloadExtensionData,reloadExtensionData',
             'Configuration' => 'showConfigurationForm,save,saveAndClose',

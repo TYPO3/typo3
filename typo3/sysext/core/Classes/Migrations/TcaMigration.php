@@ -2052,7 +2052,8 @@ class TcaMigration
                                     && isset($wizardConfig['module']['name'])
                                     && $wizardConfig['module']['name'] === 'wizard_rte'
                                     && !isset($fieldConfig['config']['fieldControl']['fullScreenRichtext'])
-                                    && (!isset($fieldConfig['config']['enableRichtext'])
+                                    && (
+                                        !isset($fieldConfig['config']['enableRichtext'])
                                         || isset($fieldConfig['config']['enableRichtext']) && (bool)$fieldConfig['config']['enableRichtext'] === false
                                     )
                                 ) {

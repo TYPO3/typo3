@@ -65,11 +65,17 @@ class TypoScriptFrontendControllerHook
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
             if ($pObj->config['config']['message_preview_workspace']) {
-                $content .= sprintf($pObj->config['config']['message_preview_workspace'], $currentWorkspaceTitle,
-                    $currentWorkspaceId ?? -1);
+                $content .= sprintf(
+                    $pObj->config['config']['message_preview_workspace'],
+                    $currentWorkspaceTitle,
+                    $currentWorkspaceId ?? -1
+                );
             } else {
-                $text = LocalizationUtility::translate('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText',
-                    'workspaces', [$currentWorkspaceTitle, $currentWorkspaceId ?? -1]);
+                $text = LocalizationUtility::translate(
+                    'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText',
+                    'workspaces',
+                    [$currentWorkspaceTitle, $currentWorkspaceId ?? -1]
+                );
                 if ($pObj->doWorkspacePreview()) {
                     $urlForStoppingPreview = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=LOGOUT&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
                     $text .= '<br><a style="color: #000;" href="' . $urlForStoppingPreview . '">Stop preview</a>';

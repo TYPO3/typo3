@@ -342,7 +342,8 @@ class PageLayoutController
         //              'icon' => TRUE));
         if (is_array($this->externalTables)) {
             if (!empty($this->externalTables)) {
-                GeneralUtility::deprecationLog('The rendering of records in the page module by using '
+                GeneralUtility::deprecationLog(
+                    'The rendering of records in the page module by using '
                     . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'cms\'][\'db_layout\'][\'addTables\']'
                     . ' has been deprecated since TYPO3 CMS 8 and will be removed in TYPO3 CMS 9.'
                 );
@@ -397,10 +398,18 @@ class PageLayoutController
                         )
                     )
                 )
-                ->groupBy('pages_language_overlay.sys_language_uid', 'sys_language.uid', 'sys_language.pid',
-                    'sys_language.tstamp', 'sys_language.hidden', 'sys_language.title',
-                    'sys_language.language_isocode', 'sys_language.static_lang_isocode', 'sys_language.flag',
-                    'sys_language.sorting')
+                ->groupBy(
+                    'pages_language_overlay.sys_language_uid',
+                    'sys_language.uid',
+                    'sys_language.pid',
+                    'sys_language.tstamp',
+                    'sys_language.hidden',
+                    'sys_language.title',
+                    'sys_language.language_isocode',
+                    'sys_language.static_lang_isocode',
+                    'sys_language.flag',
+                    'sys_language.sorting'
+                )
                 ->orderBy('sys_language.sorting');
             if (!$this->getBackendUser()->isAdmin()) {
                 $queryBuilder->andWhere(

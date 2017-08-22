@@ -71,7 +71,10 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
 
         // nasty workaround so typolink stops putting a link together, there is a link already built
         throw new UnableToLinkException(
-            '', 1491130170, null, $link
+            '',
+            1491130170,
+            null,
+            $link
         );
     }
 }

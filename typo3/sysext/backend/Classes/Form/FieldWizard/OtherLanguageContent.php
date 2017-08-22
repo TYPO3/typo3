@@ -137,7 +137,9 @@ class OtherLanguageContent extends AbstractNode
                         $field,
                         '',
                         '',
-                        $config['config']['uploadfolder'], 0, ' align="middle"'
+                        $config['config']['uploadfolder'],
+                        0,
+                        ' align="middle"'
                     ) .
                     ($absFilePath ? BackendUtility::wrapClickMenuOnIcon($fileIcon, $absFilePath, 0) : $fileIcon) .
                     $imgPath .

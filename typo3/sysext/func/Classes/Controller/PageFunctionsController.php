@@ -125,7 +125,8 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
                 'WebFuncInLineJS',
-                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
+                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
+            );
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 

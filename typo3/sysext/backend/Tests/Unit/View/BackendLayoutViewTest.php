@@ -32,7 +32,9 @@ class BackendLayoutViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->backendLayoutView = $this->getAccessibleMock(
             \TYPO3\CMS\Backend\View\BackendLayoutView::class,
             ['getPage', 'getRootLine'],
-            [], '', false
+            [],
+            '',
+            false
         );
     }
 

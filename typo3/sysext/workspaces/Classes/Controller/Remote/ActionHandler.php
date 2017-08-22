@@ -462,8 +462,8 @@ class ActionHandler extends AbstractHandler
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['swapWith'] = $item->uid;
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['comment'] = $comment;
                     $cmdMapArray[$tableName][$item->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
-                // Setting stage uses version id in command map
                 } else {
+                    // Setting stage uses version id in command map
                     $cmdMapArray[$tableName][$item->uid]['version']['action'] = 'setStage';
                     $cmdMapArray[$tableName][$item->uid]['version']['stageId'] = $stageId;
                     $cmdMapArray[$tableName][$item->uid]['version']['comment'] = $comment;

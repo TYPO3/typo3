@@ -1510,30 +1510,42 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['summaryCropAfter'], $typoScriptArray['summaryCropAfter.']),
-            10, 5000, 180
+            10,
+            5000,
+            180
         );
         $this->settings['results.']['summaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['summaryCropSignifier'], $typoScriptArray['summaryCropSignifier.']);
         $this->settings['results.']['titleCropAfter'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['titleCropAfter'], $typoScriptArray['titleCropAfter.']),
-            10, 500, 50
+            10,
+            500,
+            50
         );
         $this->settings['results.']['titleCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['titleCropSignifier'], $typoScriptArray['titleCropSignifier.']);
         $this->settings['results.']['markupSW_summaryMax'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['markupSW_summaryMax'], $typoScriptArray['markupSW_summaryMax.']),
-            10, 5000, 300
+            10,
+            5000,
+            300
         );
         $this->settings['results.']['markupSW_postPreLgd'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['markupSW_postPreLgd'], $typoScriptArray['markupSW_postPreLgd.']),
-            1, 500, 60
+            1,
+            500,
+            60
         );
         $this->settings['results.']['markupSW_postPreLgd_offset'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['markupSW_postPreLgd_offset'], $typoScriptArray['markupSW_postPreLgd_offset.']),
-            1, 50, 5
+            1,
+            50,
+            5
         );
         $this->settings['results.']['markupSW_divider'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['markupSW_divider'], $typoScriptArray['markupSW_divider.']);
         $this->settings['results.']['hrefInSummaryCropAfter'] = MathUtility::forceIntegerInRange(
             $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['hrefInSummaryCropAfter'], $typoScriptArray['hrefInSummaryCropAfter.']),
-            10, 400, 60
+            10,
+            400,
+            60
         );
         $this->settings['results.']['hrefInSummaryCropSignifier'] = $GLOBALS['TSFE']->cObj->stdWrap($typoScriptArray['hrefInSummaryCropSignifier'], $typoScriptArray['hrefInSummaryCropSignifier.']);
     }

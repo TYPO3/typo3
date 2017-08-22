@@ -69,8 +69,8 @@ abstract class AbstractGraphicalTask extends AbstractTask
             $targetFileExtension = $this->configuration['fileExtension'];
         } elseif (in_array($this->getSourceFile()->getExtension(), ['jpg', 'jpeg', 'png', 'gif'], true)) {
             $targetFileExtension = $this->getSourceFile()->getExtension();
-        // If true, thumbnails from non-processable files will be converted to 'png', otherwise 'gif'
         } elseif ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png']) {
+            // If true, thumbnails from non-processable files will be converted to 'png', otherwise 'gif'
             $targetFileExtension = 'png';
         } else {
             $targetFileExtension = 'gif';

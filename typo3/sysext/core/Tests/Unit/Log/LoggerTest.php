@@ -42,7 +42,7 @@ class LoggerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $logger = new Logger('test.core.log');
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::ERROR, $writer);
-            // warning < error, thus must not be logged
+        // warning < error, thus must not be logged
         $logger->log(LogLevel::WARNING, 'test message');
         $this->assertAttributeEmpty('records', $writer);
     }
@@ -96,7 +96,7 @@ class LoggerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
         $processor->expects($this->once())->method('processLogRecord')->will($this->returnValue(new LogRecord($component, $level, $message)));
         $logger->addProcessor($level, $processor);
-            // we need a writer, otherwise we will not process log records
+        // we need a writer, otherwise we will not process log records
         $logger->addWriter($level, new NullWriter());
         $logger->warning($message);
     }
@@ -124,7 +124,7 @@ class LoggerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $logger = new Logger('test.core.log');
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::NOTICE, $writer);
-            // notice == notice, thus must be logged
+        // notice == notice, thus must be logged
         $logger->log(LogLevel::NOTICE, 'test message');
         $this->assertAttributeNotEmpty('records', $writer);
     }
@@ -168,7 +168,7 @@ class LoggerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $logger = new Logger('test.core.log');
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::NOTICE, $writer);
-            // warning > notice, thus must be logged
+        // warning > notice, thus must be logged
         $logger->log(LogLevel::WARNING, 'test message');
         $this->assertAttributeNotEmpty('records', $writer);
     }

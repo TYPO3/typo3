@@ -136,7 +136,7 @@ class ResourceStorageTest extends BaseTestCase
             $driver = new LocalDriver($driverConfiguration);
         } else {
             // We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
-                // when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
+            // when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
             $driver = $this->getMockBuilder(LocalDriver::class)
                 ->setMethods($mockedDriverMethods)
                 ->setConstructorArgs([$driverConfiguration])
@@ -360,7 +360,7 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver->expects($this->any())->method('getPermissions')->will($this->returnValue($permissionsFromDriver));
         /** @var $mockedFolder Folder|\PHPUnit_Framework_MockObject_MockObject  */
         $mockedFolder = $this->createMock(Folder::class);
-            // Let all other checks pass
+        // Let all other checks pass
         /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission'])
@@ -760,7 +760,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->subject->renameFile($file, 'bar', DuplicationBehavior::CANCEL);
     }
 
-     /**
+    /**
      * @test
      */
     public function renameFileReplacesIfConflictAndConflictModeIsReplace()

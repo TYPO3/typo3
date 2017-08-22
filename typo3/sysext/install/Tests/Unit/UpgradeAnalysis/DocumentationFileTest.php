@@ -96,8 +96,10 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->docRoot = vfsStream::setup('root', null, $structure);
 
         $this->registry = $this->prophesize(Registry::class);
-        $this->documentationFileService = new DocumentationFile($this->registry->reveal(),
-            vfsStream::url('root/Changelog'));
+        $this->documentationFileService = new DocumentationFile(
+            $this->registry->reveal(),
+            vfsStream::url('root/Changelog')
+        );
     }
 
     /**
@@ -165,8 +167,11 @@ class DocumentationFileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function filesAreFilteredByUsersChoice()
     {
         $ignoredFiles = ['vfs://root/Changelog/1.2/Breaking-12345-Issue.rst'];
-        $this->registry->get('upgradeAnalysisIgnoreFilter', 'ignoredDocumentationFiles',
-            Argument::any())->willReturn($ignoredFiles);
+        $this->registry->get(
+            'upgradeAnalysisIgnoreFilter',
+            'ignoredDocumentationFiles',
+            Argument::any()
+        )->willReturn($ignoredFiles);
 
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog'));
         self::assertArrayNotHasKey(12345, $result['1.2']);

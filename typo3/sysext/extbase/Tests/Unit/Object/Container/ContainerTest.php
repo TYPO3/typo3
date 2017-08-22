@@ -896,7 +896,8 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfNoneAreGiven()
     {
         $object = $this->container->getInstance(
-            \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class);
+            \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class
+        );
         $this->assertInstanceOf(
             \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\TwoConstructorArgumentsBothOptional::class,
             $object

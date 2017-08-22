@@ -82,7 +82,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 $dataLines = [];
                 $line = [];
                 $line['title'] = 'wiz_changeOrder_title';
-                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                $line['href'] = BackendUtility::getModuleUrl(
+                    'web_func',
                     [
                         'id' => $GLOBALS['SOBE']->id,
                         'sortByField' => 'title'
@@ -90,7 +91,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 );
                 $dataLines[] = $line;
                 $line['title'] = 'wiz_changeOrder_subtitle';
-                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                $line['href'] = BackendUtility::getModuleUrl(
+                    'web_func',
                     [
                         'id' => $GLOBALS['SOBE']->id,
                         'sortByField' => 'subtitle'
@@ -98,7 +100,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 );
                 $dataLines[] = $line;
                 $line['title'] = 'wiz_changeOrder_tChange';
-                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                $line['href'] = BackendUtility::getModuleUrl(
+                    'web_func',
                     [
                         'id' => $GLOBALS['SOBE']->id,
                         'sortByField' => 'tstamp'
@@ -106,7 +109,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 );
                 $dataLines[] = $line;
                 $line['title'] = 'wiz_changeOrder_tCreate';
-                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                $line['href'] = BackendUtility::getModuleUrl(
+                    'web_func',
                     [
                         'id' => $GLOBALS['SOBE']->id,
                         'sortByField' => 'crdate'
@@ -114,7 +118,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
                 );
                 $dataLines[] = $line;
                 $line['title'] = 'wiz_changeOrder_REVERSE';
-                $line['href'] = BackendUtility::getModuleUrl('web_func',
+                $line['href'] = BackendUtility::getModuleUrl(
+                    'web_func',
                     [
                         'id' => $GLOBALS['SOBE']->id,
                         'sortByField' => 'REV'

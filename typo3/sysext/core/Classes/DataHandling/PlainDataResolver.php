@@ -255,8 +255,8 @@ class PlainDataResolver
             if (isset($ids[$movePlaceholderId])) {
                 $ids[$movePlaceholderId] = $liveReferenceId;
                 unset($ids[$liveReferenceId]);
-            // Just purge live reference
             } elseif (!$this->keepMovePlaceholder) {
+                // Just purge live reference
                 unset($ids[$liveReferenceId]);
             }
         }

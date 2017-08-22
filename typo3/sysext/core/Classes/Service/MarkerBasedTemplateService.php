@@ -296,8 +296,13 @@ class MarkerBasedTemplateService
             }
             if (!empty($markersAndSubparts[$subpartMarker])) {
                 foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
-                    $subpartSubstitutes[$completeMarker] .= $this->substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
-                        $partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
+                    $subpartSubstitutes[$completeMarker] .= $this->substituteMarkerAndSubpartArrayRecursive(
+                        $subTemplates[$completeMarker],
+                        $partialMarkersAndSubparts,
+                        $wrap,
+                        $uppercase,
+                        $deleteUnused
+                    );
                 }
             } else {
                 $subpartSubstitutes[$completeMarker] = '';

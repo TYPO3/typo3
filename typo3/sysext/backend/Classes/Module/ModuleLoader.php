@@ -200,8 +200,8 @@ class ModuleLoader
         // check if there is a navigation component (like the pagetree)
         if (is_array($this->navigationComponents[$name])) {
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
-        // navigation component can be overridden by the main module component
         } elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+            // navigation component can be overridden by the main module component
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
         }
         return $finalModuleConfiguration;

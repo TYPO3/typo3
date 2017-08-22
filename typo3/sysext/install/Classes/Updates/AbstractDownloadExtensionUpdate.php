@@ -126,8 +126,10 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
     protected function fetchExtension($extensionKey, $version)
     {
         if (empty($extensionKey) || empty($version)) {
-            throw new \InvalidArgumentException('No extension key for fetching an extension was given.',
-                1344687432);
+            throw new \InvalidArgumentException(
+                'No extension key for fetching an extension was given.',
+                1344687432
+            );
         }
 
         $filename = $extensionKey[0] . '/' . $extensionKey[1] . '/' . $extensionKey . '_' . $version . '.t3x';
@@ -151,16 +153,20 @@ abstract class AbstractDownloadExtensionUpdate extends AbstractUpdate
     protected function fetchUrl($url)
     {
         if (empty($url)) {
-            throw new \InvalidArgumentException('No URL for downloading an extension given.',
-                1344687436);
+            throw new \InvalidArgumentException(
+                'No URL for downloading an extension given.',
+                1344687436
+            );
         }
 
         $fileContent = GeneralUtility::getUrl($url);
 
         // Can not fetch url, throw an exception
         if ($fileContent === false) {
-            throw new \RuntimeException('Can not fetch URL "' . $url . '". Possible reasons are network problems or misconfiguration.',
-                1344685036);
+            throw new \RuntimeException(
+                'Can not fetch URL "' . $url . '". Possible reasons are network problems or misconfiguration.',
+                1344685036
+            );
         }
 
         return $fileContent;

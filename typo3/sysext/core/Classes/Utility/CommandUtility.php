@@ -153,11 +153,11 @@ class CommandUtility
         if ($handler && !self::checkCommand($handler)) {
             return -1;
         }
-            // Already checked and valid
+        // Already checked and valid
         if (self::$applications[$cmd]['valid']) {
             return true;
         }
-            // Is set but was (above) not TRUE
+        // Is set but was (above) not TRUE
         if (isset(self::$applications[$cmd]['valid'])) {
             return false;
         }
@@ -167,7 +167,7 @@ class CommandUtility
             if ($validPath) {
                 if (TYPO3_OS === 'WIN') {
                     // Windows OS
-                        // @todo Why is_executable() is not called here?
+                    // @todo Why is_executable() is not called here?
                     if (@is_file($path . $cmd)) {
                         self::$applications[$cmd]['app'] = $cmd;
                         self::$applications[$cmd]['path'] = $path;
@@ -193,8 +193,8 @@ class CommandUtility
             }
         }
 
-            // Try to get the executable with the command 'which'.
-            // It does the same like already done, but maybe on other paths
+        // Try to get the executable with the command 'which'.
+        // It does the same like already done, but maybe on other paths
         if (TYPO3_OS !== 'WIN') {
             $cmd = @self::exec('which ' . $cmd);
             if (@is_executable($cmd)) {
@@ -302,12 +302,12 @@ class CommandUtility
     {
         $doCheck = false;
 
-            // Init global paths array if not already done
+        // Init global paths array if not already done
         if (!is_array(self::$paths)) {
             self::$paths = self::getPathsInternal();
             $doCheck = true;
         }
-            // Merge the submitted paths array to the global
+        // Merge the submitted paths array to the global
         if ($paths) {
             $paths = GeneralUtility::trimExplode(',', $paths, true);
             if (is_array($paths)) {
@@ -326,7 +326,7 @@ class CommandUtility
                 }
             }
         }
-            // Check if new paths are invalid
+        // Check if new paths are invalid
         if ($doCheck) {
             foreach (self::$paths as $path => $valid) {
                 // Ignore invalid (FALSE) paths
@@ -373,14 +373,14 @@ class CommandUtility
         $pathsArr = [];
         $sysPathArr = [];
 
-            // Image magick paths first
-            // processor_path_lzw take precedence over processor_path
+        // Image magick paths first
+        // processor_path_lzw take precedence over processor_path
         if ($imPath = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']) {
             $imPath = self::fixPath($imPath);
             $pathsArr[$imPath] = $imPath;
         }
 
-            // Add configured paths
+        // Add configured paths
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath']) {
             $sysPath = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath'], true);
             foreach ($sysPath as $val) {
@@ -389,8 +389,8 @@ class CommandUtility
             }
         }
 
-            // Add path from environment
-            // @todo how does this work for WIN
+        // Add path from environment
+        // @todo how does this work for WIN
         if ($GLOBALS['_SERVER']['PATH']) {
             $sep = (TYPO3_OS === 'WIN' ? ';' : ':');
             $envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], true);
@@ -400,7 +400,7 @@ class CommandUtility
             }
         }
 
-            // Set common paths for Unix (only)
+        // Set common paths for Unix (only)
         if (TYPO3_OS !== 'WIN') {
             $sysPathArr = array_merge($sysPathArr, [
                 '/usr/bin/' => '/usr/bin/',

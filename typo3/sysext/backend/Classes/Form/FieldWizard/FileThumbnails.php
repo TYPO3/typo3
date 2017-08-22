@@ -61,8 +61,10 @@ class FileThumbnails extends AbstractNode
                 $fileObject = $fileFactory->getFileObject($uidOrPath);
                 if (!$fileObject->isMissing()) {
                     $extension = $fileObject->getExtension();
-                    if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                        $extension)
+                    if (GeneralUtility::inList(
+                        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                        $extension
+                    )
                     ) {
                         $thumbnailsHtml[] = '<li>';
                         $thumbnailsHtml[] =     '<span class="thumbnail">';
@@ -93,8 +95,13 @@ class FileThumbnails extends AbstractNode
                         . '</li>';
                 } catch (\Exception $exception) {
                     $message = $exception->getMessage();
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '',
-                        FlashMessage::ERROR, true);
+                    $flashMessage = GeneralUtility::makeInstance(
+                        FlashMessage::class,
+                        $message,
+                        '',
+                        FlashMessage::ERROR,
+                        true
+                    );
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);

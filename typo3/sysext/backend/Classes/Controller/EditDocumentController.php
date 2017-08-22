@@ -661,8 +661,8 @@ class EditDocumentController extends AbstractModule
                     } else {
                         $relatedPageId = -$nRec['uid'];
                     }
-                // Determine related page ID for workspace context
                 } else {
+                    // Determine related page ID for workspace context
                     if ($insertRecordOnTop) {
                         // Fetch live version of workspace version since the pid value is always -1 in workspaces
                         $liveRecord = BackendUtility::getRecord($nTable, $nRec['t3ver_oid'], $recordFields);

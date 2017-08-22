@@ -1647,7 +1647,8 @@ class ResourceStorage implements ResourceStorageInterface
         // Cache-Control header is needed here to solve an issue with browser IE8 and lower
         // See for more information: http://support.microsoft.com/kb/323308
         header("Cache-Control: ''");
-        header('Last-Modified: ' .
+        header(
+            'Last-Modified: ' .
             gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), ['mtime']))) . ' GMT',
             true,
             200
@@ -2339,7 +2340,10 @@ class ResourceStorage implements ResourceStorageInterface
                 $parentPermissions = $this->driver->getPermissions($this->driver->getParentFolderIdentifierOfIdentifier($identifier));
                 if ($parentPermissions['r']) {
                     $folder = GeneralUtility::makeInstance(
-                        InaccessibleFolder::class, $this, $data['identifier'], $data['name']
+                        InaccessibleFolder::class,
+                        $this,
+                        $data['identifier'],
+                        $data['name']
                     );
                 }
             }
@@ -2879,11 +2883,17 @@ class ResourceStorage implements ResourceStorageInterface
                 }
             } catch (Exception\InsufficientFolderWritePermissionsException $e) {
                 $this->processingFolder = GeneralUtility::makeInstance(
-                    InaccessibleFolder::class, $this, $processingFolder, $processingFolder
+                    InaccessibleFolder::class,
+                    $this,
+                    $processingFolder,
+                    $processingFolder
                 );
             } catch (Exception\ResourcePermissionsUnavailableException $e) {
                 $this->processingFolder = GeneralUtility::makeInstance(
-                    InaccessibleFolder::class, $this, $processingFolder, $processingFolder
+                    InaccessibleFolder::class,
+                    $this,
+                    $processingFolder,
+                    $processingFolder
                 );
             }
         }

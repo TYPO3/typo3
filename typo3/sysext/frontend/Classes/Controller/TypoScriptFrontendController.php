@@ -3262,7 +3262,8 @@ class TypoScriptFrontendController
             if (in_array(
                 (string)$this->config['config']['doctype'],
                 ['xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'html5'],
-                true)
+                true
+            )
             ) {
                 $this->dtdAllowsFrames = true;
             }

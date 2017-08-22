@@ -176,7 +176,8 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         }
         $selectorFieldName = $result['inlineParentConfig']['foreign_selector'];
         if (!isset($result['processedTca']['columns'][$selectorFieldName]['config']['type'])
-            || ($result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'select'
+            || (
+                $result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'select'
                 && $result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'group'
             )
         ) {

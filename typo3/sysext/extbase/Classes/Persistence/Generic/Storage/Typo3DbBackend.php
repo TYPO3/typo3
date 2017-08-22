@@ -225,7 +225,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     {
         if (!isset($fieldValues['uid_local']) && !isset($fieldValues['uid_foreign'])) {
             throw new \InvalidArgumentException(
-                'The given fieldValues must contain a value for "uid_local" and "uid_foreign".', 1360500126
+                'The given fieldValues must contain a value for "uid_local" and "uid_foreign".',
+                1360500126
             );
         }
 

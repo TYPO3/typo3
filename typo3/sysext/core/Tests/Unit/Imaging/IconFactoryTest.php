@@ -119,8 +119,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconReturnsIconWithCorrectMarkupWrapperIfRegisteredIconIdentifierIsUsed()
     {
-        $this->assertContains('<span class="icon-markup">',
-            $this->subject->getIcon($this->registeredIconIdentifier)->render());
+        $this->assertContains(
+            '<span class="icon-markup">',
+            $this->subject->getIcon($this->registeredIconIdentifier)->render()
+        );
     }
 
     /**
@@ -128,8 +130,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-close" data-identifier="actions-close">',
-            $this->subject->getIcon($this->registeredIconIdentifier)->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-close" data-identifier="actions-close">',
+            $this->subject->getIcon($this->registeredIconIdentifier)->render()
+        );
     }
 
     /**
@@ -138,8 +142,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size)
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close">',
-            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close">',
+            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render()
+        );
     }
 
     /**
@@ -148,8 +154,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed($size)
     {
-        $this->assertContains('<span class="icon-overlay icon-overlay-readonly">',
-            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'], 'overlay-readonly')->render());
+        $this->assertContains(
+            '<span class="icon-overlay icon-overlay-readonly">',
+            $this->subject->getIcon($this->registeredIconIdentifier, $size['input'], 'overlay-readonly')->render()
+        );
     }
 
     /**
@@ -166,8 +174,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'additionalClasses' => 'fa-fw'
             ]
         ]);
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
-            $this->subject->getIcon($this->notRegisteredIconIdentifier)->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            $this->subject->getIcon($this->notRegisteredIconIdentifier)->render()
+        );
     }
 
     /**
@@ -185,8 +195,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'additionalClasses' => 'fa-fw'
             ]
         ]);
-        $this->assertContains('<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
-            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render()
+        );
     }
 
     /**
@@ -202,8 +214,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'spinning' => true
             ]
         ]);
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',
-            $this->subject->getIcon($this->registeredSpinningIconIdentifier)->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',
+            $this->subject->getIcon($this->registeredSpinningIconIdentifier)->render()
+        );
     }
 
     /**
@@ -213,8 +227,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed($size)
     {
-        $this->assertContains('<span class="icon-overlay icon-overlay-readonly">',
-            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'], 'overlay-readonly')->render());
+        $this->assertContains(
+            '<span class="icon-overlay icon-overlay-readonly">',
+            $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'], 'overlay-readonly')->render()
+        );
     }
 
     /**
@@ -237,8 +253,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForFileWithNoFileTypeReturnsDefaultFileIcon()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
-            $this->subject->getIconForFileExtension('')->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
+            $this->subject->getIconForFileExtension('')->render()
+        );
     }
 
     /**
@@ -248,8 +266,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForFileWithUnknownFileTypeReturnsDefaultFileIcon()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
-            $this->subject->getIconForFileExtension('foo')->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
+            $this->subject->getIconForFileExtension('foo')->render()
+        );
     }
 
     /**
@@ -259,8 +279,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForFileWithFileTypePdfReturnsPdfIcon()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
-            $this->subject->getIconForFileExtension('pdf')->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
+            $this->subject->getIconForFileExtension('pdf')->render()
+        );
     }
 
     /**
@@ -270,8 +292,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForFileWithFileTypePngReturnsPngIcon()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">',
-            $this->subject->getIconForFileExtension('png')->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">',
+            $this->subject->getIconForFileExtension('png')->render()
+        );
     }
 
     /**
@@ -284,8 +308,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $resourceProphecy->getExtension()->willReturn('pdf');
         $resourceProphecy->getMimeType()->willReturn('');
 
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
-            $this->subject->getIconForResource($resourceProphecy->reveal())->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
+            $this->subject->getIconForResource($resourceProphecy->reveal())->render()
+        );
     }
 
     //////////////////////////////////////////////
@@ -422,8 +448,10 @@ class IconFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getIconForRecordWithNullTableReturnsMissingIcon()
     {
-        $this->assertContains('<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
-            $this->subject->getIconForRecord('', [])->render());
+        $this->assertContains(
+            '<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
+            $this->subject->getIconForRecord('', [])->render()
+        );
     }
 
     /**

@@ -43,19 +43,19 @@ class ConfigurationService
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
     }
 
-     /**
-      * Get the prototype configuration
-      *
-      * @param string $prototypeName name of the prototype to get the configuration for
-      * @return array the prototype configuration
-      * @throws PrototypeNotFoundException if prototype with the name $prototypeName was not found
-      * @api
-      */
-     public function getPrototypeConfiguration(string $prototypeName): array
-     {
-         if (!isset($this->formSettings['prototypes'][$prototypeName])) {
-             throw new PrototypeNotFoundException(sprintf('The Prototype "%s" was not found.', $prototypeName), 1475924277);
-         }
-         return $this->formSettings['prototypes'][$prototypeName];
-     }
+    /**
+     * Get the prototype configuration
+     *
+     * @param string $prototypeName name of the prototype to get the configuration for
+     * @return array the prototype configuration
+     * @throws PrototypeNotFoundException if prototype with the name $prototypeName was not found
+     * @api
+     */
+    public function getPrototypeConfiguration(string $prototypeName): array
+    {
+        if (!isset($this->formSettings['prototypes'][$prototypeName])) {
+            throw new PrototypeNotFoundException(sprintf('The Prototype "%s" was not found.', $prototypeName), 1475924277);
+        }
+        return $this->formSettings['prototypes'][$prototypeName];
+    }
 }

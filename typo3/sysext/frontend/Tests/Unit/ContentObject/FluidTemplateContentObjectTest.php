@@ -158,7 +158,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->expects($this->at(1))
             ->method('stdWrap')
             ->with('', ['field' => 'someField']);
-        $this->subject->render([
+        $this->subject->render(
+            [
                 'templateName' => 'foobar',
                 'templateRootPaths.' => [
                     10 => 'dummyPath',
@@ -236,7 +237,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->method('setTemplate')
             ->with('foo');
 
-        $this->subject->render([
+        $this->subject->render(
+            [
             'templateName' => 'foo',
             'templateRootPaths.' => [
                 0 => 'dummyPath1/',
@@ -266,7 +268,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->method('setTemplate')
             ->with('bar');
 
-        $this->subject->render([
+        $this->subject->render(
+            [
             'templateName' => 'TEXT',
             'templateName.' => ['value' => 'bar'],
             'templateRootPaths.' => [

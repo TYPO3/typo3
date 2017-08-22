@@ -51,7 +51,9 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     {
         parent::initializeArguments();
         $this->registerTagAttribute(
-            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+            'disabled',
+            'string',
+            'Specifies that the input element should be disabled when the page loads'
         );
         $this->registerUniversalTagAttributes();
     }

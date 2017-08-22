@@ -2635,7 +2635,9 @@ class GraphicalFunctions
         }
         $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
         $cmd = CommandUtility::imageMagickCommand(
-            'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']
+            'convert',
+            '"' . $theFile . '" "' . $newFile . '"',
+            $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']
         );
         CommandUtility::exec($cmd);
         if (@is_file($newFile)) {

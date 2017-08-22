@@ -331,8 +331,8 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     'language' => $parentLanguage,
                     'ids' => [$type],
                 ];
-            // Either localize or synchronize all child elements from default language of the parent element
             } else {
+                // Either localize or synchronize all child elements from default language of the parent element
                 $cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = [
                     'field' => $parent['field'],
                     'language' => $parentLanguage,

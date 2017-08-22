@@ -110,8 +110,10 @@ class RequestBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->expects($this->any())
             ->method('getCommandByIdentifier')
             ->with('test:default:list')
-            ->will($this->throwException(
-                new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('testing', 1476050312))
+            ->will(
+                $this->throwException(
+                new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('testing', 1476050312)
+            )
             );
         $this->requestBuilder->_set('commandManager', $mockCommandManager);
         $request = $this->requestBuilder->build('test:default:list');

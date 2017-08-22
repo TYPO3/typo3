@@ -425,8 +425,6 @@ class IconFactory
                     $overlayIdentifier = 'overlay-locked';
                 }
             }
-
-        // File
         } elseif ($resource instanceof File) {
             $mimeTypeIcon = $this->iconRegistry->getIconIdentifierForMimeType($resource->getMimeType());
 

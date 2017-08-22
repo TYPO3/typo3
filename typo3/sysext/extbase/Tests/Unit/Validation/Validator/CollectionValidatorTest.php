@@ -141,7 +141,7 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             ->method('buildBaseValidatorConjunction')
             ->will($this->returnValue($aValidator));
 
-            // Add validators to properties
+        // Add validators to properties
         $aValidator->addPropertyValidator('b', $this->validator);
         $aValidator->addPropertyValidator('integer', $integerValidator);
 
@@ -162,7 +162,7 @@ class CollectionValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             ['someNotEmptyValue']
         );
         \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($lazyObjectStorage, 'isInitialized', false, true);
-            // only in this test case we want to mock the isValid method
+        // only in this test case we want to mock the isValid method
         $validator = $this->getValidator(['elementType' => $elementType], ['isValid']);
         $validator->expects($this->never())->method('isValid');
         $this->mockValidatorResolver->expects($this->never())->method('createValidator');

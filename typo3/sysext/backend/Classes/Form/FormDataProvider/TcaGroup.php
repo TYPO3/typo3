@@ -49,7 +49,9 @@ class TcaGroup implements FormDataProviderInterface
 
             // Sanitize max items, set to 99999 if not defined
             $result['processedTca']['columns'][$fieldName]['config']['maxitems'] = MathUtility::forceIntegerInRange(
-                $fieldConfig['config']['maxitems'], 0, 99999
+                $fieldConfig['config']['maxitems'],
+                0,
+                99999
             );
             if ($result['processedTca']['columns'][$fieldName]['config']['maxitems'] === 0) {
                 $result['processedTca']['columns'][$fieldName]['config']['maxitems'] = 99999;

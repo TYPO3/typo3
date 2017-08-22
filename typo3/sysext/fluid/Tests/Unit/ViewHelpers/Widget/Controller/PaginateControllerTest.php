@@ -63,8 +63,13 @@ class PaginateControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $this->query->_set('persistenceManager', $this->persistenceManager);
         $this->dataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         $this->query->_set('dataMapper', $this->dataMapper);
-        $this->controller = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
-            ['dummy'], [], '', false);
+        $this->controller = $this->getAccessibleMock(
+            \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
         $this->controller->_set('view', $this->createMock(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface::class));
     }
 

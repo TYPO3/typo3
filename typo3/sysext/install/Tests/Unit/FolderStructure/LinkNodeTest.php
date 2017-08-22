@@ -351,7 +351,8 @@ class LinkNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->testFilesToDelete[] = $path;
         $this->testFilesToDelete[] = $target;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
+        $node = $this->getAccessibleMock(
+            \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
             [],
             '',
@@ -377,7 +378,8 @@ class LinkNodeTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->testFilesToDelete[] = $path;
         $this->testFilesToDelete[] = $target;
         /** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class,
+        $node = $this->getAccessibleMock(
+            \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
             [],
             '',

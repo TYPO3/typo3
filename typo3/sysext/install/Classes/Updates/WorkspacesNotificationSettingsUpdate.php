@@ -186,17 +186,17 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
             $settings += 2;
         }
 
-        // Custom stages: preselect responsible persons (8)
         if (isset($record['responsible_persons'])) {
+            // Custom stages: preselect responsible persons (8)
             $preselection = 8;
-        // Workspace "edit" stage: preselect members (2)
         } elseif ($to === 'edit') {
+            // Workspace "edit" stage: preselect members (2)
             $preselection = 2;
-        // Workspace "publish" stage: preselect owners (1)
         } elseif ($to === 'publish') {
+            // Workspace "publish" stage: preselect owners (1)
             $preselection = 1;
-        // Workspace "execute" stage: preselect owners (1) and members (2) as default
         } else {
+            // Workspace "execute" stage: preselect owners (1) and members (2) as default
             $preselection = 1 + 2;
         }
 

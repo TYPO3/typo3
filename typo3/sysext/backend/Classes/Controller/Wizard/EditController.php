@@ -121,7 +121,8 @@ class EditController extends AbstractWizardController
             HttpUtility::redirect($url);
         } elseif (is_array($config)
             && $this->P['currentSelectedValues']
-            && ($config['type'] === 'select'
+            && (
+                $config['type'] === 'select'
                 && $config['foreign_table']
                 || $config['type'] === 'group'
                 && $config['internal_type'] === 'db'

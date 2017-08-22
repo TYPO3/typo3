@@ -202,7 +202,8 @@ class ExtendedFileUtility extends BasicFileUtility
                 $uploads = $this->fileCmdMap['upload'];
                 foreach ($uploads as $upload) {
                     if (empty($_FILES['upload_' . $upload['data']]['name'])
-                        || (is_array($_FILES['upload_' . $upload['data']]['name'])
+                        || (
+                            is_array($_FILES['upload_' . $upload['data']]['name'])
                             && empty($_FILES['upload_' . $upload['data']]['name'][0])
                         )
                     ) {

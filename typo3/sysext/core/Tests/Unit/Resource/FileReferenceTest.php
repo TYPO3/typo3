@@ -47,7 +47,8 @@ class FileReferenceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, [], [], '', false);
         $originalFileMock->expects($this->any())
             ->method('getProperties')
-            ->will($this->returnValue($originalFileProperties)
+            ->will(
+                $this->returnValue($originalFileProperties)
         );
         $fixture->_set('originalFile', $originalFileMock);
         $fixture->_set('propertiesOfFileReference', $fileReferenceProperties);

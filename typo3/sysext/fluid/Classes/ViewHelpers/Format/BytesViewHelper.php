@@ -109,8 +109,12 @@ class BytesViewHelper extends AbstractViewHelper
 
         return sprintf(
             '%s %s',
-            number_format(round($bytes, 4 * $arguments['decimals']), $arguments['decimals'],
-                $arguments['decimalSeparator'], $arguments['thousandsSeparator']),
+            number_format(
+                round($bytes, 4 * $arguments['decimals']),
+                $arguments['decimals'],
+                $arguments['decimalSeparator'],
+                $arguments['thousandsSeparator']
+            ),
             $units[$pow]
         );
     }

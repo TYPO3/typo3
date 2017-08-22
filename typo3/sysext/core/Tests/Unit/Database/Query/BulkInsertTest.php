@@ -307,8 +307,10 @@ class BulkInsertTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionMessage('Multiple types specified for column baz (index 1).');
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
-        $query->addValues(['bar', 'baz'],
-            [Connection::PARAM_INT, Connection::PARAM_INT, 'baz' => Connection::PARAM_STR]);
+        $query->addValues(
+            ['bar', 'baz'],
+            [Connection::PARAM_INT, Connection::PARAM_INT, 'baz' => Connection::PARAM_STR]
+        );
     }
 
     /**

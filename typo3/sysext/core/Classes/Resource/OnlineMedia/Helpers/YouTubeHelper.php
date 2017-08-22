@@ -99,7 +99,8 @@ class YouTubeHelper extends AbstractOEmbedHelper
      */
     protected function getOEmbedUrl($mediaId, $format = 'json')
     {
-        return sprintf('https://www.youtube.com/oembed?url=%s&format=%s',
+        return sprintf(
+            'https://www.youtube.com/oembed?url=%s&format=%s',
             urlencode(sprintf('https://www.youtube.com/watch?v=%s', $mediaId)),
             rawurlencode($format)
         );

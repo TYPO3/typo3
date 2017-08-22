@@ -43,7 +43,9 @@ class RegularExpressionValidator extends AbstractValidator
                 $this->translateErrorMessage(
                     'validator.regularexpression.nomatch',
                     'extbase'
-                ), 1221565130);
+                ),
+                1221565130
+            );
         }
         if ($result === false) {
             throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('regularExpression "' . $this->options['regularExpression'] . '" in RegularExpressionValidator contained an error.', 1298273089);

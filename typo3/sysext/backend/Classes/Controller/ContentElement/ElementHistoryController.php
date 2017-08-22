@@ -145,7 +145,7 @@ class ElementHistoryController extends AbstractModule
             ->setFieldName('history_log');
         $buttonBar->addButton($helpButton);
 
-         // Get returnUrl parameter
+        // Get returnUrl parameter
         $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         if ($returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

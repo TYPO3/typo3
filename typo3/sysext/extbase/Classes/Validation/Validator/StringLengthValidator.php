@@ -73,7 +73,10 @@ class StringLengthValidator extends AbstractValidator
                             $this->options['minimum'],
                             $this->options['maximum']
                         ]
-                    ), 1428504122, [$this->options['minimum'], $this->options['maximum']]);
+                    ),
+                    1428504122,
+                    [$this->options['minimum'], $this->options['maximum']]
+                );
             } elseif ($this->options['minimum'] > 0) {
                 $this->addError(
                     $this->translateErrorMessage(
@@ -82,7 +85,10 @@ class StringLengthValidator extends AbstractValidator
                         [
                             $this->options['minimum']
                         ]
-                    ), 1238108068, [$this->options['minimum']]);
+                    ),
+                    1238108068,
+                    [$this->options['minimum']]
+                );
             } else {
                 $this->addError(
                     $this->translateErrorMessage(
@@ -91,7 +97,10 @@ class StringLengthValidator extends AbstractValidator
                         [
                             $this->options['maximum']
                         ]
-                    ), 1238108069, [$this->options['maximum']]);
+                    ),
+                    1238108069,
+                    [$this->options['maximum']]
+                );
             }
         }
     }

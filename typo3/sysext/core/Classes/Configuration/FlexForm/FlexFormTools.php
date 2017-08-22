@@ -130,7 +130,10 @@ class FlexFormTools
                 $hookInstance = GeneralUtility::makeInstance($hookClass);
                 if (method_exists($hookClass, 'getDataStructureIdentifierPreProcess')) {
                     $dataStructureIdentifier = $hookInstance->getDataStructureIdentifierPreProcess(
-                        $fieldTca, $tableName, $fieldName, $row
+                        $fieldTca,
+                        $tableName,
+                        $fieldName,
+                        $row
                     );
                     if (!is_array($dataStructureIdentifier)) {
                         throw new \RuntimeException(
@@ -152,11 +155,19 @@ class FlexFormTools
             $tcaDataStructurePointerField = $fieldTca['config']['ds_pointerField'] ?? null;
             if (!is_array($tcaDataStructureArray) && $tcaDataStructurePointerField) {
                 // "ds" is not an array, but "ds_pointerField" is set -> data structure is found in different table
-                $dataStructureIdentifier = $this->getDataStructureIdentifierFromRecord($fieldTca, $tableName,
-                    $fieldName, $row);
+                $dataStructureIdentifier = $this->getDataStructureIdentifierFromRecord(
+                    $fieldTca,
+                    $tableName,
+                    $fieldName,
+                    $row
+                );
             } elseif (is_array($tcaDataStructureArray)) {
-                $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray($fieldTca, $tableName,
-                    $fieldName, $row);
+                $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray(
+                    $fieldTca,
+                    $tableName,
+                    $fieldName,
+                    $row
+                );
             } else {
                 throw new \RuntimeException(
                     'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
@@ -181,7 +192,11 @@ class FlexFormTools
                 $hookInstance = GeneralUtility::makeInstance($hookClass);
                 if (method_exists($hookClass, 'getDataStructureIdentifierPostProcess')) {
                     $dataStructureIdentifier = $hookInstance->getDataStructureIdentifierPostProcess(
-                        $fieldTca, $tableName, $fieldName, $row, $dataStructureIdentifier
+                        $fieldTca,
+                        $tableName,
+                        $fieldName,
+                        $row,
+                        $dataStructureIdentifier
                     );
                     if (!is_array($dataStructureIdentifier) || empty($dataStructureIdentifier)) {
                         throw new \RuntimeException(
@@ -274,9 +289,11 @@ class FlexFormTools
                     $queryBuilder->addSelect($pointerSubFieldName);
                 }
                 $queryStatement = $queryBuilder->from($tableName)
-                    ->where($queryBuilder->expr()->eq(
+                    ->where(
+                        $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT))
+                        $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
+                    )
                     )
                     ->execute();
                 if ($queryStatement->rowCount() !== 1) {

@@ -89,8 +89,10 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains('<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
-            $result);
+        $this->assertContains(
+            '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
+            $result
+        );
     }
 
     /**
