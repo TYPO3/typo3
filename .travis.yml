@@ -1,21 +1,17 @@
 language: php
 
-node_js:
-    - "0.10"
-
 matrix:
   fast_finish: true
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
+      env: UNIT_TESTS=yes
 
 sudo: false
 
 addons:
   apt:
     packages:
-      - parallel
       - language-pack-de
 
 cache:
@@ -50,39 +46,9 @@ before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - COMPOSER_ROOT_VERSION=8.7.0 composer install
-  - export typo3DatabaseName="typo3"
-  - export typo3DatabaseHost="localhost"
-  - export typo3DatabaseUsername="root"
-  - export typo3DatabasePassword=""
 
 script:
   - >
     if [[ "$UNIT_TESTS" == "yes" ]]; then
       ./bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml
-    fi
-
-  - >
-    if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
-      ./vendor/typo3/testing-framework/Resources/Core/Build/Scripts/splitFunctionalTests.sh 24
-      parallel --jobs 2 -a <(seq 0 23) --gnu './bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-{}.xml'
-    fi
-
-  - >
-    if [[ "$PHP_LINT" == "yes" ]]; then
-      find typo3/ -name \*.php -not -path "vendor/*" | parallel --jobs 6 --gnu php -d display_errors=stderr -l {} > /dev/null \;
-    fi
-
-  - >
-    if [[ "$XLF_CHECK" == "yes" ]]; then
-      ./Build/Scripts/xlfcheck.sh
-    fi
-
-  - >
-    if [[ "$SUBMODULE_TEST" == "yes" ]]; then
-      /bin/bash -c "
-        if [[ `git submodule status 2>&1 | wc -l` -ne 0 ]]; then
-          echo \"Found a submodule definition in repository\";
-          exit 99;
-        fi
-      "
     fi
