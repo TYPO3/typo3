@@ -519,6 +519,7 @@ class ImportExportController extends BaseScriptClass
                 case 't3d':
                     $this->export->dontCompress = 1;
                     // intentional fall-through
+                    // no break
                 default:
                     $out = $this->export->compileMemoryToFileContent();
                     $fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';

@@ -189,9 +189,11 @@ class PaginateController extends AbstractWidgetController
             $modifiedObjects = array_slice($this->objects, $offset, $itemsPerPage);
             return $modifiedObjects;
         } else {
-            throw new \InvalidArgumentException('The view helper "' . get_class($this)
+            throw new \InvalidArgumentException(
+                'The view helper "' . get_class($this)
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
-                . 'given: ' . get_class($this->objects), 1385547291
+                . 'given: ' . get_class($this->objects),
+                1385547291
             );
         }
     }

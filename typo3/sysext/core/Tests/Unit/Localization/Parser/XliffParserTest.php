@@ -50,7 +50,7 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
         $this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Parser\XliffParser::class);
 
-            // We have to take the whole relative path as otherwise this test fails on Windows systems
+        // We have to take the whole relative path as otherwise this test fails on Windows systems
         $fixturePath = PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/';
         $this->xliffFileNames = [
             'locallang' => $fixturePath . 'locallang.xlf',
@@ -59,7 +59,7 @@ class XliffParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
-            // Clear localization cache
+        // Clear localization cache
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
     }
 

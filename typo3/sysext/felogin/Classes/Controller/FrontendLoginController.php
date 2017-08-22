@@ -338,15 +338,19 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $postData = GeneralUtility::_POST($this->prefixId);
                 if (isset($postData['changepasswordsubmit'])) {
                     if (strlen($postData['password1']) < $minLength) {
-                        $markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
+                        $markerArray['###STATUS_MESSAGE###'] = sprintf(
+                            $this->getDisplayText(
                             'change_password_tooshort_message',
-                            $this->conf['changePasswordTooShortMessage_stdWrap.']),
+                            $this->conf['changePasswordTooShortMessage_stdWrap.']
+                        ),
                             $minLength
                         );
                     } elseif ($postData['password1'] != $postData['password2']) {
-                        $markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
+                        $markerArray['###STATUS_MESSAGE###'] = sprintf(
+                            $this->getDisplayText(
                             'change_password_notequal_message',
-                            $this->conf['changePasswordNotEqualMessage_stdWrap.']),
+                            $this->conf['changePasswordNotEqualMessage_stdWrap.']
+                        ),
                             $minLength
                         );
                     } else {

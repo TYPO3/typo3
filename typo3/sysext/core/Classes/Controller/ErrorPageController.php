@@ -70,8 +70,8 @@ class ErrorPageController
         string $title,
         string $message,
         int $severity = AbstractMessage::ERROR,
-        int $errorCode = 0): string
-    {
+        int $errorCode = 0
+    ): string {
         $this->severity = $severity;
         $classes = [
             AbstractMessage::NOTICE => 'notice',

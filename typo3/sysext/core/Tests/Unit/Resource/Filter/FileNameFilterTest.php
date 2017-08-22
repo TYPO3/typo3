@@ -65,7 +65,11 @@ class FileNameFilterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertSame(
             $expected,
             FileNameFilter::filterHiddenFilesAndFolders(
-                $itemName, $itemIdentifier, '', [], $driverMock
+                $itemName,
+                $itemIdentifier,
+                '',
+                [],
+                $driverMock
             )
         );
     }
@@ -84,7 +88,11 @@ class FileNameFilterTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         FileNameFilter::setShowHiddenFilesAndFolders(true);
         $this->assertSame(
             FileNameFilter::filterHiddenFilesAndFolders(
-                $itemName, $itemIdentifier, '', [], $driverMock
+                $itemName,
+                $itemIdentifier,
+                '',
+                [],
+                $driverMock
             ),
             $expected
         );

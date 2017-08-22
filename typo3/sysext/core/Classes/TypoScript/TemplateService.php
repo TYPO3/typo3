@@ -1200,8 +1200,11 @@ class TemplateService
         $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
         for ($a = 0; $a <= $this->outermostRootlineIndexWithTemplate; $a++) {
             if (trim($this->absoluteRootLine[$a]['tsconfig_includes'])) {
-                $includeTsConfigFileList = GeneralUtility::trimExplode(',',
-                    $this->absoluteRootLine[$a]['tsconfig_includes'], true);
+                $includeTsConfigFileList = GeneralUtility::trimExplode(
+                    ',',
+                    $this->absoluteRootLine[$a]['tsconfig_includes'],
+                    true
+                );
 
                 $TSdataArray = $this->mergeConstantsFromIncludedTsConfigFiles($includeTsConfigFileList, $TSdataArray);
             }
@@ -1394,8 +1397,8 @@ class TemplateService
         // only show a separator if there are both site title and page title
         if ($pageTitle === '' || $siteTitle === '') {
             $pageTitleSeparator = '';
-        // use the default separator if non given
         } elseif (empty($pageTitleSeparator)) {
+            // use the default separator if non given
             $pageTitleSeparator = ': ';
         }
         return $siteTitle . $pageTitleSeparator . $pageTitle;

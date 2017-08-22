@@ -1985,7 +1985,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         if ($this->addRequireJs) {
             // load the paths of the requireJS configuration
             $out .= GeneralUtility::wrapJS('var require = ' . json_encode($this->requireJsConfig)) . LF;
-                // directly after that, include the require.js file
+            // directly after that, include the require.js file
             $out .= '<script src="' . $this->processJsFile($this->requireJsPath . 'require.js') . '" type="text/javascript"></script>' . LF;
         }
 

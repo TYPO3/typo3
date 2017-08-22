@@ -104,7 +104,7 @@ class ElementBrowserFramesetController
 		';
     }
 
-   /**
+    /**
      * @return DocumentTemplate
      */
     protected function getDocumentTemplate()

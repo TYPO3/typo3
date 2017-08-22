@@ -392,11 +392,11 @@ class DataMapProcessor
         // retrieve value from in-memory data-map
         if ($this->isSetInDataMap($item->getFromTableName(), $fromId, $fieldName)) {
             $fromValue = $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName];
-        // retrieve value from record
         } elseif (array_key_exists($fieldName, $fromRecord)) {
+            // retrieve value from record
             $fromValue = $fromRecord[$fieldName];
-        // otherwise abort synchronization
         } else {
+            // otherwise abort synchronization
             return;
         }
 
@@ -407,11 +407,11 @@ class DataMapProcessor
                 $item->getId(),
                 [$fieldName => $fromValue]
             );
-        // direct relational values
         } elseif (!$this->isInlineRelationField($item->getFromTableName(), $fieldName)) {
+            // direct relational values
             $this->synchronizeDirectRelations($item, $fieldName, $fromRecord);
-        // inline relational values
         } else {
+            // inline relational values
             $this->synchronizeInlineRelations($item, $fieldName, $fromRecord, $forRecord);
         }
     }
@@ -583,8 +583,8 @@ class DataMapProcessor
             // if child table is not aware of localization, just copy
             if ($isLocalizationModeExclude || !$isTranslatable) {
                 $localCommandMap[$foreignTableName][$createAncestorId]['copy'] = -$createAncestorId;
-            // otherwise, trigger the localization process
             } else {
+                // otherwise, trigger the localization process
                 $localCommandMap[$foreignTableName][$createAncestorId]['localize'] = $item->getLanguage();
             }
         }
@@ -664,8 +664,8 @@ class DataMapProcessor
                 $this->allDataMap[$item->getFromTableName()][$fromId][$fieldName],
                 true
             );
-        // determine suggested elements of either translation parent or source record from storage
         } elseif (MathUtility::canBeInterpretedAsInteger($fromId)) {
+            // determine suggested elements of either translation parent or source record from storage
             $relationHandler = $this->createRelationHandler();
             $relationHandler->start(
                 $fromRecord[$fieldName],
@@ -968,18 +968,18 @@ class DataMapProcessor
             // implicit: use origin pointer if table cannot be translated
             if (!$isTranslatable) {
                 $ancestorId = (int)$dependentElement[$fieldNames['origin']];
-            // only consider element if it reflects the desired language
+                // only consider element if it reflects the desired language
             } elseif ((int)$dependentElement[$fieldNames['language']] === $desiredLanguage) {
                 $ancestorId = $this->resolveAncestorId($fieldNames, $dependentElement);
-            // otherwise skip the element completely
             } else {
+                // otherwise skip the element completely
                 continue;
             }
             // only keep ancestors that were initially requested before expanding
             if (in_array($ancestorId, $ids)) {
                 $dependentIdMap[$ancestorId] = $dependentId;
-            // resolve from previously expanded search criteria
             } elseif (!empty($ancestorIdMap[$ancestorId])) {
+                // resolve from previously expanded search criteria
                 $possibleChainedIds = array_intersect(
                     $ids,
                     $ancestorIdMap[$ancestorId]
@@ -1047,16 +1047,16 @@ class DataMapProcessor
                 // any parent or source pointers
                 $queryBuilder->expr()->orX(...$ancestorPredicates),
             ];
-        // fetch by origin dependency ("copied from")
         } elseif (!empty($fieldNames['origin'])) {
+            // fetch by origin dependency ("copied from")
             $predicates = [
                 $queryBuilder->expr()->in(
                     $fieldNames['origin'],
                     $idsParameter
                 )
             ];
-        // otherwise: stop execution
         } else {
+            // otherwise: stop execution
             throw new \InvalidArgumentException(
                 'Invalid combination of query field names given',
                 1487192370
@@ -1156,8 +1156,8 @@ class DataMapProcessor
             && $element[$fieldNames['source']] !== $element[$fieldNames['parent']]
         ) {
             return (int)$fieldNames['source'];
-        // implicit: use parent pointer if defined
         } elseif (!empty($fieldNames['parent'])) {
+            // implicit: use parent pointer if defined
             return (int)$element[$fieldNames['parent']];
         }
         return null;

@@ -1034,8 +1034,8 @@ abstract class AbstractItemProvider
                 // Use pid from parent page clause if in flex form context
                 if (!empty($result['flexParentDatabaseRow']['pid'])) {
                     $effectivePid = $result['flexParentDatabaseRow']['pid'];
-                // Use pid from database row if in inline context
                 } elseif (!$effectivePid && !empty($result['databaseRow']['pid'])) {
+                    // Use pid from database row if in inline context
                     $effectivePid = $result['databaseRow']['pid'];
                 }
             }

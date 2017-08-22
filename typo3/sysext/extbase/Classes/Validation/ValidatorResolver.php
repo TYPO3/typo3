@@ -457,7 +457,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
             }
         } else {
             // Full qualified
-             // Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
+            // Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
             $possibleClassName = $validatorName;
             if (!empty($possibleClassName) && $possibleClassName[0] === '\\') {
                 $possibleClassName = substr($possibleClassName, 1);

@@ -60,8 +60,13 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $pageRepositoryMock =
             $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
         $this->frontendControllerMock =
-            $this->getAccessibleMock(TypoScriptFrontendController::class,
-            ['dummy'], [], '', false);
+            $this->getAccessibleMock(
+                TypoScriptFrontendController::class,
+            ['dummy'],
+                [],
+                '',
+                false
+            );
         $this->frontendControllerMock->tmpl = $this->templateServiceMock;
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page =  [];
@@ -196,7 +201,8 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration)
     {
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $subject = $this->getAccessibleMock(AbstractTypolinkBuilder::class,
+        $subject = $this->getAccessibleMock(
+            AbstractTypolinkBuilder::class,
             ['build'],
             [$contentObjectRendererProphecy->reveal()],
             '',
@@ -216,7 +222,8 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder()
     {
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $subject = $this->getAccessibleMock(AbstractTypolinkBuilder::class,
+        $subject = $this->getAccessibleMock(
+            AbstractTypolinkBuilder::class,
             ['build'],
             [$contentObjectRendererProphecy->reveal()],
             '',
@@ -349,8 +356,12 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ->setMethods(['build'])
             ->getMock();
         $actual = $this->callInaccessibleMethod(
-            $subject, 'resolveTargetAttribute',
-            $conf, $name, $respectFrameSetOption, $fallbackTarget
+            $subject,
+            'resolveTargetAttribute',
+            $conf,
+            $name,
+            $respectFrameSetOption,
+            $fallbackTarget
         );
         $this->assertEquals($expected, $actual);
     }

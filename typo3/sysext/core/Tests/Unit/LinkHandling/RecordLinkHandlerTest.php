@@ -30,9 +30,11 @@ class RecordLinkHandlerTest extends UnitTestCase
             'identifier' => 'tx_identifier',
             'uid' => 123
         ];
-        $url = sprintf('t3://record?identifier=%s&uid=%s',
+        $url = sprintf(
+            't3://record?identifier=%s&uid=%s',
             $parameters['identifier'],
-            $parameters['uid']);
+            $parameters['uid']
+        );
 
         $this->assertEquals($url, $subject->asString($parameters));
     }

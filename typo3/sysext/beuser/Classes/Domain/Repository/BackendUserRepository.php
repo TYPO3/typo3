@@ -63,7 +63,8 @@ class BackendUserRepository extends BackendUserGroupRepository
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             foreach (['userName', 'uid', 'realName'] as $field) {
                 $searchConstraints[] = $query->like(
-                    $field, '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
+                    $field,
+                    '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
                 );
             }
             $constraints[] = $query->logicalOr($searchConstraints);

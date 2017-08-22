@@ -40,6 +40,9 @@ class DateTimeValidator extends AbstractValidator
                 [
                     gettype($value)
                 ]
-            ), 1238087674, [gettype($value)]);
+            ),
+            1238087674,
+            [gettype($value)]
+        );
     }
 }

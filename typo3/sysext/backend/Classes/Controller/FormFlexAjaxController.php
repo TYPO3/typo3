@@ -106,7 +106,8 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
                 ['lDEF'][$flexFormFieldName]
                 ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
             )
-            && is_array($formData['databaseRow'][$fieldName]
+            && is_array(
+                $formData['databaseRow'][$fieldName]
                 ['data'][$flexFormSheetName]
                 ['lDEF'][$flexFormFieldName]
                 ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']

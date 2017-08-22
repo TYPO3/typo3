@@ -53,7 +53,7 @@ class LocallangXmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
-            // Clear localization cache
+        // Clear localization cache
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
     }
 

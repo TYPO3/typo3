@@ -747,7 +747,12 @@ class ExtendedTemplateService extends TemplateService
      * @return string
      */
     public function ext_outputTS(
-        array $config, $lineNumbers = false, $comments = false, $crop = false, $syntaxHL = false, $syntaxHLBlockmode = 0
+        array $config,
+        $lineNumbers = false,
+        $comments = false,
+        $crop = false,
+        $syntaxHL = false,
+        $syntaxHLBlockmode = 0
     ) {
         $all = '';
         foreach ($config as $str) {

@@ -456,7 +456,8 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist([
+        $fileHandlerMock->ensureConfiguredDirectoriesExist(
+            [
                 'key' => 'foo_bar',
                 'uploadfolder' => 0,
             ]
@@ -471,7 +472,8 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist([
+        $fileHandlerMock->ensureConfiguredDirectoriesExist(
+            [
                 'key' => 'foo_bar',
                 'createDirs' => '',
             ]
@@ -487,7 +489,8 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $fileHandlerMock->expects($this->once())
             ->method('createNestedDirectory')
             ->with('uploads/tx_foobar/');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist([
+        $fileHandlerMock->ensureConfiguredDirectoriesExist(
+            [
                 'key' => 'foo_bar',
                 'uploadfolder' => 1,
             ]
@@ -502,13 +505,15 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
         $fileHandlerMock->expects($this->exactly(2))
             ->method('createNestedDirectory')
-            ->will($this->returnCallback(function ($path) {
-                if (!in_array($path, ['foo/bar', 'baz/foo'])) {
-                    throw new \Exception('Path "' . $path . '" is not expected to be created', 1476108500);
-                }
-            })
+            ->will(
+                $this->returnCallback(function ($path) {
+                    if (!in_array($path, ['foo/bar', 'baz/foo'])) {
+                        throw new \Exception('Path "' . $path . '" is not expected to be created', 1476108500);
+                    }
+                })
             );
-        $fileHandlerMock->ensureConfiguredDirectoriesExist([
+        $fileHandlerMock->ensureConfiguredDirectoriesExist(
+            [
                 'key' => 'foo_bar',
                 'createDirs' => 'foo/bar, baz/foo',
             ]
@@ -526,7 +531,8 @@ class FileHandlingUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             ->will($this->returnValue(true));
         $fileHandlerMock->expects($this->never())
             ->method('createNestedDirectory');
-        $fileHandlerMock->ensureConfiguredDirectoriesExist([
+        $fileHandlerMock->ensureConfiguredDirectoriesExist(
+            [
                 'key' => 'foo_bar',
                 'uploadfolder' => 1,
                 'createDirs' => 'foo/bar, baz/foo',

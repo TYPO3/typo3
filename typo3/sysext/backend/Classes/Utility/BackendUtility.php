@@ -4276,7 +4276,8 @@ class BackendUtility
             sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:free.software'),
                 ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'),
-                '</a> ')
+                '</a> '
+            )
             . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:keep.notice');
         return $cNotice;
     }

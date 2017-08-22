@@ -73,7 +73,8 @@ class DependencyResolver
                         throw new \UnexpectedValueException(
                             'The package "' . $packageKey . '" depends on "'
                             . $dependentPackageKey . '" which is not present in the system.',
-                            1382276561);
+                            1382276561
+                        );
                     }
                     $dependencies[$packageKey]['after'][] = $dependentPackageKey;
                 }
@@ -119,7 +120,8 @@ class DependencyResolver
             // The order of the array_merge is crucial here,
             // we want the framework first
             $packageStateConfiguration[$packageKey]['dependencies'] = array_merge(
-                $rootPackageKeys, $packageKeysWithoutFramework
+                $rootPackageKeys,
+                $packageKeysWithoutFramework
             );
         }
         return $packageStateConfiguration;

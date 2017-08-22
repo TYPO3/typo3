@@ -159,12 +159,12 @@ class FluidTemplateContentObject extends AbstractContentObject
                 ? $this->cObj->stdWrap(isset($conf['templateName']) ? $conf['templateName'] : '', $conf['templateName.'])
                 : $conf['templateName'];
             $this->view->setTemplate($templateName);
-        // Fetch the Fluid template by template cObject
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
+            // Fetch the Fluid template by template cObject
             $templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.']);
             $this->view->setTemplateSource($templateSource);
-        // Fetch the Fluid template by file stdWrap
         } else {
+            // Fetch the Fluid template by file stdWrap
             $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
             /** @var $templateService \TYPO3\CMS\Core\TypoScript\TemplateService */
             $templateService = $GLOBALS['TSFE']->tmpl;

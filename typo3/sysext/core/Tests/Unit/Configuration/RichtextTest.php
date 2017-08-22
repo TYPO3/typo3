@@ -352,7 +352,8 @@ class RichtextTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ],
         ];
 
-        $subject = $this->getAccessibleMock(Richtext::class,
+        $subject = $this->getAccessibleMock(
+            Richtext::class,
             ['loadConfigurationFromPreset', 'getRtePageTsConfigOfPid'],
             [],
             '',

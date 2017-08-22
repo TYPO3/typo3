@@ -96,9 +96,8 @@ class ImageInfo extends FileInfo
         // First check if width+height are set
         if (!empty($xmlAttributes['width']) && !empty($xmlAttributes['height'])) {
             $imagesSizes = [(int)$xmlAttributes['width'], (int)$xmlAttributes['height']];
-
-        // Fallback to viewBox
         } elseif (!empty($xmlAttributes['viewBox'])) {
+            // Fallback to viewBox
             $viewBox = explode(' ', $xmlAttributes['viewBox']);
             $imagesSizes = [(int)$viewBox[2], (int)$viewBox[3]];
         }

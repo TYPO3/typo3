@@ -939,8 +939,8 @@ class PageRepository
                     $this->error_getRootLine_failPid = -1;
                 }
                 return [];
-            /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
             } elseif ($ex->getCode() === 1343589451) {
+                /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
                 return [];
             }
             throw $ex;
@@ -1550,7 +1550,8 @@ class PageRepository
                     // You have to specifically set $unsetMovePointers in order to clear these
                     // because it is normally a display issue if it should be shown or not.
                     if (
-                        ($rowVersionState->equals(VersionState::MOVE_POINTER)
+                        (
+                            $rowVersionState->equals(VersionState::MOVE_POINTER)
                             && !$movePldSwap
                         ) && $unsetMovePointers
                     ) {

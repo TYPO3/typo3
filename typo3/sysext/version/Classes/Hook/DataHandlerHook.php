@@ -94,7 +94,11 @@ class DataHandlerHook
                     $dataHandler->versionizeRecord($table, $id, $value['label']);
                     break;
                 case 'swap':
-                    $this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
+                    $this->version_swap(
+                        $table,
+                        $id,
+                        $value['swapWith'],
+                        $value['swapIntoWS'],
                         $dataHandler,
                         $comment,
                         true,
@@ -110,7 +114,10 @@ class DataHandlerHook
                 case 'setStage':
                     $elementIds = GeneralUtility::trimExplode(',', $id, true);
                     foreach ($elementIds as $elementId) {
-                        $this->version_setStage($table, $elementId, $value['stageId'],
+                        $this->version_setStage(
+                            $table,
+                            $elementId,
+                            $value['stageId'],
                                 $comment,
                                 true,
                                 $dataHandler,
@@ -304,8 +311,8 @@ class DataHandlerHook
                 $dataHandler->versionizeRecord($table, $uid, 'MovePointer');
                 $WSversion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
                 $this->moveRecord_processFields($dataHandler, $resolvedPid, $table, $uid);
-            // If the record has been versioned before (e.g. cascaded parent-child structure), create only the move-placeholders
             } elseif ($dataHandler->isRecordCopied($table, $uid) && (int)$dataHandler->copyMappingArray[$table][$uid] === (int)$WSversion['uid']) {
+                // If the record has been versioned before (e.g. cascaded parent-child structure), create only the move-placeholders
                 $this->moveRecord_processFields($dataHandler, $resolvedPid, $table, $uid);
             }
         }
@@ -369,8 +376,12 @@ class DataHandlerHook
                 continue;
             }
             $this->moveRecord_processFieldValue(
-                $dataHandler, $resolvedPageId,
-                $table, $uid, $field, $value,
+                $dataHandler,
+                $resolvedPageId,
+                $table,
+                $uid,
+                $field,
+                $value,
                 $GLOBALS['TCA'][$table]['columns'][$field]['config']
             );
         }
@@ -1019,7 +1030,7 @@ class DataHandlerHook
             } else {
                 $this->notifyStageChange($wsAccess, $stageId, $table, $id, $comment, $dataHandler, $notificationAlternativeRecipients);
             }
-                // Write to log with stageId -20
+            // Write to log with stageId -20
             $dataHandler->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
             $dataHandler->log($table, $id, 6, 0, 0, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
 
@@ -1086,14 +1097,16 @@ class DataHandlerHook
         // Update relations for both (workspace/versioning) sites:
         if (count($liveRelations->itemArray)) {
             $dataHandler->addRemapAction(
-                    $tableName, $liveData['uid'],
+                    $tableName,
+                $liveData['uid'],
                     [$this, 'updateInlineForeignFieldSorting'],
                     [$tableName, $liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
             );
         }
         if (count($versionRelations->itemArray)) {
             $dataHandler->addRemapAction(
-                    $tableName, $liveData['uid'],
+                    $tableName,
+                $liveData['uid'],
                     [$this, 'updateInlineForeignFieldSorting'],
                     [$tableName, $liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
             );
@@ -1444,8 +1457,8 @@ class DataHandlerHook
             // Use property for move placeholders if set (since TYPO3 CMS 6.2)
             if (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'])) {
                 $shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'];
-            // Fallback to property for new placeholder (existed long time before TYPO3 CMS 6.2)
             } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'])) {
+                // Fallback to property for new placeholder (existed long time before TYPO3 CMS 6.2)
                 $shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
             }
 

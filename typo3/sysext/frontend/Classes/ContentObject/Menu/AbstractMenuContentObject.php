@@ -345,7 +345,8 @@ abstract class AbstractMenuContentObject
                     }
                     // Add to register:
                     $this->rL_uidRegister[] = 'ITEM:' . $v_rl['uid'] .
-                        (!empty($rl_MParray)
+                        (
+                            !empty($rl_MParray)
                             ? ':' . implode(',', $rl_MParray)
                             : ''
                         );
@@ -387,7 +388,8 @@ abstract class AbstractMenuContentObject
                     $nextMParray[] = $this->tmpl->rootLine[$currentLevel]['_MP_PARAM'];
                 }
                 $this->nextActive = $this->tmpl->rootLine[$currentLevel]['uid'] .
-                    (!empty($nextMParray)
+                    (
+                        !empty($nextMParray)
                         ? ':' . implode(',', $nextMParray)
                         : ''
                     );
@@ -948,9 +950,11 @@ abstract class AbstractMenuContentObject
         // Max number of items
         $limit = MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
         // Start point
-        $eLevel = $this->parent_cObj->getKey(isset($this->conf['special.']['entryLevel.'])
+        $eLevel = $this->parent_cObj->getKey(
+            isset($this->conf['special.']['entryLevel.'])
             ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.'])
-            : $this->conf['special.']['entryLevel'], $this->tmpl->rootLine
+            : $this->conf['special.']['entryLevel'],
+            $this->tmpl->rootLine
         );
         $startUid = (int)$this->tmpl->rootLine[$eLevel]['uid'];
         // Which field is for keywords

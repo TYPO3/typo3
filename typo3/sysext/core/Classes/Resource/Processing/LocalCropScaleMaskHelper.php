@@ -121,9 +121,8 @@ class LocalCropScaleMaskHelper
                     1 => $newDimensions['height'],
                     3 => '' // no file = use original
                 ];
-
-            // all other images
             } else {
+                // all other images
                 // the result info is an array with 0=width,1=height,2=extension,3=filename
                 $result = $gifBuilder->imageMagickConvert(
                     $originalFileName,

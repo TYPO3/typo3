@@ -62,7 +62,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function addElementRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            self::FIELD_ContentElement,
+            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
         );
     }
 
@@ -73,7 +76,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function deleteElementRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            self::FIELD_ContentElement,
+            [self::VALUE_ElementIdFirst]
         );
     }
 
@@ -93,7 +99,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function changeElementRelationSorting()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, self::FIELD_ContentElement, [self::VALUE_ElementIdSecond, self::VALUE_ElementIdFirst]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            self::FIELD_ContentElement,
+            [self::VALUE_ElementIdSecond, self::VALUE_ElementIdFirst]
         );
     }
 
@@ -104,7 +113,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function createContentAndAddElementRelation()
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1', self::FIELD_ContentElement => self::VALUE_ElementIdFirst]
+            self::TABLE_Content,
+            self::VALUE_PageId,
+            ['header' => 'Testing #1', self::FIELD_ContentElement => self::VALUE_ElementIdFirst]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
@@ -224,7 +235,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdLast, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_ContentElement,
+            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
         );
     }
 
@@ -241,7 +255,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
             ['l10n_state' => [self::FIELD_ContentElement => 'source']]
         );
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdLast, self::FIELD_ContentElement, [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_ContentElement,
+            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
         );
     }
 

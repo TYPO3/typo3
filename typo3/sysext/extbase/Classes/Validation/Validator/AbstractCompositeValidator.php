@@ -57,7 +57,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
             throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
         }
 
-            // check for required options being set
+        // check for required options being set
         array_walk(
             $this->supportedOptions,
             function ($supportedOptionData, $supportedOptionName, $options) {
@@ -68,7 +68,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
             $options
         );
 
-            // merge with default values
+        // merge with default values
         $this->options = array_merge(
             array_map(
                 function ($value) {

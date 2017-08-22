@@ -307,8 +307,13 @@ class FrontendUserImageUpdateWizard extends AbstractUpdate
                     );
 
                     $format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-                    $message = sprintf($format, $this->sourcePath . $item, $this->table,
-                        $row['uid'], $this->fieldToMigrate);
+                    $message = sprintf(
+                        $format,
+                        $this->sourcePath . $item,
+                        $this->table,
+                        $row['uid'],
+                        $this->fieldToMigrate
+                    );
                     $customMessage .= PHP_EOL . $message;
                     continue;
                 }

@@ -116,7 +116,8 @@ class AbstractControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
             ->getMock();
         $controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));
 
-        $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
+        $controller = $this->getMockForAbstractClass(
+            \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
             [],
             '',
             false,
@@ -136,7 +137,8 @@ class AbstractControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1243258395);
-        $controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
+        $controller = $this->getMockForAbstractClass(
+            \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
             [],
             '',
             false,

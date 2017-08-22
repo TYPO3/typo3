@@ -381,8 +381,12 @@ class Clipboard
                             $thumb = [];
                             $folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
                             $size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
-                            if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                                    $fileObject->getExtension())
+                            if (
+                                !$folder
+                                && GeneralUtility::inList(
+                                    $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                                    $fileObject->getExtension()
+                                )
                             ) {
                                 $thumb = [
                                     'image' => $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, []),
@@ -390,10 +394,14 @@ class Clipboard
                                 ];
                             }
                             $lines[] = [
-                                'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource($fileObject,
-                                        Icon::SIZE_SMALL)->render() . '</span>',
-                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(),
-                                    $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()),
+                                'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource(
+                                    $fileObject,
+                                    Icon::SIZE_SMALL
+                                )->render() . '</span>',
+                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+                                    $fileObject->getName(),
+                                    $this->getBackendUser()->uc['titleLen']
+                                )), $fileObject->getName()),
                                 'thumb' => $thumb,
                                 'infoLink' => htmlspecialchars('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($v) . '); return false;'),
                                 'removeLink' => $this->removeUrl('_FILE', GeneralUtility::shortMD5($v))
@@ -408,10 +416,15 @@ class Clipboard
                         $rec = BackendUtility::getRecordWSOL($table, $uid);
                         if (is_array($rec)) {
                             $lines[] = [
-                                'icon' => $this->linkItemText($this->iconFactory->getIconForRecord($table, $rec,
-                                    Icon::SIZE_SMALL)->render(), $rec, $table),
-                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table,
-                                    $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table),
+                                'icon' => $this->linkItemText($this->iconFactory->getIconForRecord(
+                                    $table,
+                                    $rec,
+                                    Icon::SIZE_SMALL
+                                )->render(), $rec, $table),
+                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
+                                    $table,
+                                    $rec
+                                ), $this->getBackendUser()->uc['titleLen'])), $rec, $table),
                                 'infoLink' => htmlspecialchars('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', \'' . (int)$uid . '\'); return false;'),
                                 'removeLink' => $this->removeUrl($table, $uid)
                             ];

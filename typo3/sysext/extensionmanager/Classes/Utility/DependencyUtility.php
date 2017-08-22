@@ -517,7 +517,9 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $versions = $this->getLowestAndHighestIntegerVersions($dependency);
         $count = $this->extensionRepository->countByVersionRangeAndExtensionKey(
-            $dependency->getIdentifier(), $versions['lowestIntegerVersion'], $versions['highestIntegerVersion']
+            $dependency->getIdentifier(),
+            $versions['lowestIntegerVersion'],
+            $versions['highestIntegerVersion']
         );
         return !empty($count);
     }

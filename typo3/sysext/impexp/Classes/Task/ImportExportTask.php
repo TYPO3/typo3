@@ -118,7 +118,8 @@ class ImportExportTask implements TaskInterface
                     }
                     // Owner
                     $description[] = $lang->getLL('task.owner') . ': '
-                                     . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid']
+                                     . (
+                                         $presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid']
                             ? $lang->getLL('task.own')
                             : '[' . htmlspecialchars($usernames[$presetCfg['user_uid']]['username']) . ']'
                                      );
@@ -126,7 +127,8 @@ class ImportExportTask implements TaskInterface
                     if ($configuration['pagetree']['id']) {
                         $description[] = $lang->getLL('task.page') . ': ' . $configuration['pagetree']['id'];
                         $description[] = $lang->getLL('task.path') . ': ' . htmlspecialchars(
-                                BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20));
+                                BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20)
+                        );
                     } else {
                         $description[] = $lang->getLL('single-record');
                     }

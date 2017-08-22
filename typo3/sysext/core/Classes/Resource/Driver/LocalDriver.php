@@ -1144,7 +1144,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             throw new \RuntimeException(
                 sprintf(
                     'Creating filename mapping after renaming "%1$s" to "%2$s" failed. Reverted rename operation.\\n\\nOriginal error: %3$s"',
-                    $sourcePath, $targetPath, $e->getMessage()
+                    $sourcePath,
+                    $targetPath,
+                    $e->getMessage()
                 ),
                 1334160746
             );

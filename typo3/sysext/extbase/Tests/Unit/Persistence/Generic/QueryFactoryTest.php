@@ -47,7 +47,8 @@ class QueryFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
 
         $this->queryFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class, ['dummy']);
-        $this->queryFactory->_set('configurationManager',
+        $this->queryFactory->_set(
+            'configurationManager',
             $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class)
         );
 

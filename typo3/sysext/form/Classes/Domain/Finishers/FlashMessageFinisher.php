@@ -89,8 +89,12 @@ class FlashMessageFinisher extends AbstractFinisher
                 break;
         }
 
-        $flashMessage = $this->objectManager->get(FlashMessage::class,
-            $message->render(), $message->getTitle(), $severity, true
+        $flashMessage = $this->objectManager->get(
+            FlashMessage::class,
+            $message->render(),
+            $message->getTitle(),
+            $severity,
+            true
         );
 
         $this->finisherContext->getControllerContext()->getFlashMessageQueue()->addMessage($flashMessage);

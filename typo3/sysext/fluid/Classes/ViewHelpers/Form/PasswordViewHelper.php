@@ -44,16 +44,24 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
     {
         parent::initializeArguments();
         $this->registerTagAttribute(
-            'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+            'disabled',
+            'string',
+            'Specifies that the input element should be disabled when the page loads'
         );
         $this->registerTagAttribute(
-            'maxlength', 'int', 'The maxlength attribute of the input field (will not be validated)'
+            'maxlength',
+            'int',
+            'The maxlength attribute of the input field (will not be validated)'
         );
         $this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textfield');
         $this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
         $this->registerTagAttribute('size', 'int', 'The size of the input field');
         $this->registerArgument(
-            'errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error'
+            'errorClass',
+            'string',
+            'CSS class to set if there are errors for this view helper',
+            false,
+            'f3-form-error'
         );
         $this->registerUniversalTagAttributes();
     }

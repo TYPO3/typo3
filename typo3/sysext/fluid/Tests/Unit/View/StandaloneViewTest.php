@@ -106,7 +106,10 @@ class StandaloneViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
         $this->view = $this->getAccessibleMock(
             \TYPO3\CMS\Fluid\View\StandaloneView::class,
-            ['testFileExistence', 'buildParserConfiguration', 'getOrParseAndStoreTemplate'], [], '', false
+            ['testFileExistence', 'buildParserConfiguration', 'getOrParseAndStoreTemplate'],
+            [],
+            '',
+            false
         );
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);

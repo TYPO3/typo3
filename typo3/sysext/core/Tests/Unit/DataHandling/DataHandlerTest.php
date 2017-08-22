@@ -492,7 +492,10 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $result = $this->callInaccessibleMethod(
             $this->subject,
             'isSubmittedValueEqualToStoredValue',
-            $submittedValue, $storedValue, $storedType, $allowNull
+            $submittedValue,
+            $storedValue,
+            $storedType,
+            $allowNull
         );
         $this->assertEquals($expected, $result);
     }

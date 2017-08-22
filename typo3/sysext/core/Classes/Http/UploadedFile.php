@@ -137,7 +137,7 @@ class UploadedFile implements UploadedFileInterface
         return $this->stream;
     }
 
-     /**
+    /**
      * Move the uploaded file to a new location.
      *
      * Use this method as an alternative to move_uploaded_file(). This method is

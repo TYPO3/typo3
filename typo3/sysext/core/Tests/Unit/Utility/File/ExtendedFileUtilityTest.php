@@ -56,7 +56,8 @@ class ExtendedFileUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
             ->getMock();
         $folder->expects($this->once())
             ->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)
-            ->will($this->returnValue([$file])
+            ->will(
+                $this->returnValue([$file])
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */

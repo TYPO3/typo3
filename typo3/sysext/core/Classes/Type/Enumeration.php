@@ -81,7 +81,8 @@ abstract class Enumeration implements TypeInterface
         if (empty($constants)) {
             throw new Exception\InvalidEnumerationValueException(
                 sprintf(
-                    'No constants defined in enumeration "%s"', $class
+                    'No constants defined in enumeration "%s"',
+                    $class
                 ),
                 1381512807
             );

@@ -109,9 +109,11 @@ class RenameFileController extends AbstractModule
             $parsedUrl = parse_url($this->returnUrl);
             $queryParts = GeneralUtility::explodeUrl2Array(urldecode($parsedUrl['query']));
             if ($queryParts['id'] === $this->fileOrFolderObject->getCombinedIdentifier()) {
-                $this->returnUrl = str_replace(urlencode($queryParts['id']),
+                $this->returnUrl = str_replace(
+                    urlencode($queryParts['id']),
                     urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()),
-                    $this->returnUrl);
+                    $this->returnUrl
+                );
             }
         }
 

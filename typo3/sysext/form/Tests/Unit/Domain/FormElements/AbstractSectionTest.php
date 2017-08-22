@@ -29,8 +29,14 @@ class AbstractSectionTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function createElementThrowsExceptionIfTypeDefinitionNotFound()
     {
-        $mockAbstractSection = $this->getAccessibleMockForAbstractClass(AbstractSection::class,
-            [], '', false, true, true, [
+        $mockAbstractSection = $this->getAccessibleMockForAbstractClass(
+            AbstractSection::class,
+            [],
+            '',
+            false,
+            true,
+            true,
+            [
                 'getRootForm',
             ]
         );

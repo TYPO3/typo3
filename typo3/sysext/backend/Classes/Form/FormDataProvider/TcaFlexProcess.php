@@ -481,9 +481,8 @@ class TcaFlexProcess implements FormDataProviderInterface
                             ['sheets'][$dataStructureSheetName]['ROOT']['el']
                             [$dataStructureFieldName]['children'] = [];
                     }
-
-                // A "normal" TCA flex form element, no section
                 } else {
+                    // A "normal" TCA flex form element, no section
                     if (isset($dataValues['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName])
                         && array_key_exists('vDEF', $dataValues['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName])
                     ) {

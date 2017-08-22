@@ -54,7 +54,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements AdditionalFieldPro
             $taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
             $taskInfo[$this->fieldPrefix . 'NotificationAll'] = $task->getNotificationAll();
         }
-            // build html for additional email field
+        // build html for additional email field
         $fieldName = $this->getFullFieldName('notificationEmail');
         $fieldId = 'task_' . $fieldName;
         $fieldHtml = '<textarea class="form-control" ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';

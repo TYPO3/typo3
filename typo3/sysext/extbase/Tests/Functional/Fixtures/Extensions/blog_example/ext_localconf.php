@@ -2,14 +2,16 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'ExtbaseTeam.' . $_EXTKEY, 'Blogs',
+    'ExtbaseTeam.' . $_EXTKEY,
+    'Blogs',
     [
         'Blog' => 'list',
     ],
     []
 );
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'ExtbaseTeam.' . $_EXTKEY, 'Content',
+    'ExtbaseTeam.' . $_EXTKEY,
+    'Content',
     [
         'Content' => 'list',
     ],

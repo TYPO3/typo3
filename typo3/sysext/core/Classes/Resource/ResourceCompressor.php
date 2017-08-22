@@ -122,7 +122,8 @@ class ResourceCompressor
             if (
                 !isset($options['baseDirectories'])
                 || $this->checkBaseDirectory(
-                    $filenameFromMainDir, array_merge($options['baseDirectories'], [$this->targetDirectory])
+                    $filenameFromMainDir,
+                    array_merge($options['baseDirectories'], [$this->targetDirectory])
                 )
             ) {
                 $type = isset($fileOptions['media']) ? strtolower($fileOptions['media']) : 'all';
@@ -674,7 +675,8 @@ class ResourceCompressor
         // There are different conditions for removing leading and trailing
         // whitespace.
         // @see http://php.net/manual/regexp.reference.subpatterns.php
-        $contents = preg_replace('<
+        $contents = preg_replace(
+            '<
 				# Strip leading and trailing whitespace.
 				\s*([@{};,])\s*
 				# Strip only leading whitespace from:

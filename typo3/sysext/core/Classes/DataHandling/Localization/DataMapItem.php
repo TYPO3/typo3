@@ -269,14 +269,14 @@ class DataMapItem
             // implicit: default language, it's a parent
             if ($this->language === 0) {
                 $this->type = static::TYPE_PARENT;
-            // implicit: having source value different to parent value, it's a 2nd or higher level translation
             } elseif (
+                // implicit: having source value different to parent value, it's a 2nd or higher level translation
                 $this->source !== null
                 && $this->source !== $this->parent
             ) {
                 $this->type = static::TYPE_GRAND_CHILD;
-            // implicit: otherwise, it's a 1st level translation
             } else {
+                // implicit: otherwise, it's a 1st level translation
                 $this->type = static::TYPE_DIRECT_CHILD;
             }
         }
@@ -454,14 +454,14 @@ class DataMapItem
                 $this->tableName,
                 $this->persistedValues['l10n_state'] ?? null
             );
-        // use provided states for a new and copied element
         } elseif (is_string($this->suggestedValues['l10n_state'] ?? null)) {
+            // use provided states for a new and copied element
             $state = State::fromJSON(
                 $this->tableName,
                 $this->suggestedValues['l10n_state']
             );
-        // provide the default states
         } else {
+            // provide the default states
             $state = State::create($this->tableName);
         }
         // switch "custom" to "source" state for 2nd level translations

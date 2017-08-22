@@ -53,8 +53,8 @@ abstract class CoreUpdateAbstract extends AbstractAjaxAction
         JsonView $view = null,
         CoreUpdateService $coreUpdateService = null,
         StatusUtility $statusUtility = null,
-        CoreVersionService $coreVersionService = null)
-    {
+        CoreVersionService $coreVersionService = null
+    ) {
         parent::__construct($view);
         $this->coreUpdateService = $coreUpdateService ?: GeneralUtility::makeInstance(CoreUpdateService::class);
         $this->statusUtility = $statusUtility ?: GeneralUtility::makeInstance(StatusUtility::class);

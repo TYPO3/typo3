@@ -323,7 +323,8 @@ class ConfigurationManager
         $localConfigurationFile = $this->getLocalConfigurationFileLocation();
         if (!$this->canWriteConfiguration()) {
             throw new \RuntimeException(
-                $localConfigurationFile . ' is not writable.', 1346323822
+                $localConfigurationFile . ' is not writable.',
+                1346323822
             );
         }
         $configuration = ArrayUtility::sortByKeyRecursive($configuration);

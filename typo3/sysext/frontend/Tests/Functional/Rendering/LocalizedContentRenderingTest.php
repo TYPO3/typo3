@@ -222,12 +222,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 0);
         $responseSections = $frontendResponse->getResponseSections();
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -385,12 +389,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 1);
         $responseSections = $frontendResponse->getResponseSections();
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -595,12 +603,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 2);
         if ($status === Response::STATUS_Success) {
             $responseSections = $frontendResponse->getResponseSections();
-            $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            $this->assertThat(
+                $responseSections,
+                $this->getRequestSectionHasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
             );
-            $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            $this->assertThat(
+                $responseSections,
+                $this->getRequestSectionDoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
@@ -761,12 +773,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         $this->assertEquals('success', $frontendResponse->getStatus());
         $responseSections = $frontendResponse->getResponseSections();
 
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+        $this->assertThat(
+            $responseSections,
+            $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))

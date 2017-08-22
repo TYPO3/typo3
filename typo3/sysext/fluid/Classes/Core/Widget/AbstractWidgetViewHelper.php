@@ -94,8 +94,13 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('customWidgetId', 'string', 'extend the widget identifier with a custom widget id',
-            false, null);
+        $this->registerArgument(
+            'customWidgetId',
+            'string',
+            'extend the widget identifier with a custom widget id',
+            false,
+            null
+        );
     }
 
     /**
@@ -172,7 +177,9 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
                 'initiateSubRequest() can not be called if there is no valid controller extending ' .
                 'TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController' .
                 ' Got "' . ($this->controller ? get_class($this->controller) : gettype($this->controller)) .
-                '" in class "' . get_class($this) . '".', 1289422564);
+                '" in class "' . get_class($this) . '".',
+                1289422564
+            );
         }
         $subRequest = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
         $subRequest->setWidgetContext($this->widgetContext);

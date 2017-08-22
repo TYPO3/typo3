@@ -70,9 +70,8 @@ class RequestHandler implements RequestHandlerInterface
         // Check if the router has the available route and dispatch.
         try {
             return $this->dispatch($request);
-
-        // When token was invalid redirect to login
         } catch (InvalidRequestTokenException $e) {
+            // When token was invalid redirect to login
             $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
         }

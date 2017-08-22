@@ -181,8 +181,8 @@ class MetaInformation
             $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
-        // If the module is about a FAL resource
         } elseif (is_array($pageRecord) && !empty($pageRecord['combined_identifier'])) {
+            // If the module is about a FAL resource
             try {
                 $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'];

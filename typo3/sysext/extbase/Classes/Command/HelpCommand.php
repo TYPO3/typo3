@@ -65,9 +65,8 @@ class HelpCommand extends \Symfony\Component\Console\Command\HelpCommand
             $_SERVER['argv'][1] = 'extbase:help:help';
             $bootstrap = GeneralUtility::makeInstance(Bootstrap::class);
             $bootstrap->run('', []);
-
-        // An extbase command was originally called, but is now required to show the help information
         } elseif ($this->command instanceof ExtbaseCommand) {
+            // An extbase command was originally called, but is now required to show the help information
             // Ugly hack to modify 'argv' so the help command for a specific command is shown
             $args = [$_SERVER['argv'][0], 'help'];
             foreach ($_SERVER['argv'] as $k => $value) {

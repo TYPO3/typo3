@@ -443,8 +443,8 @@ class RelationHandler
                 foreach ($this->itemArray as &$item) {
                     $item['id'] = $this->getLiveDefaultId($item['table'], $item['id']);
                 }
-            // Directly overlay workspace data
             } else {
+                // Directly overlay workspace data
                 $this->itemArray = [];
                 $foreignTable = $configuration['foreign_table'];
                 $ids = $this->getResolver($foreignTable, $this->tableArray[$foreignTable])->get();
@@ -1385,8 +1385,8 @@ class RelationHandler
         // Ensure, only live relations are in the items Array
         if ($workspaceId === 0) {
             $purgeCallback = 'purgeVersionedIds';
-        // Otherwise, ensure that live relations are purged if version exists
         } else {
+            // Otherwise, ensure that live relations are purged if version exists
             $purgeCallback = 'purgeLiveVersionedIds';
         }
 

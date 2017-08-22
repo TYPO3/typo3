@@ -170,14 +170,14 @@ class LanguageService
         if (strpos($input, 'LLL:') === 0) {
             $restStr = trim(substr($input, 4));
             $extPrfx = '';
-                // ll-file referred to is found in an extension.
+            // ll-file referred to is found in an extension.
             if (strpos($restStr, 'EXT:') === 0) {
                 $restStr = trim(substr($restStr, 4));
                 $extPrfx = 'EXT:';
             }
             $parts = explode(':', $restStr);
             $parts[0] = $extPrfx . $parts[0];
-                // Getting data if not cached
+            // Getting data if not cached
             if (!isset($this->LL_files_cache[$parts[0]])) {
                 $this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
             }
@@ -201,31 +201,31 @@ class LanguageService
     public function loadSingleTableDescription($table)
     {
         // First the 'table' cannot already be loaded in [columns]
-            // and secondly there must be a references to locallang files available in [refs]
+        // and secondly there must be a references to locallang files available in [refs]
         if (is_array($GLOBALS['TCA_DESCR'][$table]) && !isset($GLOBALS['TCA_DESCR'][$table]['columns']) && is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
             // Init $TCA_DESCR for $table-key
             $GLOBALS['TCA_DESCR'][$table]['columns'] = [];
-                // Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
+            // Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
             foreach ($GLOBALS['TCA_DESCR'][$table]['refs'] as $llfile) {
                 $localLanguage = $this->includeLLFile($llfile, false, true);
-                    // Traverse all keys
+                // Traverse all keys
                 if (is_array($localLanguage['default'])) {
                     foreach ($localLanguage['default'] as $lkey => $lVal) {
                         // Exploding by '.':
-                            // 0-n => fieldname,
-                            // n+1 => type from (alttitle, description, details, syntax, image_descr,image,seeAlso),
-                            // n+2 => special instruction, if any
+                        // 0-n => fieldname,
+                        // n+1 => type from (alttitle, description, details, syntax, image_descr,image,seeAlso),
+                        // n+2 => special instruction, if any
                         $keyParts = explode('.', $lkey);
                         $keyPartsCount = count($keyParts);
-                            // Check if last part is special instruction
-                            // Only "+" is currently supported
+                        // Check if last part is special instruction
+                        // Only "+" is currently supported
                         $specialInstruction = $keyParts[$keyPartsCount - 1] === '+';
                         if ($specialInstruction) {
                             array_pop($keyParts);
                         }
-                            // If there are more than 2 parts, get the type from the last part
-                            // and merge back the other parts with a dot (.)
-                            // Otherwise just get type and field name straightaway
+                        // If there are more than 2 parts, get the type from the last part
+                        // and merge back the other parts with a dot (.)
+                        // Otherwise just get type and field name straightaway
                         if ($keyPartsCount > 2) {
                             $type = array_pop($keyParts);
                             $fieldName = implode('.', $keyParts);
@@ -233,14 +233,14 @@ class LanguageService
                             $fieldName = $keyParts[0];
                             $type = $keyParts[1];
                         }
-                            // Detecting 'hidden' labels, converting to normal fieldname
+                        // Detecting 'hidden' labels, converting to normal fieldname
                         if ($fieldName === '_') {
                             $fieldName = '';
                         }
                         if ($fieldName !== '' && $fieldName[0] === '_') {
                             $fieldName = substr($fieldName, 1);
                         }
-                            // Append label
+                        // Append label
                         $label = $lVal[0]['target'] ? :
                             $lVal[0]['source'];
                         if ($specialInstruction) {
@@ -267,7 +267,7 @@ class LanguageService
     public function includeLLFile($fileRef, $setGlobal = true, $mergeLocalOntoDefault = false)
     {
         $globalLanguage = [];
-            // Get default file
+        // Get default file
         $localLanguage = $this->readLLfile($fileRef);
         if (is_array($localLanguage) && !empty($localLanguage)) {
             // it depends on, whether we should return the result or set it in the global $LOCAL_LANG array
@@ -277,15 +277,15 @@ class LanguageService
             } else {
                 $globalLanguage = $localLanguage;
             }
-                // Merge local onto default
+            // Merge local onto default
             if ($mergeLocalOntoDefault && $this->lang !== 'default' && is_array($globalLanguage[$this->lang]) && is_array($globalLanguage['default'])) {
                 // array_merge can be used so far the keys are not
-                    // numeric - which we assume they are not...
+                // numeric - which we assume they are not...
                 $globalLanguage['default'] = array_merge($globalLanguage['default'], $globalLanguage[$this->lang]);
                 unset($globalLanguage[$this->lang]);
             }
         }
-            // Return value if not global is set.
+        // Return value if not global is set.
         if (!$setGlobal) {
             return $globalLanguage;
         } else {
@@ -323,7 +323,7 @@ class LanguageService
             }
             if ($this->lang !== 'default' && isset($tempLL[$language])) {
                 // Merge current language labels onto labels from previous language
-                    // This way we have a labels with fall back applied
+                // This way we have a labels with fall back applied
                 ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
             }
         }

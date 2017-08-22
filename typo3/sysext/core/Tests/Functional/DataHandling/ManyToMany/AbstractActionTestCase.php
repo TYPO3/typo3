@@ -63,7 +63,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function addCategoryRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, 31]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            'categories',
+            [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, 31]
         );
     }
 
@@ -74,7 +77,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function deleteCategoryRelation()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdFirst]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            'categories',
+            [self::VALUE_CategoryIdFirst]
         );
     }
 
@@ -85,7 +91,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     public function changeCategoryRelationSorting()
     {
         $this->actionService->modifyReferences(
-            self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst]
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            'categories',
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst]
         );
     }
 

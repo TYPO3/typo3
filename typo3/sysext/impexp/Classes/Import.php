@@ -469,7 +469,8 @@ class Import extends ImportExport
             if (!in_array($fileReferenceRecord['uid_local'], $this->import_mapId['sys_file'])) {
                 unset($this->dat['header']['records']['sys_file_reference'][$sysFileReferenceUid]);
                 unset($this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]);
-                $this->error('Error: sys_file_reference record ' . (int)$sysFileReferenceUid
+                $this->error(
+                    'Error: sys_file_reference record ' . (int)$sysFileReferenceUid
                              . ' with relation to sys_file record ' . (int)$fileReferenceRecord['uid_local']
                              . ', which is not part of the import data, was not imported.'
                 );

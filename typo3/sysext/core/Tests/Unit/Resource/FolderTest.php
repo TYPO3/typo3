@@ -89,7 +89,8 @@ class FolderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function getFilesReturnsArrayWithFilenamesAsKeys()
     {
         $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
-        $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue([
+        $mockedStorage->expects($this->once())->method('getFilesInFolder')->will($this->returnValue(
+            [
                 'somefile.png' => [
                     'name' => 'somefile.png'
                 ],

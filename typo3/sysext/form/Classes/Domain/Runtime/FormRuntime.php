@@ -560,7 +560,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function invokeFinishers()
     {
-        $finisherContext = $this->objectManager->get(FinisherContext::class,
+        $finisherContext = $this->objectManager->get(
+            FinisherContext::class,
             $this,
             $this->getControllerContext()
         );

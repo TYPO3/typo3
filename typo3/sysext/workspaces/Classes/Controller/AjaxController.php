@@ -43,8 +43,12 @@ class AjaxController
         $this->getBackendUser()->setWorkspace($workspaceId);
 
         while ($pageId) {
-            $page = BackendUtility::getRecordWSOL('pages', $pageId, '*',
-                ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')');
+            $page = BackendUtility::getRecordWSOL(
+                'pages',
+                $pageId,
+                '*',
+                ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')'
+            );
             if ($page) {
                 if ($this->getBackendUser()->doesUserHaveAccess($page, 1)) {
                     break;

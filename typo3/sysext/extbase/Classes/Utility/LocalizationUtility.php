@@ -86,7 +86,8 @@ class LocalizationUtility
         } else {
             if (empty($extensionName)) {
                 throw new \InvalidArgumentException(
-                    'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.', 1498144052
+                    'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.',
+                    1498144052
                 );
             }
             self::initializeLocalization($extensionName);

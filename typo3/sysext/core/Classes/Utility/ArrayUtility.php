@@ -36,7 +36,8 @@ class ArrayUtility
                     'The options "%s" were not allowed (allowed were: "%s")',
                     implode(', ', $notAllowedArrayKeys),
                     implode(', ', $allowedArrayKeys)
-                ), 1325697085
+                ),
+                1325697085
             );
         }
     }

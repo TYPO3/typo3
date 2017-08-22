@@ -1591,7 +1591,9 @@ class QueryGenerator
         } else {
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-        $fieldList = GeneralUtility::trimExplode(',', $this->extFieldLists['queryFields']
+        $fieldList = GeneralUtility::trimExplode(
+            ',',
+            $this->extFieldLists['queryFields']
             . ',pid'
             . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '')
         );

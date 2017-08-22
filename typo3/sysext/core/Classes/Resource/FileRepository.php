@@ -114,7 +114,11 @@ class FileRepository extends AbstractRepository
             /** @var $relationHandler RelationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->start(
-                '', 'sys_file_reference', '', $uid, $tableName,
+                '',
+                'sys_file_reference',
+                '',
+                $uid,
+                $tableName,
                 BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
             );
             if (!empty($relationHandler->tableArray['sys_file_reference'])) {

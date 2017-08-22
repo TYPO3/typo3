@@ -273,14 +273,13 @@ class NewContentElementController extends AbstractModule
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
 
                     $this->menuItemView->assignMultiple([
-                            'onClickEvent' => $this->onClickEvent,
-                            'aOnClick' => $aOnClick,
-                            'wizardInformation' => $wInfo,
-                            'icon' => $icon,
-                            'wizardOnClick' => $wizardOnClick,
-                            'wizardKey' => $wizardKey
-                        ]
-                    );
+                        'onClickEvent' => $this->onClickEvent,
+                        'aOnClick' => $aOnClick,
+                        'wizardInformation' => $wInfo,
+                        'icon' => $icon,
+                        'wizardOnClick' => $wizardOnClick,
+                        'wizardKey' => $wizardKey
+                    ]);
                     $menuItems[$key]['content'] .= $this->menuItemView->render();
                     $cc++;
                 }

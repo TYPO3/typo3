@@ -87,7 +87,8 @@ class UserStorageCapabilityService
 			</div>
 		</div>';
 
-        $content = sprintf($template,
+        $content = sprintf(
+            $template,
             $isPublic ? 'checked="checked"' : ''
         );
 

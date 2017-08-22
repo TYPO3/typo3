@@ -90,7 +90,8 @@ class Upgrade extends AbstractAction
             ->from('sys_registry')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'entry_namespace', $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles', \PDO::PARAM_STR)
+                    'entry_namespace',
+                    $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles', \PDO::PARAM_STR)
                 )
             )
             ->execute()
@@ -105,7 +106,8 @@ class Upgrade extends AbstractAction
             ->from('sys_registry')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'entry_namespace', $queryBuilder->createNamedParameter('extensionScannerNotAffected', \PDO::PARAM_STR)
+                    'entry_namespace',
+                    $queryBuilder->createNamedParameter('extensionScannerNotAffected', \PDO::PARAM_STR)
                 )
             )
             ->execute()

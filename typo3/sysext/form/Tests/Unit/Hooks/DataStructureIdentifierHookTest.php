@@ -54,7 +54,11 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     {
         $givenIdentifier = ['aKey' => 'aValue'];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
-            [], 'aTable', 'aField', [], $givenIdentifier
+            [],
+            'aTable',
+            'aField',
+            [],
+            $givenIdentifier
         );
         $this->assertEquals($givenIdentifier, $result);
     }
@@ -65,7 +69,11 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
     public function getDataStructureIdentifierPostProcessAddDefaultValuesForNewRecord()
     {
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
-            [], 'tt_content', 'pi_flexform', ['CType' => 'form_formframework'], []
+            [],
+            'tt_content',
+            'pi_flexform',
+            ['CType' => 'form_formframework'],
+            []
         );
         $this->assertEquals(
             ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => false],
@@ -103,7 +111,11 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
             'ext-form-overrideFinishers' => false,
         ];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
-            [], 'tt_content', 'pi_flexform', $row, $incomingIdentifier
+            [],
+            'tt_content',
+            'pi_flexform',
+            $row,
+            $incomingIdentifier
         );
         $this->assertEquals($expected, $result);
     }
@@ -134,7 +146,11 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
             'ext-form-overrideFinishers' => true,
         ];
         $result = (new DataStructureIdentifierHook())->getDataStructureIdentifierPostProcess(
-            [], 'tt_content', 'pi_flexform', $row, []
+            [],
+            'tt_content',
+            'pi_flexform',
+            $row,
+            []
         );
         $this->assertEquals($expected, $result);
     }
@@ -147,7 +163,8 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
         $dataStructure = ['foo' => 'bar'];
         $expected = $dataStructure;
         $result = (new DataStructureIdentifierHook())->parseDataStructureByIdentifierPostProcess(
-            $dataStructure, []
+            $dataStructure,
+            []
         );
         $this->assertEquals($expected, $result);
     }
