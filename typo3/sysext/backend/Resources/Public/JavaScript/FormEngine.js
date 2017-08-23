@@ -1013,12 +1013,10 @@ define(['jquery',
 		}).each(function () {
 			var $group = $(this).closest('.t3js-form-field-inputlink'),
 				$inputField = $group.find(inputFieldClass),
-				$explanationField = $group.find(explanationClass),
-				explanationShown;
-			explanationShown = !$explanationField.hasClass('hidden');
-			$explanationField.toggleClass('hidden', explanationShown);
-			$inputField.toggleClass('hidden', !explanationShown);
-			$group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
+				$explanationField = $group.find(explanationClass);
+			$explanationField.toggleClass('hidden', true);
+			$inputField.toggleClass('hidden', false);
+			$group.find('.form-control-clearable button.close').toggleClass('hidden', false)
 		});
 
 		$(document).on('click', toggleClass, function (e) {
