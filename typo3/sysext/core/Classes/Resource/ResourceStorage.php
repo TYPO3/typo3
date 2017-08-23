@@ -1301,7 +1301,8 @@ class ResourceStorage implements ResourceStorageInterface
                     }
 
                     $queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
-                    $publicUrl = PathUtility::getAbsoluteWebPath('index.php') . '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
+                    $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(PATH_site . 'index.php'));
+                    $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
                 }
 
                 // If requested, make the path relative to the current script in order to make it possible

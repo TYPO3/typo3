@@ -95,11 +95,6 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
             $uriPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         }
 
-        // Prevent double / when concatenating $uriPrefix and $imageUrl
-        if ($imageUrl[0] === '/') {
-            $uriPrefix = rtrim($uriPrefix, '/');
-        }
-
         if ($absolute) {
             // If full URL has no scheme we add the same scheme as used by the site
             // so we have an absolute URL also usable outside of browser scope (e.g. in an email message)
