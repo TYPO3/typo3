@@ -159,10 +159,10 @@
 				<table class="table table-striped">
 					<tr>
 						<td>
-							{imageConfiguration.processor} enabled:
+							{imageProcessingProcessor} enabled:
 						</td>
 						<td>
-							{f:if(condition:imageConfiguration.processorEnabled, then:'Yes', else:'No')}
+							{f:if(condition:imageProcessingEnabled, then:'Yes', else:'No')}
 						</td>
 					</tr>
 					<tr>
@@ -170,31 +170,31 @@
 							ImageMagick or GraphicsMagick:
 						</td>
 						<td>
-							{imageConfiguration.processor}
+							{imageProcessingProcessor}
 						</td>
 					</tr>
 					<tr>
 						<td>
-							{imageConfiguration.processor} path:
+							{imageProcessingProcessor} path:
 						</td>
 						<td>
-							{imageConfiguration.processorPath}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							{imageConfiguration.processor} version:
-						</td>
-						<td>
-							{imageConfiguration.processorVersion}
+							{imageProcessingPath}
 						</td>
 					</tr>
 					<tr>
 						<td>
-							{imageConfiguration.processor} effects enabled:
+							{imageProcessingProcessor} version:
 						</td>
 						<td>
-							{imageConfiguration.processorEffects} <span>(Blurring/Sharpening with {imageConfiguration.processor})</span>
+							{imageProcessingVersion}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{imageProcessingProcessor} effects enabled:
+						</td>
+						<td>
+							{imageProcessingEffects} <span>(Blurring/Sharpening with {imageProcessingProcessor})</span>
 						</td>
 					</tr>
 					<tr>
@@ -202,7 +202,7 @@
 							GDLib enabled:
 						</td>
 						<td>
-							{f:if(condition:imageConfiguration.gdlibEnabled, then:'Yes', else:'No')}
+							{f:if(condition:imageProcessingGdlibEnabled, then:'Yes', else:'No')}
 						</td>
 					</tr>
 					<tr>
@@ -210,15 +210,7 @@
 							GDLib using PNG:
 						</td>
 						<td>
-							{imageConfiguration.gdlibPng}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Freetype DPI:
-						</td>
-						<td>
-							{imageConfiguration.freeTypeDpi} <span>(Should be 96 for Freetype 2)</span>
+							{f:if(condition:imageProcessingGdlibPng, then:'Yes', else:'No')}
 						</td>
 					</tr>
 					<tr>
@@ -226,7 +218,7 @@
 							File Formats:
 						</td>
 						<td>
-							{imageConfiguration.fileFormats}
+							{imageProcessingFileFormats}
 						</td>
 					</tr>
 				</table>

@@ -41,8 +41,15 @@ class Environment extends Action\AbstractAction
             'folderStructureFilePermissionStatus' => $permissionCheck->getMaskStatus('fileCreateMask'),
             'folderStructureDirectoryPermissionStatus' => $permissionCheck->getMaskStatus('folderCreateMask'),
 
-            'imageProcessingConfiguration' => $this->getImageConfiguration(),
             'imageProcessingToken' => $formProtection->generateToken('installTool', 'imageProcessing'),
+            'imageProcessingProcessor' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick',
+            'imageProcessingEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'],
+            'imageProcessingPath' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'],
+            'imageProcessingVersion' => $this->determineImageMagickVersion(),
+            'imageProcessingEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
+            'imageProcessingGdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
+            'imageProcessingGdlibPng' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'],
+            'imageProcessingFileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
 
             'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
             'mailTestSenderAddress' => $this->getSenderEmailAddress(),
@@ -55,25 +62,6 @@ class Environment extends Action\AbstractAction
     }
 
     /**
-     * Gather image configuration overview
-     *
-     * @return array Result array
-     */
-    protected function getImageConfiguration(): array
-    {
-        return [
-            'processor' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick',
-            'processorEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'],
-            'processorPath' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'],
-            'processorVersion' => $this->determineImageMagickVersion(),
-            'processorEffects' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'],
-            'gdlibEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'],
-            'gdlibPng' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'],
-            'fileFormats' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-        ];
-    }
-
-    /**
      * Determine ImageMagick / GraphicsMagick version
      *
      * @return string Version
@@ -83,9 +71,13 @@ class Environment extends Action\AbstractAction
         $command = CommandUtility::imageMagickCommand('identify', '-version');
         CommandUtility::exec($command, $result);
         $string = $result[0];
-        list(, $version) = explode('Magick', $string);
-        list($version) = explode(' ', trim($version));
-        return trim($version);
+        $version = '';
+        if (!empty($string)) {
+            list(, $version) = explode('Magick', $string);
+            list($version) = explode(' ', trim($version));
+            $version = trim($version);
+        }
+        return $version;
     }
 
     /**
