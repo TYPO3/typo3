@@ -25,7 +25,7 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
-		selectorGridderOpener: '.t3js-upgradeWizards-open',
+		selectorGridderOpener: 't3js-upgradeWizards-open',
 		selectorMarkUndoneToken: '#t3js-upgradeWizards-markUndone-token',
 		selectorOutputWizardsContainer: '.t3js-upgradeWizards-wizards-output',
 		selectorOutputDoneContainer: '.t3js-upgradeWizards-done-output',
@@ -58,10 +58,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 			var self = this;
 
 			// Load main content on first open
-			$(document).on('click', this.selectorGridderOpener, function(event) {
-				var $element = $(event.target).closest(self.selectorGridderOpener);
-				if (!$element.data('upgradeWizardInitialized')) {
-					$element.data('upgradeWizardInitialized', true);
+			// Load main content on first open
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
+					$card.data('isInitialized', true);
 					self.silentUpgrades();
 					self.doneUpgrades();
 				}

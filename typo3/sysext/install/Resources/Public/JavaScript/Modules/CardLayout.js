@@ -101,6 +101,7 @@ define(['jquery', 'bootstrap'], function ($) {
 			}
 			CardLayout.checkNavigationButtons();
 		});
+		$(document).trigger('cardlayout:card-opened', [$element]);
 	};
 
 	/**
@@ -125,6 +126,7 @@ define(['jquery', 'bootstrap'], function ($) {
 			}
 			CardLayout.checkNavigationButtons();
 		});
+		$(document).trigger('cardlayout:card-closed', [$element]);
 	};
 
 	/**

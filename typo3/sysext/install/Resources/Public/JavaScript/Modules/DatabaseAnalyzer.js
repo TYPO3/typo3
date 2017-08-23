@@ -18,7 +18,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 	'use strict';
 
 	return {
-		selectorGridderOpener: '.t3js-databaseAnalyzer-open',
+		selectorGridderOpener: 't3js-databaseAnalyzer-open',
 		selectorAnalyzeTrigger: '.t3js-databaseAnalyzer-analyze',
 		selectorExecuteTrigger: '.t3js-databaseAnalyzer-execute',
 		selectorOutputContainer: '.t3js-databaseAnalyzer-output',
@@ -29,10 +29,9 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			var self = this;
 
 			// Load main content on first open
-			$(document).on('click', this.selectorGridderOpener, function(event) {
-				var $element = $(event.target).closest(self.selectorGridderOpener);
-				if (!$element.data('databaseAnalyzerInitialized')) {
-					$element.data('databaseAnalyzerInitialized', true);
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
+					$card.data('isInitialized', true);
 					self.analyze();
 				}
 			});

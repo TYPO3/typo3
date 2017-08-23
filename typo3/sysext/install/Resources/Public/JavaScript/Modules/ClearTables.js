@@ -24,7 +24,7 @@ define([
 	'use strict';
 
 	return {
-		selectorGridderOpener: '.t3js-clearTables-open',
+		selectorGridderOpener: 't3js-clearTables-open',
 		selectorClearToken: '#t3js-clearTables-clear-token',
 		selectorClearTrigger: '.t3js-clearTables-clear',
 		selectorStatsTrigger: '.t3js-clearTables-stats',
@@ -40,10 +40,9 @@ define([
 			var self = this;
 
 			// Load stats on first open
-			$(document).on('click', this.selectorGridderOpener, function(event) {
-				var $element = $(event.target).closest(self.selectorGridderOpener);
-				if (!$element.data('isInitialized')) {
-					$element.data('isInitialized', true);
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
+					$card.data('isInitialized', true);
 					self.getStats();
 				}
 			});

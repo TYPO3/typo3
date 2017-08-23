@@ -18,7 +18,7 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 	'use strict';
 
 	return {
-		selectorGridderOpener: '.t3js-upgradeDocs-open',
+		selectorGridderOpener: 't3js-upgradeDocs-open',
 		selectorMarkReadToken: '#t3js-upgradeDocs-markRead-token',
 		selectorUnmarkReadToken: '#t3js-upgradeDocs-unmarkRead-token',
 		selectorRestFileItem: '.upgrade_analysis_item_to_filter',
@@ -47,17 +47,20 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 			});
 
 			// Delayed initialize of some stuff on first open
-			$(document).on('click', this.selectorGridderOpener, function(event) {
-				$('[data-toggle="tooltip"]').tooltip({container: 'body'});
-				self.chosenField = $(self.selectorChosenField);
-				self.fulltextSearchField = $(self.selectorFulltextSearch);
-				self.initializeChosenSelector();
-				self.chosenField.on('change', function() {
-					self.combinedFilterSearch();
-				});
-				self.fulltextSearchField.on('keyup', function() {
-					self.combinedFilterSearch();
-				});
+			// Load main content on first open
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener)) {
+					$('[data-toggle="tooltip"]').tooltip({container: 'body'});
+					self.chosenField = $(self.selectorChosenField);
+					self.fulltextSearchField = $(self.selectorFulltextSearch);
+					self.initializeChosenSelector();
+					self.chosenField.on('change', function() {
+						self.combinedFilterSearch();
+					});
+					self.fulltextSearchField.on('keyup', function() {
+						self.combinedFilterSearch();
+					});
+				}
 			});
 		},
 

@@ -24,7 +24,7 @@ define(['jquery',
     'use strict';
 
     return {
-        selectorGridderOpener: '.t3js-imageProcessing-open',
+        selectorGridderOpener: 't3js-imageProcessing-open',
         selectorImageProcessingToken: '#t3js-imageProcessing-token',
         selectorExecuteTrigger: '.t3js-imageProcessing-execute',
         selectorTestContainer: '.t3js-imageProcessing-twinContainer',
@@ -36,11 +36,10 @@ define(['jquery',
         initialize: function() {
             var self = this;
 
-            // Run tests on first open
-            $(document).on('click', this.selectorGridderOpener, function(event) {
-                var $element = $(event.target).closest(self.selectorGridderOpener);
-                if (!$element.data('isInitialized')) {
-                    $element.data('isInitialized', true);
+            // Load main content on first open
+            $(document).on('cardlayout:card-opened', function(event, $card) {
+                if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
+                    $card.data('isInitialized', true);
                     self.runTests();
                 }
             });
