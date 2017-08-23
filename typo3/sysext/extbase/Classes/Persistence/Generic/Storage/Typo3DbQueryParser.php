@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
@@ -752,6 +753,7 @@ class Typo3DbQueryParser
 
                     if ($mode === 'strict') {
                         $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                        $queryBuilderForSubselect->getRestrictions()->removeAll()->add(new DeletedRestriction());
                         $queryBuilderForSubselect
                             ->select($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
                             ->from($tableName)
@@ -778,6 +780,7 @@ class Typo3DbQueryParser
                         );
                     }
                     $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                    $queryBuilderForSubselect->getRestrictions()->removeAll()->add(new DeletedRestriction());
                     $queryBuilderForSubselect
                             ->select($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
                             ->from($tableName)
