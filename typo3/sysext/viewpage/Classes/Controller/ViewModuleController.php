@@ -197,9 +197,8 @@ class ViewModuleController extends ActionController
                 }
             }
             return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand . $languageParameter;
-        } else {
-            return '#';
         }
+        return '#';
     }
 
     /**

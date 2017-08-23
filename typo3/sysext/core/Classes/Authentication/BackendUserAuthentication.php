@@ -437,9 +437,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         if (!$acs && $exitOnError) {
             throw new \RuntimeException('Access Error: You don\'t have access to this module.', 1294586448);
-        } else {
-            return $acs;
         }
+        return $acs;
     }
 
     /**
@@ -515,9 +514,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
             }
             return $constraint;
-        } else {
-            return ' 1=0';
         }
+        return ' 1=0';
     }
 
     /**
@@ -770,7 +768,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                     $this->errorMsg = 'ERROR: Language was not allowed.';
                     return false;
-                } elseif (
+                }
+                if (
                     $checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0
                     && !$this->checkFullLanguagesAccess($table, $idOrRow)
                 ) {
@@ -916,36 +915,32 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     // No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
                     if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         return 'Versioning disabled for table';
-                    } elseif ((int)$recData['t3ver_wsid'] !== $this->workspace) {
+                    }
+                    if ((int)$recData['t3ver_wsid'] !== $this->workspace) {
                         // So does workspace match?
                         return 'Workspace ID of record didn\'t match current workspace';
-                    } else {
-                        // So is the user allowed to "use" the edit stage within the workspace?
-                        return $this->workspaceCheckStageForCurrent(0)
+                    }
+                    // So is the user allowed to "use" the edit stage within the workspace?
+                    return $this->workspaceCheckStageForCurrent(0)
                             ? false
                             : 'User\'s access level did not allow for editing';
-                    }
-                } else {
-                    // We are testing a "live" record:
-                    // For "Live" records, check that PID for table allows editing
-                    if ($res = $this->workspaceAllowLiveRecordsInPID($recData['pid'], $table)) {
-                        // Live records are OK in this branch, but what about the stage of branch point, if any:
-                        // OK
-                        return $res > 0
+                }
+                // We are testing a "live" record:
+                // For "Live" records, check that PID for table allows editing
+                if ($res = $this->workspaceAllowLiveRecordsInPID($recData['pid'], $table)) {
+                    // Live records are OK in this branch, but what about the stage of branch point, if any:
+                    // OK
+                    return $res > 0
                             ? false
                             : 'Stage for versioning root point and users access level did not allow for editing';
-                    } else {
-                        // If not offline and not in versionized branch, output error:
-                        return 'Online record was not in versionized branch!';
-                    }
                 }
-            } else {
-                return 'No record';
+                // If not offline and not in versionized branch, output error:
+                return 'Online record was not in versionized branch!';
             }
-        } else {
-            // OK because workspace is 0
-            return false;
+            return 'No record';
         }
+        // OK because workspace is 0
+        return false;
     }
 
     /**
@@ -965,15 +960,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             if (is_array($recData)) {
                 if ((int)$recData['pid'] === -1) {
                     return $this->workspaceCannotEditRecord($table, $recData);
-                } else {
-                    return 'Not an offline version';
                 }
-            } else {
-                return 'No record';
+                return 'Not an offline version';
             }
-        } else {
-            return 'Table does not support versioning.';
+            return 'No record';
         }
+        return 'Table does not support versioning.';
     }
 
     /**
@@ -998,10 +990,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         ) {
             // OK to create for this table.
             return 2;
-        } else {
-            // If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
-            return false;
         }
+        // If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
+        return false;
     }
 
     /**
@@ -1094,9 +1085,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             } elseif ($stage == -10 || $stage == -20) {
                 if ($stat['_ACCESS'] === 'owner') {
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             } else {
                 $memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
                 if (
@@ -1159,9 +1149,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         if ($this->workspace > 0 && (int)$this->workspaceRec['swap_modes'] === 2) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
@@ -1962,9 +1951,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
         if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
             return $uploadFolder;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -2097,8 +2085,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if (is_array($wsRec)) {
             if ($this->isAdmin()) {
                 return array_merge($wsRec, ['_ACCESS' => 'admin']);
-            } else {
-                switch ((string)$wsRec['uid']) {
+            }
+            switch ((string)$wsRec['uid']) {
                     case '0':
                         $retVal = $this->groupData['workspace_perms'] & Permission::PAGE_SHOW
                             ? array_merge($wsRec, ['_ACCESS' => 'online'])
@@ -2136,7 +2124,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                             }
                         }
                 }
-            }
         }
         return $retVal;
     }

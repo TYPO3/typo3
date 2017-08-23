@@ -68,7 +68,8 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
             if ($aShowItemFieldArray['fieldName'] === '--div--') {
                 // tabs are not of interest here
                 continue;
-            } elseif ($aShowItemFieldArray['fieldName'] === '--palette--') {
+            }
+            if ($aShowItemFieldArray['fieldName'] === '--palette--') {
                 // showitem references to a palette field. unpack the palette and process
                 // label overrides that may be in there.
                 if (!isset($result['processedTca']['palettes'][$aShowItemFieldArray['paletteName']]['showitem'])) {

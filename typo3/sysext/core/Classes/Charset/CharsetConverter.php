@@ -683,12 +683,10 @@ class CharsetConverter implements SingletonInterface
                     }
                 }
                 return 2;
-            } else {
-                return false;
             }
-        } else {
-            return 1;
+            return false;
         }
+        return 1;
     }
 
     /**
@@ -907,10 +905,9 @@ class CharsetConverter implements SingletonInterface
                 $ord = hexdec($code_value);
                 if ($ord > 127) {
                     continue 2;
-                } else {
-                    // Skip decompositions containing non-ASCII chars
-                    $code_decomp[] = chr($ord);
                 }
+                // Skip decompositions containing non-ASCII chars
+                $code_decomp[] = chr($ord);
             }
             $ascii[$this->UnumberToChar(hexdec($from))] = implode('', $code_decomp);
         }

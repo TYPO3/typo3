@@ -148,9 +148,8 @@ class RootlineUtility
         if ($this->mountPointParameter !== '') {
             if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
                 throw new \RuntimeException('Mount-Point Pages are disabled for this installation. Cannot resolve a Rootline for a page with Mount-Points', 1343462896);
-            } else {
-                $this->parseMountPointParameter();
             }
+            $this->parseMountPointParameter();
         }
         if (self::$cache === null) {
             self::$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_rootline');

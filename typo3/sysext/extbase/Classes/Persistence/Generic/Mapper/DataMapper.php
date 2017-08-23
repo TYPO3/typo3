@@ -325,16 +325,16 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
             // 0 -> NULL !!!
             return null;
-        } elseif ($storageFormat === 'date' || $storageFormat === 'datetime') {
+        }
+        if ($storageFormat === 'date' || $storageFormat === 'datetime') {
             // native date/datetime values are stored in UTC
             $utcTimeZone = new \DateTimeZone('UTC');
             $utcDateTime = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
             $currentTimeZone = new \DateTimeZone(date_default_timezone_get());
             return $utcDateTime->setTimezone($currentTimeZone);
-        } else {
-            // integer timestamps are local server time
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, date('c', $value));
         }
+        // integer timestamps are local server time
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, date('c', $value));
     }
 
     /**

@@ -149,8 +149,7 @@ class DateViewHelper extends AbstractViewHelper
 
         if (strpos($format, '%') !== false) {
             return strftime($format, $date->format('U'));
-        } else {
-            return $date->format($format);
         }
+        return $date->format($format);
     }
 }

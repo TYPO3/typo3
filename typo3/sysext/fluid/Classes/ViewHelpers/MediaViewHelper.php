@@ -101,10 +101,9 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         // Fallback to image when no renderer is found
         if ($fileRenderer === null) {
             return $this->renderImage($file, $width, $height);
-        } else {
-            $additionalConfig = array_merge_recursive($this->arguments, $additionalConfig);
-            return $fileRenderer->render($file, $width, $height, $additionalConfig);
         }
+        $additionalConfig = array_merge_recursive($this->arguments, $additionalConfig);
+        return $fileRenderer->render($file, $width, $height, $additionalConfig);
     }
 
     /**

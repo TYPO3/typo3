@@ -719,7 +719,8 @@ abstract class AbstractUserAuthentication
                         if ((int)$ret >= 200) {
                             $authenticated = true;
                             break;
-                        } elseif ((int)$ret >= 100) {
+                        }
+                        if ((int)$ret >= 100) {
                         } else {
                             $authenticated = true;
                         }
@@ -1142,14 +1143,13 @@ abstract class AbstractUserAuthentication
         $IP = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         if ($parts >= 4) {
             return $IP;
-        } else {
-            $parts = MathUtility::forceIntegerInRange($parts, 1, 3);
-            $IPparts = explode('.', $IP);
-            for ($a = 4; $a > $parts; $a--) {
-                unset($IPparts[$a - 1]);
-            }
-            return implode('.', $IPparts);
         }
+        $parts = MathUtility::forceIntegerInRange($parts, 1, 3);
+        $IPparts = explode('.', $IP);
+        for ($a = 4; $a > $parts; $a--) {
+            unset($IPparts[$a - 1]);
+        }
+        return implode('.', $IPparts);
     }
 
     /*************************

@@ -127,9 +127,8 @@ abstract class AbstractNode
     {
         if (@is_link($this->getAbsolutePath())) {
             return true;
-        } else {
-            return @file_exists($this->getAbsolutePath());
         }
+        return @file_exists($this->getAbsolutePath());
     }
 
     /**
@@ -173,9 +172,8 @@ abstract class AbstractNode
         }
         if ($this->getCurrentPermission() === $this->getTargetPermission()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

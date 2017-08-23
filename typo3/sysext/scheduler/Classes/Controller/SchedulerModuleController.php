@@ -837,9 +837,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             )->render() . '</span>
                     </span>
                 </a><span id="page_' . $fieldID . '">&nbsp;' . htmlspecialchars($fieldInfo['pageTitle']) . '</span></div>';
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

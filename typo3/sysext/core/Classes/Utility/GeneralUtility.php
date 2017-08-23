@@ -279,14 +279,14 @@ class GeneralUtility
         $list = trim($list);
         if ($list === '') {
             return false;
-        } elseif ($list === '*') {
+        }
+        if ($list === '*') {
             return true;
         }
         if (strpos($baseIP, ':') !== false && self::validIPv6($baseIP)) {
             return self::cmpIPv6($baseIP, $list);
-        } else {
-            return self::cmpIPv4($baseIP, $list);
         }
+        return self::cmpIPv4($baseIP, $list);
     }
 
     /**
@@ -582,9 +582,8 @@ class GeneralUtility
                         if ($wildcardMatched) {
                             // Match found by recursive compare
                             return true;
-                        } else {
-                            $yes = false;
                         }
+                        $yes = false;
                     }
                 } elseif ($baseHostNameParts[$index] !== $val) {
                     // In case of no match
@@ -933,13 +932,12 @@ class GeneralUtility
     {
         if (isset(self::$idnaStringCache[$value])) {
             return self::$idnaStringCache[$value];
-        } else {
-            if (!self::$idnaConverter) {
-                self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(['idn_version' => 2008]);
-            }
-            self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
-            return self::$idnaStringCache[$value];
         }
+        if (!self::$idnaConverter) {
+            self::$idnaConverter = new \Mso\IdnaConvert\IdnaConvert(['idn_version' => 2008]);
+        }
+        self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
+        return self::$idnaStringCache[$value];
     }
 
     /**
@@ -1091,16 +1089,15 @@ class GeneralUtility
             $position = strrpos($string, strrev($delimiter));
             if ($position !== false) {
                 return [substr($string, 0, $position), substr($string, $position + strlen($delimiter))];
-            } else {
-                return [$string];
             }
-        } elseif ($count <= 1) {
             return [$string];
-        } else {
-            $explodedValues = explode($delimiter, strrev($string), $count);
-            $explodedValues = array_map('strrev', $explodedValues);
-            return array_reverse($explodedValues);
         }
+        if ($count <= 1) {
+            return [$string];
+        }
+        $explodedValues = explode($delimiter, strrev($string), $count);
+        $explodedValues = array_map('strrev', $explodedValues);
+        return array_reverse($explodedValues);
     }
 
     /**
@@ -3041,9 +3038,8 @@ class GeneralUtility
         if ((string)$filename !== '' && static::validPathStr($filename)) {
             // checks backpath.
             return $filename;
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -3736,24 +3732,24 @@ class GeneralUtility
                 // reset service and return object
                 $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->reset();
                 return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
-            } else {
-                $obj = self::makeInstance($info['className']);
-                if (is_object($obj)) {
-                    if (!@is_callable([$obj, 'init'])) {
-                        // use silent logging??? I don't think so.
-                        die('Broken service:' . DebugUtility::viewArray($info));
-                    }
-                    $obj->info = $info;
-                    // service available?
-                    if ($obj->init()) {
-                        // create persistent object
-                        $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
-                        return $obj;
-                    }
-                    $error = $obj->getLastErrorArray();
-                    unset($obj);
-                }
             }
+            $obj = self::makeInstance($info['className']);
+            if (is_object($obj)) {
+                if (!@is_callable([$obj, 'init'])) {
+                    // use silent logging??? I don't think so.
+                    die('Broken service:' . DebugUtility::viewArray($info));
+                }
+                $obj->info = $info;
+                // service available?
+                if ($obj->init()) {
+                    // create persistent object
+                    $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
+                    return $obj;
+                }
+                $error = $obj->getLastErrorArray();
+                unset($obj);
+            }
+
             // deactivate the service
             ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);
         }

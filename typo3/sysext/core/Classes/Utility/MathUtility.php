@@ -177,9 +177,9 @@ class MathUtility
                 $value = self::calculateWithPriorityToAdditionAndSubtraction(substr($string, 0, $valueLenC));
                 $string = $value . substr($string, ($valueLenC + 1));
                 return $string;
-            } else {
-                $string = substr($string, 0, $valueLenO) . self::calculateWithParentheses(substr($string, ($valueLenO + 1)));
             }
+            $string = substr($string, 0, $valueLenO) . self::calculateWithParentheses(substr($string, ($valueLenO + 1)));
+
             // Security:
             $securC--;
             if ($securC <= 0) {

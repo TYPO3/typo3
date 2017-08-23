@@ -47,8 +47,8 @@ class ConditionMatcher extends AbstractConditionMatcher
         $result = $this->evaluateConditionCommon($key, $value);
         if (is_bool($result)) {
             return $result;
-        } else {
-            switch ($key) {
+        }
+        switch ($key) {
                 case 'usergroup':
                     $groupList = $this->getGroupList();
                     $values = GeneralUtility::trimExplode(',', $value, true);
@@ -95,7 +95,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                         return $conditionResult;
                     }
             }
-        }
+
         return false;
     }
 

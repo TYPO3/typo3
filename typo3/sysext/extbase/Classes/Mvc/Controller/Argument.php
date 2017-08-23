@@ -293,9 +293,8 @@ class Argument
     {
         if ($this->value === null) {
             return $this->defaultValue;
-        } else {
-            return $this->value;
         }
+        return $this->value;
     }
 
     /**

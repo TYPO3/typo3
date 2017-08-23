@@ -140,12 +140,12 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
                 if (!is_array($slotReturn)) {
                     throw new Exception\InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '()\'s return value is of an not allowed type ('
                         . gettype($slotReturn) . ').', 1376683067);
-                } elseif (count($slotReturn) !== count($signalArguments)) {
+                }
+                if (count($slotReturn) !== count($signalArguments)) {
                     throw new Exception\InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() returned a different number ('
                         . count($slotReturn) . ') of arguments, than it received (' . count($signalArguments) . ').', 1376683066);
-                } else {
-                    $signalArguments = $slotReturn;
                 }
+                $signalArguments = $slotReturn;
             }
         }
 

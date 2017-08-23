@@ -874,9 +874,8 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
     {
         if ($condition['isNew']) {
             return !((int)$condition['uid'] > 0);
-        } else {
-            return (int)$condition['uid'] > 0;
         }
+        return (int)$condition['uid'] > 0;
     }
 
     /**

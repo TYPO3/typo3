@@ -655,9 +655,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface
 
         if ($affectedRows === 1) {
             return 'success';
-        } else {
-            return 'failed';
         }
+        return 'failed';
     }
 
     /**

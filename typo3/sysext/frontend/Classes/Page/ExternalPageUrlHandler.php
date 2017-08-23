@@ -42,9 +42,8 @@ class ExternalPageUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInter
         $this->externalUrl = $tsfe->sys_page->getExtURL($tsfe->page);
         if (empty($this->externalUrl)) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

@@ -197,9 +197,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
                 ),
                 1342554622
             );
-        } else {
-            $this->unloadExtension($extensionKey);
         }
+        $this->unloadExtension($extensionKey);
     }
 
     /**
@@ -329,9 +328,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
             return $availableExtensions[$extensionKey];
-        } else {
-            throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
         }
+        throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
     }
 
     /**

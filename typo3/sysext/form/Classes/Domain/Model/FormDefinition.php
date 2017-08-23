@@ -504,9 +504,8 @@ class FormDefinition extends AbstractCompositeRenderable
             $finisher->setOptions($defaultOptions);
             $this->addFinisher($finisher);
             return $finisher;
-        } else {
-            throw new FinisherPresetNotFoundException('The finisher preset identified by "' . $finisherIdentifier . '" could not be found, or the implementationClassName was not specified.', 1328709784);
         }
+        throw new FinisherPresetNotFoundException('The finisher preset identified by "' . $finisherIdentifier . '" could not be found, or the implementationClassName was not specified.', 1328709784);
     }
 
     /**

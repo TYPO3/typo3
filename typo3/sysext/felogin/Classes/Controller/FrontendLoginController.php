@@ -927,9 +927,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         if ($returnUrl) {
             return htmlspecialchars($this->cObj->typoLink_URL($this->conf['linkConfig.']));
-        } else {
-            return $this->cObj->typoLink($label, $this->conf['linkConfig.']);
         }
+        return $this->cObj->typoLink($label, $this->conf['linkConfig.']);
     }
 
     /**

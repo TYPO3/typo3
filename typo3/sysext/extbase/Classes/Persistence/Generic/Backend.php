@@ -283,12 +283,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     {
         if ($this->session->hasIdentifier($identifier, $className)) {
             return $this->session->getObjectByIdentifier($identifier, $className);
-        } else {
-            $query = $this->persistenceManager->createQueryForType($className);
-            $query->getQuerySettings()->setRespectStoragePage(false);
-            $query->getQuerySettings()->setRespectSysLanguage(false);
-            return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
         }
+        $query = $this->persistenceManager->createQueryForType($className);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
     }
 
     /**

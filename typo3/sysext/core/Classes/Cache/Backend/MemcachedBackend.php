@@ -278,9 +278,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     {
         if ($this->usedPeclModule === 'memcache') {
             return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
-        } else {
-            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
         }
+        return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
     }
 
     /**
@@ -349,9 +348,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
         if ($identifiers !== false) {
             return (array)$identifiers;
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

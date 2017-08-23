@@ -395,13 +395,15 @@ class GridDataService
         $path_cmp = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
         if ($path_cmp < 0) {
             return $path_cmp;
-        } elseif ($path_cmp == 0) {
+        }
+        if ($path_cmp == 0) {
             if ($a[$this->sort] == $b[$this->sort]) {
                 return 0;
             }
             if ($this->sortDir === 'ASC') {
                 return $a[$this->sort] < $b[$this->sort] ? -1 : 1;
-            } elseif ($this->sortDir === 'DESC') {
+            }
+            if ($this->sortDir === 'DESC') {
                 return $a[$this->sort] > $b[$this->sort] ? -1 : 1;
             }
         } elseif ($path_cmp > 0) {
@@ -425,13 +427,15 @@ class GridDataService
         $path_cmp = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
         if ($path_cmp < 0) {
             return $path_cmp;
-        } elseif ($path_cmp == 0) {
+        }
+        if ($path_cmp == 0) {
             if ($a[$this->sort] == $b[$this->sort]) {
                 return 0;
             }
             if ($this->sortDir === 'ASC') {
                 return strcasecmp($a[$this->sort], $b[$this->sort]);
-            } elseif ($this->sortDir === 'DESC') {
+            }
+            if ($this->sortDir === 'DESC') {
                 return strcasecmp($a[$this->sort], $b[$this->sort]) * -1;
             }
         } elseif ($path_cmp > 0) {

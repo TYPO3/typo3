@@ -208,9 +208,8 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
         $identifiers = apcu_fetch($this->getIdentifierPrefix() . 'tag_' . $tag, $success);
         if ($success === false) {
             return [];
-        } else {
-            return (array)$identifiers;
         }
+        return (array)$identifiers;
     }
 
     /**

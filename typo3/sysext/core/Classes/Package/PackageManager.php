@@ -482,9 +482,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         $lowercasedComposerName = strtolower($composerName);
         if (isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
             return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
-        } else {
-            return $composerName;
         }
+        return $composerName;
     }
 
     /**
@@ -1023,10 +1022,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
             $packageKey = basename($packagePath);
             return preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
-        } else {
-            $packageKey = str_replace('/', '.', $manifest->name);
-            return preg_replace('/[^A-Za-z0-9.]/', '', $packageKey);
         }
+        $packageKey = str_replace('/', '.', $manifest->name);
+        return preg_replace('/[^A-Za-z0-9.]/', '', $packageKey);
     }
 
     /**

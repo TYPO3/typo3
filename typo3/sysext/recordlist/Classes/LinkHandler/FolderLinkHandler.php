@@ -56,9 +56,8 @@ class FolderLinkHandler extends FileLinkHandler
             return [
                 'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $this->linkParts['url']['folder']])
             ];
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

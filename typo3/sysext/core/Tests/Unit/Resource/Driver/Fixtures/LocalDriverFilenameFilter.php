@@ -33,8 +33,7 @@ class LocalDriverFilenameFilter
     {
         if ($itemName === 'fileA' || $itemName === 'folderA/') {
             return -1;
-        } else {
-            return true;
         }
+        return true;
     }
 }

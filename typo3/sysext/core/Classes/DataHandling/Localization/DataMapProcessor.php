@@ -1156,7 +1156,8 @@ class DataMapProcessor
             && $element[$fieldNames['source']] !== $element[$fieldNames['parent']]
         ) {
             return (int)$fieldNames['source'];
-        } elseif (!empty($fieldNames['parent'])) {
+        }
+        if (!empty($fieldNames['parent'])) {
             // implicit: use parent pointer if defined
             return (int)$element[$fieldNames['parent']];
         }

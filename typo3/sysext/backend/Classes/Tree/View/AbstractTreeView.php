@@ -510,9 +510,8 @@ abstract class AbstractTreeView
             $cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
             $bMark = $this->bank . '_' . $row['uid'];
             return $this->PM_ATagWrap('', $cmd, $bMark, $isOpen);
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -532,9 +531,8 @@ abstract class AbstractTreeView
             $name = $bMark ? ' name="' . $bMark . '"' : '';
             $aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
             return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
-        } else {
-            return $icon;
         }
+        return $icon;
     }
 
     /**
@@ -846,13 +844,13 @@ abstract class AbstractTreeView
         if (is_array($this->data)) {
             $res = $this->getDataInit($uid);
             return $this->getDataCount($res);
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-            $queryBuilder->getRestrictions()
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-            $count = $queryBuilder
+        $count = $queryBuilder
                 ->count('uid')
                 ->from($this->table)
                 ->where(
@@ -865,8 +863,7 @@ abstract class AbstractTreeView
                 ->execute()
                 ->fetchColumn();
 
-            return (int)$count;
-        }
+        return (int)$count;
     }
 
     /**
@@ -891,9 +888,8 @@ abstract class AbstractTreeView
     {
         if (is_array($this->data)) {
             return $this->dataLookup[$uid];
-        } else {
-            return BackendUtility::getRecordWSOL($this->table, $uid);
         }
+        return BackendUtility::getRecordWSOL($this->table, $uid);
     }
 
     /**
@@ -915,13 +911,13 @@ abstract class AbstractTreeView
                 reset($this->dataLookup[$parentId][$this->subLevelID]);
             }
             return $parentId;
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-            $queryBuilder->getRestrictions()
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-            $queryBuilder
+        $queryBuilder
                 ->select(...$this->fieldArray)
                 ->from($this->table)
                 ->where(
@@ -932,13 +928,12 @@ abstract class AbstractTreeView
                     QueryHelper::stripLogicalOperatorPrefix($this->clause)
                 );
 
-            foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
-                list($fieldName, $order) = $orderPair;
-                $queryBuilder->addOrderBy($fieldName, $order);
-            }
-
-            return $queryBuilder->execute();
+        foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
+            list($fieldName, $order) = $orderPair;
+            $queryBuilder->addOrderBy($fieldName, $order);
         }
+
+        return $queryBuilder->execute();
     }
 
     /**
@@ -953,9 +948,8 @@ abstract class AbstractTreeView
     {
         if (is_array($this->data)) {
             return count($this->dataLookup[$res][$this->subLevelID]);
-        } else {
-            return $res->rowCount();
         }
+        return $res->rowCount();
     }
 
     /**
@@ -976,15 +970,14 @@ abstract class AbstractTreeView
                 list(, $row) = each($this->dataLookup[$res][$this->subLevelID]);
             }
             return $row;
-        } else {
-            while ($row = $res->fetch()) {
-                BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, true);
-                if (is_array($row)) {
-                    break;
-                }
-            }
-            return $row;
         }
+        while ($row = $res->fetch()) {
+            BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, true);
+            if (is_array($row)) {
+                break;
+            }
+        }
+        return $row;
     }
 
     /**

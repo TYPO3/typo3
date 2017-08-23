@@ -356,10 +356,9 @@ class ServerRequest extends Request implements ServerRequestInterface
         $clonedObject = clone $this;
         if (!isset($clonedObject->attributes[$name])) {
             return $clonedObject;
-        } else {
-            unset($clonedObject->attributes[$name]);
-            return $clonedObject;
         }
+        unset($clonedObject->attributes[$name]);
+        return $clonedObject;
     }
 
     /**

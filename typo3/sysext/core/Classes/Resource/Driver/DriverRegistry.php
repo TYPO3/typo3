@@ -68,9 +68,8 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface
             // Return immediately without changing configuration
             if ($this->drivers[$shortName] === $className) {
                 return true;
-            } else {
-                throw new \InvalidArgumentException('Driver ' . $shortName . ' is already registered.', 1314979451);
             }
+            throw new \InvalidArgumentException('Driver ' . $shortName . ' is already registered.', 1314979451);
         }
         $this->drivers[$shortName] = $className;
         $this->driverConfigurations[$shortName] = [

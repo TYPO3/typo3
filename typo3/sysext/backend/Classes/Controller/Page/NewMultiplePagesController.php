@@ -164,19 +164,18 @@ class NewMultiplePagesController
         foreach ($newPagesData as $identifier => $data) {
             if (!trim($data['title'])) {
                 continue;
-            } else {
-                $commandArray['pages'][$identifier]['hidden'] = $hidePages;
-                $commandArray['pages'][$identifier]['nav_hide'] = $hidePagesInMenu;
-                $commandArray['pages'][$identifier]['title'] = $data['title'];
-                $commandArray['pages'][$identifier]['doktype'] = $data['doktype'];
-                if ($firstRecord) {
-                    $firstRecord = false;
-                    $commandArray['pages'][$identifier]['pid'] = $firstPid;
-                } else {
-                    $commandArray['pages'][$identifier]['pid'] = '-' . $previousIdentifier;
-                }
-                $previousIdentifier = $identifier;
             }
+            $commandArray['pages'][$identifier]['hidden'] = $hidePages;
+            $commandArray['pages'][$identifier]['nav_hide'] = $hidePagesInMenu;
+            $commandArray['pages'][$identifier]['title'] = $data['title'];
+            $commandArray['pages'][$identifier]['doktype'] = $data['doktype'];
+            if ($firstRecord) {
+                $firstRecord = false;
+                $commandArray['pages'][$identifier]['pid'] = $firstPid;
+            } else {
+                $commandArray['pages'][$identifier]['pid'] = '-' . $previousIdentifier;
+            }
+            $previousIdentifier = $identifier;
         }
 
         if (!empty($commandArray)) {

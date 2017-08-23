@@ -241,7 +241,8 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
     {
         if (isset($this->subConfigurationForProperty[$propertyName])) {
             return $this->subConfigurationForProperty[$propertyName];
-        } elseif (isset($this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER])) {
+        }
+        if (isset($this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER])) {
             return $this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER];
         }
 

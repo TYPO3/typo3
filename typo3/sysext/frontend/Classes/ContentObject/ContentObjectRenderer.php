@@ -821,9 +821,8 @@ class ContentObjectRenderer
             $exceptionHandler = $this->createExceptionHandler($configuration);
             if ($exceptionHandler === null) {
                 throw $exception;
-            } else {
-                $content = $exceptionHandler->handle($exception, $contentObject, $configuration);
             }
+            $content = $exceptionHandler->handle($exception, $contentObject, $configuration);
         }
 
         // Store cache
@@ -2091,9 +2090,8 @@ class ContentObjectRenderer
         if (!empty($conf['csConv'])) {
             $output = mb_convert_encoding($content, 'utf-8', trim(strtolower($conf['csConv'])));
             return $output !== false && $output !== '' ? $output : $content;
-        } else {
-            return $content;
         }
+        return $content;
     }
 
     /**
@@ -3356,9 +3354,8 @@ class ContentObjectRenderer
         $options = GeneralUtility::intExplode(',', $options . ',');
         if ($options[1]) {
             return mb_substr($content, $options[0], $options[1], 'utf-8');
-        } else {
-            return mb_substr($content, $options[0], null, 'utf-8');
         }
+        return mb_substr($content, $options[0], null, 'utf-8');
     }
 
     /**
@@ -3496,9 +3493,8 @@ class ContentObjectRenderer
                     }
                     $splittedContent[$offset] = $tempContent;
                     break;
-                } else {
-                    $strLen += $thisStrLen;
                 }
+                $strLen += $thisStrLen;
             }
         }
         // Close cropped tags.
@@ -4786,14 +4782,14 @@ class ContentObjectRenderer
     {
         if (!strstr($field, '//')) {
             return $this->data[trim($field)];
-        } else {
-            $sections = GeneralUtility::trimExplode('//', $field, true);
-            foreach ($sections as $k) {
-                if ((string)$this->data[$k] !== '') {
-                    return $this->data[$k];
-                }
+        }
+        $sections = GeneralUtility::trimExplode('//', $field, true);
+        foreach ($sections as $k) {
+            if ((string)$this->data[$k] !== '') {
+                return $this->data[$k];
             }
         }
+
         return '';
     }
 
@@ -4915,7 +4911,8 @@ class ContentObjectRenderer
                                 if ($retVal === '-1') {
                                     $retVal = 'none';
                                     break;
-                                } elseif ($retVal !== '' && $retVal !== '0') {
+                                }
+                                if ($retVal !== '' && $retVal !== '0') {
                                     // Stop searching if a layout for "next level" is set
                                     break;
                                 }
@@ -5094,14 +5091,14 @@ class ContentObjectRenderer
         $rootLine = is_array($altRootLine) ? $altRootLine : $this->getTypoScriptFrontendController()->tmpl->rootLine;
         if (!$slideBack) {
             return $rootLine[$key][$field];
-        } else {
-            for ($a = $key; $a >= 0; $a--) {
-                $val = $rootLine[$a][$field];
-                if ($val) {
-                    return $val;
-                }
+        }
+        for ($a = $key; $a >= 0; $a--) {
+            $val = $rootLine[$a][$field];
+            if ($val) {
+                return $val;
             }
         }
+
         return '';
     }
 

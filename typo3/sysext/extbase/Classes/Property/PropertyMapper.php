@@ -302,9 +302,8 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         }
         if (isset($convertersForSource['object'])) {
             return $this->findEligibleConverterWithHighestPriority($convertersForSource['object'], $source, $targetClass);
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -362,17 +361,20 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (is_string($source)) {
             return 'string';
-        } elseif (is_array($source)) {
-            return 'array';
-        } elseif (is_float($source)) {
-            return 'float';
-        } elseif (is_int($source)) {
-            return 'integer';
-        } elseif (is_bool($source)) {
-            return 'boolean';
-        } else {
-            throw new Exception\InvalidSourceException('The source is not of type string, array, float, integer or boolean, but of type "' . gettype($source) . '"', 1297773150);
         }
+        if (is_array($source)) {
+            return 'array';
+        }
+        if (is_float($source)) {
+            return 'float';
+        }
+        if (is_int($source)) {
+            return 'integer';
+        }
+        if (is_bool($source)) {
+            return 'boolean';
+        }
+        throw new Exception\InvalidSourceException('The source is not of type string, array, float, integer or boolean, but of type "' . gettype($source) . '"', 1297773150);
     }
 
     /**

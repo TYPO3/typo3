@@ -188,9 +188,8 @@ class DebuggerUtility
         }
         if ($plainText) {
             return $header . $content;
-        } else {
-            return '<span class="extbase-debugger-tree">' . $header . '<span class="extbase-debug-content">' . $content . '</span></span>';
         }
+        return '<span class="extbase-debugger-tree">' . $header . '<span class="extbase-debug-content">' . $content . '</span></span>';
     }
 
     /**
@@ -212,9 +211,8 @@ class DebuggerUtility
         }
         if ($plainText) {
             return $header . $content;
-        } else {
-            return '<span class="extbase-debugger-tree"><input type="checkbox" /><span class="extbase-debug-header">' . $header . '</span><span class="extbase-debug-content">' . $content . '</span></span>';
         }
+        return '<span class="extbase-debugger-tree"><input type="checkbox" /><span class="extbase-debug-header">' . $header . '</span><span class="extbase-debug-content">' . $content . '</span></span>';
     }
 
     /**
@@ -484,9 +482,8 @@ class DebuggerUtility
     {
         if ($enable) {
             return '[' . $ansiColors . 'm' . $string . '[0m';
-        } else {
-            return $string;
         }
+        return $string;
     }
 
     /**
@@ -569,9 +566,9 @@ class DebuggerUtility
         self::$blacklistedPropertyNames = $backupBlacklistedPropertyNames;
         if ($return === true) {
             return $css . $output;
-        } else {
-            echo $css . $output;
         }
+        echo $css . $output;
+
         return '';
     }
 }

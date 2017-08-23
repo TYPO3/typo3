@@ -151,9 +151,8 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
     {
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             return $this->baseUri . TYPO3_mainDir;
-        } else {
-            return $this->baseUri;
         }
+        return $this->baseUri;
     }
 
     /**

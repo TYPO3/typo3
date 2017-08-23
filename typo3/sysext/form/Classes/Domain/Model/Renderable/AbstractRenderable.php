@@ -190,9 +190,8 @@ abstract class AbstractRenderable implements RenderableInterface
                 ->get($implementationClassName, $defaultOptions);
             $this->addValidator($validator);
             return $validator;
-        } else {
-            throw new ValidatorPresetNotFoundException('The validator preset identified by "' . $validatorIdentifier . '" could not be found, or the implementationClassName was not specified.', 1328710202);
         }
+        throw new ValidatorPresetNotFoundException('The validator preset identified by "' . $validatorIdentifier . '" could not be found, or the implementationClassName was not specified.', 1328710202);
     }
 
     /**

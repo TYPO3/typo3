@@ -503,9 +503,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 ->fetchColumn(0);
             if ($uid > 0) {
                 return $uid;
-            } else {
-                return false;
             }
+            return false;
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getPrevious()->getMessage(), 1470231748);
         }

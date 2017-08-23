@@ -292,9 +292,8 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
         $page = BackendUtility::getRecord('pages', $pageId, 'title', '', false);
         if ($page === null) {
             return '';
-        } else {
-            return $page['title'];
         }
+        return $page['title'];
     }
 
     /**

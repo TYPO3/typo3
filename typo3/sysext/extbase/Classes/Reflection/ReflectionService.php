@@ -275,9 +275,8 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
         $className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
         if (isset($this->classSchemata[$className])) {
             return $this->classSchemata[$className];
-        } else {
-            return $this->buildClassSchema($className);
         }
+        return $this->buildClassSchema($className);
     }
 
     /**

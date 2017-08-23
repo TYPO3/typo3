@@ -622,9 +622,8 @@ class UriBuilder
     {
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             return $this->buildBackendUri();
-        } else {
-            return $this->buildFrontendUri();
         }
+        return $this->buildFrontendUri();
     }
 
     /**

@@ -129,9 +129,8 @@ class CropVariantCollection
     {
         if (isset($this->cropVariants[$id])) {
             return $this->cropVariants[$id]->getCropArea();
-        } else {
-            return Area::createEmpty();
         }
+        return Area::createEmpty();
     }
 
     /**
@@ -142,9 +141,8 @@ class CropVariantCollection
     {
         if (isset($this->cropVariants[$id]) && $this->cropVariants[$id]->getFocusArea() !== null) {
             return $this->cropVariants[$id]->getFocusArea();
-        } else {
-            return Area::createEmpty();
         }
+        return Area::createEmpty();
     }
 
     /**

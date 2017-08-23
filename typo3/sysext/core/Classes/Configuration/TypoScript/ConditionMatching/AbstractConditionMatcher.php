@@ -584,9 +584,8 @@ abstract class AbstractConditionMatcher
         }
         if (!is_array($theVar) && !is_object($theVar)) {
             return $theVar;
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

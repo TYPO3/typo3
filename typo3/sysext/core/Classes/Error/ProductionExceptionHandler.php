@@ -115,9 +115,8 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     {
         if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && $exception->getTitle() !== '') {
             return $exception->getTitle();
-        } else {
-            return $this->defaultTitle;
         }
+        return $this->defaultTitle;
     }
 
     /**
@@ -130,8 +129,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
     {
         if ($this->discloseExceptionInformation($exception)) {
             return $exception->getMessage();
-        } else {
-            return $this->defaultMessage;
         }
+        return $this->defaultMessage;
     }
 }

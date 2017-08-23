@@ -521,7 +521,8 @@ class ResourceStorage implements ResourceStorageInterface
                     $isWithinFileMount = true;
                     if (!$checkWriteAccess) {
                         break;
-                    } elseif (empty($fileMount['read_only'])) {
+                    }
+                    if (empty($fileMount['read_only'])) {
                         $writableFileMountAvailable = true;
                         break;
                     }
@@ -734,15 +735,14 @@ class ResourceStorage implements ResourceStorageInterface
                 }
                 // If no match we return TRUE
                 return true;
-            } else {
-                if ($fileExtensionPermissions['allow'] === '*') {
-                    return true;
-                }
-                if ($fileExtensionPermissions['deny'] === '*') {
-                    return false;
-                }
+            }
+            if ($fileExtensionPermissions['allow'] === '*') {
                 return true;
             }
+            if ($fileExtensionPermissions['deny'] === '*') {
+                return false;
+            }
+            return true;
         }
         return $isAllowed;
     }
@@ -761,12 +761,11 @@ class ResourceStorage implements ResourceStorageInterface
                     'You are not allowed to read folders',
                     1430657869
                 );
-            } else {
-                throw new Exception\InsufficientFolderAccessPermissionsException(
+            }
+            throw new Exception\InsufficientFolderAccessPermissionsException(
                     'You are not allowed to access the given folder: "' . $folder->getName() . '"',
                     1375955684
                 );
-            }
         }
     }
 
@@ -1170,7 +1169,8 @@ class ResourceStorage implements ResourceStorageInterface
         $replaceExisting = false;
         if ($conflictMode->equals(DuplicationBehavior::CANCEL) && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
             throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
-        } elseif ($conflictMode->equals(DuplicationBehavior::RENAME)) {
+        }
+        if ($conflictMode->equals(DuplicationBehavior::RENAME)) {
             $targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
         } elseif ($conflictMode->equals(DuplicationBehavior::REPLACE) && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
             $replaceExisting = true;
@@ -2405,9 +2405,8 @@ class ResourceStorage implements ResourceStorageInterface
         if ($respectFileMounts && !empty($this->fileMounts)) {
             $mount = reset($this->fileMounts);
             return $mount['folder'];
-        } else {
-            return $this->getResourceFactoryInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
         }
+        return $this->getResourceFactoryInstance()->createFolderObject($this, $this->driver->getRootLevelFolder(), '');
     }
 
     /**

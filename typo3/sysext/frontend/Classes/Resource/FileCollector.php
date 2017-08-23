@@ -210,9 +210,8 @@ class FileCollector implements \Countable
                 ) use ($sortingProperty) {
                     if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
                         return strnatcasecmp($a->getProperty($sortingProperty), $b->getProperty($sortingProperty));
-                    } else {
-                        return 0;
                     }
+                    return 0;
                 }
             );
 

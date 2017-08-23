@@ -188,7 +188,8 @@ class IntegrityService
     {
         if ($identifier === null) {
             return $this->issues;
-        } elseif (isset($this->issues[$identifier])) {
+        }
+        if (isset($this->issues[$identifier])) {
             return $this->issues[$identifier];
         }
         return [];

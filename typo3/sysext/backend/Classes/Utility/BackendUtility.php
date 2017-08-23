@@ -539,9 +539,8 @@ class BackendUtility
         }
         if ($fullTitleLimit) {
             return [$output, $fullOutput];
-        } else {
-            return $output;
         }
+        return $output;
     }
 
     /**
@@ -851,74 +850,74 @@ class BackendUtility
             && isset($pagesTSconfig_cacheReference[$id])
         ) {
             return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
+        }
+        $TSconfig = [];
+        if (!is_array($rootLine)) {
+            $useCacheForCurrentPageId = true;
+            $rootLine = self::BEgetRootLine($id, '', true);
         } else {
-            $TSconfig = [];
-            if (!is_array($rootLine)) {
-                $useCacheForCurrentPageId = true;
-                $rootLine = self::BEgetRootLine($id, '', true);
-            } else {
-                $useCacheForCurrentPageId = false;
-            }
+            $useCacheForCurrentPageId = false;
+        }
 
-            // Order correctly
-            ksort($rootLine);
-            $TSdataArray = [];
-            // Setting default configuration
-            $TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
-            foreach ($rootLine as $k => $v) {
-                if (trim($v['tsconfig_includes'])) {
-                    $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
-                    // Traversing list
-                    foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
-                        if (strpos($includeTsConfigFile, 'EXT:') === 0) {
-                            list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
+        // Order correctly
+        ksort($rootLine);
+        $TSdataArray = [];
+        // Setting default configuration
+        $TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
+        foreach ($rootLine as $k => $v) {
+            if (trim($v['tsconfig_includes'])) {
+                $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
+                // Traversing list
+                foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
+                    if (strpos($includeTsConfigFile, 'EXT:') === 0) {
+                        list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
                                 '/',
                                 substr($includeTsConfigFile, 4),
                                 2
                             );
-                            if ((string)$includeTsConfigFileExtensionKey !== ''
+                        if ((string)$includeTsConfigFileExtensionKey !== ''
                                 && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
                                 && (string)$includeTsConfigFilename !== ''
                             ) {
-                                $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
+                            $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
                                     $includeTsConfigFilename;
-                                if (file_exists($includeTsConfigFileAndPath)) {
-                                    $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
-                                }
+                            if (file_exists($includeTsConfigFileAndPath)) {
+                                $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
                             }
                         }
                     }
                 }
-                $TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
             }
-            $TSdataArray = static::emitGetPagesTSconfigPreIncludeSignal($TSdataArray, $id, $rootLine, $returnPartArray);
-            $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
-            if ($returnPartArray) {
-                return $TSdataArray;
-            }
-            // Parsing the page TS-Config
-            $pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-            /* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
-            $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
-            $res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
-            if ($res) {
-                $TSconfig = $res['TSconfig'];
-            }
-            $cacheHash = $res['hash'];
-            // Get User TSconfig overlay
-            $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
-            if (is_array($userTSconfig)) {
-                ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
-                $cacheHash .= '_user' . $GLOBALS['BE_USER']->user['uid'];
-            }
-
-            if ($useCacheForCurrentPageId) {
-                if (!isset($combinedTSconfig_cache[$cacheHash])) {
-                    $combinedTSconfig_cache[$cacheHash] = $TSconfig;
-                }
-                $pagesTSconfig_cacheReference[$id] = $cacheHash;
-            }
+            $TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
         }
+        $TSdataArray = static::emitGetPagesTSconfigPreIncludeSignal($TSdataArray, $id, $rootLine, $returnPartArray);
+        $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
+        if ($returnPartArray) {
+            return $TSdataArray;
+        }
+        // Parsing the page TS-Config
+        $pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
+        /* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
+        $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
+        $res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
+        if ($res) {
+            $TSconfig = $res['TSconfig'];
+        }
+        $cacheHash = $res['hash'];
+        // Get User TSconfig overlay
+        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
+        if (is_array($userTSconfig)) {
+            ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
+            $cacheHash .= '_user' . $GLOBALS['BE_USER']->user['uid'];
+        }
+
+        if ($useCacheForCurrentPageId) {
+            if (!isset($combinedTSconfig_cache[$cacheHash])) {
+                $combinedTSconfig_cache[$cacheHash] = $TSconfig;
+            }
+            $pagesTSconfig_cacheReference[$id] = $cacheHash;
+        }
+
         return $TSconfig;
     }
 
@@ -2239,9 +2238,8 @@ class BackendUtility
         }
         if ($fixed_lgd_chars) {
             return GeneralUtility::fixed_lgd_cs($l, $fixed_lgd_chars);
-        } else {
-            return $l;
         }
+        return $l;
     }
 
     /**
@@ -3153,9 +3151,8 @@ class BackendUtility
                 $beUser->pushModuleData($modName, $settings);
             }
             return $settings;
-        } else {
-            die('Wrong module name: "' . $modName . '"');
         }
+        die('Wrong module name: "' . $modName . '"');
     }
 
     /**
@@ -3695,9 +3692,8 @@ class BackendUtility
 
         if ($count) {
             return $msg ? sprintf($msg, $count) : $count;
-        } else {
-            return $msg ? '' : 0;
         }
+        return $msg ? '' : 0;
     }
 
     /**
@@ -3744,9 +3740,8 @@ class BackendUtility
 
         if ($count) {
             return $msg ? sprintf($msg, $count) : $count;
-        } else {
-            return $msg ? '' : 0;
         }
+        return $msg ? '' : 0;
     }
 
     /*******************************************

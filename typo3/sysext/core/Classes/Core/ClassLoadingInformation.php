@@ -152,9 +152,8 @@ class ClassLoadingInformation
     {
         if (self::isTestingContext()) {
             return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
-        } else {
-            return PATH_site . self::AUTOLOAD_INFO_DIR;
         }
+        return PATH_site . self::AUTOLOAD_INFO_DIR;
     }
 
     /**

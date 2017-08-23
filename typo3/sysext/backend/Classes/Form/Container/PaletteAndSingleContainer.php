@@ -232,9 +232,8 @@ class PaletteAndSingleContainer extends AbstractContainer
 
         if ($foundRealElement) {
             return $resultStructure;
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

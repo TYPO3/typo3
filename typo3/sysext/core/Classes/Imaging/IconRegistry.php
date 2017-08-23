@@ -3467,8 +3467,7 @@ class IconRegistry implements SingletonInterface
     {
         if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
             return SvgIconProvider::class;
-        } else {
-            return BitmapIconProvider::class;
         }
+        return BitmapIconProvider::class;
     }
 }

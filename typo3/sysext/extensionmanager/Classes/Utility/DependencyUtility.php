@@ -396,12 +396,11 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
                         'The extension ' . $extensionKey . ' is not available from TER.',
                         1399161266
                     );
-                } else {
-                    throw new Exception\MissingExtensionDependencyException(
+                }
+                throw new Exception\MissingExtensionDependencyException(
                         'The extension ' . $extensionKey . ' could not be checked. Please update your Extension-List from TYPO3 Extension Repository (TER).',
                         1430580308
                     );
-                }
             }
             return;
         }
@@ -626,12 +625,11 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
             if (!array_key_exists($extensionKey, $filteredExtensions)) {
                 $filteredExtensions[$extensionKey] = $extension;
                 continue;
-            } else {
-                $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
-                $newVersion = $extension->getVersion();
-                if (version_compare($newVersion, $currentVersion, '>')) {
-                    $filteredExtensions[$extensionKey] = $extension;
-                }
+            }
+            $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
+            $newVersion = $extension->getVersion();
+            if (version_compare($newVersion, $currentVersion, '>')) {
+                $filteredExtensions[$extensionKey] = $extension;
             }
         }
         return $filteredExtensions;

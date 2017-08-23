@@ -157,7 +157,8 @@ class ServerRequestFactory
                 }
             }
             return $files;
-        } elseif (!empty($value['tmp_name'])) {
+        }
+        if (!empty($value['tmp_name'])) {
             return new UploadedFile($value['tmp_name'], $value['size'], $value['error'], $value['name'], $value['type']);
         }
         return null;

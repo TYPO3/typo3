@@ -128,9 +128,8 @@ class LocalImageProcessor implements ProcessorInterface
             $task->getTargetFile()->updateProperties($properties);
 
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

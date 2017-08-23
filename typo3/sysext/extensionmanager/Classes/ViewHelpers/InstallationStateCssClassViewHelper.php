@@ -56,9 +56,8 @@ class InstallationStateCssClassViewHelper extends AbstractViewHelper
         if (array_key_exists($needle, $haystack)) {
             if (isset($haystack[$needle]['installed']) && $haystack[$needle]['installed'] === true) {
                 return 'installed';
-            } else {
-                return 'available';
             }
+            return 'available';
         }
         return '';
     }

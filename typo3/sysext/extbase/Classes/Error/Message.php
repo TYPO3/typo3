@@ -127,9 +127,8 @@ class Message
     {
         if (!empty($this->arguments)) {
             return vsprintf($this->message, $this->arguments);
-        } else {
-            return $this->message;
         }
+        return $this->message;
     }
 
     /**

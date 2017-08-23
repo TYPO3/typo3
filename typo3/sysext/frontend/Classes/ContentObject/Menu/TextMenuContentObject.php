@@ -195,9 +195,8 @@ class TextMenuContentObject extends AbstractMenuContentObject
         $processedPref = isset($this->I['val'][$pref . '.']) ? $this->WMcObj->stdWrap($this->I['val'][$pref], $this->I['val'][$pref . '.']) : $this->I['val'][$pref];
         if (isset($this->I['val'][$pref . 'Wrap'])) {
             return $this->WMcObj->wrap($res . $processedPref, $this->I['val'][$pref . 'Wrap']);
-        } else {
-            return $res . $processedPref;
         }
+        return $res . $processedPref;
     }
 
     /**

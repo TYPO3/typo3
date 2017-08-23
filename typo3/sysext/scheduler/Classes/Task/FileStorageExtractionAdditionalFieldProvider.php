@@ -158,9 +158,11 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
             || !MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_fileCount'])
         ) {
             return false;
-        } elseif (ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
+        }
+        if (ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
             return false;
-        } elseif (!MathUtility::isIntegerInRange($submittedData['scheduler_fileStorageIndexing_fileCount'], 1, 9999)) {
+        }
+        if (!MathUtility::isIntegerInRange($submittedData['scheduler_fileStorageIndexing_fileCount'], 1, 9999)) {
             return false;
         }
         return true;

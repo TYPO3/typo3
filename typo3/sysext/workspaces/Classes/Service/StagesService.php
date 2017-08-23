@@ -347,24 +347,21 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
         // Current stage is "Ready to publish" - there is no next stage
         if ($stageId == self::STAGE_PUBLISH_ID) {
             return $nextStageArray;
-        } else {
-            $nextStageRecord = $this->getNextStage($stageId);
-            if (empty($nextStageRecord) || !is_array($nextStageRecord)) {
-                // There is no next stage
-                return $nextStageArray;
-            } else {
-                // Check if the user has the permission to for the current stage
-                // If this next stage record is the first next stage after the current the user
-                // has always the needed permission
-                if ($this->isStageAllowedForUser($stageId)) {
-                    $nextStageArray[] = $nextStageRecord;
-                    return $this->getNextStages($nextStageArray, $nextStageRecord['uid']);
-                } else {
-                    // He hasn't - return given next stage array
-                    return $nextStageArray;
-                }
-            }
         }
+        $nextStageRecord = $this->getNextStage($stageId);
+        if (empty($nextStageRecord) || !is_array($nextStageRecord)) {
+            // There is no next stage
+            return $nextStageArray;
+        }
+        // Check if the user has the permission to for the current stage
+        // If this next stage record is the first next stage after the current the user
+        // has always the needed permission
+        if ($this->isStageAllowedForUser($stageId)) {
+            $nextStageArray[] = $nextStageRecord;
+            return $this->getNextStages($nextStageArray, $nextStageRecord['uid']);
+        }
+        // He hasn't - return given next stage array
+        return $nextStageArray;
     }
 
     /**
@@ -394,8 +391,8 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 }
                 prev($workspaceStageRecs);
             }
-        } else {
         }
+
         return $prevStage;
     }
 
@@ -543,9 +540,8 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
                 $stageRecord->getPreselectedRecipients(),
                 $this->getRecordService()->getCreateUserIds()
             );
-        } else {
-            return $stageRecord->getPreselectedRecipients();
         }
+        return $stageRecord->getPreselectedRecipients();
     }
 
     /**

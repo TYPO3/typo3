@@ -622,10 +622,9 @@ class NewRecordController extends AbstractModule
                 $ret = strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
             }
             return $ret;
-        } else {
-            // Return alphabetic order
-            return strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
         }
+        // Return alphabetic order
+        return strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
     }
 
     /**

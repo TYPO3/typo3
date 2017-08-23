@@ -298,10 +298,9 @@ class IndexSearchRepository
                 'firstRow' => $firstRow,
                 'count' => $count
             ];
-        } else {
-            // No results found
-            return false;
         }
+        // No results found
+        return false;
     }
 
     /**
@@ -323,9 +322,8 @@ class IndexSearchRepository
             $res = $this->execFinalQuery($list, $freeIndexUid);
             $this->getTimeTracker()->pull();
             return $res;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1186,17 +1184,17 @@ class IndexSearchRepository
                     'gr_list' => $this->frontendUserGroupList
                 ]
             );
-        } else {
-            // Ordinary TYPO3 pages:
-            if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
-                // Selecting for the grlist records belonging to the phash-row where the current users gr_list exists.
-                // If it is found it is proof that this user has direct access to the phash-rows content although
-                // he did not himself initiate the indexing...
-                if (!$this->isTableUsed('index_grlist')) {
-                    return false;
-                }
+        }
+        // Ordinary TYPO3 pages:
+        if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
+            // Selecting for the grlist records belonging to the phash-row where the current users gr_list exists.
+            // If it is found it is proof that this user has direct access to the phash-rows content although
+            // he did not himself initiate the indexing...
+            if (!$this->isTableUsed('index_grlist')) {
+                return false;
+            }
 
-                return (bool)$connection->count(
+            return (bool)$connection->count(
                     'phash',
                     'index_grlist',
                     [
@@ -1204,10 +1202,8 @@ class IndexSearchRepository
                         'gr_list' => $this->frontendUserGroupList
                     ]
                 );
-            } else {
-                return true;
-            }
         }
+        return true;
     }
 
     /**

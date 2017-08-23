@@ -575,9 +575,8 @@ class FileList extends AbstractRecordList
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
             return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
-        } else {
-            return '<a href="' . htmlspecialchars($href) . '"' . $onclick . '>' . $title . '</a>';
         }
+        return '<a href="' . htmlspecialchars($href) . '"' . $onclick . '>' . $title . '</a>';
     }
 
     /**
@@ -643,9 +642,8 @@ class FileList extends AbstractRecordList
         $systemLanguages = array_filter($allSystemLanguages, function ($languageRecord) {
             if ($languageRecord['uid'] === -1 || $languageRecord['uid'] === 0 || !$this->getBackendUser()->checkLanguageAccess($languageRecord['uid'])) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         });
 
         foreach ($files as $fileObject) {

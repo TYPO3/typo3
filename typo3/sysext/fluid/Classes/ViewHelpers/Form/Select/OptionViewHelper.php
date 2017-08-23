@@ -80,7 +80,8 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $selectedValue = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {
             return in_array($value, $selectedValue);
-        } elseif ($selectedValue instanceof \Iterator) {
+        }
+        if ($selectedValue instanceof \Iterator) {
             return in_array($value, iterator_to_array($selectedValue));
         }
         return $value == $selectedValue;

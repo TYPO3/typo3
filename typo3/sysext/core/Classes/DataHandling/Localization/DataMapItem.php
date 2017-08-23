@@ -434,13 +434,13 @@ class DataMapItem
     {
         if (MathUtility::canBeInterpretedAsInteger($idValue)) {
             return $idValue;
-        } elseif (strpos($idValue, 'NEW') === 0) {
-            return $idValue;
-        } else {
-            // @todo Handle if $tableName does not match $this->tableName
-            list($tableName, $id) = BackendUtility::splitTable_Uid($idValue);
-            return $id;
         }
+        if (strpos($idValue, 'NEW') === 0) {
+            return $idValue;
+        }
+        // @todo Handle if $tableName does not match $this->tableName
+        list($tableName, $id) = BackendUtility::splitTable_Uid($idValue);
+        return $id;
     }
 
     /**

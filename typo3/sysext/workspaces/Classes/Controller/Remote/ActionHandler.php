@@ -205,9 +205,8 @@ class ActionHandler extends AbstractHandler
     {
         if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
             return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

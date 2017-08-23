@@ -160,9 +160,8 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
         }
         if ($this->persistenceSession->hasIdentifier($identifier, $objectType)) {
             return $this->persistenceSession->getObjectByIdentifier($identifier, $objectType);
-        } else {
-            return $this->backend->getObjectByIdentifier($identifier, $objectType);
         }
+        return $this->backend->getObjectByIdentifier($identifier, $objectType);
     }
 
     /**

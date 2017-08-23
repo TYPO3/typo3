@@ -62,9 +62,8 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
         // @todo add support for lazy loading proxies, if needed
         if (ObjectAccess::isPropertyGettable($object, $propertyName)) {
             return ObjectAccess::getProperty($object, $propertyName);
-        } else {
-            return ObjectAccess::getProperty($object, $propertyName, true);
         }
+        return ObjectAccess::getProperty($object, $propertyName, true);
     }
 
     /**
@@ -149,11 +148,10 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
         }
         if ($this->validatedInstancesContainer->contains($object)) {
             return true;
-        } else {
-            $this->validatedInstancesContainer->attach($object);
-
-            return false;
         }
+        $this->validatedInstancesContainer->attach($object);
+
+        return false;
     }
 
     /**
@@ -166,9 +164,8 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
     {
         if ($propertyName !== null) {
             return (isset($this->propertyValidators[$propertyName])) ? $this->propertyValidators[$propertyName] : [];
-        } else {
-            return $this->propertyValidators;
         }
+        return $this->propertyValidators;
     }
 
     /**

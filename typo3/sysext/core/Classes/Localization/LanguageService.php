@@ -288,10 +288,9 @@ class LanguageService
         // Return value if not global is set.
         if (!$setGlobal) {
             return $globalLanguage;
-        } else {
-            $GLOBALS['LOCAL_LANG'] = $globalLanguage;
-            return null;
         }
+        $GLOBALS['LOCAL_LANG'] = $globalLanguage;
+        return null;
     }
 
     /**

@@ -101,8 +101,7 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
     {
         if (static::evaluateCondition($this->arguments)) {
             return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
         }
+        return $this->renderElseChild();
     }
 }

@@ -376,16 +376,13 @@ class ExtendedTemplateService extends TemplateService
         if ((string)$parts[0] !== '' && is_array($theSetup[$parts[0] . '.'])) {
             if (trim($parts[1]) !== '') {
                 return $this->ext_getSetup($theSetup[$parts[0] . '.'], trim($parts[1]));
-            } else {
-                return [$theSetup[$parts[0] . '.'], $theSetup[$parts[0]]];
             }
-        } else {
-            if (trim($theKey) !== '') {
-                return [[], $theSetup[$theKey]];
-            } else {
-                return [$theSetup, ''];
-            }
+            return [$theSetup[$parts[0] . '.'], $theSetup[$parts[0]]];
         }
+        if (trim($theKey) !== '') {
+            return [[], $theSetup[$theKey]];
+        }
+        return [$theSetup, ''];
     }
 
     /**
@@ -763,9 +760,8 @@ class ExtendedTemplateService extends TemplateService
             $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
             $tsparser->parentObject = $this;
             return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '', $syntaxHLBlockmode);
-        } else {
-            return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
         }
+        return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
     }
 
     /**
@@ -785,9 +781,8 @@ class ExtendedTemplateService extends TemplateService
                     $string = GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3));
                     $marker = substr(md5($string), 0, 6);
                     return '##' . $marker . '_B##' . $string . '##' . $marker . '_E##';
-                } else {
-                    return GeneralUtility::fixed_lgd_cs($string, $chars - 3);
                 }
+                return GeneralUtility::fixed_lgd_cs($string, $chars - 3);
             }
         }
         return $string;

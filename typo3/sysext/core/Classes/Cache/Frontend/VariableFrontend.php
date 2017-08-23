@@ -83,9 +83,8 @@ class VariableFrontend extends AbstractFrontend
         $rawResult = $this->backend->get($entryIdentifier);
         if ($rawResult === false) {
             return false;
-        } else {
-            return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
         }
+        return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
     }
 
     /**

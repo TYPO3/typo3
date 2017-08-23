@@ -114,16 +114,15 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     {
         if ($this->hasDropDown()) {
             return $this->getFluidTemplateObject('ClearCacheToolbarItem.html')->render();
-        } else {
-            $view = $this->getFluidTemplateObject('ClearCacheToolbarItemSingle.html');
-            $cacheAction = end($this->cacheActions);
-            $view->assignMultiple([
+        }
+        $view = $this->getFluidTemplateObject('ClearCacheToolbarItemSingle.html');
+        $cacheAction = end($this->cacheActions);
+        $view->assignMultiple([
                 'link'  => $cacheAction['href'],
                 'title' => $cacheAction['title'],
                 'iconIdentifier'  => $cacheAction['iconIdentifier'],
             ]);
-            return $view->render();
-        }
+        return $view->render();
     }
 
     /**

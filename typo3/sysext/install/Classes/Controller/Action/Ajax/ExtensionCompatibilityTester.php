@@ -125,9 +125,8 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction
         if (is_file($this->protocolFile)) {
             $exclude = (string)file_get_contents($this->protocolFile);
             return GeneralUtility::trimExplode(',', $exclude);
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

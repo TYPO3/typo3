@@ -336,27 +336,28 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         $row = $queryBuilder->execute()->fetch();
         if ($row === false) {
             throw new \OutOfBoundsException('Query could not be executed. Possible defect in tables tx_scheduler_task or tx_scheduler_task_group or DB server problems', 1422044826);
-        } elseif (empty($row)) {
+        }
+        if (empty($row)) {
             // If there are no available tasks, thrown an exception
             throw new \OutOfBoundsException('No task', 1247827244);
+        }
+        /** @var $task Task\AbstractTask */
+        $task = unserialize($row['serialized_task_object']);
+        if ($this->isValidTaskObject($task)) {
+            // The task is valid, return it
+            $task->setScheduler();
         } else {
-            /** @var $task Task\AbstractTask */
-            $task = unserialize($row['serialized_task_object']);
-            if ($this->isValidTaskObject($task)) {
-                // The task is valid, return it
-                $task->setScheduler();
-            } else {
-                // Forcibly set the disable flag to 1 in the database,
-                // so that the task does not come up again and again for execution
-                $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
+            // Forcibly set the disable flag to 1 in the database,
+            // so that the task does not come up again and again for execution
+            $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
                     'tx_scheduler_task',
                     ['disable' => 1],
                     ['uid' => (int)$row['uid']]
                 );
-                // Throw an exception to raise the problem
-                throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
-            }
+            // Throw an exception to raise the problem
+            throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
         }
+
         return $task;
     }
 

@@ -107,9 +107,8 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
                 $uriPrefix = (GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https:' : 'http:') . $uriPrefix;
             }
             return GeneralUtility::locationHeaderUrl($uriPrefix . $imageUrl);
-        } else {
-            return $uriPrefix . $imageUrl;
         }
+        return $uriPrefix . $imageUrl;
     }
 
     /**

@@ -273,10 +273,9 @@ class LoginController
                  */
                 throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .
                     'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
-            } else {
-                // try it once again - that might be needed for auto login
-                $this->redirectToURL = 'index.php?commandLI=setCookie';
             }
+            // try it once again - that might be needed for auto login
+            $this->redirectToURL = 'index.php?commandLI=setCookie';
         }
         $redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
         if (empty($redirectToUrl)) {

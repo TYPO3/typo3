@@ -54,9 +54,8 @@ class TypeHandlingUtility
                 'type' => $type,
                 'elementType' => $elementType
             ];
-        } else {
-            throw new \TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException('Found an invalid element type declaration in %s. A type "' . var_export($type, true) . '" does not exist.', 1264093630);
         }
+        throw new \TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException('Found an invalid element type declaration in %s. A type "' . var_export($type, true) . '" does not exist.', 1264093630);
     }
 
     /**

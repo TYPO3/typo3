@@ -294,13 +294,13 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $mode = strtolower($mode);
         if ($mode === 'be') {
             return 'be_users';
-        } elseif ($mode === 'fe') {
+        }
+        if ($mode === 'fe') {
             return 'fe_users';
-        } else {
-            throw new \InvalidArgumentException(
+        }
+        throw new \InvalidArgumentException(
                 'Invalid mode "' . $mode . '" for salted passwords bulk update',
                 1465392861
             );
-        }
     }
 }

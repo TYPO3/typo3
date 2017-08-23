@@ -126,17 +126,14 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
             $methodParameter = current($methodParameters);
             if (!isset($methodParameter['type'])) {
                 throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
-            } else {
-                return $methodParameter['type'];
             }
-        } else {
-            $methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, '__construct');
-            if (isset($methodParameters[$propertyName]) && isset($methodParameters[$propertyName]['type'])) {
-                return $methodParameters[$propertyName]['type'];
-            } else {
-                throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
-            }
+            return $methodParameter['type'];
         }
+        $methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, '__construct');
+        if (isset($methodParameters[$propertyName]) && isset($methodParameters[$propertyName]['type'])) {
+            return $methodParameters[$propertyName]['type'];
+        }
+        throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
     }
 
     /**
@@ -230,8 +227,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
                 }
             }
             return call_user_func_array([$this->objectManager, 'get'], array_merge([$objectType], $constructorArguments));
-        } else {
-            return $this->objectManager->get($objectType);
         }
+        return $this->objectManager->get($objectType);
     }
 }

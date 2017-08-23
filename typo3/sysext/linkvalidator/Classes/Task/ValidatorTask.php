@@ -504,9 +504,8 @@ class ValidatorTask extends AbstractTask
                         $lang->sL($this->languageFile . ':tasks.error.invalidToEmail'),
                         '1295476821'
                     );
-                } else {
-                    $validEmailList[] = $emailAdd;
                 }
+                $validEmailList[] = $emailAdd;
             }
         }
         if (is_array($validEmailList) && !empty($validEmailList)) {

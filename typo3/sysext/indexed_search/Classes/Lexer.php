@@ -215,11 +215,10 @@ class Lexer
                                 $len = $printJoinLgd;
                             }
                             return true;
-                        } else {
-                            // If a printJoin char is found, record the length if it has not been recorded already:
-                            if (!$printJoinLgd) {
-                                $printJoinLgd = $len;
-                            }
+                        }
+                        // If a printJoin char is found, record the length if it has not been recorded already:
+                        if (!$printJoinLgd) {
+                            $printJoinLgd = $len;
                         }
                     } else {
                         // When a true letter is found, reset printJoinLgd counter:

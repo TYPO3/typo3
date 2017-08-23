@@ -348,9 +348,8 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
     {
         if ($this->hasArgument('fieldNamePrefix')) {
             return $this->arguments['fieldNamePrefix'];
-        } else {
-            return $this->getDefaultFieldNamePrefix();
         }
+        return $this->getDefaultFieldNamePrefix();
     }
 
     /**
@@ -431,9 +430,8 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         }
         if ($extensionName !== null && $pluginName != null) {
             return $this->extensionService->getPluginNamespace($extensionName, $pluginName);
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

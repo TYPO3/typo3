@@ -899,13 +899,15 @@ class ReferenceIndex
         // Get IRRE relations
         if (empty($conf)) {
             return false;
-        } elseif ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
+        }
+        if ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
             $dbAnalysis->setUseLiveReferenceIds(false);
             $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
             return $dbAnalysis->itemArray;
             // DB record lists:
-        } elseif ($this->isDbReferenceField($conf)) {
+        }
+        if ($this->isDbReferenceField($conf)) {
             $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             if ($conf['MM_opposite_field']) {
                 return [];
@@ -1042,21 +1044,20 @@ class ReferenceIndex
                     // Data Array, now ready to be sent to DataHandler
                     if ($returnDataArray) {
                         return $dataArray;
-                    } else {
-                        // Execute CMD array:
-                        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-                        $dataHandler->dontProcessTransformations = true;
-                        $dataHandler->bypassWorkspaceRestrictions = true;
-                        $dataHandler->bypassFileHandling = true;
-                        // Otherwise this cannot update things in deleted records...
-                        $dataHandler->bypassAccessCheckForRecords = true;
-                        // Check has been done previously that there is a backend user which is Admin and also in live workspace
-                        $dataHandler->start($dataArray, []);
-                        $dataHandler->process_datamap();
-                        // Return errors if any:
-                        if (!empty($dataHandler->errorLog)) {
-                            return LF . 'DataHandler:' . implode((LF . 'DataHandler:'), $dataHandler->errorLog);
-                        }
+                    }
+                    // Execute CMD array:
+                    $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+                    $dataHandler->dontProcessTransformations = true;
+                    $dataHandler->bypassWorkspaceRestrictions = true;
+                    $dataHandler->bypassFileHandling = true;
+                    // Otherwise this cannot update things in deleted records...
+                    $dataHandler->bypassAccessCheckForRecords = true;
+                    // Check has been done previously that there is a backend user which is Admin and also in live workspace
+                    $dataHandler->start($dataArray, []);
+                    $dataHandler->process_datamap();
+                    // Return errors if any:
+                    if (!empty($dataHandler->errorLog)) {
+                        return LF . 'DataHandler:' . implode((LF . 'DataHandler:'), $dataHandler->errorLog);
                     }
                 }
             }

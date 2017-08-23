@@ -35,11 +35,11 @@ class MailUtility
         $name = self::getSystemFromName();
         if (!$address) {
             return null;
-        } elseif ($name) {
-            return [$address => $name];
-        } else {
-            return [$address];
         }
+        if ($name) {
+            return [$address => $name];
+        }
+        return [$address];
     }
 
     /**
@@ -53,9 +53,8 @@ class MailUtility
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
             return $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**

@@ -470,14 +470,17 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if (GeneralUtility::isFirstPartOfStr($input, 'file:')) {
             $input = substr($input, 5);
             return $this->retrieveFileOrFolderObject($input);
-        } elseif (MathUtility::canBeInterpretedAsInteger($input)) {
+        }
+        if (MathUtility::canBeInterpretedAsInteger($input)) {
             return $this->getFileObject($input);
-        } elseif (strpos($input, ':') > 0) {
+        }
+        if (strpos($input, ':') > 0) {
             list($prefix) = explode(':', $input);
             if (MathUtility::canBeInterpretedAsInteger($prefix)) {
                 // path or folder in a valid storageUID
                 return $this->getObjectFromCombinedIdentifier($input);
-            } elseif ($prefix === 'EXT') {
+            }
+            if ($prefix === 'EXT') {
                 $input = GeneralUtility::getFileAbsFileName($input);
                 if (empty($input)) {
                     return null;
@@ -485,21 +488,18 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 
                 $input = PathUtility::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
                 return $this->getFileObjectFromCombinedIdentifier($input);
-            } else {
-                return null;
             }
-        } else {
-            // this is a backwards-compatible way to access "0-storage" files or folders
-            // eliminate double slashes, /./ and /../
-            $input = PathUtility::getCanonicalPath(ltrim($input, '/'));
-            if (@is_file(PATH_site . $input)) {
-                // only the local file
-                return $this->getFileObjectFromCombinedIdentifier($input);
-            } else {
-                // only the local path
-                return $this->getFolderObjectFromCombinedIdentifier($input);
-            }
+            return null;
         }
+        // this is a backwards-compatible way to access "0-storage" files or folders
+        // eliminate double slashes, /./ and /../
+        $input = PathUtility::getCanonicalPath(ltrim($input, '/'));
+        if (@is_file(PATH_site . $input)) {
+            // only the local file
+            return $this->getFileObjectFromCombinedIdentifier($input);
+        }
+        // only the local path
+        return $this->getFolderObjectFromCombinedIdentifier($input);
     }
 
     /**
@@ -558,11 +558,11 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         $storage = $this->getStorageObject($storageId);
         if ($storage->hasFile($objectIdentifier)) {
             return $storage->getFile($objectIdentifier);
-        } elseif ($storage->hasFolder($objectIdentifier)) {
-            return $storage->getFolder($objectIdentifier);
-        } else {
-            throw new Exception\ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
         }
+        if ($storage->hasFolder($objectIdentifier)) {
+            return $storage->getFolder($objectIdentifier);
+        }
+        throw new Exception\ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
     }
 
     /**

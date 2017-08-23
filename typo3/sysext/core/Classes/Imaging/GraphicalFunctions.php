@@ -928,25 +928,23 @@ class GraphicalFunctions
             // If any kind of spacing applys, we use this function:
             if ($spacing || $wordSpacing) {
                 return $conf['fontSize'];
-            } else {
-                do {
-                    // Determine bounding box.
-                    $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $conf['text'], $conf['splitRendering.']);
-                    if ($conf['angle'] < 0) {
-                        $pixelWidth = abs($bounds[4] - $bounds[0]);
-                    } elseif ($conf['angle'] > 0) {
-                        $pixelWidth = abs($bounds[2] - $bounds[6]);
-                    } else {
-                        $pixelWidth = abs($bounds[4] - $bounds[6]);
-                    }
-                    // Size is fine, exit:
-                    if ($pixelWidth <= $maxWidth) {
-                        break;
-                    } else {
-                        $conf['fontSize']--;
-                    }
-                } while ($conf['fontSize'] > 1);
             }
+            do {
+                // Determine bounding box.
+                $bounds = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $conf['text'], $conf['splitRendering.']);
+                if ($conf['angle'] < 0) {
+                    $pixelWidth = abs($bounds[4] - $bounds[0]);
+                } elseif ($conf['angle'] > 0) {
+                    $pixelWidth = abs($bounds[2] - $bounds[6]);
+                } else {
+                    $pixelWidth = abs($bounds[4] - $bounds[6]);
+                }
+                // Size is fine, exit:
+                if ($pixelWidth <= $maxWidth) {
+                    break;
+                }
+                $conf['fontSize']--;
+            } while ($conf['fontSize'] > 1);
         }
         return $conf['fontSize'];
     }
@@ -2205,16 +2203,15 @@ class GraphicalFunctions
         if (file_exists($imageFile) && GeneralUtility::inList($this->imageFileExt, strtolower($reg[0]))) {
             if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
                 return $returnArr;
+            }
+            if ($temp = @getimagesize($imageFile)) {
+                $returnArr = [$temp[0], $temp[1], strtolower($reg[0]), $imageFile];
             } else {
-                if ($temp = @getimagesize($imageFile)) {
-                    $returnArr = [$temp[0], $temp[1], strtolower($reg[0]), $imageFile];
-                } else {
-                    $returnArr = $this->imageMagickIdentify($imageFile);
-                }
-                if ($returnArr) {
-                    $this->cacheImageDimensions($returnArr);
-                    return $returnArr;
-                }
+                $returnArr = $this->imageMagickIdentify($imageFile);
+            }
+            if ($returnArr) {
+                $this->cacheImageDimensions($returnArr);
+                return $returnArr;
             }
         }
         return null;
@@ -2668,9 +2665,8 @@ class GraphicalFunctions
     {
         if ($type === 'ai' || $w * $h < $this->pixelLimitGif) {
             return $this->gifExtension;
-        } else {
-            return 'jpg';
         }
+        return 'jpg';
     }
 
     /**

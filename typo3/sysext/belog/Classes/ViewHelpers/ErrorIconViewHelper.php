@@ -66,8 +66,7 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper
         if ($errorSymbols[$arguments['errorNumber']]) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             return $iconFactory->getIcon($errorSymbols[$arguments['errorNumber']], Icon::SIZE_SMALL)->render();
-        } else {
-            return '';
         }
+        return '';
     }
 }

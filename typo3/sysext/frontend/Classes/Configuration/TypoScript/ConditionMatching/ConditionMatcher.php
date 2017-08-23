@@ -42,8 +42,8 @@ class ConditionMatcher extends AbstractConditionMatcher
 
         if (is_bool($result)) {
             return $result;
-        } else {
-            switch ($key) {
+        }
+        switch ($key) {
                 case 'usergroup':
                     $groupList = $this->getGroupList();
                     // '0,-1' is the default usergroups when not logged in!
@@ -84,7 +84,6 @@ class ConditionMatcher extends AbstractConditionMatcher
                         return $conditionResult;
                     }
             }
-        }
 
         return false;
     }

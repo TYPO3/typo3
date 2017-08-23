@@ -1332,7 +1332,8 @@ class TemplateService
         $file = trim($fileFromSetup);
         if (!$file) {
             return null;
-        } elseif (strpos($file, '../') !== false) {
+        }
+        if (strpos($file, '../') !== false) {
             if ($this->tt_track) {
                 $this->getTimeTracker()->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
             }

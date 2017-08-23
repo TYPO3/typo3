@@ -76,11 +76,11 @@ class QueryHelper
 
                 if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {
                     return [$tableName, $alias];
-                } elseif (!empty($as) && empty($alias)) {
-                    return [$tableName, $as];
-                } else {
-                    return [$tableName, null];
                 }
+                if (!empty($as) && empty($alias)) {
+                    return [$tableName, $as];
+                }
+                return [$tableName, null];
             },
             $tableExpressions
         );

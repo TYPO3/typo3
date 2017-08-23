@@ -360,7 +360,8 @@ class TypoScriptParser
                         $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
                         $this->inBrace = 0;
                         return $line;
-                    } elseif ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
+                    }
+                    if ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
                         // If not brace-end or comment
                         // Find object name string until we meet an operator
                         $varL = strcspn($line, TAB . ' {=<>(');
@@ -644,11 +645,11 @@ class TypoScriptParser
                 $retArr[1] = $setup[$subKey];
             }
             return $retArr;
-        } else {
-            if ($setup[$subKey]) {
-                return $this->getVal($remainingKey, $setup[$subKey]);
-            }
         }
+        if ($setup[$subKey]) {
+            return $this->getVal($remainingKey, $setup[$subKey]);
+        }
+
         return [];
     }
 

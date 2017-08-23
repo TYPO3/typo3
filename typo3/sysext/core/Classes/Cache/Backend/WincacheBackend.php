@@ -139,9 +139,8 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
         $identifiers = wincache_ucache_get($this->identifierPrefix . 'tag_' . $tag, $success);
         if ($success === false) {
             return [];
-        } else {
-            return (array)$identifiers;
         }
+        return (array)$identifiers;
     }
 
     /**
