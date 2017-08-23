@@ -446,17 +446,17 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -466,19 +466,19 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+                'visibleRecordHeaders' => ['Regular Element #3', '[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
             ],
             5 => [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             // Expected behaviour:
             // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
 //             Expected behaviour:
 //             Element #3 is not translated in PL and it is translated in DK. It's not shown as content_fallback is not related to single CE level
@@ -486,7 +486,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -496,24 +496,24 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[PL] Without default language', '[Translate to Polski:] Regular Element #1', 'Regular Element #3'],
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of hideNonTranslated
             10 => [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
@@ -523,7 +523,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #2', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
+                'visibleRecordHeaders' => ['[PL] Without default language', 'Regular Element #3', '[Translate to Polski:] Regular Element #1'],
             ]
         ];
     }
