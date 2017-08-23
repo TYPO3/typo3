@@ -60,9 +60,8 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
                 . ' and need to be migrated to the new definitions. This update wizard'
                 . ' upgrades the accordant settings in the available workspaces and stages.';
             return true;
-        } else {
-            $this->markWizardAsDone();
         }
+        $this->markWizardAsDone();
 
         return false;
     }

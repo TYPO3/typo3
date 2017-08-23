@@ -199,7 +199,8 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
         $dateFormat = $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, self::CONFIGURATION_DATE_FORMAT);
         if ($dateFormat === null) {
             return self::DEFAULT_DATE_FORMAT;
-        } elseif ($dateFormat !== null && !is_string($dateFormat)) {
+        }
+        if ($dateFormat !== null && !is_string($dateFormat)) {
             throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat)) . '" given', 1307719569);
         }
         return $dateFormat;

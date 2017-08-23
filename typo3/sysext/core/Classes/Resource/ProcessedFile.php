@@ -316,9 +316,8 @@ class ProcessedFile extends AbstractFile
     {
         if ($this->usesOriginalFile()) {
             return $this->originalFile->getName();
-        } else {
-            return $this->name;
         }
+        return $this->name;
     }
 
     /**
@@ -434,9 +433,8 @@ class ProcessedFile extends AbstractFile
         // Only delete file when original isn't used
         if (!$this->usesOriginalFile()) {
             return parent::delete();
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
@@ -451,9 +449,8 @@ class ProcessedFile extends AbstractFile
         // The uid always (!) has to come from this file and never the original file (see getOriginalFile() to get this)
         if ($this->isUnchanged() && $key !== 'uid') {
             return $this->originalFile->getProperty($key);
-        } else {
-            return $this->properties[$key];
         }
+        return $this->properties[$key];
     }
 
     /**
@@ -565,10 +562,10 @@ class ProcessedFile extends AbstractFile
     {
         if ($this->deleted) {
             return null;
-        } elseif ($this->usesOriginalFile()) {
-            return $this->getOriginalFile()->getPublicUrl($relativeToCurrentScript);
-        } else {
-            return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
         }
+        if ($this->usesOriginalFile()) {
+            return $this->getOriginalFile()->getPublicUrl($relativeToCurrentScript);
+        }
+        return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
     }
 }

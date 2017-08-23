@@ -814,9 +814,8 @@ class BackendController
 					// start in module:
 				top.startInModule = [' . GeneralUtility::quoteJSvalue($startModule) . ', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
 			';
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

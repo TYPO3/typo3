@@ -367,7 +367,8 @@ class ElementEntity
                     if ($outerMostParent instanceof \TYPO3\CMS\Version\Dependency\ElementEntity) {
                         $this->outerMostParent = $outerMostParent;
                         break;
-                    } elseif ($outerMostParent === false) {
+                    }
+                    if ($outerMostParent === false) {
                         break;
                     }
                 }

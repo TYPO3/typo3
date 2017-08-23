@@ -218,7 +218,8 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
         $records = $this->getSubpages(-1, $searchFilter);
         if (!is_array($records) || empty($records)) {
             return $nodeCollection;
-        } elseif (count($records) > 500) {
+        }
+        if (count($records) > 500) {
             return $nodeCollection;
         }
         // check no temporary mountpoint is used

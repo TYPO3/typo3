@@ -127,9 +127,8 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
     {
         if ($this->hasArgument('fieldNamePrefix')) {
             return $this->arguments['fieldNamePrefix'];
-        } else {
-            return $this->getDefaultFieldNamePrefix();
         }
+        return $this->getDefaultFieldNamePrefix();
     }
 
     /**
@@ -152,8 +151,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
         }
         if ($extensionName !== null && $pluginName != null) {
             return $this->extensionService->getPluginNamespace($extensionName, $pluginName);
-        } else {
-            return '';
         }
+        return '';
     }
 }

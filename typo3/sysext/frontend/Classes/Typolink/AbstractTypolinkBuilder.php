@@ -113,9 +113,8 @@ abstract class AbstractTypolinkBuilder
     {
         if ($originalLinkText === '') {
             return $this->contentObjectRenderer->parseFunc($fallbackLinkText, ['makelinks' => 0], '< lib.parseFunc');
-        } else {
-            return $originalLinkText;
         }
+        return $originalLinkText;
     }
 
     /**

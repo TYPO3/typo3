@@ -276,7 +276,8 @@ class WorkspaceService implements SingletonInterface
         // be collected, an empty result array needs to be returned:
         if ($isTableLocalizable === false && $language > 0) {
             return [];
-        } elseif ($isTableLocalizable) {
+        }
+        if ($isTableLocalizable) {
             $languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         }
 
@@ -868,9 +869,8 @@ class WorkspaceService implements SingletonInterface
         GeneralUtility::_GETset($originalM, 'M');
         if ($addDomain === true) {
             return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
-        } else {
-            return $viewScript;
         }
+        return $viewScript;
     }
 
     /**

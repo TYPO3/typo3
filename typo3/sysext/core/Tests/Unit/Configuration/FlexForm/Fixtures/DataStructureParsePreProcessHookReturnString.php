@@ -34,8 +34,7 @@ class DataStructureParsePreProcessHookReturnString
                     <sheets></sheets>
                 </T3DataStructure>
             ';
-        } else {
-            return '';
         }
+        return '';
     }
 }

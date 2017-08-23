@@ -609,9 +609,8 @@ class Check implements CheckInterface
             $status = new Status\OkStatus();
             $status->setTitle('PHP suhosin extension loaded and active');
             return $status;
-        } else {
-            throw new \BadMethodCallException('Should be called only if suhosin extension is loaded', 1422634778);
         }
+        throw new \BadMethodCallException('Should be called only if suhosin extension is loaded', 1422634778);
     }
 
     /**

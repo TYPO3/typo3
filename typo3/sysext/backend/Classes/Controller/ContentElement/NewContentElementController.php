@@ -508,12 +508,11 @@ class NewContentElementController extends AbstractModule
                             // Remove element all together:
                             unset($wizardItems[$key]);
                             break;
-                        } else {
-                            // Add the parameter:
-                            $wizardItems[$key]['params'] .= '&defVals[tt_content][' . $fN . ']=' . rawurlencode($this->getLanguageService()->sL($fV));
-                            $tmp = explode('_', $key);
-                            $headersUsed[$tmp[0]] = $tmp[0];
                         }
+                        // Add the parameter:
+                        $wizardItems[$key]['params'] .= '&defVals[tt_content][' . $fN . ']=' . rawurlencode($this->getLanguageService()->sL($fV));
+                        $tmp = explode('_', $key);
+                        $headersUsed[$tmp[0]] = $tmp[0];
                     }
                 }
             }

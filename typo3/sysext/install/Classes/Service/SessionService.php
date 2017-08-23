@@ -82,7 +82,8 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
             $sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587485);
-        } elseif (defined('SID')) {
+        }
+        if (defined('SID')) {
             $sessionCreationError = 'Session already started by session_start().<br />';
             $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587486);

@@ -46,9 +46,8 @@ class FileNameFilter
         // Only apply the filter if you want to hide the hidden files
         if (self::$showHiddenFilesAndFolders === false && strpos($itemIdentifier, '/.') !== false) {
             return -1;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

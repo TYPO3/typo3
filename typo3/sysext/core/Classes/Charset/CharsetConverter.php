@@ -773,12 +773,10 @@ class CharsetConverter implements SingletonInterface
                     }
                 }
                 return 2;
-            } else {
-                return false;
             }
-        } else {
-            return 1;
+            return false;
         }
+        return 1;
     }
 
     /**
@@ -997,10 +995,9 @@ class CharsetConverter implements SingletonInterface
                 $ord = hexdec($code_value);
                 if ($ord > 127) {
                     continue 2;
-                } else {
-                    // Skip decompositions containing non-ASCII chars
-                    $code_decomp[] = chr($ord);
                 }
+                // Skip decompositions containing non-ASCII chars
+                $code_decomp[] = chr($ord);
             }
             $ascii[$this->UnumberToChar(hexdec($from))] = implode('', $code_decomp);
         }
@@ -1377,13 +1374,11 @@ class CharsetConverter implements SingletonInterface
             // $len outside actual string length
             if ($byte_end === false) {
                 return $len < 0 ? '' : $str;
-            } else {
-                // When length is less than zero and exceeds, then we return blank string.
-                return substr($str, 0, $byte_end);
             }
-        } else {
-            return $str;
+            // When length is less than zero and exceeds, then we return blank string.
+            return substr($str, 0, $byte_end);
         }
+        return $str;
     }
 
     /**
@@ -1650,9 +1645,8 @@ class CharsetConverter implements SingletonInterface
         if ($i > $len) {
             // We ended on a first byte
             return substr($str, 0, $len - 1);
-        } else {
-            return substr($str, 0, $len);
         }
+        return substr($str, 0, $len);
     }
 
     /**
@@ -1679,12 +1673,10 @@ class CharsetConverter implements SingletonInterface
             // $len outside actual string length
             if ($byte_end === false) {
                 return $str;
-            } else {
-                return substr($str, 0, $byte_end);
             }
-        } else {
-            return $str;
+            return substr($str, 0, $byte_end);
         }
+        return $str;
     }
 
     /**

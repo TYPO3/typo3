@@ -800,9 +800,8 @@ function jumpToUrl(URL) {
 	<div>
 ';
             return $str;
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -824,9 +823,8 @@ function jumpToUrl(URL) {
 	      End output section.
 	     ********************* -->
 ';
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

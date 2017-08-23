@@ -78,12 +78,12 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         $route = $request->getAttribute('route');
         if ($route->getOption('access') === 'public') {
             return true;
-        } elseif ($route->getOption('ajax')) {
+        }
+        if ($route->getOption('ajax')) {
             $token = (string)(isset($request->getParsedBody()['ajaxToken']) ? $request->getParsedBody()['ajaxToken'] : $request->getQueryParams()['ajaxToken']);
             return $this->getFormProtection()->validateToken($token, 'ajaxCall', $route->getOption('_identifier'));
-        } else {
-            $token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
-            return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
         }
+        $token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
+        return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
     }
 }

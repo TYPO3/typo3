@@ -131,7 +131,8 @@ class SaltedPasswordsUtility
         $securityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel']) ?: 'normal';
         if ($mode === 'BE') {
             return true;
-        } elseif ($mode === 'FE' && $extConf['enabled']) {
+        }
+        if ($mode === 'FE' && $extConf['enabled']) {
             return $securityLevel === 'normal' || $securityLevel === 'rsa';
         }
         return false;

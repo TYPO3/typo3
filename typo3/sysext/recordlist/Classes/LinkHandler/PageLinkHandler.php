@@ -215,9 +215,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     {
         if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') > 0) {
             return GeneralUtility::linkThisScript(['setTempDBmount' => 0]);
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

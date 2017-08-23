@@ -74,9 +74,8 @@ class ImageManipulationWizard
             $response->getBody()->write($content);
 
             return $response;
-        } else {
-            return $response->withStatus(403);
         }
+        return $response->withStatus(403);
     }
 
     /**

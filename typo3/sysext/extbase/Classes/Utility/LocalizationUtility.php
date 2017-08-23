@@ -119,9 +119,8 @@ class LocalizationUtility
         }
         if (is_array($arguments) && $value !== null) {
             return vsprintf($value, $arguments);
-        } else {
-            return $value;
         }
+        return $value;
     }
 
     /**
@@ -137,12 +136,12 @@ class LocalizationUtility
         if (TYPO3_MODE === 'FE') {
             $value = self::getTypoScriptFrontendController()->sL($key);
             return $value !== false ? $value : null;
-        } elseif (is_object($GLOBALS['LANG'])) {
+        }
+        if (is_object($GLOBALS['LANG'])) {
             $value = self::getLanguageService()->sL($key);
             return $value !== '' ? $value : null;
-        } else {
-            return $key;
         }
+        return $key;
     }
 
     /**

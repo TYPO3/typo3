@@ -774,7 +774,6 @@ class Import extends ImportExport
                             foreach ($uidList as $uid) {
                                 if ($this->dontIgnorePid($tableName, $uid)) {
                                     $cmd_data[$tableName][$uid]['move'] = $newPid;
-                                } else {
                                 }
                             }
                         }
@@ -1117,9 +1116,8 @@ class Import extends ImportExport
                     $this->alternativeFileName[$tmpFile] = $fI['filename'];
                     $this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
                     return $tmpFile;
-                } else {
-                    $this->error('Error: temporary file ' . $tmpFile . ' had a size (' . filesize($tmpFile) . ') different from the original (' . $this->dat['files'][$fI['ID']]['filesize'] . ')');
                 }
+                $this->error('Error: temporary file ' . $tmpFile . ' had a size (' . filesize($tmpFile) . ') different from the original (' . $this->dat['files'][$fI['ID']]['filesize'] . ')');
             } else {
                 $this->error('Error: temporary file ' . $tmpFile . ' was not written as it should have been!');
             }
@@ -1462,9 +1460,8 @@ class Import extends ImportExport
                             $this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], true);
                             // Return the relative path of the copy file name:
                             return PathUtility::stripPathSitePrefix($copyDestName);
-                        } else {
-                            $this->error('ERROR: Could not find original file ID');
                         }
+                        $this->error('ERROR: Could not find original file ID');
                     } else {
                         $this->error('ERROR: The destination filenames "' . $copyDestName . '" and "' . $origDestName . '" either existed or have non-valid names');
                     }
@@ -1617,10 +1614,9 @@ class Import extends ImportExport
         $this->fileIDMap[$fileID] = $fileName;
         if (md5(file_get_contents($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
             return true;
-        } else {
-            $this->error('ERROR: File content "' . $fileName . '" was corrupted');
-            return false;
         }
+        $this->error('ERROR: File content "' . $fileName . '" was corrupted');
+        return false;
     }
 
     /**
@@ -1692,9 +1688,8 @@ class Import extends ImportExport
                     if ($this->dat['_DOCUMENT_TAG'] === 'T3RecordDocument' && is_array($this->dat['header']) && is_array($this->dat['records'])) {
                         $this->loadInit();
                         return true;
-                    } else {
-                        $this->error('XML file did not contain proper XML for TYPO3 Import');
                     }
+                    $this->error('XML file did not contain proper XML for TYPO3 Import');
                 } else {
                     $this->error('XML could not be parsed: ' . $this->dat);
                 }
@@ -1712,9 +1707,9 @@ class Import extends ImportExport
                 }
                 $this->loadInit();
                 return true;
-            } else {
-                $this->error('Error opening file: ' . $filename);
             }
+            $this->error('Error opening file: ' . $filename);
+
             fclose($fd);
         }
         return false;
@@ -1760,9 +1755,9 @@ class Import extends ImportExport
                 }
             }
             return $unserialize ? unserialize($datString, ['allowed_classes' => false]) : $datString;
-        } else {
-            $this->error('MD5 check failed (' . $name . ')');
         }
+        $this->error('MD5 check failed (' . $name . ')');
+
         return null;
     }
 
@@ -1808,9 +1803,8 @@ class Import extends ImportExport
                 if ($this->compress) {
                     $datString = gzuncompress($datString);
                     return $unserialize ? unserialize($datString, ['allowed_classes' => false]) : $datString;
-                } else {
-                    $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.');
                 }
+                $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.');
             }
         } else {
             $this->error('MD5 check failed (' . $name . ')');

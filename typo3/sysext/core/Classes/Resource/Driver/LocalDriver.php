@@ -410,7 +410,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                 // If calling the method succeeded and thus we can't use that as a return value.
                 if ($result === -1) {
                     return false;
-                } elseif ($result === false) {
+                }
+                if ($result === false) {
                     throw new \RuntimeException(
                         'Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1],
                         1476046425
@@ -1239,9 +1240,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     {
         if ($writable === false) {
             return $this->getAbsolutePath($fileIdentifier);
-        } else {
-            return $this->copyFileToTemporaryPath($fileIdentifier);
         }
+        return $this->copyFileToTemporaryPath($fileIdentifier);
     }
 
     /**
@@ -1413,11 +1413,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $recycleDirectory = $searchDirectory . '/' . $recyclerSubdirectory;
             if (is_dir($recycleDirectory)) {
                 return $recycleDirectory;
-            } elseif ($searchDirectory === $rootDirectory) {
-                return '';
-            } else {
-                $searchDirectory = PathUtility::dirname($searchDirectory);
             }
+            if ($searchDirectory === $rootDirectory) {
+                return '';
+            }
+            $searchDirectory = PathUtility::dirname($searchDirectory);
         }
 
         return '';

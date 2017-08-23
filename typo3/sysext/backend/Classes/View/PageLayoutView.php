@@ -248,9 +248,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
     {
         if (isset($this->externalTables[$table])) {
             return $this->getExternalTables($id, $table);
-        } else {
-            // Branch out based on table name:
-            switch ($table) {
+        }
+        // Branch out based on table name:
+        switch ($table) {
                 case 'pages':
                     return $this->getTable_pages($id);
                     break;
@@ -260,7 +260,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 default:
                     return '';
             }
-        }
     }
 
     /**
@@ -1879,9 +1878,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         // Return values:
         if ($this->isDisabled('tt_content', $row)) {
             return '<span class="text-muted">' . $out . '</span>';
-        } else {
-            return $out;
         }
+        return $out;
     }
 
     /**
@@ -2067,9 +2065,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
             // Return link
             return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $str . '</a>';
-        } else {
-            return $str;
         }
+        return $str;
     }
 
     /**

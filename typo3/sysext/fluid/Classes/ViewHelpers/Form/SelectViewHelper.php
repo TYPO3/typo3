@@ -269,7 +269,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         if ($this->hasArgument('multiple')) {
             if (is_null($selectedValue) && $this->arguments['selectAllByDefault'] === true) {
                 return true;
-            } elseif (is_array($selectedValue) && in_array($value, $selectedValue)) {
+            }
+            if (is_array($selectedValue) && in_array($value, $selectedValue)) {
                 return true;
             }
         }
@@ -306,17 +307,14 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         if (is_object($valueElement)) {
             if ($this->hasArgument('optionValueField')) {
                 return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
-            } else {
-                // @todo use $this->persistenceManager->isNewObject() once it is implemented
-                if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
-                    return $this->persistenceManager->getIdentifierByObject($valueElement);
-                } else {
-                    return (string)$valueElement;
-                }
             }
-        } else {
-            return $valueElement;
+            // @todo use $this->persistenceManager->isNewObject() once it is implemented
+            if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
+                return $this->persistenceManager->getIdentifierByObject($valueElement);
+            }
+            return (string)$valueElement;
         }
+        return $valueElement;
     }
 
     /**

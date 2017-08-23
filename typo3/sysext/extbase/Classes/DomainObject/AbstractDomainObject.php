@@ -67,9 +67,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     {
         if ($this->uid !== null) {
             return (int)$this->uid;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -95,9 +94,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     {
         if ($this->pid === null) {
             return null;
-        } else {
-            return (int)$this->pid;
         }
+        return (int)$this->pid;
     }
 
     /**

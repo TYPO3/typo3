@@ -854,21 +854,20 @@ abstract class ImportExport
         if ($this->mode === 'export') {
             if ($r['type'] === 'record') {
                 return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_singlereco_exclude')) . '</label>';
-            } else {
-                return  $r['type'] === 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
             }
-        } else {
-            // During import
-            // For softreferences with editable fields:
-            if ($r['type'] === 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
-                $tokenID = $r['_softRefInfo']['subst']['tokenID'];
-                $cfg = $this->softrefCfg[$tokenID];
-                if ($cfg['mode'] === 'editable') {
-                    return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
+            return  $r['type'] === 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
+        }
+        // During import
+        // For softreferences with editable fields:
+        if ($r['type'] === 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
+            $tokenID = $r['_softRefInfo']['subst']['tokenID'];
+            $cfg = $this->softrefCfg[$tokenID];
+            if ($cfg['mode'] === 'editable') {
+                return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
 						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars((isset($this->softrefInputValues[$tokenID]) ? $this->softrefInputValues[$tokenID] : $cfg['defValue'])) . '" />';
-                }
             }
         }
+
         return '';
     }
 

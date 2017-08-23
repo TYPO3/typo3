@@ -122,9 +122,8 @@ abstract class AbstractFile implements FileInterface
     {
         if ($this->hasProperty($key)) {
             return $this->properties[$key];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -537,9 +536,8 @@ abstract class AbstractFile implements FileInterface
     {
         if ($this->deleted) {
             return null;
-        } else {
-            return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
         }
+        return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
     }
 
     /**

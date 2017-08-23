@@ -66,20 +66,20 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
         // Look for hook before running default code for function
         if ($hookObj = $this->hookRequest('render_table')) {
             return $hookObj->render_table($content, $conf);
-        } else {
-            // Init FlexForm configuration
-            $this->pi_initPIflexForm();
-            // Get bodytext field content
-            $field = isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext';
-            $content = trim($this->cObj->data[$field]);
-            if ($content === '') {
-                return '';
-            }
-            // Get configuration
-            $caption = trim($this->cObj->data['table_caption']);
-            $useTfoot = trim($this->cObj->data['table_tfoot']);
-            $headerPosition = trim($this->cObj->data['table_header_position']);
-            switch ($headerPosition) {
+        }
+        // Init FlexForm configuration
+        $this->pi_initPIflexForm();
+        // Get bodytext field content
+        $field = isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext';
+        $content = trim($this->cObj->data[$field]);
+        if ($content === '') {
+            return '';
+        }
+        // Get configuration
+        $caption = trim($this->cObj->data['table_caption']);
+        $useTfoot = trim($this->cObj->data['table_tfoot']);
+        $headerPosition = trim($this->cObj->data['table_header_position']);
+        switch ($headerPosition) {
                 case '1':
                     $headerPos = 'top';
                     break;
@@ -90,87 +90,86 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
                     $headerPos = '';
                     break;
             }
-            $tableClass = trim($this->cObj->data['table_class']);
-            $delimiter = trim($this->cObj->data['table_delimiter']);
-            if ($delimiter) {
-                $delimiter = chr((int)$delimiter);
-            } else {
-                $delimiter = '|';
-            }
-            $quotedInput = trim($this->cObj->data['table_enclosure']);
-            if ($quotedInput) {
-                $quotedInput = chr((int)$quotedInput);
-            } else {
-                $quotedInput = '';
-            }
-            // Generate id prefix for accessible header
-            $headerScope = $headerPos === 'top' ? 'col' : 'row';
-            $headerIdPrefix = $headerScope . $this->cObj->data['uid'] . '-';
-            // Split into single lines (will become table-rows):
-            $rows = GeneralUtility::trimExplode(LF, $content);
-            reset($rows);
-            // Find number of columns to render:
-            $cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+        $tableClass = trim($this->cObj->data['table_class']);
+        $delimiter = trim($this->cObj->data['table_delimiter']);
+        if ($delimiter) {
+            $delimiter = chr((int)$delimiter);
+        } else {
+            $delimiter = '|';
+        }
+        $quotedInput = trim($this->cObj->data['table_enclosure']);
+        if ($quotedInput) {
+            $quotedInput = chr((int)$quotedInput);
+        } else {
+            $quotedInput = '';
+        }
+        // Generate id prefix for accessible header
+        $headerScope = $headerPos === 'top' ? 'col' : 'row';
+        $headerIdPrefix = $headerScope . $this->cObj->data['uid'] . '-';
+        // Split into single lines (will become table-rows):
+        $rows = GeneralUtility::trimExplode(LF, $content);
+        reset($rows);
+        // Find number of columns to render:
+        $cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
                 $this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(str_getcsv(current($rows), $delimiter, $quotedInput)),
                 0,
                 100
             );
-            // Traverse rows (rendering the table here)
-            $rCount = count($rows);
-            foreach ($rows as $k => $v) {
-                $cells = str_getcsv($v, $delimiter, $quotedInput);
-                $newCells = [];
-                for ($a = 0; $a < $cols; $a++) {
-                    if (trim($cells[$a]) === '') {
-                        $cells[$a] = ' ';
-                    }
-                    $cells[$a] = preg_replace('|<br */?>|i', LF, $cells[$a]);
-                    if ($headerPos === 'top' && !$k || $headerPos === 'left' && !$a) {
-                        $scope = ' scope="' . $headerScope . '"';
-                        $scope .= ' id="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
-                        $newCells[$a] = '<th' . $scope . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</th>';
-                    } else {
-                        if (empty($headerPos)) {
-                            $accessibleHeader = '';
-                        } else {
-                            $accessibleHeader = ' headers="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
-                        }
-                        $newCells[$a] = '<td' . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
-                    }
+        // Traverse rows (rendering the table here)
+        $rCount = count($rows);
+        foreach ($rows as $k => $v) {
+            $cells = str_getcsv($v, $delimiter, $quotedInput);
+            $newCells = [];
+            for ($a = 0; $a < $cols; $a++) {
+                if (trim($cells[$a]) === '') {
+                    $cells[$a] = ' ';
                 }
-                $rows[$k] = '<tr>' . implode('', $newCells) . '</tr>';
+                $cells[$a] = preg_replace('|<br */?>|i', LF, $cells[$a]);
+                if ($headerPos === 'top' && !$k || $headerPos === 'left' && !$a) {
+                    $scope = ' scope="' . $headerScope . '"';
+                    $scope .= ' id="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
+                    $newCells[$a] = '<th' . $scope . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</th>';
+                } else {
+                    if (empty($headerPos)) {
+                        $accessibleHeader = '';
+                    } else {
+                        $accessibleHeader = ' headers="' . $headerIdPrefix . ($headerScope === 'col' ? $a : $k) . '"';
+                    }
+                    $newCells[$a] = '<td' . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
+                }
             }
-            $addTbody = 0;
-            $tableContents = '';
-            if ($caption) {
-                $tableContents .= '
-					<caption>' . $caption . '</caption>';
-            }
-            if ($headerPos === 'top' && $rows[0]) {
-                $tableContents .= '<thead>' . $rows[0] . '</thead>';
-                unset($rows[0]);
-                $addTbody = 1;
-            }
-            if ($useTfoot) {
-                $tableContents .= '<tfoot>' . $rows[$rCount - 1] . '</tfoot>';
-                unset($rows[$rCount - 1]);
-                $addTbody = 1;
-            }
-            $tmpTable = implode('', $rows);
-            if ($addTbody) {
-                $tmpTable = '<tbody>' . $tmpTable . '</tbody>';
-            }
-            $tableContents .= $tmpTable;
-            // Set header type:
-            $type = (int)$this->cObj->data['layout'];
-            // Table tag params.
-            $tableTagParams = [];
-            $tableTagParams['class'] = 'contenttable contenttable-' . $type . ($tableClass ? ' contenttable-' . $tableClass : '');
-            // Compile table output:
-            $out = '<table ' . GeneralUtility::implodeAttributes($tableTagParams) . '>' . $tableContents . '</table>';
-            // Return value
-            return $out;
+            $rows[$k] = '<tr>' . implode('', $newCells) . '</tr>';
         }
+        $addTbody = 0;
+        $tableContents = '';
+        if ($caption) {
+            $tableContents .= '
+					<caption>' . $caption . '</caption>';
+        }
+        if ($headerPos === 'top' && $rows[0]) {
+            $tableContents .= '<thead>' . $rows[0] . '</thead>';
+            unset($rows[0]);
+            $addTbody = 1;
+        }
+        if ($useTfoot) {
+            $tableContents .= '<tfoot>' . $rows[$rCount - 1] . '</tfoot>';
+            unset($rows[$rCount - 1]);
+            $addTbody = 1;
+        }
+        $tmpTable = implode('', $rows);
+        if ($addTbody) {
+            $tmpTable = '<tbody>' . $tmpTable . '</tbody>';
+        }
+        $tableContents .= $tmpTable;
+        // Set header type:
+        $type = (int)$this->cObj->data['layout'];
+        // Table tag params.
+        $tableTagParams = [];
+        $tableTagParams['class'] = 'contenttable contenttable-' . $type . ($tableClass ? ' contenttable-' . $tableClass : '');
+        // Compile table output:
+        $out = '<table ' . GeneralUtility::implodeAttributes($tableTagParams) . '>' . $tableContents . '</table>';
+        // Return value
+        return $out;
     }
 
     /**

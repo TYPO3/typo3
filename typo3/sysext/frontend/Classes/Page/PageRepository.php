@@ -905,9 +905,8 @@ class PageRepository
                 HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_301);
             }
             die;
-        } else {
-            return $row['uid'];
         }
+        return $row['uid'];
     }
 
     /**
@@ -942,7 +941,8 @@ class PageRepository
                     $this->error_getRootLine_failPid = -1;
                 }
                 return [];
-            } elseif ($ex->getCode() === 1343589451) {
+            }
+            if ($ex->getCode() === 1343589451) {
                 /** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
                 return [];
             }
@@ -1159,12 +1159,10 @@ class PageRepository
                             ->fetchColumn();
                         if ($numRows > 0) {
                             return $row;
-                        } else {
-                            return 0;
                         }
-                    } else {
-                        return $row;
+                        return 0;
                     }
+                    return $row;
                 }
             }
         }
@@ -1786,24 +1784,21 @@ class PageRepository
                 if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
                     // Return offline version, tested for its enableFields.
                     return $newrow;
-                } else {
-                    // Return -1 because offline version was de-selected due to its enableFields.
-                    return -1;
                 }
-            } else {
-                // OK, so no workspace version was found. Then check if online version can be
-                // selected with full enable fields and if so, return 1:
-                $queryBuilder->where(
+                // Return -1 because offline version was de-selected due to its enableFields.
+                return -1;
+            }
+            // OK, so no workspace version was found. Then check if online version can be
+            // selected with full enable fields and if so, return 1:
+            $queryBuilder->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                 );
-                if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
-                    // Means search was done, but no version found.
-                    return 1;
-                } else {
-                    // Return -2 because the online record was de-selected due to its enableFields.
-                    return -2;
-                }
+            if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
+                // Means search was done, but no version found.
+                return 1;
             }
+            // Return -2 because the online record was de-selected due to its enableFields.
+            return -2;
         }
         // No look up in database because versioning not enabled / or workspace not
         // offline

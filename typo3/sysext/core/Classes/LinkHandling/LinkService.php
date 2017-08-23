@@ -146,7 +146,8 @@ class LinkService implements SingletonInterface
     {
         if (is_object($this->handlers[$parameters['type']])) {
             return $this->handlers[$parameters['type']]->asString($parameters);
-        } elseif (isset($parameters['url']) && !empty($parameters['url'])) {
+        }
+        if (isset($parameters['url']) && !empty($parameters['url'])) {
             // This usually happens for tel: or other types where a URL is available and the
             // legacy link service could resolve at least something
             return $parameters['url'];

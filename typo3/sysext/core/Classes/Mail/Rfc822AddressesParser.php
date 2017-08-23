@@ -255,11 +255,11 @@ class Rfc822AddressesParser
         if ($is_group && $address[0] === ',') {
             $address = trim(substr($address, 1));
             return $address;
-        } elseif ($address !== '') {
-            return $address;
-        } else {
-            return '';
         }
+        if ($address !== '') {
+            return $address;
+        }
+        return '';
     }
 
     /**
@@ -280,9 +280,8 @@ class Rfc822AddressesParser
         if (count(($parts = explode(':', $string))) > 1) {
             $string2 = $this->_splitCheck($parts, ':');
             return $string2 !== $string;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -361,9 +360,8 @@ class Rfc822AddressesParser
         if ($num_angle_start < $num_angle_end) {
             $this->error = 'Invalid address spec. Unmatched quote or bracket (' . $chars . ')';
             return false;
-        } else {
-            return $num_angle_start > $num_angle_end;
         }
+        return $num_angle_start > $num_angle_end;
     }
 
     /**

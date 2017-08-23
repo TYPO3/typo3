@@ -151,9 +151,8 @@ class EnableFileService
     {
         if (time() - @filemtime(self::getInstallToolEnableFilePath()) > self::INSTALL_TOOL_ENABLE_FILE_LIFETIME) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

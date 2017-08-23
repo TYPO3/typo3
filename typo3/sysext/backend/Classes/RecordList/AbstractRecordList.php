@@ -326,16 +326,15 @@ abstract class AbstractRecordList
                 $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
             }
             return [1, $code];
-        } else {
-            if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
-                // 	Forward
-                $theData = [];
-                $titleCol = $this->fieldArray[0];
-                $theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
-                $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
-            }
-            return [0, $code];
         }
+        if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
+            // 	Forward
+            $theData = [];
+            $titleCol = $this->fieldArray[0];
+            $theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
+            $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
+        }
+        return [0, $code];
     }
 
     /**

@@ -203,9 +203,8 @@ class ArrayUtility
                 return is_array($array[$key]) ? self::getValueByPath($array[$key], $path) : null;
             }
             return $array[$key];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**

@@ -1876,14 +1876,12 @@ class TypoScriptFrontendController
                 $pageUid = $this->sys_page->getDomainStartPage(implode('.', $host), GeneralUtility::getIndpEnv('SCRIPT_NAME'), GeneralUtility::getIndpEnv('REQUEST_URI'));
                 if ($pageUid) {
                     return $pageUid;
-                } else {
-                    array_shift($host);
                 }
+                array_shift($host);
             }
             return $pageUid;
-        } else {
-            return $this->sys_page->getDomainStartPage(GeneralUtility::getIndpEnv('HTTP_HOST'), GeneralUtility::getIndpEnv('SCRIPT_NAME'), GeneralUtility::getIndpEnv('REQUEST_URI'));
         }
+        return $this->sys_page->getDomainStartPage(GeneralUtility::getIndpEnv('HTTP_HOST'), GeneralUtility::getIndpEnv('SCRIPT_NAME'), GeneralUtility::getIndpEnv('REQUEST_URI'));
     }
 
     /**
@@ -2254,11 +2252,10 @@ class TypoScriptFrontendController
             if (is_array($pageSectionCacheContent)) {
                 // we have the content, nice that some other process did the work for us already
                 $this->releaseLock('pagesection');
-            } else {
-                // We keep the lock set, because we are the ones generating the page now
+            }
+            // We keep the lock set, because we are the ones generating the page now
                 // and filling the cache.
                 // This indicates that we have to release the lock in the Registry later in releaseLocks()
-            }
         }
 
         if (is_array($pageSectionCacheContent)) {
@@ -2292,11 +2289,10 @@ class TypoScriptFrontendController
                     if (is_array($row)) {
                         // we have the content, nice that some other process did the work for us
                         $this->releaseLock('pages');
-                    } else {
-                        // We keep the lock set, because we are the ones generating the page now
+                    }
+                    // We keep the lock set, because we are the ones generating the page now
                         // and filling the cache.
                         // This indicates that we have to release the lock in the Registry later in releaseLocks()
-                    }
                 }
                 if (is_array($row)) {
                     // we have data from cache
@@ -4424,7 +4420,8 @@ class TypoScriptFrontendController
     {
         if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
             return $LOCAL_LANG[$this->lang][$index][0]['target'];
-        } elseif (isset($LOCAL_LANG['default'][$index][0]['target'])) {
+        }
+        if (isset($LOCAL_LANG['default'][$index][0]['target'])) {
             return $LOCAL_LANG['default'][$index][0]['target'];
         }
         return false;
@@ -4481,9 +4478,8 @@ class TypoScriptFrontendController
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
             $output = $charsetConverter->conv($str, $charsetConverter->parse_charset($from), 'utf-8');
             return $output ?: $str;
-        } else {
-            return $str;
         }
+        return $str;
     }
 
     /**
@@ -4824,9 +4820,8 @@ class TypoScriptFrontendController
             $this->locks[$type]['accessLock']->release();
             if ($locked) {
                 break;
-            } else {
-                throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1460975877);
             }
+            throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1460975877);
         } while (true);
     }
 

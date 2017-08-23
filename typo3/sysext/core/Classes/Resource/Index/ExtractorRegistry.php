@@ -55,11 +55,11 @@ class ExtractorRegistry implements SingletonInterface
     {
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('The class "' . $className . '" you are registering is not available', 1422705270);
-        } elseif (!in_array(ExtractorInterface::class, class_implements($className))) {
-            throw new \InvalidArgumentException('The extractor needs to implement the ExtractorInterface', 1422705271);
-        } else {
-            $this->extractors[] = $className;
         }
+        if (!in_array(ExtractorInterface::class, class_implements($className))) {
+            throw new \InvalidArgumentException('The extractor needs to implement the ExtractorInterface', 1422705271);
+        }
+        $this->extractors[] = $className;
     }
 
     /**

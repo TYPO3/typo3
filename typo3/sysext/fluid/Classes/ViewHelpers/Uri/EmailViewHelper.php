@@ -60,8 +60,7 @@ class EmailViewHelper extends AbstractViewHelper
         if (TYPO3_MODE === 'FE') {
             $emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
             return reset($emailParts);
-        } else {
-            return 'mailto:' . $email;
         }
+        return 'mailto:' . $email;
     }
 }

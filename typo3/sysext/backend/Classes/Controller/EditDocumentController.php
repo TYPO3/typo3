@@ -1810,30 +1810,26 @@ class EditDocumentController extends AbstractModule
                         // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)
                         return $reqRecord;
-                    } else {
-                        // The input record was online and an offline version must be found or made:
-                        // Look for version of this workspace:
-                        $versionRec = BackendUtility::getWorkspaceVersionOfRecord(
+                    }
+                    // The input record was online and an offline version must be found or made:
+                    // Look for version of this workspace:
+                    $versionRec = BackendUtility::getWorkspaceVersionOfRecord(
                             $this->getBackendUser()->workspace,
                             $table,
                             $reqRecord['uid'],
                             'uid,pid,t3ver_oid'
                         );
-                        return is_array($versionRec) ? $versionRec : $reqRecord;
-                    }
-                } else {
-                    // This means that editing cannot occur on this record because it was not supporting versioning
-                    // which is required inside an offline workspace.
-                    return false;
+                    return is_array($versionRec) ? $versionRec : $reqRecord;
                 }
-            } else {
-                // In ONLINE workspace, just return the originally requested record:
-                return $reqRecord;
+                // This means that editing cannot occur on this record because it was not supporting versioning
+                // which is required inside an offline workspace.
+                return false;
             }
-        } else {
-            // Return FALSE because the table/uid was not found anyway.
-            return false;
+            // In ONLINE workspace, just return the originally requested record:
+            return $reqRecord;
         }
+        // Return FALSE because the table/uid was not found anyway.
+        return false;
     }
 
     /**

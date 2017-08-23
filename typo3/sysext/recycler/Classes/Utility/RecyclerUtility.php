@@ -125,9 +125,8 @@ class RecyclerUtility
         }
         if ($fullTitleLimit) {
             return [$output, $fullOutput];
-        } else {
-            return $output;
         }
+        return $output;
     }
 
     /**

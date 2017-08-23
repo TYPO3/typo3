@@ -137,9 +137,8 @@ class DatabaseRowsUpdateWizard extends AbstractUpdate
         foreach ($listOfAllTables as $key => $table) {
             if ($table === $startPosition['table']) {
                 break;
-            } else {
-                unset($listOfAllTables[$key]);
             }
+            unset($listOfAllTables[$key]);
         }
 
         // Ask each row updater if it potentially has field updates for rows of a table

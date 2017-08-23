@@ -348,9 +348,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
         if ($identifiers !== false) {
             return (array)$identifiers;
-        } else {
-            return [];
         }
+        return [];
     }
 
     /**

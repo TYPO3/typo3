@@ -84,9 +84,8 @@ class ElementBrowserFolderTreeView extends FolderTreeView
         if ($this->ext_isLinkable($folderObject)) {
             $parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
             return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
-        } else {
-            return '<span class="text-muted">' . $title . '</span>';
         }
+        return '<span class="text-muted">' . $title . '</span>';
     }
 
     /**

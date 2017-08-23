@@ -80,9 +80,8 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
         }
         if (is_numeric($role)) {
             return is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']);
-        } else {
-            return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
         }
+        return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
     }
 
     /**
@@ -92,8 +91,7 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
     {
         if (static::evaluateCondition($this->arguments)) {
             return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
         }
+        return $this->renderElseChild();
     }
 }

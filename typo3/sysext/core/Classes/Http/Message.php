@@ -151,9 +151,8 @@ class Message implements MessageInterface
         $headerValue = $this->headers[$header];
         if (is_array($headerValue)) {
             return $headerValue;
-        } else {
-            return [$headerValue];
         }
+        return [$headerValue];
     }
 
     /**

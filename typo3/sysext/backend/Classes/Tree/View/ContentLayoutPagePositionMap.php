@@ -94,9 +94,8 @@ class ContentLayoutPagePositionMap extends PagePositionMap
             /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             return $iconFactory->getIcon('status-status-current', Icon::SIZE_SMALL)->render() . $str;
-        } else {
-            return $str;
         }
+        return $str;
     }
 
     /**

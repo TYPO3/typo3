@@ -38,9 +38,8 @@ abstract class AbstractConditionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHe
     {
         if (static::evaluateCondition($this->arguments)) {
             return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
         }
+        return $this->renderElseChild();
     }
 
     /**

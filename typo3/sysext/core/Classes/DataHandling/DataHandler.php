@@ -5489,7 +5489,8 @@ class DataHandler
         } else {
             if ($pageIdsInBranch === -1) {
                 return 'Attempt to delete page without permissions';
-            } elseif ($pageIdsInBranch !== '') {
+            }
+            if ($pageIdsInBranch !== '') {
                 return 'Attempt to delete page which has subpages';
             }
 
@@ -5520,9 +5521,8 @@ class DataHandler
         if ($table === 'pages') {
             $res = $this->canDeletePage($id);
             return is_array($res) ? false : $res;
-        } else {
-            return $this->doesRecordExist($table, $id, 'delete') ? false : 'No permission to delete record';
         }
+        return $this->doesRecordExist($table, $id, 'delete') ? false : 'No permission to delete record';
     }
 
     /**
@@ -6516,14 +6516,15 @@ class DataHandler
         }
         if ($res === 1 || $res === 0) {
             return $res;
-        } else {
-            $res = 0;
         }
+        $res = 0;
+
         if ($GLOBALS['TCA'][$table] && (int)$id > 0) {
             // If information is cached, return it
             if (isset($this->recUpdateAccessCache[$table][$id])) {
                 return $this->recUpdateAccessCache[$table][$id];
-            } elseif ($this->doesRecordExist($table, $id, 'edit')) {
+            }
+            if ($this->doesRecordExist($table, $id, 'edit')) {
                 $res = 1;
             }
             // Cache the result
@@ -6779,9 +6780,8 @@ class DataHandler
                 BackendUtility::fixVersioningPid('pages', $row);
                 if ($row['pid'] == $id) {
                     return false;
-                } else {
-                    $destinationId = (int)$row['pid'];
                 }
+                $destinationId = (int)$row['pid'];
             } else {
                 return false;
             }
@@ -6991,9 +6991,8 @@ class DataHandler
                     }
                 }
                 return false;
-            } else {
-                return $this->doesRecordExist_pageLookUp($id, $perms, $columns);
             }
+            return $this->doesRecordExist_pageLookUp($id, $perms, $columns);
         }
         return false;
     }
@@ -7211,7 +7210,8 @@ class DataHandler
                         $this->registerRecordIdForPageCacheClearing($table, $id);
                     }
                     return $id;
-                } elseif ($this->enableLogging) {
+                }
+                if ($this->enableLogging) {
                     $this->log($table, $id, 1, 0, 2, 'SQL error: \'%s\' (%s)', 12, [$insertErrorMessage, $table . ':' . $id]);
                 }
             }
@@ -7371,19 +7371,17 @@ class DataHandler
                         $this->resorting($table, $pid, $sortRow, 0);
                         // First sorting number after resorting
                         return $this->sortIntervals;
-                    } else {
-                        // Sorting number between current top element and zero
-                        return floor($row[$sortRow] / 2);
                     }
-                } else {
-                    // No pages, so we choose the default value as sorting-number
-                    // First sorting number if no elements.
-                    return $this->sortIntervals;
+                    // Sorting number between current top element and zero
+                    return floor($row[$sortRow] / 2);
                 }
-            } else {
-                // Sorting number is inside the list
-                // Fetches the record which is supposed to be the prev record
-                $row = $queryBuilder
+                // No pages, so we choose the default value as sorting-number
+                // First sorting number if no elements.
+                return $this->sortIntervals;
+            }
+            // Sorting number is inside the list
+            // Fetches the record which is supposed to be the prev record
+            $row = $queryBuilder
                     ->where($queryBuilder->expr()->eq(
                         'uid',
                         $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
@@ -7391,24 +7389,24 @@ class DataHandler
                     ->execute()
                     ->fetch();
 
-                // There was a record
-                if (!empty($row)) {
-                    // Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
-                    if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
-                        $row = $lookForLiveVersion;
-                    }
-                    // Fetch move placeholder, since it might point to a new page in the current workspace
-                    if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortRow)) {
-                        $row = $movePlaceholder;
-                    }
-                    // If the record should be inserted after itself, keep the current sorting information:
-                    if ((int)$row['uid'] === (int)$uid) {
-                        $sortNumber = $row[$sortRow];
-                    } else {
-                        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
-                        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            // There was a record
+            if (!empty($row)) {
+                // Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
+                if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
+                    $row = $lookForLiveVersion;
+                }
+                // Fetch move placeholder, since it might point to a new page in the current workspace
+                if ($movePlaceholder = BackendUtility::getMovePlaceholder($table, $row['uid'], 'uid,pid,' . $sortRow)) {
+                    $row = $movePlaceholder;
+                }
+                // If the record should be inserted after itself, keep the current sorting information:
+                if ((int)$row['uid'] === (int)$uid) {
+                    $sortNumber = $row[$sortRow];
+                } else {
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+                    $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
 
-                        $subResults = $queryBuilder
+                    $subResults = $queryBuilder
                             ->select($sortRow, 'pid', 'uid')
                             ->from($table)
                             ->where(
@@ -7425,34 +7423,32 @@ class DataHandler
                             ->setMaxResults(2)
                             ->execute()
                             ->fetchAll();
-                        // Fetches the next record in order to calculate the in-between sortNumber
-                        // There was a record afterwards
-                        if (count($subResults) === 2) {
-                            // There was a record afterwards, fetch that
-                            $subrow = array_pop($subResults);
-                            // The sortNumber is found in between these values
-                            $sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
-                            // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
-                            if ($sortNumber <= $row[$sortRow] || $sortNumber >= $subrow[$sortRow]) {
-                                // By this special param, resorting reserves and returns the sortnumber after the uid
-                                $sortNumber = $this->resorting($table, $row['pid'], $sortRow, $row['uid']);
-                            }
-                        } else {
-                            // If after the last record in the list, we just add the sortInterval to the last sortvalue
-                            $sortNumber = $row[$sortRow] + $this->sortIntervals;
+                    // Fetches the next record in order to calculate the in-between sortNumber
+                    // There was a record afterwards
+                    if (count($subResults) === 2) {
+                        // There was a record afterwards, fetch that
+                        $subrow = array_pop($subResults);
+                        // The sortNumber is found in between these values
+                        $sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
+                        // The sortNumber happened NOT to be between the two surrounding numbers, so we'll have to resort the list
+                        if ($sortNumber <= $row[$sortRow] || $sortNumber >= $subrow[$sortRow]) {
+                            // By this special param, resorting reserves and returns the sortnumber after the uid
+                            $sortNumber = $this->resorting($table, $row['pid'], $sortRow, $row['uid']);
                         }
+                    } else {
+                        // If after the last record in the list, we just add the sortInterval to the last sortvalue
+                        $sortNumber = $row[$sortRow] + $this->sortIntervals;
                     }
-                    return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
-                } else {
-                    if ($this->enableLogging) {
-                        $propArr = $this->getRecordProperties($table, $uid);
-                        // OK, don't insert $propArr['event_pid'] here...
-                        $this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, [$propArr['header'], $table . ':' . $uid, abs($pid)], $propArr['pid']);
-                    }
-                    // There MUST be a page or else this cannot work
-                    return false;
                 }
+                return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
             }
+            if ($this->enableLogging) {
+                $propArr = $this->getRecordProperties($table, $uid);
+                // OK, don't insert $propArr['event_pid'] here...
+                $this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, [$propArr['header'], $table . ':' . $uid, abs($pid)], $propArr['pid']);
+            }
+            // There MUST be a page or else this cannot work
+            return false;
         }
         return null;
     }
@@ -7857,9 +7853,8 @@ class DataHandler
         // Returns the proper delete-clause if any for a table from TCA
         if (!$this->disableDeleteClause && $GLOBALS['TCA'][$table]['ctrl']['delete']) {
             return ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -8179,13 +8174,13 @@ class DataHandler
         if ($conf['foreign_field']) {
             // The reference to the parent is stored in a pointer field in the child record
             return 'field';
-        } elseif ($conf['MM']) {
+        }
+        if ($conf['MM']) {
             // Regular MM intermediate table is used to store data
             return 'mm';
-        } else {
-            // An item list (separated by comma) is stored (like select type is doing)
-            return 'list';
         }
+        // An item list (separated by comma) is stored (like select type is doing)
+        return 'list';
     }
 
     /**
@@ -8381,7 +8376,8 @@ class DataHandler
         // If the record was copied:
         if (isset($this->copyMappingArray[$table][$uid])) {
             return true;
-        } elseif (isset($this->copyMappingArray[$table]) && in_array($uid, array_values($this->copyMappingArray[$table]))) {
+        }
+        if (isset($this->copyMappingArray[$table]) && in_array($uid, array_values($this->copyMappingArray[$table]))) {
             return true;
         }
         return false;

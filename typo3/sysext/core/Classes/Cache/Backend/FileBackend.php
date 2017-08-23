@@ -376,15 +376,13 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
         if ($this->frozen === true) {
             if (isset($this->cacheEntryIdentifiers[$entryIdentifier])) {
                 return require_once $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-            } else {
-                return false;
             }
-        } else {
-            if ($entryIdentifier !== basename($entryIdentifier)) {
-                throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
-            }
-            $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-            return $this->isCacheFileExpired($pathAndFilename) ? false : require_once $pathAndFilename;
+            return false;
         }
+        if ($entryIdentifier !== basename($entryIdentifier)) {
+            throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
+        }
+        $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+        return $this->isCacheFileExpired($pathAndFilename) ? false : require_once $pathAndFilename;
     }
 }

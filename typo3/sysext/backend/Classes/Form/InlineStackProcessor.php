@@ -193,9 +193,8 @@ class InlineStackProcessor
 
         if ($level !== false) {
             return $this->inlineStructure['stable'][$level];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

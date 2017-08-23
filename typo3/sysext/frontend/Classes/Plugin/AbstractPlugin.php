@@ -893,12 +893,10 @@ class AbstractPlugin
         if ($panel) {
             if ($label) {
                 return '<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">' . $label . '</td><td valign="top" align="right">' . $panel . '</td></tr></table><!-- END: EDIT PANEL -->';
-            } else {
-                return '<!-- BEGIN: EDIT PANEL -->' . $panel . '<!-- END: EDIT PANEL -->';
             }
-        } else {
-            return $label;
+            return '<!-- BEGIN: EDIT PANEL -->' . $panel . '<!-- END: EDIT PANEL -->';
         }
+        return $label;
     }
 
     /**

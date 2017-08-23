@@ -741,9 +741,8 @@ class Indexer
                 }
             }
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

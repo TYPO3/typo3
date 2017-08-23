@@ -450,9 +450,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $record = BackendUtility::getRecord('be_users', $id, '*', ' AND cruser_id=' . $this->getBackendUser()->user['uid'] . ' AND createdByAction=' . $action['uid']);
         if (is_array($record)) {
             return $record;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

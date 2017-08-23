@@ -276,9 +276,8 @@ class DatabaseIntegrityCheck
                 ->getConnectionForTable($table)
                 ->update($table, $updateFields, ['uid' => (int)$uid]);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

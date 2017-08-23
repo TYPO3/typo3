@@ -86,9 +86,8 @@ class EnvironmentAndFolders extends AbstractStepAction
     {
         if (@is_file(PATH_typo3conf . 'LocalConfiguration.php')) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

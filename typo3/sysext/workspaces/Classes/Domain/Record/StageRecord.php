@@ -119,9 +119,11 @@ class StageRecord extends AbstractRecord
     {
         if ($this->getUid() === $stageRecord->getUid()) {
             return 0;
-        } elseif ($this->isEditStage() || $stageRecord->isExecuteStage() || $this->isPreviousTo($stageRecord)) {
+        }
+        if ($this->isEditStage() || $stageRecord->isExecuteStage() || $this->isPreviousTo($stageRecord)) {
             return -1;
-        } elseif ($this->isExecuteStage() || $stageRecord->isEditStage() || $this->isNextTo($stageRecord)) {
+        }
+        if ($this->isExecuteStage() || $stageRecord->isEditStage() || $this->isNextTo($stageRecord)) {
             return 1;
         }
         return 0;

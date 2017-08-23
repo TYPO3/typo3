@@ -95,9 +95,8 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
             if (GeneralUtility::getApplicationContext()->isProduction()) {
                 $this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', ['exception' => $exception]);
                 return '';
-            } else {
-                throw $exception;
             }
+            throw $exception;
         }
     }
 

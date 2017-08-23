@@ -77,6 +77,8 @@ return PhpCsFixer\Config::create()
         'no_unneeded_control_parentheses' => true,
         'phpdoc_no_empty_return' => true,
         'no_blank_lines_after_phpdoc' => true,
-        'phpdoc_trim' => true
+        'phpdoc_trim' => true,
+        'no_superfluous_elseif' => true,
+        'no_useless_else' => true,
     ])
     ->setFinder($finder);

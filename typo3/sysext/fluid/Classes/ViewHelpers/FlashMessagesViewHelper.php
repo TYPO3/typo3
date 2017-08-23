@@ -127,12 +127,11 @@ class FlashMessagesViewHelper extends AbstractViewHelper
             return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
                 ->resolve()
                 ->render($flashMessages);
-        } else {
-            $templateVariableContainer = $renderingContext->getVariableProvider();
-            $templateVariableContainer->add($as, $flashMessages);
-            $content = $renderChildrenClosure();
-            $templateVariableContainer->remove($as);
         }
+        $templateVariableContainer = $renderingContext->getVariableProvider();
+        $templateVariableContainer->add($as, $flashMessages);
+        $content = $renderChildrenClosure();
+        $templateVariableContainer->remove($as);
 
         return $content;
     }

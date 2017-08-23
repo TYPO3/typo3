@@ -130,7 +130,8 @@ class CliRequestHandler implements RequestHandlerInterface
         $cliKey = $input->getFirstArgument();
         if (empty($cliKey)) {
             throw new \InvalidArgumentException('This script must have a command as first argument.', 1476107418);
-        } elseif (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey])) {
+        }
+        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey])) {
             throw new \InvalidArgumentException('This supplied command is not valid.', 1476107480);
         }
         return $cliKey;

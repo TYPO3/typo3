@@ -434,10 +434,9 @@ class SqlSchemaMigrationService
                                             $clear_table = true;
                                         }
                                         continue;
-                                    } else {
-                                        $extras[] = $fN . '=' . $fV;
-                                        $extras_currentValue[] = $fN . '=' . $diffArr['diff_currentValues'][$table]['extra'][$fN];
                                     }
+                                    $extras[] = $fN . '=' . $fV;
+                                    $extras_currentValue[] = $fN . '=' . $diffArr['diff_currentValues'][$table]['extra'][$fN];
                                 }
                             }
                         }
@@ -648,9 +647,8 @@ class SqlSchemaMigrationService
         }
         if (!empty($result)) {
             return $result;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

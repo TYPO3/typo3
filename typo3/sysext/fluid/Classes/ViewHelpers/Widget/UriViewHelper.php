@@ -59,9 +59,10 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 
         if ($ajax === true) {
             return $this->getAjaxUri();
-        } else {
-            return $this->getWidgetUri();
         }
+        return $this->getWidgetUri();
+
+        return static::getWidgetUri($renderingContext, $arguments);
     }
 
     /**

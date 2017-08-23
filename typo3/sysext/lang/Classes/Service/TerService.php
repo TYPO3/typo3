@@ -74,22 +74,22 @@ class TerService extends TerUtility implements SingletonInterface
             $error = xml_error_string(xml_get_error_code($parser));
             xml_parser_free($parser);
             throw new XmlParserException('Error in XML parser while decoding l10n XML file. Line ' . $line . ': ' . $error, 1345736517);
-        } else {
-            // Init vars
-            $stack = [[]];
-            $stacktop = 0;
-            $current = [];
-            $tagName = '';
-            $documentTag = '';
-            // Traverse the parsed XML structure:
-            foreach ($values as $val) {
-                // First, process the tag-name (which is used in both cases, whether "complete" or "close")
-                $tagName = (string)($val['tag'] === 'languagepack' && $val['type'] === 'open') ? $val['attributes']['language'] : $val['tag'];
-                if (!$documentTag) {
-                    $documentTag = $tagName;
-                }
-                // Setting tag-values, manage stack:
-                switch ($val['type']) {
+        }
+        // Init vars
+        $stack = [[]];
+        $stacktop = 0;
+        $current = [];
+        $tagName = '';
+        $documentTag = '';
+        // Traverse the parsed XML structure:
+        foreach ($values as $val) {
+            // First, process the tag-name (which is used in both cases, whether "complete" or "close")
+            $tagName = (string)($val['tag'] === 'languagepack' && $val['type'] === 'open') ? $val['attributes']['language'] : $val['tag'];
+            if (!$documentTag) {
+                $documentTag = $tagName;
+            }
+            // Setting tag-values, manage stack:
+            switch ($val['type']) {
                         // If open tag it means there is an array stored in sub-elements.
                         // Therefore increase the stackpointer and reset the accumulation array
                     case 'open':
@@ -115,9 +115,9 @@ class TerService extends TerUtility implements SingletonInterface
                         }
                         break;
                 }
-            }
-            $result = $current[$tagName];
         }
+        $result = $current[$tagName];
+
         return $result;
     }
 
@@ -193,9 +193,8 @@ class TerService extends TerUtility implements SingletonInterface
         $l10nResponse = GeneralUtility::getUrl($mirrorUrl . $packageUrl);
         if ($l10nResponse === false) {
             throw new XmlParserException('Error: Translation could not be fetched.', 1345736785);
-        } else {
-            return [$l10nResponse];
         }
+        return [$l10nResponse];
     }
 
     /**

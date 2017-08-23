@@ -80,9 +80,8 @@ class PersistentObjectConverterTest extends \TYPO3\TestingFramework\Core\Unit\Un
                 $reflectionClass = new \ReflectionClass($className);
                 if (empty($arguments)) {
                     return $reflectionClass->newInstance();
-                } else {
-                    return $reflectionClass->newInstanceArgs($arguments);
                 }
+                return $reflectionClass->newInstanceArgs($arguments);
             }));
         $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
 

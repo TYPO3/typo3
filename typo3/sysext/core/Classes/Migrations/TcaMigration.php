@@ -1843,7 +1843,8 @@ class TcaMigration
                                     . $table . '[\'columns\'][\'' . $fieldName . '\'] has been dropped, the setting'
                                     . ' is no longer supported';
                                 continue;
-                            } elseif ($defaultExtrasSetting === 'nowrap') {
+                            }
+                            if ($defaultExtrasSetting === 'nowrap') {
                                 $fieldConfig['config']['wrap'] = 'off';
                                 $this->messages[] = 'The defaultExtras setting \'nowrap\' in TCA table '
                                     . $table . '[\'columns\'][\'' . $fieldName . '\'] has been migrated to TCA table '
@@ -1881,7 +1882,8 @@ class TcaMigration
                                         . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldName . '\']'
                                         . ' has been dropped, the setting is no longer supported';
                                     continue;
-                                } elseif ($defaultExtrasSetting === 'nowrap') {
+                                }
+                                if ($defaultExtrasSetting === 'nowrap') {
                                     $overrideConfig['config']['wrap'] = 'off';
                                     $this->messages[] = 'The defaultExtras setting \'nowrap\' in TCA table '
                                         . $table . '[\'types\'][\'' . $typeName . '\'][\'columnsOverrides\'][\'' . $fieldName . '\']'

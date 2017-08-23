@@ -152,9 +152,8 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
                     FlashMessage::ERROR
                 );
                 break;
-            } else {
-                $checkTca = true;
             }
+            $checkTca = true;
         }
 
         return $checkTca;

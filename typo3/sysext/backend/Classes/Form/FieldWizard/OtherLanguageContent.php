@@ -146,8 +146,7 @@ class OtherLanguageContent extends AbstractNode
                     '</span>';
             }
             return implode('<br />', $imgs);
-        } else {
-            return nl2br(htmlspecialchars($value));
         }
+        return nl2br(htmlspecialchars($value));
     }
 }

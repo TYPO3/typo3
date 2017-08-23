@@ -198,10 +198,10 @@ class Typo3DbQueryParser
                     $this->parseConstraint($constraint1, $source),
                     $this->parseConstraint($constraint2, $source)
                 );
-            } else {
-                return '';
             }
-        } elseif ($constraint instanceof Qom\OrInterface) {
+            return '';
+        }
+        if ($constraint instanceof Qom\OrInterface) {
             $constraint1 = $constraint->getConstraint1();
             $constraint2 = $constraint->getConstraint2();
             if (($constraint1 instanceof Qom\ConstraintInterface)
@@ -211,16 +211,16 @@ class Typo3DbQueryParser
                     $this->parseConstraint($constraint->getConstraint1(), $source),
                     $this->parseConstraint($constraint->getConstraint2(), $source)
                 );
-            } else {
-                return '';
             }
-        } elseif ($constraint instanceof Qom\NotInterface) {
-            return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
-        } elseif ($constraint instanceof Qom\ComparisonInterface) {
-            return $this->parseComparison($constraint, $source);
-        } else {
-            throw new \RuntimeException('not implemented', 1476199898);
+            return '';
         }
+        if ($constraint instanceof Qom\NotInterface) {
+            return ' NOT(' . $this->parseConstraint($constraint->getConstraint(), $source) . ')';
+        }
+        if ($constraint instanceof Qom\ComparisonInterface) {
+            return $this->parseComparison($constraint, $source);
+        }
+        throw new \RuntimeException('not implemented', 1476199898);
     }
 
     /**
@@ -300,27 +300,27 @@ class Typo3DbQueryParser
         if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
             if ($comparison->getOperand2() === null) {
                 throw new Exception\BadConstraintException('The value for the CONTAINS operator must not be null.', 1484828468);
-            } else {
-                $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
-                if (!$source instanceof Qom\SelectorInterface) {
-                    throw new \RuntimeException('Source is not of type "SelectorInterface"', 1395362539);
-                }
-                $className = $source->getNodeTypeName();
-                $tableName = $this->dataMapper->convertClassNameToTableName($className);
-                $operand1 = $comparison->getOperand1();
-                $propertyName = $operand1->getPropertyName();
-                $fullPropertyPath = '';
-                while (strpos($propertyName, '.') !== false) {
-                    $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
-                }
-                $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
-                $dataMap = $this->dataMapper->getDataMap($className);
-                $columnMap = $dataMap->getColumnMap($propertyName);
-                $typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : null;
-                if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-                    $relationTableName = $columnMap->getRelationTableName();
-                    $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
-                    $queryBuilderForSubselect
+            }
+            $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
+            if (!$source instanceof Qom\SelectorInterface) {
+                throw new \RuntimeException('Source is not of type "SelectorInterface"', 1395362539);
+            }
+            $className = $source->getNodeTypeName();
+            $tableName = $this->dataMapper->convertClassNameToTableName($className);
+            $operand1 = $comparison->getOperand1();
+            $propertyName = $operand1->getPropertyName();
+            $fullPropertyPath = '';
+            while (strpos($propertyName, '.') !== false) {
+                $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
+            }
+            $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+            $dataMap = $this->dataMapper->getDataMap($className);
+            $columnMap = $dataMap->getColumnMap($propertyName);
+            $typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : null;
+            if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+                $relationTableName = $columnMap->getRelationTableName();
+                $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                $queryBuilderForSubselect
                         ->select($columnMap->getParentKeyFieldName())
                         ->from($relationTableName)
                         ->where(
@@ -329,24 +329,25 @@ class Typo3DbQueryParser
                                 $this->queryBuilder->createNamedParameter($value)
                             )
                         );
-                    $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($queryBuilderForSubselect->expr(), $columnMap, $relationTableName, $relationTableName);
-                    if ($additionalWhereForMatchFields) {
-                        $queryBuilderForSubselect->andWhere($additionalWhereForMatchFields);
-                    }
+                $additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($queryBuilderForSubselect->expr(), $columnMap, $relationTableName, $relationTableName);
+                if ($additionalWhereForMatchFields) {
+                    $queryBuilderForSubselect->andWhere($additionalWhereForMatchFields);
+                }
 
-                    return $this->queryBuilder->expr()->comparison(
+                return $this->queryBuilder->expr()->comparison(
                         $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
                         'IN',
                         '(' . $queryBuilderForSubselect->getSQL() . ')'
                     );
-                } elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
-                    $parentKeyFieldName = $columnMap->getParentKeyFieldName();
-                    if (isset($parentKeyFieldName)) {
-                        $childTableName = $columnMap->getChildTableName();
+            }
+            if ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
+                $parentKeyFieldName = $columnMap->getParentKeyFieldName();
+                if (isset($parentKeyFieldName)) {
+                    $childTableName = $columnMap->getChildTableName();
 
-                        // Build the SQL statement of the subselect
-                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
-                        $queryBuilderForSubselect
+                    // Build the SQL statement of the subselect
+                    $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                    $queryBuilderForSubselect
                             ->select($parentKeyFieldName)
                             ->from($childTableName)
                             ->where(
@@ -356,24 +357,20 @@ class Typo3DbQueryParser
                                 )
                             );
 
-                        // Add it to the main query
-                        return $this->queryBuilder->expr()->eq(
+                    // Add it to the main query
+                    return $this->queryBuilder->expr()->eq(
                             $tableName . '.uid',
                             '(' . $queryBuilderForSubselect->getSQL() . ')'
                         );
-                    } else {
-                        return $this->queryBuilder->expr()->inSet(
+                }
+                return $this->queryBuilder->expr()->inSet(
                             $tableName . '.' . $columnName,
                             $this->queryBuilder->quote($value)
                         );
-                    }
-                } else {
-                    throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
-                }
             }
-        } else {
-            return $this->parseDynamicOperand($comparison, $source);
+            throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
         }
+        return $this->parseDynamicOperand($comparison, $source);
     }
 
     /**
@@ -605,9 +602,8 @@ class Typo3DbQueryParser
 
         if (!empty($additionalWhereForMatchFields)) {
             return $exprBuilder->andX(...$additionalWhereForMatchFields);
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -763,9 +759,9 @@ class Typo3DbQueryParser
                                 )
                             )
                         );
-                    } else {
-                        $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
-                        $queryBuilderForSubselect
+                    }
+                    $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                    $queryBuilderForSubselect
                             ->select($tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
                             ->from($tableName)
                             ->where(
@@ -774,7 +770,7 @@ class Typo3DbQueryParser
                                     $queryBuilderForSubselect->expr()->eq($tableName . '.' . $languageField, (int)$querySettings->getLanguageUid())
                                 )
                             );
-                        return $this->queryBuilder->expr()->orX(
+                    return $this->queryBuilder->expr()->orX(
                             $this->queryBuilder->expr()->in($tableAlias . '.' . $languageField, [(int)$querySettings->getLanguageUid(), -1]),
                             $this->queryBuilder->expr()->andX(
                                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
@@ -785,13 +781,11 @@ class Typo3DbQueryParser
                                 )
                             )
                         );
-                    }
-                } else {
-                    return $this->queryBuilder->expr()->in(
+                }
+                return $this->queryBuilder->expr()->in(
                         $tableAlias . '.' . $languageField,
                         [(int)$querySettings->getLanguageUid(), -1]
                     );
-                }
             }
         }
         return '';
@@ -839,9 +833,8 @@ class Typo3DbQueryParser
         $storagePageIds = array_map('intval', $storagePageIds);
         if (count($storagePageIds) === 1) {
             return $this->queryBuilder->expr()->eq($tableAlias . '.pid', reset($storagePageIds));
-        } else {
-            return $this->queryBuilder->expr()->in($tableAlias . '.pid', $storagePageIds);
         }
+        return $this->queryBuilder->expr()->in($tableAlias . '.pid', $storagePageIds);
     }
 
     /**

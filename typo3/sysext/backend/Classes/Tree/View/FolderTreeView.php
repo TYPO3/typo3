@@ -146,9 +146,8 @@ class FolderTreeView extends AbstractTreeView
             $scopeHash = GeneralUtility::hmac($scopeData);
             $js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
             return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
-        } else {
-            return $icon;
         }
+        return $icon;
     }
 
     /**
@@ -644,12 +643,10 @@ class FolderTreeView extends AbstractTreeView
         if ($storageObject) {
             if ($startingPointFolder) {
                 return $this->storageHashNumbers[$storageObject->getUid() . $startingPointFolder->getCombinedIdentifier()];
-            } else {
-                return $this->storageHashNumbers[$storageObject->getUid()];
             }
-        } else {
-            return null;
+            return $this->storageHashNumbers[$storageObject->getUid()];
         }
+        return null;
     }
 
     /**

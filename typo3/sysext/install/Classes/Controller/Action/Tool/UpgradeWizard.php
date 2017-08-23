@@ -157,7 +157,8 @@ class UpgradeWizard extends Action\AbstractAction
                         // we stop immediately here as the remaining updates may
                         // require the new fields to be present in order to avoid SQL errors
                         break;
-                    } elseif ($identifier === 'finalUpdateDatabaseSchema') {
+                    }
+                    if ($identifier === 'finalUpdateDatabaseSchema') {
                         // Okay to check here because finalUpdateDatabaseSchema is last element in array
                         $availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
                     } elseif (!$this->needsInitialUpdateDatabaseSchema && $updateObject->shouldRenderNextButton()) {

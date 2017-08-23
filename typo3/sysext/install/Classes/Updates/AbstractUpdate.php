@@ -71,9 +71,8 @@ abstract class AbstractUpdate
     {
         if ($this->title) {
             return $this->title;
-        } else {
-            return $this->identifier;
         }
+        return $this->identifier;
     }
 
     /**

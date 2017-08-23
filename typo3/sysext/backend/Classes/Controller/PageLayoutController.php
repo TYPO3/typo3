@@ -717,9 +717,8 @@ class PageLayoutController
                 ->execute()
                 ->fetch();
             return $overlayRecord['title'];
-        } else {
-            return $this->pageinfo['title'];
         }
+        return $this->pageinfo['title'];
     }
 
     /**

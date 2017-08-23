@@ -89,9 +89,8 @@ class FileDumpController
             $file->getStorage()->dumpFileContents($file);
             // @todo Refactor FAL to not echo directly, but to implement a stream for output here and use response
             return null;
-        } else {
-            return $response->withStatus(403);
         }
+        return $response->withStatus(403);
     }
 
     /**

@@ -76,9 +76,8 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
             $url = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$v['uid']]);
             return '<span class="list-tree-title"><a href="' . htmlspecialchars($url) . '" class="t3js-pageLink">' . $title . '</a></span>';
-        } else {
-            return '<span class="list-tree-title text-muted">' . $title . '</span>';
         }
+        return '<span class="list-tree-title text-muted">' . $title . '</span>';
     }
 
     /**

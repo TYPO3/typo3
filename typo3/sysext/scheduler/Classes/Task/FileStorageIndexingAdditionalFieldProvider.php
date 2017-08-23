@@ -81,7 +81,8 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         $value = $submittedData['scheduler_fileStorageIndexing_storage'];
         if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
             return false;
-        } elseif (\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
+        }
+        if (\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
             return true;
         }
         return false;

@@ -208,9 +208,8 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
         $identifiers = apc_fetch($this->getIdentifierPrefix() . 'tag_' . $tag, $success);
         if ($success === false) {
             return [];
-        } else {
-            return (array)$identifiers;
         }
+        return (array)$identifiers;
     }
 
     /**

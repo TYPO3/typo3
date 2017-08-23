@@ -65,8 +65,7 @@ class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
     {
         if (static::evaluateCondition($this->arguments)) {
             return $this->renderThenChild();
-        } else {
-            return $this->renderElseChild();
         }
+        return $this->renderElseChild();
     }
 }

@@ -78,10 +78,9 @@ class ExtDirectApi
 				}
 				Ext.apply(Ext.app.ExtDirectAPI, ' . json_encode($javascriptNamespaces) . ');
 			';
-        } else {
-            $errorMessage = $this->getNamespaceError($filterNamespaces);
-            throw new \InvalidArgumentException($errorMessage, 1297645190);
         }
+        $errorMessage = $this->getNamespaceError($filterNamespaces);
+        throw new \InvalidArgumentException($errorMessage, 1297645190);
     }
 
     /**

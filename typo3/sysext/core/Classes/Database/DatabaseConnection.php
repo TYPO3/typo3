@@ -593,9 +593,8 @@ class DatabaseConnection
                 $this->debug_lastBuiltQuery = $query;
             }
             return $query;
-        } else {
-            throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !', 1270853880);
         }
+        throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !', 1270853880);
     }
 
     /**
@@ -620,9 +619,8 @@ class DatabaseConnection
                 $this->debug_lastBuiltQuery = $query;
             }
             return $query;
-        } else {
-            throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !', 1270853881);
         }
+        throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !', 1270853881);
     }
 
     /**
@@ -1112,9 +1110,8 @@ class DatabaseConnection
         $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             return $res->num_rows;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1134,9 +1131,8 @@ class DatabaseConnection
                 $result = false;
             }
             return $result;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1157,9 +1153,8 @@ class DatabaseConnection
                 $result = false;
             }
             return $result;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1175,9 +1170,8 @@ class DatabaseConnection
         if ($this->debug_check_recordset($res) && is_object($res)) {
             $res->free();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1213,9 +1207,8 @@ class DatabaseConnection
         $this->logDeprecation();
         if ($this->debug_check_recordset($res)) {
             return $res->data_seek($seek);
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1256,9 +1249,8 @@ class DatabaseConnection
                 return false;
             }
             return $mysql_data_type_hash[$metaInfo->type];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1382,20 +1374,20 @@ class DatabaseConnection
                 'MySQL Error: Cannot get tablenames: "' . $this->sql_error() . '"!',
                 1378457171
             );
-        } else {
-            while ($row = $db_list->fetch_object()) {
-                try {
-                    $this->setDatabaseName($row->SCHEMA_NAME);
-                    if ($this->sql_select_db()) {
-                        $dbArr[] = $row->SCHEMA_NAME;
-                    }
-                } catch (\RuntimeException $exception) {
-                    // The exception happens if we cannot connect to the database
+        }
+        while ($row = $db_list->fetch_object()) {
+            try {
+                $this->setDatabaseName($row->SCHEMA_NAME);
+                if ($this->sql_select_db()) {
+                    $dbArr[] = $row->SCHEMA_NAME;
+                }
+            } catch (\RuntimeException $exception) {
+                // The exception happens if we cannot connect to the database
                     // (usually due to missing permissions). This is ok here.
                     // We catch the exception, skip the database and continue.
-                }
             }
         }
+
         return $dbArr;
     }
 

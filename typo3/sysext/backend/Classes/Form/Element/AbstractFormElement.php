@@ -393,9 +393,8 @@ abstract class AbstractFormElement extends AbstractNode
                     'fieldControl' => [],
                     'fieldWizard' => [],
                 ];
-            } else {
-                return $item;
             }
+            return $item;
         }
 
         $languageService = $this->getLanguageService();

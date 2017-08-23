@@ -58,20 +58,19 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
             $divider = ceil(($end - $start) / 2);
             if ($this->offsetGet($divider)->equals($node)) {
                 return $divider;
-            } elseif ($this->offsetGet($divider)->compareTo($node) > 0) {
+            }
+            if ($this->offsetGet($divider)->compareTo($node) > 0) {
                 return $this->binarySearch($node, $start, $divider - 1);
-            } else {
-                return $this->binarySearch($node, $divider + 1, $end);
             }
-        } else {
-            if ($this->offsetGet($start)->equals($node)) {
-                return $start;
-            } elseif ($this->offsetGet($end)->equals($node)) {
-                return $end;
-            } else {
-                return -1;
-            }
+            return $this->binarySearch($node, $divider + 1, $end);
         }
+        if ($this->offsetGet($start)->equals($node)) {
+            return $start;
+        }
+        if ($this->offsetGet($end)->equals($node)) {
+            return $end;
+        }
+        return -1;
     }
 
     /**

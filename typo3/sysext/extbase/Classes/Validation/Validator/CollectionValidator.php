@@ -59,13 +59,14 @@ class CollectionValidator extends GenericObjectValidator
             if ((is_object($value) && !\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCollectionType(get_class($value))) && !is_array($value)) {
                 $this->addError('The given subject was not a collection.', 1317204797);
                 return $this->result;
-            } elseif ($value instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage && !$value->isInitialized()) {
-                return $this->result;
-            } elseif (is_object($value) && $this->isValidatedAlready($value)) {
-                return $this->result;
-            } else {
-                $this->isValid($value);
             }
+            if ($value instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage && !$value->isInitialized()) {
+                return $this->result;
+            }
+            if (is_object($value) && $this->isValidatedAlready($value)) {
+                return $this->result;
+            }
+            $this->isValid($value);
         }
         return $this->result;
     }

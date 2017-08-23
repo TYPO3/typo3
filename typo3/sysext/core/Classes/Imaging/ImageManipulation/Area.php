@@ -179,8 +179,7 @@ class Area
     {
         if ($this->isEmpty()) {
             return '';
-        } else {
-            return json_encode($this->asArray());
         }
+        return json_encode($this->asArray());
     }
 }

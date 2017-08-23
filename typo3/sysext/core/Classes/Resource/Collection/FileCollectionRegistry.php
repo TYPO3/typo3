@@ -65,7 +65,8 @@ class FileCollectionRegistry implements SingletonInterface
             // Return immediately without changing configuration
             if ($this->types[$type] === $className) {
                 return true;
-            } elseif (!$override) {
+            }
+            if (!$override) {
                 throw new \InvalidArgumentException('FileCollections ' . $type . ' is already registered.', 1391295643);
             }
         }

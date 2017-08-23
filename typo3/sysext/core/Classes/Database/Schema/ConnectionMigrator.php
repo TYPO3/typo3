@@ -155,15 +155,14 @@ class ConnectionMigrator
                 $this->getChangedFieldUpdateSuggestions($schemaDiff),
                 $this->getChangedTableOptions($schemaDiff)
             );
-        } else {
-            return array_merge_recursive(
+        }
+        return array_merge_recursive(
                 ['change' => [], 'change_table' => [], 'drop' => [], 'drop_table' => [], 'tables_count' => []],
                 $this->getUnusedFieldUpdateSuggestions($schemaDiff),
                 $this->getUnusedTableUpdateSuggestions($schemaDiff),
                 $this->getDropTableUpdateSuggestions($schemaDiff),
                 $this->getDropFieldUpdateSuggestions($schemaDiff)
             );
-        }
     }
 
     /**
@@ -1071,9 +1070,8 @@ class ConnectionMigrator
 
         if (is_string($nameLengthRestrictions)) {
             return $this->getTableAndFieldNameMaxLengths($nameLengthRestrictions);
-        } else {
-            return $nameLengthRestrictions;
         }
+        return $nameLengthRestrictions;
     }
 
     /**

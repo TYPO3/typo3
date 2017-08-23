@@ -45,10 +45,9 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                 } else {
                     $result['databaseRow'][$column] = null;
                 }
-            } else {
-                // its a UNIX timestamp! We do not modify this here, as it will only be treated as a datetime because
-                // of eval being set to "date" or "datetime". This is handled in InputTextElement then.
             }
+            // its a UNIX timestamp! We do not modify this here, as it will only be treated as a datetime because
+                // of eval being set to "date" or "datetime". This is handled in InputTextElement then.
         }
         return $result;
     }

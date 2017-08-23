@@ -185,10 +185,9 @@ class FileController
             return $response
                     ->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
                     ->withStatus(303);
-        } else {
-            // empty response
-            return $response;
         }
+        // empty response
+        return $response;
     }
 
     /**

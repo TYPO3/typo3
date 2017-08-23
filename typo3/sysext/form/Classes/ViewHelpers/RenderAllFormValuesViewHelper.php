@@ -131,9 +131,8 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
             );
             if (is_array($value)) {
                 return self::mapValuesToOptions($value, $properties['options']);
-            } else {
-                return self::mapValueToOption($value, $properties['options']);
             }
+            return self::mapValueToOption($value, $properties['options']);
         }
         if (is_object($value)) {
             return self::processObject($element, $value);

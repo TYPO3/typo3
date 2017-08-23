@@ -208,9 +208,8 @@ class Query implements QueryInterface
         $source = $this->getSource();
         if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
             return $source->getSelectorName();
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -237,9 +236,8 @@ class Query implements QueryInterface
     {
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
-        } else {
-            return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class, $this);
         }
+        return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class, $this);
     }
 
     /**
