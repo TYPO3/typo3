@@ -65,8 +65,8 @@ class SingleFieldContainer extends AbstractContainer
                 $isOverlay = !empty($parentValue) ? (bool)$parentValue[0] : false;
             } else {
                 throw new \InvalidArgumentException(
-                    'The given value for the original language field ' . $this->data['processedTca']['ctrl']['transOrigPointerField']
-                    . ' of table ' . $table . ' contains an invalid value.',
+                    'The given value "' . $parentValue . '" for the original language field ' . $this->data['processedTca']['ctrl']['transOrigPointerField']
+                    . ' of table ' . $table . ' is invalid.',
                     1470742770
                 );
             }
