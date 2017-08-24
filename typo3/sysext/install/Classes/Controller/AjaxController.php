@@ -87,36 +87,8 @@ class AjaxController extends AbstractController
      */
     public function execute()
     {
-        $this->loadBaseExtensions();
-        // Warning: Order of these methods is security relevant and interferes with different access
-        // conditions (new/existing installation). See the single method comments for details.
-        $this->outputInstallToolNotEnabledMessageIfNeeded();
-        $this->checkInstallToolPasswordNotSet();
-        $this->initializeSession();
-        $this->checkSessionToken();
-        $this->checkSessionLifetime();
         $this->checkLogin();
         $this->dispatchAuthenticationActions();
-    }
-
-    /**
-     * Check whether the install tool is enabled
-     */
-    protected function outputInstallToolNotEnabledMessageIfNeeded()
-    {
-        if (!$this->isInstallToolAvailable()) {
-            $this->output($this->unauthorized);
-        }
-    }
-
-    /**
-     * Check if the install tool password is set
-     */
-    protected function checkInstallToolPasswordNotSet()
-    {
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])) {
-            $this->output($this->unauthorized);
-        }
     }
 
     /**
@@ -129,28 +101,6 @@ class AjaxController extends AbstractController
         } else {
             $this->session->refreshSession();
         }
-    }
-
-    /**
-     * Overwrites abstract method
-     * In contrast to abstract method, a response "you are not authorized is outputted"
-     *
-     * @param bool $tokenOk
-     */
-    protected function handleSessionTokenCheck($tokenOk)
-    {
-        if (!$tokenOk) {
-            $this->output($this->unauthorized);
-        }
-    }
-
-    /**
-     * Overwrites abstract method
-     * In contrast to abstract method, a response "you are not authorized is outputted"
-     */
-    protected function handleSessionLifeTimeExpired()
-    {
-        $this->output($this->unauthorized);
     }
 
     /**
@@ -188,7 +138,7 @@ class AjaxController extends AbstractController
      *
      * @param string $content JSON encoded content to output
      */
-    protected function output($content = '')
+    public function output($content = '')
     {
         ob_clean();
         header('Content-Type: application/json; charset=utf-8');

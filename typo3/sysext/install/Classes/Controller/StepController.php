@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Install\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -43,21 +43,63 @@ class StepController extends AbstractController
      */
     public function execute()
     {
-        $this->loadBaseExtensions();
-        $this->outputInstallToolNotEnabledMessageIfNeeded();
-        $this->outputInstallToolPasswordNotSetMessageIfNeeded();
-        $this->recreatePackageStatesFileIfNotExisting();
-        $this->executeOrOutputFirstInstallStepIfNeeded();
-        $this->adjustTrustedHostsPatternIfNeeded();
-        $this->executeSilentConfigurationUpgradesIfNeeded();
-        $this->initializeSession();
-        $this->checkSessionToken();
-        $this->checkSessionLifetime();
         $this->loginIfRequested();
         $this->outputLoginFormIfNotAuthorized();
         $this->executeSpecificStep();
         $this->outputSpecificStep();
         $this->redirectToTool();
+    }
+
+    /**
+     * Guard method checking typo3conf/ENABLE_INSTALL_TOOL
+     *
+     * Checking ENABLE_INSTALL_TOOL validity is simple:
+     * As soon as there is a typo3conf directory at all (not step 1 of "first install"),
+     * the file must be there and valid in order to proceed.
+     */
+    public function outputInstallToolNotEnabledMessage()
+    {
+        if (!EnableFileService::isFirstInstallAllowed() && !\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->checkIfEssentialConfigurationExists()) {
+            /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
+            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\FirstInstallAction::class);
+            $action->setAction('firstInstall');
+        } else {
+            /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
+            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);
+            $action->setAction('installToolDisabled');
+        }
+        $action->setController('common');
+        $this->output($action->handle());
+    }
+
+    /**
+     * Guard method checking for valid install tool password
+     *
+     * If installation is completed - LocalConfiguration exists and
+     * installProcess is not running, and installToolPassword must be set
+     */
+    public function outputInstallToolPasswordNotSetMessage()
+    {
+        /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
+        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
+        $action->setController('common');
+        $action->setAction('installToolPasswordNotSet');
+        $this->output($action->handle());
+    }
+
+    /**
+     * Show login for if user is not authorized yet and if
+     * not in first installation process.
+     */
+    protected function outputLoginFormIfNotAuthorized()
+    {
+        if (!$this->session->isAuthorized()
+            && !$this->isInitialInstallationInProgress()
+        ) {
+            $this->output($this->loginForm());
+        } else {
+            $this->session->refreshSession();
+        }
     }
 
     /**
@@ -160,74 +202,6 @@ class StepController extends AbstractController
     }
 
     /**
-     * Create PackageStates.php if missing and LocalConfiguration exists.
-     *
-     * It is fired if PackageStates.php is deleted on a running instance,
-     * all packages marked as "part of minimal system" are activated in this case.
-     *
-     * The step installer creates typo3conf/, LocalConfiguration and PackageStates in
-     * one call, so an "installation in progress" does not trigger creation of
-     * PackageStates here.
-     *
-     * @throws \Exception
-     */
-    protected function recreatePackageStatesFileIfNotExisting()
-    {
-        /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
-        $localConfigurationFileExists = is_file($localConfigurationFileLocation);
-        $packageStatesFilePath = PATH_typo3conf . 'PackageStates.php';
-        $localConfigurationBackupFilePath = preg_replace(
-            '/\\.php$/',
-            '.beforePackageStatesMigration.php',
-            $configurationManager->getLocalConfigurationFileLocation()
-        );
-
-        if (file_exists($packageStatesFilePath)
-            || (is_dir(PATH_typo3conf) && !$localConfigurationFileExists)
-            || !is_dir(PATH_typo3conf)
-        ) {
-            return;
-        }
-
-        try {
-            /** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-            $packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
-
-            // Activate all packages required for a minimal usable system
-            $packages = $packageManager->getAvailablePackages();
-            foreach ($packages as $package) {
-                /** @var $package \TYPO3\CMS\Core\Package\PackageInterface */
-                if ($package instanceof \TYPO3\CMS\Core\Package\PackageInterface
-                    && $package->isPartOfMinimalUsableSystem()
-                ) {
-                    $packageManager->activatePackage($package->getPackageKey());
-                }
-            }
-
-            // Backup LocalConfiguration.php
-            copy(
-                $configurationManager->getLocalConfigurationFileLocation(),
-                $localConfigurationBackupFilePath
-            );
-
-            $packageManager->forceSortAndSavePackageStates();
-
-            // Perform a reload to self, so bootstrap now uses new PackageStates.php
-            $this->redirect();
-        } catch (\Exception $exception) {
-            if (file_exists($packageStatesFilePath)) {
-                unlink($packageStatesFilePath);
-            }
-            if (file_exists($localConfigurationBackupFilePath)) {
-                unlink($localConfigurationBackupFilePath);
-            }
-            throw $exception;
-        }
-    }
-
-    /**
      * The first install step has a special standing and needs separate handling:
      * At this point no directory exists (no typo3conf, no typo3temp), so we can
      * not start the session handling (that stores the install tool session within typo3temp).
@@ -239,7 +213,7 @@ class StepController extends AbstractController
      * executed if called so. After that, a redirect is initiated to proceed with
      * other tasks.
      */
-    protected function executeOrOutputFirstInstallStepIfNeeded()
+    public function executeOrOutputFirstInstallStepIfNeeded()
     {
         $postValues = $this->getPostValues();
 
@@ -283,35 +257,6 @@ class StepController extends AbstractController
         }
 
         if ($wasExecuted) {
-            $this->redirect();
-        }
-    }
-
-    /**
-     * Checks the trusted hosts pattern setting
-     */
-    protected function adjustTrustedHostsPatternIfNeeded()
-    {
-        if (GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
-            return;
-        }
-
-        /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $configurationManager->setLocalConfigurationValueByPath('SYS/trustedHostsPattern', '.*');
-        $this->redirect();
-    }
-
-    /**
-     * Call silent upgrade class, redirect to self if configuration was changed.
-     */
-    protected function executeSilentConfigurationUpgradesIfNeeded()
-    {
-        /** @var SilentConfigurationUpgradeService $upgradeService */
-        $upgradeService = GeneralUtility::makeInstance(SilentConfigurationUpgradeService::class);
-        try {
-            $upgradeService->execute();
-        } catch (Exception\RedirectException $e) {
             $this->redirect();
         }
     }

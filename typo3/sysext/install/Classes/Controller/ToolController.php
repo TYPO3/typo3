@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
@@ -39,15 +40,6 @@ class ToolController extends AbstractController
      */
     public function execute()
     {
-        $this->loadBaseExtensions();
-
-        // Warning: Order of these methods is security relevant and interferes with different access
-        // conditions (new/existing installation). See the single method comments for details.
-        $this->outputInstallToolNotEnabledMessageIfNeeded();
-        $this->outputInstallToolPasswordNotSetMessageIfNeeded();
-        $this->initializeSession();
-        $this->checkSessionToken();
-        $this->checkSessionLifetime();
         $this->logoutIfRequested();
         $this->loginIfRequested();
         $this->outputLoginFormIfNotAuthorized();
@@ -71,7 +63,20 @@ class ToolController extends AbstractController
             );
             $formProtection->clean();
             $this->session->destroySession();
-            $this->redirect();
+            throw new RedirectException('Forced logout', 1504032052);
+        }
+    }
+
+    /**
+     * Show login for if user is not authorized yet and if
+     * not in first installation process.
+     */
+    protected function outputLoginFormIfNotAuthorized()
+    {
+        if (!$this->session->isAuthorized()) {
+            $this->output($this->loginForm());
+        } else {
+            $this->session->refreshSession();
         }
     }
 

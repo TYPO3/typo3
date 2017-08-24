@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 
@@ -37,7 +38,8 @@ class Application implements ApplicationInterface
      * @var array
      */
     protected $availableRequestHandlers = [
-        \TYPO3\CMS\Install\Http\RequestHandler::class
+        \TYPO3\CMS\Install\Http\RequestHandler::class,
+        \TYPO3\CMS\Install\Http\RecoveryRequestHandler::class
     ];
 
     /**
@@ -61,6 +63,8 @@ class Application implements ApplicationInterface
         $this->bootstrap
             ->startOutputBuffering()
             ->loadConfigurationAndInitialize(false, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
+
+        $this->disableCachingFramework();
     }
 
     /**
@@ -79,6 +83,27 @@ class Application implements ApplicationInterface
         }
 
         $this->bootstrap->shutdown();
+    }
+
+    /**
+     * Set caching to NullBackend, install tool must not cache anything
+     */
+    protected function disableCachingFramework()
+    {
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+        $cacheConfigurationsWithCachesSetToNullBackend = [];
+        foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
+            // cache_core is handled in bootstrap already
+            if (is_array($cacheConfiguration) && $cacheName !== 'cache_core') {
+                $cacheConfiguration['backend'] = NullBackend::class;
+                $cacheConfiguration['options'] = [];
+            }
+            $cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
+        }
+        /** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
+        $cacheManager = $this->bootstrap->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManager->setCacheConfigurations($cacheConfigurationsWithCachesSetToNullBackend);
     }
 
     /**
