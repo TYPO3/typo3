@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
@@ -52,7 +51,6 @@ class ToolController extends AbstractController
         $this->logoutIfRequested();
         $this->loginIfRequested();
         $this->outputLoginFormIfNotAuthorized();
-        $this->registerExtensionConfigurationErrorHandler();
         $this->dispatchAuthenticationActions();
     }
 
@@ -75,80 +73,6 @@ class ToolController extends AbstractController
             $this->session->destroySession();
             $this->redirect();
         }
-    }
-
-    /**
-     * This function registers a shutdown function, which is called even if a fatal error occurs.
-     * The request either gets redirected to an action where all extension configurations are checked for compatibility or
-     * an information with a link to that action.
-     */
-    protected function registerExtensionConfigurationErrorHandler()
-    {
-        register_shutdown_function(function () {
-            $error = error_get_last();
-            if ($error !== null) {
-                $errorType = $error['type'];
-
-                if ($errorType & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR)) {
-                    $getPostValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
-
-                    $parameters = [];
-
-                    // Add context parameter in case this script was called within backend scope
-                    $context = 'install[context]=standalone';
-                    if (isset($getPostValues['context']) && $getPostValues['context'] === 'backend') {
-                        $context = 'install[context]=backend';
-                    }
-                    $parameters[] = $context;
-
-                    // Add controller parameter
-                    $parameters[] = 'install[controller]=tool';
-
-                    // Add action if specified
-                    $parameters[] = 'install[action]=loadExtensions';
-
-                    // Add error to display a message what triggered the check
-                    $errorEncoded = json_encode($error);
-                    $parameters[] = 'install[lastError]=' . rawurlencode($errorEncoded);
-
-                    // We do not use GeneralUtility here to be sure that hash generation works even if that class might not exist any more.
-                    $parameters[] = 'install[lastErrorHash]=' . hash_hmac('sha1', $errorEncoded, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'InstallToolError');
-
-                    $redirectLocation = GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT') . '?' . implode('&', $parameters);
-
-                    if (!headers_sent()) {
-                        \TYPO3\CMS\Core\Utility\HttpUtility::redirect(
-                            $redirectLocation,
-                            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303
-                        );
-                    } else {
-                        echo '
-<p><strong>
-	The system detected a fatal error during script execution.
-	Please use the <a href="' . $redirectLocation . '">extension check tool</a> to find incompatible extensions.
-</strong></p>';
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Get last error values of install tool.
-     *
-     * @return array
-     */
-    protected function getLastError()
-    {
-        $getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('install');
-        $lastError = [];
-        if (isset($getVars['lastError']) && isset($getVars['lastErrorHash']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-            $calculatedHash = hash_hmac('sha1', $getVars['lastError'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'InstallToolError');
-            if ($calculatedHash === $getVars['lastErrorHash']) {
-                $lastError = json_decode($getVars['lastError'], true);
-            }
-        }
-        return $lastError;
     }
 
     /**
@@ -177,7 +101,6 @@ class ToolController extends AbstractController
         $toolAction->setAction($action);
         $toolAction->setToken($this->generateTokenForAction($action));
         $toolAction->setPostValues($this->getPostValues());
-        $toolAction->setLastError($this->getLastError());
         $this->output($toolAction->handle());
     }
 }
