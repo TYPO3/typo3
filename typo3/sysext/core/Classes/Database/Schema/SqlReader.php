@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Database\Schema;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
-use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
 
 /**
  * Helper methods to handle raw SQL input and transform it into individual statements
@@ -144,7 +143,7 @@ class SqlReader
     {
         // Using the old class name from the install tool here to keep backwards compatibility.
         $signalReturn = $this->signalSlotDispatcher->dispatch(
-            SqlExpectedSchemaService::class,
+            'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
             'tablesDefinitionIsBeingBuilt',
             [$sqlString]
         );

@@ -26,7 +26,7 @@ class DatabaseSchemaService
      * Add l10n_state field to tables that provide localization
      *
      * @param array $sqlString Current SQL statements to be executed
-     * @return array Modified arguments of SqlExpectedSchemaService::tablesDefinitionIsBeingBuilt signal
+     * @return array Modified arguments of SqlReader::tablesDefinitionIsBeingBuilt signal
      */
     public function getLocalizationRequiredDatabaseSchema(array $sqlString)
     {

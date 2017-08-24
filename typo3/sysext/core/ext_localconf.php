@@ -71,7 +71,7 @@ $signalSlotDispatcher->connect(
 );
 
 $signalSlotDispatcher->connect(
-    \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+    'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
     'tablesDefinitionIsBeingBuilt',
     \TYPO3\CMS\Core\DataHandling\DatabaseSchemaService::class,
     'getLocalizationRequiredDatabaseSchema'

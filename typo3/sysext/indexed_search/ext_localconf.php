@@ -60,7 +60,7 @@ if (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1')
     // Register schema analyzer slot to hook in required fulltext index definition
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
     $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
+        'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
         'tablesDefinitionIsBeingBuilt',
         \TYPO3\CMS\IndexedSearch\Service\DatabaseSchemaService::class,
         'addMysqlFulltextIndex'
