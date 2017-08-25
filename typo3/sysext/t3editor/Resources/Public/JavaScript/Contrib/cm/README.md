@@ -1,34 +1,23 @@
-# CodeMirror
-[![Build Status](https://travis-ci.org/codemirror/CodeMirror.svg)](https://travis-ci.org/codemirror/CodeMirror)
-[![NPM version](https://img.shields.io/npm/v/codemirror.svg)](https://www.npmjs.org/package/codemirror)
-[![Join the chat at https://gitter.im/codemirror/CodeMirror](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/codemirror/CodeMirror)  
-[Funding status: ![maintainer happiness](https://marijnhaverbeke.nl/fund/status_s.png?again)](https://marijnhaverbeke.nl/fund/)
+# CodeMirror-minified
+[![Build Status](https://travis-ci.org/Dominator008/CodeMirror-minified.svg?branch=master)](https://travis-ci.org/Dominator008/CodeMirror-minified) [![npm version](https://badge.fury.io/js/codemirror-minified.svg)](https://badge.fury.io/js/codemirror-minified)
 
-CodeMirror is a versatile text editor implemented in JavaScript for
-the browser. It is specialized for editing code, and comes with over
-100 language modes and various addons that implement more advanced
-editing functionality.
+## About
+This is a minified [CodeMirror](https://codemirror.net) distribution. All JavaScript files have been minified with [Google Closure Compiler](https://github.com/google/closure-compiler) using `SIMPLE_OPTIMIZATIONS`, and all CSS files have been minified with [clean-css](https://github.com/jakubpawlowicz/clean-css). This projects has CodeMirror's main repository as a Git submodule and is released once per CodeMirror release using the same version number.
 
-A rich programming API and a CSS theming system are available for
-customizing CodeMirror to fit your application, and extending it with
-new functionality.
+This distribution contains only the `addon`, `keymap`, `lib`, `mode` and `theme` directories. Within them, only non-test JavaScript and CSS files are included. See the ["files"](https://github.com/Dominator008/CodeMirror-minified/blob/master/package.json#L10-L22) section in `package.json` for the list of things included.
 
-You can find more information (and the
-[manual](http://codemirror.net/doc/manual.html)) on the [project
-page](http://codemirror.net). For questions and discussion, use the
-[discussion forum](https://discuss.codemirror.net/).
+## Instructions
+Just use this as if you were using the original CodeMirror library. All minified files retain their original name and location relative to CodeMirror's project root directory.
 
-See
-[CONTRIBUTING.md](https://github.com/codemirror/CodeMirror/blob/master/CONTRIBUTING.md)
-for contributing guidelines.
+An NPM package is available at https://www.npmjs.com/package/codemirror-minified. Install with:
+```sh
+npm install codemirror-minified
+```
 
-The CodeMirror community aims to be welcoming to everybody. We use the
-[Contributor Covenant
-(1.1)](http://contributor-covenant.org/version/1/1/0/) as our code of
-conduct.
-
-### Quickstart
-
-To build the project, make sure you have Node.js installed (at least version 6)
-and then `npm install`. To run, just open `index.html` in your
-browser (you don't need to run a webserver). Run the tests with `npm test`.
+## Building it Yourself
+We use Gulp:
+```sh
+git submodule update --init
+npm install
+gulp
+```

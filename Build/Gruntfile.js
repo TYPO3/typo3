@@ -408,7 +408,7 @@ module.exports = function (grunt) {
 					destPrefix: "<%= paths.t3editor %>Public/JavaScript/Contrib"
 				},
 				files: {
-					'cm/': 'codemirror/'
+					'cm/': 'codemirror-minified/'
 				}
 			},
 			all: {

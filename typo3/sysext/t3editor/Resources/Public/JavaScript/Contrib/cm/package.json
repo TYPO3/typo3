@@ -1,30 +1,30 @@
 {
-  "_from": "codemirror@5.28.0",
-  "_id": "codemirror@5.28.0",
+  "_from": "codemirror-minified",
+  "_id": "codemirror-minified@5.28.0",
   "_inBundle": false,
-  "_integrity": "sha512-E/Z6050shti9v9ivl0dUClVRM4xaH204jsJmEpNYC6KDTlQwAz+5DdhLzn0tjaL/Mp1P0J1uhZokcSP2RFSwlA==",
-  "_location": "/codemirror",
+  "_integrity": "sha1-cWiy5Tfr/bJzySIdWNqNN/OKM6E=",
+  "_location": "/codemirror-minified",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "codemirror@5.28.0",
-    "name": "codemirror",
-    "escapedName": "codemirror",
-    "rawSpec": "5.28.0",
+    "raw": "codemirror-minified",
+    "name": "codemirror-minified",
+    "escapedName": "codemirror-minified",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "5.28.0"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/codemirror/-/codemirror-5.28.0.tgz",
-  "_shasum": "2978d9280d671351a4f5737d06bbd681a0fd6f83",
-  "_spec": "codemirror@5.28.0",
+  "_resolved": "https://registry.npmjs.org/codemirror-minified/-/codemirror-minified-5.28.0.tgz",
+  "_shasum": "7168b2e537ebfdb273c9221d58da8d37f38a33a1",
+  "_spec": "codemirror-minified",
   "_where": "/Volumes/VagrantCS/VagrantWMDB/vHosts/_typo3_src/master/Build",
   "bugs": {
-    "url": "http://github.com/codemirror/CodeMirror/issues"
+    "url": "https://github.com/Dominator008/CodeMirror-minified/issues"
   },
   "bundleDependencies": false,
   "contributors": [
@@ -2042,19 +2042,30 @@
     }
   ],
   "deprecated": false,
-  "description": "Full-featured in-browser code editor",
+  "description": "Minified CodeMirror distribution",
   "devDependencies": {
-    "blint": "^1",
-    "node-static": "0.6.0",
-    "phantomjs-prebuilt": "^2.1.12",
-    "rollup": "^0.41.0",
-    "rollup-plugin-buble": "^0.15.0",
-    "rollup-watch": "^3.2.0"
+    "google-closure-compiler": "^20170806.0.0",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-flatmap": "^1.0.0"
   },
   "directories": {
     "lib": "./lib"
   },
-  "homepage": "http://codemirror.net",
+  "files": [
+    "addon",
+    "keymap",
+    "lib",
+    "mode",
+    "theme",
+    "bower.json",
+    "package.json",
+    "AUTHORS",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "homepage": "https://codemirror.net",
   "jspm": {
     "directories": {},
     "dependencies": {},
@@ -2063,29 +2074,21 @@
   "keywords": [
     "JavaScript",
     "CodeMirror",
-    "Editor"
+    "Editor",
+    "minified"
   ],
   "license": "MIT",
   "main": "lib/codemirror.js",
   "maintainers": [
     {
-      "name": "Marijn Haverbeke",
-      "email": "marijnh@gmail.com",
-      "url": "http://marijnhaverbeke.nl"
+      "name": "Michael Zhou",
+      "email": "zhoumotongxue008@gmail.com"
     }
   ],
-  "name": "codemirror",
+  "name": "codemirror-minified",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codemirror/CodeMirror.git"
+    "url": "git+https://github.com/Dominator008/CodeMirror-minified.git"
   },
-  "scripts": {
-    "build": "rollup -c",
-    "lint": "bin/lint",
-    "prepare": "npm run-script build",
-    "test": "node ./test/run.js",
-    "watch": "rollup -w -c"
-  },
-  "style": "lib/codemirror.css",
   "version": "5.28.0"
 }
