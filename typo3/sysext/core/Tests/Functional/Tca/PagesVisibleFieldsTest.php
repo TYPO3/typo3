@@ -199,8 +199,6 @@ class PagesVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 'author_email',
                 'layout',
                 'newUntil',
-                'backend_layout',
-                'backend_layout_next_level',
                 'module',
                 'content_from_pid',
                 'cache_timeout',
@@ -217,8 +215,6 @@ class PagesVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 'no_search',
                 'php_tree_stop',
                 'media',
-                'tsconfig_includes',
-                'TSconfig',
             ],
         ],
     ];
