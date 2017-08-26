@@ -1615,8 +1615,14 @@ class PageLayoutView implements LoggerAwareInterface
         // Traverse any selected elements and render their display code:
         $results = $this->getResult($queryBuilder->execute());
         $unused = [];
+        $hookArray = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used'] ?? [];
         foreach ($results as $record) {
-            if (isset($columns[$record['colPos']])) {
+            $used = isset($columns[$record['colPos']]);
+            foreach ($hookArray as $_funcRef) {
+                $_params = ['columns' => $columns, 'record' => $record, 'used' => $used];
+                $used = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            }
+            if ($used) {
                 $columnValue = (string)$record['colPos'];
                 $contentRecordsPerColumn[$columnValue][] = $record;
             } else {
