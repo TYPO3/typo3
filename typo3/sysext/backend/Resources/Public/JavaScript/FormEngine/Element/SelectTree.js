@@ -15,7 +15,10 @@
  * Module: TYPO3/CMS/Backend/FormEngine/Element/SelectTree
  * Logic for SelectTree
  */
-define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree'], function (d3, SvgTree) {
+define(['d3',
+        'TYPO3/CMS/Backend/FormEngine/Element/SvgTree',
+        'TYPO3/CMS/Backend/FormEngine'
+    ], function (d3, SvgTree) {
     'use strict';
 
     /**
