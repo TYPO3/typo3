@@ -28,6 +28,7 @@ Register an addon
 To register an addon, the following code may be used:
 
 .. code-block:: php
+
     'my/addon' => [
         'module' => 'cm/addon/my/addon',
         'cssFiles' => [
@@ -61,6 +62,7 @@ Register a mode
 To register a mode, the following code may be used:
 
 .. code-block:: php
+
     'css' => [
         'module' => 'cm/mode/css/css',
         'extensions' => ['css'],
