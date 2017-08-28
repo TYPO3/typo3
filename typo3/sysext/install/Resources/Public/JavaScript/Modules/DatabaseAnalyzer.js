@@ -63,7 +63,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			var lineTemplate = $(this.selectorSuggestionLine).html();
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.append(message);
-			$(this.selectorExecuteTrigger).hide();
+			$(this.selectorExecuteTrigger).prop('disabled', true);
+			$(this.selectorAnalyzeTrigger).prop('disabled', true);
 			$.ajax({
 				url: url,
 				cache: false,
@@ -108,7 +109,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 								});
 								$outputContainer.append(aBlock);
 							});
-							$(self.selectorExecuteTrigger).show();
+							$(self.selectorExecuteTrigger).prop('disabled', false);
+							$(self.selectorAnalyzeTrigger).prop('disabled', false);
 						}
 					}
 				},
@@ -130,6 +132,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 				selectedHashes.push($(this).data('hash'));
 			});
 			$outputContainer.empty().html(message);
+			$(this.selectorExecuteTrigger).prop('disabled', true);
+			$(this.selectorAnalyzeTrigger).prop('disabled', true);
 			var postData = {
 				'install': {
 					'action': 'databaseAnalyzerExecute',
