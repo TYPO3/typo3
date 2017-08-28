@@ -261,10 +261,6 @@ class RequestHandler implements RequestHandlerInterface
             $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
             $response->getBody()->write($this->controller->content);
         }
-        // Debugging Output
-        if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable([$GLOBALS['error'], 'debugOutput'])) {
-            $GLOBALS['error']->debugOutput();
-        }
         GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
         return $response;
     }

@@ -32,7 +32,6 @@ class ExtDirectRouter
      */
     public function routeAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $GLOBALS['error'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class);
         $isForm = false;
         $isUpload = false;
         $rawPostData = file_get_contents('php://input');
@@ -85,7 +84,6 @@ class ExtDirectRouter
                     }
                     $extResponse[$index]['type'] = 'rpc';
                     $extResponse[$index]['result'] = $this->processRpc($singleRequest, $namespace);
-                    $extResponse[$index]['debug'] = $GLOBALS['error']->toString();
                 } catch (\Exception $exception) {
                     $extResponse[$index]['type'] = 'exception';
                     $extResponse[$index]['message'] = $exception->getMessage();

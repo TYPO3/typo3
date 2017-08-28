@@ -108,16 +108,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     /**
      * @test
      */
-    public function initializeGlobalVariablesUnsetsGlobalErrorArray()
-    {
-        $GLOBALS['error'] = 'foo';
-        $this->subject->_call('initializeGlobalVariables');
-        $this->assertFalse(isset($GLOBALS['error']));
-    }
-
-    /**
-     * @test
-     */
     public function initializeGlobalVariablesSetsGlobalTypo3MiscArray()
     {
         unset($GLOBALS['TYPO3_MISC']);

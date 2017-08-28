@@ -213,7 +213,6 @@ class SystemEnvironmentBuilder
     protected static function initializeGlobalVariables()
     {
         // Unset variable(s) in global scope (security issue #13959)
-        unset($GLOBALS['error']);
         $GLOBALS['TYPO3_MISC'] = [];
         $GLOBALS['T3_VAR'] = [];
         $GLOBALS['T3_SERVICES'] = [];

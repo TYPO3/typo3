@@ -349,6 +349,11 @@ return [
             'Important-82229-FluidImplementationOfCmsVariableProviderRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\ExtDirect\ExtDirectDebug' => [
+        'restFiles' => [
+            'Breaking-37180-RemovedExtDirectDebugAndGLOBALSerror.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [
