@@ -47,7 +47,7 @@ class Settings extends Action\AbstractAction
      */
     protected function executeAction(): string
     {
-        $presetFeatures = $this->featureManager->getInitializedFeatures();
+        $presetFeatures = $this->featureManager->getInitializedFeatures($this->postValues['values'] ?? []);
         $localConfigurationValueService = new LocalConfigurationValueService();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $this->view->assignMultiple([

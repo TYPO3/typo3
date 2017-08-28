@@ -20,13 +20,15 @@
 	<div id="t3js-presets-activate-token">{presetActivateToken}</div>
 </div>
 
-<div class="form-horizontal">
+<form method="post" class="form-horizontal">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<f:for each="{presetFeatures}" as="feature">
 			<f:render partial="Action/Tool/Settings/Presets/{feature.name}" arguments="{_all}"/>
 		</f:for>
 	</div>
-</div>
+</form>
 <div class="t3js-presets-output"></div>
 
 <button

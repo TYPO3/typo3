@@ -20,6 +20,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 	return {
 		selectorActivateToken: '#t3js-presets-activate-token',
 		selectorActivateTrigger: '.t3js-presets-activate',
+		selectorContentContainer: '.t3js-presets',
 		selectorOutputContainer: '.t3js-presets-output',
 
 		initialize: function() {
@@ -38,20 +39,12 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 
 		activate: function() {
 			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install[action]': 'presetActivate',
-				'install[token]': $(this.selectorActivateToken).text()
-			};
-			$('.gridder-show .t3js-presets-formField').each(function(i, element) {
-				var $element = $(element);
-				if ($element.attr('type') === 'radio') {
-					if (element.checked) {
-						postData[$element.attr('name')] = $element.val();
-					}
-				} else {
-					postData[$element.attr('name')] = $element.val();
-				}
+			var postData = {};
+			$($(this.selectorContentContainer + ' form').serializeArray()).each(function() {
+				postData[this.name] = this.value;
 			});
+			postData['install[action]'] = 'presetActivate';
+			postData['install[token]'] = $(this.selectorActivateToken).text();
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
