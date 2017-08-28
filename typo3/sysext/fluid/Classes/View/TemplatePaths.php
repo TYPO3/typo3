@@ -82,8 +82,18 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         $cache = $this->getRuntimeCache();
         $cacheIdentifier = 'viewpaths_' . $extensionKey;
         $configuration = $cache->get($cacheIdentifier);
-        if (!empty($configuration)) {
+        if (is_array($configuration)) {
             return $configuration;
+        }
+
+        $configuredPaths = [];
+        if (!empty($this->templateRootPaths) || !empty($this->partialRootPaths) || !empty($this->layoutRootPaths)) {
+            // The view was manually configured - early return to avoid caching this configuration.
+            return [
+                self::CONFIG_TEMPLATEROOTPATHS => $this->templateRootPaths,
+                self::CONFIG_PARTIALROOTPATHS => $this->partialRootPaths,
+                self::CONFIG_LAYOUTROOTPATHS => $this->layoutRootPaths,
+            ];
         }
 
         $resources = $this->getExtensionPrivateResourcesPath($extensionKey);
@@ -93,31 +103,17 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             self::CONFIG_LAYOUTROOTPATHS => [$resources . 'Layouts/']
         ];
 
-        $configuredPaths = [];
-        if (!empty($this->templateRootPaths) || !empty($this->partialRootPaths) || !empty($this->layoutRootPaths)) {
-            // The view was configured already
-            $configuredPaths = [
-                self::CONFIG_TEMPLATEROOTPATHS => $this->templateRootPaths,
-                self::CONFIG_PARTIALROOTPATHS => $this->partialRootPaths,
-                self::CONFIG_LAYOUTROOTPATHS => $this->layoutRootPaths,
-            ];
-        } else {
-            if (empty($this->typoScript)) {
-                $this->typoScript = GeneralUtility::removeDotsFromTS(
-                    (array)$this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)
-                );
-            }
-            $signature = str_replace('_', '', $extensionKey);
-            if ($this->isBackendMode() && isset($this->typoScript['module']['tx_' . $signature]['view'])) {
-                $configuredPaths = (array)$this->typoScript['module']['tx_' . $signature]['view'];
-            } elseif ($this->isFrontendMode() && isset($this->typoScript['plugin']['tx_' . $signature]['view'])) {
-                $configuredPaths = (array)$this->typoScript['plugin']['tx_' . $signature]['view'];
-            }
+        if (empty($this->typoScript)) {
+            $this->typoScript = (array)$this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         }
 
-        if (empty($configuredPaths)) {
-            return $paths;
+        $signature = str_replace('_', '', $extensionKey);
+        if ($this->isBackendMode() && isset($this->typoScript['module.']['tx_' . $signature . '.']['view.'])) {
+            $configuredPaths = (array)$this->typoScript['module.']['tx_' . $signature . '.']['view.'];
+        } elseif ($this->isFrontendMode() && isset($this->typoScript['plugin.']['tx_' . $signature . '.']['view.'])) {
+            $configuredPaths = (array)$this->typoScript['plugin.']['tx_' . $signature . '.']['view.'];
         }
+        $configuredPaths = GeneralUtility::removeDotsFromTS($configuredPaths);
 
         foreach ($paths as $name => $defaultPaths) {
             if (!empty($configuredPaths[$name])) {
