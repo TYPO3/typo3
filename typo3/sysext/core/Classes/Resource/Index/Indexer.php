@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -107,7 +109,20 @@ class Indexer
         $fileIndexRecords = $this->getFileIndexRepository()->findInStorageWithIndexOutstanding($this->storage, $maximumFileCount);
         foreach ($fileIndexRecords as $indexRecord) {
             $fileObject = $this->getResourceFactory()->getFileObject($indexRecord['uid'], $indexRecord);
-            $this->extractMetaData($fileObject);
+
+            // Check for existence of file before extraction
+            if ($fileObject->exists()) {
+                try {
+                    $this->extractMetaData($fileObject);
+                } catch (InsufficientFileAccessPermissionsException $e) {
+                    //  We skip files that are not accessible
+                } catch (IllegalFileExtensionException $e) {
+                    //  We skip files that have an extension that we don't allow
+                }
+            } else {
+                // Mark file as missing and continue with next record
+                $this->getFileIndexRepository()->markFileAsMissing($indexRecord['uid']);
+            }
         }
     }
 
