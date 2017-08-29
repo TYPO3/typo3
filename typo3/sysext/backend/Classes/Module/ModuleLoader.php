@@ -261,6 +261,10 @@ class ModuleLoader
             return true;
         }
         $access = strtolower($MCONF['access']);
+        // Check if this module is only allowed by system maintainers (= admins who are in the list of system maintainers)
+        if (strpos($access, BackendUserAuthentication::ROLE_SYSTEMMAINTAINER) !== false) {
+            return $this->BE_USER->isSystemMaintainer();
+        }
         // Checking if admin-access is required
         // If admin-permissions is required then return TRUE if user is admin
         if (strpos($access, 'admin') !== false && $this->BE_USER->isAdmin()) {

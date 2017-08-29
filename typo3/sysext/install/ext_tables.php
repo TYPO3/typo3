@@ -23,7 +23,7 @@ if (TYPO3_MODE === 'BE') {
                     'action' => 'maintenance'
                 ]
             ],
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'name' => 'tools_toolsmaintenance',
             'iconIdentifier' => 'module-install-maintenance',
             'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf'
@@ -41,7 +41,7 @@ if (TYPO3_MODE === 'BE') {
                     'action' => 'settings'
                 ]
             ],
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'name' => 'tools_toolssettings',
             'iconIdentifier' => 'module-install-settings',
             'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf'
@@ -59,7 +59,7 @@ if (TYPO3_MODE === 'BE') {
                     'action' => 'upgrade'
                 ]
             ],
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'name' => 'tools_toolsupgrade',
             'iconIdentifier' => 'module-install-upgrade',
             'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf'
@@ -77,7 +77,7 @@ if (TYPO3_MODE === 'BE') {
                     'action' => 'environment'
                 ]
             ],
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'name' => 'tools_toolsenvironment',
             'iconIdentifier' => 'module-install-environment',
             'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf'

@@ -38,6 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUserAuthentication extends AbstractUserAuthentication
 {
+    const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
+
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
      * @var string
@@ -426,6 +428,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             return false;
         }
+        // Returns TRUE if conf[access] is set to system maintainers and the user is system maintainer
+        if (strpos($conf['access'], self::ROLE_SYSTEMMAINTAINER) !== false && $this->isSystemMaintainer()) {
+            return true;
+        }
         // Returns TRUE if conf[access] is not set at all or if the user is admin
         if (!$conf['access'] || $this->isAdmin()) {
             return true;
@@ -439,6 +445,32 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             throw new \RuntimeException('Access Error: You don\'t have access to this module.', 1294586448);
         }
         return $acs;
+    }
+
+    /**
+     * Checks if the user is in the valid list of allowed system maintainers, if the list is not set.
+     * then all admins are system maintainers. If the list is empty, no one is system maintainer (good for production
+     * systems)
+     *
+     * @return bool
+     */
+    public function isSystemMaintainer(): bool
+    {
+        if (GeneralUtility::getApplicationContext()->isDevelopment() && $this->isAdmin()) {
+            return true;
+        }
+        $allowedAdmins = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
+        if (!empty($allowedAdmins)) {
+            return in_array((int)$this->user['uid'], $allowedAdmins, true);
+        }
+        // No system maintainers set up yet, so any admin is allowed to access the modules
+        // but explicitly no system maintainers allowed (empty string in TYPO3_CONF_VARS).
+        // @todo: this needs to be adjusted once system maintainers can log into the install tool with their credentials
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])
+            && empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])) {
+            return false;
+        }
+        return $this->isAdmin();
     }
 
     /**

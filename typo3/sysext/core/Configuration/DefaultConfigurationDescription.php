@@ -84,6 +84,7 @@ return [
         'generateApacheHtaccess' => 'Boolean: TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.',
         'isInitialInstallationInProgress' => 'Boolean: If TRUE, the installation is \'in progress\'. This value is handled within the install tool step installer internally.',
         'isInitialDatabaseImportDone' => 'Boolean: If TRUE, the database import is finished. This value is handled within the install tool step installer internally.',
+        'systemMaintainers' => 'Array: A list of backend user IDs allowed to access the Install Tool',
     ],
     'EXT' => [ // Options related to the Extension Management
         'allowGlobalInstall' => 'Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.',
