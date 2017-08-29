@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -29,7 +30,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Currently only available and useful when called from Router->generate() as the information
  * about possible routes needs to be handed over.
  */
-class UriBuilder
+class UriBuilder implements SingletonInterface
 {
     /**
      * Generates an absolute URL
@@ -42,17 +43,22 @@ class UriBuilder
     const ABSOLUTE_PATH = 'absolute';
 
     /**
-     * @var Route[]
+     * @var Router
      */
-    protected $routes;
+    protected $router;
 
     /**
-     * Fetches the available routes from the Router to be used for generating routes
+     * @var array
      */
-    protected function loadBackendRoutes()
+    protected $generated = [];
+
+    /**
+     * Loads the router to fetch the available routes from the Router to be used for generating routes
+     * @param Router|null $router
+     */
+    public function __construct(Router $router = null)
     {
-        $router = GeneralUtility::makeInstance(Router::class);
-        $this->routes = $router->getRoutes();
+        $this->router = $router ?? GeneralUtility::makeInstance(Router::class);
     }
 
     /**
@@ -88,12 +94,15 @@ class UriBuilder
      */
     public function buildUriFromRoute($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
-        $this->loadBackendRoutes();
-        if (!isset($this->routes[$name])) {
+        $cacheIdentifier = 'route' . $name . serialize($parameters) . $referenceType;
+        if (isset($this->generated[$cacheIdentifier])) {
+            return $this->generated[$cacheIdentifier];
+        }
+        if (!isset($this->router->getRoutes()[$name])) {
             throw new RouteNotFoundException('Unable to generate a URL for the named route "' . $name . '" because this route was not found.', 1476050190);
         }
 
-        $route = $this->routes[$name];
+        $route = $this->router->getRoutes()[$name];
         $parameters = array_merge(
             $route->getOptions()['parameters'] ?? [],
             $parameters
@@ -111,7 +120,8 @@ class UriBuilder
             'route' => $route->getPath()
         ] + $parameters;
 
-        return $this->buildUri($parameters, $referenceType);
+        $this->generated[$cacheIdentifier] = $this->buildUri($parameters, $referenceType);
+        return $this->generated[$cacheIdentifier];
     }
 
     /**
@@ -127,11 +137,16 @@ class UriBuilder
     public function buildUriFromModule($moduleName, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
         trigger_error('UriBuilder->buildUriFromModule() will be removed in TYPO3 v10.0, use buildUriFromRoute() instead.', E_USER_DEPRECATED);
+        $cacheIdentifier = 'module' . $moduleName . serialize($parameters) . $referenceType;
+        if (isset($this->generated[$cacheIdentifier])) {
+            return $this->generated[$cacheIdentifier];
+        }
         $parameters = [
             'route' => $moduleName,
             'token' => FormProtectionFactory::get('backend')->generateToken('route', $moduleName)
         ] + $parameters;
-        return $this->buildUri($parameters, $referenceType);
+        $this->generated[$cacheIdentifier] = $this->buildUri($parameters, $referenceType);
+        return $this->generated[$cacheIdentifier];
     }
 
     /**

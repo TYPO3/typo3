@@ -37,6 +37,8 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $uriBuilderMock;
 
+    protected $resetSingletonInstances = true;
+
     /**
      * setUp function
      */
@@ -91,7 +93,7 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
             'referenceType' => 'theReferenceTypeArgument'
         ]);
 
-        GeneralUtility::addInstance(UriBuilder::class, $this->uriBuilderMock);
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
         $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
@@ -116,7 +118,7 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
                 'referenceType' => 'theReferenceTypeArgument'
             ]
         );
-        GeneralUtility::addInstance(UriBuilder::class, $this->uriBuilderMock);
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
         $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');

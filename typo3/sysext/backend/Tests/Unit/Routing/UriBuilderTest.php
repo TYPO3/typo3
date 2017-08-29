@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Routing;
 
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,17 +25,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UriBuilderTest extends UnitTestCase
 {
-    /**
-     * @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
-     */
-    protected $uriBuilder;
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['loadBackendRoutes']);
-    }
-
     /**
      * @return array
      */
@@ -96,9 +85,12 @@ class UriBuilderTest extends UnitTestCase
         array $routeParameters,
         string $expectation
     ) {
-        $this->uriBuilder->_set('routes', $routes);
-
-        $uri = $this->uriBuilder->buildUriFromRoute(
+        $router = new Router();
+        foreach ($routes as $routeName => $route) {
+            $router->addRoute($routeName, $route);
+        }
+        $subject = new UriBuilder($router);
+        $uri = $subject->buildUriFromRoute(
             $routeName,
             $routeParameters
         );
@@ -113,6 +105,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1476050190);
-        $this->uriBuilder->buildUriFromRoute(uniqid('any'));
+        $subject = new UriBuilder(new Router());
+        $subject->buildUriFromRoute(uniqid('any'));
     }
 }
