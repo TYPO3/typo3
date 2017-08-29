@@ -329,7 +329,7 @@ Override the option using the ``form definition``:
 
     finishers:
       -
-        identifier: Custom
+        identifier: CustomFinisher
         options:
           yourCustomOption: 'Björn'
 
