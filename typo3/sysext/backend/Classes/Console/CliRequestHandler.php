@@ -92,6 +92,10 @@ class CliRequestHandler implements RequestHandlerInterface
             $exitCode = $e->getCode();
         }
 
+        if ($exitCode > 0 && 0 === $exitCode % 256) {
+            $exitCode = 1;
+        }
+
         exit($exitCode);
     }
 
