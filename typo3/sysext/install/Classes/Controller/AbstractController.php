@@ -17,10 +17,6 @@ namespace TYPO3\CMS\Install\Controller;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Common\LoginForm;
-use TYPO3\CMS\Install\Controller\Exception\RedirectException;
-use TYPO3\CMS\Install\Exception\AuthenticationRequiredException;
-use TYPO3\CMS\Install\Service\EnableFileService;
-use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * Controller abstract for shared parts of Tool, Step and Ajax controller
@@ -28,35 +24,9 @@ use TYPO3\CMS\Install\Service\SessionService;
 class AbstractController
 {
     /**
-     * @var SessionService
-     */
-    protected $session = null;
-
-    /**
      * @var array List of valid action names that need authentication
      */
     protected $authenticationActions = [];
-
-    /**
-     * @param SessionService $session
-     */
-    public function setSessionService(SessionService $session)
-    {
-        $this->session = $session;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isInstallToolAvailable()
-    {
-        /** @var EnableFileService $installToolEnableService */
-        $installToolEnableService = GeneralUtility::makeInstance(EnableFileService::class);
-        if ($installToolEnableService->isFirstInstallAllowed()) {
-            return true;
-        }
-        return $installToolEnableService->checkInstallToolEnableFile();
-    }
 
     /**
      * Show login form
@@ -77,106 +47,6 @@ class AbstractController
         }
         $content = $action->handle();
         return $content;
-    }
-
-    /**
-     * Validate install tool password and login user if requested
-     *
-     * @throws RedirectException on successful login
-     * @throws AuthenticationRequiredException when a login is requested but credentials are invalid
-     */
-    protected function loginIfRequested()
-    {
-        $action = $this->getAction();
-        $postValues = $this->getPostValues();
-        if ($action === 'login') {
-            $password = '';
-            $validPassword = false;
-            if (isset($postValues['values']['password']) && $postValues['values']['password'] !== '') {
-                $password = $postValues['values']['password'];
-                $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-                $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
-                if (is_object($saltFactory)) {
-                    $validPassword = $saltFactory->checkPassword($password, $installToolPassword);
-                } elseif (md5($password) === $installToolPassword) {
-                    // Update install tool password
-                    $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
-                    /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-                    $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-                    $configurationManager->setLocalConfigurationValueByPath(
-                        'BE/installToolPassword',
-                        $saltFactory->getHashedPassword($password)
-                    );
-                    $validPassword = true;
-                }
-            }
-            if ($validPassword) {
-                $this->session->setAuthorized();
-                $this->sendLoginSuccessfulMail();
-                throw new RedirectException('Login', 1504032046);
-            }
-            if (!isset($postValues['values']['password']) || $postValues['values']['password'] === '') {
-                $messageText = 'Please enter the install tool password';
-            } else {
-                $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
-                $hashedPassword = $saltFactory->getHashedPassword($password);
-                $messageText = 'Given password does not match the install tool login password. ' .
-                        'Calculated hash: ' . $hashedPassword;
-            }
-            $message = new FlashMessage(
-                $messageText,
-                'Login failed',
-                FlashMessage::ERROR
-            );
-            $this->sendLoginFailedMail();
-            throw new AuthenticationRequiredException('Login failed', 1504031979, null, $message);
-        }
-    }
-
-    /**
-     * If install tool login mail is set, send a mail for a successful login.
-     */
-    protected function sendLoginSuccessfulMail()
-    {
-        $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        if ($warningEmailAddress) {
-            /** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
-            $mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-            $mailMessage
-                ->addTo($warningEmailAddress)
-                ->setSubject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setBody('There has been an Install Tool login at TYPO3 site'
-                . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
-                . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-                . ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-                . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
-                ->send();
-        }
-    }
-
-    /**
-     * If install tool login mail is set, send a mail for a failed login.
-     */
-    protected function sendLoginFailedMail()
-    {
-        $formValues = GeneralUtility::_GP('install');
-        $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        if ($warningEmailAddress) {
-            /** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
-            $mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-            $mailMessage
-                ->addTo($warningEmailAddress)
-                ->setSubject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setBody('There has been an Install Tool login attempt at TYPO3 site'
-                . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
-                . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-                . ' The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
-                . ' remote address was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-                . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
-                ->send();
-        }
     }
 
     /**
@@ -202,41 +72,6 @@ class AbstractController
             \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
         );
         return $formProtection->generateToken('installTool', $action);
-    }
-
-    /**
-     * First installation is in progress, if LocalConfiguration does not exist,
-     * or if isInitialInstallationInProgress is not set or FALSE.
-     *
-     * @return bool TRUE if installation is in progress
-     */
-    protected function isInitialInstallationInProgress()
-    {
-        /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-
-        $localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
-        $localConfigurationFileExists = @is_file($localConfigurationFileLocation);
-        $result = false;
-        if (!$localConfigurationFileExists
-            || !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['isInitialInstallationInProgress'])
-        ) {
-            $result = true;
-        }
-        return $result;
-    }
-
-    /**
-     * Add status messages to session.
-     * Used to output messages between requests, especially in step controller
-     *
-     * @param FlashMessage[] $messages
-     */
-    protected function addSessionMessages(array $messages)
-    {
-        foreach ($messages as $message) {
-            $this->session->addMessage($message);
-        }
     }
 
     /**
@@ -372,33 +207,5 @@ class AbstractController
         header('Pragma: no-cache');
         echo $content;
         die;
-    }
-
-    /**
-     * Get sender address from configuration
-     * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-     * If this setting is empty fall back to 'no-reply@example.com'
-     *
-     * @return string Returns an email address
-     */
-    protected function getSenderEmailAddress()
-    {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-            : 'no-reply@example.com';
-    }
-
-    /**
-     * Gets sender name from configuration
-     * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
-     * If this setting is empty, it falls back to a default string.
-     *
-     * @return string
-     */
-    protected function getSenderEmailName()
-    {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
-            : 'TYPO3 CMS install tool';
     }
 }

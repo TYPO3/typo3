@@ -87,20 +87,15 @@ class AjaxController extends AbstractController
      */
     public function execute()
     {
-        $this->checkLogin();
         $this->dispatchAuthenticationActions();
     }
 
     /**
      * Check login status
      */
-    protected function checkLogin()
+    public function unauthorizedAction()
     {
-        if (!$this->session->isAuthorized()) {
-            $this->output($this->unauthorized);
-        } else {
-            $this->session->refreshSession();
-        }
+        $this->output($this->unauthorized);
     }
 
     /**

@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Controller\Exception\RedirectException;
-use TYPO3\CMS\Install\Service\EnableFileService;
-
 /**
  * Install tool controller, dispatcher class of the install tool.
  *
@@ -40,44 +37,15 @@ class ToolController extends AbstractController
      */
     public function execute()
     {
-        $this->logoutIfRequested();
-        $this->loginIfRequested();
-        $this->outputLoginFormIfNotAuthorized();
         $this->dispatchAuthenticationActions();
     }
 
     /**
-     * Logout user if requested
+     * Show login for if user is not authorized yet
      */
-    protected function logoutIfRequested()
+    public function unauthorizedAction()
     {
-        $action = $this->getAction();
-        if ($action === 'logout') {
-            if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
-                EnableFileService::removeInstallToolEnableFile();
-            }
-
-            /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
-            $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-                \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
-            );
-            $formProtection->clean();
-            $this->session->destroySession();
-            throw new RedirectException('Forced logout', 1504032052);
-        }
-    }
-
-    /**
-     * Show login for if user is not authorized yet and if
-     * not in first installation process.
-     */
-    protected function outputLoginFormIfNotAuthorized()
-    {
-        if (!$this->session->isAuthorized()) {
-            $this->output($this->loginForm());
-        } else {
-            $this->session->refreshSession();
-        }
+        $this->output($this->loginForm());
     }
 
     /**

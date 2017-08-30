@@ -14,14 +14,22 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action\Step\AbstractStepAction;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Install\Service\SessionService;
 
 /**
  * Install step controller, dispatcher class of step actions.
  */
 class StepController extends AbstractController
 {
+    /**
+     * @var SessionService
+     */
+    protected $session = null;
+
     /**
      * @var array List of valid action names that need authentication. Order is important!
      */
@@ -34,17 +42,20 @@ class StepController extends AbstractController
     ];
 
     /**
+     * @param SessionService $session
+     */
+    public function setSessionService(SessionService $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
      * Index action acts as a dispatcher to different steps
-     *
-     * Warning: Order of these methods is security relevant and interferes with different access
-     * conditions (new/existing installation). See the single method comments for details.
      *
      * @throws Exception
      */
     public function execute()
     {
-        $this->loginIfRequested();
-        $this->outputLoginFormIfNotAuthorized();
         $this->executeSpecificStep();
         $this->outputSpecificStep();
         $this->redirectToTool();
@@ -88,21 +99,6 @@ class StepController extends AbstractController
     }
 
     /**
-     * Show login for if user is not authorized yet and if
-     * not in first installation process.
-     */
-    protected function outputLoginFormIfNotAuthorized()
-    {
-        if (!$this->session->isAuthorized()
-            && !$this->isInitialInstallationInProgress()
-        ) {
-            $this->output($this->loginForm());
-        } else {
-            $this->session->refreshSession();
-        }
-    }
-
-    /**
      * Execute a step action if requested. If executed, a redirect is done, so
      * the next request will render step one again if needed or initiate a
      * request to test the next step.
@@ -114,6 +110,7 @@ class StepController extends AbstractController
         $action = $this->getAction();
         $postValues = $this->getPostValues();
         if ($action && isset($postValues['set']) && $postValues['set'] === 'execute') {
+            /** @var AbstractStepAction $stepAction */
             $stepAction = $this->getActionInstance($action);
             $stepAction->setAction($action);
             $stepAction->setToken($this->generateTokenForAction($action));
@@ -137,6 +134,7 @@ class StepController extends AbstractController
             // First step action
             list($action) = $this->authenticationActions;
         }
+        /** @var AbstractStepAction $stepAction */
         $stepAction = $this->getActionInstance($action);
         $stepAction->setAction($action);
         $stepAction->setController('step');
@@ -215,34 +213,21 @@ class StepController extends AbstractController
      */
     public function executeOrOutputFirstInstallStepIfNeeded()
     {
+        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
         $postValues = $this->getPostValues();
 
         $wasExecuted = false;
         $errorMessagesFromExecute = [];
-        if (isset($postValues['action'])
-            && $postValues['action'] === 'environmentAndFolders'
-        ) {
-            /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
+        if (isset($postValues['action']) && $postValues['action'] === 'environmentAndFolders') {
             $errorMessagesFromExecute = $action->execute();
             $wasExecuted = true;
         }
 
-        /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
-
-        $needsExecution = true;
-        try {
-            // needsExecution() may throw a RedirectException to communicate that it changed
-            // configuration parameters and need an application reload.
-            $needsExecution = $action->needsExecution();
-        } catch (Exception\RedirectException $e) {
-            $this->redirect();
-        }
+        // needsExecution() may throw a RedirectException to communicate that it changed
+        // configuration parameters and need an application reload.
+        $needsExecution = $action->needsExecution();
 
         if (!@is_dir(PATH_typo3conf) || $needsExecution) {
-            /** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-            $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
             if ($this->isInitialInstallationInProgress()) {
                 $currentStep = (array_search('environmentAndFolders', $this->authenticationActions) + 1);
                 $totalSteps = count($this->authenticationActions);
@@ -258,6 +243,41 @@ class StepController extends AbstractController
 
         if ($wasExecuted) {
             $this->redirect();
+        }
+    }
+
+    /**
+     * First installation is in progress, if LocalConfiguration does not exist,
+     * or if isInitialInstallationInProgress is not set or FALSE.
+     *
+     * @return bool TRUE if installation is in progress
+     */
+    protected function isInitialInstallationInProgress()
+    {
+        /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+
+        $localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
+        $localConfigurationFileExists = @is_file($localConfigurationFileLocation);
+        $result = false;
+        if (!$localConfigurationFileExists
+            || !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['isInitialInstallationInProgress'])
+        ) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    /**
+     * Add status messages to session.
+     * Used to output messages between requests, especially in step controller
+     *
+     * @param FlashMessage[] $messages
+     */
+    protected function addSessionMessages(array $messages)
+    {
+        foreach ($messages as $message) {
+            $this->session->addMessage($message);
         }
     }
 }
