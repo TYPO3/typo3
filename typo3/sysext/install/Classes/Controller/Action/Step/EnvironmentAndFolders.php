@@ -14,8 +14,14 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\StatusUtility;
+use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
+use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
@@ -33,32 +39,26 @@ class EnvironmentAndFolders extends AbstractStepAction
      * - Create main folder structure
      * - Create typo3conf/LocalConfiguration.php
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
     public function execute()
     {
-        /** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
-        $folderStructureFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
-        /** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
+        $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
-        $structureFixMessages = $structureFacade->fix();
-        /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
-        $errorsFromStructure = $statusUtility->filterBySeverity($structureFixMessages, 'error');
+        $structureFixMessageQueue = $structureFacade->fix();
+        $errorsFromStructure = $structureFixMessageQueue->getAllMessages(FlashMessage::ERROR);
 
         if (@is_dir(PATH_typo3conf)) {
-            /** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-            $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->createLocalConfigurationFromFactoryConfiguration();
 
             // Create a PackageStates.php with all packages activated marked as "part of factory default"
             if (!file_exists(PATH_typo3conf . 'PackageStates.php')) {
                 /** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-                $packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+                $packageManager = Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
                 $packages = $packageManager->getAvailablePackages();
                 foreach ($packages as $package) {
-                    /** @var $package \TYPO3\CMS\Core\Package\PackageInterface */
-                    if ($package instanceof \TYPO3\CMS\Core\Package\PackageInterface
+                    if ($package instanceof PackageInterface
                         && $package->isPartOfFactoryDefault()
                     ) {
                         $packageManager->activatePackage($package->getPackageKey());
@@ -68,8 +68,7 @@ class EnvironmentAndFolders extends AbstractStepAction
             }
 
             // Create enable install tool file after typo3conf & LocalConfiguration were created
-            /** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolService */
-            $installToolService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\EnableFileService::class);
+            $installToolService = GeneralUtility::makeInstance(EnableFileService::class);
             $installToolService->removeFirstInstallFile();
             $installToolService->createInstallToolEnableFile();
         }
@@ -97,29 +96,34 @@ class EnvironmentAndFolders extends AbstractStepAction
      */
     protected function executeAction()
     {
-        $statusObjects = array_merge(
-            GeneralUtility::makeInstance(Check::class)->getStatus(),
-            GeneralUtility::makeInstance(SetupCheck::class)->getStatus()
-        );
-        /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
-        $environmentStatus = $statusUtility->sortBySeverity($statusObjects);
-        $alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
-        $this->view->assign('alerts', $alerts);
-        $this->view->assign('environmentStatus', $environmentStatus);
+        $systemCheckMessageQueue = new FlashMessageQueue('install');
+        $checkMessages = (new Check())->getStatus();
+        foreach ($checkMessages as $message) {
+            $systemCheckMessageQueue->enqueue($message);
+        }
+        $setupCheckMessages = (new SetupCheck())->getStatus();
+        foreach ($setupCheckMessages as $message) {
+            $systemCheckMessageQueue->enqueue($message);
+        }
+        $environmentStatus = [
+            'error' => $systemCheckMessageQueue->getAllMessages(FlashMessage::ERROR),
+            'warning' => $systemCheckMessageQueue->getAllMessages(FlashMessage::WARNING),
+        ];
 
-        /** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
-        $folderStructureFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
-        /** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
+        $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
-        $structureMessages = $structureFacade->getStatus();
-        /** @var $statusUtility \TYPO3\CMS\Install\Status\StatusUtility */
-        $structureErrors = $statusUtility->filterBySeverity($structureMessages, 'error');
-        $this->view->assign('structureErrors', $structureErrors);
+        $structureMessageQueue = $structureFacade->getStatus();
+        $structureErrors = $structureMessageQueue->getAllMessages(FlashMessage::ERROR);
 
         if (!empty($environmentStatus['error']) || !empty($environmentStatus['warning']) || !empty($structureErrors)) {
             $this->view->assign('errorsOrWarningsFromStatus', true);
         }
+
+        $this->view->assignMultiple([
+            'environmentStatus' => $environmentStatus,
+            'structureErrors' => $structureErrors,
+        ]);
+
         $this->assignSteps();
 
         return $this->view->render();

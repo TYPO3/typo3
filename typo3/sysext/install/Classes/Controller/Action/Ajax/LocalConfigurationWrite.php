@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
-use TYPO3\CMS\Install\Status\WarningStatus;
 
 /**
  * Write values to LocalConfiguration
@@ -38,17 +38,19 @@ class LocalConfigurationWrite extends AbstractAjaxAction
         }
 
         $localConfigurationValueService = new LocalConfigurationValueService();
-        $messages = $localConfigurationValueService->updateLocalConfigurationValues($this->postValues['configurationValues']);
+        $messageQueue = $localConfigurationValueService->updateLocalConfigurationValues($this->postValues['configurationValues']);
 
-        if (empty($messages)) {
-            $message = new WarningStatus();
-            $message->setTitle('No values changed');
-            $messages[] = $message;
+        if (empty($messageQueue)) {
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'No values changed',
+                FlashMessage::WARNING
+            ));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
+namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,21 +14,22 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
-use TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class DefaultFactoryTest extends UnitTestCase
+class FlashMessageQueueTest extends UnitTestCase
 {
     /**
      * @test
      */
-    public function getStructureReturnsInstanceOfStructureFacadeInterface()
+    public function jsonSerializeReturnsArrayWithMessages()
     {
-        $object = new DefaultFactory();
-        $this->assertInstanceOf(StructureFacadeInterface::class, $object->getStructure());
+        $message = new FlashMessage('testMessage');
+        $subject= (new FlashMessageQueue('testing'))->enqueue($message);
+        $this->assertEquals([ $message ], $subject->jsonSerialize());
     }
 }

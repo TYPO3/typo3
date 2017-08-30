@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status;
 use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 
 /**
@@ -33,6 +33,11 @@ use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
  */
 class MySqlCheck implements CheckInterface
 {
+    /**
+     * @var FlashMessageQueue
+     */
+    protected $messageQueue;
+
     /**
      * Minimum supported MySQL version
      *
@@ -52,85 +57,81 @@ class MySqlCheck implements CheckInterface
     /**
      * Get all status information as array with status objects
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @return FlashMessageQueue
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getStatus(): array
+    public function getStatus(): FlashMessageQueue
     {
-        $statusArray = [];
+        $this->messageQueue = new FlashMessageQueue('install');
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         if (strpos($defaultConnection->getServerVersion(), 'MySQL') !== 0) {
-            return $statusArray;
+            return $this->messageQueue;
         }
-        $statusArray[] = $this->checkMysqlVersion($defaultConnection);
-        $statusArray[] = $this->checkInvalidSqlModes($defaultConnection);
-        $statusArray[] = $this->checkMysqlDatabaseUtf8Status($defaultConnection);
-        return $statusArray;
+        $this->checkMysqlVersion($defaultConnection);
+        $this->checkInvalidSqlModes($defaultConnection);
+        $this->checkMysqlDatabaseUtf8Status($defaultConnection);
+        return $this->messageQueue;
     }
 
     /**
      * Check if any SQL mode is set which is not compatible with TYPO3
      *
-     * @param Connection Connection to the database to be checked
-     * @return Status\StatusInterface
+     * @param Connection $connection to the database to be checked
      */
-    protected function checkInvalidSqlModes($connection)
+    protected function checkInvalidSqlModes(Connection $connection)
     {
         $detectedIncompatibleSqlModes = $this->getIncompatibleSqlModes($connection);
         if (!empty($detectedIncompatibleSqlModes)) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('Incompatible SQL modes found!');
-            $status->setMessage(
-                'Incompatible SQL modes have been detected:' .
-                ' ' . implode(', ', $detectedIncompatibleSqlModes) . '.' .
-                ' The listed modes are not compatible with TYPO3 CMS.' .
-                ' You have to change that setting in your MySQL environment' .
-                ' or in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\']'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Incompatible SQL modes have been detected:'
+                    . ' ' . implode(', ', $detectedIncompatibleSqlModes) . '.'
+                    . ' The listed modes are not compatible with TYPO3 CMS.'
+                    . ' You have to change that setting in your MySQL environment'
+                    . ' or in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\']',
+                'Incompatible SQL modes found!',
+                FlashMessage::ERROR
+            ));
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('No incompatible SQL modes found.');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'No incompatible SQL modes found.'
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Check minimum MySQL version
      *
-     * @param Connection Connection to the database to be checked
-     * @return Status\StatusInterface
+     * @param Connection $connection to the database to be checked
      */
-    protected function checkMysqlVersion($connection)
+    protected function checkMysqlVersion(Connection $connection)
     {
         preg_match('/MySQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
         $currentMysqlVersion = $match[1];
         if (version_compare($currentMysqlVersion, $this->minimumMySQLVersion, '<')) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('MySQL version too low');
-            $status->setMessage(
-                'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run' .
-                ' with this version. Update to at least MySQL ' . $this->minimumMySQLVersion
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run'
+                    . ' with this version. Update to at least MySQL ' . $this->minimumMySQLVersion,
+                'MySQL version too low',
+                FlashMessage::ERROR
+            ));
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('MySQL version is fine');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'MySQL version is fine'
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Checks the character set of the database and reports an error if it is not utf-8.
      *
      * @param Connection $connection to the database to be checked
-     * @return Status\StatusInterface
      */
     protected function checkMysqlDatabaseUtf8Status(Connection $connection)
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
         $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
             ->from('information_schema.SCHEMATA')
@@ -145,26 +146,27 @@ class MySqlCheck implements CheckInterface
             ->fetchColumn();
         // also allow utf8mb4
         if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('MySQL database character set check failed');
-            $status->setMessage(
+            $this->messageQueue->enqueue(new FlashMessage(
                 'Checking database character set failed, got key "'
-                . $defaultDatabaseCharset . '" instead of "utf8" or "utf8mb4"'
-            );
+                    . $defaultDatabaseCharset . '" instead of "utf8" or "utf8mb4"',
+                'MySQL database character set check failed',
+                FlashMessage::ERROR
+            ));
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('Your database uses utf-8. All good.');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'Your database uses utf-8. All good.'
+            ));
         }
-        return $status;
     }
 
     /**
      * Returns an array with the current sql mode settings
      *
-     * @param Connection Connection to the database to be checked
+     * @param Connection $connection to the database to be checked
      * @return array Contains all configured SQL modes that are incompatible
      */
-    protected function getIncompatibleSqlModes($connection)
+    protected function getIncompatibleSqlModes(Connection $connection): array
     {
         $sqlModes = explode(',', $connection->executeQuery('SELECT @@SESSION.sql_mode;')
             ->fetch(0)['@@SESSION.sql_mode']);

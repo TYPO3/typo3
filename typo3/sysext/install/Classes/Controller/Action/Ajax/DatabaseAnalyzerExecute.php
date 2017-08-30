@@ -17,10 +17,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\Status\WarningStatus;
 
 /**
  * Execute database analyzer "execute" action to apply
@@ -37,11 +36,13 @@ class DatabaseAnalyzerExecute extends AbstractAjaxAction
     {
         $this->loadExtLocalconfDatabaseAndExtTables();
 
-        $messages = [];
+        $messageQueue = new FlashMessageQueue('install');
         if (empty($this->postValues['hashes'])) {
-            $message = new WarningStatus();
-            $message->setTitle('No database changes selected');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'No database changes selected',
+                FlashMessage::WARNING
+            ));
         } else {
             $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
             $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
@@ -50,19 +51,21 @@ class DatabaseAnalyzerExecute extends AbstractAjaxAction
             $results = $schemaMigrationService->migrate($sqlStatements, $statementHashesToPerform);
             // Create error flash messages if any
             foreach ($results as $errorMessage) {
-                $message = new ErrorStatus();
-                $message->setTitle('Database update failed');
-                $message->setMessage('Error: ' . $errorMessage);
-                $messages[] = $message;
+                $messageQueue->enqueue(new FlashMessage(
+                    'Error: ' . $errorMessage,
+                    'Database update failed',
+                    FlashMessage::ERROR
+                ));
             }
-            $message = new OkStatus();
-            $message->setTitle('Executed database updates');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Executed database updates'
+            ));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

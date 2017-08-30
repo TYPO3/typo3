@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Install\Tests\Unit\Status;
+namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,36 +15,25 @@ namespace TYPO3\CMS\Install\Tests\Unit\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Status\AlertStatus;
-use TYPO3\CMS\Install\Status\WarningStatus;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class AbstractStatusTest extends UnitTestCase
+class FlashMessageTest extends UnitTestCase
 {
     /**
      * @test
      */
-    public function getSeverityNumberReturnNumberForAlertStatus()
+    public function jsonSerializeReturnsArrayWithDetailData()
     {
-        $this->assertEquals(2, (new AlertStatus())->getSeverityNumber());
-    }
-
-    /**
-     * @test
-     */
-    public function jsonSerializeReturnsArrayForWarningStatus()
-    {
-        $status = new WarningStatus();
-        $status->setTitle('aTitle');
-        $status->setMessage('aMessage');
+        $message = new FlashMessage('aMessage', 'aTitle', FlashMessage::INFO);
         $expected = [
-            'severity' => 1,
+            'severity' => FlashMessage::INFO,
             'title' => 'aTitle',
             'message' => 'aMessage',
         ];
-        $this->assertEquals($expected, $status->jsonSerialize());
+        $this->assertEquals($expected, $message->jsonSerialize());
     }
 }

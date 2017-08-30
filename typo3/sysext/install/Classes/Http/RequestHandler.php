@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Http;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\Exception;
@@ -207,11 +208,10 @@ class RequestHandler implements RequestHandlerInterface
             $this->session->resetSession();
             $this->session->startSession();
 
-            /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-            $message->setTitle('Invalid form token');
-            $message->setMessage(
-                'The form protection token was invalid. You have been logged out, please log in and try again.'
+            $message = new FlashMessage(
+                'The form protection token was invalid. You have been logged out, please log in and try again.',
+                'Invalid form token',
+                FlashMessage::ERROR
             );
             throw new AuthenticationRequiredException('Invalid form token', 1504030810, null, $message);
         }
@@ -230,11 +230,10 @@ class RequestHandler implements RequestHandlerInterface
             $this->session->resetSession();
             $this->session->startSession();
 
-            /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-            $message->setTitle('Session expired');
-            $message->setMessage(
-                'Your Install Tool session has expired. You have been logged out, please log in and try again.'
+            $message = new FlashMessage(
+                'Your Install Tool session has expired. You have been logged out, please log in and try again.',
+                'Session expired',
+                FlashMessage::ERROR
             );
             throw new AuthenticationRequiredException('Session expired', 1504030839, null, $message);
         }

@@ -14,11 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Common;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action;
-use TYPO3\CMS\Install\Status\StatusUtility;
-use TYPO3\CMS\Install\SystemEnvironment\Check;
-use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
 /**
  * Welcome page
@@ -32,15 +28,6 @@ class InstallToolDisabledAction extends Action\AbstractAction
      */
     protected function executeAction()
     {
-        $statusObjects = array_merge(
-            GeneralUtility::makeInstance(Check::class)->getStatus(),
-            GeneralUtility::makeInstance(SetupCheck::class)->getStatus()
-        );
-        /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
-        $alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
-        $this->view->assign('alerts', $alerts);
-
         return $this->view->render();
     }
 }

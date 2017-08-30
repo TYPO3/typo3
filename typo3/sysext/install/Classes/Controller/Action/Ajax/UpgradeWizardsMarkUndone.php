@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Mark a wizard as undone in registry. Can be either a
@@ -38,15 +38,18 @@ class UpgradeWizardsMarkUndone extends AbstractAjaxAction
         $upgradeWizardsService = new UpgradeWizardsService();
         $result = $upgradeWizardsService->markWizardUndoneInRegistry($wizardToBeMarkedAsUndoneIdentifier);
 
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         if ($result) {
-            $message = new OkStatus();
-            $message->setTitle('Wizard has been marked undone');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                '',
+                'Wizard has been marked undone'
+            ));
         } else {
-            $message = new ErrorStatus();
-            $message->setTitle('Wizard has not been marked undone');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                '',
+                'Wizard has not been marked undone',
+                FlashMessage::ERROR
+            ));
         }
 
         $this->view->assignMultiple([

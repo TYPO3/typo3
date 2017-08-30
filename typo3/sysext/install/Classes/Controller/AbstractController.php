@@ -14,9 +14,12 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action\Common\LoginForm;
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 use TYPO3\CMS\Install\Exception\AuthenticationRequiredException;
+use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -47,8 +50,8 @@ class AbstractController
      */
     protected function isInstallToolAvailable()
     {
-        /** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
-        $installToolEnableService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\EnableFileService::class);
+        /** @var EnableFileService $installToolEnableService */
+        $installToolEnableService = GeneralUtility::makeInstance(EnableFileService::class);
         if ($installToolEnableService->isFirstInstallAllowed()) {
             return true;
         }
@@ -58,13 +61,13 @@ class AbstractController
     /**
      * Show login form
      *
-     * @param \TYPO3\CMS\Install\Status\StatusInterface $message Optional status message from controller
+     * @param FlashMessage $message Optional status message from controller
      * @return string Rendered HTML
      */
-    public function loginForm(\TYPO3\CMS\Install\Status\StatusInterface $message = null)
+    public function loginForm(FlashMessage $message = null)
     {
-        /** @var \TYPO3\CMS\Install\Controller\Action\Common\LoginForm $action */
-        $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\LoginForm::class);
+        /** @var LoginForm $action */
+        $action = GeneralUtility::makeInstance(LoginForm::class);
         $action->setController('common');
         $action->setAction('login');
         $action->setToken($this->generateTokenForAction('login'));
@@ -120,10 +123,11 @@ class AbstractController
                 $messageText = 'Given password does not match the install tool login password. ' .
                         'Calculated hash: ' . $hashedPassword;
             }
-            /** @var $message \TYPO3\CMS\Install\Status\ErrorStatus */
-            $message = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-            $message->setTitle('Login failed');
-            $message->setMessage($messageText);
+            $message = new FlashMessage(
+                $messageText,
+                'Login failed',
+                FlashMessage::ERROR
+            );
             $this->sendLoginFailedMail();
             throw new AuthenticationRequiredException('Login failed', 1504031979, null, $message);
         }
@@ -226,7 +230,7 @@ class AbstractController
      * Add status messages to session.
      * Used to output messages between requests, especially in step controller
      *
-     * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $messages
+     * @param FlashMessage[] $messages
      */
     protected function addSessionMessages(array $messages)
     {

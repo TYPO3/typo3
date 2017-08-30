@@ -13,7 +13,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform\MySqlCheck;
 use TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform\PostgreSqlCheck;
 
@@ -41,16 +41,17 @@ class DatabaseCheck implements CheckInterface
     /**
      * Get status of each database platform defined in the list
      *
-     * @return array
-     * @throws \InvalidArgumentException
+     * @return FlashMessageQueue
      */
-    public function getStatus(): array
+    public function getStatus(): FlashMessageQueue
     {
-        $databaseStatus = [];
-
+        $messageQueue = new FlashMessageQueue('install');
         foreach ($this->databasePlatformChecks as $databasePlatformCheckClass) {
-            $databaseStatus += GeneralUtility::makeInstance($databasePlatformCheckClass)->getStatus();
+            $platformMessageQueue = (new $databasePlatformCheckClass)->getStatus();
+            foreach ($platformMessageQueue as $message) {
+                $messageQueue->enqueue($message);
+            }
         }
-        return $databaseStatus;
+        return $messageQueue;
     }
 }

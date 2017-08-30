@@ -20,8 +20,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
 
 /**
  * Populate base tables, insert admin user, set install tool password
@@ -31,11 +31,11 @@ class DatabaseData extends AbstractStepAction
     /**
      * Import tables and data, create admin user, create install tool password
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @return FlashMessage[]
      */
     public function execute()
     {
-        $result = [];
+        $messages = [];
 
         /** @var ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
@@ -47,14 +47,13 @@ class DatabaseData extends AbstractStepAction
         // Check password and return early if not good enough
         $password = $postValues['password'];
         if (strlen($password) < 8) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Administrator password not secure enough!');
-            $errorStatus->setMessage(
-                'You are setting an important password here! It gives an attacker full control over your instance if cracked.' .
-                ' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.'
+            $messages[] = new FlashMessage(
+                'You are setting an important password here! It gives an attacker full control over your instance if cracked.'
+                    . ' It should be strong (include lower and upper case characters, special characters and numbers) and must be at least eight characters long.',
+                'Administrator password not secure enough!',
+                FlashMessage::ERROR
             );
-            $result[] = $errorStatus;
-            return $result;
+            return $messages;
         }
 
         // Set site name
@@ -63,19 +62,17 @@ class DatabaseData extends AbstractStepAction
         }
 
         try {
-            $result = $this->importDatabaseData();
-            if (!empty($result)) {
-                return $result;
+            $messages = $this->importDatabaseData();
+            if (!empty($messages)) {
+                return $messages;
             }
         } catch (StatementException $exception) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Import of database data could not be performed');
-            $errorStatus->setMessage(
-                'Error detected in SQL statement:' . LF .
-                $exception->getMessage()
+            $messages[] = new FlashMessage(
+                'Error detected in SQL statement:' . LF . $exception->getMessage(),
+                'Import of database data could not be performed',
+                FlashMessage::ERROR
             );
-            $result[] = $errorStatus;
-            return $result;
+            return $messages;
         }
 
         // Insert admin user
@@ -91,14 +88,13 @@ class DatabaseData extends AbstractStepAction
         try {
             $databaseConnection->insert('be_users', $adminUserFields);
         } catch (DBALException $exception) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Administrator account not created!');
-            $errorStatus->setMessage(
-                'The administrator account could not be created. The following error occurred:' . LF .
-                $exception->getPrevious()->getMessage()
+            $messages[] = new FlashMessage(
+                'The administrator account could not be created. The following error occurred:' . LF
+                    . $exception->getPrevious()->getMessage(),
+                'Administrator account not created!',
+                FlashMessage::ERROR
             );
-            $result[] = $errorStatus;
-            return $result;
+            return $messages;
         }
 
         // Set password as install tool password
@@ -107,7 +103,7 @@ class DatabaseData extends AbstractStepAction
         // Mark the initial import as done
         $this->markImportDatabaseDone();
 
-        return $result;
+        return $messages;
     }
 
     /**
@@ -143,7 +139,7 @@ class DatabaseData extends AbstractStepAction
     /**
      * Create tables and import static rows
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @return FlashMessage[]
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Schema\SchemaException
      * @throws \InvalidArgumentException
@@ -181,15 +177,11 @@ class DatabaseData extends AbstractStepAction
                 continue;
             }
 
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Database query failed!');
-            $errorStatus->setMessage(
-                'Query:' . LF .
-                ' ' . $statement . LF .
-                'Error:' . LF .
-                ' ' . $message
+            $message = new FlashMessage(
+                'Query:' . LF . ' ' . $statement . LF . 'Error:' . LF . ' ' . $message,
+                'Database query failed!',
+                FlashMessage::ERROR
             );
-            $message = $errorStatus;
         }
 
         return array_values($results);

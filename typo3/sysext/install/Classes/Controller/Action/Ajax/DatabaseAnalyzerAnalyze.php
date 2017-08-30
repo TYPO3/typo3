@@ -18,9 +18,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Execute database analyzer "analyze" / "show" status action
@@ -35,6 +35,7 @@ class DatabaseAnalyzerAnalyze extends AbstractAjaxAction
     protected function executeAction(): array
     {
         $this->loadExtLocalconfDatabaseAndExtTables();
+        $messageQueue = new FlashMessageQueue('install');
 
         $suggestions = [];
         try {
@@ -169,19 +170,21 @@ class DatabaseAnalyzerAnalyze extends AbstractAjaxAction
                 $suggestions[] = $suggestion;
             }
 
-            $message = new OkStatus();
-            $message->setTitle('Analyzed current database');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Analyzed current database'
+            ));
         } catch (StatementException $e) {
-            $message = new ErrorStatus();
-            $message->setTitle('Database analysis failed');
-            $message->setMessage($e->getMessage());
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Database analysis failed',
+                FlashMessage::ERROR
+            ));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => $messageQueue,
             'suggestions' => $suggestions,
         ]);
         return $this->view->render();

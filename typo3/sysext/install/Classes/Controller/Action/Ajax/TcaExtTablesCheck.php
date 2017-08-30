@@ -15,9 +15,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
-use TYPO3\CMS\Install\Status\NoticeStatus;
 
 /**
  * Check ext_tables.php files of loaded extensions for TCA changes.
@@ -37,18 +38,19 @@ class TcaExtTablesCheck extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusMessages = [];
+        $messageQueue = new FlashMessageQueue('install');
         $tcaMessages = $this->checkTcaChangesInExtTables();
-
         foreach ($tcaMessages as $tcaMessage) {
-            $message = new NoticeStatus();
-            $message->setTitle($tcaMessage);
-            $statusMessages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                $tcaMessage,
+                FlashMessage::NOTICE
+            ));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $statusMessages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

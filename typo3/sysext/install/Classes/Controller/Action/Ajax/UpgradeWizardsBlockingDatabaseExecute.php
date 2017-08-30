@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Execute "Add required db tables and fields" blocking upgrade wizard
@@ -37,10 +38,11 @@ class UpgradeWizardsBlockingDatabaseExecute extends AbstractAjaxAction
         $upgradeWizardsService = new UpgradeWizardsService();
         $upgradeWizardsService->addMissingTablesAndFields();
 
-        $messages = [];
-        $message = new OkStatus();
-        $message->setTitle('Added missing database fields and tables');
-        $messages[] = $message;
+        $messages = new FlashMessageQueue('install');
+        $messages->enqueue(new FlashMessage(
+            '',
+            'Added missing database fields and tables'
+        ));
 
         $this->view->assignMultiple([
             'success' => true,

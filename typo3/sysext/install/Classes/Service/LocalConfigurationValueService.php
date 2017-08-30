@@ -16,9 +16,10 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Service handling bulk read and write of LocalConfiguration values.
@@ -96,11 +97,11 @@ class LocalConfigurationValueService
      * Store changed values in LocalConfiguration
      *
      * @param array $valueList Nested array with key['key'] value
-     * @return array StatusInterface[]
+     * @return FlashMessageQueue
      */
-    public function updateLocalConfigurationValues(array $valueList): array
+    public function updateLocalConfigurationValues(array $valueList): FlashMessageQueue
     {
-        $statusObjects = [];
+        $messageQueue = new FlashMessageQueue('install');
         $configurationPathValuePairs = [];
         $commentArray = $this->getDefaultConfigArrayComments();
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
@@ -131,20 +132,21 @@ class LocalConfigurationValueService
             // Save if value changed
             if ($valueHasChanged) {
                 $configurationPathValuePairs[$path] = $value;
-                $status = GeneralUtility::makeInstance(OkStatus::class);
-                $status->setTitle($path);
                 if (is_bool($value)) {
-                    $status->setMessage('New value = ' . ($value ? 'true' : 'false'));
+                    $messageBody = 'New value = ' . ($value ? 'true' : 'false');
                 } else {
-                    $status->setMessage('New value = ' . $value);
+                    $messageBody = 'New value = ' . $value;
                 }
-                $statusObjects[] = $status;
+                $messageQueue->enqueue(new FlashMessage(
+                    $messageBody,
+                    $path
+                ));
             }
         }
-        if (!empty($statusObjects)) {
+        if (!empty($messageQueue)) {
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
         }
-        return $statusObjects;
+        return $messageQueue;
     }
 
     /**

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,7 +29,7 @@ class CoreUpdateServiceTest extends UnitTestCase
     {
         /** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreUpdateService::class, ['dummy'], [], '', false);
-        $aMessage = $this->getUniqueId('message_');
+        $aMessage = new FlashMessageQueue('install');
         $instance->_set('messages', $aMessage);
         $this->assertSame($aMessage, $instance->getMessages());
     }

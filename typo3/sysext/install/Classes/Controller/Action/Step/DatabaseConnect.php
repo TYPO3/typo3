@@ -19,8 +19,8 @@ use Doctrine\DBAL\DriverManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
 
 /**
  * Database connect step:
@@ -34,11 +34,11 @@ class DatabaseConnect extends AbstractStepAction
      * Execute database step:
      * - Set database connect credentials in LocalConfiguration
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
     public function execute()
     {
-        $result = [];
+        $messages = [];
         $postValues = $this->postValues['values'];
         $defaultConnectionSettings = [];
 
@@ -55,10 +55,11 @@ class DatabaseConnect extends AbstractStepAction
                 if (in_array($postValues['driver'], $validDrivers, true)) {
                     $defaultConnectionSettings['driver'] = $postValues['driver'];
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database driver unknown');
-                    $errorStatus->setMessage('Given driver must be one of ' . implode(', ', $validDrivers));
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given driver must be one of ' . implode(', ', $validDrivers),
+                        'Database driver unknown',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['username'])) {
@@ -66,10 +67,11 @@ class DatabaseConnect extends AbstractStepAction
                 if (strlen($value) <= 50) {
                     $defaultConnectionSettings['user'] = $value;
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database username not valid');
-                    $errorStatus->setMessage('Given username must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given username must be shorter than fifty characters.',
+                        'Database username not valid',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['password'])) {
@@ -77,10 +79,11 @@ class DatabaseConnect extends AbstractStepAction
                 if (strlen($value) <= 50) {
                     $defaultConnectionSettings['password'] = $value;
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database password not valid');
-                    $errorStatus->setMessage('Given password must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given password must be shorter than fifty characters.',
+                        'Database password not valid',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['host'])) {
@@ -88,10 +91,11 @@ class DatabaseConnect extends AbstractStepAction
                 if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 255) {
                     $defaultConnectionSettings['host'] = $value;
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database host not valid');
-                    $errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than 255 characters.',
+                        'Database host not valid',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['port']) && $postValues['host'] !== 'localhost') {
@@ -99,20 +103,22 @@ class DatabaseConnect extends AbstractStepAction
                 if (preg_match('/^[0-9]+(:.+)?$/', $value) && $value > 0 && $value <= 65535) {
                     $defaultConnectionSettings['port'] = (int)$value;
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database port not valid');
-                    $errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given port is not numeric or within range 1 to 65535.',
+                        'Database port not valid',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['socket']) && $postValues['socket'] !== '') {
                 if (@file_exists($postValues['socket'])) {
                     $defaultConnectionSettings['unix_socket'] = $postValues['socket'];
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Socket does not exist');
-                    $errorStatus->setMessage('Given socket location does not exist on server.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given socket location does not exist on server.',
+                        'Socket does not exist',
+                        FlashMessage::ERROR
+                    );
                 }
             }
             if (isset($postValues['database'])) {
@@ -120,10 +126,11 @@ class DatabaseConnect extends AbstractStepAction
                 if (strlen($value) <= 50) {
                     $defaultConnectionSettings['dbname'] = $value;
                 } else {
-                    $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $errorStatus->setTitle('Database name not valid');
-                    $errorStatus->setMessage('Given database name must be shorter than fifty characters.');
-                    $result[] = $errorStatus;
+                    $messages[] = new FlashMessage(
+                        'Given database name must be shorter than fifty characters.',
+                        'Database name not valid',
+                        FlashMessage::ERROR
+                    );
                 }
             }
         }
@@ -136,10 +143,11 @@ class DatabaseConnect extends AbstractStepAction
                 $connectionParams['charset'] = 'utf-8';
                 DriverManager::getConnection($connectionParams)->ping();
             } catch (DBALException $e) {
-                $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                $errorStatus->setTitle('Database connect not successful');
-                $errorStatus->setMessage('Connecting to the database with given settings failed: ' . $e->getMessage());
-                $result[] = $errorStatus;
+                $messages[] = new FlashMessage(
+                    'Connecting to the database with given settings failed: ' . $e->getMessage(),
+                    'Database connect not successful',
+                    FlashMessage::ERROR
+                );
             }
             $localConfigurationPathValuePairs = [];
             foreach ($defaultConnectionSettings as $settingsName => $value) {
@@ -152,7 +160,7 @@ class DatabaseConnect extends AbstractStepAction
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
 
-        return $result;
+        return $messages;
     }
 
     /**

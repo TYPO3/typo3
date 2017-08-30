@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+
 /**
  * Check system environment status
  *
@@ -30,7 +32,7 @@ interface CheckInterface
     /**
      * Get all status information as array with status objects
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @return FlashMessageQueue
      */
-    public function getStatus(): array;
+    public function getStatus(): FlashMessageQueue;
 }

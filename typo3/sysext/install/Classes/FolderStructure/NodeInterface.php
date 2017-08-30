@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * Interface for structure nodes root, link, file, ...
  */
@@ -44,9 +46,9 @@ interface NodeInterface
     /**
      * Get the status of the object tree, recursive for directory and root node
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function getStatus();
+    public function getStatus(): array;
 
     /**
      * Check if node is writable - can be created and permission can be fixed
@@ -60,7 +62,7 @@ interface NodeInterface
      *
      * If there is nothing to fix, returns an empty array
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function fix();
+    public function fix(): array;
 }

@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\ClearCacheService;
-use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Clear Cache
@@ -35,40 +35,17 @@ class ClearAllCache extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusMessages[] = $this->clearAllCache();
-        $statusMessages[] = $this->clearOpcodeCache();
+        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
+        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+
+        $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+            new FlashMessage('Successfully cleared all caches and all available opcode caches.')
+        );
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $statusMessages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
-    }
-
-    /**
-     * Clear all caches
-     *
-     * @return StatusInterface
-     */
-    protected function clearAllCache(): StatusInterface
-    {
-        $clearCacheService = GeneralUtility::makeInstance(ClearCacheService::class);
-        $clearCacheService->clearAll();
-        $message = new OkStatus();
-        $message->setTitle('Successfully cleared all caches');
-        return $message;
-    }
-
-    /**
-     * Clear PHP opcode cache
-     *
-     * @return StatusInterface
-     */
-    protected function clearOpcodeCache(): StatusInterface
-    {
-        GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
-        $message = new OkStatus();
-        $message->setTitle('Successfully cleared all available opcode caches');
-        return $message;
     }
 }

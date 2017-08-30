@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -306,9 +307,9 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Add a message to "Flash" message storage.
      *
-     * @param \TYPO3\CMS\Install\Status\StatusInterface $message A message to add
+     * @param FlashMessage $message A message to add
      */
-    public function addMessage(\TYPO3\CMS\Install\Status\StatusInterface $message)
+    public function addMessage(FlashMessage $message)
     {
         if (!is_array($_SESSION['messages'])) {
             $_SESSION['messages'] = [];
@@ -319,7 +320,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Return stored session messages and flush.
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface> Messages
+     * @return FlashMessage[] Messages
      */
     public function getMessagesAndFlush()
     {

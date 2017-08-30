@@ -15,9 +15,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
-use TYPO3\CMS\Install\Status\StatusUtility;
 
 /**
  * Get folder structure status
@@ -34,23 +35,23 @@ class FolderStructureGetStatus extends AbstractAjaxAction
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
 
-        $statusObjects = $structureFacade->getStatus();
-        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
-
-        $errorStatus = array_merge(
-            $statusUtility->filterBySeverity($statusObjects, 'error'),
-            $statusUtility->filterBySeverity($statusObjects, 'warning')
-        );
-        $okStatus = array_merge(
-            $statusUtility->filterBySeverity($statusObjects, 'notice'),
-            $statusUtility->filterBySeverity($statusObjects, 'information'),
-            $statusUtility->filterBySeverity($statusObjects, 'ok')
-        );
+        $structureMessages = $structureFacade->getStatus();
+        $errorQueue = new FlashMessageQueue('install');
+        $okQueue = new FlashMessageQueue('install');
+        foreach ($structureMessages as $message) {
+            if ($message->getSeverity() === FlashMessage::ERROR
+                || $message->getSeverity() === FlashMessage::WARNING
+            ) {
+                $errorQueue->enqueue($message);
+            } else {
+                $okQueue->enqueue($message);
+            }
+        }
 
         $this->view->assignMultiple([
             'success' => true,
-            'errorStatus' => $errorStatus,
-            'okStatus' => $okStatus,
+            'errorStatus' => $errorQueue,
+            'okStatus' => $okQueue,
         ]);
         return $this->view->render();
     }

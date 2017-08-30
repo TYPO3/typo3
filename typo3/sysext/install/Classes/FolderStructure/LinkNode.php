@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Status;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * A link
@@ -63,61 +63,71 @@ class LinkNode extends AbstractNode implements NodeInterface
      * Returns OK status if is link and possible target is correct
      * Else returns error (not fixable)
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         if ($this->isWindowsOs()) {
-            $status = new Status\InfoStatus();
-            $status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but this support is incomplete for Windows.');
-            $status->setMessage(
-                'This node is not handled for Windows OS and should be checked manually.'
-            );
-            return [$status];
+            return [
+                new FlashMessage(
+                    'This node is not handled for Windows OS and should be checked manually.',
+                    $this->getRelativePathBelowSiteRoot() . ' should be a link, but this support is incomplete for Windows.',
+                    FlashMessage::INFO
+                ),
+            ];
         }
 
         if (!$this->exists()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle($this->getRelativePathBelowSiteRoot() . ' should be a link, but it does not exist');
-            $status->setMessage('Links cannot be fixed by this system');
-            return [$status];
+            return [
+                new FlashMessage(
+                    'Links cannot be fixed by this system',
+                    $this->getRelativePathBelowSiteRoot() . ' should be a link, but it does not exist',
+                    FlashMessage::ERROR
+                ),
+            ];
         }
 
         if (!$this->isLink()) {
-            $status = new Status\WarningStatus();
-            $status->setTitle('Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a link');
             $type = @filetype($this->getAbsolutePath());
             if ($type) {
-                $status->setMessage(
+                $messageBody =
                     'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a link,' .
                     ' but is of type ' . $type . '. This cannot be fixed automatically. Please investigate.'
-                );
+                ;
             } else {
-                $status->setMessage(
+                $messageBody =
                     'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
                     ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
-                );
+                ;
             }
-            return [$status];
+            return [
+                new FlashMessage(
+                    $messageBody,
+                    'Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a link',
+                    FlashMessage::WARNING
+                ),
+            ];
         }
 
         if (!$this->isTargetCorrect()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle($this->getRelativePathBelowSiteRoot() . ' is a link, but link target is not as specified');
-            $status->setMessage(
-                'Link target should be ' . $this->getTarget() . ' but is ' . $this->getCurrentTarget()
-            );
-            return [$status];
+            return [
+                new FlashMessage(
+                    'Link target should be ' . $this->getTarget() . ' but is ' . $this->getCurrentTarget(),
+                    $this->getRelativePathBelowSiteRoot() . ' is a link, but link target is not as specified',
+                    FlashMessage::ERROR
+                ),
+            ];
         }
-
-        $status = new Status\OkStatus();
         $message = 'Is a link';
         if ($this->getTarget() !== '') {
             $message .= ' and correctly points to target ' . $this->getTarget();
         }
-        $status->setTitle($this->getRelativePathBelowSiteRoot());
-        $status->setMessage($message);
-        return [$status];
+        return [
+            new FlashMessage(
+                $message,
+                $this->getRelativePathBelowSiteRoot()
+            ),
+        ];
     }
 
     /**
@@ -125,9 +135,9 @@ class LinkNode extends AbstractNode implements NodeInterface
      *
      * If there is nothing to fix, returns an empty array
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function fix()
+    public function fix(): array
     {
         return [];
     }

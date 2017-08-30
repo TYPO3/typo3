@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\ClearTableService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Truncate a given table via ClearTableService
@@ -39,13 +40,13 @@ class ClearTablesClear extends AbstractAjaxAction
         }
 
         (new ClearTableService())->clearSelectedTable($this->postValues['table']);
-        $message = new OkStatus();
-        $message->setTitle('Cleared table');
-        $messages[] = $message;
+        $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+            new FlashMessage('Cleared table')
+        );
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => $messageQueue
         ]);
         return $this->view->render();
     }

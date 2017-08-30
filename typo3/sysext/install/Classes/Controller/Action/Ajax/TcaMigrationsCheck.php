@@ -15,10 +15,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LoadTcaService;
-use TYPO3\CMS\Install\Status\NoticeStatus;
 
 /**
  * Checks whether the current TCA needs migrations and displays applied migrations.
@@ -32,18 +33,19 @@ class TcaMigrationsCheck extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusMessages = [];
+        $messageQueue = new FlashMessageQueue('install');
         $tcaMessages = $this->checkTcaMigrations();
-
         foreach ($tcaMessages as $tcaMessage) {
-            $message = new NoticeStatus();
-            $message->setMessage($tcaMessage);
-            $statusMessages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                $tcaMessage,
+                FlashMessage::NOTICE
+            ));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $statusMessages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

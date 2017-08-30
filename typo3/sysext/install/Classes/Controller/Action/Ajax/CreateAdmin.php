@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Create an administrator from given username and password
@@ -36,22 +36,25 @@ class CreateAdmin extends AbstractAjaxAction
         $username = preg_replace('/\\s/i', '', $this->postValues['userName']);
         $password = $this->postValues['userPassword'];
         $passwordCheck = $this->postValues['userPasswordCheck'];
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         if (strlen($username) < 1) {
-            $message = new ErrorStatus();
-            $message->setTitle('Administrator user not created');
-            $message->setMessage('No valid username given.');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                'No valid username given.',
+                'Administrator user not created',
+                FlashMessage::ERROR
+            ));
         } elseif ($password !== $passwordCheck) {
-            $message = new ErrorStatus();
-            $message->setTitle('Administrator user not created');
-            $message->setMessage('Passwords do not match.');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                'Passwords do not match.',
+                'Administrator user not created',
+                FlashMessage::ERROR
+            ));
         } elseif (strlen($password) < 8) {
-            $message = new ErrorStatus();
-            $message->setTitle('Administrator user not created');
-            $message->setMessage('Password must be at least eight characters long.');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                'Password must be at least eight characters long.',
+                'Administrator user not created',
+                FlashMessage::ERROR
+            ));
         } else {
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $userExists = $connectionPool->getConnectionForTable('be_users')
@@ -61,10 +64,11 @@ class CreateAdmin extends AbstractAjaxAction
                     ['username' => $username]
                 );
             if ($userExists) {
-                $message = new ErrorStatus();
-                $message->setTitle('Administrator user not created');
-                $message->setMessage('A user with username "' . $username . '" exists already.');
-                $messages[] = $message;
+                $messages->enqueue(new FlashMessage(
+                    'A user with username "' . $username . '" exists already.',
+                    'Administrator user not created',
+                    FlashMessage::ERROR
+                ));
             } else {
                 $hashedPassword = $this->getHashedPassword($password);
                 $adminUserFields = [
@@ -75,9 +79,10 @@ class CreateAdmin extends AbstractAjaxAction
                     'crdate' => $GLOBALS['EXEC_TIME']
                 ];
                 $connectionPool->getConnectionForTable('be_users')->insert('be_users', $adminUserFields);
-                $message = new OkStatus();
-                $message->setTitle('Administrator created with username "' . $username . '".');
-                $messages[] = $message;
+                $messages->enqueue(new FlashMessage(
+                    '',
+                    'Administrator created with username "' . $username . '".'
+                ));
             }
         }
 

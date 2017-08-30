@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * A class used for any kind of messages.
  */
-abstract class AbstractMessage
+abstract class AbstractMessage implements \JsonSerializable
 {
     const NOTICE = -2;
     const INFO = -1;
@@ -129,5 +129,17 @@ abstract class AbstractMessage
             $title = ' - ' . $this->title;
         }
         return $severities[$this->severity] . $title . ': ' . $this->message;
+    }
+
+    /**
+     * @return array Data which can be serialized by json_encode()
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'severity' => $this->getSeverity(),
+            'title' => $this->getTitle(),
+            'message' => $this->getMessage(),
+        ];
     }
 }

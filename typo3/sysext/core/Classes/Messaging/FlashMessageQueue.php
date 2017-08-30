@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A class which collects and renders flash messages.
  */
-class FlashMessageQueue extends \SplQueue
+class FlashMessageQueue extends \SplQueue implements \JsonSerializable
 {
     /**
      * A unique identifier for this queue
@@ -52,8 +52,9 @@ class FlashMessageQueue extends \SplQueue
      *
      * @param FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
      * @throws \TYPO3\CMS\Core\Exception
+     * @return FlashMessageQueue Self to allow chaining
      */
-    public function enqueue($message)
+    public function enqueue($message): FlashMessageQueue
     {
         if (!($message instanceof FlashMessage)) {
             throw new \TYPO3\CMS\Core\Exception(
@@ -66,6 +67,7 @@ class FlashMessageQueue extends \SplQueue
         } else {
             parent::enqueue($message);
         }
+        return $this;
     }
 
     /**
@@ -175,10 +177,15 @@ class FlashMessageQueue extends \SplQueue
      *
      * @return FlashMessage[]
      */
-    protected function getFlashMessagesFromSession()
+    protected function getFlashMessagesFromSession(): array
     {
-        $flashMessages = $this->getUserByContext()->getSessionData($this->identifier);
-        return is_array($flashMessages) ? $flashMessages : [];
+        $sessionMessages = [];
+        $user = $this->getUserByContext();
+        if ($user instanceof AbstractUserAuthentication) {
+            $sessionMessages = $user->getSessionData($this->identifier);
+            $sessionMessages = is_array($sessionMessages) ? $sessionMessages : [];
+        }
+        return $sessionMessages;
     }
 
     /**
@@ -255,5 +262,13 @@ class FlashMessageQueue extends \SplQueue
                 $this->offsetUnset($key);
             }
         }
+    }
+
+    /**
+     * @return array Data which can be serialized by json_encode()
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

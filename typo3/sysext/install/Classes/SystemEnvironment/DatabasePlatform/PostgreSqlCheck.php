@@ -17,8 +17,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status;
 use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 
 /**
@@ -32,6 +33,11 @@ use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
  */
 class PostgreSqlCheck implements CheckInterface
 {
+    /**
+     * @var FlashMessageQueue
+     */
+    protected $messageQueue;
+
     /**
      * Minimum supported PostgreSQL Server version
      *
@@ -48,83 +54,81 @@ class PostgreSqlCheck implements CheckInterface
     /**
      * Get all status information as array with status objects
      *
-     * @return array
+     * @return FlashMessageQueue
      * @throws \Doctrine\DBAL\DBALException
      * @throws \InvalidArgumentException
      */
-    public function getStatus(): array
+    public function getStatus(): FlashMessageQueue
     {
-        $statusArray = [];
+        $this->messageQueue = new FlashMessageQueue('install');
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         if (strpos($defaultConnection->getServerVersion(), 'PostgreSQL') !== 0) {
-            return $statusArray;
+            return $this->messageQueue;
         }
 
-        $statusArray[] = $this->checkPostgreSqlVersion($defaultConnection);
-        $statusArray[] = $this->checkLibpqVersion();
-        return $statusArray;
+        $this->checkPostgreSqlVersion($defaultConnection);
+        $this->checkLibpqVersion();
+        return $this->messageQueue;
     }
 
     /**
      * Check minimum PostgreSQL version
      *
-     * @param Connection Connection to the database to be checked
-     * @return Status\StatusInterface
+     * @param Connection $connection to the database to be checked
      */
-    protected function checkPostgreSqlVersion($connection): Status\StatusInterface
+    protected function checkPostgreSqlVersion(Connection $connection)
     {
         preg_match('/PostgreSQL ((\d+\.)*(\d+\.)*\d+)/', $connection->getServerVersion(), $match);
         $currentPostgreSqlVersion = $match[1];
         if (version_compare($currentPostgreSqlVersion, $this->minimumPostgreSQLVerion, '<')) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('PostgreSQL Server version is unsupported');
-            $status->setMessage(
-                'Your PostgreSQL version ' . $currentPostgreSqlVersion . ' is not supported. TYPO3 CMS does not run' .
-                ' with this version. The minimum supported PostgreSQL version is ' . $this->minimumPostgreSQLVerion
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Your PostgreSQL version ' . $currentPostgreSqlVersion . ' is not supported. TYPO3 CMS does not run'
+                    . ' with this version. The minimum supported PostgreSQL version is ' . $this->minimumPostgreSQLVerion,
+                'PostgreSQL Server version is unsupported',
+                FlashMessage::ERROR
+            ));
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('PostgreSQL Server version is supported');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'PostgreSQL Server version is supported'
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Check the version of ligpq within the PostgreSQL driver
-     *
-     * @return Status\StatusInterface
      */
-    protected function checkLibpqVersion(): Status\StatusInterface
+    protected function checkLibpqVersion()
     {
         if (!defined('PGSQL_LIBPQ_VERSION_STR')) {
-            $status = new Status\WarningStatus();
-            $status->setTitle('PostgreSQL libpq version cannot be determined');
-            $status->setMessage(
-                'It is not possible to retrieve your PostgreSQL libpq version. Please check the version' .
-                ' in the "phpinfo" area of the "System environment" module in the install tool manually.' .
-                ' This should be found in section "pdo_pgsql".' .
-                ' You should have at least the following version of  PostgreSQL libpq installed: ' .
-                $this->minimumLibPQVersion
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'It is not possible to retrieve your PostgreSQL libpq version. Please check the version'
+                    . ' in the "phpinfo" area of the "System environment" module in the install tool manually.'
+                    . ' This should be found in section "pdo_pgsql".'
+                    . ' You should have at least the following version of  PostgreSQL libpq installed: '
+                    . $this->minimumLibPQVersion,
+                'PostgreSQL libpq version cannot be determined',
+                FlashMessage::WARNING
+            ));
         } else {
             preg_match('/PostgreSQL ((\d+\.)*(\d+\.)*\d+)/', \PGSQL_LIBPQ_VERSION_STR, $match);
             $currentPostgreSqlLibpqVersion = $match[1];
 
             if (version_compare($currentPostgreSqlLibpqVersion, $this->minimumLibPQVersion, '<')) {
-                $status = new Status\ErrorStatus();
-                $status->setTitle('PostgreSQL libpq version is unsupported');
-                $status->setMessage(
-                    'Your PostgreSQL libpq version "' . $currentPostgreSqlLibpqVersion . '" is unsupported.' .
-                    ' TYPO3 CMS does not run with this version. The minimum supported libpq version is ' .
-                    $this->minimumLibPQVersion
-                );
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'Your PostgreSQL libpq version "' . $currentPostgreSqlLibpqVersion . '" is unsupported.'
+                        . ' TYPO3 CMS does not run with this version. The minimum supported libpq version is '
+                        . $this->minimumLibPQVersion,
+                    'PostgreSQL libpq version is unsupported',
+                    FlashMessage::ERROR
+                ));
             } else {
-                $status = new Status\OkStatus();
-                $status->setTitle('PostgreSQL libpq version is supported');
+                $this->messageQueue->enqueue(new FlashMessage(
+                    '',
+                    'PostgreSQL libpq version is supported'
+                ));
             }
         }
-        return $status;
     }
 }

@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Perform "silent" wizard upgrades on first opening of the card
@@ -37,11 +38,12 @@ class UpgradeWizardsSilentUpgrades extends AbstractAjaxAction
         $upgradeWizardsService = new UpgradeWizardsService();
         $statements = $upgradeWizardsService->silentCacheFrameworkTableSchemaMigration();
 
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         if (!empty($statements)) {
-            $message = new OkStatus();
-            $message->setTitle('Created some database cache tables.');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                '',
+                'Created some database cache tables.'
+            ));
         }
 
         $this->view->assignMultiple([

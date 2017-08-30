@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Exception;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\CMS\Install\Service\CoreVersionService;
-use TYPO3\CMS\Install\Status\StatusUtility;
 use TYPO3\CMS\Install\View\JsonView;
 
 /**
@@ -34,11 +33,6 @@ abstract class CoreUpdateAbstract extends AbstractAjaxAction
     protected $coreUpdateService;
 
     /**
-     * @var StatusUtility
-     */
-    protected $statusUtility;
-
-    /**
      * @var CoreVersionService
      */
     protected $coreVersionService;
@@ -46,18 +40,15 @@ abstract class CoreUpdateAbstract extends AbstractAjaxAction
     /**
      * @param JsonView $view
      * @param CoreUpdateService $coreUpdateService
-     * @param StatusUtility $statusUtility
      * @param CoreVersionService $coreVersionService
      */
     public function __construct(
         JsonView $view = null,
         CoreUpdateService $coreUpdateService = null,
-        StatusUtility $statusUtility = null,
         CoreVersionService $coreVersionService = null
     ) {
         parent::__construct($view);
         $this->coreUpdateService = $coreUpdateService ?: GeneralUtility::makeInstance(CoreUpdateService::class);
-        $this->statusUtility = $statusUtility ?: GeneralUtility::makeInstance(StatusUtility::class);
         $this->coreVersionService = $coreVersionService ?: GeneralUtility::makeInstance(CoreVersionService::class);
     }
 

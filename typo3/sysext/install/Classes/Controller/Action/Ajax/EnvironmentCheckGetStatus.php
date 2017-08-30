@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\StatusUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
@@ -33,15 +33,29 @@ class EnvironmentCheckGetStatus extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusObjects = array_merge(
-            GeneralUtility::makeInstance(Check::class)->getStatus(),
-            GeneralUtility::makeInstance(SetupCheck::class)->getStatus(),
-            GeneralUtility::makeInstance(DatabaseCheck::class)->getStatus()
-        );
+        $messageQueue = new FlashMessageQueue('install');
+        $checkMessages = (new Check())->getStatus();
+        foreach ($checkMessages as $message) {
+            $messageQueue->enqueue($message);
+        }
+        $setupMessages = (new SetupCheck())->getStatus();
+        foreach ($setupMessages as $message) {
+            $messageQueue->enqueue($message);
+        }
+        $databaseMessages = (new DatabaseCheck())->getStatus();
+        foreach ($databaseMessages as $message) {
+            $messageQueue->enqueue($message);
+        }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => (new StatusUtility())->sortBySeverity($statusObjects),
+            'status' => [
+                'error' => $messageQueue->getAllMessages(FlashMessage::ERROR),
+                'warning' => $messageQueue->getAllMessages(FlashMessage::WARNING),
+                'ok' => $messageQueue->getAllMessages(FlashMessage::OK),
+                'information' => $messageQueue->getAllMessages(FlashMessage::INFO),
+                'notice' => $messageQueue->getAllMessages(FlashMessage::NOTICE),
+            ],
         ]);
         return $this->view->render();
     }

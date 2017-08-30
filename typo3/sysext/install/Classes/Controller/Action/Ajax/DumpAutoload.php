@@ -17,9 +17,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-use TYPO3\CMS\Install\Status\NoticeStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 
 /**
  * Ajax wrapper for dumping autoload.
@@ -33,30 +32,24 @@ class DumpAutoload extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusMessages[] = $this->dumpAutoload();
-
-        $this->view->assignMultiple([
-            'success' => true,
-            'status' => $statusMessages,
-        ]);
-        return $this->view->render();
-    }
-
-    /**
-     * Dumps Extension Autoload Information
-     *
-     * @return StatusInterface
-     */
-    protected function dumpAutoload(): StatusInterface
-    {
+        $messageQueue = new FlashMessageQueue('install');
         if (Bootstrap::usesComposerClassLoading()) {
-            $message = new NoticeStatus();
-            $message->setTitle('Skipped generating additional class loading information in composer mode.');
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Skipped generating additional class loading information in composer mode.',
+                FlashMessage::NOTICE
+            ));
         } else {
             ClassLoadingInformation::dumpClassLoadingInformation();
-            $message = new OkStatus();
-            $message->setTitle('Successfully dumped class loading information for extensions.');
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Successfully dumped class loading information for extensions.'
+            ));
         }
-        return $message;
+        $this->view->assignMultiple([
+            'success' => true,
+            'status' => $messageQueue
+        ]);
+        return $this->view->render();
     }
 }

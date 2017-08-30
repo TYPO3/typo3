@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
-use TYPO3\CMS\Install\Status\InfoStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Activate a LocalConfiguration preset
@@ -32,24 +32,27 @@ class PresetActivate extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         $configurationManager = new ConfigurationManager();
         $featureManager = new FeatureManager();
         $configurationValues = $featureManager->getConfigurationForSelectedFeaturePresets($this->postValues['values']);
         if (!empty($configurationValues)) {
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
-            $message = new OkStatus();
-            $message->setTitle('Configuration written');
             $messageBody = [];
             foreach ($configurationValues as $configurationKey => $configurationValue) {
                 $messageBody[] = '\'' . $configurationKey . '\' => \'' . $configurationValue . '\'';
             }
-            $message->setMessage(implode('<br>', $messageBody));
+            $messages->enqueue(new FlashMessage(
+                implode('<br>', $messageBody),
+                'Configuration written'
+            ));
         } else {
-            $message = new InfoStatus();
-            $message->setTitle('No configuration change selected');
+            $messages->enqueue(new FlashMessage(
+                '',
+                'No configuration change selected',
+                FlashMessage::INFO
+            ));
         }
-        $messages[] = $message;
 
         $this->view->assignMultiple([
             'success' => true,

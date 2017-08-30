@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Change install tool password
@@ -34,31 +34,32 @@ class ChangeInstallToolPassword extends AbstractAjaxAction
     {
         $password = $this->postValues['password'];
         $passwordCheck = $this->postValues['passwordCheck'];
-        $messages = [];
+        $messageQueue = new FlashMessageQueue('install');
+
         if ($password !== $passwordCheck) {
-            $message = new ErrorStatus();
-            $message->setTitle('Install tool password not changed');
-            $message->setMessage('Given passwords do not match.');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                'Install tool password not changed. Given passwords do not match.',
+                '',
+                FlashMessage::ERROR
+            ));
         } elseif (strlen($password) < 8) {
-            $message = new ErrorStatus();
-            $message->setTitle('Install tool password not changed');
-            $message->setMessage('Given password must be at least eight characters long.');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage(
+                'Install tool password not changed. Given password must be at least eight characters long.',
+                '',
+                FlashMessage::ERROR
+            ));
         } else {
             $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->setLocalConfigurationValueByPath(
                 'BE/installToolPassword',
                 $this->getHashedPassword($password)
             );
-            $message = new OkStatus();
-            $message->setTitle('Install tool password changed');
-            $messages[] = $message;
+            $messageQueue->enqueue(new FlashMessage('Install tool password changed'));
         }
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

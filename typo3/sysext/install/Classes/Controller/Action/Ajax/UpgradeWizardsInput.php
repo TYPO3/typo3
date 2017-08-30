@@ -37,10 +37,9 @@ class UpgradeWizardsInput extends AbstractAjaxAction
         $identifier = $this->postValues['identifier'];
         $result = $upgradeWizardsService->getWizardUserInput($identifier);
 
-        $messages = [];
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => [],
             'userInput' => $result,
         ]);
         return $this->view->render();

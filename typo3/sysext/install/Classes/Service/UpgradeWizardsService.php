@@ -21,10 +21,10 @@ use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 
@@ -315,10 +315,10 @@ class UpgradeWizardsService
      *
      * @param string $identifier
      * @param array $postValues
-     * @return array StatusInterface[]
+     * @return FlashMessageQueue
      * @throws \RuntimeException
      */
-    public function executeWizard(string $identifier, array $postValues = []): array
+    public function executeWizard(string $identifier, array $postValues = []): FlashMessageQueue
     {
         if (empty($identifier)
             || !array_key_exists($identifier, $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])
@@ -336,14 +336,15 @@ class UpgradeWizardsService
             'title' => $updateObject->getTitle(),
         ];
 
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         // $wizardInputErrorMessage is given as reference to wizard object!
         $wizardInputErrorMessage = '';
         if (method_exists($updateObject, 'checkUserInput') && !$updateObject->checkUserInput($wizardInputErrorMessage)) {
-            $message = new ErrorStatus();
-            $message->setTitle('Input parameter broken');
-            $message->setMessage($wizardInputErrorMessage ?: 'Something went wrong!');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                $wizardInputErrorMessage ?: 'Something went wrong!',
+                'Input parameter broken',
+                FlashMessage::ERROR
+            ));
         } else {
             if (!method_exists($updateObject, 'performUpdate')) {
                 throw new \RuntimeException(
@@ -358,16 +359,16 @@ class UpgradeWizardsService
             $performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
 
             if ($performResult) {
-                $message = new OkStatus();
-                $message->setTitle('Update successful');
-                $messages[] = $message;
+                $messages->enqueue(new FlashMessage(
+                    '',
+                    'Update successful'
+                ));
             } else {
-                $message = new ErrorStatus();
-                $message->setTitle('Update failed!');
-                if ($customOutput) {
-                    $message->setMessage($customOutput);
-                }
-                $messages[] = $message;
+                $messages->enqueue(new FlashMessage(
+                    $customOutput,
+                    'Update failed!',
+                    FlashMessage::ERROR
+                ));
             }
 
             if ($postValues['values']['showDatabaseQueries'] == 1) {

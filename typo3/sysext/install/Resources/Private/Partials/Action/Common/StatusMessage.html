@@ -1,20 +1,17 @@
 <f:switch expression="{message.severity}">
-	<f:case value="error">
+	<f:case value="2">
 		<div class="t3js-message typo3-message alert alert-danger" role="alert">
 	</f:case>
-	<f:case value="warning">
+	<f:case value="1">
 		<div class="t3js-message typo3-message alert alert-warning" role="alert">
 	</f:case>
-	<f:case value="ok">
+	<f:case value="0">
 		<div class="t3js-message typo3-message alert alert-success" role="alert">
 	</f:case>
-	<f:case value="information">
+	<f:case value="-1">
 		<div class="t3js-message typo3-message alert alert-info" role="alert">
 	</f:case>
-	<f:case value="loading">
-		<div class="t3js-message typo3-message alert alert-notice alert-loading" role="alert">
-	</f:case>
-	<f:case value="">
+	<f:case value="-2">
 		<div class="t3js-message typo3-message alert alert-notice" role="alert">
 	</f:case>
 	<f:defaultCase>

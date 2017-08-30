@@ -18,9 +18,8 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Database select step.
@@ -31,26 +30,29 @@ class DatabaseSelect extends AbstractStepAction
     /**
      * Create database if needed, save selected db name in configuration
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface[]
+     * @return FlashMessage[]
      */
     public function execute()
     {
         $postValues = $this->postValues['values'];
         if ($postValues['type'] === 'new') {
             $status = $this->createNewDatabase($postValues['new']);
-            if ($status instanceof ErrorStatus) {
+            if ($status->getSeverity() === FlashMessage::ERROR) {
                 return [ $status ];
             }
         } elseif ($postValues['type'] === 'existing' && !empty($postValues['existing'])) {
             $status = $this->checkExistingDatabase($postValues['existing']);
-            if ($status instanceof ErrorStatus) {
+            if ($status->getSeverity() === FlashMessage::ERROR) {
                 return [ $status ];
             }
         } else {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('No Database selected');
-            $errorStatus->setMessage('You must select a database.');
-            return [ $errorStatus ];
+            return [
+                new FlashMessage(
+                    'You must select a database.',
+                    'No Database selected',
+                    FlashMessage::ERROR
+                ),
+            ];
         }
         return [];
     }
@@ -195,20 +197,18 @@ class DatabaseSelect extends AbstractStepAction
      *
      * @param string $dbName name of database
      *
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return FlashMessage
      */
     protected function createNewDatabase($dbName)
     {
         if (!$this->isValidDatabaseName($dbName)) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Database name not valid');
-            $errorStatus->setMessage(
-                'Given database name must be shorter than fifty characters' .
-                ' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)' .
-                ' and underscores (_).'
+            return new FlashMessage(
+                'Given database name must be shorter than fifty characters'
+                    . ' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)'
+                    . ' and underscores (_).',
+                'Database name not valid',
+                FlashMessage::ERROR
             );
-
-            return $errorStatus;
         }
 
         try {
@@ -219,18 +219,19 @@ class DatabaseSelect extends AbstractStepAction
             GeneralUtility::makeInstance(ConfigurationManager::class)
                 ->setLocalConfigurationValueByPath('DB/Connections/Default/dbname', $dbName);
         } catch (DBALException $e) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Unable to create database');
-            $errorStatus->setMessage(
-                'Database with name "' . $dbName . '" could not be created.' .
-                ' Either your database name contains a reserved keyword or your database' .
-                ' user does not have sufficient permissions to create it or the database already exists.' .
-                ' Please choose an existing (empty) database, choose another name or contact administration.'
+            return new FlashMessage(
+                'Database with name "' . $dbName . '" could not be created.'
+                    . ' Either your database name contains a reserved keyword or your database'
+                    . ' user does not have sufficient permissions to create it or the database already exists.'
+                    . ' Please choose an existing (empty) database, choose another name or contact administration.',
+                'Unable to create database',
+                FlashMessage::ERROR
             );
-            return $errorStatus;
         }
-
-        return GeneralUtility::makeInstance(OkStatus::class);
+        return new FlashMessage(
+            '',
+            'Database created'
+        );
     }
 
     /**
@@ -239,11 +240,11 @@ class DatabaseSelect extends AbstractStepAction
      * persisted to the local configuration if the database is empty.
      *
      * @param string $dbName name of the database
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return FlashMessage
      */
     protected function checkExistingDatabase($dbName)
     {
-        $result = GeneralUtility::makeInstance(OkStatus::class);
+        $result = new FlashMessage('');
         $localConfigurationPathValuePairs = [];
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $isInitialInstallation = $configurationManager
@@ -255,42 +256,39 @@ class DatabaseSelect extends AbstractStepAction
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
             if ($isInitialInstallation && !empty($connection->getSchemaManager()->listTableNames())) {
-                $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-                $errorStatus->setTitle('Selected database is not empty!');
-                $errorStatus->setMessage(
+                $result = new FlashMessage(
                     sprintf('Cannot use database "%s"', $dbName)
-                    . ', because it already contains tables. '
-                    . 'Please select a different database or choose to create one!'
+                        . ', because it already contains tables. '
+                        . 'Please select a different database or choose to create one!',
+                    'Selected database is not empty!',
+                    FlashMessage::ERROR
                 );
-                $result = $errorStatus;
             }
         } catch (\Exception $e) {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Could not connect to selected database!');
-            $errorStatus->setMessage(
+            $result = new FlashMessage(
                 sprintf('Could not connect to database "%s"', $dbName)
-                . '! Make sure it really exists and your database user has the permissions to select it!'
+                    . '! Make sure it really exists and your database user has the permissions to select it!',
+                'Could not connect to selected database!',
+                FlashMessage::ERROR
             );
-            $result = $errorStatus;
         }
 
-        if ($result instanceof OkStatus) {
+        if ($result->getSeverity() === FlashMessage::OK) {
             $localConfigurationPathValuePairs['DB/Connections/Default/dbname'] = $dbName;
         }
 
         // check if database charset is utf-8 - also allow utf8mb4
         $defaultDatabaseCharset = $this->getDefaultDatabaseCharset($dbName);
         if (substr($defaultDatabaseCharset, 0, 4) !== 'utf8') {
-            $errorStatus = GeneralUtility::makeInstance(ErrorStatus::class);
-            $errorStatus->setTitle('Invalid Charset');
-            $errorStatus->setMessage(
-                'Your database uses character set "' . $defaultDatabaseCharset . '", ' .
-                'but only "utf8" is supported with TYPO3. You probably want to change this before proceeding.'
+            $result = new FlashMessage(
+                'Your database uses character set "' . $defaultDatabaseCharset . '", '
+                    . 'but only "utf8" is supported with TYPO3. You probably want to change this before proceeding.',
+                'Invalid Charset',
+                FlashMessage::ERROR
             );
-            $result = $errorStatus;
         }
 
-        if ($result instanceof OkStatus && !empty($localConfigurationPathValuePairs)) {
+        if ($result->getSeverity() === FlashMessage::OK && !empty($localConfigurationPathValuePairs)) {
             $configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
         }
 

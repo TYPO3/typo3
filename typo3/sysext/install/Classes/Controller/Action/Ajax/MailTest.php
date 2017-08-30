@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Send a test mail
@@ -32,13 +32,14 @@ class MailTest extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         $recipient = $this->postValues['email'];
         if (empty($recipient) || !GeneralUtility::validEmail($recipient)) {
-            $message = new ErrorStatus();
-            $message->setTitle('Mail not sent');
-            $message->setMessage('Given address is not a valid email address.');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                'Given address is not a valid email address.',
+                'Mail not sent',
+                FlashMessage::ERROR
+            ));
         } else {
             $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
             $mailMessage
@@ -48,10 +49,10 @@ class MailTest extends AbstractAjaxAction
                 ->setBody('<html><body>html test content</body></html>', 'text/html')
                 ->addPart('TEST CONTENT')
                 ->send();
-            $message = new OkStatus();
-            $message->setTitle('Test mail sent');
-            $message->setMessage('Recipient: ' . $recipient);
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                'Recipient: ' . $recipient,
+                'Test mail sent'
+            ));
         }
 
         $this->view->assignMultiple([

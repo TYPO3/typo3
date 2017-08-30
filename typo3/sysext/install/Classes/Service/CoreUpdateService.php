@@ -15,18 +15,14 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\NoticeStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
-use TYPO3\CMS\Install\Status\StatusUtility;
-use TYPO3\CMS\Install\Status\WarningStatus;
 
 /**
  * Core update service.
@@ -46,9 +42,9 @@ class CoreUpdateService
     protected $coreVersionService;
 
     /**
-     * @var StatusInterface[]
+     * @var FlashMessageQueue
      */
-    protected $messages = [];
+    protected $messages;
 
     /**
      * Absolute path to download location
@@ -80,6 +76,7 @@ class CoreUpdateService
         $this->setDownloadTargetPath(PATH_site . 'typo3temp/var/transient/');
         $this->symlinkToCoreFiles = $this->discoverCurrentCoreSymlink();
         $this->downloadBaseUri = $this->coreVersionService->getDownloadBaseUri();
+        $this->messages = new FlashMessageQueue('install');
     }
 
     /**
@@ -120,9 +117,9 @@ class CoreUpdateService
     /**
      * Get messages of previous method call
      *
-     * @return StatusInterface[]
+     * @return FlashMessageQueue
      */
-    public function getMessages()
+    public function getMessages(): FlashMessageQueue
     {
         return $this->messages;
     }
@@ -139,14 +136,12 @@ class CoreUpdateService
             $this->coreVersionService->updateVersionMatrix();
         } catch (RemoteFetchException $e) {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('Version matrix could not be fetched from get.typo3.org');
-            $message->setMessage(
+            $this->messages->enqueue(new FlashMessage(
                 'Current version specification could not be fetched from http://get.typo3.org/json.'
-                . ' This is probably a network issue, please fix it.'
-            );
-            $this->messages = [$message];
+                    . ' This is probably a network issue, please fix it.',
+                'Version matrix could not be fetched from get.typo3.org',
+                FlashMessage::ERROR
+            ));
         }
         return $success;
     }
@@ -156,41 +151,35 @@ class CoreUpdateService
      *
      * @param string $version The target version number
      * @return bool TRUE on success
-     * @throws \TYPO3\CMS\Install\Status\Exception
      */
     public function checkPreConditions($version)
     {
         $success = true;
-        $messages = [];
-
-        /** @var StatusUtility $statusUtility */
-        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
 
         // Folder structure test: Update can be done only if folder structure returns no errors
-        /** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
         $folderStructureFacade = GeneralUtility::makeInstance(DefaultFactory::class)->getStructure();
-        $folderStructureErrors = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'error');
-        $folderStructureWarnings = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'warning');
+        $folderStructureMessageQueue = $folderStructureFacade->getStatus();
+        $folderStructureErrors = $folderStructureMessageQueue->getAllMessages(FlashMessage::ERROR);
+        $folderStructureWarnings = $folderStructureMessageQueue->getAllMessages(FlashMessage::WARNING);
         if (!empty($folderStructureErrors) || !empty($folderStructureWarnings) || !is_link(PATH_site . 'typo3_src')) {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('Automatic TYPO3 CMS core update not possible: Folder structure has errors or warnings');
-            $message->setMessage(
+            $this->messages->enqueue(new FlashMessage(
                 'To perform an update, the folder structure of this TYPO3 CMS instance must'
-                . ' stick to the conventions, or the update process could lead to unexpected'
-                . ' results and may be hazardous to your system'
-            );
-            $messages[] = $message;
+                    . ' stick to the conventions, or the update process could lead to unexpected'
+                    . ' results and may be hazardous to your system',
+                'Automatic TYPO3 CMS core update not possible: Folder structure has errors or warnings',
+                FlashMessage::ERROR
+            ));
         }
 
         // No core update on windows
         if (TYPO3_OS === 'WIN') {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('Automatic TYPO3 CMS core update not possible: Update not supported on Windows OS');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'Automatic TYPO3 CMS core update not possible: Update not supported on Windows OS',
+                FlashMessage::ERROR
+            ));
         }
 
         if ($success) {
@@ -199,11 +188,11 @@ class CoreUpdateService
             $result = @touch($file);
             if (!$result) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Automatic TYPO3 CMS core update not possible: No write access to document root');
-                $message->setMessage('Could not write a file in path "' . PATH_site . '"!');
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    'Could not write a file in path "' . PATH_site . '"!',
+                    'Automatic TYPO3 CMS core update not possible: No write access to document root',
+                    FlashMessage::ERROR
+                ));
             } else {
                 unlink($file);
             }
@@ -215,13 +204,11 @@ class CoreUpdateService
                 $result = @touch($file);
                 if (!$result) {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location');
-                    $message->setMessage(
-                        'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!'
-                    );
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!',
+                        'Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location',
+                        FlashMessage::ERROR
+                    ));
                 } else {
                     unlink($file);
                 }
@@ -230,18 +217,15 @@ class CoreUpdateService
 
         if ($success && !$this->coreVersionService->isInstalledVersionAReleasedVersion()) {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('Automatic TYPO3 CMS core update not possible: You are running a development version of TYPO3');
-            $message->setMessage(
+            $this->messages->enqueue(new FlashMessage(
                 'Your current version is specified as ' . $this->coreVersionService->getInstalledVersion() . '.'
-                . ' This is a development version and can not be updated automatically. If this is a "git"'
-                . ' checkout, please update using git directly.'
-            );
-            $messages[] = $message;
+                    . ' This is a development version and can not be updated automatically. If this is a "git"'
+                    . ' checkout, please update using git directly.',
+                'Automatic TYPO3 CMS core update not possible: You are running a development version of TYPO3',
+                FlashMessage::ERROR
+            ));
         }
 
-        $this->messages = $messages;
         return $success;
     }
 
@@ -253,49 +237,51 @@ class CoreUpdateService
      */
     public function downloadVersion($version)
     {
-        $messages = [];
         $success = true;
-
         if ($this->checkCoreFilesAvailable($version)) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
-            $message->setTitle('Skipped download of TYPO3 CMS core. A core source directory already exists in destination path. Using this instead.');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'Skipped download of TYPO3 CMS core. A core source directory already exists in destination path. Using this instead.',
+                FlashMessage::NOTICE
+            ));
         } else {
             $downloadUri = $this->downloadBaseUri . $version;
             $fileLocation = $this->getDownloadTarGzTargetPath($version);
 
             if (@file_exists($fileLocation)) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('TYPO3 CMS core download exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath));
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'TYPO3 CMS core download exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath),
+                    FlashMessage::ERROR
+                ));
             } else {
                 $fileContent = GeneralUtility::getUrl($downloadUri);
                 if (!$fileContent) {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('Download not successful');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Download not successful',
+                        FlashMessage::ERROR
+                    ));
                 } else {
                     $fileStoreResult = file_put_contents($fileLocation, $fileContent);
                     if (!$fileStoreResult) {
                         $success = false;
-                        /** @var $message StatusInterface */
-                        $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                        $message->setTitle('Unable to store download content');
-                        $messages[] = $message;
+                        $this->messages->enqueue(new FlashMessage(
+                            '',
+                            'Unable to store download content',
+                            FlashMessage::ERROR
+                        ));
                     } else {
-                        $message = GeneralUtility::makeInstance(OkStatus::class);
-                        $message->setTitle('TYPO3 CMS core download finished');
-                        $messages[] = $message;
+                        $this->messages->enqueue(new FlashMessage(
+                            '',
+                            'TYPO3 CMS core download finished'
+                        ));
                     }
                 }
             }
         }
-        $this->messages = $messages;
         return $success;
     }
 
@@ -307,46 +293,43 @@ class CoreUpdateService
      */
     public function verifyFileChecksum($version)
     {
-        $messages = [];
         $success = true;
-
         if ($this->checkCoreFilesAvailable($version)) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(WarningStatus::class);
-            $message->setTitle('Verifying existing TYPO3 CMS core checksum is not possible');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'Verifying existing TYPO3 CMS core checksum is not possible',
+                FlashMessage::WARNING
+            ));
         } else {
             $fileLocation = $this->getDownloadTarGzTargetPath($version);
             $expectedChecksum = $this->coreVersionService->getTarGzSha1OfVersion($version);
-
             if (!file_exists($fileLocation)) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Downloaded TYPO3 CMS core not found');
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'Downloaded TYPO3 CMS core not found',
+                    FlashMessage::ERROR
+                ));
             } else {
                 $actualChecksum = sha1_file($fileLocation);
                 if ($actualChecksum !== $expectedChecksum) {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('New TYPO3 CMS core checksum mismatch');
-                    $message->setMessage(
+                    $this->messages->enqueue(new FlashMessage(
                         'The official TYPO3 CMS version system on https://get.typo3.org expects a sha1 checksum of '
-                        . $expectedChecksum . ' from the content of the downloaded new TYPO3 CMS core version ' . $version . '.'
-                        . ' The actual checksum is ' . $actualChecksum . '. The update is stopped. This may be a'
-                        . ' failed download, an attack, or an issue with the typo3.org infrastructure.'
-                    );
-                    $messages[] = $message;
+                            . $expectedChecksum . ' from the content of the downloaded new TYPO3 CMS core version ' . $version . '.'
+                            . ' The actual checksum is ' . $actualChecksum . '. The update is stopped. This may be a'
+                            . ' failed download, an attack, or an issue with the typo3.org infrastructure.',
+                        'New TYPO3 CMS core checksum mismatch',
+                        FlashMessage::ERROR
+                    ));
                 } else {
-                    $message = GeneralUtility::makeInstance(OkStatus::class);
-                    $message->setTitle('Checksum verified');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Checksum verified'
+                    ));
                 }
             }
         }
-        $this->messages = $messages;
         return $success;
     }
 
@@ -358,55 +341,57 @@ class CoreUpdateService
      */
     public function unpackVersion($version)
     {
-        $messages = [];
         $success = true;
-
         if ($this->checkCoreFilesAvailable($version)) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
-            $message->setTitle('Unpacking TYPO3 CMS core files skipped');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'Unpacking TYPO3 CMS core files skipped',
+                FlashMessage::NOTICE
+            ));
         } else {
             $fileLocation = $this->downloadTargetPath . $version . '.tar.gz';
-
             if (!@is_file($fileLocation)) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Downloaded TYPO3 CMS core not found');
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'Downloaded TYPO3 CMS core not found',
+                    FlashMessage::ERROR
+                ));
             } elseif (@file_exists($this->downloadTargetPath . 'typo3_src-' . $version)) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Unpacked TYPO3 CMS core exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath));
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'Unpacked TYPO3 CMS core exists in download location: ' . PathUtility::stripPathSitePrefix($this->downloadTargetPath),
+                    FlashMessage::ERROR
+                ));
             } else {
                 $unpackCommand = 'tar xf ' . escapeshellarg($fileLocation) . ' -C ' . escapeshellarg($this->downloadTargetPath) . ' 2>&1';
                 exec($unpackCommand, $output, $errorCode);
                 if ($errorCode) {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('Unpacking TYPO3 CMS core not successful');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Unpacking TYPO3 CMS core not successful',
+                        FlashMessage::ERROR
+                    ));
                 } else {
                     $removePackedFileResult = unlink($fileLocation);
                     if (!$removePackedFileResult) {
                         $success = false;
-                        /** @var $message StatusInterface */
-                        $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                        $message->setTitle('Removing packed TYPO3 CMS core not successful');
-                        $messages[] = $message;
+                        $this->messages->enqueue(new FlashMessage(
+                            '',
+                            'Removing packed TYPO3 CMS core not successful',
+                            FlashMessage::ERROR
+                        ));
                     } else {
-                        $message = GeneralUtility::makeInstance(OkStatus::class);
-                        $message->setTitle('Unpacking TYPO3 CMS core successful');
-                        $messages[] = $message;
+                        $this->messages->enqueue(new FlashMessage(
+                            '',
+                            'Unpacking TYPO3 CMS core successful'
+                        ));
                     }
                 }
             }
         }
-        $this->messages = $messages;
         return $success;
     }
 
@@ -418,41 +403,41 @@ class CoreUpdateService
      */
     public function moveVersion($version)
     {
-        $messages = [];
         $success = true;
-
         if ($this->checkCoreFilesAvailable($version)) {
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(NoticeStatus::class);
-            $message->setTitle('Moving TYPO3 CMS core files skipped');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'Moving TYPO3 CMS core files skipped',
+                FlashMessage::NOTICE
+            ));
         } else {
             $downloadedCoreLocation = $this->downloadTargetPath . 'typo3_src-' . $version;
             $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
 
             if (!@is_dir($downloadedCoreLocation)) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Unpacked TYPO3 CMS core not found');
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'Unpacked TYPO3 CMS core not found',
+                    FlashMessage::ERROR
+                ));
             } else {
                 $moveResult = rename($downloadedCoreLocation, $newCoreLocation);
                 if (!$moveResult) {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('Moving TYPO3 CMS core to ' . $newCoreLocation . ' failed');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Moving TYPO3 CMS core to ' . $newCoreLocation . ' failed',
+                        FlashMessage::ERROR
+                    ));
                 } else {
-                    $message = GeneralUtility::makeInstance(OkStatus::class);
-                    $message->setTitle('Moved TYPO3 CMS core to final location');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Moved TYPO3 CMS core to final location'
+                    ));
                 }
             }
         }
-
-        $this->messages = $messages;
         return $success;
     }
 
@@ -465,31 +450,31 @@ class CoreUpdateService
     public function activateVersion($version)
     {
         $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
-
-        $messages = [];
         $success = true;
-
         if (!is_dir($newCoreLocation)) {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('New TYPO3 CMS core not found');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'New TYPO3 CMS core not found',
+                FlashMessage::ERROR
+            ));
         } elseif (!is_link($this->symlinkToCoreFiles)) {
             $success = false;
-            /** @var $message StatusInterface */
-            $message = GeneralUtility::makeInstance(ErrorStatus::class);
-            $message->setTitle('TYPO3 CMS core source directory (typo3_src) is not a link');
-            $messages[] = $message;
+            $this->messages->enqueue(new FlashMessage(
+                '',
+                'TYPO3 CMS core source directory (typo3_src) is not a link',
+                FlashMessage::ERROR
+            ));
         } else {
             $isCurrentCoreSymlinkAbsolute = PathUtility::isAbsolutePath(readlink($this->symlinkToCoreFiles));
             $unlinkResult = unlink($this->symlinkToCoreFiles);
             if (!$unlinkResult) {
                 $success = false;
-                /** @var $message StatusInterface */
-                $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                $message->setTitle('Removing old symlink failed');
-                $messages[] = $message;
+                $this->messages->enqueue(new FlashMessage(
+                    '',
+                    'Removing old symlink failed',
+                    FlashMessage::ERROR
+                ));
             } else {
                 if (!$isCurrentCoreSymlinkAbsolute) {
                     $newCoreLocation = $this->getRelativePath($newCoreLocation);
@@ -499,15 +484,14 @@ class CoreUpdateService
                     GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
                 } else {
                     $success = false;
-                    /** @var $message StatusInterface */
-                    $message = GeneralUtility::makeInstance(ErrorStatus::class);
-                    $message->setTitle('Linking new TYPO3 CMS core failed');
-                    $messages[] = $message;
+                    $this->messages->enqueue(new FlashMessage(
+                        '',
+                        'Linking new TYPO3 CMS core failed',
+                        FlashMessage::ERROR
+                    ));
                 }
             }
         }
-
-        $this->messages = $messages;
         return $success;
     }
 

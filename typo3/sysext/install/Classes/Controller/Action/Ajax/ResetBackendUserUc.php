@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\OkStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
 
 /**
  * Ajax wrapper to reset backend user preferences
@@ -33,30 +33,22 @@ class ResetBackendUserUc extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
-        $statusMessages[] = $this->resetBackendUserUc();
-
-        $this->view->assignMultiple([
-            'success' => true,
-            'status' => $statusMessages,
-        ]);
-        return $this->view->render();
-    }
-
-    /**
-     * Reset uc field of all be_users to empty string
-     *
-     * @return StatusInterface
-     * @throws \InvalidArgumentException
-     */
-    protected function resetBackendUserUc(): StatusInterface
-    {
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('be_users')
             ->update('be_users')
             ->set('uc', '')
             ->execute();
-        $message = new OkStatus();
-        $message->setTitle('Reset all backend users preferences');
-        return $message;
+
+        $messageQueue = new FlashMessageQueue('install');
+        $messageQueue->enqueue(new FlashMessage(
+            '',
+            'Reset all backend users preferences'
+        ));
+
+        $this->view->assignMultiple([
+            'success' => true,
+            'status' => $messageQueue
+        ]);
+        return $this->view->render();
     }
 }

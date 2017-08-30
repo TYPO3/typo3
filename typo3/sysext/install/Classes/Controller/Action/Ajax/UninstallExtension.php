@@ -15,9 +15,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
 
 /**
  * Uninstall Extensions
@@ -40,6 +41,7 @@ class UninstallExtension extends AbstractAjaxAction
     protected function executeAction(): array
     {
         $getVars = GeneralUtility::_GET('install');
+        $messageQueue = new FlashMessageQueue('install');
         if (isset($getVars['uninstallExtension']) && isset($getVars['uninstallExtension']['extensions'])) {
             $extensionsToUninstall = GeneralUtility::trimExplode(',', $getVars['uninstallExtension']['extensions']);
             foreach ($extensionsToUninstall as $extension) {
@@ -47,11 +49,14 @@ class UninstallExtension extends AbstractAjaxAction
                     try {
                         ExtensionManagementUtility::unloadExtension($extension);
                     } catch (\Exception $e) {
-                        $message = new ErrorStatus();
-                        $message->setMessage($e->getMessage());
+                        $messageQueue->enqueue(new FlashMessage(
+                            $e->getMessage(),
+                            '',
+                            FlashMessage::ERROR
+                        ));
                         return [
                             'success' => true,
-                            'status' => [ $message ],
+                            'status' => $messageQueue
                         ];
                     }
                 }

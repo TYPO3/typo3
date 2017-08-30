@@ -16,15 +16,16 @@ namespace TYPO3\CMS\Install\Exception;
  */
 
 use Throwable;
-use TYPO3\CMS\Install\Status\StatusInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\Exception;
 
 /**
  * An exception if the authentication is needed
  */
-class AuthenticationRequiredException extends \TYPO3\CMS\Install\Exception
+class AuthenticationRequiredException extends Exception
 {
     /**
-     * @var StatusInterface
+     * @var FlashMessage
      */
     protected $messageObject;
 
@@ -32,18 +33,18 @@ class AuthenticationRequiredException extends \TYPO3\CMS\Install\Exception
      * @param string $message
      * @param int $code
      * @param Throwable|null $previous
-     * @param StatusInterface|null $messageObject
+     * @param FlashMessage|null $messageObject
      */
-    public function __construct($message = '', $code = 0, Throwable $previous = null, StatusInterface $messageObject = null)
+    public function __construct($message = '', $code = 0, Throwable $previous = null, FlashMessage $messageObject = null)
     {
         parent::__construct($message, $code, $previous);
         $this->messageObject = $messageObject;
     }
 
     /**
-     * @return StatusInterface
+     * @return FlashMessage
      */
-    public function getMessageObject(): StatusInterface
+    public function getMessageObject(): FlashMessage
     {
         return $this->messageObject;
     }

@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status\StatusInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 
 /**
  * Check if a younger version is available
@@ -30,53 +30,59 @@ class CoreUpdateIsUpdateAvailable extends CoreUpdateAbstract
      */
     protected function executeAction(): array
     {
-        $status = [];
+        $messageQueue = new FlashMessageQueue('install');
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
             $isDevelopmentUpdateAvailable = $this->coreVersionService->isYoungerPatchDevelopmentReleaseAvailable();
             $isUpdateAvailable = $this->coreVersionService->isYoungerPatchReleaseAvailable();
             $isUpdateSecurityRelevant = $this->coreVersionService->isUpdateSecurityRelevant();
-
             if (!$isUpdateAvailable && !$isDevelopmentUpdateAvailable) {
-                $status = $this->getMessage('notice', 'No regular update available');
+                $messageQueue->enqueue(new FlashMessage(
+                    '',
+                    'No regular update available',
+                    FlashMessage::NOTICE
+                ));
             } elseif ($isUpdateAvailable) {
                 $newVersion = $this->coreVersionService->getYoungestPatchRelease();
                 if ($isUpdateSecurityRelevant) {
-                    $status = $this->getMessage('warning', 'Update to security relevant released version ' . $newVersion . ' is available!');
+                    $messageQueue->enqueue(new FlashMessage(
+                        '',
+                        'Update to security relevant released version ' . $newVersion . ' is available!',
+                        FlashMessage::WARNING
+                    ));
                     $action = $this->getAction('Update now', 'updateRegular');
                 } else {
-                    $status = $this->getMessage('info', 'Update to regular released version ' . $newVersion . ' is available!');
+                    $messageQueue->enqueue(new FlashMessage(
+                        '',
+                        'Update to regular released version ' . $newVersion . ' is available!',
+                        FlashMessage::INFO
+                    ));
                     $action = $this->getAction('Update now', 'updateRegular');
                 }
             } elseif ($isDevelopmentUpdateAvailable) {
                 $newVersion = $this->coreVersionService->getYoungestPatchDevelopmentRelease();
-                $status = $this->getMessage('info', 'Update to development release ' . $newVersion . ' is available!');
+                $messageQueue->enqueue(new FlashMessage(
+                    '',
+                    'Update to development release ' . $newVersion . ' is available!',
+                    FlashMessage::INFO
+                ));
                 $action = $this->getAction('Update now', 'updateDevelopment');
             }
         } else {
-            $status = $this->getMessage('warning', 'Current version is a development version and can not be updated');
+            $messageQueue->enqueue(new FlashMessage(
+                '',
+                'Current version is a development version and can not be updated',
+                FlashMessage::WARNING
+            ));
         }
 
-        $this->view->assign('success', true);
-        $this->view->assign('status', [$status]);
+        $this->view->assignMultiple([
+            'success' => true,
+            'status' => $messageQueue,
+        ]);
         if (isset($action)) {
             $this->view->assign('action', $action);
         }
         return $this->view->render();
-    }
-
-    /**
-     * @param string $severity
-     * @param string $title
-     * @param string $message
-     * @return StatusInterface
-     */
-    protected function getMessage($severity, $title, $message = ''): StatusInterface
-    {
-        /** @var $statusMessage StatusInterface */
-        $statusMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Status\\' . ucfirst($severity) . 'Status');
-        $statusMessage->setTitle($title);
-        $statusMessage->setMessage($message);
-        return $statusMessage;
     }
 
     /**

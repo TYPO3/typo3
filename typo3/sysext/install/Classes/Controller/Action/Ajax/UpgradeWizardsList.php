@@ -35,10 +35,9 @@ class UpgradeWizardsList extends AbstractAjaxAction
         $upgradeWizardsService = new UpgradeWizardsService();
         $wizards = $upgradeWizardsService->getUpgradeWizardsList();
 
-        $messages = [];
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $messages,
+            'status' => [],
             'wizards' => $wizards,
         ]);
         return $this->view->render();

@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Status;
 
 /**
  * Check TYPO3 setup status
@@ -30,78 +31,85 @@ use TYPO3\CMS\Install\Status;
 class SetupCheck implements CheckInterface
 {
     /**
+     * @var FlashMessageQueue
+     */
+    protected $messageQueue;
+
+    /**
      * Get all status information as array with status objects
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessageQueue
      */
-    public function getStatus(): array
+    public function getStatus(): FlashMessageQueue
     {
-        $status = [];
+        $this->messageQueue = new FlashMessageQueue('install');
 
-        $status[] = $this->checkTrustedHostPattern();
-        $status[] = $this->checkDownloadsPossible();
-        $status[] = $this->checkSystemLocale();
-        $status[] = $this->checkLocaleWithUTF8filesystem();
-        $status[] = $this->checkSomePhpOpcodeCacheIsLoaded();
-        $status[] = $this->isTrueTypeFontWorking();
-        $status[] = $this->checkLibXmlBug();
+        $this->checkTrustedHostPattern();
+        $this->checkDownloadsPossible();
+        $this->checkSystemLocale();
+        $this->checkLocaleWithUTF8filesystem();
+        $this->checkSomePhpOpcodeCacheIsLoaded();
+        $this->isTrueTypeFontWorking();
+        $this->checkLibXmlBug();
 
-        return $status;
+        return $this->messageQueue;
     }
 
     /**
      * Checks the status of the trusted hosts pattern check
-     *
-     * @return Status\StatusInterface
      */
     protected function checkTrustedHostPattern()
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
-            $status = new Status\WarningStatus();
-            $status->setTitle('Trusted hosts pattern is insecure');
-            $status->setMessage('Trusted hosts pattern is configured to allow all header values. Check the pattern defined in Install Tool -> All configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).');
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Trusted hosts pattern is configured to allow all header values. Check the pattern defined in Install'
+                    . ' Tool -> All configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).',
+                'Trusted hosts pattern is insecure',
+                FlashMessage::WARNING
+            ));
         } else {
             if (GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
-                $status = new Status\OkStatus();
-                $status->setTitle('Trusted hosts pattern is configured to allow current host value.');
+                $this->messageQueue->enqueue(new FlashMessage(
+                    '',
+                    'Trusted hosts pattern is configured to allow current host value.'
+                ));
             } else {
-                $status = new Status\ErrorStatus();
-                $status->setTitle('Trusted hosts pattern mismatch');
-                $status->setMessage('The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME is "' . htmlspecialchars($_SERVER['SERVER_NAME']) . '" while your HTTP_HOST is "' . htmlspecialchars($_SERVER['HTTP_HOST']) . '". Check the pattern defined in Install Tool -> All configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).');
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME'
+                        . ' is "' . htmlspecialchars($_SERVER['SERVER_NAME']) . '" while your HTTP_HOST is "'
+                        . htmlspecialchars($_SERVER['HTTP_HOST']) . '". Check the pattern defined in Install Tool -> All'
+                        . ' configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).',
+                    'Trusted hosts pattern mismatch',
+                    FlashMessage::ERROR
+                ));
             }
         }
-
-        return $status;
     }
 
     /**
      * Check if it is possible to download external data (e.g. TER)
      * Either allow_url_fopen must be enabled or curl must be used
-     *
-     * @return Status\OkStatus|Status\WarningStatus
      */
     protected function checkDownloadsPossible()
     {
         $allowUrlFopen = (bool)ini_get('allow_url_fopen');
         $curlEnabled = function_exists('curl_version');
         if ($allowUrlFopen || $curlEnabled) {
-            $status = new Status\OkStatus();
-            $status->setTitle('Fetching external URLs is allowed');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'Fetching external URLs is allowed'
+            ));
         } else {
-            $status = new Status\WarningStatus();
-            $status->setTitle('Fetching external URLs is not allowed');
-            $status->setMessage(
-                'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or compile curl into your PHP with --with-curl.'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or compile curl into your PHP with --with-curl.',
+                'Fetching external URLs is not allowed',
+                FlashMessage::WARNING
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Check if systemLocale setting is correct (locale exists in the OS)
-     *
-     * @return Status\StatusInterface
      */
     protected function checkSystemLocale()
     {
@@ -109,74 +117,71 @@ class SetupCheck implements CheckInterface
 
         // On Windows an empty locale value uses the regional settings from the Control Panel
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
-            $status = new Status\InfoStatus();
-            $status->setTitle('Empty systemLocale setting');
-            $status->setMessage(
-                '$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8' .
-                ' file system is used.'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                '$GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is not set. This is fine as long as no UTF-8 file system is used.',
+                'Empty systemLocale setting',
+                FlashMessage::INFO
+            ));
         } elseif (setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']) === false) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('Incorrect systemLocale setting');
-            $status->setMessage(
-                'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. A locale with' .
-                ' this name doesn\'t exist in the operating system.'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Current value of the $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] is incorrect. A locale with'
+                    . ' this name doesn\'t exist in the operating system.',
+                'Incorrect systemLocale setting',
+                FlashMessage::ERROR
+            ));
             setlocale(LC_CTYPE, $currentLocale);
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('System locale is correct');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'System locale is correct'
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Checks whether we can use file names with UTF-8 characters.
      * Configured system locale must support UTF-8 when UTF8filesystem is set
-     *
-     * @return Status\StatusInterface
      */
     protected function checkLocaleWithUTF8filesystem()
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // On Windows an empty local value uses the regional settings from the Control Panel
             if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] === '' && TYPO3_OS !== 'WIN') {
-                $status = new Status\ErrorStatus();
-                $status->setTitle('System locale not set on UTF-8 file system');
-                $status->setMessage(
-                    '$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]' .
-                    ' is empty. Make sure a valid locale which supports UTF-8 is set.'
-                );
+                $this->messageQueue->enqueue(new FlashMessage(
+                    '$GLOBALS[TYPO3_CONF_VARS][SYS][UTF8filesystem] is set, but $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale]'
+                        . ' is empty. Make sure a valid locale which supports UTF-8 is set.',
+                    'System locale not set on UTF-8 file system',
+                    FlashMessage::ERROR
+                ));
             } else {
                 $testString = 'ÖöĄĆŻĘĆćążąęó.jpg';
                 $currentLocale = setlocale(LC_CTYPE, 0);
                 $quote = TYPO3_OS === 'WIN' ? '"' : '\'';
                 setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
                 if (escapeshellarg($testString) === $quote . $testString . $quote) {
-                    $status = new Status\OkStatus();
-                    $status->setTitle('File names with UTF-8 characters can be used.');
+                    $this->messageQueue->enqueue(new FlashMessage(
+                        '',
+                        'File names with UTF-8 characters can be used.'
+                    ));
                 } else {
-                    $status = new Status\ErrorStatus();
-                    $status->setTitle('System locale setting doesn\'t support UTF-8 file names.');
-                    $status->setMessage(
-                        'Please check your $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] setting.'
-                    );
+                    $this->messageQueue->enqueue(new FlashMessage(
+                        'Please check your $GLOBALS[TYPO3_CONF_VARS][SYS][systemLocale] setting.',
+                        'System locale setting doesn\'t support UTF-8 file names.',
+                        FlashMessage::ERROR
+                    ));
                 }
                 setlocale(LC_CTYPE, $currentLocale);
             }
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('Skipping test, as UTF8filesystem is not enabled.');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'Skipping test, as UTF8filesystem is not enabled.'
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Check if some opcode cache is loaded
-     *
-     * @return Status\StatusInterface
      */
     protected function checkSomePhpOpcodeCacheIsLoaded()
     {
@@ -185,34 +190,31 @@ class SetupCheck implements CheckInterface
         $opcodeCaches = GeneralUtility::makeInstance(OpcodeCacheService::class)->getAllActive();
         if (empty($opcodeCaches)) {
             // Set status to notice. It needs to be notice so email won't be triggered.
-            $status = new Status\NoticeStatus();
-            $status->setTitle('No PHP opcode cache loaded');
-            $status->setMessage(
-                'PHP opcode caches hold a compiled version of executed PHP scripts in' .
-                ' memory and do not require to recompile a script each time it is accessed.' .
-                ' This can be a massive performance improvement and can reduce the load on a' .
-                ' server in general. A parse time reduction by factor three for fully cached' .
-                ' pages can be achieved easily if using an opcode cache.' .
-                LF . $wikiLink
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'PHP opcode caches hold a compiled version of executed PHP scripts in'
+                    . ' memory and do not require to recompile a script each time it is accessed.'
+                    . ' This can be a massive performance improvement and can reduce the load on a'
+                    . ' server in general. A parse time reduction by factor three for fully cached'
+                    . ' pages can be achieved easily if using an opcode cache.'
+                    . LF . $wikiLink,
+                'No PHP opcode cache loaded',
+                FlashMessage::NOTICE
+            ));
         } else {
-            $status = new Status\OkStatus();
+            $status = FlashMessage::OK;
             $message = '';
             foreach ($opcodeCaches as $opcodeCache => $properties) {
                 $message .= 'Name: ' . $opcodeCache . ' Version: ' . $properties['version'];
                 $message .= LF;
                 if ($properties['error']) {
-                    // Set status to error if not already set
-                    if ($status->getSeverity() !== 'error') {
-                        $status = new Status\ErrorStatus();
-                    }
+                    $status = FlashMessage::ERROR;
                     $message .= ' This opcode cache is marked as malfunctioning by the TYPO3 CMS Team.';
                 } elseif ($properties['canInvalidate']) {
                     $message .= ' This opcode cache should work correctly and has good performance.';
                 } else {
                     // Set status to notice if not already error set. It needs to be notice so email won't be triggered.
-                    if ($status->getSeverity() !== 'error' || $status->getSeverity() !== 'warning') {
-                        $status = new Status\NoticeStatus();
+                    if ($status !== FlashMessage::ERROR) {
+                        $status = FlashMessage::NOTICE;
                     }
                     $message .= ' This opcode cache may work correctly but has medium performance.';
                 }
@@ -220,28 +222,25 @@ class SetupCheck implements CheckInterface
             }
             $message .= $wikiLink;
             // Set title of status depending on serverity
-            switch ($status->getSeverity()) {
-                case 'error':
-                    $status->setTitle('A possibly malfunctioning PHP opcode cache is loaded');
+            switch ($status) {
+                case FlashMessage::ERROR:
+                    $title = 'A possibly malfunctioning PHP opcode cache is loaded';
                     break;
-                case 'warning':
-                    $status->setTitle('A PHP opcode cache is loaded which may cause problems');
-                    break;
-                case 'ok':
+                case FlashMessage::OK:
                 default:
-                    $status->setTitle('A PHP opcode cache is loaded');
+                    $title = 'A PHP opcode cache is loaded';
                     break;
             }
-            $status->setMessage($message);
+            $this->messageQueue->enqueue(new FlashMessage(
+                $message,
+                $title,
+                $status
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Create true type font test image
-     *
-     * @return Status\StatusInterface
      */
     protected function isTrueTypeFontWorking()
     {
@@ -256,54 +255,52 @@ class SetupCheck implements CheckInterface
             );
             $fontBoxWidth = $textDimensions[2] - $textDimensions[0];
             if ($fontBoxWidth < 300 && $fontBoxWidth > 200) {
-                $status = new Status\OkStatus();
-                $status->setTitle('FreeType True Type Font DPI');
-                $status->setMessage('Fonts are rendered by FreeType library. ' .
-                    'We need to ensure that the final dimensions are as expected. ' .
-                    'This server renderes fonts based on 96 DPI correctly');
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'Fonts are rendered by FreeType library. '
+                        . 'We need to ensure that the final dimensions are as expected. '
+                        . 'This server renderes fonts based on 96 DPI correctly',
+                    'FreeType True Type Font DPI'
+                ));
             } else {
-                $status = new Status\NoticeStatus();
-                $status->setTitle('FreeType True Type Font DPI');
-                $status->setMessage('Fonts are rendered by FreeType library. ' .
-                    'This server does not render fonts as expected. ' .
-                    'Please check your FreeType 2 module.');
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'Fonts are rendered by FreeType library. '
+                        . 'This server does not render fonts as expected. '
+                        . 'Please check your FreeType 2 module.',
+                    'FreeType True Type Font DPI',
+                    FlashMessage::NOTICE
+                ));
             }
         } else {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('PHP GD library freetype2 support missing');
-            $status->setMessage(
-                'The core relies on GD library compiled into PHP with freetype2' .
-                ' support. This is missing on your system. Please install it.'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'The core relies on GD library compiled into PHP with freetype2'
+                    . ' support. This is missing on your system. Please install it.',
+                'PHP GD library freetype2 support missing',
+                FlashMessage::ERROR
+            ));
         }
-
-        return $status;
     }
 
     /**
      * Check for bug in libxml
-     *
-     * @return Status\StatusInterface
      */
     protected function checkLibXmlBug()
     {
         $sampleArray = ['Test>><<Data'];
         $xmlContent = '<numIndex index="0">Test&gt;&gt;&lt;&lt;Data</numIndex>' . LF;
         $xml = GeneralUtility::array2xml($sampleArray, '', -1);
-
         if ($xmlContent !== $xml) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('PHP libxml bug present');
-            $status->setMessage(
-                'Some hosts have problems saving ">><<" in a flexform.' .
-                ' To fix this, enable [BE][flexformForceCDATA] in' .
-                ' All Configuration.'
-            );
+            $this->messageQueue->enqueue(new FlashMessage(
+                'Some hosts have problems saving ">><<" in a flexform.'
+                    . ' To fix this, enable [BE][flexformForceCDATA] in'
+                    . ' All Configuration.',
+                'PHP libxml bug present',
+                FlashMessage::ERROR
+            ));
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('PHP libxml bug not present');
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                'PHP libxml bug not present'
+            ));
         }
-
-        return $status;
     }
 }

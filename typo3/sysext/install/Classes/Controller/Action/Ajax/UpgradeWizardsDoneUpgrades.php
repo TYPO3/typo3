@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Get a list of wizards and row updaters marked as "done" in registry
@@ -36,11 +37,12 @@ class UpgradeWizardsDoneUpgrades extends AbstractAjaxAction
         $wizardsDone = $upgradeWizardsService->listOfWizardsDoneInRegistry();
         $rowUpdatersDone = $upgradeWizardsService->listOfRowUpdatersDoneInRegistry();
 
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         if (empty($wizardsDone) && empty($rowUpdatersDone)) {
-            $message = new OkStatus();
-            $message->setTitle('No wizards are marked as done');
-            $messages[] = $message;
+            $messages->enqueue(new FlashMessage(
+                '',
+                'No wizards are marked as done'
+            ));
         }
 
         $this->view->assignMultiple([

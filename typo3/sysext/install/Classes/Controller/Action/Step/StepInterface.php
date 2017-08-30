@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Controller\Action;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Interface implemented by single steps
@@ -24,7 +24,7 @@ interface StepInterface
     /**
      * Execute a step
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
     public function execute();
 

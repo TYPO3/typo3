@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Status;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Root node of structure
@@ -61,15 +61,17 @@ class RootNode extends DirectoryNode implements RootNodeInterface
     /**
      * Get own status and status of child objects - Root node gives error status if not exists
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $result = [];
         if (!$this->exists()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle($this->getAbsolutePath() . ' does not exist');
-            $result[] = $status;
+            $result[] = new FlashMessage(
+                '',
+                $this->getAbsolutePath() . ' does not exist',
+                FlashMessage::ERROR
+            );
         } else {
             $result = $this->getSelfStatus();
         }

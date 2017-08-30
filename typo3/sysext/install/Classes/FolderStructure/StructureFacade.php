@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+
 /**
  * Structure facade, a facade class in front of root node.
  * This is the main API interface to the node structure and should
@@ -41,20 +43,28 @@ class StructureFacade implements StructureFacadeInterface
     /**
      * Get status of node tree
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessageQueue
      */
-    public function getStatus()
+    public function getStatus(): FlashMessageQueue
     {
-        return $this->structure->getStatus();
+        $messageQueue = new FlashMessageQueue('install');
+        foreach ($this->structure->getStatus() as $message) {
+            $messageQueue->enqueue($message);
+        }
+        return $messageQueue;
     }
 
     /**
      * Fix structure
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessageQueue
      */
-    public function fix()
+    public function fix(): FlashMessageQueue
     {
-        return $this->structure->fix();
+        $messageQueue = new FlashMessageQueue('install');
+        foreach ($this->structure->fix() as $message) {
+            $messageQueue->enqueue($message);
+        }
+        return $messageQueue;
     }
 }

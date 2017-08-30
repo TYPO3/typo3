@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -28,7 +29,7 @@ class DefaultConfiguration extends AbstractStepAction
     /**
      * Set defaults of auto configuration, mark installation as completed
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
     public function execute()
     {

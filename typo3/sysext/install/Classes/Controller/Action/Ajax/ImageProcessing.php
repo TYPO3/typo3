@@ -16,13 +16,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\InfoStatus;
-use TYPO3\CMS\Install\Status\StatusInterface;
-use TYPO3\CMS\Install\Status\WarningStatus;
 
 /**
  * Execute an image test.
@@ -163,11 +161,14 @@ class ImageProcessing extends AbstractAjaxAction
             ];
         }
         if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $inputFormat)) {
-            $message = new WarningStatus();
-            $message->setTitle('Skipped test');
-            $message->setMessage('Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']');
             return [
-                'status' => [ $message ]
+                'status' => [
+                    new FlashMessage(
+                        'Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']',
+                        'Skipped test',
+                        FlashMessage::WARNING
+                    )
+                ]
             ];
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -206,7 +207,7 @@ class ImageProcessing extends AbstractAjaxAction
         $imageProcessor = $this->initializeImageProcessor();
         $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
         $imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '300', '', '', '', [], true);
-        $messages = [];
+        $messages = new FlashMessageQueue('install');
         if ($imResult !== null && is_file($imResult[3])) {
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
                 clearstatcache();
@@ -214,20 +215,21 @@ class ImageProcessing extends AbstractAjaxAction
                 $methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
                 clearstatcache();
                 $compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
-                $message = new InfoStatus();
-                $message->setTitle('Compressed gif');
-                $message->setMessage(
+                $messages->enqueue(new FlashMessage(
                     'Method used by compress: ' . $methodUsed . LF
-                    . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
-                );
-                $messages[] = $message;
+                        . ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize,
+                    'Compressed gif',
+                    FlashMessage::INFO
+                ));
             } else {
-                $message = new InfoStatus();
-                $message->setTitle('Gif compression not enabled by [GFX][gif_compress]');
-                $messages[] = $message;
+                $messages->enqueue(new FlashMessage(
+                    '',
+                    'Gif compression not enabled by [GFX][gif_compress]',
+                    FlashMessage::INFO
+                ));
             }
             $result = [
-                'status' => $message,
+                'status' => $messages,
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
                 'referenceFile' => PATH_site . 'typo3/sysext/install/Resources/Public/Images/TestReference/Write-gif.gif',
@@ -666,19 +668,17 @@ class ImageProcessing extends AbstractAjaxAction
     /**
      * Create a 'image generation failed' message
      *
-     * @return StatusInterface
+     * @return FlashMessage
      */
-    protected function imageGenerationFailedMessage(): StatusInterface
+    protected function imageGenerationFailedMessage(): FlashMessage
     {
-        /** @var StatusInterface $message */
-        $message = GeneralUtility::makeInstance(ErrorStatus::class);
-        $message->setTitle('Image generation failed');
-        $message->setMessage(
+        return new FlashMessage(
             'ImageMagick / GraphicsMagick handling is enabled, but the execute'
-            . ' command returned an error. Please check your settings, especially'
-            . ' [\'GFX\'][\'processor_path\'] and [\'GFX\'][\'processor_path_lzw\'] and ensure Ghostscript is installed on your server.'
+                . ' command returned an error. Please check your settings, especially'
+                . ' [\'GFX\'][\'processor_path\'] and [\'GFX\'][\'processor_path_lzw\'] and ensure Ghostscript is installed on your server.',
+            'Image generation failed',
+            FlashMessage::ERROR
         );
-        return $message;
     }
 
     /**
@@ -696,14 +696,15 @@ class ImageProcessing extends AbstractAjaxAction
     /**
      * Create a 'imageMagick disabled' message
      *
-     * @return StatusInterface
+     * @return FlashMessage
      */
-    protected function imageMagickDisabledMessage(): StatusInterface
+    protected function imageMagickDisabledMessage(): FlashMessage
     {
-        $message = new ErrorStatus();
-        $message->setTitle('Tests not executed');
-        $message->setMessage('ImageMagick / GraphicsMagick handling is disabled or not configured correctly.');
-        return $message;
+        return new FlashMessage(
+            'ImageMagick / GraphicsMagick handling is disabled or not configured correctly.',
+            'Tests not executed',
+            FlashMessage::ERROR
+        );
     }
 
     /**

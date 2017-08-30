@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
-use TYPO3\CMS\Install\Status\ErrorStatus;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Clear Processed Files
@@ -33,26 +33,27 @@ class ClearTypo3tempFiles extends AbstractAjaxAction
      */
     protected function executeAction(): array
     {
+        $messageQueue = new FlashMessageQueue('install');
         $typo3tempFileService = new Typo3tempFileService();
         if ($this->postValues['folder'] === '_processed_') {
             $failedDeletions = $typo3tempFileService->clearProcessedFiles();
             if ($failedDeletions) {
-                $message = new ErrorStatus();
-                $message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/logs/typo3_*.log)');
+                $messageQueue->enqueue(new FlashMessage(
+                    'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/logs/typo3_*.log)',
+                    '',
+                    FlashMessage::ERROR
+                ));
             } else {
-                $message = new OkStatus();
-                $message->setTitle('Cleared processed files');
+                $messageQueue->enqueue(new FlashMessage('Cleared processed files'));
             }
         } else {
             $typo3tempFileService->clearAssetsFolder($this->postValues['folder']);
-            $message = new OkStatus();
-            $message->setTitle('Cleared files in "' . $this->postValues['folder'] . '" folder');
+            $messageQueue->enqueue(new FlashMessage('Cleared files in "' . $this->postValues['folder'] . '" folder'));
         }
-        $statusMessages[] = $message;
 
         $this->view->assignMultiple([
             'success' => true,
-            'status' => $statusMessages,
+            'status' => $messageQueue,
         ]);
         return $this->view->render();
     }

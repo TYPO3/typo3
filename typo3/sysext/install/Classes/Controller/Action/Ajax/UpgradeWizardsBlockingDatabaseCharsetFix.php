@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Set default connection MySQL database charset to utf8.
@@ -33,10 +34,11 @@ class UpgradeWizardsBlockingDatabaseCharsetFix extends AbstractAjaxAction
         $upgradeWizardsService = new UpgradeWizardsService();
         $upgradeWizardsService->setDatabaseCharsetUtf8();
 
-        $messages = [];
-        $message = new OkStatus();
-        $message->setTitle('Default connection database has been set to utf8');
-        $messages[] = $message;
+        $messages = new FlashMessageQueue('install');
+        $messages->enqueue(new FlashMessage(
+            '',
+            'Default connection database has been set to utf8'
+        ));
 
         $this->view->assignMultiple([
             'success' => true,

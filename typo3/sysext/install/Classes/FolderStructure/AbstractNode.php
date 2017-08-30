@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Install\Status;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Abstract node implements common methods
@@ -135,9 +135,9 @@ abstract class AbstractNode
      * Fix permission if they are not equal to target permission
      *
      * @throws Exception
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return FlashMessage
      */
-    protected function fixPermission()
+    protected function fixPermission(): FlashMessage
     {
         if ($this->isPermissionCorrect()) {
             throw new Exception(
@@ -147,17 +147,17 @@ abstract class AbstractNode
         }
         $result = @chmod($this->getAbsolutePath(), octdec($this->getTargetPermission()));
         if ($result === true) {
-            $status = new Status\OkStatus();
-            $status->setTitle('Fixed permission on ' . $this->getRelativePathBelowSiteRoot() . '.');
-        } else {
-            $status = new Status\NoticeStatus();
-            $status->setTitle('Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful');
-            $status->setMessage(
-                'Permissions could not be changed to ' . $this->getTargetPermission() .
-                    '. This only is a problem if files and folders within this node cannot be written.'
+            return new FlashMessage(
+                '',
+                'Fixed permission on ' . $this->getRelativePathBelowSiteRoot() . '.'
             );
         }
-        return $status;
+        return new FlashMessage(
+            'Permissions could not be changed to ' . $this->getTargetPermission()
+                . '. This only is a problem if files and folders within this node cannot be written.',
+            'Permission change on ' . $this->getRelativePathBelowSiteRoot() . ' not successful',
+            FlashMessage::NOTICE
+        );
     }
 
     /**

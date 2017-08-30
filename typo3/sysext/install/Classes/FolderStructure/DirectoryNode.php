@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Install\Status;
 
 /**
  * A directory
@@ -65,15 +65,17 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     /**
      * Get own status and status of child objects
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $result = [];
         if (!$this->exists()) {
-            $status = new Status\WarningStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' does not exist');
-            $status->setMessage('The Install Tool can try to create it');
+            $status = new FlashMessage(
+                'The Install Tool can try to create it',
+                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' does not exist',
+                FlashMessage::WARNING
+            );
             $result[] = $status;
         } else {
             $result = $this->getSelfStatus();
@@ -103,9 +105,9 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      *
      * If there is nothing to fix, returns an empty array
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    public function fix()
+    public function fix(): array
     {
         $result = $this->fixSelf();
         foreach ($this->children as $child) {
@@ -122,7 +124,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      * - if there is no "write" permissions, try to fix it
      * - leave it alone otherwise
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
     protected function fixSelf()
     {
@@ -130,7 +132,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
         if (!$this->exists()) {
             $resultCreateDirectory = $this->createDirectory();
             $result[] = $resultCreateDirectory;
-            if ($resultCreateDirectory instanceof Status\OkStatus &&
+            if ($resultCreateDirectory->getSeverity() === FlashMessage::OK &&
                 !$this->isPermissionCorrect()
             ) {
                 $result[] = $this->fixPermission();
@@ -140,21 +142,23 @@ class DirectoryNode extends AbstractNode implements NodeInterface
             // Try it:
             $result[] = $this->fixPermission();
         } elseif (!$this->isDirectory()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a directory');
             $fileType = @filetype($this->getAbsolutePath());
             if ($fileType) {
-                $status->setMessage(
+                $messageBody =
                     'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,' .
                     ' but is of type ' . $fileType . '. This cannot be fixed automatically. Please investigate.'
-                );
+                ;
             } else {
-                $status->setMessage(
+                $messageBody =
                     'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,' .
                     ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
-                );
+                ;
             }
-            $result[] = $status;
+            $result[] = new FlashMessage(
+                $messageBody,
+                'Path ' . $this->getRelativePathBelowSiteRoot() . ' is not a directory',
+                FlashMessage::ERROR
+            );
         }
         return $result;
     }
@@ -163,9 +167,9 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      * Create directory if not exists
      *
      * @throws Exception
-     * @return \TYPO3\CMS\Install\Status\StatusInterface
+     * @return FlashMessage
      */
-    protected function createDirectory()
+    protected function createDirectory(): FlashMessage
     {
         if ($this->exists()) {
             throw new Exception(
@@ -175,58 +179,53 @@ class DirectoryNode extends AbstractNode implements NodeInterface
         }
         $result = @mkdir($this->getAbsolutePath());
         if ($result === true) {
-            $status = new Status\OkStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' successfully created.');
-        } else {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' not created!');
-            $status->setMessage(
-                'The target directory could not be created. There is probably a' .
-                ' group or owner permission problem on the parent directory.'
+            return new FlashMessage(
+                '',
+                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' successfully created.'
             );
         }
-        return $status;
+        return new FlashMessage(
+            'The target directory could not be created. There is probably a'
+                . ' group or owner permission problem on the parent directory.',
+            'Directory ' . $this->getRelativePathBelowSiteRoot() . ' not created!',
+            FlashMessage::ERROR
+        );
     }
 
     /**
      * Get status of directory - used in root and directory node
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    protected function getSelfStatus()
+    protected function getSelfStatus(): array
     {
         $result = [];
         if (!$this->isDirectory()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle($this->getRelativePathBelowSiteRoot() . ' is not a directory');
-            $status->setMessage(
-                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,' .
-                ' but is of type ' . filetype($this->getAbsolutePath())
+            $result[] = new FlashMessage(
+                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' should be a directory,'
+                    . ' but is of type ' . filetype($this->getAbsolutePath()),
+                $this->getRelativePathBelowSiteRoot() . ' is not a directory',
+                FlashMessage::ERROR
             );
-            $result[] = $status;
         } elseif (!$this->isWritable()) {
-            $status = new Status\ErrorStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' is not writable');
-            $status->setMessage(
-                'Path ' . $this->getAbsolutePath() . ' exists, but no file underneath it' .
-                ' can be created.'
+            $result[] = new FlashMessage(
+                'Path ' . $this->getAbsolutePath() . ' exists, but no file underneath it'
+                    . ' can be created.',
+                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' is not writable',
+                FlashMessage::ERROR
             );
-            $result[] = $status;
         } elseif (!$this->isPermissionCorrect()) {
-            $status = new Status\NoticeStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' permissions mismatch');
-            $status->setMessage(
-                'Default configured permissions are ' . $this->getTargetPermission() .
-                ' but current permissions are ' . $this->getCurrentPermission()
+            $result[] = new FlashMessage(
+                'Default configured permissions are ' . $this->getTargetPermission()
+                    . ' but current permissions are ' . $this->getCurrentPermission(),
+                'Directory ' . $this->getRelativePathBelowSiteRoot() . ' permissions mismatch',
+                FlashMessage::NOTICE
             );
-            $result[] = $status;
         } else {
-            $status = new Status\OkStatus();
-            $status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot());
-            $status->setMessage(
-                'Is a directory with the configured permissions of ' . $this->getTargetPermission()
+            $result[] = new FlashMessage(
+                'Is a directory with the configured permissions of ' . $this->getTargetPermission(),
+                'Directory ' . $this->getRelativePathBelowSiteRoot()
             );
-            $result[] = $status;
         }
         return $result;
     }
@@ -234,9 +233,9 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     /**
      * Get status of children
      *
-     * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+     * @return FlashMessage[]
      */
-    protected function getChildrenStatus()
+    protected function getChildrenStatus(): array
     {
         $result = [];
         foreach ($this->children as $child) {

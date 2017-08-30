@@ -13,13 +13,20 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
+use TYPO3\CMS\Install\FolderStructure\NodeInterface;
+use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
+use TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
  */
-class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTestCase
+class DirectoryNodeTest extends FolderStructureTestCase
 {
     /**
      * @test
@@ -28,8 +35,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222203);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $node->__construct([], null);
     }
 
@@ -40,9 +47,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366226639);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        $parent = $this->createMock(NodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo/bar',
         ];
@@ -54,10 +61,10 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function constructorCallsCreateChildrenIfChildrenAreSet()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $parent = $this->createMock(NodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['createChildren'],
             [],
             '',
@@ -79,9 +86,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function constructorSetsParent()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        $parent = $this->createMock(NodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo',
         ];
@@ -94,9 +101,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function constructorSetsTargetPermission()
     {
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        $parent = $this->createMock(NodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $targetPermission = '2550';
         $structure = [
             'name' => 'foo',
@@ -111,9 +118,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function constructorSetsName()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $parent = $this->createMock(RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         $this->assertSame($name, $node->getName());
@@ -124,9 +131,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArray()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -147,9 +154,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithWarningStatusIfDirectoryNotExists()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -163,9 +170,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(false));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(false));
         $statusArray = $node->getStatus();
-        /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-        $status = $statusArray[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\WarningStatus::class, $status);
+        $this->assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -173,9 +178,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotADirectory()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -190,9 +195,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
         $statusArray = $node->getStatus();
-        /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-        $status = $statusArray[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $status);
+        $this->assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -200,9 +203,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithErrorStatusIfDirectoryExistsButIsNotWritable()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -217,9 +220,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(false));
         $statusArray = $node->getStatus();
-        /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-        $status = $statusArray[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $status);
+        $this->assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -227,9 +228,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithNoticeStatusIfDirectoryExistsButPermissionAreNotCorrect()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -244,9 +245,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(false));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
         $statusArray = $node->getStatus();
-        /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-        $status = $statusArray[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $status);
+        $this->assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -254,9 +253,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithOkStatusIfDirectoryExistsAndPermissionAreCorrect()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
             [],
             '',
@@ -271,9 +270,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
         $statusArray = $node->getStatus();
-        /** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
-        $status = $statusArray[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $status);
+        $this->assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -281,9 +278,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusCallsGetStatusOnChildren()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['exists', 'isDirectory', 'isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'isWritable'],
             [],
             '',
@@ -293,9 +290,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isDirectory')->will($this->returnValue(true));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $childMock1 = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $childMock1 = $this->createMock(NodeInterface::class);
         $childMock1->expects($this->once())->method('getStatus')->will($this->returnValue([]));
-        $childMock2 = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $childMock2 = $this->createMock(NodeInterface::class);
         $childMock2->expects($this->once())->method('getStatus')->will($this->returnValue([]));
         $node->_set('children', [$childMock1, $childMock2]);
         $node->getStatus();
@@ -306,9 +303,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getStatusReturnsArrayWithOwnStatusAndStatusOfChild()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['exists', 'isDirectory', 'isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'isWritable'],
             [],
             '',
@@ -318,15 +315,15 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('isDirectory')->will($this->returnValue(true));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $childMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        $childStatusMock = $this->createMock(\TYPO3\CMS\Install\Status\ErrorStatus::class);
-        $childMock->expects($this->once())->method('getStatus')->will($this->returnValue([$childStatusMock]));
+        $childMock = $this->createMock(NodeInterface::class);
+        $childMessage = new FlashMessage('foo');
+        $childMock->expects($this->once())->method('getStatus')->will($this->returnValue([$childMessage]));
         $node->_set('children', [$childMock]);
         $status = $node->getStatus();
         $statusOfDirectory = $status[0];
         $statusOfChild = $status[1];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $statusOfDirectory);
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $statusOfChild);
+        $this->assertSame(FlashMessage::OK, $statusOfDirectory->getSeverity());
+        $this->assertSame($childMessage, $statusOfChild);
     }
 
     /**
@@ -334,9 +331,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function fixCallsFixSelfAndReturnsItsResult()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['fixSelf'],
             [],
             '',
@@ -352,16 +349,16 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function fixCallsFixOnChildrenAndReturnsMergedResult()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['fixSelf'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
         $uniqueReturnSelf = $this->getUniqueId('foo_');
         $node->expects($this->once())->method('fixSelf')->will($this->returnValue([$uniqueReturnSelf]));
 
-        $childMock1 = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $childMock1 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild1 = $this->getUniqueId('foo_');
         $childMock1->expects($this->once())->method('fix')->will($this->returnValue([$uniqueReturnChild1]));
 
-        $childMock2 = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        $childMock2 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild2 = $this->getUniqueId('foo_');
         $childMock2->expects($this->once())->method('fix')->will($this->returnValue([$uniqueReturnChild2]));
 
@@ -375,9 +372,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function fixSelfCallsCreateDirectoryIfDirectoryDoesNotExistAndReturnsResult()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['exists', 'createDirectory', 'isPermissionCorrect'],
             [],
             '',
@@ -385,7 +382,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         );
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $uniqueReturn = $this->getUniqueId();
+        $uniqueReturn = new FlashMessage('foo');
         $node->expects($this->once())->method('createDirectory')->will($this->returnValue($uniqueReturn));
         $this->assertSame([$uniqueReturn], $node->_call('fixSelf'));
     }
@@ -395,9 +392,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotADirectoryAndReturnsResult()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['exists', 'isWritable', 'getRelativePathBelowSiteRoot', 'isDirectory', 'getAbsolutePath'],
             [],
             '',
@@ -409,7 +406,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue(''));
         $result = $node->_call('fixSelf');
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $result[0]);
+        $this->assertSame(FlashMessage::ERROR, $result[0]->getSeverity());
     }
 
     /**
@@ -417,9 +414,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function fixSelfCallsFixPermissionIfDirectoryExistsButIsNotWritable()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(
-            \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            DirectoryNode::class,
             ['exists', 'isWritable', 'fixPermission'],
             [],
             '',
@@ -427,8 +424,9 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         );
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(false));
-        $node->expects($this->once())->method('fixPermission')->will($this->returnValue(true));
-        $this->assertSame([true], $node->_call('fixSelf'));
+        $message = new FlashMessage('foo');
+        $node->expects($this->once())->method('fixPermission')->will($this->returnValue($message));
+        $this->assertSame([$message], $node->_call('fixSelf'));
     }
 
     /**
@@ -438,8 +436,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366740091);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['exists', 'getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue(''));
         $node->expects($this->once())->method('exists')->will($this->returnValue(true));
         $node->_call('createDirectory');
@@ -450,8 +448,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function createDirectoryCreatesDirectory()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -465,13 +463,13 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function createDirectoryReturnsOkStatusIfDirectoryWasCreated()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\StatusInterface::class, $node->_call('createDirectory'));
+        $this->assertSame(FlashMessage::OK, $node->_call('createDirectory')->getSeverity());
     }
 
     /**
@@ -479,15 +477,15 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function createDirectoryReturnsErrorStatusIfDirectoryWasNotCreated()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
         $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($subPath));
-        $this->assertInstanceOf(\TYPO3\CMS\Install\Status\StatusInterface::class, $node->_call('createDirectory'));
+        $this->assertSame(FlashMessage::ERROR, $node->_call('createDirectory')->getSeverity());
     }
 
     /**
@@ -497,8 +495,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222204);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
                 'name' => 'foo',
@@ -514,8 +512,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222205);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
                 'type' => 'foo',
@@ -531,15 +529,15 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222206);
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
-                'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+                'type' => DirectoryNode::class,
                 'name' => 'foo',
             ],
             [
-                'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+                'type' => DirectoryNode::class,
                 'name' => 'foo',
             ],
         ];
@@ -551,25 +549,25 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function getChildrenReturnsCreatedChild()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['dummy'], [], '', false);
-        $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
+        $parent = $this->createMock(NodeInterface::class);
         $childName = $this->getUniqueId('test_');
         $structure = [
             'name' => 'foo',
-            'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+            'type' => DirectoryNode::class,
             'children' => [
                 [
-                    'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
+                    'type' => DirectoryNode::class,
                     'name' => $childName,
                 ],
             ],
         ];
         $node->__construct($structure, $parent);
         $children = $node->_call('getChildren');
-        /** @var $child \TYPO3\CMS\Install\FolderStructure\NodeInterface */
+        /** @var $child NodeInterface */
         $child = $children[0];
-        $this->assertInstanceOf(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, $children[0]);
+        $this->assertInstanceOf(DirectoryNode::class, $children[0]);
         $this->assertSame($childName, $child->getName());
     }
 
@@ -578,8 +576,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isWritableReturnsFalseIfNodeDoesNotExist()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertFalse($node->isWritable());
@@ -590,8 +588,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isWritableReturnsTrueIfNodeExistsAndFileCanBeCreated()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->isWritable());
@@ -605,8 +603,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             $this->markTestSkipped('Test skipped if run on linux as root');
         }
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -618,8 +616,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isDirectoryReturnsTrueIfNameIsADirectory()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertTrue($node->_call('isDirectory'));
@@ -631,8 +629,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Install\Tests\Unit\FolderStructureTes
      */
     public function isDirectoryReturnsFalseIfNameIsALinkToADirectory()
     {
-        /** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, ['getAbsolutePath'], [], '', false);
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
