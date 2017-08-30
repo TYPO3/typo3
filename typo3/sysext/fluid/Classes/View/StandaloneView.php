@@ -73,14 +73,6 @@ class StandaloneView extends AbstractTemplateView
     }
 
     /**
-     * @param string $templateName
-     */
-    public function setTemplate($templateName)
-    {
-        $this->baseRenderingContext->setControllerAction($templateName);
-    }
-
-    /**
      * Sets the format of the current request (default format is "html")
      *
      * @param string $format
@@ -127,17 +119,6 @@ class StandaloneView extends AbstractTemplateView
     }
 
     /**
-     * Sets the absolute path to a Fluid template file
-     *
-     * @param string $templatePathAndFilename Fluid template path
-     * @api
-     */
-    public function setTemplatePathAndFilename($templatePathAndFilename)
-    {
-        $this->baseRenderingContext->getTemplatePaths()->setTemplatePathAndFilename($templatePathAndFilename);
-    }
-
-    /**
      * Returns the absolute path to a Fluid template file if it was specified with setTemplatePathAndFilename() before.
      * If the template filename was never specified, Fluid attempts to resolve the file based on controller and action.
      *
@@ -167,64 +148,6 @@ class StandaloneView extends AbstractTemplateView
     public function setTemplateSource($templateSource)
     {
         $this->baseRenderingContext->getTemplatePaths()->setTemplateSource($templateSource);
-    }
-
-    /**
-     * Set the root path(s) to the templates.
-     *
-     * @param string[] $templateRootPaths Root paths to the templates.
-     * @api
-     */
-    public function setTemplateRootPaths(array $templateRootPaths)
-    {
-        $this->baseRenderingContext->getTemplatePaths()->setTemplateRootPaths($templateRootPaths);
-    }
-
-    /**
-     * Set the root path(s) to the layouts.
-     *
-     * @param string[] $layoutRootPaths Root path to the layouts
-     * @api
-     */
-    public function setLayoutRootPaths(array $layoutRootPaths)
-    {
-        $this->baseRenderingContext->getTemplatePaths()->setLayoutRootPaths($layoutRootPaths);
-    }
-
-    /**
-     * Resolves the layout root to be used inside other paths.
-     *
-     * @return array Fluid layout root paths
-     * @throws InvalidTemplateResourceException
-     * @api
-     */
-    public function getLayoutRootPaths()
-    {
-        return $this->baseRenderingContext->getTemplatePaths()->getLayoutRootPaths();
-    }
-
-    /**
-     * Set the root path(s) to the partials.
-     * If set, overrides the one determined from $this->partialRootPathPattern
-     *
-     * @param string[] $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
-     * @api
-     */
-    public function setPartialRootPaths(array $partialRootPaths)
-    {
-        $this->baseRenderingContext->getTemplatePaths()->setPartialRootPaths($partialRootPaths);
-    }
-
-    /**
-     * Returns the absolute path to the folder that contains Fluid partial files
-     *
-     * @return array Fluid partial root paths
-     * @throws InvalidTemplateResourceException
-     * @api
-     */
-    public function getPartialRootPaths()
-    {
-        return $this->baseRenderingContext->getTemplatePaths()->getPartialRootPaths();
     }
 
     /**
