@@ -27,7 +27,7 @@ The new configuration array structure:
 				'host' => '127.0.0.1',
 				'port' => 3306,
 				'user' => 'typo3',
-				'socket' => '',
+				'unix_socket' => '',
 				'charset' => 'utf-8',
 			],
 		],
