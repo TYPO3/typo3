@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Common\LoginForm;
@@ -31,10 +34,11 @@ class AbstractController
     /**
      * Show login form
      *
-     * @param FlashMessage $message Optional status message from controller
+     * @param ServerRequestInterface $request
+     * @param FlashMessage $message Optional status message
      * @return string Rendered HTML
      */
-    public function loginForm(FlashMessage $message = null)
+    protected function loginForm(ServerRequestInterface $request, FlashMessage $message = null)
     {
         /** @var LoginForm $action */
         $action = GeneralUtility::makeInstance(LoginForm::class);
@@ -195,17 +199,19 @@ class AbstractController
     }
 
     /**
-     * Output content.
-     * WARNING: This exits the script execution!
+     * Creates a PSR-7 response
      *
-     * @param string $content Content to output
+     * @param string $content
+     * @return ResponseInterface
      */
-    public function output($content = '')
+    public function output($content = ''): ResponseInterface
     {
-        header('Content-Type: text/html; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        echo $content;
-        die;
+        $response = new Response('php://temp', 200, [
+            'Content-Type' => 'text/html; charset=utf-8',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
+        ]);
+        $response->getBody()->write($content);
+        return $response;
     }
 }

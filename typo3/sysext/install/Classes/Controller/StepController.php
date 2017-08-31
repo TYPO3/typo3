@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Step\AbstractStepAction;
@@ -50,15 +52,20 @@ class StepController extends AbstractController
     }
 
     /**
-     * Index action acts as a dispatcher to different steps
+     * Main dispatch method
      *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
      * @throws Exception
      */
-    public function execute()
+    public function execute(ServerRequestInterface $request): ResponseInterface
     {
         $this->executeSpecificStep();
-        $this->outputSpecificStep();
-        $this->redirectToTool();
+        $response = $this->outputSpecificStep();
+        if (!($response instanceof ResponseInterface)) {
+            $this->redirectToTool();
+        }
+        return $response;
     }
 
     /**
@@ -68,7 +75,7 @@ class StepController extends AbstractController
      * As soon as there is a typo3conf directory at all (not step 1 of "first install"),
      * the file must be there and valid in order to proceed.
      */
-    public function outputInstallToolNotEnabledMessage()
+    public function outputInstallToolNotEnabledMessage(): ResponseInterface
     {
         if (!EnableFileService::isFirstInstallAllowed() && !\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->checkIfEssentialConfigurationExists()) {
             /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
@@ -80,7 +87,7 @@ class StepController extends AbstractController
             $action->setAction('installToolDisabled');
         }
         $action->setController('common');
-        $this->output($action->handle());
+        return $this->output($action->handle());
     }
 
     /**
@@ -89,13 +96,13 @@ class StepController extends AbstractController
      * If installation is completed - LocalConfiguration exists and
      * installProcess is not running, and installToolPassword must be set
      */
-    public function outputInstallToolPasswordNotSetMessage()
+    public function outputInstallToolPasswordNotSetMessage(): ResponseInterface
     {
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
         $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
         $action->setController('common');
         $action->setAction('installToolPasswordNotSet');
-        $this->output($action->handle());
+        return $this->output($action->handle());
     }
 
     /**
@@ -157,14 +164,13 @@ class StepController extends AbstractController
                 $stepAction->setStepsCounter($currentStep, $totalSteps);
             }
             $stepAction->setMessages($this->session->getMessagesAndFlush());
-            $this->output($stepAction->handle());
-        } else {
-            // Redirect to next step if there are any
-            $currentPosition = array_keys($this->authenticationActions, $action, true);
-            $nextAction = array_slice($this->authenticationActions, $currentPosition[0] + 1, 1);
-            if (!empty($nextAction)) {
-                $this->redirect('', $nextAction[0]);
-            }
+            return $this->output($stepAction->handle());
+        }
+        // Redirect to next step if there are any
+        $currentPosition = array_keys($this->authenticationActions, $action, true);
+        $nextAction = array_slice($this->authenticationActions, $currentPosition[0] + 1, 1);
+        if (!empty($nextAction)) {
+            $this->redirect('', $nextAction[0]);
         }
     }
 
@@ -210,6 +216,8 @@ class StepController extends AbstractController
      * So, if no typo3conf directory exists yet, the first step is just rendered, or
      * executed if called so. After that, a redirect is initiated to proceed with
      * other tasks.
+     *
+     * @return ResponseInterface|null
      */
     public function executeOrOutputFirstInstallStepIfNeeded()
     {
@@ -238,7 +246,7 @@ class StepController extends AbstractController
             if (!empty($errorMessagesFromExecute)) {
                 $action->setMessages($errorMessagesFromExecute);
             }
-            $this->output($action->handle());
+            return $this->output($action->handle());
         }
 
         if ($wasExecuted) {
@@ -279,5 +287,17 @@ class StepController extends AbstractController
         foreach ($messages as $message) {
             $this->session->addMessage($message);
         }
+    }
+
+    /**
+     * Show login for if user is not authorized yet
+     *
+     * @param ServerRequestInterface $request
+     * @param FlashMessage $message
+     * @return ResponseInterface
+     */
+    public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
+    {
+        return $this->output($this->loginForm($request, $message));
     }
 }

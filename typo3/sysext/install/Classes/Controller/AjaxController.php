@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,27 +88,12 @@ class AjaxController extends AbstractController
 
     /**
      * Main entry point
-     */
-    public function execute()
-    {
-        $this->dispatchAuthenticationActions();
-    }
-
-    /**
-     * Check login status
-     */
-    public function unauthorizedAction()
-    {
-        $this->output($this->unauthorized);
-    }
-
-    /**
-     * Call an action that needs authentication
      *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
      * @throws Exception
-     * @return string Rendered content
      */
-    protected function dispatchAuthenticationActions()
+    public function execute(ServerRequestInterface $request): ResponseInterface
     {
         $action = $this->getAction();
         if ($action === '') {
@@ -124,22 +113,36 @@ class AjaxController extends AbstractController
         $toolAction->setAction($action);
         $toolAction->setToken($this->generateTokenForAction($action));
         $toolAction->setPostValues($this->getPostValues());
-        $this->output($toolAction->handle());
+        return $this->output($toolAction->handle());
     }
 
     /**
-     * Output content.
-     * WARNING: This exits the script execution!
+     * Render "unauthorized"
      *
-     * @param string $content JSON encoded content to output
+     * @param ServerRequestInterface $request
+     * @param FlashMessage $message
+     * @return ResponseInterface
      */
-    public function output($content = '')
+    public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
+    {
+        return $this->output($this->unauthorized);
+    }
+
+    /**
+     * Creates a PSR-7 response
+     *
+     * @param string $content
+     * @return ResponseInterface
+     */
+    public function output($content = ''): ResponseInterface
     {
         ob_clean();
-        header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        echo $content;
-        die;
+        $response = new Response('php://temp', 200, [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
+        ]);
+        $response->getBody()->write($content);
+        return $response;
     }
 }

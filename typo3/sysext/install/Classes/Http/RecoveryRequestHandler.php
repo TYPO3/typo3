@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -65,8 +66,9 @@ class RecoveryRequestHandler implements RequestHandlerInterface
      * Handles an install tool request when nothing is there
      *
      * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function handleRequest(ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
         $controller = GeneralUtility::makeInstance(StepController::class);
@@ -75,18 +77,21 @@ class RecoveryRequestHandler implements RequestHandlerInterface
             // Warning: Order of these methods is security relevant and interferes with different access
             // conditions (new/existing installation). See the single method comments for details.
             if (!$this->isInstallToolAvailable()) {
-                $controller->outputInstallToolNotEnabledMessage();
+                return $controller->outputInstallToolNotEnabledMessage();
             }
             if (!$this->isInitialInstallationInProgress()
                 && !$this->isInstallToolPasswordSet()
             ) {
-                $controller->outputInstallToolPasswordNotSetMessage();
+                return $controller->outputInstallToolPasswordNotSetMessage();
             }
             $this->recreatePackageStatesFileIfNotExisting();
 
             // todo: this would be nice, if this is detected by the Request workflow and not the controller
             // controller should just execute this
-            $controller->executeOrOutputFirstInstallStepIfNeeded();
+            $response = $controller->executeOrOutputFirstInstallStepIfNeeded();
+            if ($response instanceof ResponseInterface) {
+                return $response;
+            }
             $this->adjustTrustedHostsPatternIfNeeded();
             $this->executeSilentConfigurationUpgradesIfNeeded();
             $this->initializeSession();
@@ -101,9 +106,9 @@ class RecoveryRequestHandler implements RequestHandlerInterface
             $this->session->refreshSession();
 
             $controller->setSessionService($this->session);
-            $controller->execute();
+            return $controller->execute($this->request);
         } catch (AuthenticationRequiredException $e) {
-            $controller->output($controller->loginForm($e->getMessageObject()));
+            return $controller->unauthorizedAction($this->request, $e->getMessageObject());
         } catch (RedirectException $e) {
             $controller->redirect();
         }

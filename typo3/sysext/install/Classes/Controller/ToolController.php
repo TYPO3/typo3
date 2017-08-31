@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Install\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * Install tool controller, dispatcher class of the install tool.
  *
@@ -34,27 +38,12 @@ class ToolController extends AbstractController
 
     /**
      * Main dispatch method
-     */
-    public function execute()
-    {
-        $this->dispatchAuthenticationActions();
-    }
-
-    /**
-     * Show login for if user is not authorized yet
-     */
-    public function unauthorizedAction()
-    {
-        $this->output($this->loginForm());
-    }
-
-    /**
-     * Call an action that needs authentication
      *
+     * @param $request ServerRequestInterface
+     * @return ResponseInterface
      * @throws Exception
-     * @return string Rendered content
      */
-    protected function dispatchAuthenticationActions()
+    public function execute(ServerRequestInterface $request): ResponseInterface
     {
         $action = $this->getAction();
         if ($action === '') {
@@ -74,6 +63,18 @@ class ToolController extends AbstractController
         $toolAction->setAction($action);
         $toolAction->setToken($this->generateTokenForAction($action));
         $toolAction->setPostValues($this->getPostValues());
-        $this->output($toolAction->handle());
+        return $this->output($toolAction->handle());
+    }
+
+    /**
+     * Show login for if user is not authorized yet
+     *
+     * @param ServerRequestInterface $request
+     * @param FlashMessage $message
+     * @return ResponseInterface
+     */
+    public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
+    {
+        return $this->output($this->loginForm($request, $message));
     }
 }

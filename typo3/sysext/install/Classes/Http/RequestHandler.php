@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -63,14 +64,16 @@ class RequestHandler implements RequestHandlerInterface
      * Handles an install tool request for normal operations
      *
      * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function handleRequest(ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
         $getPost = !empty($request->getQueryParams()['install']) ? $request->getQueryParams()['install'] : $request->getParsedBody()['install'];
-        if ($getPost['controller'] === 'ajax') {
+        $isAjaxRequest = $getPost['controller'] === 'ajax';
+
+        if ($isAjaxRequest) {
             $controllerClassName = \TYPO3\CMS\Install\Controller\AjaxController::class;
-            $this->request = $this->request->withAttribute('isAjaxRequest', true);
         } else {
             $controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
         }
@@ -88,19 +91,14 @@ class RequestHandler implements RequestHandlerInterface
             $this->loginIfRequested();
 
             if (!$this->session->isAuthorized()) {
-                $controller->unauthorizedAction();
-            } else {
-                $this->session->refreshSession();
+                return $controller->unauthorizedAction($this->request);
             }
+            $this->session->refreshSession();
 
-            $controller->execute();
+            return $controller->execute($this->request);
         } catch (AuthenticationRequiredException $e) {
-            // show the login form (or, if AJAX call, just do
-            if ($this->request->getAttribute('isAjaxRequest', false)) {
-                $controller->unauthorizedAction();
-            } else {
-                $controller->output($controller->loginForm($e->getMessageObject()));
-            }
+            // Show the login form (or, if AJAX call, just return "unauthorized"
+            return $controller->unauthorizedAction($this->request, $e->getMessageObject());
         } catch (Exception\RedirectException $e) {
             $controller->redirect();
         }
