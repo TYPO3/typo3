@@ -55,8 +55,7 @@ The extension provides several types of hashing method:
 
 - **Blowfish salted hashing** This method provides increased security in
   comparison to MD5 salted hashing. Use this setting if you have higher
-  requirements on password security. This requires a PHP > 5.3.0, PHP
-  5.X.X with suhosin patch applied or PHP compiled with a recent glibc.
+  requirements on password security.
   You might want to execute the Unit Tests brought together with this
   extension; if tests in blowfish test suite fail, your server
   installation most probably does not support blowfish. Once you've
