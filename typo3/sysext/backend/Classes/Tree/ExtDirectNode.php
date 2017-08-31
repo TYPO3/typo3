@@ -586,7 +586,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
         if (!$this->isLeafNode()) {
             $arrayRepresentation['leaf'] = false;
         }
-        // Suhosin(?) or some other strange environment thingy prevents
+        // Some strange environment thingy prevents
         // the direct copy of an array into an index of the same array
         $copy = $arrayRepresentation;
         $arrayRepresentation['nodeData'] = $copy;
