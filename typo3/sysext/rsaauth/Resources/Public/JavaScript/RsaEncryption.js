@@ -32,6 +32,10 @@
 		 * Fetches a new public key by Ajax and encrypts the password for transmission
 		 */
 		this.handleFormSubmitRequest = function(event) {
+			if (event.cancelBubble) {
+				return;
+			}
+
 			var rsaEncryption = this.rsaEncryption || event.srcElement.rsaEncryption;
 			if (!rsaEncryption) {
 				return;
