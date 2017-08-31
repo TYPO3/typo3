@@ -45,12 +45,11 @@ class AbstractController
         $action->setController('common');
         $action->setAction('login');
         $action->setToken($this->generateTokenForAction('login'));
-        $action->setPostValues($this->getPostValues());
+        $action->setPostValues($request->getParsedBody()['install'] ?? []);
         if ($message) {
             $action->setMessages([$message]);
         }
-        $content = $action->handle();
-        return $content;
+        return $action->handle();
     }
 
     /**
@@ -62,9 +61,6 @@ class AbstractController
      */
     protected function generateTokenForAction($action = null)
     {
-        if (!$action) {
-            $action = $this->getAction();
-        }
         if ($action === '') {
             throw new Exception(
                 'Token must have a valid action name',
@@ -98,15 +94,11 @@ class AbstractController
      * Retrieve parameter from GET or POST and sanitize
      *
      * @throws Exception
+     * @param string $action requested action
      * @return string Empty string if no action is given or sanitized action string
      */
-    public function getAction()
+    protected function sanitizeAction($action = '')
     {
-        $formValues = GeneralUtility::_GP('install');
-        $action = '';
-        if (isset($formValues['action'])) {
-            $action = $formValues['action'];
-        }
         if ($action !== ''
             && $action !== 'login'
             && $action !== 'loginForm'
@@ -119,21 +111,6 @@ class AbstractController
             );
         }
         return $action;
-    }
-
-    /**
-     * Get POST form values of install tool.
-     * All POST data is secured by form token protection, except in very installation step.
-     *
-     * @return array
-     */
-    protected function getPostValues()
-    {
-        $postValues = GeneralUtility::_POST('install');
-        if (!is_array($postValues)) {
-            $postValues = [];
-        }
-        return $postValues;
     }
 
     /**

@@ -60,12 +60,8 @@ class StepController extends AbstractController
      */
     public function execute(ServerRequestInterface $request): ResponseInterface
     {
-        $this->executeSpecificStep();
-        $response = $this->outputSpecificStep();
-        if (!($response instanceof ResponseInterface)) {
-            $this->redirectToTool();
-        }
-        return $response;
+        $this->executeSpecificStep($request);
+        return $this->outputSpecificStep($request);
     }
 
     /**
@@ -110,18 +106,19 @@ class StepController extends AbstractController
      * the next request will render step one again if needed or initiate a
      * request to test the next step.
      *
+     * @param ServerRequestInterface $request
      * @throws Exception
      */
-    protected function executeSpecificStep()
+    protected function executeSpecificStep(ServerRequestInterface $request)
     {
-        $action = $this->getAction();
-        $postValues = $this->getPostValues();
+        $action = $this->sanitizeAction($request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? '');
+        $postValues = $request->getParsedBody()['install'] ?? [];
         if ($action && isset($postValues['set']) && $postValues['set'] === 'execute') {
             /** @var AbstractStepAction $stepAction */
             $stepAction = $this->getActionInstance($action);
             $stepAction->setAction($action);
             $stepAction->setToken($this->generateTokenForAction($action));
-            $stepAction->setPostValues($this->getPostValues());
+            $stepAction->setPostValues($postValues);
             $messages = $stepAction->execute();
             $this->addSessionMessages($messages);
             $this->redirect();
@@ -133,10 +130,14 @@ class StepController extends AbstractController
      * The according step is instantiated and 'needsExecution' is called. If
      * it needs execution, the step will be rendered, otherwise a redirect
      * to test the next step is initiated.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    protected function outputSpecificStep()
+    protected function outputSpecificStep(ServerRequestInterface $request)
     {
-        $action = $this->getAction();
+        $postValues = $request->getParsedBody()['install'] ?? [];
+        $action = $this->sanitizeAction($request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? '');
         if ($action === '') {
             // First step action
             list($action) = $this->authenticationActions;
@@ -146,7 +147,7 @@ class StepController extends AbstractController
         $stepAction->setAction($action);
         $stepAction->setController('step');
         $stepAction->setToken($this->generateTokenForAction($action));
-        $stepAction->setPostValues($this->getPostValues());
+        $stepAction->setPostValues($postValues);
 
         $needsExecution = true;
         try {
@@ -172,6 +173,9 @@ class StepController extends AbstractController
         if (!empty($nextAction)) {
             $this->redirect('', $nextAction[0]);
         }
+
+        // All done, redirect to tool
+        $this->redirect('tool');
     }
 
     /**
@@ -197,15 +201,6 @@ class StepController extends AbstractController
     }
 
     /**
-     * If the last step was reached and none needs execution, a redirect
-     * to call the tool controller is initiated.
-     */
-    protected function redirectToTool()
-    {
-        $this->redirect('tool');
-    }
-
-    /**
      * The first install step has a special standing and needs separate handling:
      * At this point no directory exists (no typo3conf, no typo3temp), so we can
      * not start the session handling (that stores the install tool session within typo3temp).
@@ -217,12 +212,13 @@ class StepController extends AbstractController
      * executed if called so. After that, a redirect is initiated to proceed with
      * other tasks.
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface|null
      */
-    public function executeOrOutputFirstInstallStepIfNeeded()
+    public function executeOrOutputFirstInstallStepIfNeededAction(ServerRequestInterface $request)
     {
         $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
-        $postValues = $this->getPostValues();
+        $postValues = $request->getParsedBody()['install'] ?? [];
 
         $wasExecuted = false;
         $errorMessagesFromExecute = [];

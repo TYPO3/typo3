@@ -88,7 +88,7 @@ class RecoveryRequestHandler implements RequestHandlerInterface
 
             // todo: this would be nice, if this is detected by the Request workflow and not the controller
             // controller should just execute this
-            $response = $controller->executeOrOutputFirstInstallStepIfNeeded();
+            $response = $controller->executeOrOutputFirstInstallStepIfNeededAction($this->request);
             if ($response instanceof ResponseInterface) {
                 return $response;
             }

@@ -45,7 +45,7 @@ class ToolController extends AbstractController
      */
     public function execute(ServerRequestInterface $request): ResponseInterface
     {
-        $action = $this->getAction();
+        $action = $this->sanitizeAction($request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? '');
         if ($action === '') {
             $action = 'maintenance';
         }
@@ -62,7 +62,7 @@ class ToolController extends AbstractController
         $toolAction->setController('tool');
         $toolAction->setAction($action);
         $toolAction->setToken($this->generateTokenForAction($action));
-        $toolAction->setPostValues($this->getPostValues());
+        $toolAction->setPostValues($request->getParsedBody()['install'] ?? []);
         return $this->output($toolAction->handle());
     }
 
