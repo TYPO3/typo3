@@ -82,6 +82,7 @@ class StepController extends AbstractController
             $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);
             $action->setAction('installToolDisabled');
         }
+        $action->setContext('standalone');
         $action->setController('common');
         return $this->output($action->handle());
     }
@@ -97,6 +98,7 @@ class StepController extends AbstractController
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
         $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
         $action->setController('common');
+        $action->setContext('standalone');
         $action->setAction('installToolPasswordNotSet');
         return $this->output($action->handle());
     }
@@ -117,6 +119,7 @@ class StepController extends AbstractController
             /** @var AbstractStepAction $stepAction */
             $stepAction = $this->getActionInstance($action);
             $stepAction->setAction($action);
+            $stepAction->setContext('standalone');
             $stepAction->setToken($this->generateTokenForAction($action));
             $stepAction->setPostValues($postValues);
             $messages = $stepAction->execute();
@@ -146,6 +149,7 @@ class StepController extends AbstractController
         $stepAction = $this->getActionInstance($action);
         $stepAction->setAction($action);
         $stepAction->setController('step');
+        $stepAction->setContext('standalone');
         $stepAction->setToken($this->generateTokenForAction($action));
         $stepAction->setPostValues($postValues);
 
@@ -238,6 +242,7 @@ class StepController extends AbstractController
                 $action->setStepsCounter($currentStep, $totalSteps);
             }
             $action->setController('step');
+            $action->setContext('standalone');
             $action->setAction('environmentAndFolders');
             if (!empty($errorMessagesFromExecute)) {
                 $action->setMessages($errorMessagesFromExecute);

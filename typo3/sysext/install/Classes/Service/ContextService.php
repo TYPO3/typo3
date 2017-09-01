@@ -26,13 +26,12 @@ class ContextService
 
     /**
      * Constructor, prepare the context information
+     *
+     * @param string $context
      */
-    public function __construct()
+    public function __construct($context)
     {
-        $formValues = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
-        if (isset($formValues['context'])) {
-            $this->backendContext = ($formValues['context'] === 'backend');
-        }
+        $this->backendContext = ($context === 'backend');
     }
 
     /**

@@ -16,17 +16,9 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
- * Backend module controller
- *
- * Embeds in backend and only shows the 'enable install tool button' or redirects
- * to step installer if install tool is enabled.
+ * Backend module controller to dispatch to the main modules or to an AJAX request
  *
  * This is a classic backend module that does not interfere with other code
  * within the install tool, it can be seen as a facade around install tool just
@@ -35,62 +27,82 @@ use TYPO3\CMS\Install\Service\EnableFileService;
 class BackendModuleController
 {
     /**
-     * Index action shows install tool / step installer or redirect to action to enable install tool
+     * Renders the maintenance tool action (or AJAX, if it was specifically requested)
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @return ResponseInterface
-     * @throws \RuntimeException
      */
-    public function index(ServerRequestInterface $request, ResponseInterface $response)
+    public function maintenanceAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $enableFileService = GeneralUtility::makeInstance(EnableFileService::class);
+        return $this->executeSpecificToolAction($request, 'maintenance');
+    }
 
-        $formProtection = FormProtectionFactory::get();
+    /**
+     * Renders the settings tool action (or AJAX, if it was specifically requested)
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function settingsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        return $this->executeSpecificToolAction($request, 'settings');
+    }
 
-        $targetUrl = 'install.php?install[context]=backend';
-        if (!empty($request->getQueryParams()['install']['action'])) {
-            $subAction = !empty($request->getQueryParams()['install']['action'])
-                ? $request->getQueryParams()['install']['action']
-                : '';
-            $targetUrl .= '&install[controller]=tool&install[action]=' . $subAction;
+    /**
+     * Renders the upgrade tool action (or AJAX, if it was specifically requested)
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function upgradeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        return $this->executeSpecificToolAction($request, 'upgrade');
+    }
+
+    /**
+     * Renders the environment tool action (or AJAX, if it was specifically requested)
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function environmentAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        return $this->executeSpecificToolAction($request, 'environment');
+    }
+
+    /**
+     * Sets the action inside the install tool to a specific action and calls the "toolcontroller" afterwards
+     *
+     * @param ServerRequestInterface $request
+     * @param $action
+     * @return ResponseInterface
+     */
+    protected function executeSpecificToolAction(ServerRequestInterface $request, $action): ResponseInterface
+    {
+        $request = $request->withAttribute('context', 'backend');
+        // Can be moved into one controller in my opinion now, or should go into a dispatcher that
+        // also deals with actions
+        if ($request->getQueryParams()['install']['controller'] === 'ajax') {
+            return $this->handleAjaxRequest($request);
         }
+        $queryParameters = $request->getQueryParams();
+        $queryParameters['install']['action'] = $action;
+        $request = $request->withQueryParams($queryParameters);
+        return (new ToolController())->execute($request);
+    }
 
-        if ($enableFileService->checkInstallToolEnableFile()) {
-            // Install tool is open and valid, redirect to it
-            $response = $response
-                ->withStatus(303)
-                ->withHeader('Location', $targetUrl);
-        } elseif ($request->getMethod() === 'POST' && $request->getParsedBody()['action'] === 'enableInstallTool') {
-            // Request to open the install tool
-            $installToolEnableToken = $request->getParsedBody()['installToolEnableToken'];
-            if (!$formProtection->validateToken($installToolEnableToken, 'installTool')) {
-                throw new \RuntimeException('Given form token was not valid', 1369161225);
-            }
-            $enableFileService->createInstallToolEnableFile();
-
-            // Install tool is open and valid, redirect to it
-            $response = $response
-                ->withStatus(303)
-                ->withHeader('Location', $targetUrl);
-        } else {
-            // Show the "create enable install tool" button
-            $token = $formProtection->generateToken('installTool');
-
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(
-                GeneralUtility::getFileAbsFileName(
-                    'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html'
-                )
-            );
-            $view->assign('installToolEnableToken', $token);
-
-            $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-            $moduleTemplate->setContent($view->render());
-
-            $response->getBody()->write($moduleTemplate->renderContent());
-        }
-
-        return $response;
+    /**
+     * Calls the AJAX controller (if requested as "controller")
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    protected function handleAjaxRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return (new AjaxController())->execute($request);
     }
 }

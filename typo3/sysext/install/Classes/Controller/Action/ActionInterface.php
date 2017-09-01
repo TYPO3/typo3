@@ -49,6 +49,13 @@ interface ActionInterface
     public function setAction($action);
 
     /**
+     * Set the context name, can be "installer", "standalone" or "backend"
+     *
+     * @param string $context
+     */
+    public function setContext($context);
+
+    /**
      * Set POST values
      *
      * @param array $postValues List of values submitted via POST

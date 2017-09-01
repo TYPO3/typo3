@@ -44,6 +44,7 @@ class AbstractController
         $action = GeneralUtility::makeInstance(LoginForm::class);
         $action->setController('common');
         $action->setAction('login');
+        $action->setContext($request->getAttribute('context', 'standalone'));
         $action->setToken($this->generateTokenForAction('login'));
         $action->setPostValues($request->getParsedBody()['install'] ?? []);
         if ($message) {
@@ -145,13 +146,6 @@ class AbstractController
             );
         }
         $parameters[] = 'install[redirectCount]=' . $redirectCount;
-
-        // Add context parameter in case this script was called within backend scope
-        $context = 'install[context]=standalone';
-        if (isset($getPostValues['context']) && $getPostValues['context'] === 'backend') {
-            $context = 'install[context]=backend';
-        }
-        $parameters[] = $context;
 
         // Add controller parameter
         $controllerParameter = 'install[controller]=step';

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Controller\Action;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Install\Service\ContextService;
 
 /**
  * General purpose controller action helper methods and bootstrap
@@ -53,6 +54,11 @@ abstract class AbstractAction implements ActionInterface
     protected $messages = [];
 
     /**
+     * @var ContextService
+     */
+    protected $contextService;
+
+    /**
      * Handles the action
      *
      * @return string Rendered content
@@ -68,9 +74,6 @@ abstract class AbstractAction implements ActionInterface
      */
     protected function initializeHandle()
     {
-        // Context service distinguishes between standalone and backend context
-        $contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class);
-
         $viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
         $controllerActionDirectoryName = ucfirst($this->controller);
         $mainTemplate = ucfirst($this->action);
@@ -85,8 +88,8 @@ abstract class AbstractAction implements ActionInterface
             ->assign('action', $this->action)
             ->assign('controller', $this->controller)
             ->assign('token', $this->token)
-            ->assign('context', $contextService->getContextString())
-            ->assign('contextService', $contextService)
+            ->assign('context', $this->contextService->getContextString())
+            ->assign('contextService', $this->contextService)
             ->assign('messages', $this->messages)
             ->assign('typo3Version', TYPO3_version)
             ->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
@@ -152,17 +155,13 @@ abstract class AbstractAction implements ActionInterface
 
     /**
      * Context determines if the install tool is called within backend or standalone
+     * This method creates a context service that distinguishes between standalone and backend context
      *
-     * @return string Either 'standalone' or 'backend'
+     * @param $context string Either 'standalone' or 'backend'
      */
-    protected function getContext()
+    public function setContext($context)
     {
-        $context = 'standalone';
-        $formValues = GeneralUtility::_GP('install');
-        if (isset($formValues['context'])) {
-            $context = $formValues['context'] === 'backend' ? 'backend' : 'standalone';
-        }
-        return $context;
+        $this->contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class, $context);
     }
 
     /**

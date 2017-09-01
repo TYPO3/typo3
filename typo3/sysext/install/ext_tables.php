@@ -17,12 +17,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
-            'routeParameters' => [
-                'install' => [
-                    'action' => 'maintenance'
-                ]
-            ],
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::maintenanceAction',
             'access' => 'systemMaintainer',
             'name' => 'tools_toolsmaintenance',
             'iconIdentifier' => 'module-install-maintenance',
@@ -35,12 +30,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
-            'routeParameters' => [
-                'install' => [
-                    'action' => 'settings'
-                ]
-            ],
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::settingsAction',
             'access' => 'systemMaintainer',
             'name' => 'tools_toolssettings',
             'iconIdentifier' => 'module-install-settings',
@@ -53,12 +43,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
-            'routeParameters' => [
-                'install' => [
-                    'action' => 'upgrade'
-                ]
-            ],
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::upgradeAction',
             'access' => 'systemMaintainer',
             'name' => 'tools_toolsupgrade',
             'iconIdentifier' => 'module-install-upgrade',
@@ -71,12 +56,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
-            'routeParameters' => [
-                'install' => [
-                    'action' => 'environment'
-                ]
-            ],
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::environmentAction',
             'access' => 'systemMaintainer',
             'name' => 'tools_toolsenvironment',
             'iconIdentifier' => 'module-install-environment',

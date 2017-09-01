@@ -62,6 +62,7 @@ class ToolController extends AbstractController
         $toolAction->setController('tool');
         $toolAction->setAction($action);
         $toolAction->setToken($this->generateTokenForAction($action));
+        $toolAction->setContext($request->getAttribute('context', 'standalone'));
         $toolAction->setPostValues($request->getParsedBody()['install'] ?? []);
         return $this->output($toolAction->handle());
     }
