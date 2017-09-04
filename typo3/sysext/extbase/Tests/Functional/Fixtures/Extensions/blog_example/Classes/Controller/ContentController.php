@@ -45,7 +45,20 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $content = $this->contentRepository->findAll();
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($content);
-
+        // this is required so we don't try to json_encode content of the image
+        $this->view->setConfiguration(['value' => [
+            '_descendAll' => [
+                '_descendAll' => [
+                    '_descendAll' => [
+                        '_descendAll' => [
+                            '_descendAll' => [
+                                '_exclude' => ['contents']
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]]);
         $this->view->assign('value', $value);
     }
 

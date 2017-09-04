@@ -69,6 +69,14 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
         ]
     ];
 
+    /**
+     * @var array
+     */
+    protected $pathsToLinkInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
+    ];
+
     protected function setUp()
     {
         parent::setUp();
