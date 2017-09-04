@@ -529,7 +529,7 @@ abstract class AbstractLinkBrowserController
                     <label class="col-xs-4 control-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
                     <div class="col-xs-8">
                         <input type="text" name="lclass" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" /></td>
+                            value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" />
                     </div>
                 </div>
             </form>';
