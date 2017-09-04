@@ -1472,7 +1472,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
         $content = '';
         // Get processed values:
         $info = [];
-        $this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
+        $this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,space_before_class,space_after_class', $row, $info);
 
         // Content element annotation
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn'])) {
