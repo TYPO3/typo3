@@ -511,7 +511,7 @@
 				<source>Bottom Margin</source>
 			</trans-unit>
 			<trans-unit id="space_before_class">
-				<source>Space Before Alass</source>
+				<source>Space Before Class</source>
 			</trans-unit>
 			<trans-unit id="space_before_class_formlabel">
 				<source>Space Before</source>
