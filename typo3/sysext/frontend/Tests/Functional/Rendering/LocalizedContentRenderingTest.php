@@ -96,12 +96,23 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         ]
     ];
 
+    /**
+     * @var array
+     */
+    protected $pathsToLinkInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
+    ];
+
     protected function setUp()
     {
         parent::setUp();
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');
-
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+        ]);
         $this->backendUser->workspace = 0;
     }
 
@@ -214,9 +225,6 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      */
     public function onlyEnglishContentIsRenderedForDefaultLanguage(string $typoScript, string $sysLanguageMode, string $sysLanguageContentOL)
     {
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
-        ]);
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
 
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 0);
@@ -237,6 +245,26 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
 
+        //assert FAL relations
+        $visibleFiles = ['T3BOARD'];
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
+            ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
+
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
+            ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
+
+        $visibleFiles = ['Kasper'];
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
+            ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
+
+        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
+            ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
+
+        //Assert TSFE and page record title
         $content = json_decode($frontendResponse->getContent());
         $this->assertEquals('Default language Page', $content->Scope->page->title);
         $this->assertEquals(0, $content->Scope->tsfe->sys_language_uid, 'sys_language_uid doesn\'t match');
@@ -259,42 +287,140 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => []
+                    ],
+                ],
                 'sys_language_mode' => '',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => []
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => []
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => []
+                    ],
+                ],
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => []
+                    ],
+                ],
                 'sys_language_mode' => 'ignore',
                 'sys_language_contentOL' => 0
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => '',
                 'sys_language_contentOL' => 1
             ],
@@ -303,7 +429,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 1
             ],
@@ -313,21 +452,60 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 1
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 1
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'ignore',
                 'sys_language_contentOL' => 1
             ],
@@ -336,21 +514,48 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => '',
                 'sys_language_contentOL' => 'hideNonTranslated'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 'hideNonTranslated'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'content_fallback',
                 'sys_language_contentOL' => 'hideNonTranslated'
             ],
@@ -358,14 +563,32 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'strict',
                 'sys_language_contentOL' => 'hideNonTranslated'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'sys_language_mode' => 'ignore',
                 'sys_language_contentOL' => 'hideNonTranslated'
             ],
@@ -377,18 +600,19 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      * @dataProvider dutchDataProvider
      *
      * @param string $typoScript
-     * @param array $visibleHeaders
+     * @param array $visibleRecords
      * @param string $sysLanguageMode
      * @param string $sysLanguageContentOL
      */
-    public function renderingOfDutchLanguage(string $typoScript, array $visibleHeaders, string $sysLanguageMode, string $sysLanguageContentOL)
+    public function renderingOfDutchLanguage(string $typoScript, array $visibleRecords, string $sysLanguageMode, string $sysLanguageContentOL)
     {
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
-        ]);
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 1);
         $responseSections = $frontendResponse->getResponseSections();
+        $visibleHeaders = array_map(function ($element) {
+            return $element['header'];
+        }, $visibleRecords);
+
         $this->assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
@@ -403,6 +627,19 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             ->setField('header')
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
+
+        foreach ($visibleRecords as $ttContentUid => $properties) {
+            $visibleFileTitles = $properties['image'];
+            if (!empty($visibleFileTitles)) {
+                $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                    ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                    ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
+            }
+            $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+                ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
+        }
+
         $content = json_decode($frontendResponse->getContent());
         $this->assertEquals('[DK]Page', $content->Scope->page->title);
         $this->assertEquals(1, $content->Scope->tsfe->sys_language_uid, 'sys_language_uid doesn\'t match');
@@ -422,7 +659,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 0,
                 'sys_language_content' => 0,
@@ -432,7 +682,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 0,
@@ -442,7 +705,24 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[DK] Without default language', '[DK] UnHidden Element #4'],
+                'visibleRecords' => [
+                    300 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    301 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    303 => [
+                        'header' => '[DK] Without default language',
+                        'image' => ['[T3BOARD] Image added to DK elemet without default language'],
+                    ],
+                    308 => [
+                        'header' => '[DK] UnHidden Element #4',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
@@ -452,7 +732,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => [],
+                'visibleRecords' => [],
                 'pageTitle' => '',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -463,7 +743,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[DE] Without default language'],
+                'visibleRecords' => [
+                    302 => [
+                        'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
+                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                    ],
+                    304 => [
+                        'header' => '[DE] Without default language',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -473,7 +762,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             5 => [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 0,
                 'sys_language_content' => 0,
@@ -484,7 +786,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 0,
@@ -496,7 +811,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
@@ -506,7 +834,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => [],
+                'visibleRecords' => [],
                 'pageTitle' => '',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -517,7 +845,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
+                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -527,7 +868,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             10 => [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode =',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 0,
                 'sys_language_content' => 0,
@@ -537,7 +891,20 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback',
-                'visibleRecordHeaders' => ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => 'Regular Element #1',
+                        'image' => ['T3BOARD'],
+                    ],
+                    298 => [
+                        'header' => 'Regular Element #2',
+                        'image' => ['Kasper'],
+                    ],
+                    299 => [
+                        'header' => 'Regular Element #3',
+                        'image' => [],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 0,
@@ -547,7 +914,16 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
-                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Dansk:] Regular Element #1',
+                        'image' => [],
+                    ],
+                    299 => [
+                        'header' => '[Translate to Dansk:] Regular Element #3',
+                        'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page', //TODO: change it to "[DK]Page" once #81657 is fixed
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
@@ -557,7 +933,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = strict',
-                'visibleRecordHeaders' => [],
+                'visibleRecords' => [],
                 'pageTitle' => '',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -568,7 +944,12 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = ignore',
-                'visibleRecordHeaders' => ['[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'],
+                'visibleRecords' => [
+                    297 => [
+                        'header' => '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
+                        'image' => ['[T3BOARD] image translated to DE from DK'],
+                    ],
+                ],
                 'pageTitle' => 'Default language Page',
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
@@ -585,7 +966,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      * @dataProvider contentOnNonTranslatedPageDataProvider
      *
      * @param string $typoScript
-     * @param array $visibleHeaders
+     * @param array $visibleRecords
      * @param string $pageTitle
      * @param int $sysLanguageUid
      * @param int $sysLanguageContent
@@ -593,12 +974,12 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      * @param string $sysLanguageContentOL
      * @param string $status 'success' or 404
      */
-    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleHeaders, string $pageTitle, int $sysLanguageUid, int $sysLanguageContent, string $sysLanguageMode, string $sysLanguageContentOL, string $status='success')
+    public function contentOnNonTranslatedPageGerman(string $typoScript, array $visibleRecords, string $pageTitle, int $sysLanguageUid, int $sysLanguageContent, string $sysLanguageMode, string $sysLanguageContentOL, string $status='success')
     {
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
-        ]);
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
+        $visibleHeaders = array_map(function ($element) {
+            return $element['header'];
+        }, $visibleRecords);
 
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 2);
         if ($status === Response::STATUS_Success) {
@@ -617,6 +998,18 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 ->setField('header')
                 ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
             );
+
+            foreach ($visibleRecords as $ttContentUid => $properties) {
+                $visibleFileTitles = $properties['image'];
+                if (!empty($visibleFileTitles)) {
+                    $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                        ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                        ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
+                }
+                $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+                    ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
+                    ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
+            }
 
             $content = json_decode($frontendResponse->getContent());
             $this->assertEquals($pageTitle, $content->Scope->page->title);
@@ -764,9 +1157,6 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
      */
     public function contentOnPartiallyTranslatedPage(string $typoScript, array $visibleHeaders, string $sysLanguageMode, string $sysLanguageContentOL)
     {
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
-        ]);
         $this->addTypoScriptToTemplateRecord(1, $typoScript);
 
         $frontendResponse = $this->getFrontendResponse(self::VALUE_PageId, 3);
@@ -820,6 +1210,25 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             '[PL] Hidden Regular Element #2'
         ];
         return array_diff($allElements, $visibleHeaders);
+    }
+
+    /**
+     * Helper function to ease asserting that rest of the files are not present
+     *
+     * @param array $visibleTitles
+     * @return array
+     */
+    protected function getNonVisibleFileTitles(array $visibleTitles): array
+    {
+        $allElements = [
+            'T3BOARDD',
+            'Kasper',
+            '[Kasper] Image translated to Dansk',
+            '[T3BOARD] Image added in Dansk (without parent)',
+            '[T3BOARD] Image added to DK elemet without default language',
+            '[T3BOARD] image translated to DE from DK',
+        ];
+        return array_diff($allElements, $visibleTitles);
     }
 
     /**
