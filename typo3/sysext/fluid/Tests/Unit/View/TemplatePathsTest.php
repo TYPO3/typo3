@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
@@ -102,128 +101,309 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * Bulk test to confirm that configuration is returned correctly based on
+     * different TypoScript and FE/BE mode, and mixed sorting results in a
+     * correctly sorted set of template paths.
+     *
+     * @param bool $frontendMode
+     * @param array $typoScript
+     * @param array $expectedPaths
      * @test
+     * @dataProvider getContextSpecificViewConfigurationTestValues
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode()
+    public function getContextSpecificViewConfigurationMergesAndSortsPaths($frontendMode, array $typoScript, array $expectedPaths)
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
-            'plugin.' => [
-                'tx_test.' => [
-                    'view.' => [
-                        'templateRootPaths.' => [
-                            '30' => 'third',
-                            '10' => 'first',
-                            '20' => 'second'
-                        ],
-                        'partialRootPaths.' => [
-                            '20' => '2',
-                            '30' => '3',
-                            '10' => '1'
-                        ],
-                        'layoutRootPaths.' => [
-                            '130' => '3.',
-                            '10' => '1.',
-                            '120' => '2.'
-                        ],
-                    ]
-                ]
-            ]
-        ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->once())->method('set');
-        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn($typoScript);
+        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode'])->getMock();
         $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
-        $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
-        $subject->expects($this->once())->method('isFrontendMode')->willReturn(true);
+        $subject->expects($this->any())->method('isBackendMode')->willReturn(!$frontendMode);
+        $subject->expects($this->any())->method('isFrontendMode')->willReturn($frontendMode);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
-        $this->assertSame([
-            'templateRootPaths' => [
-                'test/Templates/',
-                'first',
-                'second',
-                'third'
-            ],
-            'partialRootPaths' => [
-                'test/Partials/',
-                '1',
-                '2',
-                '3'
-            ],
-            'layoutRootPaths' => [
-                'test/Layouts/',
-                '1.',
-                '2.',
-                '3.'
-            ]
-        ], $result);
+        $this->assertSame($expectedPaths, $result);
     }
 
     /**
+     * Confirmation that if an empty extension key context is passed,
+     * TemplatePaths will be unable to return even fallback paths and
+     * will instead return an empty array and never call any methods
+     * to get TypoScript etc.
+     *
      * @test
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode()
+    public function getContextSpecificViewConfigurationReturnsEmptyPathsForEmptyExtensionKey()
     {
-        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
-            'module.' => [
-                'tx_test2.' => [
-                    'view.' => [
-                        'templateRootPaths.' => [
-                            '30' => 'third',
-                            '10' => 'first',
-                            '20' => 'second'
-                        ],
-                        'partialRootPaths.' => [
-                            '20' => '2',
-                            '30' => '3',
-                            '10' => '1'
-                        ],
-                        'layoutRootPaths.' => [
-                            '130' => '3.',
-                            '10' => '1.',
-                            '120' => '2.'
-                        ],
-                    ]
-                ]
-            ]
-        ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->once())->method('set');
-        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
-        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test2')->willReturn('test/');
-        $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
-        $subject->expects($this->once())->method('isBackendMode')->willReturn(true);
-        $subject->expects($this->never())->method('isFrontendMode');
-        $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test2');
-        $this->assertSame([
-            'templateRootPaths' => [
-                'test/Templates/',
-                'first',
-                'second',
-                'third'
-            ],
-            'partialRootPaths' => [
-                'test/Partials/',
-                '1',
-                '2',
-                '3'
-            ],
-            'layoutRootPaths' => [
-                'test/Layouts/',
-                '1.',
-                '2.',
-                '3.'
-            ]
-        ], $result);
+        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager'])->getMock();
+        $subject->expects($this->never())->method('getConfigurationManager');
+        $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', '');
     }
 
     /**
+     * @return array
+     */
+    public function getContextSpecificViewConfigurationTestValues()
+    {
+        return [
+            'complete TypoScript configuration with mixed-sorting paths get sorted correctly in backend mode' => [
+                false,
+                [
+                    'module.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'templateRootPaths.' => [
+                                    '30' => 'third',
+                                    '10' => 'first',
+                                    '20' => 'second'
+                                ],
+                                'partialRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ],
+                                'layoutRootPaths.' => [
+                                    '130' => '3.',
+                                    '10' => '1.',
+                                    '120' => '2.'
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/',
+                        'first',
+                        'second',
+                        'third'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/',
+                        '1.',
+                        '2.',
+                        '3.'
+                    ]
+                ]
+            ],
+            'complete TypoScript configuration with mixed-sorting paths get sorted correctly in frontend mode' => [
+                true,
+                [
+                    'plugin.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'templateRootPaths.' => [
+                                    '30' => 'third',
+                                    '10' => 'first',
+                                    '20' => 'second'
+                                ],
+                                'partialRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ],
+                                'layoutRootPaths.' => [
+                                    '130' => '3.',
+                                    '10' => '1.',
+                                    '120' => '2.'
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/',
+                        'first',
+                        'second',
+                        'third'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/',
+                        '1.',
+                        '2.',
+                        '3.'
+                    ]
+                ]
+            ],
+            'partial TypoScript configuration merges fallback templateRootPaths' => [
+                true,
+                [
+                    'plugin.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'partialRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ],
+                                'layoutRootPaths.' => [
+                                    '130' => '3.',
+                                    '10' => '1.',
+                                    '120' => '2.'
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/',
+                        '1.',
+                        '2.',
+                        '3.'
+                    ]
+                ]
+            ],
+            'partial TypoScript configuration merges fallback partialRootPaths' => [
+                true,
+                [
+                    'plugin.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'templateRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ],
+                                'layoutRootPaths.' => [
+                                    '130' => '3.',
+                                    '10' => '1.',
+                                    '120' => '2.'
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/',
+                        '1.',
+                        '2.',
+                        '3.'
+                    ]
+                ]
+            ],
+            'partial TypoScript configuration merges fallback layoutRootPaths' => [
+                true,
+                [
+                    'plugin.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'templateRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ],
+                                'partialRootPaths.' => [
+                                    '130' => '3.',
+                                    '10' => '1.',
+                                    '120' => '2.'
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/',
+                        '1.',
+                        '2.',
+                        '3.'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/'
+                    ]
+                ]
+            ],
+            'partial TypoScript configuration merges fallback layoutRootPaths and partialRootPaths' => [
+                true,
+                [
+                    'plugin.' => [
+                        'tx_test.' => [
+                            'view.' => [
+                                'templateRootPaths.' => [
+                                    '20' => '2',
+                                    '30' => '3',
+                                    '10' => '1'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/',
+                        '1',
+                        '2',
+                        '3'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/'
+                    ]
+                ]
+            ],
+            'missing TypoScript configuration returns fallback path collection' => [
+                true,
+                [],
+                [
+                    'templateRootPaths' => [
+                        'test/Templates/'
+                    ],
+                    'partialRootPaths' => [
+                        'test/Partials/'
+                    ],
+                    'layoutRootPaths' => [
+                        'test/Layouts/'
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * Test to confirm that regardless of TypoScript configuration, an unknown FE/BE mode
+     * results in purely fallback template paths being returned (since not knowing the
+     * mode means inability to resolve correct TS TLO plugin./module.)
+     *
      * @test
      */
     public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode()
@@ -252,13 +432,9 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ]
             ]
         ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->once())->method('set');
-        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
+        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode'])->getMock();
         $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
         $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
         $subject->expects($this->once())->method('isFrontendMode')->willReturn(false);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
@@ -273,5 +449,115 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'test/Layouts/'
             ]
         ], $result);
+    }
+
+    /**
+     * Test to confirm that regardless which setter methods for path collections
+     * were called, the getContextSpecificViewConfiguration() method always returns
+     * the paths that were configured in TypoScript and does not change any of the
+     * paths set via the setter methods.
+     *
+     * @dataProvider getContextSpecificViewConfigurationIgnoresValues
+     * @test
+     */
+    public function getContextSpecificViewConfigurationIgnoresValuesSetInPathSetterMethods($frontendMode, array $paths)
+    {
+        $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
+            'plugin.' => [
+                'tx_test.' => [
+                    'view.' => [
+                        'templateRootPaths.' => [
+                            '30' => 'third',
+                            '10' => 'first',
+                            '20' => 'second'
+                        ],
+                        'partialRootPaths.' => [
+                            '20' => '2',
+                            '30' => '3',
+                            '10' => '1'
+                        ],
+                        'layoutRootPaths.' => [
+                            '130' => '3.',
+                            '10' => '1.',
+                            '120' => '2.'
+                        ],
+                    ]
+                ]
+            ]
+        ]);
+        $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode', 'sanitizePath'])->getMock();
+        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
+        $subject->expects($this->once())->method('isBackendMode')->willReturn(!$frontendMode);
+        $subject->expects($this->once())->method('isFrontendMode')->willReturn($frontendMode);
+
+        // Set paths and expect sanitizePath() to be called, emulate return from sanitizePath()
+        $subject->expects($this->atLeastOnce())->method('sanitizePath')->willReturnArgument(0);
+        foreach ($paths as $key => $pathSet) {
+            $setter = 'set' . ucfirst($key);
+            $subject->$setter($pathSet);
+        }
+
+        $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
+        $this->assertSame([
+            'templateRootPaths' => [
+                'test/Templates/',
+                'first',
+                'second',
+                'third'
+            ],
+            'partialRootPaths' => [
+                'test/Partials/',
+                '1',
+                '2',
+                '3'
+            ],
+            'layoutRootPaths' => [
+                'test/Layouts/',
+                '1.',
+                '2.',
+                '3.'
+            ]
+        ], $result);
+        foreach ($paths as $key => $pathSet) {
+            $this->assertAttributeSame($pathSet, $key, $subject);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getContextSpecificViewConfigurationIgnoresValues()
+    {
+        return [
+            'has templateRootPaths set with setter method' => [
+                true,
+                [
+                    'templateRootPaths' => [
+                        '1.',
+                        '2.'
+                    ]
+                ]
+            ],
+            'has partialRootPaths set with setter method' => [
+                true,
+                [
+                    'partialRootPaths' => [
+                        '1.',
+                        '2.'
+                    ]
+                ]
+            ],
+            'has layoutRootPaths set with setter method' => [
+                true,
+                [
+                    'layoutRootPaths' => [
+                        '1.',
+                        '2.'
+                    ]
+                ]
+            ],
+        ];
     }
 }
