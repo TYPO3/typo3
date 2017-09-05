@@ -43,7 +43,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $fileName = $this->getUniqueId('filename');
         $data = [];
-        $phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml', true);
+        $phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml,pht', true);
         foreach ($phpExtensions as $extension) {
             $data[] = [$fileName . '.' . $extension];
             $data[] = [$fileName . '.' . $extension . '.txt'];
