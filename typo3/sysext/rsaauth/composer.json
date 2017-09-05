@@ -12,6 +12,7 @@
 
 	"require": {
 		"php": ">=7.0.0 <=7.1.99",
+		"ext-openssl": "*",
 		"typo3/cms-core": "8.7.5"
 	},
 	"conflict": {
