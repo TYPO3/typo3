@@ -4192,6 +4192,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'Regular .php3 file' => ['file.php3'],
             'Regular .phpsh file' => ['file.phpsh'],
             'Regular .phtml file' => ['file.phtml'],
+            'Regular .pht file' => ['file.pht'],
             'PHP file in the middle' => ['file.php.txt'],
             '.htaccess file' => ['.htaccess'],
         ];
