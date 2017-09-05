@@ -8851,12 +8851,15 @@ class DataHandler
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($tableName);
+        $sortingStatement = !empty($sortingField)
+            ? [$connection->quoteIdentifier($sortingField)]
+            : null;
         /** @var PlainDataResolver $resolver */
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,
             $tableName,
             $liveIds,
-            [$connection->quoteIdentifier($sortingField)]
+            $sortingStatement
         );
 
         $resolver->setWorkspaceId($this->BE_USER->workspace);
