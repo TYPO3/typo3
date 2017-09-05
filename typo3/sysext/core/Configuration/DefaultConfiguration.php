@@ -1035,7 +1035,7 @@ return [
         'verify' => true,
         'version' => '1.1',
         'headers' => [ // Additional HTTP headers sent by every request TYPO3 executes.
-            'User-Agent' => 'TYPO3/' . TYPO3_version // String: Default user agent. If empty, this will be "TYPO3/x.y.z", while x.y.z is the current version. This overrides the constant <em>TYPO3_user_agent</em>.
+            'User-Agent' => 'TYPO3' // String: Default user agent. This sets the constant <em>TYPO3_user_agent</em>.
         ]
     ],
     'LOG' => [
