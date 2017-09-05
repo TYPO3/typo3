@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,17 +33,22 @@ class UserFileMountService
      * of a selected mount
      *
      * @param array $PA the array with additional configuration options.
-     * @return string The HTML code for the TCEform field
      */
     public function renderTceformsSelectDropdown(&$PA)
     {
+        $allowedStorageIds = array_map(
+            function(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
+                return $storage->getUid();
+            },
+            $this->getBackendUserAuthentication()->getFileStorages()
+        );
         // If working for sys_filemounts table
         $storageUid = (int)$PA['row']['base'][0];
         if (!$storageUid) {
             // If working for sys_file_collection table
             $storageUid = (int)$PA['row']['storage'][0];
         }
-        if ($storageUid > 0) {
+        if ($storageUid > 0 && in_array($storageUid, $allowedStorageIds, true)) {
             /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
             $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
             /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
@@ -122,5 +128,15 @@ class UserFileMountService
             $allFolderItems = array_merge($allFolderItems, $subFolderItems);
         }
         return $allFolderItems;
+    }
+
+    /**
+     * Returns the BE USER Object
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
