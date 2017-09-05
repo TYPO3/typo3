@@ -64,7 +64,7 @@ class RecordsOverview extends AbstractNode
                 $selectedItem['uid']
             );
             $linkedTitle = BackendUtility::wrapClickMenuOnIcon(
-                $shortenedTitle,
+                htmlspecialchars($shortenedTitle),
                 $selectedItem['table'],
                 $selectedItem['uid']
             );
