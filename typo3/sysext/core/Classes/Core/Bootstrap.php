@@ -401,7 +401,6 @@ class Bootstrap
         $this->initializeCachingFramework()
             ->initializePackageManagement($packageManagerClassName)
             ->initializeRuntimeActivatedPackagesFromConfiguration()
-            ->defineUserAgentConstant()
             ->setCacheHashOptions()
             ->setDefaultTimezone()
             ->initializeL10nLocales()
@@ -513,17 +512,6 @@ class Bootstrap
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
             = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['options']);
-        return $this;
-    }
-
-    /**
-     * Define user agent constant
-     *
-     * @return \TYPO3\CMS\Core\Core\Bootstrap
-     */
-    protected function defineUserAgentConstant()
-    {
-        define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['headers']['User-Agent']);
         return $this;
     }
 

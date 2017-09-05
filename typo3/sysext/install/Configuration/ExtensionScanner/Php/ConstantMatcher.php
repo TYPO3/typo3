@@ -15,4 +15,9 @@ return [
             'Breaking-82162-GlobalErrorConstantsRemoved.rst',
         ],
     ],
+    'TYPO3_user_agent' => [
+        'restFiles' => [
+            'Breaking-82296-UserAgentConstantRemoved.rst',
+        ],
+    ],
 ];
