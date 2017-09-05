@@ -11,6 +11,9 @@ loginHighlightColor =
 # cat=Login; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.loginBackgroundImage
 loginBackgroundImage =
 
+# cat=Login; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.loginFootnote
+loginFootnote =
+
 # cat=Backend; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.backendLogo
 backendLogo =
 

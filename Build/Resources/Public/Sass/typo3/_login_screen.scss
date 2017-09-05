@@ -9,9 +9,9 @@
 // According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
 // Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
 //
-$login-width: 360px;
+$login-width: 320px;
 $login-bg: #eee;
-$login-border-radius: 5px;
+$login-border-radius: 3px;
 $login-highlight: #f80;
 $login-btn-text: #fff;
 $login-btn-bg: $login-highlight;
@@ -27,27 +27,58 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 //
 // Login
 //
+
 .typo3-login {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto !important;
     background-color: $login-bg;
-    background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    display: table;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
+}
+
+.typo3-login-inner {
+    margin: 0 auto;
+    width: 99.999%; // IE HOTFIX TO AVOID VISIBLE X SCROLLBARS
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .typo3-login-container {
-    display: table-cell;
-    vertical-align: middle;
+    z-index: 100;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.typo3-login-footnote {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 1em 1.5em;
+    display: block;
+    color: #999;
+
+    @media (min-width: $screen-sm-min) {
+        flex: none;
+        position: absolute;
+        bottom: 1.5em;
+        right: 0;
+    }
+
+    p {
+        margin: 0;
+    }
 }
 
 .typo3-login-wrap {
+    width: 100%;
     max-width: $login-width;
     margin: 0 auto;
 }
@@ -72,7 +103,8 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 // Logo
 //
 .typo3-login-logo {
-    margin-bottom: 30px;
+    padding-top: 1em;
+    margin-bottom: 2.5em;
 
     > img {
         display: block;
@@ -99,15 +131,20 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     border-radius: $login-border-radius;
 
     .panel-heading {
-        @include border-top-radius(($login-border-radius - 1));
+        padding: 1.5em 2.5em;
+        border-top-left-radius: $login-border-radius - 1;
+        border-top-right-radius: $login-border-radius - 1;
     }
 
     .panel-body {
+        padding: 2.5em;
         border-bottom: 3px solid $login-highlight;
     }
 
     .panel-footer {
-        @include border-bottom-radius(($login-border-radius - 1));
+        padding: 1.5em 2.5em;
+        border-bottom-left-radius: $login-border-radius - 1;
+        border-bottom-right-radius: $login-border-radius - 1;
     }
 
     a {
@@ -217,6 +254,8 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 // Copyright
 //
 .typo3-login-copyright-link {
+    font-weight: normal !important;
+
     @extend .clearfix;
 
     > img {
@@ -226,6 +265,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 }
 
 .typo3-login-copyright-text {
+    font-size: 0.9em;
     margin-top: $line-height-computed;
     color: $login-copyright-text;
 

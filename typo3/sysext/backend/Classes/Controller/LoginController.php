@@ -165,13 +165,17 @@ class LoginController
         if (!empty($extConf['loginBackgroundImage'])) {
             $backgroundImage = $this->getUriForFileName($extConf['loginBackgroundImage']);
             $this->getDocumentTemplate()->inDocStylesArray[] = '
-				@media (min-width: 768px){
-					.typo3-login-carousel-control.right,
-					.typo3-login-carousel-control.left,
-					.panel-login { border: 0; }
-					.typo3-login { background-image: url("' . $backgroundImage . '"); }
-				}
+				.typo3-login-carousel-control.right,
+				.typo3-login-carousel-control.left,
+				.panel-login { border: 0; }
+				.typo3-login { background-image: url("' . $backgroundImage . '"); }
+				.typo3-login-footnote { background-color: #000000; color: #ffffff; opacity: 0.5; }
 			';
+        }
+
+        // Login Footnote
+        if (!empty($extConf['loginFootnote'])) {
+            $this->view->assign('loginFootnote', strip_tags(trim($extConf['loginFootnote'])));
         }
 
         // Add additional css to use the highlight color in the login screen
