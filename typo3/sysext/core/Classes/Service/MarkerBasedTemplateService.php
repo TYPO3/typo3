@@ -69,7 +69,7 @@ class MarkerBasedTemplateService
      *
      * @param string $content Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
      * @param string $marker Marker string, eg. "###CONTENT_PART###
-     * @param array $subpartContent If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
+     * @param string|array $subpartContent If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
      * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
      * @param bool $keepMarker If set, the marker around the subpart is not removed, but kept in the output
      *
