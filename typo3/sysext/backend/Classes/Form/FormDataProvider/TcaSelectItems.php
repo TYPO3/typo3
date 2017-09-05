@@ -54,8 +54,11 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $staticItems = $fieldConfig['config']['items'];
 
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
-            $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
+            // removing items before $dynamicItems and $removedItems have been built results in having them
+            // not populated to the dynamic database row and displayed as "invalid value" in the forms view
+            $fieldConfig['config']['items'] = $this->removeItemsByUserStorageRestriction($result, $fieldName, $fieldConfig['config']['items']);
 
+            $dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
             $removedItems = $fieldConfig['config']['items'];
 
             $fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
