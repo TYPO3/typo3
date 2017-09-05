@@ -690,6 +690,40 @@ abstract class AbstractItemProvider
     }
 
     /**
+     * Remove items if sys_file_storage is not allowed for non-admin users.
+     *
+     * Used by TcaSelectItems data providers
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @param array $items Incoming items
+     * @return array Modified item array
+     */
+    protected function removeItemsByUserStorageRestriction(array $result, $fieldName, array $items)
+    {
+        $referencedTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'] ?? null;
+        if ($referencedTableName !== 'sys_file_storage') {
+            return $items;
+        }
+
+        $allowedStorageIds = array_map(
+            function (\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
+                return $storage->getUid();
+            },
+            $this->getBackendUser()->getFileStorages()
+        );
+
+        return array_filter(
+            $items,
+            function (array $item) use ($allowedStorageIds) {
+                $itemValue = $item[1] ?? null;
+                return empty($itemValue)
+                    || in_array((int)$itemValue, $allowedStorageIds, true);
+            }
+        );
+    }
+
+    /**
      * Returns an array with the exclude fields as defined in TCA and FlexForms
      * Used for listing the exclude fields in be_groups forms.
      *
