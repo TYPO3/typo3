@@ -109,6 +109,13 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     $structureItem[$propertyName] = $propertyValue;
                 }
             }
+            //let's flatten the structure and put file reference properties level up, so we can use StructureHasRecordConstraint
+            if ($entity instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference
+                && isset($structureItem['originalResource'])
+                && $structureItem['originalResource'] instanceof \TYPO3\CMS\Core\Resource\FileReference
+            ) {
+                $structureItem = $structureItem['originalResource']->getProperties();
+            }
             $structure[$identifier] = $structureItem;
         }
 
