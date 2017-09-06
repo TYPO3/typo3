@@ -294,7 +294,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language']
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -318,7 +318,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language']
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -342,7 +342,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language']
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -366,7 +366,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language']
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -390,7 +390,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language']
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -712,7 +712,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK elemet without default language'],
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
@@ -1215,11 +1215,11 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
     protected function getNonVisibleFileTitles(array $visibleTitles)
     {
         $allElements = [
-            'T3BOARDD',
+            'T3BOARD',
             'Kasper',
             '[Kasper] Image translated to Dansk',
             '[T3BOARD] Image added in Dansk (without parent)',
-            '[T3BOARD] Image added to DK elemet without default language',
+            '[T3BOARD] Image added to DK element without default language',
             '[T3BOARD] image translated to DE from DK',
         ];
         return array_diff($allElements, $visibleTitles);
