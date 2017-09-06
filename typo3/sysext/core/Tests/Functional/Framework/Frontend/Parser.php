@@ -61,6 +61,9 @@ class Parser implements \TYPO3\CMS\Core\SingletonInterface
     protected function process(array $iterator, array $path = [])
     {
         foreach ($iterator as $identifier => $properties) {
+            if (!is_array($properties)) {
+                continue;
+            }
             $this->addRecord($identifier, $properties);
             $this->addPath($identifier, $path);
             foreach ($properties as $propertyName => $propertyValue) {
