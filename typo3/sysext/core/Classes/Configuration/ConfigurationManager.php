@@ -43,7 +43,7 @@ class ConfigurationManager
     /**
      * @var string Path to description file for TYPO3_CONF_VARS, relative to PATH_site
      */
-    protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.php';
+    protected $defaultConfigurationDescriptionFile = 'typo3/sysext/core/Configuration/DefaultConfigurationDescription.yaml';
 
     /**
      * @var string Path to local overload TYPO3_CONF_VARS file, relative to PATH_site

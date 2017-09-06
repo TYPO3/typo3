@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,19 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LocalConfigurationValueService
 {
-    /**
-     * Error handlers are a bit mask in PHP. This register hints the View to
-     * add a fluid view helper resolving the bit mask to its representation
-     * as constants again for the specified items in ['SYS'].
-     *
-     * @var array
-     */
-    protected $phpErrorCodesSettings = [
-        'errorHandlerErrors',
-        'exceptionalErrors',
-        'syslogErrorReporting',
-        'belogErrorReporting',
-    ];
 
     /**
      * Get up configuration data. Prepares main TYPO3_CONF_VARS
@@ -58,32 +45,38 @@ class LocalConfigurationValueService
             $data[$sectionName] = [];
 
             foreach ($GLOBALS['TYPO3_CONF_VARS'][$sectionName] as $key => $value) {
-                $description = trim((string)$commentArray[$sectionName][$key]);
-                $isTextarea = (bool)preg_match('/^(<.*?>)?string \\(textarea\\)/i', $description);
-                $doNotRender = (bool)preg_match('/^(<.*?>)?string \\(exclude\\)/i', $description);
-
-                if (!is_array($value) && !$doNotRender && (!preg_match('/[' . LF . CR . ']/', (string)$value) || $isTextarea)) {
+                $descriptionInfo = $commentArray[$sectionName]['items'][$key];
+                $descriptionType = $descriptionInfo['type'];
+                if (!is_array($value) && (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline')) {
                     $itemData = [];
                     $itemData['key'] = $key;
-                    $itemData['description'] = $description;
-                    if ($isTextarea) {
-                        $itemData['type'] = 'textarea';
-                        $itemData['value'] = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
-                    } elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
-                        $itemData['type'] = 'checkbox';
-                        $itemData['value'] = $value ? '1' : '0';
-                        $itemData['checked'] = (bool)$value;
-                    } elseif (preg_match('/^(<.*?>)?integer/i', $description)) {
-                        $itemData['type'] = 'number';
-                        $itemData['value'] = (int)$value;
-                    } else {
-                        $itemData['type'] = 'input';
-                        $itemData['value'] = $value;
-                    }
-
-                    // Check if the setting is a PHP error code, will trigger a view helper in fluid
-                    if ($sectionName === 'SYS' && in_array($key, $this->phpErrorCodesSettings)) {
-                        $itemData['phpErrorCode'] = true;
+                    $itemData['fieldType'] = $descriptionInfo['type'];
+                    $itemData['description'] = $descriptionInfo['description'];
+                    $itemData['allowedValues'] = $descriptionInfo['allowedValues'];
+                    $itemData['key'] = $key;
+                    switch ($descriptionType) {
+                        case 'multiline':
+                            $itemData['type'] = 'textarea';
+                            $itemData['value'] = str_replace(['\' . LF . \'', '\' . LF . \''], [LF, LF], $value);
+                        break;
+                        case 'bool':
+                            $itemData['type'] = 'checkbox';
+                            $itemData['value'] = $value ? '1' : '0';
+                            $itemData['checked'] = (bool)$value;
+                        break;
+                        case 'int':
+                            $itemData['type'] = 'number';
+                            $itemData['value'] = (int)$value;
+                        break;
+                        // Check if the setting is a PHP error code, will trigger a view helper in fluid
+                        case 'errors':
+                            $itemData['type'] = 'input';
+                            $itemData['value'] = $value;
+                            $itemData['phpErrorCode'] = true;
+                        break;
+                        default:
+                            $itemData['type'] = 'input';
+                            $itemData['value'] = $value;
                     }
 
                     $data[$sectionName][] = $itemData;
@@ -107,21 +100,23 @@ class LocalConfigurationValueService
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         foreach ($valueList as $path => $value) {
             $oldValue = $configurationManager->getConfigurationValueByPath($path);
-            $description = ArrayUtility::getValueByPath($commentArray, $path);
+            $pathParts = explode('/', $path);
+            $descriptionData = $commentArray[$pathParts[0]]['items'][$pathParts[1]];
+            $dataType = $descriptionData['type'];
 
-            if (preg_match('/^string \\(textarea\\)/i', $description)) {
+            if ($dataType === 'multiline') {
                 // Force Unix line breaks in text areas
                 $value = str_replace(CR, '', $value);
                 // Preserve line breaks
                 $value = str_replace(LF, '\' . LF . \'', $value);
             }
 
-            if (preg_match('/^(<.*?>)?boolean/i', $description)) {
+            if ($dataType === 'bool') {
                 // When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
                 // in EXT:core/Configuration/DefaultConfiguration.php will be sent as "0" resp. "1".
                 $value = $value === '1';
                 $valueHasChanged = (bool)$oldValue !== $value;
-            } elseif (preg_match('/^(<.*?>)?integer/i', $description)) {
+            } elseif ($dataType === 'int') {
                 // Cast integer values to integers (but only for values that can not contain a string as well)
                 $value = (int)$value;
                 $valueHasChanged = (int)$oldValue !== $value;
@@ -176,6 +171,8 @@ class LocalConfigurationValueService
     protected function getDefaultConfigArrayComments(): array
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-        return require $configurationManager->getDefaultConfigurationDescriptionFileLocation();
+        $fileName = $configurationManager->getDefaultConfigurationDescriptionFileLocation();
+        $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
+        return $fileLoader->load($fileName);
     }
 }

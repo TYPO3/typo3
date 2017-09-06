@@ -34,55 +34,70 @@
 					</f:if>
 				</div>
 				<div class="item-body">
-					<f:if condition="{item.type} == 'checkbox'">
-						<div class="checkbox">
-							<label>
-								<input
-									type="checkbox"
-									value="1"
-									class="t3js-localConfiguration-pathValue"
+					<f:if condition="{f:count(subject: item.allowedValues)} || {item.dataType} == 'dropdown'">
+						<f:then>
+							<div class="form-group">
+								<span class="help-block">{item.description -> f:format.raw()}</span>
+								<select
 									data-path="{sectionName}/{item.key}"
-									{f:if(condition: item.checked, then:'checked="checked"')}
-								/>
-								{item.description -> f:format.raw()}
-							</label>
-						</div>
-					</f:if>
+									class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue">
+									<f:for each="{item.allowedValues}" as="value">
+										<option	value="{item.value}" {f:if(condition:'{item.value} == {value}', then: 'selected="selected"')}>{value}</option>
+									</f:for>
+								</select>
+							</div>
+						</f:then>
+						<f:else>
+							<f:if condition="{item.type} == 'checkbox'">
+								<div class="checkbox">
+									<label>
+										<input
+											type="checkbox"
+											value="1"
+											class="t3js-localConfiguration-pathValue"
+											data-path="{sectionName}/{item.key}"
+											{f:if(condition: item.checked, then:'checked="checked"')}
+										/>
+										{item.description -> f:format.raw()}
+									</label>
+								</div>
+							</f:if>
+							<f:if condition="{item.type} == 'input'">
+								<div class="form-group">
+									<span class="help-block">{item.description -> f:format.raw()}</span>
+									<input
+										type="text"
+										value="{item.value}"
+										data-path="{sectionName}/{item.key}"
+										class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+									/>
+								</div>
+							</f:if>
 
-					<f:if condition="{item.type} == 'input'">
-						<div class="form-group">
-							<span class="help-block">{item.description -> f:format.raw()}</span>
-							<input
-								type="text"
-								value="{item.value}"
-								data-path="{sectionName}/{item.key}"
-								class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-							/>
-						</div>
-					</f:if>
+							<f:if condition="{item.type} == 'number'">
+								<div class="form-group">
+									<span class="help-block">{item.description -> f:format.raw()}</span>
+									<input
+										type="number"
+										value="{item.value}"
+										data-path="{sectionName}/{item.key}"
+										class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+									/>
+								</div>
+							</f:if>
 
-					<f:if condition="{item.type} == 'number'">
-						<div class="form-group">
-							<span class="help-block">{item.description -> f:format.raw()}</span>
-							<input
-								type="number"
-								value="{item.value}"
-								data-path="{sectionName}/{item.key}"
-								class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-							/>
-						</div>
-					</f:if>
-
-					<f:if condition="{item.type} == 'textarea'">
-						<span class="help-block">{item.description -> f:format.raw()}</span>
-						<div class="form-group">
+							<f:if condition="{item.type} == 'textarea'">
+								<span class="help-block">{item.description -> f:format.raw()}</span>
+								<div class="form-group">
 							<textarea
 								rows="5"
 								cols="60"
 								data-path="{sectionName}/{item.key}"
 								class="form-control t3js-localConfiguration-pathValue"
 							>{item.value}</textarea>
-						</div>
+								</div>
+							</f:if>
+						</f:else>
 					</f:if>
 
 					<f:if condition="{item.phpErrorCode}">
