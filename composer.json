@@ -47,7 +47,7 @@
 		"cogpowered/finediff": "~0.3.1",
 		"mso/idna-convert": "^1.1.0",
 		"typo3fluid/fluid": "^2.3",
-		"guzzlehttp/guzzle": "^6.2.1",
+		"guzzlehttp/guzzle": "^6.3.0",
 		"doctrine/dbal": "~2.5.4"
 	},
 	"require-dev": {
