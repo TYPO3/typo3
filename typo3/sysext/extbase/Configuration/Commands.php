@@ -6,7 +6,7 @@
  * of Symfony/Console/Command.
  */
 return [
-    'extbase' => [
+    '_core_command' => [
         'class' => \TYPO3\CMS\Extbase\Command\CoreCommand::class
     ],
     // Overriding Symfony Help command to use Extbase-specific output
