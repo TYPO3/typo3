@@ -66,6 +66,10 @@ class AjaxController extends AbstractController
         'mailTest',
         'presetActivate',
         'resetBackendUserUc',
+
+        'systemMaintainerGetList',
+        'systemMaintainerWrite',
+
         'tcaExtTablesCheck',
         'tcaMigrationsCheck',
 

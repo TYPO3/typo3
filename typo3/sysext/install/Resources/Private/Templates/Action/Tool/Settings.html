@@ -15,14 +15,21 @@
 			category: 'Access',
 			description: 'Set a new install tool password.'
 		},
-		1: {partial: 'Action/Tool/Settings/LocalConfiguration',
+		1: {partial: 'Action/Tool/Settings/SystemMaintainer',
+			require: 'TYPO3/CMS/Install/SystemMaintainer',
+			baseClass: 't3js-systemMaintainer',
+			title: 'Configure system maintainer',
+			category: 'Access',
+			description: 'Backend admin users with access to install tool.'
+		},
+		2: {partial: 'Action/Tool/Settings/LocalConfiguration',
 			require: 'TYPO3/CMS/Install/LocalConfiguration',
 			baseClass: 't3js-localConfiguration',
 			title: 'Configure Global Settings',
 			category: 'LocalConfiguration',
 			description: 'Modify LocalConfiguration.php settings.'
 		},
-		2: {partial: 'Action/Tool/Settings/Presets',
+		3: {partial: 'Action/Tool/Settings/Presets',
 			require: 'TYPO3/CMS/Install/Presets',
 			baseClass: 't3js-presets',
 			title: 'Configure Presets',

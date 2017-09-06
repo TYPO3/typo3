@@ -1,0 +1,43 @@
+<p>
+	Backend admin users listed here will see the system maintenance related main
+	module entries "Maintenance", "Settings", "Upgrade" and "Environment" in the
+	backend and are allowed to use them without further log in.
+	Note that all backend admin users see these menu entries if the system is in
+	development (not production) context.
+</p>
+
+<f:if condition="{systemMaintainerIsDevelopmentContext}">
+	<div class="typo3-message alert alert-info">
+		<div class="message-body">
+			This TYPO3 instance is set to "Development" context, all backend admin users
+			can see the system maintenance related main module entries.
+		</div>
+	</div>
+</f:if>
+
+<div style="display:none;">
+	<div id="t3js-systemMaintainer-write-token">{systemMaintainerWriteToken}</div>
+</div>
+
+<div class="form-group">
+	<div class="input-group t3js-systemMaintainer-chosen" style="display:none">
+		<span class="input-group-addon">System Maintainer:</span>
+		<select
+			class="chosen-select t3js-systemMaintainer-chosen-select"
+			data-placeholder="none"
+			style="width:100%;"
+			multiple
+			tabindex=""
+		>
+		</select>
+	</div>
+</div>
+
+<div class="t3js-systemMaintainer-output"></div>
+
+<button
+	class="btn btn-default t3js-systemMaintainer-write"
+	type="button"
+>
+	Save system maintainer list
+</button>

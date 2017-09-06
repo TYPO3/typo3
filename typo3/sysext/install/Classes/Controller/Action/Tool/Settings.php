@@ -50,6 +50,7 @@ class Settings extends Action\AbstractAction
         $presetFeatures = $this->featureManager->getInitializedFeatures($this->postValues['values'] ?? []);
         $localConfigurationValueService = new LocalConfigurationValueService();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+
         $this->view->assignMultiple([
             'changeInstallToolPasswordToken' => $formProtection->generateToken('installTool', 'changeInstallToolPassword'),
 
@@ -59,6 +60,9 @@ class Settings extends Action\AbstractAction
 
             'presetActivateToken' => $formProtection->generateToken('installTool', 'presetActivate'),
             'presetFeatures' => $presetFeatures,
+
+            'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
+            'systemMaintainerIsDevelopmentContext' => GeneralUtility::getApplicationContext()->isDevelopment(),
         ]);
         return $this->view->render();
     }
