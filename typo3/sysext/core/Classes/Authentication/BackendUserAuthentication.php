@@ -428,9 +428,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             return false;
         }
-        // Returns TRUE if conf[access] is set to system maintainers and the user is system maintainer
-        if (strpos($conf['access'], self::ROLE_SYSTEMMAINTAINER) !== false && $this->isSystemMaintainer()) {
-            return true;
+        // Returns false if conf[access] is set to system maintainers and the user is system maintainer
+        if (strpos($conf['access'], self::ROLE_SYSTEMMAINTAINER) !== false && !$this->isSystemMaintainer()) {
+            if ($exitOnError) {
+                throw new \RuntimeException('This module "' . $conf['name'] . '" is only available as system maintainer', 1504804727);
+            }
+            return false;
         }
         // Returns TRUE if conf[access] is not set at all or if the user is admin
         if (!$conf['access'] || $this->isAdmin()) {
