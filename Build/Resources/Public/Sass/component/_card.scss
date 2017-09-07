@@ -72,7 +72,7 @@ $card-shadow-hover-color: transparentize($card-base-color, 0.7);
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    margin: $card-spacing #{-$card-spacing};
+    margin: $card-spacing #{ - $card-spacing};
 
     .card {
         margin-left: $card-spacing;

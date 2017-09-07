@@ -7,24 +7,24 @@
 //
 // Variables
 //
-$module-bg: #fff;
-$module-color: inherit;
-$module-dark-bg: #333;
-$module-dark-color: #ccc;
-$module-docheader-bg: #eee;
-$module-docheader-border: #c3c3c3;
-$module-docheader-zindex: 300;
-$module-docheader-height: 65px;
-$module-docheader-padding-vertical: 0;
-$module-docheader-padding-horizontal: 24px;
-$module-docheader-padding: $module-docheader-padding-vertical $module-docheader-padding-horizontal;
-$module-docheader-bar-height: 26px;
-$module-docheader-bar-margin-vertical: 4px;
-$module-docheader-bar-margin-horizontal: 0;
-$module-docheader-bar-margin: $module-docheader-bar-margin-vertical $module-docheader-bar-margin-horizontal;
-$module-body-padding-vertical: 24px;
-$module-body-padding-horizontal: 24px;
-$module-body-padding: $module-body-padding-vertical $module-body-padding-horizontal;
+$module-bg: #fff !default;
+$module-color: inherit !default;
+$module-dark-bg: #333 !default;
+$module-dark-color: #ccc !default;
+$module-docheader-bg: #eee !default;
+$module-docheader-border: #c3c3c3 !default;
+$module-docheader-zindex: 300 !default;
+$module-docheader-height: 65px !default;
+$module-docheader-padding-vertical: 0 !default;
+$module-docheader-padding-horizontal: 24px !default;
+$module-docheader-padding: $module-docheader-padding-vertical $module-docheader-padding-horizontal !default;
+$module-docheader-bar-height: 26px !default;
+$module-docheader-bar-margin-vertical: 4px !default;
+$module-docheader-bar-margin-horizontal: 0 !default;
+$module-docheader-bar-margin: $module-docheader-bar-margin-vertical $module-docheader-bar-margin-horizontal !default;
+$module-body-padding-vertical: 24px !default;
+$module-body-padding-horizontal: 24px !default;
+$module-body-padding: $module-body-padding-vertical $module-body-padding-horizontal !default;
 
 //
 // Template

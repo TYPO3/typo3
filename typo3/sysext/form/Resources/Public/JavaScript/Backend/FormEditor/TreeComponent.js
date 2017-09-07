@@ -63,8 +63,8 @@ define(['jquery',
             svgLink: {
                 height: 15,
                 paths: {
-                    angle: 'M0 0 V21 H15',
-                    vertical: 'M0 0 V21 H0',
+                    angle: 'M0 0 V20 H15',
+                    vertical: 'M0 0 V20 H0',
                     hidden: 'M0 0 V0 H0'
                 },
                 width: 15
