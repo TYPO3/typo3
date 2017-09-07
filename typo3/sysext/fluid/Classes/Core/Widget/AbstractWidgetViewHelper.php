@@ -144,7 +144,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      */
     public function setChildNodes(array $childNodes)
     {
-        $rootNode = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $rootNode = $this->objectManager->get(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
         foreach ($childNodes as $childNode) {
             $rootNode->addChildNode($childNode);
         }
