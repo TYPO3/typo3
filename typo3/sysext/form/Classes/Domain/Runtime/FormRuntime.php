@@ -333,7 +333,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @param Page $page
-     * return null|string
+     * @return null|string
      */
     protected function getHoneypotNameFromSession(Page $page)
     {

@@ -3062,7 +3062,6 @@ class DataHandler
                 }
 
                 if ($DSelements[$key]['section']) {
-                    $newIndexCounter = 0;
                     foreach ($dataValues[$key]['el'] as $ik => $el) {
                         if (!is_array($el)) {
                             continue;

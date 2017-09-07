@@ -706,7 +706,6 @@ class GeneralUtility
     {
         $hashAlgorithm = 'sha1';
         $hashBlocksize = 64;
-        $hmac = '';
         $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
         if (extension_loaded('hash') && function_exists('hash_hmac') && function_exists('hash_algos') && in_array($hashAlgorithm, hash_algos())) {
             $hmac = hash_hmac($hashAlgorithm, $input, $secret);

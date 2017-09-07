@@ -206,7 +206,6 @@ class TcaMigration
                         'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : null,
                         'fieldExtra' => isset($fieldArray[3]) ? $fieldArray[3] : null,
                     ];
-                    $fieldName = $fieldArray['fieldName'];
                     if (!empty($fieldArray['fieldExtra'])) {
                         // Move fieldExtra "specConf" to columnsOverrides "defaultExtras"
                         if (!isset($newTca[$table]['types'][$typeName]['columnsOverrides'])) {

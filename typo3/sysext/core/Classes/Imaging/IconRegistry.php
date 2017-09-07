@@ -2368,12 +2368,6 @@ class IconRegistry implements SingletonInterface
                 'name' => 'plug'
             ]
         ],
-        'module-help' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'question-circle'
-            ]
-        ],
         'module-about' => [
             'provider' => SvgIconProvider::class,
             'options' => [
@@ -2638,12 +2632,6 @@ class IconRegistry implements SingletonInterface
             'provider' => SvgIconProvider::class,
             'options' => [
                 'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-hidden.svg'
-            ]
-        ],
-        'overlay-endtime' => [
-            'provider' => SvgIconProvider::class,
-            'options' => [
-                'source' => 'EXT:core/Resources/Public/Icons/T3Icons/overlay/overlay-endtime.svg'
             ]
         ],
         'overlay-includes-subpages' => [

@@ -2710,8 +2710,7 @@ class GraphicalFunctions
                     if ($this->setup['quality']) {
                         $quality = MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
                     }
-                    if ($this->ImageWrite($this->im, $file, $quality)) {
-                    }
+                    $this->ImageWrite($this->im, $file, $quality);
                     break;
             }
         }
