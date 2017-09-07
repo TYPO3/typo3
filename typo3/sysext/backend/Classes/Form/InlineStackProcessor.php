@@ -221,11 +221,11 @@ class InlineStackProcessor
     protected function calculateStructureLevel($level)
     {
         $result = false;
-        $inlineStructureCount = count($this->inlineStructure['stable']);
+        $structureCount = $this->getStructureDepth();
         if ($level < 0) {
-            $level = $inlineStructureCount + $level;
+            $level = $structureCount + $level;
         }
-        if ($level >= 0 && $level < $inlineStructureCount) {
+        if ($level >= 0 && $level < $structureCount) {
             $result = $level;
         }
         return $result;
@@ -259,6 +259,9 @@ class InlineStackProcessor
      */
     public function getStructureDepth()
     {
+        if (!isset($this->inlineStructure['stable']) || !is_array($this->inlineStructure['stable'])) {
+            return 0;
+        }
         return count($this->inlineStructure['stable']);
     }
 
