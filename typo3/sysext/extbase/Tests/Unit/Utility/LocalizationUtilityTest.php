@@ -33,124 +33,133 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      *
      * @var array
      */
-    protected $LOCAL_LANG = [
-        'extensionKey' => [
-            'default' => [
-                'key1' => [
-                    [
-                        'source' => 'English label for key1',
-                        'target' => 'English label for key1',
-                    ]
-                ],
-                'key2' => [
-                    [
-                        'source' => 'English label for key2',
-                        'target' => 'English label for key2',
-                    ]
-                ],
-                'key3' => [
-                    [
-                        'source' => 'English label for key3',
-                        'target' => 'English label for key3',
-                    ]
-                ],
-                'key4' => [
-                    [
-                        'source' => 'English label for key4',
-                        'target' => 'English label for key4',
-                    ]
-                ],
-                'keyWithPlaceholder' => [
-                    [
-                        'source' => 'English label with number %d',
-                        'target' => 'English label with number %d',
-                    ]
-                ],
-            ],
-            'dk' => [
-                'key1' => [
-                    [
-                        'source' => 'English label for key1',
-                        'target' => 'Dansk label for key1',
-                    ]
-                ],
-                // not translated in dk => no target (llxml)
-                'key2' => [
-                    [
-                        'source' => 'English label for key2',
-                    ]
-                ],
-                'key3' => [
-                    [
-                        'source' => 'English label for key3',
-                    ]
-                ],
-                // not translated in dk => empty target (xliff)
-                'key4' => [
-                    [
-                        'source' => 'English label for key4',
-                        'target' => '',
-                    ]
-                ],
-                // not translated in dk => empty target (xliff)
-                'key5' => [
-                    [
-                        'source' => 'English label for key5',
-                        'target' => '',
-                    ]
-                ],
-                'keyWithPlaceholder' => [
-                    [
-                        'source' => 'English label with number %d',
-                    ]
-                ],
-            ],
-            // fallback language for labels which are not translated in dk
-            'dk_alt' => [
-                'key1' => [
-                    [
-                        'source' => 'English label for key1',
-                    ]
-                ],
-                'key2' => [
-                    [
-                        'source' => 'English label for key2',
-                        'target' => 'Dansk alternative label for key2',
-                    ]
-                ],
-                'key3' => [
-                    [
-                        'source' => 'English label for key3',
-                    ]
-                ],
-                // not translated in dk_alt => empty target (xliff)
-                'key4' => [
-                    [
-                        'source' => 'English label for key4',
-                        'target' => '',
-                    ]
-                ],
-                'key5' => [
-                    [
-                        'source' => 'English label for key5',
-                        'target' => 'Dansk alternative label for key5',
-                    ]
-                ],
-                'keyWithPlaceholder' => [
-                    [
-                        'source' => 'English label with number %d',
-                    ]
-                ],
-            ],
+    protected $LOCAL_LANG = [];
 
-        ],
-    ];
+    /**
+     * File path of locallang for extension "core"
+     * @var string
+     */
+    protected $languageFilePath = '';
 
     /**
      * Prepare class mocking some dependencies
      */
     protected function setUp()
     {
+        $this->languageFilePath = $this->getLanguageFilePath('core');
+        $this->LOCAL_LANG = [
+            $this->languageFilePath => [
+                'default' => [
+                    'key1' => [
+                        [
+                            'source' => 'English label for key1',
+                            'target' => 'English label for key1',
+                        ]
+                    ],
+                    'key2' => [
+                        [
+                            'source' => 'English label for key2',
+                            'target' => 'English label for key2',
+                        ]
+                    ],
+                    'key3' => [
+                        [
+                            'source' => 'English label for key3',
+                            'target' => 'English label for key3',
+                        ]
+                    ],
+                    'key4' => [
+                        [
+                            'source' => 'English label for key4',
+                            'target' => 'English label for key4',
+                        ]
+                    ],
+                    'keyWithPlaceholder' => [
+                        [
+                            'source' => 'English label with number %d',
+                            'target' => 'English label with number %d',
+                        ]
+                    ],
+                ],
+                'dk' => [
+                    'key1' => [
+                        [
+                            'source' => 'English label for key1',
+                            'target' => 'Dansk label for key1',
+                        ]
+                    ],
+                    // not translated in dk => no target (llxml)
+                    'key2' => [
+                        [
+                            'source' => 'English label for key2',
+                        ]
+                    ],
+                    'key3' => [
+                        [
+                            'source' => 'English label for key3',
+                        ]
+                    ],
+                    // not translated in dk => empty target (xliff)
+                    'key4' => [
+                        [
+                            'source' => 'English label for key4',
+                            'target' => '',
+                        ]
+                    ],
+                    // not translated in dk => empty target (xliff)
+                    'key5' => [
+                        [
+                            'source' => 'English label for key5',
+                            'target' => '',
+                        ]
+                    ],
+                    'keyWithPlaceholder' => [
+                        [
+                            'source' => 'English label with number %d',
+                        ]
+                    ],
+                ],
+                // fallback language for labels which are not translated in dk
+                'dk_alt' => [
+                    'key1' => [
+                        [
+                            'source' => 'English label for key1',
+                        ]
+                    ],
+                    'key2' => [
+                        [
+                            'source' => 'English label for key2',
+                            'target' => 'Dansk alternative label for key2',
+                        ]
+                    ],
+                    'key3' => [
+                        [
+                            'source' => 'English label for key3',
+                        ]
+                    ],
+                    // not translated in dk_alt => empty target (xliff)
+                    'key4' => [
+                        [
+                            'source' => 'English label for key4',
+                            'target' => '',
+                        ]
+                    ],
+                    'key5' => [
+                        [
+                            'source' => 'English label for key5',
+                            'target' => 'Dansk alternative label for key5',
+                        ]
+                    ],
+                    'keyWithPlaceholder' => [
+                        [
+                            'source' => 'English label with number %d',
+                        ]
+                    ],
+                ],
+
+            ],
+        ];
+
         $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
 
         $this->configurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, ['getConfiguration']);
@@ -173,14 +182,15 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $property->setValue([]);
+    }
 
-        $property = $reflectionClass->getProperty('languageKey');
-        $property->setAccessible(true);
-        $property->setValue('default');
-
-        $property = $reflectionClass->getProperty('alternativeLanguageKeys');
-        $property->setAccessible(true);
-        $property->setValue([]);
+    /**
+     * @param string $extensionName
+     * @return string
+     */
+    protected function getLanguageFilePath(string $extensionName): string
+    {
+        return PATH_typo3 . 'sysext/' . $extensionName . '/Resources/Private/Language/locallang.xlf';
     }
 
     /**
@@ -237,37 +247,36 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
     {
         return [
             'get translated key' =>
-            ['key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1'],
+            ['key1', 'dk', 'Dansk label for key1'],
 
             'fallback to English when translation is missing for key' =>
-            ['key2', $this->LOCAL_LANG, 'dk', 'English label for key2'],
+            ['key2', 'dk', 'English label for key2'],
 
             'fallback to English for non existing language' =>
-            ['key2', $this->LOCAL_LANG, 'xx', 'English label for key2'],
+            ['key2', 'xx', 'English label for key2'],
 
             'replace placeholder with argument' =>
-            ['keyWithPlaceholder', $this->LOCAL_LANG, 'en', 'English label with number 100', [], [100]],
+            ['keyWithPlaceholder', 'default', 'English label with number 100', [], [100]],
 
             'get translated key from primary language' =>
-            ['key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1', ['dk_alt']],
+            ['key1', 'dk', 'Dansk label for key1', ['dk_alt']],
 
             'fallback to alternative language if translation is missing(llxml)' =>
-            ['key2', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key2', ['dk_alt']],
+            ['key2', 'dk', 'Dansk alternative label for key2', ['dk_alt']],
 
             'fallback to alternative language if translation is missing(xlif)' =>
-            ['key5', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key5', ['dk_alt']],
+            ['key5', 'dk', 'Dansk alternative label for key5', ['dk_alt']],
 
             'fallback to English for label not translated in dk and dk_alt(llxml)' =>
-            ['key3', $this->LOCAL_LANG, 'dk', 'English label for key3', ['dk_alt']],
+            ['key3', 'dk', 'English label for key3', ['dk_alt']],
 
             'fallback to English for label not translated in dk and dk_alt(xlif)' =>
-            ['key4', $this->LOCAL_LANG, 'dk', 'English label for key4', ['dk_alt']],
+            ['key4', 'dk', 'English label for key4', ['dk_alt']],
         ];
     }
 
     /**
      * @param string $key
-     * @param array $LOCAL_LANG
      * @param string $languageKey
      * @param string $expected
      * @param array $altLanguageKeys
@@ -275,23 +284,38 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTest($key, array $LOCAL_LANG, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
+    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
     {
         $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($LOCAL_LANG);
+        $property->setValue($this->LOCAL_LANG);
 
-        $property = $reflectionClass->getProperty('languageKey');
+        $oldBackendUserLanguage = $GLOBALS['BE_USER']->uc['lang'];
+        $GLOBALS['BE_USER']->uc['lang'] = $languageKey;
+        $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));
+        $GLOBALS['BE_USER']->uc['lang'] = $oldBackendUserLanguage;
+    }
+
+    /**
+     * @param string $key
+     * @param string $languageKey
+     * @param string $expected
+     * @param array $altLanguageKeys
+     * @param array $arguments
+     * @dataProvider translateDataProvider
+     * @test
+     */
+    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
+    {
+        $reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+
+        $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
-        $property->setValue($languageKey);
+        $property->setValue($this->LOCAL_LANG);
 
-        $property = $reflectionClass->getProperty('alternativeLanguageKeys');
-        $property->setAccessible(true);
-        $property->setValue($altLanguageKeys);
-
-        $this->assertEquals($expected, LocalizationUtility::translate($key, 'extensionKey', $arguments));
+        $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
     /**
@@ -302,12 +326,12 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         return [
             'override labels with typoscript' => [
                 'LOCAL_LANG' => [
-                    'extensionKey' => [
+                    $this->getLanguageFilePath('core') => [
                         'dk' => [
                             'key1' => [
                                 [
                                     'source' => 'English label for key1',
-                                    'target' => 'Dansk label for key1 extensionKey',
+                                    'target' => 'Dansk label for key1 core',
                                 ]
                             ],
                             'key2' => [
@@ -322,12 +346,12 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                             ],
                         ],
                     ],
-                    'extensionKey1' => [
+                    $this->getLanguageFilePath('backend') => [
                         'dk' => [
                             'key1' => [
                                 [
                                     'source' => 'English label for key1',
-                                    'target' => 'Dansk label for key1 extensionKey1',
+                                    'target' => 'Dansk label for key1 backend',
                                 ]
                             ],
                             'key2' => [
@@ -346,12 +370,12 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                 'typoscript LOCAL_LANG' => [
                     '_LOCAL_LANG' => [
                         'dk' => [
-                            'key1' => 'key1 value from TS extensionKey',
+                            'key1' => 'key1 value from TS core',
                             'key3' => [
-                                'subkey1' => 'key3.subkey1 value from TS extensionKey',
+                                'subkey1' => 'key3.subkey1 value from TS core',
                                 // this key doesn't exist in xml files
                                 'subkey2' => [
-                                    'subsubkey' => 'key3.subkey2.subsubkey value from TS extensionKey'
+                                    'subsubkey' => 'key3.subkey2.subsubkey value from TS core'
                                 ]
                             ]
                         ]
@@ -362,7 +386,7 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                     'key1' => [
                         [
                             'source' => 'English label for key1',
-                            'target' => 'key1 value from TS extensionKey',
+                            'target' => 'key1 value from TS core',
                         ]
                     ],
                     'key2' => [
@@ -373,12 +397,12 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
                     'key3.subkey1' => [
                         [
                             'source' => 'English label for key3',
-                            'target' => 'key3.subkey1 value from TS extensionKey',
+                            'target' => 'key3.subkey1 value from TS core',
                         ]
                     ],
                     'key3.subkey2.subsubkey' => [
                         [
-                            'target' => 'key3.subkey2.subsubkey value from TS extensionKey',
+                            'target' => 'key3.subkey2.subsubkey value from TS core',
                         ]
                     ],
                 ],
@@ -404,22 +428,18 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $property->setAccessible(true);
         $property->setValue($LOCAL_LANG);
 
-        $property = $reflectionClass->getProperty('languageKey');
-        $property->setAccessible(true);
-        $property->setValue($languageKey);
-
         $configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', null)->will($this->returnValue($typoScriptLocalLang));
+        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'core', null)->will($this->returnValue($typoScriptLocalLang));
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
-        $method->invoke(null, 'extensionKey');
+        $method->invoke(null, 'core', $this->languageFilePath);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
         $property->setAccessible(true);
         $result = $property->getValue();
 
-        $this->assertEquals($expected, $result['extensionKey'][$languageKey]);
+        $this->assertEquals($expected, $result[$this->languageFilePath][$languageKey]);
     }
 
     /**
@@ -433,10 +453,6 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
 
-        $property = $reflectionClass->getProperty('languageKey');
-        $property->setAccessible(true);
-        $property->setValue('dk');
-
         $typoScriptLocalLang = [
             '_LOCAL_LANG' => [
                 'dk' => [
@@ -446,13 +462,13 @@ class LocalizationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTest
         ];
 
         $configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', null)->will($this->returnValue($typoScriptLocalLang));
+        $this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'core', null)->will($this->returnValue($typoScriptLocalLang));
 
         $method = $reflectionClass->getMethod('loadTypoScriptLabels');
         $method->setAccessible(true);
-        $method->invoke(null, 'extensionKey');
+        $method->invoke(null, 'core', $this->languageFilePath);
 
-        $result = LocalizationUtility::translate('key1', 'extensionKey');
+        $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         $this->assertNotNull($result);
         $this->assertEquals('', $result);
     }

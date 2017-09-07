@@ -94,6 +94,8 @@ class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
+        $this->registerArgument('languageKey', 'string', 'Language key ("dk" for example) or "default" to use for this translation. If this argument is empty, we use the current language');
+        $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist');
     }
 
     /**
@@ -111,7 +113,7 @@ class TranslateViewHelper extends AbstractViewHelper
         $id = $arguments['id'];
         $default = $arguments['default'];
         $extensionName = $arguments['extensionName'];
-        $arguments = $arguments['arguments'];
+        $translateArguments = $arguments['arguments'];
 
         // Wrapper including a compatibility layer for TYPO3 Flow Translation
         if ($id === null) {
@@ -125,14 +127,14 @@ class TranslateViewHelper extends AbstractViewHelper
         $request = $renderingContext->getControllerContext()->getRequest();
         $extensionName = $extensionName === null ? $request->getControllerExtensionName() : $extensionName;
         try {
-            $value = static::translate($id, $extensionName, $arguments);
+            $value = static::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
         } catch (\InvalidArgumentException $e) {
             $value = null;
         }
         if ($value === null) {
             $value = $default !== null ? $default : $renderChildrenClosure();
-            if (!empty($arguments)) {
-                $value = vsprintf($value, $arguments);
+            if (!empty($translateArguments)) {
+                $value = vsprintf($value, $translateArguments);
             }
         }
         return $value;
@@ -144,11 +146,13 @@ class TranslateViewHelper extends AbstractViewHelper
      * @param string $id Translation Key compatible to TYPO3 Flow
      * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
      * @param array $arguments Arguments to be replaced in the resulting string
+     * @param string $languageKey Language key to use for this translation
+     * @param string[] $alternativeLanguageKeys Alternative language keys if no translation does exist
      *
-     * @return NULL|string
+     * @return null|string
      */
-    protected static function translate($id, $extensionName, $arguments)
+    protected static function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
     {
-        return LocalizationUtility::translate($id, $extensionName, $arguments);
+        return LocalizationUtility::translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys);
     }
 }
