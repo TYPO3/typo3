@@ -2939,7 +2939,7 @@ class TypoScriptFrontendController
             'addQueryString.' => ['exclude' => 'id']]);
 
         // Prevent redirection loop
-        if (!empty($redirectUrl)) {
+        if (!empty($redirectUrl) && GeneralUtility::getIndpEnv('REQUEST_URI') !== '/' . $redirectUrl) {
             // redirect and exit
             HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
         }
