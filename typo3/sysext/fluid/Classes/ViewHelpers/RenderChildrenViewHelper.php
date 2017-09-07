@@ -70,7 +70,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode
+     * @return \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode
      */
     protected function getWidgetChildNodes()
     {
