@@ -129,7 +129,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $this->frontendControllerMock =
             $this->getAccessibleMock(
                 TypoScriptFrontendController::class,
-            ['dummy'],
+            ['sL'],
                 [],
                 '',
                 false
@@ -1578,10 +1578,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     {
         $key = $this->getUniqueId('someKey');
         $value = $this->getUniqueId('someValue');
-        $language = $this->getUniqueId('someLanguage');
-        $GLOBALS['TSFE']->LL_labels_cache[$language]['LLL:' . $key] = $value;
-        $GLOBALS['TSFE']->lang = $language;
-
+        $GLOBALS['TSFE']->expects($this->once())->method('sL')->with('LLL:' . $key)->will($this->returnValue($value));
         $this->assertEquals($value, $this->subject->getData('lll:' . $key));
     }
 

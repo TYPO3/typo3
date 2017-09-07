@@ -30,8 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
@@ -700,23 +699,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $lang = '';
 
     /**
-     * @var array
-     */
-    public $LL_labels_cache = [];
-
-    /**
-     * @var array
-     */
-    public $LL_files_cache = [];
-
-    /**
-     * List of language dependencies for actual language. This is used for local
-     * variants of a language that depend on their "main" language, like Brazilian,
-     * Portuguese or Canadian French.
+     * Internal calculations for labels
      *
-     * @var array
+     * @var LanguageService
      */
-    protected $languageDependencies = [];
+    protected $languageService;
 
     /**
      * @var LockingStrategyInterface[][]
@@ -2554,7 +2541,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // Initialize charset settings etc.
-        $this->initLLvars();
+        $languageKey = $this->config['config']['language'] ?? 'default';
+        $this->lang = $languageKey;
+        $this->setOutputLanguage($languageKey);
+
+        // Rendering charset of HTML page.
+        if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
+            $this->metaCharset = $this->config['config']['metaCharset'];
+        }
 
         // Get values from TypoScript:
         $this->sys_language_uid = ($this->sys_language_content = (int)$this->config['config']['sys_language_uid']);
@@ -2633,7 +2627,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!empty($this->config['config']['sys_language_isocode_default'])) {
                 $this->sys_language_isocode = $this->config['config']['sys_language_isocode_default'];
             } else {
-                $this->sys_language_isocode = $this->lang !== 'default' ? $this->lang : 'en';
+                $this->sys_language_isocode = $languageKey !== 'default' ? $languageKey : 'en';
             }
         }
 
@@ -4064,27 +4058,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function sL($input)
     {
-        if (substr($input, 0, 4) !== 'LLL:') {
-            // Not a label, return the key as this
-            return $input;
-        }
-        // If cached label
-        if (!isset($this->LL_labels_cache[$this->lang][$input])) {
-            $restStr = trim(substr($input, 4));
-            $extPrfx = '';
-            if (strpos($restStr, 'EXT:') === 0) {
-                $restStr = trim(substr($restStr, 4));
-                $extPrfx = 'EXT:';
-            }
-            $parts = explode(':', $restStr);
-            $parts[0] = $extPrfx . $parts[0];
-            // Getting data if not cached
-            if (!isset($this->LL_files_cache[$parts[0]])) {
-                $this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
-            }
-            $this->LL_labels_cache[$this->lang][$input] = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
-        }
-        return $this->LL_labels_cache[$this->lang][$input];
+        return $this->languageService->sL($input);
     }
 
     /**
@@ -4092,37 +4066,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $fileRef Reference to a relative filename to include.
      * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function readLLfile($fileRef)
     {
-        /** @var $languageFactory LocalizationFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-
-        if ($this->lang !== 'default') {
-            $languages = array_reverse($this->languageDependencies);
-            // At least we need to have English
-            if (empty($languages)) {
-                $languages[] = 'default';
-            }
-        } else {
-            $languages = ['default'];
-        }
-
-        $localLanguage = [];
-        foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language);
-            $localLanguage['default'] = $tempLL['default'];
-            if (!isset($localLanguage[$this->lang])) {
-                $localLanguage[$this->lang] = $localLanguage['default'];
-            }
-            if ($this->lang !== 'default' && isset($tempLL[$language])) {
-                // Merge current language labels onto labels from previous language
-                // This way we have a label with fall back applied
-                ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
-            }
-        }
-
-        return $localLanguage;
+        trigger_error('This method will be removed in TYPO3 v10, as the method LanguageService->includeLLFile() can be used directly.', E_USER_DEPRECATED);
+        return $this->languageService->includeLLFile($fileRef, false, true);
     }
 
     /**
@@ -4131,9 +4080,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
      * @param array $LOCAL_LANG The locallang array in which to search
      * @return string Label value of $index key.
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use LanguageService->getLLL() directly
      */
     public function getLLL($index, $LOCAL_LANG)
     {
+        trigger_error('This method will be removed in TYPO3 v10, as the method LanguageService->getLLL() can be used directly.', E_USER_DEPRECATED);
         if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
             return $LOCAL_LANG[$this->lang][$index][0]['target'];
         }
@@ -4145,33 +4096,35 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Initializing the getLL variables needed.
+     *
+     * @see settingLanguage()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.
      */
     public function initLLvars()
     {
-        // Init languageDependencies list
-        $this->languageDependencies = [];
-        // Setting language key and split index:
+        trigger_error('This method will be removed in TYPO3 v10, the initialization can be altered via hooks within settingLanguage().', E_USER_DEPRECATED);
         $this->lang = $this->config['config']['language'] ?: 'default';
-        $this->pageRenderer->setLanguage($this->lang);
-
-        // Finding the requested language in this list based
-        // on the $lang key being inputted to this function.
-        /** @var $locales Locales */
-        $locales = GeneralUtility::makeInstance(Locales::class);
-        $locales->initialize();
-
-        // Language is found. Configure it:
-        if (in_array($this->lang, $locales->getLocales())) {
-            $this->languageDependencies[] = $this->lang;
-            foreach ($locales->getLocaleDependencies($this->lang) as $language) {
-                $this->languageDependencies[] = $language;
-            }
-        }
+        $this->setOutputLanguage($this->lang);
 
         // Rendering charset of HTML page.
         if ($this->config['config']['metaCharset']) {
             $this->metaCharset = trim(strtolower($this->config['config']['metaCharset']));
         }
+    }
+
+    /**
+     * Sets all internal measures what language the page should be rendered.
+     * This is not for records, but rather the HTML / charset and the locallang labels
+     *
+     * @param string $language - usually set via TypoScript config.language = dk
+     */
+    protected function setOutputLanguage($language = 'default')
+    {
+        $this->pageRenderer->setLanguage($language);
+        $this->languageService = GeneralUtility::makeInstance(LanguageService::class);
+        // Always disable debugging for TSFE
+        $this->languageService->debugKey = false;
+        $this->languageService->init($language);
     }
 
     /**

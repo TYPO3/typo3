@@ -108,6 +108,8 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Unit
     public function localizationReturnsUnchangedStringIfNotLocallangLabel()
     {
         $string = $this->getUniqueId();
+        $this->subject->page = [];
+        $this->subject->settingLanguage();
         $this->assertEquals($string, $this->subject->sL($string));
     }
 
