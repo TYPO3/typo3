@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
  */
 
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 
@@ -27,7 +28,7 @@ class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     /**
      * @test
      */
-    public function throwExceptionOnInconsistentConfigurationThrowExceptionOnInconsistentConfiguration()
+    public function throwExceptionOnInconsistentConfigurationThrowsExceptionOnInconsistentConfiguration()
     {
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1480469086);
@@ -66,5 +67,53 @@ class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame('one,two', $databaseData['bar']);
+    }
+
+    /**
+     * @test
+     */
+    public function executeInternalProcessesSingleTable()
+    {
+        $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
+            ->setMethods(['process'])
+            ->getMock();
+        $this->inject($saveToDatabaseFinisher, 'options', [
+            'table' => 'tx_foo',
+            'databaseColumnMappings' => [
+                'foo' => 1,
+            ],
+        ]);
+
+        $saveToDatabaseFinisher->expects($this->once())->method('process')->with(0);
+
+        $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
+    }
+
+    /**
+     * @test
+     */
+    public function executeInternalProcessesMultipleTables()
+    {
+        $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
+            ->setMethods(['process'])
+            ->getMock();
+        $this->inject($saveToDatabaseFinisher, 'options', [
+            [
+                'table' => 'tx_foo',
+                'databaseColumnMappings' => [
+                    'foo' => 1,
+                ],
+            ],
+            [
+                'table' => 'tx_bar',
+                'databaseColumnMappings' => [
+                    'bar' => 1,
+                ],
+            ],
+        ]);
+
+        $saveToDatabaseFinisher->expects($this->exactly(2))->method('process')->withConsecutive([0], [1]);
+
+        $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
     }
 }
