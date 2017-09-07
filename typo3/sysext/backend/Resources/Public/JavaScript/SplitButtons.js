@@ -58,6 +58,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
 				// Run any preSubmit callbacks
 				for (var i = 0; i < SplitButtons.preSubmitCallbacks.length; ++i) {
 					SplitButtons.preSubmitCallbacks[i](e);
+
+					if (e.isPropagationStopped()) {
+						preventExec = false;
+						return false;
+					}
 				}
 				$form.append($elem);
 				// Disable submit buttons
