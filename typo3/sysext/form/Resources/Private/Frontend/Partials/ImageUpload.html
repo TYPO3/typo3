@@ -4,6 +4,7 @@
 		<formvh:form.uploadedResource
 			property="{element.identifier}"
 			as="image"
+			id="{element.uniqueIdentifier}"
 			additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
 			accept="{element.properties.allowedMimeTypes}"
 		>
