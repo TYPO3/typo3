@@ -253,38 +253,40 @@ class RecordHistory
                 $reloadPageFrame = 1;
             }
         }
-        // PROCESS CHANGES
-        // create an array for process_datamap
-        $diffModified = [];
-        foreach ($diff['oldData'] as $key => $value) {
-            $splitKey = explode(':', $key);
-            $diffModified[$splitKey[0]][$splitKey[1]] = $value;
-        }
-        switch (count($rollbackData)) {
-            case 1:
-                // all tables
-                $data = $diffModified;
-                break;
-            case 2:
-                // one record
-                $data[$rollbackData[0]][$rollbackData[1]] = $diffModified[$rollbackData[0]][$rollbackData[1]];
-                break;
-            case 3:
-                // one field in one record
-                $data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
-                break;
-        }
-        // Removing fields:
-        $data = $this->removeFilefields($rollbackData[0], $data);
-        // Writes the data:
-        $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->debug = 0;
-        $tce->dontProcessTransformations = 1;
-        $tce->start($data, []);
-        $tce->process_datamap();
-        unset($tce);
-        if (isset($data['pages'])) {
-            $reloadPageFrame = 1;
+        if (!$diff['insertsDeletes']) {
+            // PROCESS CHANGES
+            // create an array for process_datamap
+            $diffModified = [];
+            foreach ($diff['oldData'] as $key => $value) {
+                $splitKey = explode(':', $key);
+                $diffModified[$splitKey[0]][$splitKey[1]] = $value;
+            }
+            switch (count($rollbackData)) {
+                case 1:
+                    // all tables
+                    $data = $diffModified;
+                    break;
+                case 2:
+                    // one record
+                    $data[$rollbackData[0]][$rollbackData[1]] = $diffModified[$rollbackData[0]][$rollbackData[1]];
+                    break;
+                case 3:
+                    // one field in one record
+                    $data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
+                    break;
+            }
+            // Removing fields:
+            $data = $this->removeFilefields($rollbackData[0], $data);
+            // Writes the data:
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
+            $tce->debug = 0;
+            $tce->dontProcessTransformations = 1;
+            $tce->start($data, []);
+            $tce->process_datamap();
+            unset($tce);
+            if (isset($data['pages'])) {
+                $reloadPageFrame = 1;
+            }
         }
         // Return to normal operation
         $this->lastSyslogId = false;
