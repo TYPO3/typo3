@@ -840,6 +840,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         }
 
         $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder, false);
+        // Reset limit and offset for full count query
+        $queryBuilder->setFirstResult(0);
+        $queryBuilder->setMaxResults(1);
 
         $this->totalItems = (int)$queryBuilder->count('*')
             ->execute()
