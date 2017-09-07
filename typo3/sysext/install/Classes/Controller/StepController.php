@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action\ActionInterface;
 use TYPO3\CMS\Install\Controller\Action\Step\AbstractStepAction;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -82,7 +83,7 @@ class StepController extends AbstractController
             $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);
             $action->setAction('installToolDisabled');
         }
-        $action->setContext('standalone');
+        $action->setContext(ActionInterface::CONTEXT_STANDALONE);
         $action->setController('common');
         return $this->output($action->handle());
     }
@@ -98,7 +99,7 @@ class StepController extends AbstractController
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
         $action = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolPasswordNotSetAction::class);
         $action->setController('common');
-        $action->setContext('standalone');
+        $action->setContext(ActionInterface::CONTEXT_STANDALONE);
         $action->setAction('installToolPasswordNotSet');
         return $this->output($action->handle());
     }
@@ -119,7 +120,7 @@ class StepController extends AbstractController
             /** @var AbstractStepAction $stepAction */
             $stepAction = $this->getActionInstance($action);
             $stepAction->setAction($action);
-            $stepAction->setContext('standalone');
+            $stepAction->setContext(ActionInterface::CONTEXT_STANDALONE);
             $stepAction->setToken($this->generateTokenForAction($action));
             $stepAction->setPostValues($postValues);
             $messages = $stepAction->execute();
@@ -149,7 +150,7 @@ class StepController extends AbstractController
         $stepAction = $this->getActionInstance($action);
         $stepAction->setAction($action);
         $stepAction->setController('step');
-        $stepAction->setContext('standalone');
+        $stepAction->setContext(ActionInterface::CONTEXT_STANDALONE);
         $stepAction->setToken($this->generateTokenForAction($action));
         $stepAction->setPostValues($postValues);
 
@@ -242,7 +243,7 @@ class StepController extends AbstractController
                 $action->setStepsCounter($currentStep, $totalSteps);
             }
             $action->setController('step');
-            $action->setContext('standalone');
+            $action->setContext(ActionInterface::CONTEXT_STANDALONE);
             $action->setAction('environmentAndFolders');
             if (!empty($errorMessagesFromExecute)) {
                 $action->setMessages($errorMessagesFromExecute);

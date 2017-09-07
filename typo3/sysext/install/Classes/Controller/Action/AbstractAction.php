@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Controller\Action;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Install\Service\ContextService;
 
 /**
  * General purpose controller action helper methods and bootstrap
@@ -54,9 +53,9 @@ abstract class AbstractAction implements ActionInterface
     protected $messages = [];
 
     /**
-     * @var ContextService
+     * @var string
      */
-    protected $contextService;
+    protected $context = self::CONTEXT_STANDALONE;
 
     /**
      * Handles the action
@@ -88,8 +87,8 @@ abstract class AbstractAction implements ActionInterface
             ->assign('action', $this->action)
             ->assign('controller', $this->controller)
             ->assign('token', $this->token)
-            ->assign('context', $this->contextService->getContextString())
-            ->assign('contextService', $this->contextService)
+            ->assign('context', $this->context)
+            ->assign('backendContext', $this->context === self::CONTEXT_BACKEND)
             ->assign('messages', $this->messages)
             ->assign('typo3Version', TYPO3_version)
             ->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
@@ -155,13 +154,19 @@ abstract class AbstractAction implements ActionInterface
 
     /**
      * Context determines if the install tool is called within backend or standalone
-     * This method creates a context service that distinguishes between standalone and backend context
      *
-     * @param $context string Either 'standalone' or 'backend'
+     * @param $context string One of the `CONTEXT_*` constants.
      */
     public function setContext($context)
     {
-        $this->contextService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\ContextService::class, $context);
+        switch ($context) {
+            case self::CONTEXT_STANDALONE:
+            case self::CONTEXT_BACKEND:
+                $this->context = $context;
+                break;
+            default:
+                $this->context = self::CONTEXT_STANDALONE;
+        }
     }
 
     /**

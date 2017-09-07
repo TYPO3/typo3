@@ -44,7 +44,7 @@ class AbstractController
         $action = GeneralUtility::makeInstance(LoginForm::class);
         $action->setController('common');
         $action->setAction('login');
-        $action->setContext($request->getAttribute('context', 'standalone'));
+        $action->setContext($request->getAttribute('context'));
         $action->setToken($this->generateTokenForAction('login'));
         $action->setPostValues($request->getParsedBody()['install'] ?? []);
         if ($message) {

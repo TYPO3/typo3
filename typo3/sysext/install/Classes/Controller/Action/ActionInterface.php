@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Install\Controller\Action;
  */
 interface ActionInterface
 {
+    const CONTEXT_STANDALONE = 'standalone';
+    const CONTEXT_BACKEND = 'backend';
+
     /**
      * Handle this action
      *
@@ -49,7 +52,7 @@ interface ActionInterface
     public function setAction($action);
 
     /**
-     * Set the context name, can be "installer", "standalone" or "backend"
+     * Set the context name, must be one of the `CONTEXT_*` constants.
      *
      * @param string $context
      */

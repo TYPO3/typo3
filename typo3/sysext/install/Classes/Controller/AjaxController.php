@@ -115,7 +115,7 @@ class AjaxController extends AbstractController
         }
         $toolAction->setController('ajax');
         $toolAction->setAction($action);
-        $toolAction->setContext($request->getAttribute('context', 'standalone'));
+        $toolAction->setContext($request->getAttribute('context'));
         $toolAction->setToken($this->generateTokenForAction($action));
         $toolAction->setPostValues($request->getParsedBody()['install'] ?? []);
         return $this->output($toolAction->handle());
