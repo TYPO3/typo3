@@ -317,11 +317,22 @@ define(['jquery',
                 isAllowed: function (placeholder, placeholderParent, currentItem) {
                     var formElementIdentifierPath, formElementTypeDefinition, targetFormElementIdentifierPath, targetFormElementTypeDefinition;
 
+                    if (typeof placeholderParent === 'undefined') {
+                        return true;
+                    }
+
                     formElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(currentItem));
                     targetFormElementIdentifierPath = getTreeNodeIdentifierPathWithinDomElement($(placeholderParent));
 
                     formElementTypeDefinition = getFormElementDefinition(formElementIdentifierPath);
                     targetFormElementTypeDefinition = getFormElementDefinition(targetFormElementIdentifierPath);
+
+                    if (
+                        targetFormElementTypeDefinition['_isTopLevelFormElement']
+                        && !targetFormElementTypeDefinition['_isCompositeFormElement']
+                    ) {
+                        return false;
+                    }
 
                     if (
                         formElementTypeDefinition['_isGridContainerFormElement']
