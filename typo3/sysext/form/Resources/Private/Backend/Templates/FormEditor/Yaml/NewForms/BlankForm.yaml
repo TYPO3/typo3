@@ -5,4 +5,4 @@ renderables:
     -
         type: 'Page'
         identifier: 'page-1'
-        label: 'Page'
+        label: 'Step'
