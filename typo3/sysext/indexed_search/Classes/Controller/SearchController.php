@@ -1308,13 +1308,16 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function linkPage($pageUid, $linkText, $row = [], $markUpSwParams = [])
     {
+        $pageLanguage = $GLOBALS['TSFE']->sys_language_content;
         // Parameters for link
         $urlParameters = (array)unserialize($row['cHashParams']);
         // Add &type and &MP variable:
         if ($row['data_page_mp']) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
-        $urlParameters['L'] = (int)$row['sys_language_uid'];
+        if (($pageLanguage === 0 && $row['sys_language_uid'] > 0) || $pageLanguage > 0) {
+            $urlParameters['L'] = (int)$row['sys_language_uid'];
+        }
         // markup-GET vars:
         $urlParameters = array_merge($urlParameters, $markUpSwParams);
         // This will make sure that the path is retrieved if it hasn't been
