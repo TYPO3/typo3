@@ -35,9 +35,10 @@ class StartModuleUpdate extends AbstractUpdate
      */
     public function checkForUpdate(&$description)
     {
-        $statement = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('be_users')
-            ->select(['uid', 'uc'], 'be_users', []);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();
         $needsExecution = false;
         while ($backendUser = $statement->fetch()) {
             if ($backendUser['uc'] !== null) {
@@ -69,6 +70,7 @@ class StartModuleUpdate extends AbstractUpdate
     public function performUpdate(array &$databaseQueries, &$customMessage)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder->select('uid', 'uc')->from('be_users')->execute();
         while ($backendUser = $statement->fetch()) {
             if ($backendUser['uc'] !== null) {
@@ -79,6 +81,7 @@ class StartModuleUpdate extends AbstractUpdate
                 ) {
                     $userConfig['startModule'] = 'help_AboutAbout';
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+                    $queryBuilder->getRestrictions()->removeAll();
                     $queryBuilder->update('be_users')
                         ->where(
                             $queryBuilder->expr()->eq(

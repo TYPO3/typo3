@@ -45,6 +45,8 @@ class SystemMaintainerWrite extends AbstractAjaxAction
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
+
         $validatedUserList = $queryBuilder
             ->select('uid')
             ->from('be_users')
