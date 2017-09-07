@@ -1875,7 +1875,10 @@ class DataHandler
             );
         }
 
-        $itemC = count($items);
+        $itemC = 0;
+        if ($items !== null) {
+            $itemC = count($items);
+        }
         if (!$itemC) {
             $itemC = 1;
         }
