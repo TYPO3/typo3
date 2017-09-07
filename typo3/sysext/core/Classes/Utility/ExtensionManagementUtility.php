@@ -1015,10 +1015,9 @@ class ExtensionManagementUtility
             // OS check
             // Empty $os means 'not limited to one OS', therefore a check is not needed
             if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] && $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
-                // TYPO3_OS is not yet defined
-                $os_type = stripos(PHP_OS, 'win') !== false && !stripos(PHP_OS, 'darwin') !== false ? 'WIN' : 'UNIX';
+                $os_type = TYPO3_OS === 'WIN' ? 'WIN' : 'UNIX';
                 $os = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os']));
-                if (!in_array($os_type, $os)) {
+                if (!in_array($os_type, $os, true)) {
                     self::deactivateService($serviceType, $serviceKey);
                 }
             }
