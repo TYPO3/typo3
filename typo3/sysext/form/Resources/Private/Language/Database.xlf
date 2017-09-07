@@ -43,7 +43,7 @@
             </trans-unit>
 
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve">
-                <source>Email to sender</source>
+                <source>Email to sender (form submitter)</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" xml:space="preserve">
                 <source>Subject of the email</source>
@@ -80,7 +80,7 @@
             </trans-unit>
 
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" xml:space="preserve">
-                <source>Email to receiver</source>
+                <source>Email to receiver (you)</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" xml:space="preserve">
                 <source>Subject of the email</source>
@@ -196,7 +196,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.header" xml:space="preserve">
-                <source>Form Editor</source>
+                <source>Form editor</source>
             </trans-unit>
             <trans-unit id="formEditor.loading" xml:space="preserve">
                 <source>Loading...</source>
@@ -225,10 +225,6 @@
             <trans-unit id="formEditor.insert_elements" xml:space="preserve">
                 <source>Insert elements</source>
             </trans-unit>
-            <trans-unit id="formEditor.insert_pages" xml:space="preserve">
-                <source>Insert pages</source>
-            </trans-unit>
-
             <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" xml:space="preserve">
                 <source>Required</source>
             </trans-unit>
@@ -443,10 +439,10 @@
                 <source>Add finisher</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" xml:space="preserve">
-                <source>Email to sender (to website visitor)</source>
+                <source>Email to sender (form submitter)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" xml:space="preserve">
-                <source>Email to receiver (to you)</source>
+                <source>Email to receiver (you)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" xml:space="preserve">
                 <source>Redirect to a page</source>
@@ -456,7 +452,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" xml:space="preserve">
-                <source>Send email (to website visitor)</source>
+                <source>Email to sender (form submitter)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
@@ -471,19 +467,19 @@
                 <source>Recipient name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipientName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the website visitor, which appears in the website visitor e-mail client. You can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
+                <source>The name of the website visitor which appears in the website visitor email client. You can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText" xml:space="preserve">
-                <source>The email address of the sender (e.g. your company's email address), which appears in the website visitor e-mail client.</source>
+                <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" xml:space="preserve">
                 <source>Sender name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the sender (e.g. your company's name), which appears in the website visitor e-mail client.</source>
+                <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToAddress.label" xml:space="preserve">
                 <source>Reply-to address</source>
@@ -508,7 +504,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve">
-                <source>Send email (to you)</source>
+                <source>Email to receiver (you)</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" xml:space="preserve">
                 <source>Subject</source>
@@ -523,19 +519,19 @@
                 <source>Recipient name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipientName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the recipient, which appears in your e-mail client (e.g. your company's name).</source>
+                <source>The name of the recipient which appears in your email client (e.g. your company's name).</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" xml:space="preserve">
                 <source>Sender address</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText" xml:space="preserve">
-                <source>The email address of the sender, which appears in your e-mail client. If you want, you can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
+                <source>The email address of the sender which appears in your email client. If you want, you can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" xml:space="preserve">
                 <source>Sender name</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the sender, which appears in your e-mail client. If you want, you can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
+                <source>The name of the sender which appears in your email client. If you want, you can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToAddress.label" xml:space="preserve">
                 <source>Reply-to address</source>
@@ -637,13 +633,13 @@
                 <source>Previous button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" xml:space="preserve">
-                <source>previous Step</source>
+                <source>Previous step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" xml:space="preserve">
                 <source>Next button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" xml:space="preserve">
-                <source>next Step</source>
+                <source>Next step</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.SummaryPage.label" xml:space="preserve">
@@ -656,13 +652,13 @@
                 <source>Previous button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" xml:space="preserve">
-                <source>previous Step</source>
+                <source>Previous step</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" xml:space="preserve">
                 <source>Next button label</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" xml:space="preserve">
-                <source>next Step</source>
+                <source>Next step</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Fieldset.label" xml:space="preserve">
@@ -683,7 +679,7 @@
                 <source>Grid: Row</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.GridRow.editor.label.label" xml:space="preserve">
-                <source>Row name (not visible within Frontend)</source>
+                <source>Row name (not visible within frontend)</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Text.label" xml:space="preserve">
@@ -826,7 +822,7 @@
             </trans-unit>
 
             <trans-unit id="formEditor.elements.UnknownElement" xml:space="preserve">
-                <source>Unknown Element</source>
+                <source>Unknown element</source>
             </trans-unit>
 
             <trans-unit id="formEditor.stage.toolbar.new_element" xml:space="preserve">
