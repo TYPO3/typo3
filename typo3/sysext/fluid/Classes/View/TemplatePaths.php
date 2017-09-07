@@ -86,6 +86,15 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
             self::CONFIG_LAYOUTROOTPATHS => [$resources . 'Layouts/']
         ];
 
+        if (!empty($this->templateRootPaths) || !empty($this->partialRootPaths) || !empty($this->layoutRootPaths)) {
+            // The view was configured already
+            $configuredPaths = [
+                self::CONFIG_TEMPLATEROOTPATHS => $this->templateRootPaths,
+                self::CONFIG_PARTIALROOTPATHS => $this->partialRootPaths,
+                self::CONFIG_LAYOUTROOTPATHS => $this->layoutRootPaths,
+            ];
+        }
+
         if (empty($this->typoScript)) {
             $this->typoScript = (array)$this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         }
