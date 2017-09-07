@@ -9,6 +9,8 @@ call_user_func(function () {
         'login'
     );
 
+    $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['login'] = 'mimetypes-x-content-login';
+
     // check if there is already a forms tab and add the item after that, otherwise
     // add the tab item as well
     $additionalCTypeItem = [

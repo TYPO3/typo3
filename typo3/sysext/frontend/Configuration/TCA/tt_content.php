@@ -40,7 +40,6 @@ return [
             'table' => 'mimetypes-x-content-table',
             'uploads' => 'mimetypes-x-content-list-files',
             'list' => 'mimetypes-x-content-plugin',
-            'login' => 'mimetypes-x-content-login',
             'shortcut' => 'mimetypes-x-content-link',
             'script' => 'mimetypes-x-content-script',
             'div' => 'mimetypes-x-content-divider',
