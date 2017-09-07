@@ -718,6 +718,8 @@ define(['jquery'], function($) {
 
                     if ('object' === $.type(modelExtension[key]) || 'array' === $.type(modelExtension[key])) {
                         extendModel(modelToExtend, modelExtension[key], path, disablePublishersOnSet);
+                    } else if (pathPrefix === 'properties.options') {
+                        modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
                     } else {
                         modelToExtend.set(path, modelExtension[key], disablePublishersOnSet);
                     }
