@@ -82,6 +82,12 @@
             <trans-unit id="validation.error.1476396435" xml:space="preserve">
                 <source>Do not fill this field</source>
             </trans-unit>
+            <trans-unit id="form_new_wizard_title" xml:space="preserve">
+                <source>Form</source>
+            </trans-unit>
+            <trans-unit id="form_new_wizard_description" xml:space="preserve">
+                <source>A form allowing website users to submit messages.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

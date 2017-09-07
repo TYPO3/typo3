@@ -9,6 +9,8 @@ call_user_func(function () {
         'form_formframework'
     );
 
+    $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['form_formframework'] = 'content-form';
+
     $GLOBALS['TCA']['tt_content']['types']['form_formframework']['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
             --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
@@ -33,6 +35,7 @@ call_user_func(function () {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'TYPO3.CMS.Form',
         'Formframework',
-        'Form'
+        'Form',
+        'content-form'
     );
 });
