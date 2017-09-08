@@ -108,10 +108,10 @@ tt_content.' . $pluginSignature . ' {
      * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
-     * @param string $pluginIconPathAndFilename is a path to an icon file (relative to TYPO3_mainDir), that will be displayed in the drop down menu in the backend (optional)
+     * @param string $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
      * @throws \InvalidArgumentException
      */
-    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = null)
+    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null)
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
@@ -133,7 +133,7 @@ tt_content.' . $pluginSignature . ' {
             : 'list_type';
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-            [$pluginTitle, $pluginSignature, $pluginIconPathAndFilename],
+            [$pluginTitle, $pluginSignature, $pluginIcon],
             $pluginType,
             $extensionKey
         );
