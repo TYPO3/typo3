@@ -345,7 +345,7 @@ class Commands
         $lockInfo = BackendUtility::isRecordLocked('pages', $record['uid']);
         if (is_array($lockInfo)) {
             $qtip .= '<br />' . htmlspecialchars($lockInfo['msg']);
-            $prefix .= '<span class="typo3-pagetree-status">' . $iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
+            $prefix .= '<span class="typo3-pagetree-status">' . $iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
         }
         // Call stats information hook
         $stat = '';

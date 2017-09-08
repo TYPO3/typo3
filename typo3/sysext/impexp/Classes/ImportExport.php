@@ -620,7 +620,7 @@ abstract class ImportExport
             $preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             foreach ($record['softrefs'] as $info) {
                 $pInfo = [];
-                $pInfo['preCode'] = $preCode_A . $this->iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL)->render();
+                $pInfo['preCode'] = $preCode_A . $this->iconFactory->getIcon('status-reference-soft', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
                 if ($info['subst']['type']) {
                     if (strlen($info['subst']['title'])) {
@@ -743,7 +743,7 @@ abstract class ImportExport
                     return;
                 }
             }
-            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
+            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
             $pInfo['title'] = htmlspecialchars($fI['filename']);
             $pInfo['ref'] = 'FILE';
             $pInfo['size'] = $fI['filesize'];
@@ -793,7 +793,7 @@ abstract class ImportExport
                     $this->error('MISSING RTE original FILE: ' . $ID);
                 }
                 $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-                $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
+                $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
                 $pInfo['ref'] = 'FILE';
                 $pInfo['size'] = $fI['filesize'];

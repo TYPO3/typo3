@@ -2027,7 +2027,7 @@ class PageLayoutView
         // Get record locking status:
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $additionalIcons[] = '<a href="#" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
-                . $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
+                . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
         }
         // Call stats information hook
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
@@ -2792,7 +2792,7 @@ class PageLayoutView
     public function noEditIcon($label = 'noEditItems')
     {
         $title = htmlspecialchars($this->getLanguageService()->getLL($label));
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
+        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
     }
 
     /*****************************************

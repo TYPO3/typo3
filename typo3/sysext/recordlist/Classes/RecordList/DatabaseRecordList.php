@@ -1352,7 +1352,7 @@ class DatabaseRecordList
                 $lockInfo = BackendUtility::isRecordLocked($table, $row['uid']);
                 if ($lockInfo) {
                     $warning = '<span data-toggle="tooltip" data-placement="right" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
-                        . $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
+                        . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 $theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
                 // Render thumbnails, if:

@@ -61,7 +61,7 @@ class PageTreeView extends BrowseTreeView
         if ($lockInfo = BackendUtility::isRecordLocked('pages', $row['uid'])) {
             $aOnClick = 'alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;';
             $lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
-                . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</span></a>';
+                . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span></a>';
         } else {
             $lockIcon = '';
         }
