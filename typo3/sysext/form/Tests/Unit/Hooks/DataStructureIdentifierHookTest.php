@@ -171,8 +171,12 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
 
     /**
      * @test
+     * @dataProvider parseDataStructureByIdentifierPostProcessDataProvider
+     *
+     * @param array $formDefinition
+     * @param array $expectedItem
      */
-    public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems()
+    public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem)
     {
         $objectMangerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectMangerProphecy->reveal());
@@ -180,17 +184,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
         $objectMangerProphecy->get(FormPersistenceManagerInterface::class)
             ->willReturn($formPersistenceManagerProphecy->reveal());
 
-        $existingForms = [
-            [
-                'persistenceIdentifier' => 'hugo1',
-                'name' => 'myHugo1',
-            ],
-            [
-                'persistenceIdentifier' => 'hugo2',
-                'name' => 'myHugo2',
-            ]
-        ];
-        $formPersistenceManagerProphecy->listForms()->shouldBeCalled()->willReturn($existingForms);
+        $formPersistenceManagerProphecy->listForms()->shouldBeCalled()->willReturn([$formDefinition]);
 
         $incomingDataStructure = [
             'sheets' => [
@@ -228,14 +222,7 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
                                                 0 => 'default, no value',
                                                 1 => '',
                                             ],
-                                            1 => [
-                                                0 => 'myHugo1 (hugo1)',
-                                                1 => 'hugo1',
-                                            ],
-                                            2 => [
-                                                0 => 'myHugo2 (hugo2)',
-                                                1 => 'hugo2',
-                                            ],
+                                            1 => $expectedItem,
                                         ],
                                     ],
                                 ],
@@ -252,6 +239,39 @@ class DataStructureIdentifierHookTest extends \TYPO3\TestingFramework\Core\Unit\
         );
 
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @return array
+     */
+    public function parseDataStructureByIdentifierPostProcessDataProvider(): array
+    {
+        return [
+            'simple' => [
+                [
+                    'persistenceIdentifier' => 'hugo1',
+                    'name' => 'myHugo1',
+                ],
+                [
+                    'myHugo1 (hugo1)',
+                    'hugo1',
+                    'content-form',
+                ],
+            ],
+            'invalid' => [
+                [
+                    'persistenceIdentifier' => 'Error.yaml',
+                    'label' => 'Test Error Label',
+                    'name' => 'Test Error Name',
+                    'invalid' => true,
+                ],
+                [
+                    'Test Error Name (Error.yaml)',
+                    'Error.yaml',
+                    'overlay-missing',
+                ],
+            ],
+        ];
     }
 
     /**

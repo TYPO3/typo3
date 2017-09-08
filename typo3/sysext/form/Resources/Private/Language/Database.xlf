@@ -178,8 +178,14 @@
             <trans-unit id="formManager.edit_form_not_allowed" xml:space="preserve">
                 <source>Edit this form is not allowed.</source>
             </trans-unit>
+            <trans-unit id="formManager.duplicate_form_not_allowed" xml:space="preserve">
+                <source>Duplicate this form is not allowed.</source>
+            </trans-unit>
             <trans-unit id="formManager.delete_form_not_allowed" xml:space="preserve">
                 <source>Delete this form is not allowed.</source>
+            </trans-unit>
+            <trans-unit id="formManager.invalid" xml:space="preserve">
+                <source>Invalid YAML file!</source>
             </trans-unit>
             <trans-unit id="formManager.duplicate_identifier" xml:space="preserve">
                 <source>Duplicate identifier!</source>

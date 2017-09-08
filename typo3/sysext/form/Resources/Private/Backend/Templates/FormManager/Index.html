@@ -33,12 +33,17 @@
 							<f:for each="{forms}" as="form">
 								<tr>
 									<td class="col-icon nowrap">
-										<f:if condition="{form.duplicateIdentifier}">
+										<f:if condition="{form.invalid}">
 											<f:then>
-												<span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}" data-toggle="tooltip" data-placement="top">
+												<span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}" data-toggle="tooltip" data-placement="top">
 													<core:icon identifier="overlay-missing" />
 												</span>
 											</f:then>
+											<f:else if="{form.duplicateIdentifier}">
+												<span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}" data-toggle="tooltip" data-placement="top">
+													<core:icon identifier="overlay-missing" />
+												</span>
+											</f:else>
 											<f:else>
 												<span title="id={form.identifier}" data-toggle="tooltip" data-placement="right">
 													<core:icon identifier="content-elements-mailform" />
@@ -47,9 +52,9 @@
 										</f:if>
 									</td>
 									<td class="col-title col-responsive nowrap">
-										<f:if condition="{form.readOnly}">
+										<f:if condition="{form.invalid} || {form.readOnly}">
 												<f:then>
-													<div>{form.name}</div>
+													<div title="{form.name}">{form.name}</div>
 												</f:then>
 												<f:else>
 													<f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}" data="{toggle: 'tooltip', placement: 'right'}">{form.name}</f:link.action>
@@ -58,7 +63,7 @@
 									</td>
 									<td class="col-control nowrap">
 										<div class="btn-group" role="group">
-											<f:if condition="{form.readOnly}">
+											<f:if condition="{form.invalid} || {form.readOnly}">
 												<f:then>
 													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form_not_allowed')}"><core:icon identifier="actions-open" /></button>
 												</f:then>
@@ -66,13 +71,21 @@
 													<f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}" class="btn btn-default form-record-open"><core:icon identifier="actions-open" /></f:link.action>
 												</f:else>
 											</f:if>
-											<a href="#" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" class="btn btn-default form-record-duplicate"><core:icon identifier="t3-form-icon-duplicate" /></a>
-											<f:if condition="{form.removable}">
+											<f:if condition="{form.invalid}">
 												<f:then>
-													<a href="#" data-identifier="removeForm" data-form-persistence-identifier="{form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form')}" class="btn btn-default form-record-delete"><core:icon identifier="actions-edit-delete" /></a>
+													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_form_not_allowed')}"><core:icon identifier="t3-form-icon-duplicate" /></button>
+													<button class="btn btn-default form-record-readonly" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form_not_allowed')}"><core:icon identifier="actions-edit-delete" /></button>
 												</f:then>
 												<f:else>
-													<button class="btn btn-default form-record-delete" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form_not_allowed')}"><core:icon identifier="actions-edit-delete" /></button>
+													<a href="#" data-identifier="duplicateForm" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}" class="btn btn-default form-record-duplicate"><core:icon identifier="t3-form-icon-duplicate" /></a>
+													<f:if condition="{form.removable}">
+														<f:then>
+															<a href="#" data-identifier="removeForm" data-form-persistence-identifier="{form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form')}" class="btn btn-default form-record-delete"><core:icon identifier="actions-edit-delete" /></a>
+														</f:then>
+														<f:else>
+															<button class="btn btn-default form-record-delete" disabled="disabled" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.delete_form_not_allowed')}"><core:icon identifier="actions-edit-delete" /></button>
+														</f:else>
+													</f:if>
 												</f:else>
 											</f:if>
 										</div>

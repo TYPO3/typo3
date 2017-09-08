@@ -110,10 +110,19 @@ class DataStructureIdentifierHook
                         $formIsAccessible = true;
                     }
 
-                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
-                        $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                        $form['persistenceIdentifier'],
-                    ];
+                    if ($form['invalid']) {
+                        $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                            $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                            $form['persistenceIdentifier'],
+                            'overlay-missing'
+                        ];
+                    } else {
+                        $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                            $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
+                            $form['persistenceIdentifier'],
+                            'content-form'
+                        ];
+                    }
                 }
 
                 if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {

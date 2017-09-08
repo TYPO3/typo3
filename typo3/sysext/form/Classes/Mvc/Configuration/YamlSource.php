@@ -107,7 +107,7 @@ class YamlSource
                 }
             } catch (ParseException $exception) {
                 throw new ParseErrorException(
-                    'A parse error occurred while parsing file "' . $fileIdentifier . '". Error message: ' . $exception->getMessage(),
+                    'An error occurred while parsing file "' . $fileIdentifier . '": ' . $exception->getMessage(),
                     1480195405
                 );
             }
