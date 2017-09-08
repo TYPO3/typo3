@@ -66,8 +66,8 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $mockColumnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
         $matchFields = [
-                'fieldname' => 'foo_model'
-            ];
+            'fieldname' => 'foo_model'
+        ];
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
@@ -89,8 +89,8 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $mockColumnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
         $matchFields = [
-                'fieldname' => 'foo_model'
-            ];
+            'fieldname' => 'foo_model'
+        ];
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
@@ -172,6 +172,45 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $mockDataMapFactory->expects($this->never())->method('setManyToManyRelation');
         $actualColumnMap = $mockDataMapFactory->_callRef('setRelations', $columnMap, $columnConfiguration, $propertyMetaData);
         $this->assertSame($columnMap::RELATION_NONE, $actualColumnMap->getTypeOfRelation());
+    }
+
+    /**
+     * @return array
+     */
+    public function columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider()
+    {
+        return [
+            'maxitems not set' => ['', 'RELATION_HAS_MANY'],
+            'maxitems equals 1' => ['1', 'RELATION_NONE'],
+            'maxitems higher than 1' => ['10', 'RELATION_HAS_MANY']
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider
+     */
+    public function setRelationsDetectsTypeGroupAndRelationManyToMany($maxitems, $relation)
+    {
+        $columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('foo', 'foo');
+        if (empty($maxitems)) {
+            $columnConfiguration = [
+                'type' => 'group',
+            ];
+        } else {
+            $columnConfiguration = [
+                'type' => 'group',
+                'maxitems' => $maxitems
+            ];
+        }
+        $propertyMetaData = [];
+        $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
+        $mockDataMapFactory->expects($this->never())->method('setOneToOneRelation');
+        $mockDataMapFactory->expects($this->never())->method('setOneToManyRelation');
+        $mockDataMapFactory->expects($this->never())->method('setManyToManyRelation');
+        $actualColumnMap = $mockDataMapFactory->_callRef('setRelations', $columnMap, $columnConfiguration, $propertyMetaData);
+        $this->assertSame($relation, $actualColumnMap->getTypeOfRelation());
     }
 
     /**
