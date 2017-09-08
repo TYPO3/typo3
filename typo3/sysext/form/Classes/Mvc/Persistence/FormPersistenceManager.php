@@ -239,6 +239,12 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $storage = $folder->getStorage();
             $storage->addFileAndFolderNameFilter([$fileExtensionFilter, 'filterFileList']);
 
+            // TODO: deprecated since TYPO3 v9, will be removed in TYPO3 v10
+            $formReadOnly = false;
+            if ($folder->getCombinedIdentifier() === '1:/user_upload/') {
+                $formReadOnly = true;
+            }
+
             $files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
             foreach ($files as $file) {
                 $persistenceIdentifier = $storage->getUid() . ':' . $file->getIdentifier();
@@ -248,7 +254,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'identifier' => $form['identifier'],
                     'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
                     'persistenceIdentifier' => $persistenceIdentifier,
-                    'readOnly' => false,
+                    'readOnly' => $formReadOnly,
                     'removable' => true,
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
@@ -330,6 +336,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             try {
                 $folder = $storage->getFolder($fileMountIdentifier);
             } catch (FolderDoesNotExistException $e) {
+                $storage->createFolder($fileMountIdentifier);
                 continue;
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 continue;

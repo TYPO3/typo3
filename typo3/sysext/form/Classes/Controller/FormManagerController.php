@@ -235,6 +235,11 @@ class FormManagerController extends AbstractBackendController
     {
         $preparedAccessibleFormStorageFolders = [];
         foreach ($this->formPersistenceManager->getAccessibleFormStorageFolders() as $identifier => $folder) {
+            // TODO: deprecated since TYPO3 v9, will be removed in TYPO3 v10
+            if ($folder->getCombinedIdentifier() === '1:/user_upload/') {
+                continue;
+            }
+
             $preparedAccessibleFormStorageFolders[] = [
                 'label' => $folder->getName(),
                 'value' => $identifier

@@ -3,7 +3,8 @@ TYPO3:
     Form:
       persistenceManager:
         allowedFileMounts:
-          10: 1:/user_upload/
+          10: 1:/form_definitions/
+          20: 1:/user_upload/
         allowSaveToExtensionPaths: false
         allowDeleteFromExtensionPaths: false
         #allowedExtensionPaths:

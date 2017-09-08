@@ -60,7 +60,7 @@ for form definitions.
             allowedFileMounts:
               # default filemount, no need to redeclare it again
               # just to show you the structure
-              # 10: 1:/user_upload/
+              # 10: 1:/form_definitions/
               # additional filemounts
               100: 1:/custom/forms/
               110: 2:/cloudstorage/forms/

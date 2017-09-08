@@ -12,7 +12,7 @@ Full default configuration
 
     persistenceManager:
       allowedFileMounts:
-        10: '1:/user_upload/'
+        10: '1:/form_definitions/'
       allowSaveToExtensionPaths: false
       allowDeleteFromExtensionPaths: false
     prototypes:
