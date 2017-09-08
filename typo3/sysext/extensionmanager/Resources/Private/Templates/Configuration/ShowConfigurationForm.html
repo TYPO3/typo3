@@ -56,9 +56,6 @@
 													</f:if>
 												</span>
 											</label>
-											<f:if condition="{item.highlight}">
-												<p class="text-danger">{item.highlight}</p>
-											</f:if>
 											<div class="form-control-wrap">
 												<em:form.typoScriptConstants configuration="{item}" />
 											</div>
@@ -69,9 +66,6 @@
 									</f:for>
 								</div>
 							</f:for>
-							<f:if condition="{category.highlightText}">
-								{category.highlightText->f:format.raw()}
-							</f:if>
 						</div>
 					</f:if>
 				</f:for>

@@ -161,14 +161,6 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
             ->method('ext_initTSstyleConfig')
             ->will($this->returnValue($constants));
 
-        $setupTsConstantEditor = [
-            'advancedbackend.' => [
-                'description' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!',
-                1 => 'BE.forceSalted'
-            ]
-        ];
-        $tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
-
         $expected = [
             'checkConfigurationFE' => [
                 'cat' => 'basic',
@@ -189,13 +181,7 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                 'name' => 'BE.forceSalted',
                 'value' => '0',
                 'default_value' => '0',
-                'highlight' => 1,
             ],
-            '__meta__' => [
-                'advancedbackend' => [
-                    'highlightText' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!'
-                ]
-            ]
         ];
 
         $result = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($this->getUniqueId('some_extension'));

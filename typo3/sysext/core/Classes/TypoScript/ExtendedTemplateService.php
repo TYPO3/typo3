@@ -220,11 +220,6 @@ class ExtendedTemplateService extends TemplateService
     public $linkObjects = false;
 
     /**
-     * @var array
-     */
-    public $helpConfig = [];
-
-    /**
      * @var bool
      */
     public $changed = false;
@@ -1082,37 +1077,6 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * @param string $category
-     */
-    public function ext_getTSCE_config($category)
-    {
-        $catConf = $this->setup['constants']['TSConstantEditor.'][$category . '.'];
-        $out = [];
-        if (is_array($catConf)) {
-            foreach ($catConf as $key => $val) {
-                switch ($key) {
-                    case 'description':
-                    case 'bulletlist':
-                    case 'header':
-                        $out[$key] = $val;
-                        break;
-                    default:
-                        if (MathUtility::canBeInterpretedAsInteger($key)) {
-                            $constRefs = explode(',', $val);
-                            foreach ($constRefs as $const) {
-                                $const = trim($const);
-                                if ($const) {
-                                    $out['constants'][$const] .= '<span class="label label-danger">' . $key . '</span>';
-                                }
-                            }
-                        }
-                }
-            }
-        }
-        $this->helpConfig = $out;
-    }
-
-    /**
      * @param array $params
      * @return array
      */
@@ -1142,7 +1106,6 @@ class ExtendedTemplateService extends TemplateService
         $output = '';
         $subcat = '';
         if (is_array($this->categories[$category])) {
-            $help = $this->helpConfig;
             if (!$this->doNotSortCategoriesBeforeMakingForm) {
                 asort($this->categories[$category]);
             }
@@ -1351,7 +1314,7 @@ class ExtendedTemplateService extends TemplateService
 
                     $output .=
                         '<fieldset class="form-section">'
-                            . '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']]
+                            . '<a name="' . $raname . '"></a>'
                             . '<div class="form-group">'
                                 . $constantLabel . $constantName . $constantDescription . $constantData
                             . '</div>'

@@ -61,7 +61,6 @@ class ConfigurationItemRepository
 
         $resultArray = [];
         if (!empty($configuration)) {
-            $metaInformation = $this->addMetaInformation($configuration);
             $hierarchicConfiguration = [];
             foreach ($configuration as $configurationOption) {
                 $originalConfiguration = $this->buildConfigurationArray($configurationOption, $extensionKey);
@@ -82,8 +81,6 @@ class ConfigurationItemRepository
                 unset($subcatConfigurationArray);
             }
             unset($tempConfiguration);
-
-            ArrayUtility::mergeRecursiveWithOverrule($hierarchicConfiguration, $metaInformation);
             $resultArray = $hierarchicConfiguration;
         }
 
@@ -153,20 +150,6 @@ class ConfigurationItemRepository
     }
 
     /**
-     * Gets meta information from configuration array and
-     * returns only the meta information
-     *
-     * @param array $configuration
-     * @return array
-     */
-    protected function addMetaInformation(&$configuration)
-    {
-        $metaInformation = $configuration['__meta__'] ?: [];
-        unset($configuration['__meta__']);
-        return $metaInformation;
-    }
-
-    /**
      * Converts a hierarchic configuration array to an
      * hierarchic object storage structure
      *
@@ -180,10 +163,6 @@ class ConfigurationItemRepository
             /** @var $configurationCategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory */
             $configurationCategoryObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory::class);
             $configurationCategoryObject->setName($category);
-            if ($subcategory['highlightText']) {
-                $configurationCategoryObject->setHighlightText($subcategory['highlightText']);
-                unset($subcategory['highlightText']);
-            }
             foreach ($subcategory as $subcatName => $configurationItems) {
                 /** @var $configurationSubcategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory */
                 $configurationSubcategoryObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory::class);
@@ -222,9 +201,6 @@ class ConfigurationItemRepository
                     }
                     if (isset($configurationItem['value'])) {
                         $configurationObject->setValue($configurationItem['value']);
-                    }
-                    if (isset($configurationItem['highlight'])) {
-                        $configurationObject->setHighlight($configurationItem['highlight']);
                     }
                     $configurationSubcategoryObject->addItem($configurationObject);
                 }

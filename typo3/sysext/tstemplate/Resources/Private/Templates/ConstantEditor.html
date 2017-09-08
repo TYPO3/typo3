@@ -33,22 +33,4 @@
             </f:format.raw>
         </div>
     </f:if>
-    <f:if condition="{helpConfig.header}">
-        <div style="padding-top: 30px;"></div>
-        <div>
-            {helpConfig.header}<br>
-            <f:if condition="{helpConfig.description}">
-                <f:for each="{helpConfig.description}" as="line">
-                    {line}<br>
-                </f:for>
-            </f:if>
-            <f:if condition="{helpConfig.bulletList}">
-                <ul>
-                <f:for each="{helpConfig.bulletList}" as="line">
-                    <li>{line}</li>
-                </f:for>
-                </ul>
-            </f:if>
-        </div>
-    </f:if>
 </div>

@@ -98,9 +98,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Create a flat array of configuration options from
      * ext_conf_template.txt of an extension using core's typoscript parser.
      *
-     * Generates an array from the typoscript style constants and
-     * adds meta data like TSConstantEditor comments
-     *
      * Result is an array, with configuration item as array keys,
      * and item properties as key-value sub-array:
      *
@@ -143,18 +140,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                     && isset($tsStyleConfig->subCategories[$configurationOption['subcat_name']][0])
                 ) {
                     $theConstants[$configurationOptionName]['subcat_label'] = $tsStyleConfig->subCategories[$configurationOption['subcat_name']][0];
-                }
-            }
-
-            // Set up the additional descriptions
-            if (isset($tsStyleConfig->setup['constants']['TSConstantEditor.'])) {
-                foreach ($tsStyleConfig->setup['constants']['TSConstantEditor.'] as $category => $highlights) {
-                    $theConstants['__meta__'][rtrim($category, '.')]['highlightText'] = $highlights['description'];
-                    foreach ($highlights as $highlightNumber => $value) {
-                        if (rtrim($category, '.') == $theConstants[$value]['cat']) {
-                            $theConstants[$value]['highlight'] = $highlightNumber;
-                        }
-                    }
                 }
             }
         }

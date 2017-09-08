@@ -60,11 +60,6 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $value = '';
 
     /**
-     * @var int
-     */
-    protected $highlight = 0;
-
-    /**
      * @param string $category
      */
     public function setCategory($category)
@@ -190,21 +185,5 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * @param int $highlight
-     */
-    public function setHighlight($highlight)
-    {
-        $this->highlight = $highlight;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHighlight()
-    {
-        return $this->highlight;
     }
 }

@@ -30,11 +30,6 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
     protected $subcategories;
 
     /**
-     * @var string
-     */
-    protected $highlightText = '';
-
-    /**
      * Constructs this Category
      */
     public function __construct()
@@ -82,21 +77,5 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $highlightText
-     */
-    public function setHighlightText($highlightText)
-    {
-        $this->highlightText = $highlightText;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHighlightText()
-    {
-        return $this->highlightText;
     }
 }

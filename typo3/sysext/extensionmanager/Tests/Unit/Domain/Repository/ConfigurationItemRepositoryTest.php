@@ -172,32 +172,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\TestingFramework\Core\Unit\
     }
 
     /**
-     * @test
-     */
-    public function addMetaInformationUnsetsOriginalConfigurationMetaKey()
-    {
-        $configuration = [
-            '__meta__' => 'metaInformation',
-            'test123' => 'test123'
-        ];
-        $this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
-        $this->assertEquals(['test123' => 'test123'], $configuration);
-    }
-
-    /**
-     * @test
-     */
-    public function addMetaInformationReturnsMetaInformation()
-    {
-        $configuration = [
-            '__meta__' => 'metaInformation',
-            'test123' => 'test123'
-        ];
-        $meta = $this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
-        $this->assertEquals('metaInformation', $meta);
-    }
-
-    /**
      * @return array
      */
     public function extractInformationForConfigFieldsOfTypeUserAddsGenericAndTypeInformationDataProvider()

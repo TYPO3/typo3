@@ -179,6 +179,11 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\ExtendedTemplateService->helpConfig' => [
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];

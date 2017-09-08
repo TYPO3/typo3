@@ -1266,13 +1266,10 @@ class TemplateService
     {
         if (is_array($setupArray)) {
             foreach ($setupArray as $key => $val) {
-                if ($prefix || strpos($key, 'TSConstantEditor') !== 0) {
-                    // We don't want 'TSConstantEditor' in the flattened setup on the first level (190201)
-                    if (is_array($val)) {
-                        $this->flattenSetup($val, $prefix . $key);
-                    } else {
-                        $this->flatSetup[$prefix . $key] = $val;
-                    }
+                if (is_array($val)) {
+                    $this->flattenSetup($val, $prefix . $key);
+                } else {
+                    $this->flatSetup[$prefix . $key] = $val;
                 }
             }
         }

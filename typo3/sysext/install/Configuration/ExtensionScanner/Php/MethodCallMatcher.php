@@ -1177,4 +1177,53 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\ConfigurationForm->ext_makeHelpInformationForCategory' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\ConfigurationForm->ext_displayExample' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\ExtendedTemplateService->ext_getTSCE_config' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory->setHighlightText' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory->getHighlightText' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem->setHighlight' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem->getHighlight' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
+        ],
+    ],
 ];
