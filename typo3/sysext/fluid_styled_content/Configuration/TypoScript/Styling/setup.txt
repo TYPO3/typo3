@@ -37,7 +37,7 @@ plugin.tx_frontend._CSS_DEFAULT_STYLE (
 
     .ce-above .ce-bodytext { clear: both; }
 
-    .ce-intext.ce-left ol, .ce-intext.ce-left ul { padding-left: 40px; overflow: auto; }
+    .ce-intext.ce-left ol, .ce-intext.ce-left ul { padding-left: 40px; }
 
     /* Headline */
     .ce-headline-left { text-align: left; }
