@@ -79,7 +79,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 
     /**
      * @param RenderingContextInterface $renderingContext
-     * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode
+     * @return \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode
      */
     protected static function getWidgetChildNodes(RenderingContextInterface $renderingContext)
     {
