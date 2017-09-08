@@ -991,9 +991,11 @@ specific pattern. Furthermore, the fallback chain exists here as well. Thus,
 the following translation scenarios are possible:
 
 - translation of validation messages for a specific validator of a concrete
-  form element and form
+  form element and concrete form
 - translation of validation messages for a specific validator of various
   form elements within a concrete form
+- translation of validation messages for a specific validator of a concrete
+  form element in various forms
 - translation of validation messages for a specific validator within various
   forms
 
@@ -1006,6 +1008,7 @@ files based on the following order:
 
 - ``<formDefinitionIdentifier>.validation.error.<elementIdentifier>.<validationErrorCode>``
 - ``<formDefinitionIdentifier>.validation.error.<validationErrorCode>``
+- ``validation.error.<elementIdentifier>.<validationErrorCode>``
 - ``validation.error.<validationErrorCode>``
 
 
@@ -1045,6 +1048,7 @@ with the form element ``LastName``:
 
 - ContactForm.validation.error.LastName.1221560910
 - ContactForm.validation.error.1221560910
+- validation.error.LastName.1221560910
 - validation.error.1221560910
 
 As mentioned above, if there is no corresponding translation key available,
