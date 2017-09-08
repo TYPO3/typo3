@@ -339,6 +339,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
                 )
             ) {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
+            } elseif (
+                isset($columnConfiguration['type']) && $columnConfiguration['type'] === 'group'
+                && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
+            ) {
+                $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
             } else {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_NONE);
             }
