@@ -42,17 +42,20 @@ require(['jquery', 'TYPO3/CMS/Install/CardLayout'], function($, CardLayout) {
 		$('#' + driver).show();
 	}).trigger('change');
 
-	CardLayout.initialize();
 
-	// Each card head can have a t3js-require class and a data-require attribute
-	// with the name of a requireJS module. Those are loaded here and initialize()
-	// is executed if exists.
-	$('.t3js-require').each(function() {
-		var module = $(this).data('require');
-		require([module], function(aModule) {
-			if (typeof aModule.initialize !== 'undefined') {
-				aModule.initialize();
-			}
+	$(function(){
+		CardLayout.initialize();
+
+		// Each card head can have a t3js-require class and a data-require attribute
+		// with the name of a requireJS module. Those are loaded here and initialize()
+		// is executed if exists.
+		$('.t3js-require').each(function() {
+			var module = $(this).data('require');
+			require([module], function(aModule) {
+				if (typeof aModule.initialize !== 'undefined') {
+					aModule.initialize();
+				}
+			});
 		});
 	});
 });
