@@ -27,6 +27,7 @@ return [
             'label'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.language',
             'config' => [
                 'type'                => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table'       => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
@@ -42,6 +43,7 @@ return [
             'label'       => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xml:LGL.l18n_parent',
             'config'      => [
                 'type'  => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     ['', 0],
                 ],
@@ -76,12 +78,15 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l10n_parent, l10n_diffsource, hidden;;1'
+        '0' => [
+            'showitem' =>
+                '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title,' .
+                '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l10n_parent, l10n_diffsource, hidden'
         ]
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
+        '1' => [
+            'showitem' => ''
+        ]
     ]
 ];
