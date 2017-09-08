@@ -25,7 +25,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 
 		initialize: function() {
 			var self = this;
-			$(document).on('click', this.selectorScanSingleTrigger,  function(e) {
+			$(document).on('click', this.selectorScanSingleTrigger, function(e) {
 				// Scan a single extension
 				var extension = $(e.target).data('extension');
 				e.preventDefault();
@@ -293,6 +293,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 						} else {
 							Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
 						}
+					} else {
+						Notification.error('Oops, an error occurred', 'Please look at the console output for details');
+						console.error(data);
 					}
 				},
 				error: function(data) {

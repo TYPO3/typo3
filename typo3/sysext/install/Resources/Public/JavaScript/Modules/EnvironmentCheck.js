@@ -79,6 +79,9 @@ define([
                         } else if (warningCount > 0) {
                             $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
                         }
+                    } else {
+                      var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+                      $outputContainer.empty().append(message);
                     }
                 },
                 error: function() {

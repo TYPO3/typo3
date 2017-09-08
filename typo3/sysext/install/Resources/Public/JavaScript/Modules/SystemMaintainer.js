@@ -129,6 +129,9 @@ define([
 								$outputContainer.empty().append(message);
 							});
 						}
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

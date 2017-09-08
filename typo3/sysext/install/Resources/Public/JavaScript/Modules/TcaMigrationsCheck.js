@@ -65,6 +65,9 @@ define([
 							var message = InfoBox.render(Severity.ok, 'No TCA migrations need to be applied', 'Your TCA looks good.');
 							$outputContainer.empty().html(message);
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

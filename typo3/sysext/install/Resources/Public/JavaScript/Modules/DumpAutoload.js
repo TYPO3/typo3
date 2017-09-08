@@ -49,6 +49,9 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 								$outputContainer.append(message);
 							}));
 						}
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

@@ -65,6 +65,9 @@ define([
 							var message = InfoBox.render(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!', '');
 							$outputContainer.empty().html(message);
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

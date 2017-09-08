@@ -89,7 +89,14 @@ define([
 							});
 							$statContainer.find(self.selectorStatLastRuler + ':last').remove();
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.append(message);
 					}
+				},
+				error: function () {
+					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+					$outputContainer.append(message);
 				}
 			});
 		},
@@ -118,6 +125,9 @@ define([
 							var message = InfoBox.render(element.severity, element.title, element.message);
 							$outputContainer.append(message);
 						});
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.append(message);
 					}
 				},
 				error: function () {

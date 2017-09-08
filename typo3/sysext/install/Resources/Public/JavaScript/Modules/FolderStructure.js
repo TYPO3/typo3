@@ -125,6 +125,9 @@ define(['jquery',
 							$outputContainer.append(message);
 						}
 						self.getStatus();
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

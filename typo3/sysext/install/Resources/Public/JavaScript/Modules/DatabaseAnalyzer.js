@@ -112,6 +112,9 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 							$(self.selectorExecuteTrigger).prop('disabled', false);
 							$(self.selectorAnalyzeTrigger).prop('disabled', false);
 						}
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {

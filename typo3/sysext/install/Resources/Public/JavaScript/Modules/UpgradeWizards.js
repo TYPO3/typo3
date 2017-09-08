@@ -117,6 +117,9 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 							}));
 						}
 						self.blockingUpgradesDatabaseCharsetTest();
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {
@@ -176,6 +179,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 								$outputContainer.append(message);
 							});
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						self.removeLoadingMessage($outputContainer);
+						$outputContainer.append(message);
 					}
 				},
 				error: function() {
@@ -222,6 +229,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						} else {
 							self.wizardsList();
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						self.removeLoadingMessage($outputContainer);
+						$outputContainer.append(message);
 					}
 				},
 				error: function() {
@@ -253,6 +264,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 							});
 							self.wizardsList();
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						self.removeLoadingMessage($outputContainer);
+						$outputContainer.append(message);
 					}
 				},
 				error: function() {
@@ -308,6 +323,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 							.find('span')
 							.text(parseInt(percent) + '%');
 						$outputContainer.append(list);
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						self.removeLoadingMessage($outputContainer);
+						$outputContainer.append(message);
 					}
 				},
 				error: function() {
@@ -393,6 +412,9 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						self.wizardsList();
 						$outputDoneContainer.empty();
 						self.doneUpgrades();
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {
@@ -448,6 +470,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						if (hasBodyContent === true) {
 							$outputContainer.append(body);
 						}
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						self.removeLoadingMessage($outputContainer);
+						$outputContainer.append(message);
 					}
 				},
 				error: function() {
@@ -484,6 +510,9 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 							self.doneUpgrades();
 							self.blockingUpgradesDatabaseCharsetTest();
 						});
+					} else {
+						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().html(message);
 					}
 				},
 				error: function() {
