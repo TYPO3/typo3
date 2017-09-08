@@ -21,6 +21,7 @@ return [
             'label' => 'eval=datetime, db=text',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
             ]
         ],
@@ -29,6 +30,7 @@ return [
             'label' => 'eval=datetime, db=int',
             'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
             ]
         ],
@@ -38,6 +40,7 @@ return [
             'config' => [
                 'dbType' => 'datetime',
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
             ]
         ]
