@@ -354,6 +354,16 @@ return [
             'Breaking-37180-RemovedExtDirectDebugAndGLOBALSerror.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList' => [
+        'restFiles' => [
+            'Breaking-82334-AbstractRecordList.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\AbstractRecordList' => [
+        'restFiles' => [
+            'Breaking-82334-AbstractRecordList.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [
