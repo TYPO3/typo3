@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
             'Language' => 'listLanguages, listTranslations, getTranslations, updateLanguage, updateTranslation, activateLanguage, deactivateLanguage, removeLanguage',
         ],
         [
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'icon' => 'EXT:lang/Resources/Public/Icons/module-lang.svg',
             'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod.xlf',
         ]

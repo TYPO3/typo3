@@ -18,7 +18,7 @@ if (TYPO3_MODE === 'BE') {
             'Distribution' => 'show'
         ],
         [
-            'access' => 'admin',
+            'access' => 'systemMaintainer',
             'icon' => 'EXT:extensionmanager/Resources/Public/Icons/module-extensionmanager.svg',
             'labels' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
         ]

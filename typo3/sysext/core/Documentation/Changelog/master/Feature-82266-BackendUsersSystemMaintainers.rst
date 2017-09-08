@@ -14,6 +14,9 @@ are able to access the install tool modules from within the TYPO3 Backend, thus,
 to modify the system-wide configuration located in :php:``$TYPO3_CONF_VARS``, respectively
 LocalConfiguration.php.
 
+Extension management and language pack handling are also "system management" and thus restricted
+to the new system management role.
+
 The list of allowed admins that are assigned as system maintainers can only be done within the TYPO3
 Install Tool or by modifying the new configuration option :php:``TYPO3_CONF_VARS[SYS][systemMaintainers]``.
 
