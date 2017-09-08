@@ -88,19 +88,13 @@ class ConfigurationController extends AbstractModuleController
                 ->assign('configuration', $configuration)
                 ->assign('extension', $extension);
         } else {
-            /** @var Extension $extension */
-            $extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extKey);
-            // Extension has no configuration and is a distribution
-            if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
-                $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
-            }
             throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.', 1476047775);
         }
     }
 
     /**
      * Save configuration and redirects back to form
-     * or to the welcome page of a distribution
+     * or to the show page of a distribution
      *
      * @param array $config The new extension configuration
      * @param string $extensionKey The extension key
@@ -114,7 +108,7 @@ class ConfigurationController extends AbstractModuleController
         if ($extension instanceof Extension &&
             $extension->getCategory() === Extension::DISTRIBUTION_CATEGORY
         ) {
-            $this->redirect('welcome', 'Distribution', null, ['extension' => $extension->getUid()]);
+            $this->redirect('show', 'Distribution', null, ['extension' => $extension->getUid()]);
         } else {
             $this->redirect('showConfigurationForm', null, null, [
                 'extension' => [
