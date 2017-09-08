@@ -95,7 +95,7 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
         ];
 
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($serializedConfiguration);
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey] = $currentExtconfConfiguration;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey] = $currentExtconfConfiguration;
         $actual = $configurationUtility->getCurrentConfiguration($extensionKey);
         $this->assertEquals($expected, $actual);
     }

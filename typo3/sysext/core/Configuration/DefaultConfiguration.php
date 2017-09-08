@@ -16,7 +16,7 @@
  * This file contains the default array definition that is
  * later populated as $GLOBALS['TYPO3_CONF_VARS']
  *
- * The description of the various options is stored in the DefaultConfigurationDescription.php file
+ * The description of the various options is stored in the DefaultConfigurationDescription.yaml file
  */
 return [
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
@@ -1125,5 +1125,5 @@ return [
             'update' => [],
         ],
     ],
-    'SVCONF' => []
+    'SVCONF' => [],
 ];

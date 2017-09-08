@@ -67,7 +67,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
         /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
         $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($configuration));
-        $configurationManager->setLocalConfigurationValueByPath('EXTCONF/' . $extensionKey, $configuration);
+        $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionKey, $configuration);
     }
 
     /**
@@ -80,14 +80,14 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 
-        // @deprecated loading serialized configuration is deprecated and will be removed in v10 - use EXTCONF array instead
+        // @deprecated loading serialized configuration is deprecated and will be removed in v10 - use EXTENSIONS array instead
         // No objects allowed in extConf at all - it is safe to deny that during unserialize()
         $legacyCurrentExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
         $legacyCurrentExtensionConfiguration = is_array($legacyCurrentExtensionConfiguration) ? $legacyCurrentExtensionConfiguration : [];
         $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $legacyCurrentExtensionConfiguration);
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey])) {
-            $currentExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extensionKey];
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey])) {
+            $currentExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey];
             $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $currentExtensionConfiguration);
         }
 

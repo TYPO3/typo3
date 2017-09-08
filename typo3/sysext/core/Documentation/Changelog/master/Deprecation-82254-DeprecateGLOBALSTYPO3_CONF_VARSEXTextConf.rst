@@ -9,7 +9,7 @@ See :issue:`82254`
 Description
 ===========
 
-The extension configuration stored in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] has been deprecated and replaced by a plain array in $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'].
+The extension configuration stored in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] has been deprecated and replaced by a plain array in $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'].
 
 
 Affected Installations
@@ -21,6 +21,6 @@ All extensions manually getting settings and unserializing them from $GLOBALS['T
 Migration
 =========
 
-Switch to the use of $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'] instead and remove all unserialize calls.
+Switch to the use of $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] instead and remove all unserialize calls.
 
 .. index:: LocalConfiguration, PHP-API, FullyScanned

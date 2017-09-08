@@ -11,7 +11,7 @@ Description
 
 There is no reason to save the extension configuration as serialized values instead of an plain array. Arrays are easier to handle and there are already parts of the core using arrays (for example the avatar provider registration).
 
-Therefore the API has been changed to store the extension configuration as an array in $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']. The configuration is merged on save with the default configuration and the full configuration is written to LocalConfiguration.
+Therefore the API has been changed to store the extension configuration as an array in $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']. The configuration is merged on save with the default configuration and the full configuration is written to LocalConfiguration.
 
 
 Impact
