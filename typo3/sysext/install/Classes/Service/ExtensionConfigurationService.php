@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Extensionmanager\Utility;
+declare(strict_types=1);
+namespace TYPO3\CMS\Install\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,44 +15,61 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Utility for dealing with ext_emconf and ext_conf_template settings
+ * Utility for dealing with ext_conf_template settings and their instance
+ * specific LocalConfiguration settings. This class is @internal and only
+ * used by extension manager and install tool itself.
+ *
+ * Extension authors should use TYPO3\CMS\Core\Configuration\ExtensionConfiguration
+ * class to get() and set() extension configuration settings.
+ *
+ * @internal
  */
-class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
+class ExtensionConfigurationService
 {
     /**
-     * TypoScript hierarchy being build during parsing.
+     * TypoScript hierarchy being build.
+     * Used parsing ext_conf_template.txt
      *
      * @var array
      */
     protected $setup = [];
 
     /**
-     * Raw data, the input string exploded by LF
+     * Raw data, the input string exploded by LF.
+     * Used parsing ext_conf_template.txt
      *
      * @var array
      */
     protected $raw;
 
     /**
-     * Pointer to entry in raw data array
+     * Pointer to entry in raw data array.
+     * Used parsing ext_conf_template.txt
      *
      * @var int
      */
-    protected $rawP = 0;
+    protected $rawPointer = 0;
 
     /**
      * Holding the value of the last comment
+     * Used parsing ext_conf_template.txt
      *
      * @var string
      */
     protected $lastComment = '';
 
     /**
-     * Internally set, used as internal flag to create a multi-line comment (one of those like /* ... * /
+     * Internal flag to create a multi-line comment (one of those like /* ... * /)
+     * Used parsing ext_conf_template.txt
      *
      * @var bool
      */
@@ -59,6 +77,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Internally set, when in brace. Counter.
+     * Used parsing ext_conf_template.txt
      *
      * @var int
      */
@@ -66,6 +85,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * This will be filled with the available categories of the current template.
+     * Used parsing ext_conf_template.txt
      *
      * @var array
      */
@@ -99,75 +119,183 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
     ];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * If there are new config settings in ext_conf_template of an extenison,
+     * they are found here and synchronized to LocalConfiguration['EXTENSIONS'].
+     *
+     * Used when entering the install tool and during installation.
      */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions()
     {
-        $this->objectManager = $objectManager;
+        $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+        foreach ($activePackages as $package) {
+            $this->synchronizeExtConfTemplateWithLocalConfiguration($package->getPackageKey());
+        }
     }
 
     /**
-     * Get default configuration from ext_conf_template of an extension
-     * and save as initial configuration to LocalConfiguration ['EXT']['extConf'].
+     * Read values from ext_conf_template, verify if they are in LocalConfiguration.php
+     * already and if not, add them.
      *
-     * Used by the InstallUtility to initialize local extension config.
+     * Used public by extension manager when updating extension
+     *
+     * @param string $extensionKey The extension to sync
+     */
+    public function synchronizeExtConfTemplateWithLocalConfiguration(string $extensionKey)
+    {
+        $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($extensionKey);
+        if (!@is_file($package->getPackagePath() . 'ext_conf_template.txt')) {
+            return;
+        }
+        $extensionConfiguration = new ExtensionConfiguration();
+        try {
+            $currentLocalConfiguration = $extensionConfiguration->get($extensionKey);
+        } catch (ExtensionConfigurationExtensionNotConfiguredException $e) {
+            $currentLocalConfiguration = [];
+        }
+        $extConfTemplateConfiguration = $this->getExtConfTablesWithoutCommentsAsNestedArrayWithoutDots($extensionKey);
+        ArrayUtility::mergeRecursiveWithOverrule($extConfTemplateConfiguration, $currentLocalConfiguration);
+        $extensionConfiguration->set($extensionKey, '', $extConfTemplateConfiguration);
+    }
+
+    /**
+     * Compiles ext_conf_template file and merges it with values from LocalConfiguration['EXTENSIONS'].
+     * Returns a funny array used to display the configuration form in the install tool.
      *
      * @param string $extensionKey Extension key
-     */
-    public function saveDefaultConfiguration($extensionKey)
-    {
-        $currentConfiguration = $this->getCurrentConfiguration($extensionKey);
-        $nestedConfiguration = $this->convertValuedToNestedConfiguration($currentConfiguration);
-        $this->writeConfiguration($nestedConfiguration, $extensionKey);
-    }
-
-    /**
-     * Writes extension specific configuration to LocalConfiguration file
-     * in array ['EXT']['extConf'][$extensionKey].
-     *
-     * Removes core cache files afterwards.
-     *
-     * This low level method expects a nested configuration array that
-     * was already merged with default configuration and maybe new form values.
-     *
-     * @param array $configuration Configuration to save
-     * @param string $extensionKey Extension key
-     */
-    public function writeConfiguration(array $configuration = [], $extensionKey)
-    {
-        /** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-        $configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-        $configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($configuration));
-        $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionKey, $configuration);
-    }
-
-    /**
-     * Get current configuration of an extension. Will return the configuration as a valued object
-     *
-     * @param string $extensionKey
      * @return array
      */
-    public function getCurrentConfiguration(string $extensionKey): array
+    public function getConfigurationPreparedForView(string $extensionKey): array
     {
-        $mergedConfiguration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
-
-        // @deprecated loading serialized configuration is deprecated and will be removed in v10 - use EXTENSIONS array instead
-        // No objects allowed in extConf at all - it is safe to deny that during unserialize()
-        $legacyCurrentExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey], ['allowed_classes' => false]);
-        $legacyCurrentExtensionConfiguration = is_array($legacyCurrentExtensionConfiguration) ? $legacyCurrentExtensionConfiguration : [];
-        $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $legacyCurrentExtensionConfiguration);
-
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey])) {
-            $currentExtensionConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extensionKey];
-            $mergedConfiguration = $this->mergeExtensionConfigurations($mergedConfiguration, $currentExtensionConfiguration);
+        $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($extensionKey);
+        if (!@is_file($package->getPackagePath() . 'ext_conf_template.txt')) {
+            return [];
         }
+        $extensionConfiguration = new ExtensionConfiguration();
+        $configuration = $this->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
+        foreach ($configuration as $configurationPath => &$details) {
+            try {
+                $valueFromLocalConfiguration = $extensionConfiguration->get($extensionKey, str_replace('.', '/', $configurationPath));
+                $details['value'] = $valueFromLocalConfiguration;
+            } catch (ExtensionConfigurationPathDoesNotExistException $e) {
+                // Deliberately empty - it can happen at runtime that a written config does not return
+                // back all values (eg. saltedpassword with its userFuncs), which then miss in the written
+                // configuration and are only synced after next install tool run. This edge case is
+                // taken care off here.
+            }
+        }
+        $resultArray = [];
+        if (!empty($configuration)) {
+            $hierarchicConfiguration = [];
+            foreach ($configuration as $configurationOption) {
+                $originalConfiguration = $this->buildConfigurationArray($configurationOption);
+                ArrayUtility::mergeRecursiveWithOverrule($originalConfiguration, $hierarchicConfiguration);
+                $hierarchicConfiguration = $originalConfiguration;
+            }
+            // Flip category array as it was merged the other way around
+            $hierarchicConfiguration = array_reverse($hierarchicConfiguration);
+            // Sort configurations of each subcategory
+            foreach ($hierarchicConfiguration as &$catConfigurationArray) {
+                foreach ($catConfigurationArray as &$subcatConfigurationArray) {
+                    uasort($subcatConfigurationArray, function ($a, $b) {
+                        return strnatcmp($a['subcat'], $b['subcat']);
+                    });
+                }
+                unset($subcatConfigurationArray);
+            }
+            unset($tempConfiguration);
+            $resultArray = $hierarchicConfiguration;
+        }
+        return $resultArray;
+    }
 
-        return $mergedConfiguration;
+    /**
+     * Poor man version of getDefaultConfigurationFromExtConfTemplateAsValuedArray() which ignores
+     * comments and returns ext_conf_template as array where nested keys have no dots.
+     */
+    protected function getExtConfTablesWithoutCommentsAsNestedArrayWithoutDots(string $extensionKey)
+    {
+        $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
+        $configuration = [];
+        if ((string)$rawConfigurationString !== '') {
+            $this->raw = explode(LF, $rawConfigurationString);
+            $this->rawPointer = 0;
+            $this->setup = [];
+            $this->parseSub($this->setup);
+            if ($this->inBrace) {
+                throw new \RuntimeException(
+                    'Line ' . ($this->rawPointer - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)',
+                    1507645349
+                );
+            }
+            $configuration = $this->removeCommentsAndDotsRecursive($this->setup);
+        }
+        return $configuration;
+    }
+
+    /**
+     * Builds a configuration array from each line (option) of the config file.
+     * Helper method for getConfigurationPreparedForView()
+     *
+     * @param array $configurationOption config file line representing one setting
+     * @return array
+     */
+    protected function buildConfigurationArray(array $configurationOption): array
+    {
+        $hierarchicConfiguration = [];
+        if (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
+            $configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
+        } elseif (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
+            $configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
+        }
+        $languageService = $this->getLanguageService();
+        if (is_string($configurationOption['label'])) {
+            $translatedLabel = $languageService->sL($configurationOption['label']);
+            if ($translatedLabel) {
+                $configurationOption['label'] = $translatedLabel;
+            }
+        }
+        $configurationOption['labels'] = GeneralUtility::trimExplode(':', $configurationOption['label'], false, 2);
+        $configurationOption['subcat_name'] = $configurationOption['subcat_name'] ?: '__default';
+        $hierarchicConfiguration[$configurationOption['cat']][$configurationOption['subcat_name']][$configurationOption['name']] = $configurationOption;
+        return $hierarchicConfiguration;
+    }
+
+    /**
+     * Extracts additional information for fields of type "options"
+     * Extracts "type", "label" and values information
+     *
+     * @param array $configurationOption
+     * @return array
+     */
+    protected function extractInformationForConfigFieldsOfTypeOptions(array $configurationOption): array
+    {
+        preg_match('/options\[(.*)\]/is', $configurationOption['type'], $typeMatches);
+        $optionItems = GeneralUtility::trimExplode(',', $typeMatches[1]);
+        foreach ($optionItems as $optionItem) {
+            $optionPair = GeneralUtility::trimExplode('=', $optionItem);
+            if (count($optionPair) === 2) {
+                $configurationOption['generic'][$optionPair[0]] = $optionPair[1];
+            } else {
+                $configurationOption['generic'][$optionPair[0]] = $optionPair[0];
+            }
+        }
+        $configurationOption['type'] = 'options';
+        return $configurationOption;
+    }
+
+    /**
+     * Extract additional information for fields of type "user"
+     * Extracts "type" and the function to be called
+     *
+     * @param array $configurationOption
+     * @return array
+     */
+    protected function extractInformationForConfigFieldsOfTypeUser(array $configurationOption): array
+    {
+        preg_match('/user\\[(.*)\\]/is', $configurationOption['type'], $matches);
+        $configurationOption['generic'] = $matches[1];
+        $configurationOption['type'] = 'user';
+        return $configurationOption;
     }
 
     /**
@@ -194,16 +322,18 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey Extension key
      * @return array
      */
-    public function getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey)
+    protected function getDefaultConfigurationFromExtConfTemplateAsValuedArray(string $extensionKey): array
     {
         $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
         $theConstants = [];
         if ((string)$rawConfigurationString !== '') {
             $this->raw = explode(LF, $rawConfigurationString);
+            $this->rawPointer = 0;
+            $this->setup = [];
             $this->parseSub($this->setup);
             if ($this->inBrace) {
                 throw new \RuntimeException(
-                    'Line ' . ($this->rawP - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)',
+                    'Line ' . ($this->rawPointer - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)',
                     1507645348
                 );
             }
@@ -223,7 +353,6 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                 }
             }
         }
-
         return $theConstants;
     }
 
@@ -234,101 +363,16 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionKey Extension key
      * @return string
      */
-    protected function getDefaultConfigurationRawString($extensionKey)
+    protected function getDefaultConfigurationRawString(string $extensionKey): string
     {
         $rawString = '';
-        $extConfTemplateFileLocation = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+        $extConfTemplateFileLocation = GeneralUtility::getFileAbsFileName(
             'EXT:' . $extensionKey . '/ext_conf_template.txt'
         );
         if (file_exists($extConfTemplateFileLocation)) {
             $rawString = file_get_contents($extConfTemplateFileLocation);
         }
         return $rawString;
-    }
-
-    /**
-     * Converts a valued configuration to a nested configuration.
-     *
-     * array('first.second' => array('value' => 1))
-     * will become
-     * array('first.' => array('second' => ))
-     *
-     * @param array $valuedConfiguration
-     * @return array
-     */
-    public function convertValuedToNestedConfiguration(array $valuedConfiguration)
-    {
-        $nestedConfiguration = [];
-        foreach ($valuedConfiguration as $name => $section) {
-            $path = str_replace('.', './', $name);
-            $nestedConfiguration = ArrayUtility::setValueByPath($nestedConfiguration, $path, $section['value'], '/');
-        }
-        return $nestedConfiguration;
-    }
-
-    /**
-     * Convert a nested configuration to a valued configuration
-     *
-     * array('first.' => array('second' => 1))
-     * will become
-     * array('first.second' => array('value' => 1)
-     * @param array $nestedConfiguration
-     * @return array
-     */
-    public function convertNestedToValuedConfiguration(array $nestedConfiguration)
-    {
-        $flatExtensionConfig = ArrayUtility::flatten($nestedConfiguration);
-        $valuedCurrentExtensionConfig = [];
-        foreach ($flatExtensionConfig as $key => $value) {
-            $valuedCurrentExtensionConfig[$key]['value'] = $value;
-        }
-        return $valuedCurrentExtensionConfig;
-    }
-
-    /**
-     * Merges two existing configuration arrays,
-     * expects configuration as valued flat structure
-     * and overrides as nested array
-     *
-     * @see convertNestedToValuedConfiguration
-     *
-     * @param array $configuration
-     * @param array $configurationOverride
-     *
-     * @return array
-     */
-    private function mergeExtensionConfigurations(array $configuration, array $configurationOverride): array
-    {
-        $configurationOverride = $this->convertNestedToValuedConfiguration(
-            $configurationOverride
-        );
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $configuration,
-            $configurationOverride
-        );
-        return $configuration;
-    }
-
-    /**
-     * This flattens a hierarchical TypoScript array to $this->flatSetup
-     *
-     * @param array $setupArray TypoScript array
-     * @param string $prefix Prefix to the object path. Used for recursive calls to this function.
-     * @return array
-     */
-    protected function flattenSetup($setupArray, $prefix = '')
-    {
-        $flatSetup = [];
-        if (is_array($setupArray)) {
-            foreach ($setupArray as $key => $val) {
-                if (is_array($val)) {
-                    $flatSetup = array_merge($flatSetup, $this->flattenSetup($val, $prefix . $key));
-                } else {
-                    $flatSetup[$prefix . $key] = $val;
-                }
-            }
-        }
-        return $flatSetup;
     }
 
     /**
@@ -374,7 +418,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                                 $editableComments[$const]['cat'] = $catSplit[0];
                                 // This is the subcategory. Must be a key in $this->subCategories[].
                                 // catSplit[2] represents the search-order within the subcat.
-                                $catSplit[1] = trim($catSplit[1]);
+                                $catSplit[1] = !empty($catSplit[1]) ? trim($catSplit[1]) : '';
                                 if ($catSplit[1] && isset($this->subCategories[$catSplit[1]])) {
                                     $editableComments[$const]['subcat_name'] = $catSplit[1];
                                     $orderIdentifier = isset($catSplit[2]) ? trim($catSplit[2]) : $counter;
@@ -426,9 +470,9 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function parseSub(array &$setup)
     {
-        while (isset($this->raw[$this->rawP])) {
-            $line = ltrim($this->raw[$this->rawP]);
-            $this->rawP++;
+        while (isset($this->raw[$this->rawPointer])) {
+            $line = ltrim($this->raw[$this->rawPointer]);
+            $this->rawPointer++;
             // Set comment flag?
             if (strpos($line, '/*') === 0) {
                 $this->commentSet = 1;
@@ -448,14 +492,14 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                         $r = [];
                         if (preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
                             throw new \RuntimeException(
-                                'Line ' . ($this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."',
+                                'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."',
                                 1507645381
                             );
                         }
                         $line = ltrim(substr($line, $varL));
                         if ($line === '') {
                             throw new \RuntimeException(
-                                    'Line ' . ($this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
+                                    'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
                                     1507645417
                                 );
                         }
@@ -486,7 +530,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                                         break;
                                     default:
                                         throw new \RuntimeException(
-                                            'Line ' . ($this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
+                                            'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
                                             1507645445
                                         );
                                 }
@@ -498,7 +542,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
                     $this->lastComment = '';
                     if ($this->inBrace < 0) {
                         throw new \RuntimeException(
-                            'Line ' . ($this->rawP - 1) . ': An end brace is in excess.',
+                            'Line ' . ($this->rawPointer - 1) . ': An end brace is in excess.',
                             1507645489
                         );
                     }
@@ -620,6 +664,65 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface
             list($keySegment, $remainingKey) = explode('.', $key, 2);
         }
         return [$keySegment, $remainingKey];
+    }
+
+    /**
+     * "Comments" from the "TypoScript" parser below are identified by two (!) dots at the end of array keys
+     * and all array keys have a single dot at the end, if they have sub arrays. This is cleaned here.
+     *
+     * Incoming array:
+     * [
+     *  'automaticInstallation' => '1',
+     *  'automaticInstallation..' => '# cat=basic/enabled; ...'
+     *  'FE.' => [
+     *      'enabled' = '1',
+     *      'enabled..' => '# cat=basic/enabled; ...'
+     *  ]
+     * ]
+     *
+     * Output array:
+     * [
+     *  'automaticInstallation' => '1',
+     *  'FE' => [
+     *      'enabled' => '1',
+     * ]
+     */
+    protected function removeCommentsAndDotsRecursive(array $config): array
+    {
+        $cleanedConfig = [];
+        foreach ($config as $key => $value) {
+            if (substr($key, -2) === '..') {
+                continue;
+            }
+            if (substr($key, -1) === '.') {
+                $cleanedConfig[rtrim($key, '.')] = $this->removeCommentsAndDotsRecursive($value);
+            } else {
+                $cleanedConfig[$key] = $value;
+            }
+        }
+        return $cleanedConfig;
+    }
+
+    /**
+     * This flattens a hierarchical TypoScript array to a dotted notation
+     *
+     * @param array $setupArray TypoScript array
+     * @param string $prefix Prefix to the object path. Used for recursive calls to this function.
+     * @return array
+     */
+    protected function flattenSetup($setupArray, $prefix = '')
+    {
+        $flatSetup = [];
+        if (is_array($setupArray)) {
+            foreach ($setupArray as $key => $val) {
+                if (is_array($val)) {
+                    $flatSetup = array_merge($flatSetup, $this->flattenSetup($val, $prefix . $key));
+                } else {
+                    $flatSetup[$prefix . $key] = $val;
+                }
+            }
+        }
+        return $flatSetup;
     }
 
     /**

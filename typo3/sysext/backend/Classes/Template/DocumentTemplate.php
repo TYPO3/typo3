@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Template;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -932,10 +933,9 @@ function jumpToUrl(URL) {
     */
     protected function getBackendFavicon()
     {
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
-
-        if (!empty($extConf['backendFavicon'])) {
-            $path =  $this->getUriForFileName($extConf['backendFavicon']);
+        $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
+        if (!empty($backendFavicon)) {
+            $path =  $this->getUriForFileName($backendFavicon);
         } else {
             $path = ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico';
         }

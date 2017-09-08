@@ -31,7 +31,7 @@ class CommandLineBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         if (TYPO3_OS === 'WIN') {
             $this->markTestSkipped('This test is not available on Windows as auto-detection of openssl path will fail.');
         }
-
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['rsaauth']['temporaryDirectory'] = '';
         $this->subject = new CommandLineBackend();
     }
 

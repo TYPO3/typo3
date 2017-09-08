@@ -13,6 +13,8 @@ namespace TYPO3\CMS\IndexedSearch\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This service provides the mysql specific changes of the schema definition
@@ -28,16 +30,8 @@ class DatabaseSchemaService
      */
     public function addMysqlFulltextIndex(array $sqlString)
     {
-        // Check again if the extension flag is enabled to be on the safe side
-        // even if the slot registration is moved around in ext_localconf
-        $extConf = [];
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'])) {
-            $extConf = unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'],
-                ['allowed_classes' => false]
-            );
-        }
-        if (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1') {
+        $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
+        if ($useMysqlFulltext) {
             // @todo: With MySQL 5.7 fulltext index on InnoDB is possible, check for that and keep inno if so.
             $sqlString[] = 'CREATE TABLE index_fulltext ('
                 . LF . 'fulltextdata mediumtext,'

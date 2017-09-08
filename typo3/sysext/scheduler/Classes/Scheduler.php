@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -39,7 +40,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct()
     {
         // Get configuration from the extension manager
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler'], ['allowed_classes' => false]);
+        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
             $this->extConf['maxLifetime'] = 1440;
         }

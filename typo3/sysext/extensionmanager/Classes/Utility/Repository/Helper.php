@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 
 /**
  * Central utility class for repository handling.
@@ -65,11 +65,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
     protected $extensionRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-     */
-    protected $configurationUtility;
-
-    /**
      * Class constructor.
      *
      * @access public
@@ -81,7 +76,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository */
         $repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
         $this->extensionRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class);
-        $this->configurationUtility = $this->objectManager->get(ConfigurationUtility::class);
         /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository */
         $repository = $repositoryRepository->findByUid(1);
         if (is_object($repository)) {
@@ -142,7 +136,8 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function fetchFile($remoteResource, $localResource)
     {
-        if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
+        $isOffline = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
+        if ($isOffline) {
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078780);
         }
         if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {

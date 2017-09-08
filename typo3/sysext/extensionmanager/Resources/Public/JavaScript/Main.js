@@ -296,79 +296,6 @@ define([
 	};
 
 	/**
-	 * configuration properties
-	 */
-	ExtensionManager.configurationFieldSupport = function() {
-		$('.t3js-emconf-offset').each(function() {
-			var $me = $(this),
-				$parent = $me.parent(),
-				id = $me.attr('id'),
-				val = $me.attr('value'),
-				valArr = val.split(',');
-
-			$me.attr('data-offsetfield-x', '#' + id + '_offset_x')
-				.attr('data-offsetfield-y', '#' + id + '_offset_y')
-				.wrap('<div class="hidden"></div>');
-
-			var elementX = '' +
-				'<div class="form-multigroup-item">' +
-					'<div class="input-group">' +
-						'<div class="input-group-addon">x</div>' +
-						'<input id="' + id + '_offset_x" class="form-control t3js-emconf-offsetfield" data-target="#' + id + '" value="' + $.trim(valArr[0]) + '">' +
-					'</div>' +
-				'</div>';
-			var elementY = '' +
-				'<div class="form-multigroup-item">' +
-					'<div class="input-group">' +
-						'<div class="input-group-addon">y</div>' +
-						'<input id="' + id + '_offset_y" class="form-control t3js-emconf-offsetfield" data-target="#' + id + '" value="' + $.trim(valArr[1]) + '">' +
-					'</div>' +
-				'</div>';
-
-			var offsetGroup = '<div class="form-multigroup-wrap">' + elementX + elementY + '</div>';
-			$parent.append(offsetGroup);
-			$parent.find('.t3js-emconf-offset').keyup(function() {
-				var $target = $($(this).data('target'));
-				$target.attr(
-					'value',
-					$($target.data('offsetfield-x')).val() + ',' + $($target.data('offsetfield-y')).val()
-				);
-			});
-		});
-
-		$('.t3js-emconf-wrap').each(function() {
-			var $me = $(this),
-				$parent = $me.parent(),
-				id = $me.attr('id'),
-				val = $me.attr('value'),
-				valArr = val.split('|');
-
-			$me.attr('data-wrapfield-start', '#' + id + '_wrap_start')
-				.attr('data-wrapfield-end', '#' + id + '_wrap_end')
-				.wrap('<div class="hidden"></div>');
-
-			var elementStart = '' +
-				'<div class="form-multigroup-item">' +
-					'<input id="' + id + '_wrap_start" class="form-control t3js-emconf-wrapfield" data-target="#' + id + '" value="' + $.trim(valArr[0]) + '">' +
-				'</div>';
-			var elementEnd = '' +
-				'<div class="form-multigroup-item">' +
-					'<input id="' + id + '_wrap_end" class="form-control t3js-emconf-wrapfield" data-target="#' + id + '" value="' + $.trim(valArr[1]) + '">' +
-				'</div>';
-
-			var wrapGroup = '<div class="form-multigroup-wrap">' + elementStart + elementEnd + '</div>';
-			$parent.append(wrapGroup);
-			$parent.find('.t3js-emconf-wrapfield').keyup(function() {
-				var $target = $($(this).data('target'));
-				$target.attr(
-					'value',
-					$($target.data('wrapfield-start')).val() + '|' + $($target.data('wrapfield-end')).val()
-				);
-			});
-		});
-	};
-
-	/**
 	 *
 	 * @type {{downloadPath: string}}
 	 */
@@ -772,8 +699,6 @@ define([
 		$(document).on('click', '.t3-button-action-installdistribution', function() {
 			NProgress.start();
 		});
-
-		ExtensionManager.configurationFieldSupport();
 
 		SplitButtons.addPreSubmitCallback(function(e) {
 			if ($(e.target).hasClass('t3js-save-close')) {

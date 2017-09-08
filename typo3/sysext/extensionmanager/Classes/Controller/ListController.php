@@ -16,10 +16,12 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -50,11 +52,6 @@ class ListController extends AbstractModuleController
      * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
      */
     protected $dependencyUtility;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-     */
-    protected $configurationUtility;
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
@@ -89,20 +86,13 @@ class ListController extends AbstractModuleController
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
-     */
-    public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility)
-    {
-        $this->configurationUtility = $configurationUtility;
-    }
-
-    /**
      * Add the needed JavaScript files for all actions
      */
     public function initializeAction()
     {
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
-        if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
+        $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
+        if ($isAutomaticInstallationEnabled) {
             $this->settings['offlineMode'] = true;
         }
     }

@@ -184,12 +184,14 @@ define([
 		 */
 		handleButtonScrolling: function() {
 			var $fixedFooterHandler = $('#fixed-footer-handler');
-			var $fixedFooter = $('#fixed-footer');
-			if (!this.isScrolledIntoView($fixedFooterHandler)) {
-				$fixedFooter.addClass('fixed');
-				$fixedFooter.width($('.t3js-localConfiguration .panel-group').width());
-			} else {
-				$fixedFooter.removeClass('fixed');
+			if ($fixedFooterHandler.length > 0) {
+				var $fixedFooter = $('#fixed-footer');
+				if (!this.isScrolledIntoView($fixedFooterHandler)) {
+					$fixedFooter.addClass('fixed');
+					$fixedFooter.width($('.t3js-localConfiguration .panel-group').width());
+				} else {
+					$fixedFooter.removeClass('fixed');
+				}
 			}
 		},
 

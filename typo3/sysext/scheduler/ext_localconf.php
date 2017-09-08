@@ -2,10 +2,12 @@
 defined('TYPO3_MODE') or die();
 
 // Get the extensions's configuration
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler'], ['allowed_classes' => false]);
+$showSampleTasks = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+)->get('scheduler', 'showSampleTasks');
 // If sample tasks should be shown,
 // register information for the test and sleep tasks
-if (!empty($extConf['showSampleTasks'])) {
+if ($showSampleTasks) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Example\TestTask::class] = [
         'extension' => 'scheduler',
         'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:testTask.name',
@@ -19,6 +21,7 @@ if (!empty($extConf['showSampleTasks'])) {
         'additionalFields' => \TYPO3\CMS\Scheduler\Example\SleepTaskAdditionalFieldProvider::class
     ];
 }
+unset($showSampleTasks);
 
 // Add caching framework garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class] = [

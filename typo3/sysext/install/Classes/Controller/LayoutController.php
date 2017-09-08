@@ -17,9 +17,11 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
@@ -57,7 +59,8 @@ class LayoutController extends AbstractController
 
     /**
      * Return a json response with the main HTML layout body: Toolbar, main menu and
-     * doc header in standalone, doc header only in backend context.
+     * doc header in standalone, doc header only in backend context. Silent updaters
+     * are executed before this main view is loaded.
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -88,5 +91,69 @@ class LayoutController extends AbstractController
         return new JsonResponse([
             'success' => $success,
         ]);
+    }
+
+    /**
+     * Legacy ajax call. This silent updater takes care that all extensions configured in LocalConfiguration
+     * EXT/extConf serialized array are "upmerged" to arrays within EXTENSIONS if this extension does not
+     * exist in EXTENSIONS yet.
+     *
+     * @return ResponseInterface
+     * @deprecated since core v9, will be removed with core v10
+     */
+    public function executeSilentLegacyExtConfExtensionConfigurationUpdateAction(): ResponseInterface
+    {
+        $configurationManager = new ConfigurationManager();
+        $oldExtConfSettings = $configurationManager->getConfigurationValueByPath('EXT/extConf');
+        $newExtensionSettings = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
+        foreach ($oldExtConfSettings as $extensionName => $extensionSettings) {
+            if (!array_key_exists($extensionName, $newExtensionSettings)) {
+                $newExtensionSettings = $this->removeDotsFromArrayKeysRecursive(unserialize($extensionSettings, ['allowed_classes' => false]));
+                $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionName, $newExtensionSettings);
+            }
+        }
+        return new JsonResponse([
+            'success' => true,
+        ]);
+    }
+
+    /**
+     * Synchronize TYPO3_CONF_VARS['EXTENSIONS'] with possibly new defaults from extensions
+     * ext_conf_template.txt files. This make LocalConfiguration the only source of truth for
+     * extension configuration and it is always up to date, also if an extension has been
+     * updated.
+     *
+     * @return ResponseInterface
+     */
+    public function executeSilentExtensionConfigurationSynchronizationAction(): ResponseInterface
+    {
+        $extensionConfigurationService = new ExtensionConfigurationService();
+        $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        return new JsonResponse([
+            'success' => true,
+        ]);
+    }
+
+    /**
+     * Helper method for executeSilentLegacyExtConfExtensionConfigurationUpdateAction(). Old EXT/extConf
+     * settings have dots at the end of array keys if nested arrays were used. The new configuration does
+     * not use this funny nested representation anymore. The method removes all dots at the end of given
+     * array keys recursive to do this transition.
+     *
+     * @param array $settings
+     * @return array New settings
+     * @deprecated since core v9, will be removed with core v10 along with executeSilentLegacyExtConfExtensionConfigurationUpdateAction()
+     */
+    private function removeDotsFromArrayKeysRecursive(array $settings): array
+    {
+        $settingsWithoutDots = [];
+        foreach ($settings as $key => $value) {
+            if (is_array($value)) {
+                $settingsWithoutDots[rtrim($key, '.')] = $this->removeDotsFromArrayKeysRecursive($value);
+            } else {
+                $settingsWithoutDots[$key] = $value;
+            }
+        }
+        return $settingsWithoutDots;
     }
 }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,11 +27,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  */
 class UploadExtensionFileController extends AbstractController
 {
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-     */
-    protected $configurationUtility;
-
     /**
      * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
      */
@@ -60,14 +56,6 @@ class UploadExtensionFileController extends AbstractController
      * @var bool
      */
     protected $removeFromOriginalPath = false;
-
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
-     */
-    public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility)
-    {
-        $this->configurationUtility = $configurationUtility;
-    }
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
@@ -150,8 +138,8 @@ class UploadExtensionFileController extends AbstractController
                 );
             }
             $extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
-            $emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
-            if (!$emConfiguration['automaticInstallation']['value']) {
+            $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
+            if (!$isAutomaticInstallationEnabled) {
                 $this->addFlashMessage(
                     $this->translate('extensionList.uploadFlashMessage.message', [$extensionData['extKey']]),
                     $this->translate('extensionList.uploadFlashMessage.title'),

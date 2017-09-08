@@ -62,20 +62,7 @@ class DistributionController extends AbstractModuleController
         // Check if extension/package is installed
         $active = $this->packageManager->isPackageActive($extensionKey);
 
-        // Create link for extension configuration
-        if ($active && file_exists(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'ext_conf_template.txt')) {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
-            $action = 'showConfigurationForm';
-            $configurationLink = $uriBuilder->reset()->uriFor(
-                $action,
-                ['extension' => ['key' => $extensionKey]],
-                'Configuration'
-            );
-        } else {
-            $configurationLink = false;
-        }
         $this->view->assign('distributionActive', $active);
-        $this->view->assign('configurationLink', $configurationLink);
         $this->view->assign('extension', $extension);
     }
 

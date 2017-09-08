@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -150,7 +151,7 @@ class AdministrationController extends ActionController
     public function initializeAction()
     {
         $this->pageUid = (int)GeneralUtility::_GET('id');
-        $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->indexer = GeneralUtility::makeInstance(Indexer::class);
 

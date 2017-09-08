@@ -33,6 +33,21 @@ class SaltFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     protected function setUp()
     {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords'] = [
+            'BE' => [
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+            'FE' => [
+                'enabled' => 1,
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+        ];
         $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
     }
 

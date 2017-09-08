@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -59,11 +60,11 @@ class SaltedPasswordsUtility
     public static function returnExtConf($mode = TYPO3_MODE)
     {
         $currentConfiguration = self::returnExtConfDefaults();
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'])) {
-            $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'], ['allowed_classes' => false]);
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords'])) {
+            $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('saltedpasswords');
             // Merge default configuration with modified configuration:
-            if (isset($extensionConfiguration[$mode . '.'])) {
-                $currentConfiguration = array_merge($currentConfiguration, $extensionConfiguration[$mode . '.']);
+            if (isset($extensionConfiguration[$mode])) {
+                $currentConfiguration = array_merge($currentConfiguration, $extensionConfiguration[$mode]);
             }
         }
         return $currentConfiguration;

@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
+declare(strict_types=1);
+namespace TYPO3\CMS\Install\ViewHelpers\Form;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,14 +15,16 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
- * View Helper for rendering Extension Manager Configuration Form
+ * View Helper for rendering extension configuration forms
  * @internal
  */
-class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var array
@@ -55,7 +58,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
         $this->registerArgument('value', 'mixed', 'Value of input tag');
-        $this->registerArgument('configuration', ConfigurationItem::class, '', true);
+        $this->registerArgument('configuration', 'array', '', true);
         $this->registerUniversalTagAttributes();
     }
 
@@ -64,12 +67,12 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
      *
      * @return string the rendered tag
      */
-    public function render()
+    public function render(): string
     {
-        /** @var ConfigurationItem $configuration */
+        /** @var array $configuration */
         $configuration = $this->arguments['configuration'];
-        if (isset($this->viewHelperMapping[$configuration->getType()]) && method_exists($this, $this->viewHelperMapping[$configuration->getType()])) {
-            $input = $this->{$this->viewHelperMapping[$configuration->getType()]}($configuration);
+        if (isset($this->viewHelperMapping[$configuration['type']]) && method_exists($this, $this->viewHelperMapping[$configuration['type']])) {
+            $input = $this->{$this->viewHelperMapping[$configuration['type']]}($configuration);
         } else {
             $input = $this->{$this->viewHelperMapping['default']}($configuration);
         }
@@ -80,12 +83,12 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type color picker
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderColorPicker(ConfigurationItem $configuration)
+    protected function renderColorPicker(array $configuration): string
     {
-        $elementId = 'em-' . $configuration->getName();
+        $elementId = 'em-' . $configuration['name'];
         $elementName = $this->getName($configuration);
 
         // configure the field
@@ -95,8 +98,8 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         $this->tag->addAttribute('name', $elementName);
         $this->tag->addAttribute('data-formengine-input-name', $elementName);
         $this->tag->addAttribute('class', 'form-control');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
 
         $output = '
@@ -114,18 +117,18 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "offset"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderOffsetField(ConfigurationItem $configuration)
+    protected function renderOffsetField(array $configuration): string
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control t3js-emconf-offset');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
         return $this->tag->render();
     }
@@ -133,18 +136,18 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "wrap"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderWrapField(ConfigurationItem $configuration)
+    protected function renderWrapField(array $configuration): string
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control t3js-emconf-wrap');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
         return $this->tag->render();
     }
@@ -152,23 +155,24 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "option"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderOptionSelect(ConfigurationItem $configuration)
+    protected function renderOptionSelect(array $configuration): string
     {
         $this->tag->setTagName('select');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
-        $optionValueArray = $configuration->getGeneric();
+        $optionValueArray = $configuration['generic'];
         $output = '';
+        $languageService = $this->getLanguageService();
         foreach ($optionValueArray as $label => $value) {
             $output .= '<option value="' . htmlspecialchars($value) . '"';
-            if ($configuration->getValue() == $value) {
+            if ($configuration['value'] == $value) {
                 $output .= ' selected="selected"';
             }
-            $output .= '>' . htmlspecialchars($GLOBALS['LANG']->sL($label)) . '</option>';
+            $output .= '>' . htmlspecialchars($languageService->sL($label)) . '</option>';
         }
         $this->tag->setContent($output);
         return $this->tag->render();
@@ -177,19 +181,19 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "int+"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderPositiveIntegerField(ConfigurationItem $configuration)
+    protected function renderPositiveIntegerField(array $configuration): string
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
         $this->tag->addAttribute('min', '0');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
         return $this->tag->render();
     }
@@ -197,18 +201,18 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "integer"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderIntegerField(ConfigurationItem $configuration)
+    protected function renderIntegerField(array $configuration): string
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
         return $this->tag->render();
     }
@@ -216,18 +220,18 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "text"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderTextField(ConfigurationItem $configuration)
+    protected function renderTextField(array $configuration): string
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
-        if ($configuration->getValue() !== null) {
-            $this->tag->addAttribute('value', $configuration->getValue());
+        if ($configuration['value'] !== null) {
+            $this->tag->addAttribute('value', $configuration['value']);
         }
         return $this->tag->render();
     }
@@ -235,10 +239,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "small text"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderSmallTextField(ConfigurationItem $configuration)
+    protected function renderSmallTextField(array $configuration): string
     {
         return $this->renderTextField($configuration);
     }
@@ -246,16 +250,16 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "checkbox"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    public function renderCheckbox(ConfigurationItem $configuration)
+    public function renderCheckbox(array $configuration): string
     {
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('value', 1);
-        $this->tag->addAttribute('id', 'em-' . $configuration->getName());
-        if ($configuration->getValue() == 1) {
+        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        if ($configuration['value'] == 1) {
             $this->tag->addAttribute('checked', 'checked');
         }
         $hiddenField = $this->renderHiddenFieldForEmptyValue($configuration);
@@ -265,38 +269,38 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     /**
      * Render field of type "userFunc"
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderUserFunction(ConfigurationItem $configuration)
+    protected function renderUserFunction(array $configuration): string
     {
-        $userFunction = $configuration->getGeneric();
+        $userFunction = $configuration['generic'];
         $userFunctionParams = [
             'fieldName' => $this->getName($configuration),
-            'fieldValue' => $configuration->getValue(),
-            'propertyName' => $configuration->getName()
+            'fieldValue' => $configuration['value'],
+            'propertyName' => $configuration['name']
         ];
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
+        return (string)GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
     }
 
     /**
      * Get Field Name
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function getName(ConfigurationItem $configuration)
+    protected function getName(array $configuration): string
     {
-        return 'tx_extensionmanager_tools_extensionmanagerextensionmanager[config][' . $configuration->getName() . '][value]';
+        return $configuration['name'];
     }
 
     /**
      * Render a hidden field for empty values
      *
-     * @param ConfigurationItem $configuration
+     * @param array $configuration
      * @return string
      */
-    protected function renderHiddenFieldForEmptyValue($configuration)
+    protected function renderHiddenFieldForEmptyValue(array $configuration): string
     {
         $hiddenFieldNames = [];
         if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
@@ -312,5 +316,13 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
             return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
         }
         return '';
+    }
+
+    /**
+     * @return LanguageService|null Returns null if we are in the install tool standalone mode
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

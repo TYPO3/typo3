@@ -2,8 +2,10 @@
 defined('TYPO3_MODE') or die();
 
 // Register extension list update task
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extensionmanager'], ['allowed_classes' => false]);
-if (empty($extConf['offlineMode'])) {
+$offlineMode = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+)->get('extensionmanager', 'offlineMode');
+if (!$offlineMode) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class] = [
         'extension' => 'extensionmanager',
         'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:task.updateExtensionListTask.name',
@@ -11,6 +13,7 @@ if (empty($extConf['offlineMode'])) {
         'additionalFields' => '',
     ];
 }
+unset($offlineMode);
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController::class;
 
@@ -36,8 +39,6 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
     );
     unset($signalSlotDispatcher);
 }
-
-unset($extConf);
 
 // Register extension status report system
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =

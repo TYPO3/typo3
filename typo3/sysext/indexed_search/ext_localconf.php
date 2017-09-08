@@ -44,16 +44,11 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [
     'tif'  => \TYPO3\CMS\IndexedSearch\FileContentParser::class
 ];
 
-// unserializing the configuration so we can use it here:
-$extConf = [];
-if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'])) {
-    $extConf = unserialize(
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'],
-        ['allowed_classes' => false]
-    );
-}
+$extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+)->get('indexed_search');
 
-if (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1') {
+if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
     // Use all index_* tables except "index_rel" and "index_words"
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
         'index_phash,index_fulltext,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';

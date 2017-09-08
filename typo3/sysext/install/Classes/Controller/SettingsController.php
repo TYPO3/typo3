@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -25,9 +27,12 @@ use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
@@ -303,6 +308,67 @@ class SettingsController extends AbstractController
                 FlashMessage::INFO
             ));
         }
+        return new JsonResponse([
+            'success' => true,
+            'status' => $messages,
+        ]);
+    }
+
+    /**
+     * Render a list of extensions with their configuration form.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
+    {
+        // Extension configuration needs initialized $GLOBALS['LANG']
+        Bootstrap::getInstance()->initializeLanguageObject();
+        $extensionConfigurationService = new ExtensionConfigurationService();
+        $extensionsWithConfigurations = [];
+        $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+        foreach ($activePackages as $extensionKey => $activePackage) {
+            if (@file_exists($activePackage->getPackagePath() . 'ext_conf_template.txt')) {
+                $extensionsWithConfigurations[$extensionKey] = [
+                    'packageInfo' => $activePackage,
+                    'configuration' => $extensionConfigurationService->getConfigurationPreparedForView($extensionKey),
+                ];
+            }
+        }
+        $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
+        $view = $this->initializeStandaloneView($request, 'Settings/ExtensionConfigurationGetContent.html');
+        $view->assignMultiple([
+            'extensionsWithConfigurations' => $extensionsWithConfigurations,
+            'extensionConfigurationWriteToken' => $formProtection->generateToken('installTool', 'extensionConfigurationWrite'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render(),
+        ]);
+    }
+
+    /**
+     * Write extension configuration
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function extensionConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $extensionKey = $request->getParsedBody()['install']['extensionKey'];
+        $configuration = $request->getParsedBody()['install']['extensionConfiguration'];
+        $nestedConfiguration = [];
+        foreach ($configuration as $configKey => $value) {
+            $nestedConfiguration = ArrayUtility::setValueByPath($nestedConfiguration, $configKey, $value, '.');
+        }
+        (new ExtensionConfiguration())->set($extensionKey, '', $nestedConfiguration);
+        $messages = [
+            new FlashMessage(
+                '',
+                'Successfully saved configuration for extension "' . $extensionKey . '"',
+                FlashMessage::OK
+            )
+        ];
         return new JsonResponse([
             'success' => true,
             'status' => $messages,

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -280,7 +281,7 @@ class BackendController
         $view = $this->getFluidTemplateObject($this->partialPath . 'Backend/Topbar.html');
 
         // Extension Configuration to find the TYPO3 logo in the left corner
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend'], ['allowed_classes' => false]);
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
         $logoPath = '';
         if (!empty($extConf['backendLogo'])) {
             $customBackendLogo = GeneralUtility::getFileAbsFileName($extConf['backendLogo']);

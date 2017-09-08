@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -134,7 +135,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $iconFileNameCache = [];
 
     /**
-     * Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+     * Indexer configuration, coming from TYPO3's system configuration for EXT:indexed_search
      *
      * @var array
      */
@@ -198,7 +199,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $searchData = array_merge($this->settings['defaultOptions'], $searchData);
         }
         // Indexer configuration from Extension Manager interface:
-        $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.

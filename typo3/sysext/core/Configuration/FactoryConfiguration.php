@@ -18,24 +18,45 @@ return [
             ],
         ],
     ],
-    'EXT' => [
-        'extConf' => [
-            'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
-            'saltedpasswords' => serialize([
-                'BE.' => [
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
-                    'forceSalted' => 0,
-                    'onlyAuthService' => 0,
-                    'updatePasswd' => 1,
-                ],
-                'FE.' => [
-                    'enabled' => 1,
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
-                    'forceSalted' => 0,
-                    'onlyAuthService' => 0,
-                    'updatePasswd' => 1,
-                ],
-            ]),
+    'EXTENSIONS' => [
+        'backend' => [
+            'backendFavicon' => '',
+            'backendLogo' => '',
+            'loginBackgroundImage' => '',
+            'loginFootnote' => '',
+            'loginHighlightColor' => '',
+            'loginLogo' => '',
+        ],
+        'extensionmanager' => [
+            'automaticInstallation' => 1,
+            'offlineMode' => 0,
+        ],
+        'rsaauth' => [
+            'temporaryDirectory' => '',
+        ],
+        'saltedpasswords' => [
+            'BE' => [
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+            'FE' => [
+                'enabled' => 1,
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+            'checkConfigurationBE' => '0',
+            'checkConfigurationBE2' => '0',
+            'checkConfigurationFE' => '0',
+            'checkConfigurationFE2' => '0',
+        ],
+        'scheduler' => [
+            'enableBELog' => 1,
+            'maxLifetime' => 1440,
+            'showSampleTasks' => 1,
         ],
     ],
     'FE' => [

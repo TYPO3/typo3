@@ -9,7 +9,9 @@ See :issue:`82254`
 Description
 ===========
 
-The extension configuration stored in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] has been deprecated and replaced by a plain array in $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'].
+The extension configuration stored in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] has been
+deprecated and replaced by a plain array in $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']. A new
+API has been introduced to retrieve extension configuration.
 
 
 Affected Installations
@@ -21,6 +23,21 @@ All extensions manually getting settings and unserializing them from $GLOBALS['T
 Migration
 =========
 
-Switch to the use of $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'] instead and remove all unserialize calls.
+Use a new API to retrieve extension configuration, examples:
+
+.. code-block:: php
+
+    // Retrieve a single key
+    $backendFavicon = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
+
+    // Retrieve whole configuration
+    $backendConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
+
+    // Fully qualified class names for usage in ext_localconf.php / ext_tables.php
+    $backendConfiguration = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+    )->get('backend');
+
+
 
 .. index:: LocalConfiguration, PHP-API, FullyScanned

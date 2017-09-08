@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Connection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
@@ -30,19 +32,6 @@ class TerUtility
     public $wsdlUrl;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-     */
-    protected $configurationUtility;
-
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
-     */
-    public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility)
-    {
-        $this->configurationUtility = $configurationUtility;
-    }
-
-    /**
      * Fetches an extension from the given mirror
      *
      * @param string $extensionKey Extension Key
@@ -55,7 +44,7 @@ class TerUtility
     public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl)
     {
         if (
-            !empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])
+            (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode')
             || Bootstrap::usesComposerClassLoading()
         ) {
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);

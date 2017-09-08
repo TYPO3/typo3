@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Rsaauth;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class contains a hook to the backend warnings collection. It checks
@@ -33,8 +35,7 @@ class BackendWarnings
             $lang = $this->getLanguageService();
             $warnings['rsaauth_cmdline'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_using_cmdline');
             // Check the path
-            $extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth'], ['allowed_classes' => false]);
-            $path = trim($extconf['temporaryDirectory']);
+            $path = trim(GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('rsaauth', 'temporaryDirectory'));
             if ($path == '') {
                 // Path is empty
                 $warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/Resources/Private/Language/locallang.xlf:hook_empty_directory');

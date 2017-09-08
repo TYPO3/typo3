@@ -25,20 +25,13 @@
 						</li>
 					</f:else>
 					<f:then>
-						<f:if condition="{configurationLink}">
-							<li>
-								<a href="{configurationLink}" class="btn btn-default">
-									<core:icon identifier="actions-system-extension-configure" /> <f:translate key="extensionList.configure" />
-								</a>
-							</li>
-						</f:if>
 						<li>
 							<button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
 								<core:icon identifier="actions-document-view" /> <f:translate key="distribution.welcome.openViewModule" />
 							</button>
 						</li>
 						<li>
-							<button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_page');">
+							<button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_layout');">
 								<core:icon identifier="actions-open" /> <f:translate key="distribution.welcome.openPageModule" />
 							</button>
 						</li>

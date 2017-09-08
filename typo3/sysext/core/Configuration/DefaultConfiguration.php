@@ -805,24 +805,25 @@ return [
         'allowGlobalInstall' => false,
         'allowLocalInstall' => true,
         'excludeForPackaging' => '(?:\\..*(?!htaccess)|.*~|.*\\.swp|.*\\.bak|\\.sass-cache|node_modules|bower_components)',
-        'extConf' => [
-            'saltedpasswords' => serialize([
-                'BE.' => [
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-                    'forceSalted' => 0,
-                    'onlyAuthService' => 0,
-                    'updatePasswd' => 1,
-                ],
-                'FE.' => [
-                    'enabled' => 0,
-                    'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-                    'forceSalted' => 0,
-                    'onlyAuthService' => 0,
-                    'updatePasswd' => 1,
-                ],
-            ]),
-        ],
         'runtimeActivatedPackages' => [],
+    ],
+    // Custom options shipped by extensions
+    'EXTENSIONS' => [
+        'saltedpasswords' => [
+            'BE' => [
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+            'FE' => [
+                'enabled' => 0,
+                'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+                'forceSalted' => 0,
+                'onlyAuthService' => 0,
+                'updatePasswd' => 1,
+            ],
+        ],
     ],
     'BE' => [
         // Backend Configuration.

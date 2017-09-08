@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -133,7 +134,7 @@ class Indexer
     public $indexerConfig = [];
 
     /**
-     * Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+     * Indexer configuration, coming from TYPO3's system configuration for EXT:indexed_search
      *
      * @var array
      */
@@ -251,7 +252,7 @@ class Indexer
     public function hook_indexContent(&$pObj)
     {
         // Indexer configuration from Extension Manager interface:
-        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $disableFrontendIndexing = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'disableFrontendIndexing');
         // Crawler activation:
         // Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
@@ -265,7 +266,7 @@ class Indexer
         // Determine if page should be indexed, and if so, configure and initialize indexer
         if ($pObj->config['config']['index_enable']) {
             $this->log_push('Index page', '');
-            if (!$indexerConfig['disableFrontendIndexing'] || $this->crawlerActive) {
+            if (!$disableFrontendIndexing || $this->crawlerActive) {
                 if (!$pObj->page['no_search']) {
                     if (!$pObj->no_cache) {
                         if ((int)$pObj->sys_language_uid === (int)$pObj->sys_language_content) {
@@ -469,7 +470,7 @@ class Indexer
         // Setting phash / phash_grouping which identifies the indexed page based on some of these variables:
         $this->setT3Hashes();
         // Indexer configuration from Extension Manager interface:
-        $this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->tstamp_minAge = MathUtility::forceIntegerInRange($this->indexerConfig['minAge'] * 3600, 0);
         $this->tstamp_maxAge = MathUtility::forceIntegerInRange($this->indexerConfig['maxAge'] * 3600, 0);
         $this->maxExternalFiles = MathUtility::forceIntegerInRange($this->indexerConfig['maxExternalFiles'], 0, 1000, 5);

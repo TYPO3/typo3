@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -76,7 +77,7 @@ class FileContentParser
     public function initParser($extension)
     {
         // Then read indexer-config and set if appropriate:
-        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         // If windows, apply extension to tool name:
         $exe = TYPO3_OS === 'WIN' ? '.exe' : '';
         // lg
@@ -288,7 +289,7 @@ class FileContentParser
     public function searchTypeMediaTitle($extension)
     {
         // Read indexer-config
-        $indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'], ['allowed_classes' => false]);
+        $indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         // Ignore extensions
         $ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), true);
         if (in_array($extension, $ignoreExtensions)) {

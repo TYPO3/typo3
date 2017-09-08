@@ -72,9 +72,58 @@ define([
 				cache: false,
 				success: function(data) {
 					if (data.success === true) {
-						self.loadMainLayout();
+						self.executeSilentLegacyExtConfExtensionConfigurationUpdate();
 					} else {
 						self.executeSilentConfigurationUpdate();
+					}
+				},
+				error: function(xhr) {
+					self.handleAjaxError(xhr);
+				}
+			});
+		},
+
+		/**
+		 * Legacy layer to upmerge LocalConfiguration EXT/extConf serialized array keys
+		 * to EXTENSIONS array in LocalConfiguration for initial update from v8 to v9.
+		 *
+		 * @deprecated since TYPO3 v9, will be removed with v10 - re-route executeSilentConfigurationUpdate()
+		 * to executeSilentExtensionConfigurationUpdate() on removal of this function.
+		 */
+		executeSilentLegacyExtConfExtensionConfigurationUpdate: function() {
+			var self = this;
+			$.ajax({
+				url: this.getUrl('executeSilentLegacyExtConfExtensionConfigurationUpdate', 'layout'),
+				cache: false,
+				success: function(data) {
+					if (data.success === true) {
+						self.executeSilentExtensionConfigurationSynchronization();
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().append(message);
+					}
+				},
+				error: function(xhr) {
+					self.handleAjaxError(xhr);
+				}
+			});
+		},
+
+		/**
+		 * Extensions which come with new default settings in ext_conf_template.txt extension
+		 * configuration files get their new defaults written to LocalConfiguration.
+		 */
+		executeSilentExtensionConfigurationSynchronization: function() {
+			var self = this;
+			$.ajax({
+				url: this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout'),
+				cache: false,
+				success: function(data) {
+					if (data.success === true) {
+						self.loadMainLayout();
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						$outputContainer.empty().append(message);
 					}
 				},
 				error: function(xhr) {

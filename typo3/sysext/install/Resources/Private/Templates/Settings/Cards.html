@@ -30,6 +30,13 @@
 		title: 'Configure installation-wide options',
 		category: 'Global Configuration',
 		description: 'Modify settings to be written into TYPO3\'s LocalConfiguration.php.'
+	},
+	4: {partial: 'Settings/ExtensionConfiguration',
+		require: 'TYPO3/CMS/Install/ExtensionConfiguration',
+		baseClass: 't3js-extensionConfiguration',
+		title: 'Extension configuration',
+		category: 'Glocal Configuration',
+		description: 'Configure settings for extensions.'
 	}
 }}">
 	<div class="gridder">

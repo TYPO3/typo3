@@ -27,45 +27,6 @@
 			<trans-unit id="showAllVersions">
 				<source>Show all versions of</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.headline">
-				<source>Configure Extension</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.other">
-				<source>Other</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.int+">
-				<source>positive integer</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.int">
-				<source>integer</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.integer">
-				<source>integer</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.color">
-				<source>color</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.wrap">
-				<source>wrap</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.offset">
-				<source>offset</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.options">
-				<source>options</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.boolean">
-				<source>boolean</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.user">
-				<source>user</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.small">
-				<source>small</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplate.type.string">
-				<source>string</source>
-			</trans-unit>
 			<trans-unit id="extConfTemplate.backToList">
 				<source>Back to list</source>
 			</trans-unit>
@@ -95,12 +56,6 @@
 			</trans-unit>
 			<trans-unit id="button.resolveDependenciesIgnore">
 				<source>I know what I'm doing, continue anyway</source>
-			</trans-unit>
-			<trans-unit id="extensionList.clickToConfigure">
-				<source>(Click to configure)</source>
-			</trans-unit>
-			<trans-unit id="extensionList.configure">
-				<source>Configure</source>
 			</trans-unit>
 			<trans-unit id="extensionList.update.script">
 				<source>Execute the update script</source>

@@ -20,6 +20,8 @@ $grid-float-breakpoint: $screen-md-min;
 @import "libs/chosen";
 @import "libs/gridder";
 @import "component/card";
+@import "component/colorpicker";
+@import "typo3/main_form";
 
 //
 // Include elements

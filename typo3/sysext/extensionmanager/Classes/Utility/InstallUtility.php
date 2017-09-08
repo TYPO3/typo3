@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 /**
  * Extension Manager Install Utility
@@ -438,9 +439,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function saveDefaultConfiguration($extensionKey)
     {
-        /** @var $configUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-        $configUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
-        $configUtility->saveDefaultConfiguration($extensionKey);
+        $configUtility = $this->objectManager->get(ExtensionConfigurationService::class);
+        $configUtility->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
     }
 
     /**

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  */
 
 use Doctrine\DBAL\Driver\Statement;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -208,20 +209,12 @@ class IndexSearchRepository
      */
     public function doSearch($searchWords, $freeIndexUid = -1)
     {
-        // unserializing the configuration so we can use it here:
-        $extConf = [];
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'])) {
-            $extConf = unserialize(
-                $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search'],
-                ['allowed_classes' => false]
-            );
-        }
-
+        $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
         // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
         if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
             $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
-        } elseif (isset($extConf['useMysqlFulltext']) && $extConf['useMysqlFulltext'] === '1') {
+        } elseif ($useMysqlFulltext) {
             $result = $this->getResultRows_SQLpointerMysqlFulltext($searchWords, $freeIndexUid);
         } else {
             $result = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
