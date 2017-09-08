@@ -21,11 +21,11 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
@@ -89,7 +89,7 @@ class StandaloneViewTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $mockTemplatePaths;
 
     /**
-     * @var CmsVariableProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var StandardVariableProvider|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $mockVariableProvider;
 
