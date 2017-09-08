@@ -105,7 +105,22 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         } else {
             $file = $this->getFileByIdentifier($persistenceIdentifier);
         }
-        return $this->yamlSource->load([$file]);
+
+        try {
+            $yaml = $this->yamlSource->load([$file]);
+        } catch (\Exception $e) {
+            $yaml = [
+                'identifier' => $file->getCombinedIdentifier(),
+                'label' => $e->getMessage(),
+                'error' => [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ],
+                'invalid' => true,
+            ];
+        }
+
+        return $yaml;
     }
 
     /**
@@ -237,6 +252,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'removable' => true,
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
+                    'invalid' => $form['invalid'],
+                    'error' => $form['error'],
                 ];
                 $identifiers[$form['identifier']]++;
             }
@@ -258,6 +275,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
                     'location' => 'extension',
                     'duplicateIdentifier' => false,
+                    'invalid' => $form['invalid'],
+                    'error' => $form['error'],
                 ];
                 $identifiers[$form['identifier']]++;
             }
