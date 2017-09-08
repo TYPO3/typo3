@@ -1511,7 +1511,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $historyAction, 'history');
             // Versioning:
-            if (ExtensionManagementUtility::isLoaded('version') && !ExtensionManagementUtility::isLoaded('workspaces')) {
+            if (ExtensionManagementUtility::isLoaded('version') && ExtensionManagementUtility::isLoaded('compatibility7') && !ExtensionManagementUtility::isLoaded('workspaces')) {
                 $vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $this->getBackendUserAuthentication()->workspace, false, $row);
                 // If table can be versionized.
                 if (is_array($vers)) {
