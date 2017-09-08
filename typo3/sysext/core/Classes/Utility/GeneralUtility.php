@@ -3427,11 +3427,11 @@ class GeneralUtility
      * @param string $className Class name
      * @return object The instance of the class asked for. Instance is created with GeneralUtility::makeInstance
      * @see callUserFunction()
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use makeInstance instead.
+     * @deprecated
      */
     public static function getUserObj($className)
     {
-        self::logDeprecatedFunction();
+        trigger_error('This method will be removed in TYPO3 v10.0, use GeneralUtility::makeInstance() directly instead', E_USER_DEPRECATED);
         // Check if class exists:
         if (class_exists($className)) {
             return self::makeInstance($className);
@@ -3789,11 +3789,11 @@ class GeneralUtility
      * @param string $msg Message (in English).
      * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated
      */
     public static function sysLog($msg, $extKey, $severity = 0)
     {
-        static::logDeprecatedFunction();
+        trigger_error('Method sysLog() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
 
         $severity = MathUtility::forceIntegerInRange($severity, 0, 4);
         // Is message worth logging?
@@ -3832,11 +3832,11 @@ class GeneralUtility
      * @param string $extKey Extension key (from which extension you are calling the log)
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
+     * @deprecated
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
-        static::logDeprecatedFunction();
+        trigger_error('Method devLog() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
             $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
             $fakeThis = false;
@@ -3850,34 +3850,12 @@ class GeneralUtility
      * Writes a message to the deprecation log.
      *
      * @param string $msg Message (in English).
+     * @deprecated
      */
     public static function deprecationLog($msg)
     {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
-            return;
-        }
-        // Legacy values (no strict comparison, $log can be boolean, string or int)
-        $log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
-        if ($log === true || $log == '1') {
-            $log = ['file'];
-        } else {
-            $log = self::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'], true);
-        }
-        $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
-        if (in_array('file', $log) !== false) {
-            // Write a longer message to the deprecation log
-            $destination = static::getDeprecationLogFileName();
-            $file = @fopen($destination, 'a');
-            if ($file) {
-                @fwrite($file, ($date . $msg . LF));
-                @fclose($file);
-                self::fixPermissions($destination);
-            }
-        }
-        // Do not use console in login screen
-        if (in_array('console', $log) !== false && isset($GLOBALS['BE_USER']->user['uid'])) {
-            DebugUtility::debug($msg, $date, 'Deprecation Log');
-        }
+        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.');
+        trigger_error($msg, E_USER_DEPRECATED);
     }
 
     /**
@@ -3903,9 +3881,11 @@ class GeneralUtility
      * @param string $property
      * @param RenderingContextInterface $renderingContext
      * @param string $additionalMessage
+     * @deprecated
      */
     public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
     {
+        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
         $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction()
@@ -3916,28 +3896,29 @@ class GeneralUtility
         $message[] = 'The property "' . $property . '" has been marked as deprecated.';
         $message[] = $additionalMessage;
         $message[] = 'Please check also your partial and layout files of this template';
-        self::deprecationLog(implode(' ', $message));
+        trigger_error(implode(' ', $message), E_USER_DEPRECATED);
     }
 
     /**
      * Gets the absolute path to the deprecation log file.
      *
      * @return string Absolute path to the deprecation log file
+     * @deprecated
      */
     public static function getDeprecationLogFileName()
     {
+        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
         return PATH_typo3conf . 'deprecation_' . self::shortMD5((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '.log';
     }
 
     /**
      * Logs a call to a deprecated function.
      * The log message will be taken from the annotation.
+     * @deprecated
      */
     public static function logDeprecatedFunction()
     {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
-            return;
-        }
+        static::writeDeprecationLogFileEntry(__METHOD__ . ' is deprecated since TYPO3 v9.0, will be removed in TYPO3 v10.0');
         $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         if ($trail[1]['type']) {
             $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
@@ -3952,7 +3933,7 @@ class GeneralUtility
         $logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
         $logMsg .= '() - ' . $msg . ' - ' . DebugUtility::debugTrail();
         $logMsg .= ' (' . PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
-        self::deprecationLog($logMsg);
+        trigger_error($logMsg, E_USER_DEPRECATED);
     }
 
     /**
@@ -4082,5 +4063,22 @@ class GeneralUtility
     protected static function getLogger()
     {
         return static::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
+
+    /**
+     * @param string $msg
+     * @deprecated
+     */
+    private static function writeDeprecationLogFileEntry($msg)
+    {
+        $date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
+        // Write a longer message to the deprecation log
+        $destination = PATH_typo3conf . 'deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+        $file = @fopen($destination, 'a');
+        if ($file) {
+            @fwrite($file, $date . $msg . LF);
+            @fclose($file);
+            self::fixPermissions($destination);
+        }
     }
 }

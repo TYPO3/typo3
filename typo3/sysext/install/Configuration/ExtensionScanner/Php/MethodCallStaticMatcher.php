@@ -435,4 +435,32 @@ return [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-82438-DeprecationMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedViewHelperAttribute' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-82438-DeprecationMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getDeprecationLogFileName' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-82438-DeprecationMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-82438-DeprecationMethods.rst',
+        ],
+    ],
 ];

@@ -1478,7 +1478,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     protected function logDeprecation(string $index)
     {
-        GeneralUtility::deprecationLog('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead');
+        trigger_error('[index: ' . $index . '] $parameters in "buildQueryParameters"-Hook has been deprecated in v9 and will be remove in v10, use $queryBuilder instead', E_USER_DEPRECATED);
     }
 
     /**

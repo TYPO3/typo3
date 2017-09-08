@@ -230,7 +230,7 @@ tt_content.' . $pluginSignature . ' {
     protected static function checkVendorNameFormat($vendorName, $extensionName)
     {
         if (preg_match('/^[A-Z]/', $vendorName) !== 1) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The vendor name from tx_' . $extensionName . ' must begin with a capital letter.');
+            trigger_error('The vendor name from tx_' . $extensionName . ' must begin with a capital letter.', E_USER_DEPRECATED);
         }
     }
 

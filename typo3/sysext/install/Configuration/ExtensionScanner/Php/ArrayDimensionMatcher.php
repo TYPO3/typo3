@@ -119,4 +119,9 @@ return [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enableDeprecationLog\']' => [
+        'restFiles' => [
+            'Deprecation-82438-DeprecationMethods.rst',
+        ],
+    ],
 ];

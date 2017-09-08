@@ -197,7 +197,7 @@ abstract class AbstractRecordList
      */
     public function __construct()
     {
-        GeneralUtility::logDeprecatedFunction();
+        trigger_error('The class AbstractRecordList will be removed in TYPO3 v10, as all logic was moved into specific classes that inherited from AbstractRecordList', E_USER_DEPRECATED);
         if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
             $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
         }

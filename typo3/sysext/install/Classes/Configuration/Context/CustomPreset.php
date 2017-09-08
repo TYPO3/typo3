@@ -29,7 +29,6 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
         'FE/debug' => '',
         'SYS/devIPmask' => '',
         'SYS/displayErrors' => '',
-        'SYS/enableDeprecationLog' => '',
         'SYS/systemLogLevel' => '',
     ];
 }

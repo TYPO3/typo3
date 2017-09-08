@@ -1188,7 +1188,7 @@ class PageRepository implements LoggerAwareInterface
 
             if ($row) {
                 if ($noWSOL !== null) {
-                    GeneralUtility::deprecationLog('The fourth parameter of PageRepository->getRawRecord() has been deprecated, use a SQL statement directly. The parameter will be removed in TYPO3 v10.');
+                    trigger_error('The fourth parameter of PageRepository->getRawRecord() has been deprecated, use a SQL statement directly. The parameter will be removed in TYPO3 v10.', E_USER_DEPRECATED);
                 }
                 // @deprecated - remove this if-clause in TYPO3 v10
                 if (!$noWSOL) {

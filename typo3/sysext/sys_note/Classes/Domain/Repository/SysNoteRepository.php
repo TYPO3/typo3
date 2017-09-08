@@ -37,11 +37,11 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param string $pids Single PID or comma separated list of PIDs
      * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author The author
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
+     * @deprecated
      */
     public function findByPidsAndAuthor($pids, \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author)
     {
-        GeneralUtility::logDeprecatedFunction();
+        trigger_error('Method findByPidsAndAuthor() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
         $pids = GeneralUtility::intExplode(',', (string)$pids);
         $query = $this->createQuery();
         $query->setOrderings([

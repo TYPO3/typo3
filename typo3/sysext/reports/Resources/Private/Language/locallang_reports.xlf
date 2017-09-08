@@ -237,27 +237,6 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_installEnabledTemporarily">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLog">
-				<source>Deprecation Log</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogEnabled">
-				<source>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogFile">
-				<source>You can find the deprecation log file at %s.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogSize">
-				<source>Your deprecation log file currently takes up %s.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogDeleteLink">
-				<source>Delete deprecation log file.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogDeletedSuccessful">
-				<source>The deprecation log file was successfully deleted.</source>
-			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogDeletionFailed">
-				<source>The deprecation log file could not be deleted!</source>
-			</trans-unit>
 			<trans-unit id="status_configuration_PhpSafeModeEnabled">
 				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
 			</trans-unit>

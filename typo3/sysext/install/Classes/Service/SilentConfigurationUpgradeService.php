@@ -114,6 +114,8 @@ class SilentConfigurationUpgradeService
         'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLog',
         'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLogBE',
         'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLogFE',
+        // #82438
+        'SYS/enableDeprecationLog',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

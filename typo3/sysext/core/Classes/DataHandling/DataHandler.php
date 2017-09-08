@@ -8591,9 +8591,11 @@ class DataHandler
                 break;
             case 'temp_cached':
             case 'system':
-                GeneralUtility::deprecationLog(
-                    'Calling clear_cacheCmd() with arguments \'temp_cached\' or \'system\', using'
-                    . ' the TS config option \'options.clearCache.system\' has been deprecated.'
+                trigger_error(
+                    'Calling clear_cacheCmd() with arguments "temp_cached" or "system", using'
+                    . ' the TSconfig option "options.clearCache.system" will be removed in TYPO3 v10, use "all"'
+                    . ' instead or call the group cache clearing of "system" group directly via a custom extension.',
+                    E_USER_DEPRECATED
                 );
                 if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')) {
                     $this->getCacheManager()->flushCachesInGroup('system');

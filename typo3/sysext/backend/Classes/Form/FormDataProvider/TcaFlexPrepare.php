@@ -218,7 +218,7 @@ class TcaFlexPrepare implements FormDataProviderInterface
                         $context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
                             . ' Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
                         array_unshift($messages, $context);
-                        GeneralUtility::deprecationLog(implode(LF, $messages));
+                        trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
                     }
                     $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
                 }

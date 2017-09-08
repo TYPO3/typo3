@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Contains RESTORE_REGISTER class object.
+ * Contains SVG content object.
  */
 class ScalableVectorGraphicsContentObject extends AbstractContentObject
 {
@@ -100,10 +100,10 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
 
         // @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - see method usages
         if (!empty($conf['noscript.']) || !empty($conf['noscript'])) {
-            GeneralUtility::deprecationLog('The option "noscript" of the SVG content object has been deprecated in v9 and will be remove in v10.');
+            trigger_error('SVG cObject: The option "noscript" will be removed in TYPO3 v10.0.', E_USER_DEPRECATED);
         }
         if (!empty($conf['value.']) || !empty($conf['value'])) {
-            GeneralUtility::deprecationLog('The option "value" without setting renderMode=inline of the SVG content object has been deprecated in v9 and will be remove in v10.');
+            trigger_error('SVG cObject: The option "value" without setting renderMode=inline will be removed in TYPO3 v10.', E_USER_DEPRECATED);
         }
 
         $content = [];

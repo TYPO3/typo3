@@ -115,6 +115,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             case E_RECOVERABLE_ERROR:
                 $severity = 2;
                 break;
+            case E_USER_DEPRECATED:
             case E_USER_WARNING:
             case E_WARNING:
             case E_USER_DEPRECATED:

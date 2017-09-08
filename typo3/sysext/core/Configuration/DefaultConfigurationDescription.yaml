@@ -150,9 +150,6 @@ SYS:
               '3': 'Severity: Error'
               '4': 'Severity: Fatal Error'
             description: 'Enable the severity of log messages to be logged (see systemLog option) - Only messages with same or higher severity are logged.'
-        enableDeprecationLog:
-            type: list
-            description: 'If set, this configuration enables the logging of deprecated methods and functions. The following options are allowed: <dl><dt>String: &quot;file&quot; (or integer &quot;1&quot;)</dt><dd>The log file will be written to typo3conf/deprecation_[hash-value].log</dd><dt>String: &quot;console&quot;<dt><dd>The log will be displayed in the Backend''s Debug Console.</dd></dl>Logging options &quot;file&quot; and &quot;console&quot; can be combined by comma-separating them.'
         UTF8filesystem:
             type: bool
             description: 'If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.'

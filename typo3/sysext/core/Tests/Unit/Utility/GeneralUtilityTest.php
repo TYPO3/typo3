@@ -4242,25 +4242,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     // Tests concerning deprecation log
     /////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @test
-     */
-    public function deprecationLogFixesPermissionsOnLogFile()
-    {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-        }
-        $filePath = PATH_site . GeneralUtilityFixture::DEPRECATION_LOG_PATH;
-        @mkdir(dirname($filePath));
-        $this->testFilesToDelete[] = $filePath;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = true;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
-        GeneralUtilityFixture::deprecationLog('foo');
-        clearstatcache();
-        $resultFilePermissions = substr(decoct(fileperms($filePath)), 2);
-        $this->assertEquals('0777', $resultFilePermissions);
-    }
-
     ///////////////////////////////////////////////////
     // Tests concerning callUserFunction
     ///////////////////////////////////////////////////

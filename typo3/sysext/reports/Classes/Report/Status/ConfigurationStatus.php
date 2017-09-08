@@ -18,11 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -32,30 +29,14 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 class ConfigurationStatus implements StatusProviderInterface
 {
     /**
-     * 10MB
-     *
-     * @var int
-     */
-    protected $deprecationLogFileSizeWarningThreshold = 10485760;
-
-    /**
-     * 100MB
-     *
-     * @var int
-     */
-    protected $deprecationLogFileSizeErrorThreshold = 104857600;
-
-    /**
      * Determines the Install Tool's status, mainly concerning its protection.
      *
      * @return array List of statuses
      */
     public function getStatus()
     {
-        $this->executeAdminCommand();
         $statuses = [
             'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
-            'deprecationLog' => $this->getDeprecationLogStatus()
         ];
         if ($this->isMemcachedUsed()) {
             $statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
@@ -184,40 +165,6 @@ class ConfigurationStatus implements StatusProviderInterface
     }
 
     /**
-     * Provides status information on the deprecation log, whether it's enabled
-     * and if so whether certain limits in file size are reached.
-     *
-     * @return \TYPO3\CMS\Reports\Status The deprecation log status.
-     */
-    protected function getDeprecationLogStatus()
-    {
-        $title = $this->getLanguageService()->getLL('status_configuration_DeprecationLog');
-        $value = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:disabled');
-        $message = '';
-        $severity = ReportStatus::OK;
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
-            $value = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enabled');
-            $message = '<p>' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
-            $severity = ReportStatus::NOTICE;
-            $logFile = GeneralUtility::getDeprecationLogFileName();
-            $logFileSize = 0;
-            if (@file_exists($logFile)) {
-                $logFileSize = filesize($logFile);
-                $message .= '<p>' . sprintf($this->getLanguageService()->getLL('status_configuration_DeprecationLogFile'), '<code>' . $this->getDeprecationLogFileLink()) . '</code></p>';
-                $removeDeprecationLogFileUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=removeDeprecationLogFile';
-                $message .= '<p>' . sprintf($this->getLanguageService()->getLL('status_configuration_DeprecationLogSize'), GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $this->getLanguageService()->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
-            }
-            if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
-                $severity = ReportStatus::WARNING;
-            }
-            if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
-                $severity = ReportStatus::ERROR;
-            }
-        }
-        return GeneralUtility::makeInstance(ReportStatus::class, $title, $value, $message, $severity);
-    }
-
-    /**
      * Warning, if fileCreateMask has write bit for 'others' set.
      *
      * @return \TYPO3\CMS\Reports\Status The writable status for 'others'
@@ -251,19 +198,6 @@ class ConfigurationStatus implements StatusProviderInterface
             $message = $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions.writable');
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
-    }
-
-    /**
-     * Creates a link to the deprecation log file with the absolute path as the
-     * link text.
-     *
-     * @return string Link to the deprecation log file
-     */
-    protected function getDeprecationLogFileLink()
-    {
-        $logFile = GeneralUtility::getDeprecationLogFileName();
-        $linkToLogFile = PathUtility::getAbsoluteWebPath($logFile);
-        return '<a href="' . $linkToLogFile . '">' . $logFile . '</a>';
     }
 
     /**
@@ -340,44 +274,6 @@ class ConfigurationStatus implements StatusProviderInterface
             $message,
             $severity
         );
-    }
-
-    /**
-     * Executes admin commands.
-     *
-     * Currently implemented commands are:
-     * - Remove deprecation log file
-     */
-    protected function executeAdminCommand()
-    {
-        $command = GeneralUtility::_GET('adminCmd');
-        switch ($command) {
-            case 'removeDeprecationLogFile':
-                self::removeDeprecationLogFile();
-                break;
-            default:
-                // intentionally left blank
-        }
-    }
-
-    /**
-     * Remove deprecation log file.
-     */
-    protected static function removeDeprecationLogFile()
-    {
-        if (@unlink(GeneralUtility::getDeprecationLogFileName())) {
-            $message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletedSuccessful');
-            $severity = FlashMessage::OK;
-        } else {
-            $message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletionFailed');
-            $severity = FlashMessage::ERROR;
-        }
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $severity, true);
-        /** @var FlashMessageService $flashMessageService  */
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
     /**

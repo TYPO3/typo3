@@ -62,11 +62,11 @@ class EidUtility
 
     /**
      * Makes TCA available inside eID
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 - this is not needed anymore as TCA is now always available
+     * @deprecated
      */
     public static function initTCA()
     {
-        GeneralUtility::logDeprecatedFunction();
+        trigger_error('This method will be removed in TYPO3 v10. Is not needed anymore within eID scripts as TCA is now available at any time.', E_USER_DEPRECATED);
         // Some badly made extensions attempt to manipulate TCA in a wrong way
         // (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
         // but in fact it is not loaded. The check below ensure that

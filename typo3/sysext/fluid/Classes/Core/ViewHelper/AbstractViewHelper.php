@@ -111,7 +111,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     protected function registerRenderMethodArguments()
     {
-        GeneralUtility::deprecationLog(sprintf('Render method argument support is deprecated (used on class "%s"), switch to initializeArguments and registerArgument.', static::class));
+        trigger_error(sprintf('Render method argument support is deprecated (used on class "%s"), switch to initializeArguments and registerArgument.', static::class), E_USER_DEPRECATED);
 
         $reflectionService = $this->getReflectionService();
         $methodParameters = $reflectionService->getMethodParameters(static::class, 'render');

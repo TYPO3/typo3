@@ -81,8 +81,8 @@ class LanguageUpdateCommand extends Command
     {
         if ($this->getName() === 'language:update') {
             $message = 'bin/typo3 language:update is deprecated, use bin/typo3 lang:language:update instead';
-            GeneralUtility::deprecationLog($message);
             $output->writeln('<error>' . $message . '</error>');
+            trigger_error($message, E_USER_DEPRECATED);
         }
 
         try {

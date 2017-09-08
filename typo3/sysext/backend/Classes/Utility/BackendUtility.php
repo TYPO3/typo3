@@ -982,11 +982,11 @@ class BackendUtility
      *
      * @param string $fields Field list; $fields specify the fields selected (default: title,uid)
      * @return    array
-     * @deprecated since TYPO3 9, will be removed in TYPO3 10
+     * @deprecated
      */
     public static function getListGroupNames($fields = 'title, uid')
     {
-        GeneralUtility::logDeprecatedFunction();
+        trigger_error('This method will be removed in TYPO3 v10.0, you should generate the list of backend user groups by yourself.', E_USER_DEPRECATED);
         $beUser = static::getBackendUserAuthentication();
         $exQ = '';
         if (!$beUser->isAdmin()) {

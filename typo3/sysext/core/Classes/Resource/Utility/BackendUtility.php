@@ -29,11 +29,11 @@ class BackendUtility
      *
      * @param AbstractFile $file
      * @return FlashMessage
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
+     * @deprecated
      */
     public static function getFlashMessageForMissingFile(AbstractFile $file)
     {
-        GeneralUtility::logDeprecatedFunction();
+        trigger_error('This method will be removed in TYPO3 v10, create the flash message code in your own custom code in the correct context.', E_USER_DEPRECATED);
 
         /** @var LanguageService $lang */
         $lang = $GLOBALS['LANG'];

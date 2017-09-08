@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Recordlist\Tests\Unit\RecordList;
+namespace TYPO3\CMS\Recordlist\Tests\UnitDeprecated\RecordList;
 
 /*
  * This file is part of the TYPO3 CMS project.
