@@ -12,12 +12,12 @@
 //
 // Variables
 //
-$stage-max-width: 600px;
+$stage-max-width: 800px;
 $stage-abstract-element-height: 62px;
 $stage-abstract-element-toolbar-height: 35px;
 $stage-icon-container-width: 40px;
-$stage-breakpoint: ($screen-lg + 100);
 $stage-validation-list-width: 100px;
+$stage-breakpoint-max: $screen-lg - 1;
 $stage-validation-transition-time-in: 0.2s;
 $stage-validation-transition-time-out: 0.3s;
 $navigation-bg: $gray-lighter;
@@ -77,6 +77,14 @@ $tree-line-height: 20px;
 @mixin expanded-icon-animation() {
     transform: rotate(90deg);
     transition: transform 0.2s;
+}
+
+//
+// General / Module
+//
+
+body {
+    overflow-y: scroll;
 }
 
 //
@@ -227,6 +235,20 @@ $tree-line-height: 20px;
 
     .t3-form-x-component-inner-wrapper {
         padding-top: 2.5em;
+    }
+
+    .ui-sortable-helper {
+        > div:hover,
+        .t3-form-form-element-selected,
+        #t3-form-navigation-component-tree-root-container:hover,
+        .t3-form-root-element-selected {
+            background-color: transparent !important;
+            border-color: transparent !important;
+        }
+
+        svg {
+            opacity: 0;
+        }
     }
 }
 
@@ -456,24 +478,19 @@ $tree-line-height: 20px;
 // Stage
 //
 #t3-form-stage-inner-container {
+    position: relative;
+    left: -5px;
     display: inline-block;
     width: 90%;
+    max-width: $stage-max-width;
     text-align: left;
-
-    @media (min-width: $stage-breakpoint) {
-        width: $stage-max-width;
-    }
 }
 
 #t3-form-stage-container {
     overflow: auto;
     position: relative;
     height: 100%;
-    text-align: left;
-
-    @media (min-width: $stage-breakpoint) {
-        text-align: center;
-    }
+    text-align: center;
 
     ol,
     ul {
@@ -829,6 +846,12 @@ $tree-line-height: 20px;
 
     // Preview
     &.t3-form-stage-viewmode-preview {
+        #t3-form-stage-inner-container {
+            @media (max-width: $stage-breakpoint-max) {
+                width: 600px;
+            }
+        }
+
         input[type="text"],
         input[type="date"],
         input[type="password"],
@@ -943,6 +966,8 @@ $tree-line-height: 20px;
 
 .ui-sortable-placeholder,
 .t3-form-element-composit.ui-sortable-placeholder {
+    z-index: 1;
+    position: relative;
     background-color: #fff !important;
     border: none !important;
     outline: 1px dashed lighten($brand-success, 30%) !important;

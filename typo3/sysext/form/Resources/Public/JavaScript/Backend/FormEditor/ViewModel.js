@@ -72,6 +72,7 @@ define(['jquery',
                 moduleWrapper: 'moduleWrapper',
                 stageArea: 'stageArea',
                 stageContainer: 'stageContainer',
+                stageContainerInner: 'stageContainerInner',
                 stageNewElementRow: 'stageNewElementRow',
                 stagePanelHeading: 'panelHeading',
                 stageSection: 'stageSection',
@@ -88,7 +89,9 @@ define(['jquery',
                     marginLeft: 300,
                     marginRight: 325,
                     marginLeftCollapsed: 0,
-                    marginRightCollapsed: -25
+                    marginRightCollapsed: -25,
+                    maxWidthPreview: 1000,
+                    maxWidthAbstract: 800
                 },
                 inspector: {
                     width: 350
@@ -915,6 +918,14 @@ define(['jquery',
                     'margin-left': _configuration['panels']['stage']['marginLeft'] + 'px',
                     'margin-right': _configuration['panels']['stage']['marginRight'] + 'px'
                 }, 'slow');
+            $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
+                .animate({
+                    'max-width': _configuration['panels']['stage']['maxWidthAbstract'] + 'px'
+                }, 'slow');
+            $(getHelper().getDomElementClassName('headerButtonBar', true))
+                .animate({
+                    'margin-left': _configuration['panels']['structure']['width'] + 'px'
+                }, 'slow');
 
             if (getUtility().isUndefinedOrNull(useFadeEffect)) {
                 useFadeEffect = true;
@@ -1015,6 +1026,14 @@ define(['jquery',
                 .animate({
                     'margin-left': _configuration['panels']['stage']['marginLeftCollapsed'] + 'px',
                     'margin-right': _configuration['panels']['stage']['marginRightCollapsed'] + 'px'
+                }, 'slow');
+            $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
+                .animate({
+                    'max-width': _configuration['panels']['stage']['maxWidthPreview'] + 'px'
+                }, 'slow');
+            $(getHelper().getDomElementClassName('headerButtonBar', true))
+                .animate({
+                    'margin-left': _configuration['panels']['stage']['marginLeftCollapsed'] + 'px'
                 }, 'slow');
 
             setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModePreview')));
