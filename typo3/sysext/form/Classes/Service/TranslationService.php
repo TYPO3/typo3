@@ -427,6 +427,7 @@ class TranslationService implements SingletonInterface
         foreach ($translationFiles as $translationFile) {
             $translationKeyChain[] = sprintf('%s:%s.validation.error.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $code);
             $translationKeyChain[] = sprintf('%s:%s.validation.error.%s', $translationFile, $formRuntime->getIdentifier(), $code);
+            $translationKeyChain[] = sprintf('%s:validation.error.%s.%s', $translationFile, $element->getIdentifier(), $code);
             $translationKeyChain[] = sprintf('%s:validation.error.%s', $translationFile, $code);
         }
 
