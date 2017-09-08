@@ -32,11 +32,10 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
     public function getStatus()
     {
         $this->executeAdminCommand();
-        $statuses = [
+        return [
             'installToolPassword' => $this->getInstallToolPasswordStatus(),
             'installToolProtection' => $this->getInstallToolProtectionStatus()
         ];
-        return $statuses;
     }
 
     /**
@@ -60,7 +59,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (!$validPassword) {
             $value = $GLOBALS['LANG']->getLL('status_insecure');
             $severity = Status::ERROR;
-            $changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('system_extinstall');
+            $changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('tools_toolssettings');
             $message = sprintf(
                 $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
                 '<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">',

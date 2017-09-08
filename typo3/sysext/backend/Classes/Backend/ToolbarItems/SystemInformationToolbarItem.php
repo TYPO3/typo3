@@ -346,7 +346,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
         $view->assignMultiple([
-            'installToolUrl' => BackendUtility::getModuleUrl('system_extinstall'),
+            'environmentToolUrl' => BackendUtility::getModuleUrl('tools_toolsenvironment'),
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,

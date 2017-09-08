@@ -26,23 +26,17 @@ use TYPO3\CMS\Reports\Status;
 class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
 {
     /**
-     * @var string
-     */
-    protected $reportList = 'FileSystem,RemainingUpdates,NewVersion';
-
-    /**
      * Compiles a collection of system status checks as a status report.
      *
      * @return Status[]
      */
     public function getStatus()
     {
-        $reports = [];
-        $reportMethods = explode(',', $this->reportList);
-        foreach ($reportMethods as $reportMethod) {
-            $reports[$reportMethod] = $this->{'get' . $reportMethod . 'Status'}();
-        }
-        return $reports;
+        return [
+            'FileSystem' => $this->getFileSystemStatus(),
+            'RemainingUpdates' => $this->getRemainingUpdatesStatus(),
+            'NewVersion' => $this->getNewVersionStatus(),
+        ];
     }
 
     /**
@@ -155,7 +149,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
                     // at least one wizard was found
                     $value = $languageService->getLL('status_updateIncomplete');
                     $severity = Status::WARNING;
-                    $url = BackendUtility::getModuleUrl('system_extinstall');
+                    $url = BackendUtility::getModuleUrl('tools_toolsupgrade');
                     $message = sprintf($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
                     break;
                 }
