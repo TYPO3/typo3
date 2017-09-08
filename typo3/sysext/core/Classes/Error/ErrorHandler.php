@@ -112,6 +112,7 @@ class ErrorHandler implements ErrorHandlerInterface
                 break;
             case E_USER_WARNING:
             case E_WARNING:
+            case E_USER_DEPRECATED:
                 $severity = 1;
                 break;
             default:
