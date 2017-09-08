@@ -13,7 +13,7 @@
 							errorClass="{element.properties.elementErrorClassAttribute}"
 							additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
 						/>
-						<span>{formvh:translateElementProperty(element: element, property: 'options.{value}')}</span>
+						<span>{formvh:translateElementProperty(element: element, property: '{0: \'options\', 1: value}')}</span>
 					</label>
 				</div>
 			</f:for>
