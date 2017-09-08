@@ -19,6 +19,7 @@
 *.rst text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
+*.yaml text eol=lf
 *.ts text eol=lf
 *.typoscript text eol=lf
 *.xlf text eol=lf
