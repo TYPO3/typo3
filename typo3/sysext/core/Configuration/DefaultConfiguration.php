@@ -808,7 +808,6 @@ return [
     'EXT' => [ // Options related to the Extension Management
         'allowGlobalInstall' => false,
         'allowLocalInstall' => true,
-        'allowSystemInstall' => false,
         'excludeForPackaging' => '(?:\\..*(?!htaccess)|.*~|.*\\.swp|.*\\.bak|\\.sass-cache|node_modules|bower_components)',
         'extConf' => [
             'saltedpasswords' => serialize([

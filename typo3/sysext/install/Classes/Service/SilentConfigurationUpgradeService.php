@@ -100,6 +100,8 @@ class SilentConfigurationUpgradeService
         // #82162
         'SYS/enable_errorDLOG',
         'SYS/enable_exceptionDLOG',
+        // #82377
+        'EXT/allowSystemInstall',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

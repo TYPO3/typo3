@@ -69,4 +69,9 @@ return [
             'Deprecation-82254-DeprecateGLOBALSTYPO3_CONF_VARSEXTextConf.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'allowSystemInstall\']' => [
+        'restFiles' => [
+            'Breaking-82377-OptionToAllowUploadingSystemExtensionsRemoved.rst',
+        ],
+    ],
 ];
