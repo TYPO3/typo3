@@ -1915,20 +1915,6 @@ class DatabaseRecordList
                 . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
                 . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
             $this->addActionToCellGroup($cells, $historyAction, 'history');
-            // Versioning:
-            if (ExtensionManagementUtility::isLoaded('version') && !ExtensionManagementUtility::isLoaded('workspaces')) {
-                $vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $this->getBackendUserAuthentication()->workspace, false, $row);
-                // If table can be versionized.
-                if (is_array($vers)) {
-                    $href = BackendUtility::getModuleUrl('web_txversionM1', [
-                        'table' => $table, 'uid' => $row['uid']
-                    ]);
-                    $versionAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
-                        . htmlspecialchars($this->getLanguageService()->getLL('displayVersions')) . '">'
-                        . $this->iconFactory->getIcon('actions-version-page-open', Icon::SIZE_SMALL)->render() . '</a>';
-                    $this->addActionToCellGroup($cells, $versionAction, 'version');
-                }
-            }
             // "Edit Perms" link:
             if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
                 $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&returnId=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit';
