@@ -906,33 +906,35 @@ abstract class AbstractItemProvider
                                 $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']) . ': '
                                 . $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
                             foreach ($fieldConfig['items'] as $iVal) {
-                                // Values '' is not controlled by this setting.
-                                if ((string)$iVal[1] !== '') {
-                                    // Find iMode
-                                    $iMode = '';
-                                    switch ((string)$fieldConfig['authMode']) {
-                                        case 'explicitAllow':
+                                $itemIdentifier = (string)$iVal[1];
+                                // Values '' and '--div--' are not controlled by this setting.
+                                if ($itemIdentifier === '' || $itemIdentifier === '--div--') {
+                                    continue;
+                                }
+                                // Find iMode
+                                $iMode = '';
+                                switch ((string)$fieldConfig['authMode']) {
+                                    case 'explicitAllow':
+                                        $iMode = 'ALLOW';
+                                        break;
+                                    case 'explicitDeny':
+                                        $iMode = 'DENY';
+                                        break;
+                                    case 'individual':
+                                        if ($iVal[4] === 'EXPL_ALLOW') {
                                             $iMode = 'ALLOW';
-                                            break;
-                                        case 'explicitDeny':
+                                        } elseif ($iVal[4] === 'EXPL_DENY') {
                                             $iMode = 'DENY';
-                                            break;
-                                        case 'individual':
-                                            if ($iVal[4] === 'EXPL_ALLOW') {
-                                                $iMode = 'ALLOW';
-                                            } elseif ($iVal[4] === 'EXPL_DENY') {
-                                                $iMode = 'DENY';
-                                            }
-                                            break;
-                                    }
-                                    // Set iMode
-                                    if ($iMode) {
-                                        $allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = [
-                                            $iMode,
-                                            $languageService->sL($iVal[0]),
-                                            $adLabel[$iMode]
-                                        ];
-                                    }
+                                        }
+                                        break;
+                                }
+                                // Set iMode
+                                if ($iMode) {
+                                    $allowDenyOptions[$table . ':' . $field]['items'][$itemIdentifier] = [
+                                        $iMode,
+                                        $languageService->sL($iVal[0]),
+                                        $adLabel[$iMode]
+                                    ];
                                 }
                             }
                         }
