@@ -28,9 +28,9 @@ class ErrorHandler implements ErrorHandlerInterface
     /**
      * Error levels which should result in an exception thrown.
      *
-     * @var array
+     * @var int
      */
-    protected $exceptionalErrors = [];
+    protected $exceptionalErrors = 0;
 
     /**
      * Whether to write a flash message in case of an error
@@ -91,38 +91,32 @@ class ErrorHandler implements ErrorHandlerInterface
             return true;
         }
         $errorLevels = [
-            E_WARNING => 'Warning',
-            E_NOTICE => 'Notice',
-            E_USER_ERROR => 'User Error',
-            E_USER_WARNING => 'User Warning',
-            E_USER_NOTICE => 'User Notice',
-            E_STRICT => 'Runtime Notice',
-            E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
-            E_DEPRECATED => 'Runtime Deprecation Notice'
+            E_WARNING => 'PHP Warning',
+            E_NOTICE => 'PHP Notice',
+            E_USER_ERROR => 'PHP User Error',
+            E_USER_WARNING => 'PHP User Warning',
+            E_USER_NOTICE => 'PHP User Notice',
+            E_STRICT => 'PHP Runtime Notice',
+            E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
+            E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
+            E_DEPRECATED => 'PHP Runtime Deprecation Notice'
         ];
-        $message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
+        $message = $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
         if ($errorLevel & $this->exceptionalErrors) {
-            // handle error raised at early parse time
-            // autoloader not available & built-in classes not resolvable
-            if (!class_exists('stdClass', false)) {
-                $message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . basename($errorFile) .
-                    'line ' . $errorLine;
-                die($message);
-            }
             throw new Exception($message, 1476107295);
         }
         switch ($errorLevel) {
-                case E_USER_ERROR:
-                case E_RECOVERABLE_ERROR:
-                    $severity = 2;
-                    break;
-                case E_USER_WARNING:
-                case E_WARNING:
-                    $severity = 1;
-                    break;
-                default:
-                    $severity = 0;
-            }
+            case E_USER_ERROR:
+            case E_RECOVERABLE_ERROR:
+                $severity = 2;
+                break;
+            case E_USER_WARNING:
+            case E_WARNING:
+                $severity = 1;
+                break;
+            default:
+                $severity = 0;
+        }
         $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
         $message = $logTitle . ': ' . $message;
         // Write error message to the configured syslogs,
@@ -156,7 +150,7 @@ class ErrorHandler implements ErrorHandlerInterface
             $flashMessage = GeneralUtility::makeInstance(
                         \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         $message,
-                        'PHP ' . $errorLevels[$errorLevel],
+                        $errorLevels[$errorLevel],
                         $severity
                     );
             /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
