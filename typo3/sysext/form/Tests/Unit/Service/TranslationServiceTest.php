@@ -340,7 +340,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -384,7 +384,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -428,7 +428,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -472,7 +472,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -516,7 +516,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -563,7 +563,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'placeholder', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['placeholder'], $mockFormRuntime));
     }
 
     /**
@@ -610,7 +610,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'placeholder', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['placeholder'], $mockFormRuntime));
     }
 
     /**
@@ -658,7 +658,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'nextButtonLabel', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['nextButtonLabel'], $mockFormRuntime));
     }
 
     /**
@@ -711,7 +711,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'options', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['options'], $mockFormRuntime));
     }
 
     /**
@@ -764,7 +764,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'options', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['options'], $mockFormRuntime));
     }
 
     /**
@@ -873,7 +873,7 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 
     /**
@@ -955,6 +955,6 @@ class TranslationServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockFormRuntime->expects($this->any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
         $mockFormRuntime->expects($this->any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
-        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, 'label', $mockFormRuntime));
+        $this->assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
 }

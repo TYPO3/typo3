@@ -272,7 +272,7 @@ class TranslationService implements SingletonInterface
 
     /**
      * @param RootRenderableInterface $element
-     * @param string $property
+     * @param array $propertyParts
      * @param FormRuntime $formRuntime
      * @return string|array
      * @throws \InvalidArgumentException
@@ -280,14 +280,15 @@ class TranslationService implements SingletonInterface
      */
     public function translateFormElementValue(
         RootRenderableInterface $element,
-        string $property,
+        array $propertyParts,
         FormRuntime $formRuntime
     ) {
-        if (empty($property)) {
-            throw new \InvalidArgumentException('The argument "property" is empty', 1476216007);
+        if (empty($propertyParts)) {
+            throw new \InvalidArgumentException('The argument "propertyParts" is empty', 1476216007);
         }
 
         $propertyType = 'properties';
+        $property = implode('.', $propertyParts);
         $renderingOptions = $element->getRenderingOptions();
 
         if ($property === 'label') {
@@ -295,14 +296,14 @@ class TranslationService implements SingletonInterface
         } else {
             if ($element instanceof FormElementInterface) {
                 try {
-                    $defaultValue = ArrayUtility::getValueByPath($element->getProperties(), $property, '.');
+                    $defaultValue = ArrayUtility::getValueByPath($element->getProperties(), $propertyParts, '.');
                 } catch (\RuntimeException $exception) {
                     $defaultValue = null;
                 }
             } else {
                 $propertyType = 'renderingOptions';
                 try {
-                    $defaultValue = ArrayUtility::getValueByPath($renderingOptions, $property, '.');
+                    $defaultValue = ArrayUtility::getValueByPath($renderingOptions, $propertyParts, '.');
                 } catch (\RuntimeException $exception) {
                     $defaultValue = null;
                 }
