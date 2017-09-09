@@ -364,6 +364,12 @@ module.exports = function (grunt) {
 			fonts: {
 				files: [
 					{
+						expand: true,
+						cwd: '<%= paths.npm %>npm-font-source-sans-pro/fonts',
+						src: ['**/*'],
+						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/SourceSansPro'
+					},
+					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot',
 						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.eot'
 					},

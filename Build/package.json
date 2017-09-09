@@ -59,6 +59,7 @@
     "karma-safari-launcher": "^1.0.0",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "npm-font-source-sans-pro": "^1.0.2",
     "nprogress": "^0.2.0",
     "phantomjs-prebuilt": "^2.1.7",
     "postcss-banner": "^3.0.0",

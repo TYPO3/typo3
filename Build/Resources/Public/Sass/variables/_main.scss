@@ -15,15 +15,10 @@ $path-root: "../../../../../..";
 $path-sysext: "#{$path-root}/typo3/sysext";
 
 //
-// Share Font
-// ==========
+// Fonts
+// =====
 //
-$share-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/Share";
-
-//
-// FontAwesome
-// ===========
-//
+$sourcesanspro-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/SourceSansPro";
 $fa-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/FontAwesome";
 
 //

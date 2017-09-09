@@ -12,11 +12,10 @@ $app-icon-bg: #484848;
 //
 // TYPO3 styles for basic elements
 //
-
 h1 {
-    font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-variant: normal;
-    font-weight: normal;
+    font-weight: 400;
     margin-top: 0;
     margin-bottom: ceil(($font-size-base * 1.8));
 }
