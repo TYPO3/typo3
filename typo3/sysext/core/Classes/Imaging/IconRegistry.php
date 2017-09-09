@@ -539,18 +539,17 @@ class IconRegistry implements SingletonInterface
     protected function getCachedBackendIcons()
     {
         $cacheIdentifier = 'BackendIcons_' . sha1((TYPO3_version . PATH_site . 'BackendIcons'));
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $codeCache */
-        $codeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
-        $cacheEntry = $codeCache->get($cacheIdentifier);
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $assetsCache */
+        $assetsCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
+        $cacheEntry = $assetsCache->get($cacheIdentifier);
 
         if ($cacheEntry !== false) {
-            // substr is necessary, because the php frontend wraps php code around the cache value
-            $this->icons = unserialize(substr($cacheEntry, 6, -2));
+            $this->icons = $cacheEntry;
         } else {
             $this->registerBackendIcons();
             // all found icons should now be present, for historic reasons now merge w/ the statically declared icons
             $this->icons = array_merge($this->icons, $this->staticIcons);
-            $codeCache->set($cacheIdentifier, serialize($this->icons));
+            $assetsCache->set($cacheIdentifier, $this->icons);
         }
         // if there's now at least one icon registered, consider it successful
         if (is_array($this->icons) && (count($this->icons) >= count($this->staticIcons))) {
@@ -577,12 +576,18 @@ class IconRegistry implements SingletonInterface
                 ->name('/\.(' . implode('|', array_keys($this->backendIconAllowedExtensionsWithProvider)) . ')$/');
 
             foreach ($finder as $iconFile) {
+                $iconOptions = [
+                    'source' => $iconPath . GeneralUtility::fixWindowsFilePath($iconFile->getRelativePathname())
+                ];
+                // kind of hotfix for now, needs a nicer concept later
+                if (strpos($iconFile->getFilename(), 'spinner') === 0) {
+                    $iconOptions['spinning'] = true;
+                }
+
                 $this->registerIcon(
                     $iconFile->getBasename('.' . $iconFile->getExtension()),
                     $this->backendIconAllowedExtensionsWithProvider[$iconFile->getExtension()],
-                    [
-                        'source' => $iconPath . GeneralUtility::fixWindowsFilePath($iconFile->getRelativePathname())
-                    ]
+                    $iconOptions
                 );
             }
         }
