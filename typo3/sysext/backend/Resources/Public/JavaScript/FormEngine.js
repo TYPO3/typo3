@@ -66,19 +66,17 @@ define(['jquery',
 	// functions to connect the db/file browser with this document and the formfields on it!
 
 	/**
-	 * opens a popup window with the element browser (browser.php)
+	 * Opens a popup window with the element browser (browser.php)
 	 *
 	 * @param {String} mode can be "db" or "file"
 	 * @param {String} params additional params for the browser window
-	 * @param {Number} width width of the window
-	 * @param {Number} height height of the window
 	 */
-	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params, width, height) {
-		var url = FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params;
-		width = width ? width : TYPO3.settings.Popup.PopupWindow.width;
-		height = height ? height : TYPO3.settings.Popup.PopupWindow.height;
-		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1');
-		FormEngine.openedPopupWindow.focus();
+	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params) {
+		Modal.advanced({
+			type: Modal.types.iframe,
+			content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
+			size: Modal.sizes.large
+		});
 	};
 
 	/**

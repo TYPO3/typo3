@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Formhandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Facebook\WebDriver\Exception\NoSuchWindowException;
 use TYPO3\TestingFramework\Core\Acceptance\Step\Backend\Admin;
 use TYPO3\TestingFramework\Core\Acceptance\Support\Page\PageTree;
 
@@ -98,15 +97,12 @@ class ElementsGroupCest
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
-        $I->switchToWindow('Typo3WinBrowser');
 
-        try {
-            $I->amGoingTo('click + button to select record and close DB-Browser');
-            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
-            $I->closeTab();
-        } catch (NoSuchWindowException $e) {
-            // missing focus by auto close window
-        }
+        $I->switchToWindow();
+        $I->switchToIFrame('modal_frame');
+
+        $I->amGoingTo('click + button to select record and close DB-Browser');
+        $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
         $I->switchToWindow();
         $I->switchToIFrame('list_frame');
@@ -123,18 +119,14 @@ class ElementsGroupCest
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
-        $I->switchToWindow('Typo3WinBrowser');
+
+        $I->switchToWindow();
+        $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo('click record + in DB-Browser');
         $I->click('#recordlist-be_groups > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
-
-        try {
-            $I->amGoingTo('click + button to select record and close DB-Browser');
-            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
-            $I->closeTab();
-        } catch (NoSuchWindowException $e) {
-            // missing focus by auto close window
-        }
+        $I->amGoingTo('click + button to select record and close DB-Browser');
+        $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
 
         $I->switchToWindow();
         $I->switchToIFrame('list_frame');
@@ -151,7 +143,9 @@ class ElementsGroupCest
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
         $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
-        $I->switchToWindow('Typo3WinBrowser');
+
+        $I->switchToWindow();
+        $I->switchToIFrame('modal_frame');
 
         $I->amGoingTo("search record '' and limit 1 in DB-Browser");
         $I->fillField('#showLimit', 1);
@@ -178,16 +172,11 @@ class ElementsGroupCest
         $I->waitForElement('.recordlist');
         $I->see('admin', '.recordlist');
 
-        // search Test only by string
-        try {
-            $I->amGoingTo('click + button to select record and close DB-Browser');
-            $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
-            $I->closeTab();
-        } catch (NoSuchWindowException $e) {
-            // missing focus by auto close window
-        }
-
+        $I->amGoingTo('click + button to select record and close DB-Browser');
+        $I->click('#recordlist-be_users > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > a:nth-child(1)');
         $I->switchToWindow();
+        $I->click('.t3js-modal-close');
+
         $I->switchToIFrame('list_frame');
         $I->see('admin', 'select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"]');
         $I->click('.btn-toolbar button.btn:nth-child(2)');

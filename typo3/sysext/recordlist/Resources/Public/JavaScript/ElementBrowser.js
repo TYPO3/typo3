@@ -15,7 +15,10 @@
  * Module: TYPO3/CMS/Recordlist/ElementBrowser
  * ElementBrowser communication with parent windows
  */
-define(['jquery'], function($) {
+define([
+	'jquery',
+	'TYPO3/CMS/Backend/Modal'
+], function($, Modal) {
 	'use strict';
 
 	/**
@@ -48,10 +51,10 @@ define(['jquery'], function($) {
 	 */
 	ElementBrowser.setReferences = function() {
 		if (
-			window.opener && window.opener.content && window.opener.content.document.editform
-			&& window.opener.content.document.editform[ElementBrowser.formFieldName]
+			ElementBrowser.getParent() && ElementBrowser.getParent().content && ElementBrowser.getParent().content.document.editform
+			&& ElementBrowser.getParent().content.document.editform[ElementBrowser.formFieldName]
 		) {
-			ElementBrowser.targetDoc = window.opener.content.document;
+			ElementBrowser.targetDoc = ElementBrowser.getParent().content.document;
 			ElementBrowser.elRef = ElementBrowser.targetDoc.editform[ElementBrowser.formFieldName];
 			return true;
 		} else {
@@ -77,6 +80,31 @@ define(['jquery'], function($) {
 	};
 
 	/**
+	 * Returns the parent document object
+	 */
+	ElementBrowser.getParent = function() {
+		var opener = null;
+		if (
+			typeof window.parent !== 'undefined' &&
+			typeof window.parent.document.list_frame !== 'undefined' &&
+			window.parent.document.activeElement.classList.contains('t3js-modal-iframe')
+		) {
+			opener = window.parent.document.list_frame;
+		}
+		else if (
+			typeof window.frames !== 'undefined' &&
+			typeof window.frames.frameElement !== 'undefined' &&
+			window.frames.frameElement.classList.contains('t3js-modal-iframe')
+		) {
+			opener = window.frames.parent.frames.list_frame;
+		}
+		else if (window.opener) {
+			opener = window.opener
+		}
+		return opener;
+	}
+
+	/**
 	 *
 	 * @param {String} table
 	 * @param {Number} uid
@@ -91,10 +119,11 @@ define(['jquery'], function($) {
 	 */
 	ElementBrowser.insertElement = function(table, uid, type, filename, fp, filetype, imagefile, action, close) {
 		var performAction = true;
+
 		// Call a check function in the opener window (e.g. for uniqueness handling):
 		if (ElementBrowser.irre.objectId && ElementBrowser.irre.checkUniqueAction) {
-			if (window.opener) {
-				var res = ElementBrowser.executeFunctionByName(ElementBrowser.irre.checkUniqueAction, window.opener, ElementBrowser.irre.objectId, table ,uid, type);
+			if (ElementBrowser.getParent()) {
+				var res = ElementBrowser.executeFunctionByName(ElementBrowser.irre.checkUniqueAction, ElementBrowser.getParent(), ElementBrowser.irre.objectId, table ,uid, type);
 				if (!res.passed) {
 					if (res.message) {
 						alert(res.message);
@@ -103,46 +132,46 @@ define(['jquery'], function($) {
 				}
 			} else {
 				alert("Error - reference to main window is not set properly!");
-				close();
+				ElementBrowser.focusOpenerAndClose();
 			}
 		}
 		// Call performing function and finish this action:
 		if (performAction) {
 			// Call helper function to manage data in the opener window:
 			if (ElementBrowser.irre.objectId && ElementBrowser.irre.addAction) {
-				if (window.opener) {
-					ElementBrowser.executeFunctionByName(ElementBrowser.irre.addAction, window.opener, ElementBrowser.irre.objectId, table ,uid, type, ElementBrowser.fieldReferenceSlashed);
+				if (ElementBrowser.getParent()) {
+					ElementBrowser.executeFunctionByName(ElementBrowser.irre.addAction, ElementBrowser.getParent(), ElementBrowser.irre.objectId, table ,uid, type, ElementBrowser.fieldReferenceSlashed);
 				} else {
 					alert("Error - reference to main window is not set properly!");
-					close();
+					ElementBrowser.focusOpenerAndClose();
 				}
 			}
 			if (ElementBrowser.irre.objectId && ElementBrowser.irre.insertAction) {
-				if (window.opener) {
-					ElementBrowser.executeFunctionByName(ElementBrowser.irre.insertAction, window.opener, ElementBrowser.irre.objectId, table ,uid, type);
+				if (ElementBrowser.getParent()) {
+					ElementBrowser.executeFunctionByName(ElementBrowser.irre.insertAction, ElementBrowser.getParent(), ElementBrowser.irre.objectId, table ,uid, type);
 					if (close) {
 						ElementBrowser.focusOpenerAndClose();
 					}
 				} else {
 					alert("Error - reference to main window is not set properly!");
 					if (close) {
-						close();
+						ElementBrowser.focusOpenerAndClose();
 					}
 				}
 			} else if (ElementBrowser.fieldReference && !ElementBrowser.rte.parameters && !ElementBrowser.rte.configuration) {
 				ElementBrowser.addElement(filename, table + "_" + uid, fp, close);
 			} else {
 				if (
-					window.opener && window.opener.content && window.opener.content.document.editform
-					&& window.opener.content.document.editform[ElementBrowser.formFieldName]
+					ElementBrowser.getParent() && ElementBrowser.getParent().content && ElementBrowser.getParent().content.document.editform
+					&& ElementBrowser.getParent().content.document.editform[ElementBrowser.formFieldName]
 				) {
-					window.opener.group_change(
+					ElementBrowser.getParent().group_change(
 						"add",
 						ElementBrowser.fieldReference,
 						ElementBrowser.rte.parameters,
 						ElementBrowser.rte.configuration,
 						ElementBrowser.targetDoc.editform[ElementBrowser.formFieldName],
-						ElementBrowser.window.opener.content.document
+						ElementBrowser.getParent().content.document
 					);
 				} else {
 					alert("Error - reference to main window is not set properly!");
@@ -165,11 +194,11 @@ define(['jquery'], function($) {
 		var type = "";
 		if (ElementBrowser.irre.objectId && ElementBrowser.irre.insertAction) {
 			// Call helper function to manage data in the opener window:
-			if (window.opener) {
-				ElementBrowser.executeFunctionByName(ElementBrowser.irre.insertAction + 'Multiple', window.opener, ElementBrowser.irre.objectId, table ,uid, type, ElementBrowser.fieldReference);
+			if (ElementBrowser.getParent()) {
+				ElementBrowser.executeFunctionByName(ElementBrowser.irre.insertAction + 'Multiple', ElementBrowser.getParent(), ElementBrowser.irre.objectId, table ,uid, type, ElementBrowser.fieldReference);
 			} else {
 				alert("Error - reference to main window is not set properly!");
-				close();
+				ElementBrowser.focusOpenerAndClose();
 			}
 		}
 		return false;
@@ -183,14 +212,14 @@ define(['jquery'], function($) {
 	 * @param {String} close
 	 */
 	ElementBrowser.addElement = function(elName, elValue, altElValue, close) {
-		if (window.opener && window.opener.setFormValueFromBrowseWin) {
-			window.opener.setFormValueFromBrowseWin(ElementBrowser.fieldReference, altElValue ? altElValue : elValue, elName);
+		if (ElementBrowser.getParent() && ElementBrowser.getParent().setFormValueFromBrowseWin) {
+			ElementBrowser.getParent().setFormValueFromBrowseWin(ElementBrowser.fieldReference, altElValue ? altElValue : elValue, elName);
 			if (close) {
 				ElementBrowser.focusOpenerAndClose();
 			}
 		} else {
 			alert("Error - reference to main window is not set properly!");
-			close();
+			ElementBrowser.focusOpenerAndClose();
 		}
 	};
 
@@ -198,7 +227,10 @@ define(['jquery'], function($) {
 	 *
 	 */
 	ElementBrowser.focusOpenerAndClose = function() {
-		window.opener.focus();
+		if (ElementBrowser.getParent()) {
+			ElementBrowser.getParent().focus();
+		}
+		Modal.dismiss();
 		close();
 	};
 

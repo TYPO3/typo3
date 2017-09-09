@@ -288,7 +288,7 @@ define(['jquery',
 			currentModal.find(Modal.identifiers.body).html('<p class="loadmessage"><i class="fa fa-spinner fa-spin fa-5x "></i></p>');
 		} else if (type === 'iframe') {
 			currentModal.find(Modal.identifiers.body).append(
-				$('<iframe />', { src: content, 'class': 'modal-iframe t3js-modal-iframe' })
+				$('<iframe />', { src: content, 'name': 'modal_frame', 'class': 'modal-iframe t3js-modal-iframe' })
 			);
 			currentModal.find(Modal.identifiers.iframe).on('load',function() {
 				currentModal.find(Modal.identifiers.title).text(
