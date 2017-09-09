@@ -34,14 +34,6 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 class ExtendedTemplateService extends TemplateService
 {
     /**
-     * This string is used to indicate the point in a template from where the editable constants are listed.
-     * Any vars before this point (if it exists though) is regarded as default values.
-     *
-     * @var string
-     */
-    public $edit_divider = '###MOD_TS:EDITABLE_CONSTANTS###';
-
-    /**
      * Disabled in backend context
      *
      * @var bool
@@ -320,7 +312,7 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * Parse constants with respect to the constant-editor in this module.
-     * In particular comments in the code are registered and the edit_divider is taken into account.
+     * In particular comments in the code are registered.
      *
      * @return array
      */
@@ -343,11 +335,6 @@ class ExtendedTemplateService extends TemplateService
         foreach ($this->constants as $str) {
             $c++;
             if ($c == $cc) {
-                if (strstr($str, $this->edit_divider)) {
-                    $parts = explode($this->edit_divider, $str, 2);
-                    $str = $parts[1];
-                    $constants->parse($parts[0], $matchObj);
-                }
                 $this->flatSetup = [];
                 $this->flattenSetup($constants->setup, '');
                 $defaultConstants = $this->flatSetup;
@@ -1354,10 +1341,6 @@ class ExtendedTemplateService extends TemplateService
         // Works with regObjectPositions. "expands" the names of the TypoScript objects
         while (isset($this->raw[$this->rawP])) {
             $line = ltrim($this->raw[$this->rawP]);
-            if (strstr($line, $this->edit_divider)) {
-                // Resetting the objReg if the divider is found!!
-                $this->objReg = [];
-            }
             $this->rawP++;
             if ($line) {
                 if ($line[0] === '[') {

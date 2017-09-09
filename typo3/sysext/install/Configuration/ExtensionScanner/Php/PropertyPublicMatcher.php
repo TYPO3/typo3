@@ -184,6 +184,11 @@ return [
             'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\ExtendedTemplateService->edit_divider' => [
+        'restFiles' => [
+            'Breaking-82425-RemoveOldTyposcriptConstantsEditorOptionMOD_TSEDITABLE_CONSTANTS.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];
