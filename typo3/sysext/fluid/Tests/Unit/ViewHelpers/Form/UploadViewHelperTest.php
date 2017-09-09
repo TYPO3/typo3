@@ -33,7 +33,6 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -43,9 +42,8 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -65,14 +63,13 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->expects($this->at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
         $this->viewHelper->expects($this->at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
         $mockTagBuilder->expects($this->once())->method('render');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->setTagBuilder($mockTagBuilder);
         $arguments = [
             'name' => 'someName'
         ];
         $this->viewHelper->setArguments($arguments);
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -81,7 +78,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     public function renderCallsSetErrorClassAttribute()
     {
         $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -92,14 +89,13 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         /** @var TagBuilder $tagBuilder */
         $tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TagBuilder::class);
         $tagBuilder->addAttribute('multiple', 'multiple');
-        $this->viewHelper->_set('tag', $tagBuilder);
+        $this->viewHelper->setTagBuilder($tagBuilder);
         $arguments = [
             'name' => 'someName',
             'multiple' => 'multiple'
         ];
         $this->viewHelper->setArguments($arguments);
-        $this->viewHelper->initialize();
-        $result = $this->viewHelper->render();
+        $result = $this->viewHelper->initializeArgumentsAndRender();
         $this->assertEquals('<input multiple="multiple" type="file" name="someName[]" />', $result);
     }
 }

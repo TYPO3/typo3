@@ -25,19 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UpdateScriptViewHelper extends Link\ActionViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * initialize arguments
      */
     public function initializeArguments()
@@ -62,7 +49,7 @@ class UpdateScriptViewHelper extends Link\ActionViewHelper
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($updateScriptUtility->checkUpdateScriptExists($extensionKey)) {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
+            $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
             $action = 'show';
             $uri = $uriBuilder->reset()->uriFor(
                 $action,

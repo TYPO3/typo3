@@ -57,7 +57,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
         $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->setTagBuilder($mockTagBuilder);
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -65,8 +65,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
                 'email' => 'some@email.tld',
             ]
         );
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -78,7 +77,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->setTagBuilder($mockTagBuilder);
         $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue(null));
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -86,8 +85,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
                 'email' => 'some@email.tld',
             ]
         );
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**

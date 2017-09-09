@@ -76,10 +76,10 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
         $action = $this->arguments['action'];
         $arguments = $this->arguments['arguments'];
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
         $this->tag->addAttribute('value', $uri);
-        $currentRequest = $this->controllerContext->getRequest();
+        $currentRequest = $this->renderingContext->getControllerContext()->getRequest();
         $currentController = $currentRequest->getControllerName();
         $currentAction = $currentRequest->getControllerActionName();
         if ($action === $currentAction && $controller === $currentController) {

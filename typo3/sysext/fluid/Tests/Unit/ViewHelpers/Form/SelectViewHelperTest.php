@@ -34,7 +34,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['sortByOptionLabel'] = false;
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration', 'renderChildren']);
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
     }
 
     /**
@@ -46,9 +46,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
 
         $this->arguments['options'] = [];
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -69,9 +68,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['name'] = 'myName';
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -93,12 +91,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ];
         $this->arguments['value'] = 'value2';
         $this->arguments['name'] = 'myName';
-        $this->arguments['required'] = '1';
+        $this->arguments['required'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -134,9 +131,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -171,9 +167,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['options'] = [$obj1, $obj2, $obj3, $obj4];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -209,9 +204,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ]);
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -234,9 +228,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['name'] = 'myName';
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -260,9 +253,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['sortByOptionLabel'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -298,9 +290,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['name'] = 'myName';
         $this->arguments['sortByOptionLabel'] = true;
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -321,10 +312,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initializeArguments();
-        $this->viewHelper->initialize();
-        $result = $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $result = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2">label2</option>' . chr(10) . '<option value="value3" selected="selected">label3</option>' . chr(10) . '</select>';
         $this->assertSame($expected, $result);
     }
@@ -358,9 +347,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['optionLabelField'] = 'firstName';
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -386,10 +374,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initializeArguments();
-        $this->viewHelper->initialize();
-        $actual = $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="1" selected="selected">Schlecht</option>' . chr(10) .
             '<option value="2">Kurfuerst</option>' . chr(10) .
             '<option value="3" selected="selected">Lemke</option>' . chr(10) .
@@ -426,10 +412,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initializeArguments();
-        $this->viewHelper->initialize();
-        $actual = $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<input type="hidden" name="myName" value="" />' .
             '<select multiple="multiple" name="myName[]">' .
             '<option value="1" selected="selected">Schlecht</option>' . chr(10) .
@@ -460,9 +444,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -490,9 +473,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -514,9 +496,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         ];
         $this->arguments['name'] = 'myName';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -527,9 +508,9 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['options'] = [];
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
         $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -549,9 +530,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['selectAllByDefault'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -572,9 +552,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['selectAllByDefault'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -594,9 +573,8 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['name'] = 'myName';
         $this->arguments['prependOptionLabel'] = 'please choose';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->_set('tag', $this->tagBuilder);
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -617,8 +595,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['prependOptionLabel'] = 'please choose';
         $this->arguments['prependOptionValue'] = '-1';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 }

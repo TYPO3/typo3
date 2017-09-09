@@ -1,5 +1,11 @@
 <?php
 return [
+    // Base classes removed in TYPO3v9
+    'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper' => \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper::class,
+    'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractConditionViewHelper' => \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper::class,
+    'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper' => \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper::class,
+
+    // Compiler/parser related aliases
     'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler' => \TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\InterceptorInterface' => \TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\NodeInterface::class,
@@ -21,6 +27,7 @@ return [
     // Fluid variable containers, ViewHelpers, interfaces
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class,
     'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode' => \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,
+    'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ArgumentDefinition' => \TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer' => \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider::class,
     'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer' => \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class,
     'TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider' => \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider::class,

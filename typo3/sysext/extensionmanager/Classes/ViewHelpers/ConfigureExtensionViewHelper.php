@@ -49,7 +49,7 @@ class ConfigureExtensionViewHelper extends Link\ActionViewHelper
 
         $content = (string)$this->renderChildren();
         if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . 'ext_conf_template.txt')) {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
+            $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
             $action = 'showConfigurationForm';
             $uri = $uriBuilder->reset()->uriFor(
                 $action,

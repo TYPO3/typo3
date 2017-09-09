@@ -87,12 +87,12 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $action = $this->arguments['action'];
         $arguments = $this->arguments['arguments'];
         if ($action === null) {
-            $action = $this->controllerContext->getRequest()->getControllerActionName();
+            $action = $this->renderingContext->getControllerContext()->getRequest()->getControllerActionName();
         }
         $arguments['id'] = $GLOBALS['TSFE']->id;
         // @todo page type should be configurable
         $arguments['type'] = 7076;
-        $arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
+        $arguments['fluid-widget-id'] = $this->renderingContext->getControllerContext()->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
         $arguments['action'] = $action;
         return '?' . http_build_query($arguments, null, '&');
     }
@@ -104,8 +104,8 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
      */
     protected function getWidgetUri()
     {
-        $uriBuilder = $this->controllerContext->getUriBuilder();
-        $argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $argumentPrefix = $this->renderingContext->getControllerContext()->getRequest()->getArgumentPrefix();
         $arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : [];
         if ($this->hasArgument('action')) {
             $arguments['action'] = $this->arguments['action'];

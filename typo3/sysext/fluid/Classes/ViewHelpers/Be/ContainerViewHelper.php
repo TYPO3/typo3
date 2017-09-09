@@ -99,7 +99,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         }
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-            $extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
+            $extensionKey = $this->renderingContext->getControllerContext()->getRequest()->getControllerExtensionKey();
             foreach ($addJsInlineLabels as $key) {
                 $label = LocalizationUtility::translate($key, $extensionKey);
                 $pageRenderer->addInlineLanguageLabel($key, $label);

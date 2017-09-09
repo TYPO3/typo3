@@ -56,7 +56,7 @@ class ToggleExtensionInstallationStateViewHelper extends Link\ActionViewHelper
             return '';
         }
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $action = 'toggleExtensionInstallationState';
         $uri = $uriBuilder->reset()->uriFor($action, [
             'extensionKey' => $extension['key']

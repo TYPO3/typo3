@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\TextboxViewHelper
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper
      */
     protected $viewHelper;
 
@@ -31,7 +31,6 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, ['setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration']);
         $this->arguments['name'] = '';
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -44,10 +43,8 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
             ->disableOriginalConstructor()
             ->getMock();
         $mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->setTagBuilder($mockTagBuilder);
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**
@@ -64,7 +61,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
         $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
         $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
         $mockTagBuilder->expects($this->once())->method('render');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
+        $this->viewHelper->setTagBuilder($mockTagBuilder);
 
         $arguments = [
             'name' => 'NameOfTextbox',
@@ -73,8 +70,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
         $this->viewHelper->setArguments($arguments);
 
         $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-        $this->viewHelper->initialize();
-        $this->viewHelper->render();
+        $this->viewHelper->initializeArgumentsAndRender();
     }
 
     /**

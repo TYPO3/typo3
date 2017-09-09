@@ -96,6 +96,15 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree {
 }
 
 namespace TYPO3\CMS\Fluid\Core\ViewHelper {
+    abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+    {
+    }
+    abstract class AbstractConditionViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper
+    {
+    }
+    abstract class AbstractTagBasedViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+    {
+    }
     class TemplateVariableContainer extends \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider
     {
     }

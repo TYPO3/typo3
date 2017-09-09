@@ -46,7 +46,7 @@ class ShowExtensionVersionsViewHelper extends Link\ActionViewHelper
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $action = 'showAllVersions';
         $uri = $uriBuilder->reset()->uriFor($action, [
             'extensionKey' => $extension->getExtensionKey(),
