@@ -34,6 +34,21 @@ return [
             'Breaking-82162-GlobalErrorConstantsRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'sqlDebug\']' => [
+        'restFiles' => [
+            'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'no_pconnect\']' => [
+        'restFiles' => [
+            'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'dbClientCompress\']' => [
+        'restFiles' => [
+            'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
+        ],
+    ],
 
     // Hooks
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'getFlexFormDSClass\']' => [

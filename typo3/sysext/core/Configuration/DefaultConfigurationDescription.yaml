@@ -105,13 +105,6 @@ SYS:
         devIPmask:
             type: text
             description: 'Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()</code> for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.'
-        sqlDebug:
-            type: int
-            allowedValues:
-              '0': 'Disable SQL debug output'
-              '1': 'Display only failed SQL queries'
-              '2': 'Display all SQL queries'
-            description: 'Allows displaying executed SQL queries in the browser (for debugging purposes and development)'
         enable_DLOG:
             type: bool
             description: 'Whether the developer log is enabled.'
@@ -142,12 +135,6 @@ SYS:
         binSetup:
             type: multiline
             description: 'List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by <code>binPath</code>. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: <code>perl=/usr/bin/perl,unzip=/usr/local/bin/unzip</code>'
-        no_pconnect:
-            type: bool
-            description: 'If TRUE, "connect" is used to connect to the database. If FALSE, a persistent connection using "pconnect" will be established!'
-        dbClientCompress:
-            type: bool
-            description: 'if TRUE, data exchange between TYPO3 and database server will be compressed. This may improve performance if (1) database serever is on the different server and (2) network connection speed to database server is 100mbps or less. CPU usage will be higher if this option is used but database operations will be executed faster due to much less (up to 3 times) database network traffic. This option has no effect if MySQL server is localhost.'
         setDBinit:
             type: multiline
             description: 'These commands are executed after the database connection was established. Hint: The previous default "SET NAMES utf8;" is not required any more and will be removed automatically if set!'

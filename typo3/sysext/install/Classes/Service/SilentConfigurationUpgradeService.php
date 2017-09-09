@@ -102,6 +102,10 @@ class SilentConfigurationUpgradeService
         'SYS/enable_exceptionDLOG',
         // #82377
         'EXT/allowSystemInstall',
+        // #82421
+        'SYS/sqlDebug',
+        'SYS/no_pconnect',
+        'SYS/dbClientCompress',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
