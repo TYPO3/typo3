@@ -409,7 +409,8 @@ class PageGenerator
                             (bool)$jsFileConfig['excludeFromConcatenation'],
                             $jsFileConfig['allWrap.']['splitChar'],
                             (bool)$jsFileConfig['async'],
-                            $jsFileConfig['integrity']
+                            $jsFileConfig['integrity'],
+                            (bool)$jsFileConfig['defer']
                         );
                         unset($jsFileConfig);
                     }
@@ -439,7 +440,8 @@ class PageGenerator
                             (bool)$jsFileConfig['excludeFromConcatenation'],
                             $jsFileConfig['allWrap.']['splitChar'],
                             (bool)$jsFileConfig['async'],
-                            $jsFileConfig['integrity']
+                            $jsFileConfig['integrity'],
+                            (bool)$jsFileConfig['defer']
                         );
                         unset($jsFileConfig);
                     }
@@ -469,7 +471,8 @@ class PageGenerator
                             (bool)$jsConfig['excludeFromConcatenation'],
                             $jsConfig['allWrap.']['splitChar'],
                             (bool)$jsConfig['async'],
-                            $jsConfig['integrity']
+                            $jsConfig['integrity'],
+                            (bool)$jsConfig['defer']
                         );
                         unset($jsConfig);
                     }
@@ -498,7 +501,8 @@ class PageGenerator
                             (bool)$jsConfig['excludeFromConcatenation'],
                             $jsConfig['allWrap.']['splitChar'],
                             (bool)$jsConfig['async'],
-                            $jsConfig['integrity']
+                            $jsConfig['integrity'],
+                            (bool)$jsConfig['defer']
                         );
                         unset($jsConfig);
                     }

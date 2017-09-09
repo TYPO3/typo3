@@ -1037,8 +1037,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
+     * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      */
-    public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
+    public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false)
     {
         if (!$type) {
             $type = 'text/javascript';
@@ -1055,6 +1056,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
+                'defer' => $defer,
             ];
         }
     }
@@ -1072,8 +1074,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
+     * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      */
-    public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
+    public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false)
     {
         if (!$type) {
             $type = 'text/javascript';
@@ -1090,6 +1093,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
+                'defer' => $defer,
             ];
         }
     }
@@ -1106,8 +1110,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
+     * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      */
-    public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
+    public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false)
     {
         if (!$type) {
             $type = 'text/javascript';
@@ -1124,6 +1129,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
+                'defer' => $defer,
             ];
         }
     }
@@ -1140,8 +1146,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $splitChar The char used to split the allWrap value, default is "|"
      * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
      * @param string $integrity Subresource Integrity (SRI)
+     * @param string $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      */
-    public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '')
+    public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false)
     {
         if (!$type) {
             $type = 'text/javascript';
@@ -1158,6 +1165,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
                 'splitChar' => $splitChar,
                 'async' => $async,
                 'integrity' => $integrity,
+                'defer' => $defer,
             ];
         }
     }
@@ -2279,8 +2287,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             foreach ($this->jsLibs as $properties) {
                 $properties['file'] = $this->getStreamlinedFileName($properties['file']);
                 $async = ($properties['async']) ? ' async="async"' : '';
+                $defer = ($properties['defer']) ? ' defer="defer"' : '';
                 $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '" crossorigin="anonymous"' : '';
-                $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
+                $tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -2321,8 +2330,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             foreach ($this->jsFiles as $file => $properties) {
                 $file = $this->getStreamlinedFileName($file);
                 $async = ($properties['async']) ? ' async="async"' : '';
+                $defer = ($properties['defer']) ? ' defer="defer"' : '';
                 $integrity = ($properties['integrity']) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '" crossorigin="anonymous"' : '';
-                $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $integrity . '></script>';
+                $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
