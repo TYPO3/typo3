@@ -57,7 +57,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType()
     {
         $factory = new MenuContentObjectFactory;
-        $selfClassName = get_class($this);
+        $selfClassName = static::class;
         $factory->registerMenuType('GMENU', $selfClassName);
         $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType('GMENU'));
     }
@@ -68,7 +68,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType()
     {
         $factory = new MenuContentObjectFactory;
-        $selfClassName = get_class($this);
+        $selfClassName = static::class;
         $uniqueMenuType = $this->getUniqueId('foo_');
         $factory->registerMenuType($uniqueMenuType, $selfClassName);
         $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));

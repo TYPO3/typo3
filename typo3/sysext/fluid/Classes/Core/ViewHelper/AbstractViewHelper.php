@@ -111,11 +111,11 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     protected function registerRenderMethodArguments()
     {
-        GeneralUtility::deprecationLog(sprintf('Render method argument support is deprecated (used on class "%s"), switch to initializeArguments and registerArgument.', get_class($this)));
+        GeneralUtility::deprecationLog(sprintf('Render method argument support is deprecated (used on class "%s"), switch to initializeArguments and registerArgument.', static::class));
 
         $reflectionService = $this->getReflectionService();
-        $methodParameters = $reflectionService->getMethodParameters(get_class($this), 'render');
-        $methodTags = $reflectionService->getMethodTagsValues(get_class($this), 'render');
+        $methodParameters = $reflectionService->getMethodParameters(static::class, 'render');
+        $methodTags = $reflectionService->getMethodTagsValues(static::class, 'render');
 
         $paramAnnotations = [];
         if (isset($methodTags['param'])) {
@@ -128,7 +128,7 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
             if (isset($parameterInfo['type'])) {
                 $dataType = isset($parameterInfo['array']) && (bool)$parameterInfo['array'] ? 'array' : $parameterInfo['type'];
             } else {
-                throw new \TYPO3\CMS\Fluid\Core\Exception('Could not determine type of argument "' . $parameterName . '" of the render-method in ViewHelper "' . get_class($this) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
+                throw new \TYPO3\CMS\Fluid\Core\Exception('Could not determine type of argument "' . $parameterName . '" of the render-method in ViewHelper "' . static::class . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
             }
 
             $description = '';

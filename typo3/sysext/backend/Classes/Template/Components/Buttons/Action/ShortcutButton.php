@@ -177,7 +177,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      */
     public function getType()
     {
-        return get_class($this);
+        return static::class;
     }
 
     /**

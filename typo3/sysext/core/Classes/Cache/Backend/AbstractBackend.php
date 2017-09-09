@@ -71,7 +71,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
                 if (method_exists($this, $methodName)) {
                     $this->{$methodName}($optionValue);
                 } else {
-                    throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . get_class($this) . '"', 1231267498);
+                    throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . static::class . '"', 1231267498);
                 }
             }
         }

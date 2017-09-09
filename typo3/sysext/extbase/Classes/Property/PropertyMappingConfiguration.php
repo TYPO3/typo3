@@ -378,7 +378,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 
         $currentProperty = array_shift($splittedPropertyPath);
         if (!isset($this->subConfigurationForProperty[$currentProperty])) {
-            $type = get_class($this);
+            $type = static::class;
             if (isset($this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER])) {
                 $this->subConfigurationForProperty[$currentProperty] = clone $this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER];
             } else {

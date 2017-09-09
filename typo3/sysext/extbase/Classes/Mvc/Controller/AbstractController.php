@@ -130,7 +130,7 @@ abstract class AbstractController implements ControllerInterface
      */
     public function __construct()
     {
-        $className = get_class($this);
+        $className = static::class;
         if (strpos($className, '\\') !== false) {
             $classNameParts = explode('\\', $className, 4);
             // Skip vendor and product name for core classes
@@ -223,7 +223,7 @@ abstract class AbstractController implements ControllerInterface
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {
         if (!$this->canProcessRequest($request)) {
-            throw new UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
+            throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
         }
         if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response && $request instanceof WebRequest) {
             $response->setRequest($request);

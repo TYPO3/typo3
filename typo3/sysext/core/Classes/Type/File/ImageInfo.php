@@ -113,7 +113,7 @@ class ImageInfo extends FileInfo
         /** @var $loggerManager LogManager */
         $loggerManager = GeneralUtility::makeInstance(LogManager::class);
 
-        return $loggerManager->getLogger(get_class($this));
+        return $loggerManager->getLogger(static::class);
     }
 
     /**

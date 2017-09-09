@@ -73,7 +73,7 @@ class TreeNodeCollection extends \ArrayObject
     public function unserialize($serializedString)
     {
         $arrayRepresentation = unserialize($serializedString);
-        if ($arrayRepresentation['serializeClassName'] !== get_class($this)) {
+        if ($arrayRepresentation['serializeClassName'] !== static::class) {
             throw new \TYPO3\CMS\Core\Exception('Deserialized object type is not identical!', 1294586647);
         }
         $this->dataFromArray($arrayRepresentation);
@@ -87,7 +87,7 @@ class TreeNodeCollection extends \ArrayObject
     public function toArray()
     {
         $arrayRepresentation = [
-            'serializeClassName' => get_class($this)
+            'serializeClassName' => static::class
         ];
         $iterator = $this->getIterator();
         while ($iterator->valid()) {

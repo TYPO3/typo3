@@ -92,8 +92,8 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
             }
         }
 
-        if (isset(self::$tagAttributes[get_class($this)])) {
-            foreach (self::$tagAttributes[get_class($this)] as $attributeName) {
+        if (isset(self::$tagAttributes[static::class])) {
+            foreach (self::$tagAttributes[static::class] as $attributeName) {
                 if ($this->hasArgument($attributeName) && $this->arguments[$attributeName] !== '') {
                     $this->tag->addAttribute($attributeName, $this->arguments[$attributeName]);
                 }
@@ -114,7 +114,7 @@ abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
     protected function registerTagAttribute($name, $type, $description, $required = false, $default = null)
     {
         $this->registerArgument($name, $type, $description, $required, $default);
-        self::$tagAttributes[get_class($this)][$name] = $name;
+        self::$tagAttributes[static::class][$name] = $name;
     }
 
     /**

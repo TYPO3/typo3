@@ -741,7 +741,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
         // register static callback to self
         $callback = [
             [
-                get_class($this),
+                static::class,
                 'callbackStaticTestFunction'
             ]
         ];

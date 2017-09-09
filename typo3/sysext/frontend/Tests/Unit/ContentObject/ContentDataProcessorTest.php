@@ -62,7 +62,7 @@ class ContentDataProcessorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
         $contentObjectRendererStub = new ContentObjectRenderer();
         $config = [
             'dataProcessing.' => [
-                '10' => get_class($this)
+                '10' => static::class
             ]
         ];
         $variables = [];

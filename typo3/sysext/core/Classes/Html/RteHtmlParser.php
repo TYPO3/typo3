@@ -1321,6 +1321,6 @@ class RteHtmlParser extends HtmlParser
     {
         /** @var $logManager LogManager */
         $logManager = GeneralUtility::makeInstance(LogManager::class);
-        return $logManager->getLogger(get_class($this));
+        return $logManager->getLogger(static::class);
     }
 }

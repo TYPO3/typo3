@@ -261,6 +261,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
      */
     protected function getRepositoryClassName()
     {
-        return get_class($this);
+        return static::class;
     }
 }

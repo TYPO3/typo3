@@ -107,7 +107,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
      */
     protected function renderPMIconAndLink($cmd, $isOpen)
     {
-        if (get_class($this) === __CLASS__) {
+        if (static::class === __CLASS__) {
             return $this->PMiconATagWrap('', $cmd, !$isOpen);
         }
         return parent::renderPMIconAndLink($cmd, $isOpen);
@@ -146,7 +146,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
     {
         if (empty($this->scope)) {
             $this->scope = [
-                'class' => get_class($this),
+                'class' => static::class,
                 'script' => $this->thisScript,
                 'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
                 'browser' => $this->linkParameterProvider->getUrlParameters([]),

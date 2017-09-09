@@ -145,7 +145,7 @@ abstract class AbstractTask
      */
     public function getTaskTitle()
     {
-        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][get_class($this)]['title']);
+        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title']);
     }
 
     /**
@@ -155,7 +155,7 @@ abstract class AbstractTask
      */
     public function getTaskDescription()
     {
-        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][get_class($this)]['description']);
+        return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description']);
     }
 
     /**
@@ -165,7 +165,7 @@ abstract class AbstractTask
      */
     public function getTaskClassName()
     {
-        return get_class($this);
+        return static::class;
     }
 
     /**
@@ -490,7 +490,7 @@ abstract class AbstractTask
             }
             if ($failure instanceof \Exception) {
                 // Log failed execution
-                $logMessage = 'Task failed to execute successfully. Class: ' . get_class($this)
+                $logMessage = 'Task failed to execute successfully. Class: ' . static::class
                     . ', UID: ' . $this->taskUid . ', Code: ' . $failure->getCode() . ', ' . $failure->getMessage();
                 $this->scheduler->log($logMessage, 1);
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
@@ -608,6 +608,6 @@ abstract class AbstractTask
     protected function getLogger()
     {
         $logManager = GeneralUtility::makeInstance(LogManager::class);
-        return $logManager->getLogger(get_class($this));
+        return $logManager->getLogger(static::class);
     }
 }

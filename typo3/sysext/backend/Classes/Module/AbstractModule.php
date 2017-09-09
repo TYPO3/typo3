@@ -65,7 +65,7 @@ class AbstractModule
         $methodName = $request->getQueryParams()['action'] ?: 'index';
         if (!is_callable([$this, $methodName])) {
             throw new \InvalidArgumentException(
-                'The method "' . $methodName . '" is not callable within "' . get_class($this) . '".',
+                'The method "' . $methodName . '" is not callable within "' . static::class . '".',
                 1442736343
             );
         }

@@ -34,7 +34,7 @@ abstract class AbstractWriter implements WriterInterface
             if (method_exists($this, $methodName)) {
                 $this->{$methodName}($optionValue);
             } else {
-                throw new InvalidLogWriterConfigurationException('Invalid LogWriter configuration option "' . $optionKey . '" for log writer of type "' . get_class($this) . '"', 1321696152);
+                throw new InvalidLogWriterConfigurationException('Invalid LogWriter configuration option "' . $optionKey . '" for log writer of type "' . static::class . '"', 1321696152);
             }
         }
     }

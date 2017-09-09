@@ -3021,6 +3021,6 @@ class ResourceStorage implements ResourceStorageInterface
         $logManager = GeneralUtility::makeInstance(
             \TYPO3\CMS\Core\Log\LogManager::class
         );
-        return $logManager->getLogger(get_class($this));
+        return $logManager->getLogger(static::class);
     }
 }

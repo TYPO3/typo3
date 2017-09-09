@@ -173,7 +173,7 @@ abstract class AbstractController extends ActionController
      */
     protected function getConstraintFromBeUserData()
     {
-        $serializedConstraint = $GLOBALS['BE_USER']->getModuleData(get_class($this));
+        $serializedConstraint = $GLOBALS['BE_USER']->getModuleData(static::class);
         if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
             return null;
         }
@@ -187,7 +187,7 @@ abstract class AbstractController extends ActionController
      */
     protected function persistConstraintInBeUserData(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint)
     {
-        $GLOBALS['BE_USER']->pushModuleData(get_class($this), serialize($constraint));
+        $GLOBALS['BE_USER']->pushModuleData(static::class, serialize($constraint));
     }
 
     /**

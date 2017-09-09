@@ -710,7 +710,7 @@ class SoftReferenceIndex
      */
     protected function emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue)
     {
-        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', [$linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue]);
+        return $this->getSignalSlotDispatcher()->dispatch(static::class, 'getTypoLinkParts', [$linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue]);
     }
 
     /**
@@ -724,6 +724,6 @@ class SoftReferenceIndex
      */
     protected function emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID)
     {
-        return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', [$linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this]);
+        return $this->getSignalSlotDispatcher()->dispatch(static::class, 'setTypoLinkPartsElement', [$linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this]);
     }
 }

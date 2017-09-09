@@ -34,7 +34,7 @@ abstract class AbstractProcessor implements ProcessorInterface
             if (method_exists($this, $methodName)) {
                 $this->{$methodName}($optionValue);
             } else {
-                throw new InvalidLogProcessorConfigurationException('Invalid LogProcessor configuration option "' . $optionKey . '" for log processor of type "' . get_class($this) . '"', 1321696151);
+                throw new InvalidLogProcessorConfigurationException('Invalid LogProcessor configuration option "' . $optionKey . '" for log processor of type "' . static::class . '"', 1321696151);
             }
         }
     }

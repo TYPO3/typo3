@@ -180,7 +180,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
     public function toArray($addChildNodes = true)
     {
         $arrayRepresentation = [
-            'serializeClassName' => get_class($this),
+            'serializeClassName' => static::class,
             'id' => $this->id
         ];
         if ($this->parentNode !== null) {
@@ -231,7 +231,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
     public function unserialize($serializedString)
     {
         $arrayRepresentation = unserialize($serializedString);
-        if ($arrayRepresentation['serializeClassName'] !== get_class($this)) {
+        if ($arrayRepresentation['serializeClassName'] !== static::class) {
             throw new \TYPO3\CMS\Core\Exception('Deserialized object type is not identical!', 1294586646);
         }
         $this->dataFromArray($arrayRepresentation);

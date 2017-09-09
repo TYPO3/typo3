@@ -110,7 +110,7 @@ class JsConfirmation extends Enumeration
         }
 
         $value = (string)$value;
-        foreach (static::$enumConstants[get_class($this)] as $constantValue) {
+        foreach (static::$enumConstants[static::class] as $constantValue) {
             if ($value === (string)$constantValue) {
                 return true;
             }

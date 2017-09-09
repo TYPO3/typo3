@@ -41,7 +41,7 @@ abstract class Enumeration implements TypeInterface
     {
         if ($value === null && !defined('static::__default')) {
             throw new Exception\InvalidEnumerationValueException(
-                sprintf('A value for enumeration "%s" is required if no __default is defined.', get_class($this)),
+                sprintf('A value for enumeration "%s" is required if no __default is defined.', static::class),
                 1381512753
             );
         }
@@ -51,7 +51,7 @@ abstract class Enumeration implements TypeInterface
         static::loadValues();
         if (!$this->isValid($value)) {
             throw new Exception\InvalidEnumerationValueException(
-                sprintf('Invalid value "%s" for enumeration "%s"', $value, get_class($this)),
+                sprintf('Invalid value "%s" for enumeration "%s"', $value, static::class),
                 1381512761
             );
         }
@@ -130,14 +130,14 @@ abstract class Enumeration implements TypeInterface
      */
     protected function setValue($value)
     {
-        $enumKey = array_search($value, static::$enumConstants[get_class($this)]);
+        $enumKey = array_search($value, static::$enumConstants[static::class]);
         if ($enumKey === false) {
             throw new Exception\InvalidEnumerationValueException(
                 sprintf('Invalid value "%s" for enumeration "%s"', $value, __CLASS__),
                 1381615295
             );
         }
-        $this->value = static::$enumConstants[get_class($this)][$enumKey];
+        $this->value = static::$enumConstants[static::class][$enumKey];
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class Enumeration implements TypeInterface
     protected function isValid($value)
     {
         $value = (string)$value;
-        foreach (static::$enumConstants[get_class($this)] as $constantValue) {
+        foreach (static::$enumConstants[static::class] as $constantValue) {
             if ($value === (string)$constantValue) {
                 return true;
             }

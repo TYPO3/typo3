@@ -46,7 +46,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getClassTagsValues()
     {
         $service = new ReflectionService();
-        $classValues = $service->getClassTagsValues(get_class($this));
+        $classValues = $service->getClassTagsValues(static::class);
         $this->assertEquals([
             'firsttest' => ['test for reflection'],
             'anothertest' => ['second test for reflection', 'second test for reflection with second value']
@@ -59,7 +59,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getClassTagValues()
     {
         $service = new ReflectionService();
-        $classValues = $service->getClassTagValues(get_class($this), 'firsttest');
+        $classValues = $service->getClassTagValues(static::class, 'firsttest');
         $this->assertEquals([
             'test for reflection',
         ], $classValues);
@@ -71,8 +71,8 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function hasMethod()
     {
         $service = new ReflectionService();
-        $this->assertTrue($service->hasMethod(get_class($this), 'fixtureMethodForMethodTagsValues'));
-        $this->assertFalse($service->hasMethod(get_class($this), 'notExistentMethod'));
+        $this->assertTrue($service->hasMethod(static::class, 'fixtureMethodForMethodTagsValues'));
+        $this->assertFalse($service->hasMethod(static::class, 'notExistentMethod'));
     }
 
     /**
@@ -81,7 +81,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getMethodTagsValues()
     {
         $service = new ReflectionService();
-        $tagsValues = $service->getMethodTagsValues(get_class($this), 'fixtureMethodForMethodTagsValues');
+        $tagsValues = $service->getMethodTagsValues(static::class, 'fixtureMethodForMethodTagsValues');
         $this->assertEquals([
             'param' => ['array $foo The foo parameter'],
             'return' => ['string']
@@ -94,7 +94,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getMethodParameters()
     {
         $service = new ReflectionService();
-        $parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValues');
+        $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValues');
         $this->assertSame([
             'foo' => [
                 'position' => 0,
@@ -114,7 +114,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getMethodParametersWithShortTypeNames()
     {
         $service = new ReflectionService();
-        $parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValuesWithShortTypes');
+        $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValuesWithShortTypes');
         $this->assertSame([
             'dummy' => [
                 'position' => 0,

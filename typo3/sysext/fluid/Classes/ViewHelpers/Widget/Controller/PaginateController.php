@@ -192,7 +192,7 @@ class PaginateController extends AbstractWidgetController
             return $modifiedObjects;
         }
         throw new \InvalidArgumentException(
-                'The view helper "' . get_class($this)
+                'The view helper "' . static::class
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
                 . 'given: ' . get_class($this->objects),
                 1385547291

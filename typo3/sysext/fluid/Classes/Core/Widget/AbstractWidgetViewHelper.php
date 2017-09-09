@@ -130,7 +130,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
         $this->widgetContext->setParentPluginName($pluginName);
         $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
         $this->widgetContext->setParentPluginNamespace($pluginNamespace);
-        $this->widgetContext->setWidgetViewHelperClassName(get_class($this));
+        $this->widgetContext->setWidgetViewHelperClassName(static::class);
         if ($this->ajaxWidget === true) {
             $this->ajaxWidgetContextHolder->store($this->widgetContext);
         }
@@ -177,7 +177,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
                 'initiateSubRequest() can not be called if there is no valid controller extending ' .
                 'TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController' .
                 ' Got "' . ($this->controller ? get_class($this->controller) : gettype($this->controller)) .
-                '" in class "' . get_class($this) . '".',
+                '" in class "' . static::class . '".',
                 1289422564
             );
         }

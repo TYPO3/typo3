@@ -83,7 +83,7 @@ class AbstractButton extends AbstractControl implements ButtonInterface
      */
     public function getType()
     {
-        return get_class($this);
+        return static::class;
     }
 
     /**

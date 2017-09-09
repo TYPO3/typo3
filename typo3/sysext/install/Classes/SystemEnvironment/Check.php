@@ -579,7 +579,7 @@ class Check implements CheckInterface
      */
     protected function checkReflectionDocComment()
     {
-        $testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
+        $testReflection = new \ReflectionMethod(static::class, __FUNCTION__);
         if ($testReflection->getDocComment() === false) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'TYPO3 CMS core extensions like extbase and fluid heavily rely on method'

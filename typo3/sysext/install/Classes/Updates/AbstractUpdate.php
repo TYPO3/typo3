@@ -162,7 +162,7 @@ abstract class AbstractUpdate
      */
     protected function markWizardAsDone($confValue = 1)
     {
-        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', get_class($this), $confValue);
+        GeneralUtility::makeInstance(Registry::class)->set('installUpdate', static::class, $confValue);
     }
 
     /**
@@ -172,7 +172,7 @@ abstract class AbstractUpdate
      */
     protected function isWizardDone()
     {
-        $wizardClassName = get_class($this);
+        $wizardClassName = static::class;
         return GeneralUtility::makeInstance(Registry::class)->get('installUpdate', $wizardClassName, false);
     }
 }

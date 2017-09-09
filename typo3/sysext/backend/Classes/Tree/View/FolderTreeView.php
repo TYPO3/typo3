@@ -134,7 +134,7 @@ class FolderTreeView extends AbstractTreeView
     {
         if (empty($this->scope)) {
             $this->scope = [
-                'class' => get_class($this),
+                'class' => static::class,
                 'script' => $this->thisScript,
                 'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
             ];

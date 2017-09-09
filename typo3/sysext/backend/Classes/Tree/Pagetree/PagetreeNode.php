@@ -425,7 +425,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
         $arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
         $arrayRepresentation['nodeData']['backgroundColor'] = htmlspecialchars($this->getBackgroundColor());
         $arrayRepresentation['nodeData']['stopPageTree'] = $this->getStopPageTree();
-        $arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
+        $arrayRepresentation['nodeData']['serializeClassName'] = static::class;
         return $arrayRepresentation;
     }
 

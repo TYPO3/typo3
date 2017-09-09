@@ -264,7 +264,7 @@ class Package implements PackageInterface
      */
     public function __sleep()
     {
-        $properties = get_class_vars(get_class($this));
+        $properties = get_class_vars(static::class);
         unset($properties['packageManager']);
         return array_keys($properties);
     }

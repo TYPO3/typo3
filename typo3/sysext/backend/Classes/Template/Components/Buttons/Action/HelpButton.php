@@ -116,7 +116,7 @@ class HelpButton implements ButtonInterface, PositionInterface
      */
     public function getType()
     {
-        return get_class($this);
+        return static::class;
     }
 
     /**

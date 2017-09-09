@@ -560,7 +560,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     public function toArray($addChildNodes = true)
     {
         $arrayRepresentation = [
-            'serializeClassName' => get_class($this),
+            'serializeClassName' => static::class,
             'id' => $this->getId(),
             'type' => $this->getType(),
             'editableText' => $this->getEditableText(),

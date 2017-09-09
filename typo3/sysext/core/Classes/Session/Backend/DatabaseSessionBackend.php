@@ -66,7 +66,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
     {
         if (empty($this->configuration['table'])) {
             throw new \InvalidArgumentException(
-                'The session backend "' . get_class($this) . '" needs a "table" configuration.',
+                'The session backend "' . static::class . '" needs a "table" configuration.',
                 1442996707
             );
         }

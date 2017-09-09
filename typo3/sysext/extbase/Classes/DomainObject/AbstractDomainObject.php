@@ -323,6 +323,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      */
     public function __toString()
     {
-        return get_class($this) . ':' . (string)$this->uid;
+        return static::class . ':' . (string)$this->uid;
     }
 }
