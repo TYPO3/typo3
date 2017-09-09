@@ -594,6 +594,28 @@ abstract class FunctionalTestCase extends BaseTestCase
     }
 
     /**
+     * Adds TypoScript setup snippet to the existing template record
+     *
+     * @param int $pageId
+     * @param string $typoScript
+     */
+    protected function addTypoScriptToTemplateRecord($pageId, $typoScript)
+    {
+        $connection = $this->getDatabaseConnection();
+
+        $template = $connection->exec_SELECTgetSingleRow('*', 'sys_template', 'pid = '. $pageId . ' AND root = 1');
+        if (empty($template)) {
+            $this->fail('Cannot find root template on page with id: "' . $pageId . '"');
+        }
+        $updateFields['config'] = $template['config'] . LF . $typoScript;
+        $connection->exec_UPDATEquery(
+            'sys_template',
+            'uid = ' . $template['uid'],
+            $updateFields
+        );
+    }
+
+    /**
      * @param int $pageId
      * @param int $languageId
      * @param int $backendUserId
