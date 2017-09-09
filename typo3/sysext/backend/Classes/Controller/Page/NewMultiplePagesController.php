@@ -165,8 +165,8 @@ class NewMultiplePagesController
             if (!trim($data['title'])) {
                 continue;
             }
-            $commandArray['pages'][$identifier]['hidden'] = $hidePages;
-            $commandArray['pages'][$identifier]['nav_hide'] = $hidePagesInMenu;
+            $commandArray['pages'][$identifier]['hidden'] = (int)$hidePages;
+            $commandArray['pages'][$identifier]['nav_hide'] = (int)$hidePagesInMenu;
             $commandArray['pages'][$identifier]['title'] = $data['title'];
             $commandArray['pages'][$identifier]['doktype'] = $data['doktype'];
             if ($firstRecord) {
