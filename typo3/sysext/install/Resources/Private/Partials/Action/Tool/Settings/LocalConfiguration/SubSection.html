@@ -49,8 +49,8 @@
 								<select
 									data-path="{sectionName}/{item.key}"
 									class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue">
-									<f:for each="{item.allowedValues}" as="value">
-										<option	value="{item.value}" {f:if(condition:'{item.value} == {value}', then: 'selected="selected"')}>{value}</option>
+									<f:for each="{item.allowedValues}" key="optionKey" as="optionLabel">
+										<option value="{optionKey}" {f:if(condition:'{item.value} == {optionKey}', then: 'selected="selected"')}>{optionLabel} ({optionKey})</option>
 									</f:for>
 								</select>
 							</div>
