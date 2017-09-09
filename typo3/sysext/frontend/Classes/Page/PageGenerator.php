@@ -393,7 +393,10 @@ class PageGenerator
                         if (!$type) {
                             $type = 'text/javascript';
                         }
-
+                        $crossorigin = $jsFileConfig['crossorigin'];
+                        if (!$crossorigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
+                            $crossorigin = 'anonymous';
+                        }
                         $pageRenderer->addJsLibrary(
                             $key,
                             $ss,
@@ -405,7 +408,8 @@ class PageGenerator
                             $jsFileConfig['allWrap.']['splitChar'],
                             (bool)$jsFileConfig['async'],
                             $jsFileConfig['integrity'],
-                            (bool)$jsFileConfig['defer']
+                            (bool)$jsFileConfig['defer'],
+                            $crossorigin
                         );
                         unset($jsFileConfig);
                     }
@@ -425,6 +429,10 @@ class PageGenerator
                         if (!$type) {
                             $type = 'text/javascript';
                         }
+                        $crossorigin = $jsFileConfig['crossorigin'];
+                        if (!$crossorigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
+                            $crossorigin = 'anonymous';
+                        }
                         $pageRenderer->addJsFooterLibrary(
                             $key,
                             $ss,
@@ -436,7 +444,8 @@ class PageGenerator
                             $jsFileConfig['allWrap.']['splitChar'],
                             (bool)$jsFileConfig['async'],
                             $jsFileConfig['integrity'],
-                            (bool)$jsFileConfig['defer']
+                            (bool)$jsFileConfig['defer'],
+                            $crossorigin
                         );
                         unset($jsFileConfig);
                     }
@@ -457,6 +466,10 @@ class PageGenerator
                         if (!$type) {
                             $type = 'text/javascript';
                         }
+                        $crossorigin = $jsConfig['crossorigin'];
+                        if (!$crossorigin && $jsConfig['integrity'] && $jsConfig['external']) {
+                            $crossorigin = 'anonymous';
+                        }
                         $pageRenderer->addJsFile(
                             $ss,
                             $type,
@@ -467,7 +480,8 @@ class PageGenerator
                             $jsConfig['allWrap.']['splitChar'],
                             (bool)$jsConfig['async'],
                             $jsConfig['integrity'],
-                            (bool)$jsConfig['defer']
+                            (bool)$jsConfig['defer'],
+                            $crossorigin
                         );
                         unset($jsConfig);
                     }
@@ -487,6 +501,10 @@ class PageGenerator
                         if (!$type) {
                             $type = 'text/javascript';
                         }
+                        $crossorigin = $jsConfig['crossorigin'];
+                        if (!$crossorigin && $jsConfig['integrity'] && $jsConfig['external']) {
+                            $crossorigin = 'anonymous';
+                        }
                         $pageRenderer->addJsFooterFile(
                             $ss,
                             $type,
@@ -497,7 +515,8 @@ class PageGenerator
                             $jsConfig['allWrap.']['splitChar'],
                             (bool)$jsConfig['async'],
                             $jsConfig['integrity'],
-                            (bool)$jsConfig['defer']
+                            (bool)$jsConfig['defer'],
+                            $crossorigin
                         );
                         unset($jsConfig);
                     }
