@@ -372,12 +372,7 @@ class PageGenerator
                 $source = isset($jQueryTS['source']) ? $jQueryTS['source'] : null;
                 // When "noConflict" is not set or "1" enable the default jQuery noConflict mode, otherwise disable the namespace
                 if (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) {
-                    // Set namespace to the "noConflict.namespace" value if "noConflict.namespace" has a value
-                    if (!empty($jQueryTS['noConflict.']['namespace'])) {
-                        $namespace = $jQueryTS['noConflict.']['namespace'];
-                    } else {
-                        $namespace = PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT;
-                    }
+                    $namespace = 'noConflict';
                 } else {
                     $namespace = PageRenderer::JQUERY_NAMESPACE_NONE;
                 }
