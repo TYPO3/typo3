@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,8 +26,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This file is a backport from TYPO3 Flow
  */
-class ErrorHandler implements ErrorHandlerInterface
+class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Error levels which should result in an exception thrown.
      *
@@ -120,11 +125,8 @@ class ErrorHandler implements ErrorHandlerInterface
         }
         $logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
         $message = $logTitle . ': ' . $message;
-        // Write error message to the configured syslogs,
-        // see: $TYPO3_CONF_VARS['SYS']['systemLog']
-        if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']) {
-            GeneralUtility::sysLog($message, 'core', $severity + 1);
-        }
+
+        $this->logger->log(LogLevel::NOTICE - $severity, $message);
         // Write error message to devlog extension(s),
         GeneralUtility::devLog($message, 'core', $severity + 1);
 

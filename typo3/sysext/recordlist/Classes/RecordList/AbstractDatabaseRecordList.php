@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1257,7 +1258,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                     }
                 }
             } else {
-                GeneralUtility::sysLog(sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                GeneralUtility::makeInstance(LogManager::class)
+                              ->getLogger(__CLASS__)
+                              ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
             }
         }
         return $fieldListArr;

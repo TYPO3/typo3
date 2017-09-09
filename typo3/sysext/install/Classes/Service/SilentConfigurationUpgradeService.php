@@ -106,6 +106,8 @@ class SilentConfigurationUpgradeService
         'SYS/sqlDebug',
         'SYS/no_pconnect',
         'SYS/dbClientCompress',
+        // #82430
+        'SYS/syslogErrorReporting',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

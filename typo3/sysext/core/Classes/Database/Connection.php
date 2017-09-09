@@ -20,12 +20,16 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class Connection extends \Doctrine\DBAL\Connection
+class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Represents a SQL NULL data type.
      */
@@ -397,11 +401,7 @@ class Connection extends \Doctrine\DBAL\Connection
 
         foreach ($commandsToPerform as $command) {
             if ($this->executeUpdate($command) === false) {
-                GeneralUtility::sysLog(
-                    'Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo(),
-                    'core',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
-                );
+                $this->logger->critical('Could not initialize DB connection with query "' . $command . '": ' . $this->errorInfo());
             }
         }
     }

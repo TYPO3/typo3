@@ -16,10 +16,12 @@ namespace TYPO3\CMS\Core\Utility;
 
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -39,7 +41,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class GeneralUtility
 {
-    // Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
+    // Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
     const SYSLOG_SEVERITY_INFO = 0;
     const SYSLOG_SEVERITY_NOTICE = 1;
     const SYSLOG_SEVERITY_WARNING = 2;
@@ -3167,7 +3169,7 @@ class GeneralUtility
             }
         }
         if (!empty($url) && empty($sanitizedUrl)) {
-            self::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'core', self::SYSLOG_SEVERITY_NOTICE);
+            static::getLogger()->notice('The URL "' . $url . '" is not considered to be local and was denied.');
         }
         return $sanitizedUrl;
     }
@@ -3795,15 +3797,10 @@ class GeneralUtility
      * Initialize the system log.
      *
      * @see sysLog()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function initSysLog()
     {
-        // For CLI logging name is <fqdn-hostname>:<TYPO3-path>
-        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname() . ':' . PATH_site;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');
-        }
         // Init custom logging
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
             $params = ['initLog' => true];
@@ -3812,34 +3809,26 @@ class GeneralUtility
                 self::callUserFunction($hookMethod, $params, $fakeThis);
             }
         }
-        // Init TYPO3 logging
-        foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
-            list($type, $destination) = explode(',', $log, 3);
-            if ($type === 'syslog') {
-                if (TYPO3_OS === 'WIN') {
-                    $facility = LOG_USER;
-                } else {
-                    $facility = constant('LOG_' . strtoupper($destination));
-                }
-                openlog($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'], LOG_ODELAY, $facility);
-            }
-        }
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = true;
     }
 
     /**
-     * Logs message to the system log.
+     * Logs message to custom "systemLog" handlers and logging API
+     *
      * This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
      * If you want to implement the sysLog in your applications, simply add lines like:
      * \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('[write message in English here]', 'extension_key', 'severity');
      *
      * @param string $msg Message (in English).
-     * @param string $extKey Extension key (from which extension you are calling the log) or "Core
+     * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
      * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public static function sysLog($msg, $extKey, $severity = 0)
     {
+        static::logDeprecatedFunction();
+
         $severity = MathUtility::forceIntegerInRange($severity, 0, 4);
         // Is message worth logging?
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] > $severity) {
@@ -3861,40 +3850,8 @@ class GeneralUtility
         if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']) {
             return;
         }
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-        $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-        // Use all configured logging options
-        foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
-            list($type, $destination, $level) = explode(',', $log, 4);
-            // Is message worth logging for this log type?
-            if ((int)$level > $severity) {
-                continue;
-            }
-            $msgLine = ' - ' . $extKey . ': ' . $msg;
-            // Write message to a file
-            if ($type === 'file') {
-                $file = fopen($destination, 'a');
-                if ($file) {
-                    fwrite($file, date(($dateFormat . ' ' . $timeFormat)) . $msgLine . LF);
-                    fclose($file);
-                    self::fixPermissions($destination);
-                }
-            } elseif ($type === 'mail') {
-                list($to, $from) = explode('/', $destination);
-                if (!self::validEmail($from)) {
-                    $from = MailUtility::getSystemFrom();
-                }
-                /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-                $mail = self::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mail->setTo($to)->setFrom($from)->setSubject('Warning - error in TYPO3 installation')->setBody('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF . 'Extension: ' . $extKey . LF . 'Severity: ' . $severity . LF . LF . $msg);
-                $mail->send();
-            } elseif ($type === 'error_log') {
-                error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
-            } elseif ($type === 'syslog') {
-                $priority = [LOG_INFO, LOG_NOTICE, LOG_WARNING, LOG_ERR, LOG_CRIT];
-                syslog($priority[(int)$severity], $msgLine);
-            }
-        }
+
+        static::getLogger()->log(LogLevel::INFO - $severity, $msg, ['extension' => $extKey]);
     }
 
     /**
@@ -4153,5 +4110,13 @@ class GeneralUtility
     public static function isRunningOnCgiServerApi()
     {
         return in_array(PHP_SAPI, self::$supportedCgiServerApis, true);
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    protected static function getLogger()
+    {
+        return static::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 }

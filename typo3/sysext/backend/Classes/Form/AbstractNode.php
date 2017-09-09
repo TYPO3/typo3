@@ -15,14 +15,18 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base class for container and single elements - their abstracts extend from here.
  */
-abstract class AbstractNode implements NodeInterface
+abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Instance of the node factory to create sub elements, container and single element expansions.
      *

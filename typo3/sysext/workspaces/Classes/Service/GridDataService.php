@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -22,8 +24,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Grid data service
  */
-class GridDataService
+class GridDataService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const SIGNAL_GenerateDataArray_BeforeCaching = 'generateDataArray.beforeCaching';
     const SIGNAL_GenerateDataArray_PostProcesss = 'generateDataArray.postProcess';
     const SIGNAL_GetDataArray_PostProcesss = 'getDataArray.postProcess';
@@ -368,11 +372,7 @@ class GridDataService
                     // Do nothing
             }
         } else {
-            GeneralUtility::sysLog(
-                'Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.',
-                'workspaces',
-                GeneralUtility::SYSLOG_SEVERITY_ERROR
-            );
+            $this->logger->critical('Try to sort "' . $this->sort . '" in "\\TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.');
         }
         // Suggested slot method:
         // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $sortColumn, $sortDirection)

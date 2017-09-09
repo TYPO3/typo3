@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -36,8 +38,10 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * functions operate properly
  * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
  */
-class PageRepository
+class PageRepository implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * This is not the final clauses. There will normally be conditions for the
      * hidden, starttime and endtime fields as well. You MUST initialize the object
@@ -1816,7 +1820,7 @@ class PageRepository
              * Log the exception message for admins as they maybe can restore the storage
              */
             $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
-            GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+            $this->logger->error($logMessage, ['exception' => $e]);
             return [];
         }
 

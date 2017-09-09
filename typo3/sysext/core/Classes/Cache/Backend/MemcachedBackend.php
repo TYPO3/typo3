@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A caching backend which stores cache entries by using Memcached.
@@ -262,7 +261,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
                 throw new Exception('Could not set data to memcache server.', 1275830266);
             }
         } catch (\Exception $exception) {
-            GeneralUtility::sysLog('Memcache: could not set value. Reason: ' . $exception->getMessage(), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            $this->logger->alert('Memcache: could not set value.', ['exception' => $exception]);
         }
     }
 

@@ -159,7 +159,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
                 $this->connected = $this->redis->connect($this->hostname, $this->port, $this->connectionTimeout);
             }
         } catch (\Exception $e) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to redis server.', 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+            $this->logger->alert('Could not connect to redis server.', ['exception' => $e]);
         }
         if ($this->connected) {
             if ($this->password !== '') {

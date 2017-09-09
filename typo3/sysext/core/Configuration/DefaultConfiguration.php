@@ -90,7 +90,7 @@ return [
         'setDBinit' => '',
         'setMemoryLimit' => 0,
         'phpTimeZone' => '',
-        'systemLog' => '',
+        'systemLog' => false,
         'systemLogLevel' => 0,
         'enableDeprecationLog' => '',
         'UTF8filesystem' => false,
@@ -217,7 +217,6 @@ return [
         'errorHandler' => \TYPO3\CMS\Core\Error\ErrorHandler::class,
         'errorHandlerErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
         'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
-        'syslogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),
         'belogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),
         'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend. See 'Inside TYPO3' for more information.
         'generateApacheHtaccess' => 1,

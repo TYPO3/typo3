@@ -57,7 +57,7 @@ class AuthenticationService extends AbstractAuthenticationService
             $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', [
                 $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
             ]);
-            GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            $this->logger->warning(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
             return false;
         }
 
@@ -65,8 +65,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!is_array($user)) {
             // Failed login attempt (no username found)
             $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
-            // Logout written to log
-            GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
         } else {
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, [$this->db_user['userid_column'], $this->db_user['username_column']]), self::class);
@@ -100,7 +99,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 // Failed login attempt (wrong password) - write that to the log!
                 if ($this->writeAttemptLog) {
                     $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
-                    GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                    $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
                 }
                 if ($this->writeDevLog) {
                     GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], self::class, 2);
@@ -111,7 +110,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 // Lock domain didn't match, so error:
                 if ($this->writeAttemptLog) {
                     $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']]);
-                    GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                    $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
                 }
                 $OK = 0;
             }

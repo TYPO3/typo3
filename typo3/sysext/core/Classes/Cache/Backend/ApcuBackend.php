@@ -146,8 +146,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
             $this->removeIdentifierFromAllTags($entryIdentifier);
             $this->addIdentifierToTags($entryIdentifier, $tags);
         } else {
-            $errorMessage = 'Error using APCu: Could not save data in the cache.';
-            GeneralUtility::sysLog($errorMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+            $this->logger->alert('Error using APCu: Could not save data in the cache.');
         }
     }
 

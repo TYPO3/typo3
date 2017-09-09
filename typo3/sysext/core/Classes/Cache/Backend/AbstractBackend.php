@@ -14,14 +14,19 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+
 /**
  * An abstract caching backend
  *
  * This file is a backport from FLOW3
  * @api
  */
-abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendInterface
+abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const DATETIME_EXPIRYTIME_UNLIMITED = '9999-12-31T23:59:59+0000';
     const UNLIMITED_LIFETIME = 0;
     /**

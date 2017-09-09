@@ -105,8 +105,7 @@ class FileThumbnails extends AbstractNode
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
-                    $logMessage = $message . ' (' . $table . ':' . $row['uid'] . ')';
-                    GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+                    $this->logger->warning($message, ['table' => $table, 'row' => $row]);
                 }
             }
         }

@@ -13,14 +13,20 @@ namespace TYPO3\CMS\Core\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Parent class for "Services" classes
  */
-abstract class AbstractService
+abstract class AbstractService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array service description array
      */
@@ -259,7 +265,7 @@ abstract class AbstractService
         $ret = true;
         $progList = GeneralUtility::trimExplode(',', $progList, true);
         foreach ($progList as $prog) {
-            if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($prog)) {
+            if (!CommandUtility::checkCommand($prog)) {
                 // Program not found
                 $this->errorPush(T3_ERR_SV_PROG_NOT_FOUND, 'External program not found: ' . $prog);
                 $ret = false;
@@ -273,7 +279,7 @@ abstract class AbstractService
      */
     public function deactivateService()
     {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::deactivateService($this->info['serviceType'], $this->info['serviceKey']);
+        ExtensionManagementUtility::deactivateService($this->info['serviceType'], $this->info['serviceKey']);
     }
 
     /***************************************
@@ -367,7 +373,7 @@ abstract class AbstractService
     /**
      * Register file which should be deleted afterwards.
      *
-     * @param string File name with absolute path.
+     * @param string $absFile File name with absolute path.
      */
     public function registerTempFile($absFile)
     {

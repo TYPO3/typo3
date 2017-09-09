@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
@@ -42,8 +44,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * See Inside TYPO3 for more information about the API of the class and internal variables.
  */
-abstract class AbstractUserAuthentication
+abstract class AbstractUserAuthentication implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Session/Cookie name
      * @var string
@@ -516,7 +520,7 @@ abstract class AbstractUserAuthentication
                 $match = [];
                 $matchCnt = @preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if ($matchCnt === false) {
-                    GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                    $this->logger->critical('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.');
                 } elseif ($matchCnt) {
                     $result = $match[0];
                 }

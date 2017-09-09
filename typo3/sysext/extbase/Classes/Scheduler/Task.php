@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Cli\CommandManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+
 /**
  * Scheduler task to execute CommandController commands
  */
-class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class Task extends AbstractTask
 {
     /**
      * @var string
@@ -40,12 +45,12 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
+     * @var CommandManager
      */
     protected $commandManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Scheduler\TaskExecutor
+     * @var TaskExecutor
      */
     protected $taskExecutor;
 
@@ -55,9 +60,9 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     public function __construct()
     {
         parent::__construct();
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->commandManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
-        $this->taskExecutor = $this->objectManager->get(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->commandManager = $this->objectManager->get(CommandManager::class);
+        $this->taskExecutor = $this->objectManager->get(TaskExecutor::class);
     }
 
     /**
@@ -79,9 +84,9 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     public function __wakeup()
     {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->commandManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
-        $this->taskExecutor = $this->objectManager->get(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->commandManager = $this->objectManager->get(CommandManager::class);
+        $this->taskExecutor = $this->objectManager->get(TaskExecutor::class);
     }
 
     /**
@@ -187,6 +192,6 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function logException(\Exception $e)
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+        $this->logger->error('A Task (' . $this->commandIdentifier . ') Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
     }
 }

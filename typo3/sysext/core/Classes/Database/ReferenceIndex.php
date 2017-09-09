@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use Doctrine\DBAL\DBALException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -42,8 +44,10 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  * maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  */
-class ReferenceIndex
+class ReferenceIndex implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Definition of tables to exclude from the ReferenceIndex
      *
@@ -1323,9 +1327,11 @@ class ReferenceIndex
                     ->from($tableName)
                     ->execute();
             } catch (DBALException $e) {
-                // Table exists in $TCA but does not exist in the database
-                // @todo: improve / change message and add actual sql error?
-                GeneralUtility::sysLog(sprintf('Table "%s" exists in $TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', $tableName), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                // Table exists in TCA but does not exist in the database
+                $msg = 'Table "' .
+                       $tableName .
+                       '" exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.';
+                $this->logger->error($msg, ['exception' => $e]);
                 continue;
             }
 
@@ -1349,14 +1355,7 @@ class ReferenceIndex
 
             // Subselect based queries only work on the same connection
             if ($refIndexConnectionName !== $tableConnectionName) {
-                GeneralUtility::sysLog(
-                    sprintf(
-                        'Not checking table "%s" for lost indexes, "sys_refindex" table uses a different connection',
-                        $tableName
-                    ),
-                    'core',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
-                );
+                $this->logger->error('Not checking table "' . $tableName . '" for lost indexes, "sys_refindex" table uses a different connection');
                 continue;
             }
 

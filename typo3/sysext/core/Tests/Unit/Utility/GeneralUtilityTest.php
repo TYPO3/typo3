@@ -4251,29 +4251,8 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
-    // Tests concerning sysLog
+    // Tests concerning deprecation log
     /////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function syslogFixesPermissionsOnFileIfUsingFileLogging()
-    {
-        if (TYPO3_OS === 'WIN') {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-        }
-        // Fake all required settings
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = true;
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
-        $testLogFilename = PATH_site . 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '.txt';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
-        // Call method, get actual permissions and clean up
-        GeneralUtility::sysLog('testLog', 'test', GeneralUtility::SYSLOG_SEVERITY_NOTICE);
-        $this->testFilesToDelete[] = $testLogFilename;
-        clearstatcache();
-        $this->assertEquals('0777', substr(decoct(fileperms($testLogFilename)), 2));
-    }
 
     /**
      * @test

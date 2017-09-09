@@ -14,18 +14,22 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Execution;
 
 /**
  * This is the base class for all Scheduler tasks
  * It's an abstract class, not designed to be instantiated directly
  * All Scheduler tasks should inherit from this class
  */
-abstract class AbstractTask
+abstract class AbstractTask implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const TYPE_SINGLE = 1;
     const TYPE_RECURRING = 2;
 
@@ -60,7 +64,7 @@ abstract class AbstractTask
     /**
      * The execution object related to the task
      *
-     * @var \TYPO3\CMS\Scheduler\Execution
+     * @var Execution
      */
     protected $execution;
 
@@ -91,7 +95,7 @@ abstract class AbstractTask
     public function __construct()
     {
         $this->setScheduler();
-        $this->execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $this->execution = GeneralUtility::makeInstance(Execution::class);
     }
 
     /**
@@ -297,8 +301,8 @@ abstract class AbstractTask
      */
     public function registerSingleExecution($timestamp)
     {
-        /** @var $execution \TYPO3\CMS\Scheduler\Execution */
-        $execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        /** @var $execution Execution */
+        $execution = GeneralUtility::makeInstance(Execution::class);
         $execution->setStart($timestamp);
         $execution->setInterval(0);
         $execution->setEnd($timestamp);
@@ -320,8 +324,8 @@ abstract class AbstractTask
      */
     public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
     {
-        /** @var $execution \TYPO3\CMS\Scheduler\Execution */
-        $execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        /** @var $execution Execution */
+        $execution = GeneralUtility::makeInstance(Execution::class);
         // Set general values
         $execution->setStart($start);
         $execution->setEnd($end);
@@ -342,9 +346,9 @@ abstract class AbstractTask
     /**
      * Sets the internal execution object
      *
-     * @param \TYPO3\CMS\Scheduler\Execution $execution The execution to add
+     * @param Execution $execution The execution to add
      */
-    public function setExecution(\TYPO3\CMS\Scheduler\Execution $execution)
+    public function setExecution(Execution $execution)
     {
         $this->execution = $execution;
     }
@@ -352,7 +356,7 @@ abstract class AbstractTask
     /**
      * Returns the execution object
      *
-     * @return \TYPO3\CMS\Scheduler\Execution The internal execution object
+     * @return Execution The internal execution object
      */
     public function getExecution()
     {
@@ -564,7 +568,7 @@ abstract class AbstractTask
      */
     public function stop()
     {
-        $this->execution = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
+        $this->execution = GeneralUtility::makeInstance(Execution::class);
     }
 
     /**
@@ -590,24 +594,10 @@ abstract class AbstractTask
     }
 
     /**
-     * Log exception via GeneralUtility::sysLog
-     *
      * @param \Exception $e
      */
     protected function logException(\Exception $e)
     {
-        GeneralUtility::sysLog($e->getMessage(), 'scheduler', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-        $this->getLogger()->error('A Task Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
-    }
-
-    /**
-     * Instantiates a logger
-     *
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        return $logManager->getLogger(static::class);
+        $this->logger->error('A Task Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
     }
 }

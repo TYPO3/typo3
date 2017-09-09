@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\View;
  */
 
 use Doctrine\DBAL\Driver\Statement;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
@@ -52,8 +54,10 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 /**
  * Child class for the Web > Page module
  */
-class PageLayoutView
+class PageLayoutView implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * If TRUE, users/groups are shown in the page info box.
      *
@@ -3871,11 +3875,7 @@ class PageLayoutView
                     }
                 }
             } else {
-                GeneralUtility::sysLog(
-                    sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table),
-                    'core',
-                    GeneralUtility::SYSLOG_SEVERITY_ERROR
-                );
+                $this->logger->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
             }
         }
         return $fieldListArr;

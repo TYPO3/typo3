@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use Doctrine\DBAL\Exception\ConnectionException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -66,8 +68,10 @@ use TYPO3\CMS\Frontend\View\AdminPanelView;
  * The use of this class should be inspired by the order of function calls as
  * found in \TYPO3\CMS\Frontend\Http\RequestHandler.
  */
-class TypoScriptFrontendController
+class TypoScriptFrontendController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * The page id (int)
      * @var string
@@ -812,7 +816,7 @@ class TypoScriptFrontendController
                 $warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
                 $this->disableCache();
             }
-            GeneralUtility::sysLog($warning, 'cms', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            $this->logger->warning($warning);
         }
         $this->cHash = $cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
@@ -869,7 +873,7 @@ class TypoScriptFrontendController
             if ($this->checkPageUnavailableHandler()) {
                 $this->pageUnavailableAndExit($message);
             } else {
-                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                $this->logger->emergency($message, ['exception' => $exception]);
                 throw new ServiceUnavailableException($message, 1301648782);
             }
         }
@@ -1342,7 +1346,7 @@ class TypoScriptFrontendController
                     if ($this->checkPageUnavailableHandler()) {
                         $this->pageUnavailableAndExit($message);
                     } else {
-                        GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                        $this->logger->alert($message);
                         throw new ServiceUnavailableException($message, 1301648975);
                     }
                 }
@@ -1457,7 +1461,7 @@ class TypoScriptFrontendController
                 if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
                     $this->pageNotFoundAndExit($message);
                 } else {
-                    GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                    $this->logger->error($message);
                     throw new PageNotFoundException($message, 1301648780);
                 }
             }
@@ -1468,7 +1472,7 @@ class TypoScriptFrontendController
             if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling']) {
                 $this->pageNotFoundAndExit($message);
             } else {
-                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                $this->logger->error($message);
                 throw new PageNotFoundException($message, 1301648781);
             }
         }
@@ -1506,7 +1510,7 @@ class TypoScriptFrontendController
             if ($this->checkPageUnavailableHandler()) {
                 $this->pageUnavailableAndExit($message);
             } else {
-                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                $this->logger->error($message);
                 throw new ServiceUnavailableException($message, 1301648167);
             }
         }
@@ -1517,7 +1521,7 @@ class TypoScriptFrontendController
                 if ($this->checkPageUnavailableHandler()) {
                     $this->pageUnavailableAndExit($message);
                 } else {
-                    GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                    $this->logger->warning($message);
                     throw new ServiceUnavailableException($message, 1301648234);
                 }
             } else {
@@ -1595,7 +1599,7 @@ class TypoScriptFrontendController
             } else {
                 $pageLog[] = $page['uid'];
                 $message = 'Page shortcuts were looping in uids ' . implode(',', $pageLog) . '...!';
-                GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                $this->logger->error($message);
                 throw new \RuntimeException($message, 1294587212);
             }
         }
@@ -2441,7 +2445,7 @@ class TypoScriptFrontendController
                         $this->pageUnavailableAndExit($message);
                     } else {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
-                        GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                        $this->logger->alert($message);
                         throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
                     }
                 } else {
@@ -2487,7 +2491,7 @@ class TypoScriptFrontendController
                     $this->pageUnavailableAndExit('No TypoScript template found!');
                 } else {
                     $message = 'No TypoScript template found!';
-                    GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                    $this->logger->alert($message);
                     throw new ServiceUnavailableException($message, 1294587218);
                 }
             }
@@ -2589,7 +2593,7 @@ class TypoScriptFrontendController
         // If default translation is not available:
         if ((!$this->sys_language_uid || !$this->sys_language_content) && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'])) {
             $message = 'Page is not available in default language.';
-            GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+            $this->logger->error($message);
             $this->pageNotFoundAndExit($message);
         }
         $this->updateRootLinesWithTranslations();
@@ -3941,17 +3945,11 @@ class TypoScriptFrontendController
     /**
      * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
      *
-     * @param string $reason An optional reason to be written to the syslog.
+     * @param string $reason An optional reason to be written to the log.
      * @param bool $internal Whether the call is done from core itself (should only be used by core).
      */
     public function set_no_cache($reason = '', $internal = false)
     {
-        if ($internal && isset($GLOBALS['BE_USER'])) {
-            $severity = GeneralUtility::SYSLOG_SEVERITY_NOTICE;
-        } else {
-            $severity = GeneralUtility::SYSLOG_SEVERITY_WARNING;
-        }
-
         if ($reason !== '') {
             $warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
         } else {
@@ -3975,7 +3973,11 @@ class TypoScriptFrontendController
             $warning .= ' Caching is disabled!';
             $this->disableCache();
         }
-        GeneralUtility::sysLog($warning, 'cms', $severity);
+        if ($internal && isset($GLOBALS['BE_USER'])) {
+            $this->logger->notice($warning);
+        } else {
+            $this->logger->warning($warning);
+        }
     }
 
     /**

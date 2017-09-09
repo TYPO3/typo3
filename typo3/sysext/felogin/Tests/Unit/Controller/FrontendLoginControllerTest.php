@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -68,6 +69,7 @@ class FrontendLoginControllerTest extends \TYPO3\TestingFramework\Core\Unit\Unit
         $this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, ['dummy']);
         $this->accessibleFixture->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         $this->accessibleFixture->_set('frontendController', $this->createMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class));
+        $this->accessibleFixture->setLogger(new NullLogger());
         $this->setUpFakeSitePathAndHost();
     }
 

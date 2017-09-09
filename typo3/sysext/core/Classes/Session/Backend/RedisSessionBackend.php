@@ -15,10 +15,11 @@ namespace TYPO3\CMS\Core\Session\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotUpdatedException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class RedisSessionBackend
@@ -26,8 +27,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
  * 'database' (default 0), 'port' (default 3679) and 'password' (no default value).
  */
-class RedisSessionBackend implements SessionBackendInterface
+class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     /**
      * @var array
@@ -249,11 +251,7 @@ class RedisSessionBackend implements SessionBackendInterface
                 $this->configuration['port'] ?? 6379
             );
         } catch (\RedisException $e) {
-            GeneralUtility::sysLog(
-                'Could not connect to redis server.',
-                'core',
-                GeneralUtility::SYSLOG_SEVERITY_ERROR
-            );
+            $this->logger->alert('Could not connect to redis server.', ['exception' => $e]);
         }
 
         if (!$this->connected) {

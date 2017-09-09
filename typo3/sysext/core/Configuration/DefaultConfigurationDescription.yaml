@@ -145,8 +145,8 @@ SYS:
             type: text
             description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
         systemLog:
-            type: list
-            description: '<p>semi-colon separated list. Defines one or more logging methods. Possible methods:</p><dl><dt>file,&lt;abs-path-to-file&gt;[,&lt;level&gt;]</dt><dd>logs to a file</dd><dt>mail,&lt;to&gt;[/&lt;from&gt;][,&lt;level&gt;]</dt><dd>sends the log entries via mail</dd><dt>syslog,&lt;facility&gt;,[,&lt;level&gt;]</dt><dd>uses the operating system''s log. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).</dd><dt>error_log[,,&lt;level&gt;]</dt><dd>uses the PHP error log</dd></dl><p>The &lt;level&gt; is the individual logging level (see <a href="#SYS-systemLogLevel">[SYS][systemLogLevel]</a>).</p>'
+            type: bool
+            description: 'Enables the deprecated system log functionality. Log data is written the to the Logging API.'
         systemLogLevel:
             type: int
             allowedValues:
@@ -202,19 +202,16 @@ SYS:
             description: 'Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\CMS\Core\Error\DebugExceptionHandler". This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if [SYS][displayErrors] is set to "1" or is set to "-1" or "2" and the [SYS][devIPmask] matches the user''s IP.'
         errorHandler:
             type: phpClass
-            description: 'Classname to handle PHP errors. E.g.: TYPO3\CMS\Core\Error\ErrorHandler. This class displays and logs all errors that are registered as [SYS][errorHandlerErrors]. Leave empty to disable error handling. Errors can be logged to syslog (see: [SYS][systemLog]), to the installed developer log and to the "syslog" table. If an error is registered in [SYS][exceptionalErrors] it will be turned into an exception to be handled by the configured exceptionHandler.'
+            description: 'Classname to handle PHP errors. E.g.: TYPO3\CMS\Core\Error\ErrorHandler. This class displays and logs all errors that are registered as [SYS][errorHandlerErrors]. Leave empty to disable error handling. Errors will be logged and can be sent to the optionally installed developer log or to the "syslog" database table. If an error is registered in [SYS][exceptionalErrors] it will be turned into an exception to be handled by the configured exceptionHandler.'
         errorHandlerErrors:
             type: errors
             description: 'The E_* constant that will be handled by the [SYS][errorHandler]. Not all PHP error types can be handled! Default is 30466 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).'
         exceptionalErrors:
             type: errors
             description: 'The E_* constant that will be converted into an exception by the default [SYS][errorHandler]. Default is 20480 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).'
-        syslogErrorReporting:
-            type: errors
-            description: 'Configures which PHP errors should be logged to the configured syslogs (see: [SYS][systemLog]). If set to "0" no PHP errors are logged to the syslog. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).'
         belogErrorReporting:
             type: errors
-            description: 'Configures which PHP errors should be logged to the "syslog" table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).'
+            description: 'Configures which PHP errors should be logged to the "syslog" database table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).'
         generateApacheHtaccess:
             type: bool
             description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'

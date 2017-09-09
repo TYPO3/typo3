@@ -138,9 +138,6 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<trans-unit id="ll_enter_your_data">
 				<source>Username or email address:</source>
 			</trans-unit>
-			<trans-unit id="noValidRedirectUrl">
-				<source>Url "%s" for redirect was not accepted!</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

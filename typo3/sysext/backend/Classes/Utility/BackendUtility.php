@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -1245,8 +1247,7 @@ class BackendUtility
                  * The storage does not exist anymore
                  * Log the exception message for admins as they maybe can restore the storage
                  */
-                $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", referenceUid: ' . $referenceUid . ')';
-                GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+                self::getLogger()->error($e->getMessage(), ['table' => $tableName, 'fieldName' => $fieldName, 'referenceUid' => $referenceUid, 'exception' => $e]);
             }
         }
 
@@ -4467,6 +4468,14 @@ class BackendUtility
     protected static function getQueryBuilderForTable($table)
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    protected static function getLogger()
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
     /**

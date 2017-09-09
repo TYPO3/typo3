@@ -14,18 +14,23 @@ namespace TYPO3\CMS\Felogin\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
  */
-class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class FrontendLoginController extends AbstractPlugin implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Same as class name
      *
@@ -1031,7 +1036,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             return $url;
         }
         // URL is not allowed
-        GeneralUtility::sysLog(sprintf($this->pi_getLL('noValidRedirectUrl'), $url), 'felogin', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+        $this->logger->warning('Url "' . $url . '" for redirect was not accepted!');
         return '';
     }
 

@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -584,11 +586,7 @@ class TypoScriptParser
                     $fakeThis = false;
                     $newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
                 } else {
-                    GeneralUtility::sysLog(
-                        'Missing function definition for ' . $modifierName . ' on TypoScript',
-                        'core',
-                        GeneralUtility::SYSLOG_SEVERITY_WARNING
-                    );
+                    $this->getLogger()->warning('Missing function definition for ' . $modifierName . ' on TypoScript');
                 }
         }
         return $newValue;
@@ -790,7 +788,7 @@ class TypoScriptParser
     {
         $includedFiles = [];
         if ($cycle_counter > 100) {
-            GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            self::getLogger()->warning('It appears like TypoScript code is looping over itself. Check your templates for "<INCLUDE_TYPOSCRIPT: ..." tags');
             if ($returnFiles) {
                 return [
                     'typoscript' => '',
@@ -1007,7 +1005,7 @@ class TypoScriptParser
 
     /**
      * Process errors in INCLUDE_TYPOSCRIPT tags
-     * Errors are logged in sysLog and printed in the concatenated Typoscript result (as can be seen in Template Analyzer)
+     * Errors are logged and printed in the concatenated TypoScript result (as can be seen in Template Analyzer)
      *
      * @param string $error Text of the error message
      * @return string The error message encapsulated in comments
@@ -1015,7 +1013,7 @@ class TypoScriptParser
      */
     protected static function typoscriptIncludeError($error)
     {
-        GeneralUtility::sysLog($error, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+        self::getLogger()->warning($error);
         return "\n###\n### ERROR: " . $error . "\n###\n\n";
     }
 
@@ -1049,7 +1047,7 @@ class TypoScriptParser
     public static function extractIncludes($string, $cycle_counter = 1, array $extractedFileNames = [], $parentFilenameOrPath = '')
     {
         if ($cycle_counter > 10) {
-            GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+            self::getLogger()->warning('It appears like TypoScript code is looping over itself. Check your templates for "<INCLUDE_TYPOSCRIPT: ..." tags');
             return '
 ###
 ### ERROR: Recursion!
@@ -1344,5 +1342,18 @@ class TypoScriptParser
     protected function modifyHTMLColorAll($color, $all)
     {
         return $this->modifyHTMLColor($color, $all, $all, $all);
+    }
+
+    /**
+     * Get a logger instance
+     *
+     * This class uses logging mostly in static functions, hence we need a static getter for the logger.
+     * Injection of a logger instance via GeneralUtility::makeInstance is not possible.
+     *
+     * @return LoggerInterface
+     */
+    protected static function getLogger()
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 }
