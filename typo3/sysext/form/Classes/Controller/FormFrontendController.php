@@ -57,8 +57,8 @@ class FormFrontendController extends ActionController
         if (!empty($this->settings['persistenceIdentifier'])) {
             $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier']);
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
-            $formDefinition = $this->overrideByFlexFormSettings($formDefinition);
             $formDefinition = $this->overrideByTypoScriptSettings($formDefinition);
+            $formDefinition = $this->overrideByFlexFormSettings($formDefinition);
         }
         $this->view->assign('formConfiguration', $formDefinition);
     }
