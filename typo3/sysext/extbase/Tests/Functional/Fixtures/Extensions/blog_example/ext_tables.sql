@@ -31,7 +31,7 @@ CREATE TABLE tx_blogexample_domain_model_blog (
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
@@ -75,7 +75,7 @@ CREATE TABLE tx_blogexample_domain_model_post (
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-	l18n_diffsource mediumblob NOT NULL,
+	l18n_diffsource mediumblob,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
