@@ -309,7 +309,7 @@ CREATE TABLE sys_file_metadata (
 	# Language fields
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob NOT NULL,
+	l10n_diffsource mediumblob,
 
 	# Versioning fields
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
@@ -394,7 +394,7 @@ CREATE TABLE sys_file_reference (
 	# Language fields
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob NOT NULL,
+	l10n_diffsource mediumblob,
 
 	# Reference fields (basically same as MM table)
 	uid_local int(11) DEFAULT '0' NOT NULL,
@@ -667,7 +667,7 @@ CREATE TABLE sys_category (
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob NOT NULL,
+	l10n_diffsource mediumblob,
 
 	title tinytext NOT NULL,
 	description text,
