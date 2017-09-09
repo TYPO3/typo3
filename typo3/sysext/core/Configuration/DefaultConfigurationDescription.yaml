@@ -381,7 +381,7 @@ FE:
             description: 'Additional relative paths (comma-list) to allow TypoScript resources be in. Should be prepended with ''/''. If not, then any path where the first part is like this path will match. That is: ''myfolder/ , myarchive'' will match eg. ''myfolder/'', ''myarchive/'', ''myarchive_one/'', ''myarchive_2/'' ... No check is done to see if this directory actually exists in the root of the site. Paths are matched by simply checking if these strings equals the first part of any TypoScript resource filepath. (See class template, function init() in <code>\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser)</code>'
         debug:
             type: bool
-            description: 'If enabled, additional information (if the page was cached, and how long the processing took) as HTML comments is rendered at the end of each frontend request. This can also be enabled/disabled via the TypoScript option <code>config.debug = 0</code>.'
+            description: 'If enabled, the total parsetime of the page is added as HTTP response header "X-TYPO3-Parsetime". This can also be enabled/disabled via the TypoScript option <code>config.debug = 0</code>.'
         compressionLevel:
             type: int
             description: 'Determines output compression of FE output. Makes output smaller but slows down the page generation depending on the compression level. Requires zlib in your PHP installation. Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'

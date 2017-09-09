@@ -229,16 +229,22 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Store session data for fe_users
         $this->controller->storeSessionData();
+
+        // Create a Response object when sending content
+        if ($sendTSFEContent) {
+            $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+        }
+
         // Statistics
         $GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(true);
-        if ($this->controller->isOutputting()) {
+        if ($sendTSFEContent) {
             if (isset($this->controller->config['config']['debug'])) {
-                $debugParseTime = (bool)$this->controller->config['config']['debug'];
+                $includeParseTime = (bool)$this->controller->config['config']['debug'];
             } else {
-                $debugParseTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
+                $includeParseTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
             }
-            if ($debugParseTime) {
-                $this->controller->content .= LF . '<!-- Parsetime: ' . $this->timeTracker->getParseTime() . 'ms -->';
+            if ($includeParseTime) {
+                $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
             }
         }
         $this->controller->redirectToExternalUrl();
@@ -257,8 +263,6 @@ class RequestHandler implements RequestHandlerInterface
         }
 
         if ($sendTSFEContent) {
-            /** @var \TYPO3\CMS\Core\Http\Response $response */
-            $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
             $response->getBody()->write($this->controller->content);
         }
         GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
