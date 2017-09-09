@@ -37,12 +37,19 @@ class LocalConfigurationValueService
      */
     public function getCurrentConfigurationData(): array
     {
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        $localConfiguration = $configurationManager->getMergedLocalConfiguration();
+
         $data = [];
         $commentArray = $this->getDefaultConfigArrayComments();
 
-        foreach ($GLOBALS['TYPO3_CONF_VARS'] as $sectionName => $section) {
+        foreach ($localConfiguration as $sectionName => $section) {
             if (isset($commentArray[$sectionName])) {
-                $data[$sectionName] = $this->recursiveConfigurationFetching($section, $commentArray[$sectionName]);
+                $data[$sectionName] = $this->recursiveConfigurationFetching(
+                    $section,
+                    isset($GLOBALS['TYPO3_CONF_VARS'][$sectionName]) ? $GLOBALS['TYPO3_CONF_VARS'][$sectionName] : null,
+                    $commentArray[$sectionName]
+                );
             }
         }
 
@@ -56,11 +63,12 @@ class LocalConfigurationValueService
      * to check entries recursively.
      *
      * @param array $sections
+     * @param array|null $sectionsFromCurrentConfiguration
      * @param array $descriptions
      * @param array $path
      * @return array
      */
-    protected function recursiveConfigurationFetching(array $sections, array $descriptions, array $path = []): array
+    protected function recursiveConfigurationFetching(array $sections, array $sectionsFromCurrentConfiguration, array $descriptions, array $path = []): array
     {
         $data = [];
 
@@ -85,6 +93,10 @@ class LocalConfigurationValueService
                 $itemData['fieldType'] = $descriptionInfo['type'];
                 $itemData['description'] = $descriptionInfo['description'];
                 $itemData['allowedValues'] = $descriptionInfo['allowedValues'];
+                $itemData['differentValueInCurrentConfiguration'] = (!isset($descriptionInfo['compareValuesWithCurrentConfiguration']) ||
+                    $descriptionInfo['compareValuesWithCurrentConfiguration']) &&
+                    isset($sectionsFromCurrentConfiguration[$key]) &&
+                    $value !== $sectionsFromCurrentConfiguration[$key];
                 switch ($descriptionType) {
                     case 'multiline':
                         $itemData['type'] = 'textarea';

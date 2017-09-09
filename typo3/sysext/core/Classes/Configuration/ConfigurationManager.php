@@ -136,6 +136,18 @@ class ConfigurationManager
     }
 
     /**
+     * Returns local configuration array merged with default configuration
+     *
+     * @return array
+     */
+    public function getMergedLocalConfiguration(): array
+    {
+        $localConfiguration = $this->getDefaultConfiguration();
+        ArrayUtility::mergeRecursiveWithOverrule($localConfiguration, $this->getLocalConfiguration());
+        return $localConfiguration;
+    }
+
+    /**
      * Get the file location of the additional configuration file,
      * currently the path and filename.
      *

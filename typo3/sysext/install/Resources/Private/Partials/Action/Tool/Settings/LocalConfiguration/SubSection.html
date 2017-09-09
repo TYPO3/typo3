@@ -34,6 +34,14 @@
 					</f:if>
 				</div>
 				<div class="item-body">
+					<f:if condition="{item.differentValueInCurrentConfiguration}">
+						<div class="t3js-infobox callout callout-sm callout-warning">
+							<div class="callout-body">
+								Note that <code>$GLOBALS['TYPO3_CONF_VARS']</code> currently contains a different value.
+								This could mean that the value is overwritten in AdditionalConfiguration.php.
+							</div>
+						</div>
+					</f:if>
 					<f:if condition="{f:count(subject: item.allowedValues)} || {item.dataType} == 'dropdown'">
 						<f:then>
 							<div class="form-group">
