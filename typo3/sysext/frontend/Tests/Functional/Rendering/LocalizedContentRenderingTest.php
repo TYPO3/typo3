@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
 
 /**
@@ -1229,27 +1227,5 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
             '[T3BOARD] image translated to DE from DK',
         ];
         return array_diff($allElements, $visibleTitles);
-    }
-
-    /**
-     * Adds TypoScript setup snippet to the existing template record
-     *
-     * @param int $pageId
-     * @param string $typoScript
-     */
-    protected function addTypoScriptToTemplateRecord(int $pageId, string $typoScript)
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
-
-        $template = $connection->select(['*'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
-        if (empty($template)) {
-            $this->fail('Cannot find root template on page with id: "' . $pageId . '"');
-        }
-        $updateFields['config'] = $template['config'] . LF . $typoScript;
-        $connection->update(
-            'sys_template',
-            $updateFields,
-            ['uid' => $template['uid']]
-        );
     }
 }

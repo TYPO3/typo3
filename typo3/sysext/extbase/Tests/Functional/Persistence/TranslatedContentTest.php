@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
 
@@ -882,7 +881,6 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
                                 config.sys_language_mode = content_fallback;1,0',
-//                'visibleRecordHeaders' => ['[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2', '[DK] Without default language', '[DK] UnHidden Element #4'],
                 'visibleRecords' => [
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
@@ -979,7 +977,6 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                $dd = $this->getNonVisibleFileTitles($visibleFileTitles);
                 $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
@@ -1157,27 +1154,5 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
             '[T3BOARD] image translated to DE from DK',
         ];
         return array_diff($allElements, $visibleTitles);
-    }
-
-    /**
-     * Adds TypoScript setup snippet to the existing template record
-     *
-     * @param int $pageId
-     * @param string $typoScript
-     */
-    protected function addTypoScriptToTemplateRecord(int $pageId, string $typoScript)
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
-
-        $template = $connection->select(['*'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
-        if (empty($template)) {
-            $this->fail('Cannot find root template on page with id: "' . $pageId . '"');
-        }
-        $updateFields['config'] = $template['config'] . LF . $typoScript;
-        $connection->update(
-            'sys_template',
-            $updateFields,
-            ['uid' => $template['uid']]
-        );
     }
 }
