@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray;
 use TYPO3\CMS\Core\Package\MetaData;
@@ -1284,7 +1284,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1408,7 +1408,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         $uniqueStringInLocalconf = $this->getUniqueId('foo');
         file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($packageManager);
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1431,7 +1431,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         $extensionName = $this->getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         $GLOBALS['TYPO3_LOADED_EXT'] = new LoadedExtensionsArray($packageManager);
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1453,7 +1453,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1507,7 +1507,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1518,8 +1518,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->any())->method('has')->will($this->returnValue(true));
-        $mockCache->expects($this->once())->method('get')->willReturn('<?php ' . serialize(['tca' => [], 'categoryRegistry' => CategoryRegistry::getInstance()]) . '?>');
+        $mockCache->expects($this->once())->method('requireOnce')->willReturn(['tca' => [], 'categoryRegistry' => \serialize(CategoryRegistry::getInstance())]);
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca(true);
     }
 
@@ -1540,7 +1539,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         $uniqueStringInTableConfiguration = $this->getUniqueId('table_configuration_');
         $tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
         file_put_contents($packagePath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1551,7 +1550,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('has')->will($this->returnValue(false));
+        $mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(false));
         $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTableConfiguration), $this->anything());
         ExtensionManagementUtility::loadBaseTca(true);
     }
@@ -1561,7 +1560,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function loadBaseTcaWritesCacheEntryWithNoTags()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1572,7 +1571,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
             ->getMock();
         $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('has')->will($this->returnValue(false));
+        $mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(false));
         $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
     }
@@ -1616,7 +1615,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1653,7 +1652,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
                 'ext_tables.php' => $extTablesLocation
             ]
         ];
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1677,7 +1676,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         $GLOBALS['TYPO3_LOADED_EXT'] = [
             $extensionName => [],
         ];
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -1699,7 +1698,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
      */
     public function createExtTablesCacheEntryWritesCacheEntryWithNoTags()
     {
-        $mockCache = $this->getMockBuilder(AbstractFrontend::class)
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();

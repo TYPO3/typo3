@@ -1578,11 +1578,10 @@ tt_content.' . $key . $suffix . ' {
             $cacheIdentifier = static::getBaseTcaCacheIdentifier();
             /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
             $codeCache = static::getCacheManager()->getCache('cache_core');
-            if ($codeCache->has($cacheIdentifier)) {
-                // substr is necessary, because the php frontend wraps php code around the cache value
-                $cacheData = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
+            $cacheData = $codeCache->requireOnce($cacheIdentifier);
+            if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
-                GeneralUtility::setSingletonInstance(CategoryRegistry::class, $cacheData['categoryRegistry']);
+                GeneralUtility::setSingletonInstance(CategoryRegistry::class, unserialize($cacheData['categoryRegistry'], [CategoryRegistry::class]));
             } else {
                 static::buildBaseTcaFromSingleFiles();
                 static::createBaseTcaCacheFile();
@@ -1689,7 +1688,12 @@ tt_content.' . $key . $suffix . ' {
     {
         /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
         $codeCache = self::getCacheManager()->getCache('cache_core');
-        $codeCache->set(static::getBaseTcaCacheIdentifier(), serialize(['tca' => $GLOBALS['TCA'], 'categoryRegistry' => CategoryRegistry::getInstance()]));
+        $codeCache->set(
+            static::getBaseTcaCacheIdentifier(),
+            'return '
+                . var_export(['tca' => $GLOBALS['TCA'], 'categoryRegistry' => serialize(CategoryRegistry::getInstance())], true)
+                . ';'
+        );
     }
 
     /**
@@ -1699,7 +1703,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getBaseTcaCacheIdentifier()
     {
-        return 'tca_base_' . sha1(TYPO3_version . PATH_site . 'tca_with_category_registry' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+        return 'tca_base_' . sha1(TYPO3_version . PATH_site . 'tca_code' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
     }
 
     /**
