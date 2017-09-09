@@ -172,7 +172,7 @@ class InfoModuleController extends BaseScriptClass
             ->setModuleName($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setGetVariables([
-                'M',
+                'route',
                 'id',
                 'edit_record',
                 'pointer',

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -869,7 +868,7 @@ class DatabaseRecordList
                     ->setModuleName('web_list')
                     ->setGetVariables([
                         'id',
-                        'M',
+                        'route',
                         'imagemode',
                         'pointer',
                         'table',
@@ -3580,12 +3579,8 @@ class DatabaseRecordList
         $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
         if ($routePath = GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(Router::class);
-            $route = $router->match($routePath);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $urlParameters);
-        } elseif ($moduleName = GeneralUtility::_GP('M')) {
-            $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
         } else {
             $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?' . ltrim(
                     GeneralUtility::implodeArrayForUrl('', $urlParameters),
@@ -4152,12 +4147,8 @@ class DatabaseRecordList
     protected function determineScriptUrl()
     {
         if ($routePath = GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(Router::class);
-            $route = $router->match($routePath);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
-        } elseif ($moduleName = GeneralUtility::_GP('M')) {
-            $this->thisScript = BackendUtility::getModuleUrl($moduleName);
+            $this->thisScript = (string)$uriBuilder->buildUriFromRoutePath($routePath);
         } else {
             $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
         }

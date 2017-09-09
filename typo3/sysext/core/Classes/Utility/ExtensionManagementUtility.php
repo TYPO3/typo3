@@ -858,9 +858,8 @@ class ExtensionManagementUtility
         }
 
         // add additional configuration
+        $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
         if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
-            $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
-
             if (!empty($moduleConfiguration['icon'])) {
                 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
                 $iconIdentifier = 'module-' . $fullModuleSignature;
@@ -876,6 +875,32 @@ class ExtensionManagementUtility
 
             $GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
         }
+
+        // Also register the module as regular route
+        // Build Route objects from the data
+        $name = $fullModuleSignature;
+        if (isset($moduleConfiguration['path'])) {
+            $path = $moduleConfiguration['path'];
+        } else {
+            $path = str_replace('_', '/', $name);
+        }
+        $path = '/' . trim($path, '/') . '/';
+
+        $options = [
+            'module' => true,
+            'moduleName' => $fullModuleSignature,
+            'access' => $moduleConfiguration['access'] ?: 'user,group'
+        ];
+        if ($moduleConfiguration['routeTarget']) {
+            $options['target'] = $moduleConfiguration['routeTarget'];
+        }
+
+        $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+        $router->addRoute(
+            $name,
+            // @todo: see if we should do a "module route"
+            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Route::class, $path, $options)
+        );
     }
 
     /**

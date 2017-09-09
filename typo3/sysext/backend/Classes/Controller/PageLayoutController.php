@@ -975,7 +975,7 @@ class PageLayoutController
             ->setModuleName($this->moduleName)
             ->setGetVariables([
                 'id',
-                'M',
+                'route',
                 'edit_record',
                 'pointer',
                 'new_unique_uid',

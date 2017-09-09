@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * </output>
  *
  * <code title="Explicitly set parameters to be stored in the shortcut">
- * <f:be.buttons.shortcut getVars="{0: 'M', 1: 'myOwnPrefix'}" setVars="{0: 'function'}" />
+ * <f:be.buttons.shortcut getVars="{0: 'route', 1: 'myOwnPrefix'}" setVars="{0: 'function'}" />
  * </code>
  * <output>
  * Shortcut button as known from the TYPO3 backend.
@@ -99,7 +99,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
             $moduleName = $currentRequest->getPluginName();
             if (count($getVars) === 0) {
                 $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-                $getVars = ['id', 'M', $modulePrefix];
+                $getVars = ['id', 'route', $modulePrefix];
             }
             $getList = implode(',', $getVars);
             $setList = implode(',', $setVars);

@@ -148,7 +148,7 @@ class RecyclerModuleController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+            $getVars = ['id', 'route', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)

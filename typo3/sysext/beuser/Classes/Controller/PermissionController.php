@@ -158,7 +158,7 @@ class PermissionController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (empty($getVars)) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+            $getVars = ['id', 'route', $modulePrefix];
         }
 
         if ($currentRequest->getControllerActionName() === 'edit') {

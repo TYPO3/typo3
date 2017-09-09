@@ -87,7 +87,7 @@ class PreviewController extends AbstractController
 
         // Remove the GET parameters related to the workspaces module and the page id
         unset($queryParameters['tx_workspaces_web_workspacesworkspaces']);
-        unset($queryParameters['M']);
+        unset($queryParameters['route']);
         unset($queryParameters['id']);
 
         // Assemble a query string from the retrieved parameters

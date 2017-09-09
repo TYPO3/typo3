@@ -59,13 +59,21 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handleRequest(ServerRequestInterface $request)
     {
+        // Check if a module URL is requested and deprecate this call
+        $moduleName = $request->getQueryParams()['M'] ?? $request->getParsedBody()['M'] ?? null;
         // Allow the login page to be displayed if routing is not used and on index.php
-        $pathToRoute = (string)$request->getQueryParams()['route'] ?: '/login';
+        $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? $moduleName ?? '/login';
         $request = $request->withAttribute('routePath', $pathToRoute);
 
         // skip the BE user check on the login page
         // should be handled differently in the future by checking the Bootstrap directly
         $this->boot($pathToRoute === '/login');
+
+        if ($moduleName !== null) {
+            trigger_error('Calling the TYPO3 Backend with "M" GET parameter will be removed in TYPO3 v10,'
+                . ' the calling code calls this script with "&M=' . $moduleName . '" and needs to be adapted'
+                . ' to use the TYPO3 API.', E_USER_DEPRECATED);
+        }
 
         // Check if the router has the available route and dispatch.
         try {

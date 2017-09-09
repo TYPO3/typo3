@@ -125,7 +125,7 @@ class BackendUserActionController extends ActionController
         $extensionName = $currentRequest->getControllerExtensionName();
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+            $getVars = ['id', 'route', $modulePrefix];
         }
         $shortcutName = $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xml:backendUsers');
         if ($this->request->getControllerName() === 'BackendUser') {

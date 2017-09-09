@@ -251,7 +251,7 @@ function jumpToUrl(URL) {
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 
         // Setting default scriptID, trim forward slash from route
-        $this->scriptID = GeneralUtility::_GET('M') !== null ? GeneralUtility::_GET('M') : ltrim(GeneralUtility::_GET('route'), '/');
+        $this->scriptID = ltrim(GeneralUtility::_GET('route'), '/');
         $this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/', '-', $this->scriptID);
         // Individual configuration per script? If so, make a recursive merge of the arrays:
         if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {

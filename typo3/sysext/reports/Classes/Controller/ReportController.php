@@ -172,7 +172,7 @@ class ReportController extends ActionController
         $setVars = $this->request->hasArgument('setVars') ? $this->request->getArgument('setVars') : [];
         if (count($getVars) === 0) {
             $modulePrefix = strtolower('tx_' . $this->request->getControllerExtensionName() . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+            $getVars = ['id', 'route', $modulePrefix];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)

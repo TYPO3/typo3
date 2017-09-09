@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  */
 
 use TYPO3\CMS\Backend\RecordList\AbstractRecordList;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -1189,12 +1188,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
         if ($routePath = GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(Router::class);
-            $route = $router->match($routePath);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $urlParameters);
-        } elseif ($moduleName = GeneralUtility::_GP('M')) {
-            $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
         } else {
             $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&');
         }

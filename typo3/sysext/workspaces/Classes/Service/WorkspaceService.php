@@ -863,10 +863,10 @@ class WorkspaceService implements SingletonInterface
         $uriBuilder = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $redirect = 'index.php?redirect_url=';
         // @todo this should maybe be changed so that the extbase URI Builder can deal with module names directly
-        $originalM = GeneralUtility::_GET('M');
-        GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'M');
+        $originalM = GeneralUtility::_GET('route');
+        GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'route');
         $viewScript = $uriBuilder->uriFor('index', [], 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
-        GeneralUtility::_GETset($originalM, 'M');
+        GeneralUtility::_GETset($originalM, 'route');
         if ($addDomain === true) {
             return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
         }

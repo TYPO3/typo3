@@ -307,6 +307,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
 
     /**
      * Adds the correct token, if the url is an index.php script
+     * @todo: this needs love
      *
      * @param string $url
      * @return string
@@ -320,16 +321,20 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         if (isset($parameters['returnUrl'])) {
             $parsedReturnUrl = parse_url($parameters['returnUrl']);
             parse_str($parsedReturnUrl['query'], $returnUrlParameters);
-            if (strpos($parsedReturnUrl['path'], 'index.php') !== false && isset($returnUrlParameters['M'])) {
-                $module = $returnUrlParameters['M'];
+            if (strpos($parsedReturnUrl['path'], 'index.php') !== false && !empty($returnUrlParameters['route'])) {
+                $module = $returnUrlParameters['route'];
                 $returnUrl = BackendUtility::getModuleUrl($module, $returnUrlParameters);
                 $parameters['returnUrl'] = $returnUrl;
                 $url = $parsedUrl['path'] . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
             }
         }
+        if (isset($parameters['M']) && empty($parameters['route'])) {
+            $parameters['route'] = $parameters['M'];
+            unset($parameters['M']);
+        }
 
-        if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['M'])) {
-            $module = $parameters['M'];
+        if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
+            $module = $parameters['route'];
             $url = BackendUtility::getModuleUrl($module, $parameters);
         } elseif (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
             $routePath = $parameters['route'];

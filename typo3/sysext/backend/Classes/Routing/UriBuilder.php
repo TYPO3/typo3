@@ -55,6 +55,25 @@ class UriBuilder
     }
 
     /**
+     * Generates a URL or path for a specific route based on the given rout.
+     * Currently used to link to the current script, it is encouraged to use "buildUriFromRoute" if possible.
+     *
+     * If there is no route with the given name, the generator throws the RouteNotFoundException.
+     *
+     * @param string $pathInfo The path to the route
+     * @param array $parameters An array of parameters
+     * @param string $referenceType The type of reference to be generated (one of the constants)
+     * @return Uri The generated Uri
+     * @throws RouteNotFoundException If the named route doesn't exist
+     */
+    public function buildUriFromRoutePath($pathInfo, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
+    {
+        $router = GeneralUtility::makeInstance(Router::class);
+        $route = $router->match($pathInfo);
+        return $this->buildUriFromRoute($route->getOption('_identifier'), $parameters, $referenceType);
+    }
+
+    /**
      * Generates a URL or path for a specific route based on the given parameters.
      * When the route is configured with "access=public" then the token generation is left out.
      *
@@ -106,8 +125,8 @@ class UriBuilder
     public function buildUriFromModule($moduleName, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
         $parameters = [
-            'M' => $moduleName,
-            'moduleToken' => FormProtectionFactory::get('backend')->generateToken('moduleCall', $moduleName)
+            'route' => $moduleName,
+            'token' => FormProtectionFactory::get('backend')->generateToken('route', $moduleName)
         ] + $parameters;
         return $this->buildUri($parameters, $referenceType);
     }

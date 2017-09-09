@@ -34,17 +34,11 @@ class Application implements ApplicationInterface
     protected $entryPointLevel = 1;
 
     /**
-     * @var \Psr\Http\Message\ServerRequestInterface
-     */
-    protected $request;
-
-    /**
      * All available request handlers that can handle backend requests (non-CLI)
      * @var array
      */
     protected $availableRequestHandlers = [
         \TYPO3\CMS\Backend\Http\RequestHandler::class,
-        \TYPO3\CMS\Backend\Http\BackendModuleRequestHandler::class,
         \TYPO3\CMS\Backend\Http\AjaxRequestHandler::class
     ];
 
@@ -81,12 +75,7 @@ class Application implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
-        $this->request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
-        if (isset($this->request->getQueryParams()['M'])) {
-            $this->request = $this->request->withAttribute('isModuleRequest', true);
-        }
-
-        $this->bootstrap->handleRequest($this->request);
+        $this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
         if ($execute !== null) {
             call_user_func($execute);

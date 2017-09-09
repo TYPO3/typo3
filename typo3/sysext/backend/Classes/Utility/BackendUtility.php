@@ -2950,14 +2950,10 @@ class BackendUtility
             $script = basename(PATH_thisScript);
         }
 
-        if (GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
-            $route = $router->match(GeneralUtility::_GP('route'));
+        if ($routePath = GeneralUtility::_GP('route')) {
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoutePath($routePath, $mainParams);
             $scriptUrl .= $addParams;
-        } elseif ($script === 'index.php' && GeneralUtility::_GET('M')) {
-            $scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
         } else {
             $scriptUrl = $script . '?' . GeneralUtility::implodeArrayForUrl('', $mainParams) . $addParams;
         }
@@ -3169,8 +3165,7 @@ class BackendUtility
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            // no route registered, use the fallback logic to check for a module
-            $uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters);
+            $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
         }
         return (string)$uri;
     }

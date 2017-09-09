@@ -362,7 +362,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->MCONF['name'])
-            ->setGetVariables(['id', 'M']);
+            ->setGetVariables(['id', 'route']);
         $buttonBar->addButton($shortcutButton);
     }
 

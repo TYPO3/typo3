@@ -379,6 +379,11 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Http\BackendModuleRequestHandler' => [
+        'restFiles' => [
+            'Breaking-82406-RoutingBackendModulesRunThroughRegularDispatcher.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

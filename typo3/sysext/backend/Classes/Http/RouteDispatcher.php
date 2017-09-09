@@ -19,9 +19,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -45,10 +48,14 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         /** @var Route $route */
         $route = $router->matchRequest($request);
         $request = $request->withAttribute('route', $route);
+        $request = $request->withAttribute('target', $route->getOption('target'));
         if (!$this->isValidRequest($request)) {
             throw new InvalidRequestTokenException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
         }
 
+        if ($route->getOption('module')) {
+            return $this->dispatchModule($request, $response);
+        }
         $targetIdentifier = $route->getOption('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
         return call_user_func_array($target, [$request, $response]);
@@ -81,5 +88,85 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         }
         $token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
         return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+    }
+
+    /**
+     * Executes the modules configured via Extbase
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface A PSR-7 response object
+     * @throws \RuntimeException
+     */
+    protected function dispatchModule(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $route = $request->getAttribute('route');
+        $moduleName = $route->getOption('moduleName');
+        $moduleConfiguration = $this->getModuleConfiguration($moduleName);
+
+        $backendUserAuthentication = $GLOBALS['BE_USER'];
+
+        // Check permissions and exit if the user has no permission for entry
+        // @todo please do not use "true" here, what a bad coding paradigm
+        $backendUserAuthentication->modAccess($moduleConfiguration, true);
+        $id = (int)$request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
+        if ($id) {
+            $permClause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
+            // Check page access
+            if (!is_array(BackendUtility::readPageAccess($id, $permClause))) {
+                // Check if page has been deleted
+                $deleteField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
+                $pageInfo = BackendUtility::getRecord('pages', $id, $deleteField, $permClause ? ' AND ' . $permClause : '', false);
+                if (!$pageInfo[$deleteField]) {
+                    throw new \RuntimeException('You don\'t have access to this page', 1289917924);
+                }
+            }
+        }
+
+        // Use regular Dispatching
+        // @todo: unify with the code above
+        $targetIdentifier = $route->getOption('target');
+        if (!empty($targetIdentifier)) {
+            // @internal routeParameters are a helper construct for the install tool only.
+            // @todo: remove this, after sub-actions in install tool can be addressed directly
+            if (!empty($moduleConfiguration['routeParameters'])) {
+                $request = $request->withQueryParams(array_merge_recursive(
+                    $request->getQueryParams(),
+                    $moduleConfiguration['routeParameters']
+                ));
+            }
+            return parent::dispatch($request, $response);
+        }
+        // extbase module
+        $configuration = [
+                'extensionName' => $moduleConfiguration['extensionName'],
+                'pluginName' => $moduleName
+            ];
+        if (isset($moduleConfiguration['vendorName'])) {
+            $configuration['vendorName'] = $moduleConfiguration['vendorName'];
+        }
+
+        // Run Extbase
+        $bootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+        $content = $bootstrap->run('', $configuration);
+
+        $response->getBody()->write($content);
+
+        return $response;
+    }
+
+    /**
+     * Returns the module configuration which is provided during module registration
+     *
+     * @param string $moduleName
+     * @return array
+     * @throws \RuntimeException
+     */
+    protected function getModuleConfiguration($moduleName)
+    {
+        if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
+            throw new \RuntimeException('Module ' . $moduleName . ' is not configured.', 1289918325);
+        }
+        return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
     }
 }
