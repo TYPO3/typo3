@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Common\LoginForm;
@@ -36,9 +36,9 @@ class AbstractController
      *
      * @param ServerRequestInterface $request
      * @param FlashMessage $message Optional status message
-     * @return string Rendered HTML
+     * @return ResponseInterface
      */
-    protected function loginForm(ServerRequestInterface $request, FlashMessage $message = null)
+    protected function loginForm(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
     {
         /** @var LoginForm $action */
         $action = GeneralUtility::makeInstance(LoginForm::class);
@@ -116,25 +116,18 @@ class AbstractController
 
     /**
      * HTTP redirect to self, preserving allowed GET variables.
-     * WARNING: This exits the script execution!
      *
-     * @param string $controller Can be set to 'tool' to redirect from step to tool controller
+     * @param ServerRequestInterface $request
      * @param string $action Set specific action for next request, used in step controller to specify next step
      * @throws Exception\RedirectLoopException
+     * @return ResponseInterface
      */
-    public function redirect($controller = '', $action = '')
+    public function redirectToSelfAction(ServerRequestInterface $request, string $action = ''): ResponseInterface
     {
-        $getPostValues = GeneralUtility::_GP('install');
-
-        $parameters = [];
-
+        $redirectCount = $request->getQueryParams()['install']['redirectCount'] ?? $request->getParsedBody()['install']['redirectCount'] ?? -1;
         // Current redirect count
-        if (isset($getPostValues['redirectCount'])) {
-            $redirectCount = (int)$getPostValues['redirectCount'] + 1;
-        } else {
-            $redirectCount = 0;
-        }
-        if ($redirectCount >= 10) {
+        $redirectCount = (int)($redirectCount)+1;
+        if ($redirectCount >= 15) {
             // Abort a redirect loop by throwing an exception. Calling this method
             // some times in a row is ok, but break a loop if this happens too often.
             throw new Exception\RedirectLoopException(
@@ -145,44 +138,15 @@ class AbstractController
                 1380581244
             );
         }
-        $parameters[] = 'install[redirectCount]=' . $redirectCount;
-
-        // Add controller parameter
-        $controllerParameter = 'install[controller]=step';
-        if ((isset($getPostValues['controller']) && $getPostValues['controller'] === 'tool')
-            || $controller === 'tool'
-        ) {
-            $controllerParameter = 'install[controller]=tool';
-        }
-        $parameters[] = $controllerParameter;
-
+        $parameters = [
+            'install[redirectCount]=' . $redirectCount
+        ];
         // Add action if specified
-        if ((string)$action !== '') {
+        if ($action !== '') {
             $parameters[] = 'install[action]=' . $action;
         }
 
         $redirectLocation = GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT') . '?' . implode('&', $parameters);
-
-        \TYPO3\CMS\Core\Utility\HttpUtility::redirect(
-            $redirectLocation,
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303
-        );
-    }
-
-    /**
-     * Creates a PSR-7 response
-     *
-     * @param string $content
-     * @return ResponseInterface
-     */
-    public function output($content = ''): ResponseInterface
-    {
-        $response = new Response('php://temp', 200, [
-            'Content-Type' => 'text/html; charset=utf-8',
-            'Cache-Control' => 'no-cache, must-revalidate',
-            'Pragma' => 'no-cache'
-        ]);
-        $response->getBody()->write($content);
-        return $response;
+        return new RedirectResponse($redirectLocation, 303);
     }
 }

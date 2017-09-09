@@ -110,7 +110,7 @@ class RecoveryRequestHandler implements RequestHandlerInterface
         } catch (AuthenticationRequiredException $e) {
             return $controller->unauthorizedAction($this->request, $e->getMessageObject());
         } catch (RedirectException $e) {
-            $controller->redirect();
+            return $controller->redirectToSelfAction($request);
         }
     }
 
@@ -381,7 +381,7 @@ class RecoveryRequestHandler implements RequestHandlerInterface
             $service = new AuthenticationService($this->session);
             $result = $service->loginWithPassword($postValues['values']['password'] ?? null);
             if ($result === true) {
-                throw new Exception\RedirectException('Login', 1504032047);
+                throw new RedirectException('Login', 1504032047);
             }
             if (!isset($postValues['values']['password']) || $postValues['values']['password'] === '') {
                 $messageText = 'Please enter the install tool password';

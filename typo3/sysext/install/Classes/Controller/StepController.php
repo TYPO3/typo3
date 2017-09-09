@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\ActionInterface;
 use TYPO3\CMS\Install\Controller\Action\Step\AbstractStepAction;
+use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\SessionService;
 
@@ -85,7 +86,7 @@ class StepController extends AbstractController
         }
         $action->setContext(ActionInterface::CONTEXT_STANDALONE);
         $action->setController('common');
-        return $this->output($action->handle());
+        return $action->handle();
     }
 
     /**
@@ -101,7 +102,7 @@ class StepController extends AbstractController
         $action->setController('common');
         $action->setContext(ActionInterface::CONTEXT_STANDALONE);
         $action->setAction('installToolPasswordNotSet');
-        return $this->output($action->handle());
+        return $action->handle();
     }
 
     /**
@@ -125,7 +126,7 @@ class StepController extends AbstractController
             $stepAction->setPostValues($postValues);
             $messages = $stepAction->execute();
             $this->addSessionMessages($messages);
-            $this->redirect();
+            throw new RedirectException('Installer Step was finished', 1504971343);
         }
     }
 
@@ -138,7 +139,7 @@ class StepController extends AbstractController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function outputSpecificStep(ServerRequestInterface $request)
+    protected function outputSpecificStep(ServerRequestInterface $request): ResponseInterface
     {
         $postValues = $request->getParsedBody()['install'] ?? [];
         $action = $this->sanitizeAction($request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? '');
@@ -154,14 +155,9 @@ class StepController extends AbstractController
         $stepAction->setToken($this->generateTokenForAction($action));
         $stepAction->setPostValues($postValues);
 
-        $needsExecution = true;
-        try {
-            // needsExecution() may throw a RedirectException to communicate that it changed
-            // configuration parameters and need an application reload.
-            $needsExecution = $stepAction->needsExecution();
-        } catch (Exception\RedirectException $e) {
-            $this->redirect();
-        }
+        // needsExecution() may throw a RedirectException to communicate that it changed
+        // configuration parameters and need an application reload.
+        $needsExecution = $stepAction->needsExecution();
 
         if ($needsExecution) {
             if ($this->isInitialInstallationInProgress()) {
@@ -170,17 +166,20 @@ class StepController extends AbstractController
                 $stepAction->setStepsCounter($currentStep, $totalSteps);
             }
             $stepAction->setMessages($this->session->getMessagesAndFlush());
-            return $this->output($stepAction->handle());
+            return $stepAction->handle();
         }
-        // Redirect to next step if there are any
+        // Redirect to next step if there are any, otherwise refresh the current request so the regular
+        // maintenance mode kicks in
         $currentPosition = array_keys($this->authenticationActions, $action, true);
         $nextAction = array_slice($this->authenticationActions, $currentPosition[0] + 1, 1);
         if (!empty($nextAction)) {
-            $this->redirect('', $nextAction[0]);
+            // Reset the redirect count now because the next action is explicitly selected
+            $queryParams = $request->getQueryParams();
+            unset($queryParams['install']['redirectCount']);
+            $request = $request->withQueryParams($queryParams);
+            return $this->redirectToSelfAction($request, $nextAction[0]);
         }
-
-        // All done, redirect to tool
-        $this->redirect('tool');
+        return $this->redirectToSelfAction($request);
     }
 
     /**
@@ -219,6 +218,7 @@ class StepController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface|null
+     * @throws RedirectException when a redirect is requested
      */
     public function executeOrOutputFirstInstallStepIfNeededAction(ServerRequestInterface $request)
     {
@@ -248,11 +248,11 @@ class StepController extends AbstractController
             if (!empty($errorMessagesFromExecute)) {
                 $action->setMessages($errorMessagesFromExecute);
             }
-            return $this->output($action->handle());
+            return $action->handle();
         }
 
         if ($wasExecuted) {
-            $this->redirect();
+            throw new RedirectException('Installer Step was executed', 1504971322);
         }
     }
 
@@ -300,6 +300,6 @@ class StepController extends AbstractController
      */
     public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
     {
-        return $this->output($this->loginForm($request, $message));
+        return $this->loginForm($request, $message);
     }
 }

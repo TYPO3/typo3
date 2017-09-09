@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * General action interface
  */
@@ -25,9 +27,9 @@ interface ActionInterface
     /**
      * Handle this action
      *
-     * @return string Rendered content
+     * @return ResponseInterface Rendered content
      */
-    public function handle();
+    public function handle(): ResponseInterface;
 
     /**
      * Set form protection token

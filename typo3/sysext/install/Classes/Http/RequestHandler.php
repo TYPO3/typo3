@@ -100,7 +100,7 @@ class RequestHandler implements RequestHandlerInterface
             // Show the login form (or, if AJAX call, just return "unauthorized"
             return $controller->unauthorizedAction($this->request, $e->getMessageObject());
         } catch (Exception\RedirectException $e) {
-            $controller->redirect();
+            return $controller->redirectToSelfAction($request);
         }
     }
 

@@ -26,11 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AjaxController extends AbstractController
 {
     /**
-     * @var string
-     */
-    protected $unauthorized = 'unauthorized';
-
-    /**
      * @var array List of valid action names that need authentication
      */
     protected $authenticationActions = [
@@ -101,24 +96,24 @@ class AjaxController extends AbstractController
     {
         $action = $this->sanitizeAction($request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? '');
         if ($action === '') {
-            $this->output('noAction');
+            return $this->createResponse('noAction', 200);
         }
         $this->validateAuthenticationAction($action);
         $actionClass = ucfirst($action);
         /** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $toolAction */
-        $toolAction = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
-        if (!($toolAction instanceof Action\ActionInterface)) {
+        $actionObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\Action\\Ajax\\' . $actionClass);
+        if (!($actionObject instanceof Action\ActionInterface)) {
             throw new Exception(
                 $action . ' does not implement ActionInterface',
                 1369474308
             );
         }
-        $toolAction->setController('ajax');
-        $toolAction->setAction($action);
-        $toolAction->setContext($request->getAttribute('context'));
-        $toolAction->setToken($this->generateTokenForAction($action));
-        $toolAction->setPostValues($request->getParsedBody()['install'] ?? []);
-        return $this->output($toolAction->handle());
+        $actionObject->setController('ajax');
+        $actionObject->setAction($action);
+        $actionObject->setContext($request->getAttribute('context'));
+        $actionObject->setToken($this->generateTokenForAction($action));
+        $actionObject->setPostValues($request->getParsedBody()['install'] ?? []);
+        return $actionObject->handle();
     }
 
     /**
@@ -130,24 +125,25 @@ class AjaxController extends AbstractController
      */
     public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
     {
-        return $this->output($this->unauthorized);
+        ob_clean();
+        return $this->createResponse('unauthorized', 403);
     }
 
     /**
      * Creates a PSR-7 response
      *
-     * @param string $content
+     * @param string $string
+     * @param int $responseCode
      * @return ResponseInterface
      */
-    public function output($content = ''): ResponseInterface
+    protected function createResponse(string $string, int $responseCode): ResponseInterface
     {
-        ob_clean();
-        $response = new Response('php://temp', 200, [
+        $response = new Response('php://temp', $responseCode, [
             'Content-Type' => 'application/json; charset=utf-8',
             'Cache-Control' => 'no-cache, must-revalidate',
             'Pragma' => 'no-cache'
         ]);
-        $response->getBody()->write($content);
+        $response->getBody()->write($string);
         return $response;
     }
 }

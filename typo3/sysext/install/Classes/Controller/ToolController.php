@@ -64,7 +64,7 @@ class ToolController extends AbstractController
         $toolAction->setToken($this->generateTokenForAction($action));
         $toolAction->setContext($request->getAttribute('context'));
         $toolAction->setPostValues($request->getParsedBody()['install'] ?? []);
-        return $this->output($toolAction->handle());
+        return $toolAction->handle();
     }
 
     /**
@@ -76,6 +76,6 @@ class ToolController extends AbstractController
      */
     public function unauthorizedAction(ServerRequestInterface $request, FlashMessage $message = null): ResponseInterface
     {
-        return $this->output($this->loginForm($request, $message));
+        return $this->loginForm($request, $message);
     }
 }

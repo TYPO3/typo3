@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -60,12 +62,15 @@ abstract class AbstractAction implements ActionInterface
     /**
      * Handles the action
      *
-     * @return string Rendered content
+     * @return ResponseInterface
      */
-    public function handle()
+    public function handle(): ResponseInterface
     {
         $this->initializeHandle();
-        return $this->executeAction();
+        return new HtmlResponse($this->executeAction(), 200, [
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
+        ]);
     }
 
     /**

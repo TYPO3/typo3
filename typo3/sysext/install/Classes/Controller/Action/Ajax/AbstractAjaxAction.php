@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\AbstractAction;
 use TYPO3\CMS\Install\View\JsonView;
@@ -49,11 +51,14 @@ abstract class AbstractAjaxAction extends AbstractAction
     /**
      * Handles the action.
      *
-     * @return string Rendered content
+     * @return ResponseInterface Rendered content
      */
-    public function handle(): string
+    public function handle(): ResponseInterface
     {
         $this->initializeHandle();
-        return json_encode($this->executeAction());
+        return new JsonResponse((array)$this->executeAction(), 200, [
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache'
+        ]);
     }
 }
