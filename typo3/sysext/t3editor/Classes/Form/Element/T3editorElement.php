@@ -229,6 +229,10 @@ class T3editorElement extends AbstractFormElement
     {
         $config = $this->data['parameterArray']['fieldConf']['config'];
 
+        if (!isset($config['format'])) {
+            return ModeRegistry::getInstance()->getDefaultMode();
+        }
+
         $identifier = $config['format'];
         if (strpos($config['format'], '/') !== false) {
             $parts = explode('/', $config['format']);
