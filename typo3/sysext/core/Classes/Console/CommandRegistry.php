@@ -57,6 +57,26 @@ class CommandRegistry implements \IteratorAggregate, SingletonInterface
     }
 
     /**
+     * @param string $identifier
+     * @throws CommandNameAlreadyInUseException
+     * @throws UnknownCommandException
+     * @return Command
+     */
+    public function getCommandByIdentifier(string $identifier): Command
+    {
+        $this->populateCommandsFromPackages();
+
+        if (!isset($this->commands[$identifier])) {
+            throw new UnknownCommandException(
+                sprintf('Command "%s" has not been registered.', $identifier),
+                1510906768
+            );
+        }
+
+        return $this->commands[$identifier] ?? null;
+    }
+
+    /**
      * Find all Configuration/Commands.php files of extensions and create a registry from it.
      * The file should return an array with a command key as key and the command description
      * as value. The command description must be an array and have a class key that defines
@@ -79,7 +99,12 @@ class CommandRegistry implements \IteratorAggregate, SingletonInterface
         foreach ($this->packageManager->getActivePackages() as $package) {
             $commandsOfExtension = $package->getPackagePath() . 'Configuration/Commands.php';
             if (@is_file($commandsOfExtension)) {
-                $commands = require_once $commandsOfExtension;
+                /*
+                 * We use require instead of require_once here because it eases the testability as require_once returns
+                 * a boolean from the second execution on. As this class is a singleton, this require is only called
+                 * once per request anyway.
+                 */
+                $commands = require $commandsOfExtension;
                 if (is_array($commands)) {
                     foreach ($commands as $commandName => $commandConfig) {
                         if (array_key_exists($commandName, $this->commands)) {

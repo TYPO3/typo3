@@ -53,6 +53,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Sched
     'additionalFields' => \TYPO3\CMS\Scheduler\Task\RecyclerGarbageCollectionAdditionalFieldProvider::class
 ];
 
+// Add execute schedulable command task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask::class] = [
+    'extension' => 'scheduler',
+    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:executeSchedulableCommandTask.name',
+    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:executeSchedulableCommandTask.name',
+    'additionalFields' => \TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider::class
+];
+
 // Save any previous option array for table garbage collection task
 // to temporary variable so it can be pre-populated by other
 // extensions and LocalConfiguration/AdditionalConfiguration

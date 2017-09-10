@@ -16,9 +16,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Console;
  */
 
 use org\bovigo\vfs\vfsStream;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Console\CommandNameAlreadyInUseException;
 use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Core\Console\UnknownCommandException;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -112,5 +114,37 @@ class CommandRegistryTest extends UnitTestCase
 
         $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal());
         iterator_to_array($commandRegistry);
+    }
+
+    /**
+     * @test
+     */
+    public function getCommandByIdentifierReturnsRegisteredCommand()
+    {
+        /** @var PackageInterface|ObjectProphecy $package */
+        $package = $this->prophesize(PackageInterface::class);
+        $package->getPackagePath()->willReturn($this->rootDirectory->getChild('package1')->url() . '/');
+        $package->getPackageKey()->willReturn('package1');
+
+        $this->packageManagerProphecy->getActivePackages()->willReturn([$package->reveal()]);
+
+        $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal());
+        $command = $commandRegistry->getCommandByIdentifier('first:command');
+
+        $this->assertInstanceOf(Command::class, $command);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsUnknowCommandExceptionIfUnregisteredCommandIsRequested()
+    {
+        $this->packageManagerProphecy->getActivePackages()->willReturn([]);
+
+        $this->expectException(UnknownCommandException::class);
+        $this->expectExceptionCode(1510906768);
+
+        $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal());
+        $commandRegistry->getCommandByIdentifier('foo');
     }
 }
