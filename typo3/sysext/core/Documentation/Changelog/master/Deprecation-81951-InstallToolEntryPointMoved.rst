@@ -17,7 +17,7 @@ The canonical entry point for accessing the install tool now is:
 Impact
 ======
 
-Accessing `typo3/install/` or `typo3/sysext/install/Start/Install.php` will still work, but has been deprecated.
+Accessing `typo3/install/` will still work, but has been deprecated.
 
 
 Affected Installations
@@ -29,6 +29,6 @@ Every TYPO3 installation is affected.
 Migration
 =========
 
-Change bookmarks or scripts from the old entry point(s) to the new one.
+Change bookmarks or scripts from the old entry point to the new one.
 
 .. index:: Backend, NotScanned
