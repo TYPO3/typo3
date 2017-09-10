@@ -2,7 +2,7 @@
 <div>
     <form action="{moduleUrlTceFile}" role="form" method="post" name="editform" enctype="multipart/form-data">
     <div class="form-group">
-        <input type="checkbox" value="1" id="keepFilename" name="file[replace][1][keepFilename]">
+        <input type="checkbox" value="1" id="keepFilename" name="data[replace][1][keepFilename]">
         <label for="keepFilename"><f:translate key="LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.keepfiletitle" /></label>
     </div>
 
@@ -24,14 +24,14 @@
     </script>
 
     <input type="hidden" name="overwriteExistingFiles" value="replace" />
-    <input type="hidden" name="file[replace][1][data]" value="1" />
-    <input type="hidden" name="file[replace][1][uid]" value="{uid}" />
+    <input type="hidden" name="data[replace][1][data]" value="1" />
+    <input type="hidden" name="data[replace][1][uid]" value="{uid}" />
 
     <div class="form-group">
         <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_replace.php.submit')}" />
         <input class="btn btn-danger" type="submit" value="{f:translate(key: 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
              onclick="backToList(); return false;" />
-        <input type="hidden" name="redirect" value="{returnUrl}" />
+        <input type="hidden" name="data[replace][1][redirect]" value="{returnUrl}" />
     </div>
     </form>
 </div>

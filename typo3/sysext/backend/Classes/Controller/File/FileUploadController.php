@@ -189,7 +189,7 @@ class FileUploadController extends AbstractModule
         // Submit button:
         $content .= '
 			<div id="c-submit">
-				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
+				<input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" /><br />
 				<input class="btn btn-default" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')) . '" />
 			</div>
 		';

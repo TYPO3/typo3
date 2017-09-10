@@ -98,7 +98,8 @@ class FileController
             $this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
         } else {
             $mode = key($this->file);
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][0]['redirect']);
+            $elementKey = key($this->file[$mode]);
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect']);
         }
         $this->CB = GeneralUtility::_GP('CB');
 
