@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\DispatcherInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Dispatcher which resolves a route to call a controller and method (but also a callable)
@@ -109,8 +110,8 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         // Check permissions and exit if the user has no permission for entry
         // @todo please do not use "true" here, what a bad coding paradigm
         $backendUserAuthentication->modAccess($moduleConfiguration, true);
-        $id = (int)$request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
-        if ($id) {
+        $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
+        if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
             $permClause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
             // Check page access
             if (!is_array(BackendUtility::readPageAccess($id, $permClause))) {
