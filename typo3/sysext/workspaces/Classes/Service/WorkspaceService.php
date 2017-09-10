@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -862,11 +863,9 @@ class WorkspaceService implements SingletonInterface
         /** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
         $uriBuilder = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $redirect = 'index.php?redirect_url=';
-        // @todo this should maybe be changed so that the extbase URI Builder can deal with module names directly
-        $originalM = GeneralUtility::_GET('route');
-        GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'route');
-        $viewScript = $uriBuilder->uriFor('index', [], 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
-        GeneralUtility::_GETset($originalM, 'route');
+        $viewScript = $uriBuilder
+            ->setArguments(['route' => GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromModule('web_WorkspacesWorkspaces')])
+            ->uriFor('index', [], 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
         if ($addDomain === true) {
             return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
         }
