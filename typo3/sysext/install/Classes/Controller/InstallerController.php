@@ -633,6 +633,7 @@ class InstallerController
         $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
         try {
             $databaseConnection->insert('be_users', $adminUserFields);
+            $adminUserUid = (int)$databaseConnection->lastInsertId('be_users');
         } catch (DBALException $exception) {
             $messages[] = new FlashMessage(
                 'The administrator account could not be created. The following error occurred:' . LF
@@ -645,9 +646,11 @@ class InstallerController
                 'status' => $messages,
             ]);
         }
-        // Set password as install tool password
-        $configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $this->getHashedPassword($password));
-
+        // Set password as install tool password, add admin user to system maintainers
+        $configurationManager->setLocalConfigurationValuesByPathValuePairs([
+            'BE/installToolPassword' => $this->getHashedPassword($password),
+            'SYS/systemMaintainers' => [$adminUserUid]
+        ]);
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
