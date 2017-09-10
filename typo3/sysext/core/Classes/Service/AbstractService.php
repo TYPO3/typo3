@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -38,7 +39,11 @@ abstract class AbstractService implements LoggerAwareInterface
     public $error = [];
 
     /**
-     * @var bool Defines if debug messages should be written with \TYPO3\CMS\Core\Utility\GeneralUtility::devLog
+     * Write additional log entries
+     *
+     * Specifically useful during development of authentication services
+     *
+     * @var bool
      */
     public $writeDevLog = false;
 
@@ -149,16 +154,19 @@ abstract class AbstractService implements LoggerAwareInterface
      *
      ***************************************/
     /**
-     * Logs debug messages to \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
+     * Logs debug messages to the Logging API
      *
      * @param string $msg Debug message
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     * @param array|bool $dataVar dditional data you want to pass to the logger.
+     * @param array|bool $dataVar additional data you want to pass to the logger.
+     * @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
      */
     public function devLog($msg, $severity = 0, $dataVar = false)
     {
+        GeneralUtility::logDeprecatedFunction();
         if ($this->writeDevLog) {
-            GeneralUtility::devLog($msg, $this->info['serviceKey'], $severity, $dataVar);
+            $message = $this->info['serviceKey'] . ': ' . $msg;
+            $this->logger->debug($message, (array)$dataVar);
         }
     }
 

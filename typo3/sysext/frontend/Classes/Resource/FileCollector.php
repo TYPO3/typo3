@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Frontend\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\LogManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -31,8 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Is not persisted, use only in FE.
  */
-class FileCollector implements \Countable
+class FileCollector implements \Countable, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * The files
      *
@@ -73,7 +76,7 @@ class FileCollector implements \Countable
                 try {
                     $this->addFileObject($this->getResourceFactory()->getFileObject($fileUid));
                 } catch (Exception $e) {
-                    $this->getLogger()->warning(
+                    $this->logger->warning(
                         'The file with uid  "' . $fileUid
                         . '" could not be found and won\'t be included in frontend output',
                         ['exception' => $e]
@@ -146,7 +149,7 @@ class FileCollector implements \Countable
                     $this->addFileObjects($files);
                 }
             } catch (Exception $e) {
-                $this->getLogger()->warning(
+                $this->logger->warning(
                     'The file-collection with uid  "' . $fileCollectionUid
                     . '" could not be found or contents could not be loaded and won\'t be included in frontend output.',
                     ['exception' => $e]
@@ -184,7 +187,7 @@ class FileCollector implements \Countable
                     $this->addFileObjects(array_values($files));
                 }
             } catch (Exception $e) {
-                $this->getLogger()->warning(
+                $this->logger->warning(
                     'The folder with identifier  "' . $folderIdentifier
                     . '" could not be found and won\'t be included in frontend output',
                     ['exception' => $e]
@@ -264,14 +267,6 @@ class FileCollector implements \Countable
     public function count()
     {
         return count($this->files);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
     /**

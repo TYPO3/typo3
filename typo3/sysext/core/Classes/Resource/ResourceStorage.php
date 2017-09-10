@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
@@ -190,7 +191,8 @@ class ResourceStorage implements ResourceStorageInterface
                 $e->getMessage()
             );
 
-            $this->getLogger()->error($message);
+            // create a dedicated logger instance because we need a logger in the constructor
+            GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class)->error($message);
         }
         $this->driver->initialize();
         $this->capabilities = $this->driver->getCapabilities();
@@ -3010,17 +3012,5 @@ class ResourceStorage implements ResourceStorageInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        /** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-        $logManager = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Log\LogManager::class
-        );
-        return $logManager->getLogger(static::class);
     }
 }

@@ -55,7 +55,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      *
      * @param \Throwable $exception The throwable object.
      * @param string $context The context where the exception was thrown, WEB or CLI
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
      */
     protected function writeLogEntries(\Throwable $exception, $context)
     {
@@ -71,16 +70,13 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         if ($context === 'WEB') {
             $logMessage .= '. Requested URL: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         }
-        $backtrace = $exception->getTrace();
-        $this->logger->critical($logTitle . ': ' . $logMessage, ['exception' => $exception]);
         // When database credentials are wrong, the exception is probably
         // caused by this. Therefor we cannot do any database operation,
         // otherwise this will lead into recurring exceptions.
         try {
-            // Write error message to devlog
-            GeneralUtility::devLog($logMessage, $logTitle, 3, [
+            $this->logger->critical($logTitle . ': ' . $logMessage, [
                 'TYPO3_MODE' => TYPO3_MODE,
-                'backtrace' => $backtrace
+                'exception' => $exception
             ]);
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);

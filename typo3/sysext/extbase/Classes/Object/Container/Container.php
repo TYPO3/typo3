@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Internal TYPO3 Dependency Injection container
  */
@@ -81,7 +85,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     protected function getClassInfoFactory()
     {
         if ($this->classInfoFactory == null) {
-            $this->classInfoFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class);
+            $this->classInfoFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class);
         }
         return $this->classInfoFactory;
     }
@@ -94,7 +98,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     protected function getClassInfoCache()
     {
         if ($this->cache == null) {
-            $this->cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class);
+            $this->cache = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class);
         }
         return $this->cache;
     }
@@ -158,10 +162,10 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             return $this;
         }
         if ($className === \TYPO3\CMS\Core\Cache\CacheManager::class) {
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         }
         if ($className === \TYPO3\CMS\Core\Package\PackageManager::class) {
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
         }
         $className = \TYPO3\CMS\Core\Core\ClassLoadingInformation::getClassNameForAlias($className);
         if (isset($this->singletonInstances[$className])) {
@@ -206,7 +210,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         }
         $constructorArguments = $this->getConstructorArguments($className, $classInfo, $givenConstructorArguments);
         array_unshift($constructorArguments, $className);
-        $instance = call_user_func_array([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'], $constructorArguments);
+        $instance = call_user_func_array([GeneralUtility::class, 'makeInstance'], $constructorArguments);
         if ($classIsSingleton) {
             $this->singletonInstances[$className] = $instance;
         }
@@ -227,7 +231,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         foreach ($classInfo->getInjectMethods() as $injectMethodName => $classNameToInject) {
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                $this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
+                $this->getLogger()->notice('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
             if (is_callable([$instance, $injectMethodName])) {
                 $instance->{$injectMethodName}($instanceToInject);
@@ -236,9 +240,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         foreach ($classInfo->getInjectProperties() as $injectPropertyName => $classNameToInject) {
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                $this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
+                $this->getLogger()->notice('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
-            $propertyReflection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\PropertyReflection::class, $instance, $injectPropertyName);
+            $propertyReflection = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\PropertyReflection::class, $instance, $injectPropertyName);
 
             $propertyReflection->setAccessible(true);
             $propertyReflection->setValue($instance, $instanceToInject);
@@ -256,17 +260,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
         if ($classInfo->getIsInitializeable() && is_callable([$instance, 'initializeObject'])) {
             $instance->initializeObject();
         }
-    }
-
-    /**
-     * Wrapper for dev log, in order to ease testing
-     *
-     * @param string $message Message (in english).
-     * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     */
-    protected function log($message, $severity)
-    {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, 'extbase', $severity);
     }
 
     /**
@@ -302,7 +295,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
                 if (isset($argumentInformation['dependency']) && !array_key_exists('defaultValue', $argumentInformation)) {
                     $parameter = $this->getInstanceInternal($argumentInformation['dependency']);
                     if ($classInfo->getIsSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
-                        $this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
+                        $this->getLogger()->notice('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
                     }
                 } elseif (array_key_exists('defaultValue', $argumentInformation)) {
                     $parameter = $argumentInformation['defaultValue'];
@@ -368,5 +361,13 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     public function isPrototype($className)
     {
         return !$this->isSingleton($className);
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    protected function getLogger()
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
     }
 }

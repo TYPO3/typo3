@@ -328,7 +328,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $svConfig = [];
 
     /**
-     * Write messages to the devlog
+     * Write additional log entries
+     *
+     * Specifically useful during development of authentication services
+     *
      * @var bool
      */
     public $writeDevLog = false;
@@ -388,7 +391,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $this->writeDevLog = true;
         }
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('## Beginning of auth logging.', self::class);
+            $this->logger->debug('## Beginning of auth logging.');
         }
         // Init vars.
         $mode = '';
@@ -495,7 +498,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
             if ($this->writeDevLog) {
                 $devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
-                GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), self::class);
+                $this->logger->debug($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''));
             }
         }
     }
@@ -582,14 +585,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Indicates if an active authentication failed (not auto login)
         $this->loginFailure = false;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login type: ' . $this->loginType, self::class);
+            $this->logger->debug('Login type: ' . $this->loginType);
         }
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data: ' . GeneralUtility::arrayToLogString($loginData), self::class);
+            $this->logger->debug('Login data', $loginData);
         }
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === 'logout') {
@@ -597,10 +600,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(255, 2, 0, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
-            // Logout written to log
-            if ($this->writeDevLog) {
-                GeneralUtility::devLog('User logged out. Id: ' . $this->id, self::class, -1);
-            }
+            $this->logger->info('User logged out. Id: ' . $this->id);
             $this->logoff();
         }
         // Determine whether we need to skip session update.
@@ -621,7 +621,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (!$haveSession && $loginData['status'] === 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Active login (eg. with login form)', self::class);
+                $this->logger->debug('Active login (eg. with login form)');
             }
             // check referrer for submitted login values
             if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
@@ -648,12 +648,15 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         if ($this->writeDevLog) {
             if ($haveSession) {
-                GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), self::class, 0);
+                $this->logger->debug('User session found', [
+                    $this->userid_column => $authInfo['userSession'][$this->userid_column],
+                    $this->username_column => $authInfo['userSession'][$this->username_column],
+                ]);
             } else {
-                GeneralUtility::devLog('No user session found.', self::class, 2);
+                $this->logger->debug('No user session found');
             }
             if (is_array($this->svConfig['setup'])) {
-                GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), self::class, 0);
+                $this->logger->debug('SV setup', $this->svConfig['setup']);
             }
         }
 
@@ -669,7 +672,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
-                        GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, [$this->userid_column, $this->username_column]), self::class, 0);
+                        $this->logger->debug('User found', [
+                            $this->userid_column => $row[$this->userid_column],
+                            $this->username_column => $row[$this->username_column],
+                        ]);
                     }
                     // User found, just stop to search for more if not configured to go on
                     if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
@@ -679,13 +685,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
 
             if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
-                GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', self::class);
+                $this->logger->debug($this->loginType . '_alwaysFetchUser option is enabled');
             }
             if ($this->writeDevLog && empty($tempuserArr)) {
-                GeneralUtility::devLog('No user found by services', self::class);
+                $this->logger->debug('No user found by services');
             }
             if ($this->writeDevLog && !empty($tempuserArr)) {
-                GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', self::class);
+                $this->logger->debug(count($tempuserArr) . ' user records found by services');
             }
         }
 
@@ -696,14 +702,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // User is authenticated because we found a user session
             $authenticated = true;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User session used: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), self::class);
+                $this->logger->debug('User session used', [
+                    $this->userid_column => $authInfo['userSession'][$this->userid_column],
+                    $this->username_column => $authInfo['userSession'][$this->username_column],
+                ]);
             }
         }
         // Re-auth user when 'auth'-service option is set
         if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
             $authenticated = false;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('alwaysAuthUser option is enabled', self::class);
+                $this->logger->debug('alwaysAuthUser option is enabled');
             }
         }
         // Authenticate the user if needed
@@ -713,7 +722,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), self::class);
+                    $this->logger->debug('Auth user', $tempuser);
                 }
                 $subType = 'authUser' . $this->loginType;
 
@@ -764,7 +773,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if ($this->writeDevLog && is_array($this->user)) {
-                    GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, [$this->userid_column, $this->username_column]), self::class, -1);
+                    $this->logger->debug('User session finally read', [
+                        $this->userid_column => $this->user[$this->userid_column],
+                        $this->username_column => $this->user[$this->username_column],
+                    ]);
                 }
             } elseif ($haveSession) {
                 // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
@@ -779,11 +791,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             if ($this->writeStdLog && $activeLogin) {
                 $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '');
             }
-            if ($this->writeDevLog && $activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
+            if ($activeLogin) {
+                $this->logger->info('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')');
             }
-            if ($this->writeDevLog && !$activeLogin) {
-                GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
+            if (!$activeLogin) {
+                $this->logger->debug('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')');
             }
         } else {
             // User was not authenticated, so we should reuse the existing anonymous session
@@ -794,11 +806,18 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Mark the current login attempt as failed
             if ($activeLogin || !empty($tempuserArr)) {
                 $this->loginFailure = true;
-                if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
-                    GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), self::class, 2);
+                if (empty($tempuserArr) && $activeLogin) {
+                    $logData = [
+                        'loginData' => $loginData
+                    ];
+                    $this->logger->warning('Login failed', $logData);
                 }
-                if ($this->writeDevLog && !empty($tempuserArr)) {
-                    GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), self::class, 2);
+                if (!empty($tempuserArr)) {
+                    $logData = [
+                        $this->userid_column => $tempuser[$this->userid_column],
+                        $this->username_column => $tempuser[$this->username_column],
+                    ];
+                    $this->logger->warning('Login failed', $logData);
                 }
             }
         }
@@ -806,7 +825,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(['warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax]), self::class, -1);
+                $this->logger->debug(
+                    'Call checkLogFailures',
+                    [
+                        'warningEmail' => $this->warningEmail,
+                        'warningPeriod' => $this->warningPeriod,
+                        'warningMax' => $this->warningMax
+                    ]
+                );
             }
 
             // Hook to implement login failure tracking methods
@@ -854,7 +880,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             yield $serviceObj;
         }
         if ($this->writeDevLog && $serviceChain) {
-            GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
+            $this->logger->debug($subType . ' auth services called: ' . $serviceChain);
         }
     }
 
@@ -899,7 +925,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function createUserSession($tempuser)
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Create session ses_id = ' . $this->id, self::class);
+            $this->logger->debug('Create session ses_id = ' . $this->id);
         }
         // Delete any session entry first
         $this->getSessionBackend()->remove($this->id);
@@ -960,7 +986,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function fetchUserSession($skipSessionUpdate = false)
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, self::class);
+            $this->logger->debug('Fetch session ses_id = ' . $this->id);
         }
         try {
             $sessionRecord = $this->getSessionBackend()->get($this->id);
@@ -1019,7 +1045,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function logoff()
     {
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('logoff: ses_id = ' . $this->id, self::class);
+            $this->logger->debug('logoff: ses_id = ' . $this->id);
         }
         // Release the locked records
         BackendUtility::lockRecords();
@@ -1175,10 +1201,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $variable = $this->uc;
             }
             if ($this->writeDevLog) {
-                GeneralUtility::devLog(
-                    'writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column],
-                    self::class
-                );
+                $this->logger->debug('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column]);
             }
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table)->update(
                 $this->user_table,
@@ -1277,7 +1300,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $this->sessionData[$key] = $data;
         $this->user['ses_data'] = serialize($this->sessionData);
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->id, self::class);
+            $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->id);
         }
         $updatedSession = $this->getSessionBackend()->update(
             $this->id,
@@ -1330,7 +1353,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), self::class);
+            $this->logger->debug('Login data before processing', $loginData);
         }
         $serviceChain = '';
         $subType = 'processLoginData' . $this->loginType;
@@ -1354,7 +1377,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('Processed login data: ' . GeneralUtility::arrayToLogString($processedLoginData), self::class);
+                $this->logger->debug('Processed login data', $processedLoginData);
             }
         }
         return $loginData;

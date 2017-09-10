@@ -42,6 +42,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 class GeneralUtility
 {
     // Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
+    // @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
     const SYSLOG_SEVERITY_INFO = 0;
     const SYSLOG_SEVERITY_NOTICE = 1;
     const SYSLOG_SEVERITY_WARNING = 2;
@@ -1761,10 +1762,10 @@ class GeneralUtility
                 } catch (\Exception $e) {
                     $errorMessage = 'Error minifying java script: ' . $e->getMessage();
                     $error .= $errorMessage;
-                    static::devLog($errorMessage, \TYPO3\CMS\Core\Utility\GeneralUtility::class, 2, [
+                    static::getLogger()->warning($errorMessage, [
                         'JavaScript' => $script,
-                        'Stack trace' => $e->getTrace(),
-                        'hook' => $hookMethod
+                        'hook' => $hookMethod,
+                        'exception' => $e,
                     ]);
                 }
             }
@@ -3866,9 +3867,11 @@ class GeneralUtility
      * @param string $extKey Extension key (from which extension you are calling the log)
      * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
      * @param mixed $dataVar Additional data you want to pass to the logger.
+     * @deprecated since TYPO3 CMS 9, will be removed in TYPO3 CMS 10.
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
+        static::logDeprecatedFunction();
         if ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG'] && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'])) {
             $params = ['msg' => $msg, 'extKey' => $extKey, 'severity' => $severity, 'dataVar' => $dataVar];
             $fakeThis = false;
@@ -3905,10 +3908,6 @@ class GeneralUtility
                 @fclose($file);
                 self::fixPermissions($destination);
             }
-        }
-        if (in_array('devlog', $log) !== false) {
-            // Copy message also to the developer log
-            self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
         }
         // Do not use console in login screen
         if (in_array('console', $log) !== false && isset($GLOBALS['BE_USER']->user['uid'])) {

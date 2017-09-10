@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 
@@ -27,6 +29,11 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $container;
 
     /**
+     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $logger;
+
+    /**
      * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfo
      */
     protected $cachedClassInfo;
@@ -39,10 +46,17 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             ->getMock();
         $mockedCache->expects($this->any())->method('get')->will($this->returnValue(false));
         $mockedCache->expects($this->never())->method('has');
+
+        $this->logger = $this->getMockBuilder(Logger::class)
+            ->setMethods(['notice'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->container = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
-            ->setMethods(['log', 'getClassInfoCache'])
+            ->setMethods(['getLogger', 'getClassInfoCache'])
             ->getMock();
         $this->container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
+        $this->container->expects($this->any())->method('getLogger')->will($this->returnValue($this->logger));
     }
 
     /**
@@ -290,7 +304,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage()
     {
-        $this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.', 1);
+        $this->logger->expects($this->once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.');
         $object = $this->container->getInstance('t3lib_object_singletonNeedsPrototype');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
@@ -300,7 +314,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function singletonWhichRequiresSingletonViaSetterInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_singletonNeedsSingleton');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
@@ -310,7 +324,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototype');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
@@ -320,7 +334,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function prototypeWhichRequiresSingletonViaSetterInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_prototypeNeedsSingleton');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
@@ -330,7 +344,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage()
     {
-        $this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
+        $this->logger->expects($this->once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
         $object = $this->container->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
@@ -340,7 +354,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function singletonWhichRequiresSingletonViaConstructorInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }
@@ -350,7 +364,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
         $this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
     }
@@ -360,7 +374,7 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks()
     {
-        $this->container->expects($this->never())->method('log');
+        $this->logger->expects($this->never())->method('notice');
         $object = $this->container->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
         $this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
     }

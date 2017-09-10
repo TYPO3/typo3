@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -36,8 +38,10 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  */
-class DocumentTemplate
+class DocumentTemplate implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     // Vars you typically might want to/should set from outside after making instance of this class:
     /**
      * This can be set to the HTML-code for a formtag.
@@ -552,7 +556,7 @@ function jumpToUrl(URL) {
 </div>' : '') . $this->endOfPageJsBlock;
 
         // Logging: Can't find better place to put it:
-        GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, ['_FLUSH' => true]);
+        $this->logger->debug('END of BACKEND session', ['_FLUSH' => true]);
         return $str;
     }
 

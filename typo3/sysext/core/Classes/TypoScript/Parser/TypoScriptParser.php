@@ -1095,7 +1095,6 @@ class TypoScriptParser
                     // If this is not a beginning commented include statement this line goes into the rest content
                     $restContent[] = $line;
                 }
-                //if (is_array($matches)) GeneralUtility::devLog('matches', 'TypoScriptParser', 0, $matches);
             } else {
                 // Inside commented include statements
                 // Search for the matching ending commented include statement

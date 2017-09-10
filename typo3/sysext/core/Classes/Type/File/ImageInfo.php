@@ -13,15 +13,18 @@ namespace TYPO3\CMS\Core\Type\File;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A SPL FileInfo class providing information related to an image.
  */
-class ImageInfo extends FileInfo
+class ImageInfo extends FileInfo implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array
      */
@@ -69,7 +72,7 @@ class ImageInfo extends FileInfo
 
             // In case the image size could not be retrieved, log the incident as a warning.
             if (empty($this->imageSizes)) {
-                $this->getLogger()->warning('I could not retrieve the image size for file ' . $this->getPathname());
+                $this->logger->warning('I could not retrieve the image size for file ' . $this->getPathname());
                 $this->imageSizes = [0, 0];
             }
         }
@@ -103,17 +106,6 @@ class ImageInfo extends FileInfo
         }
 
         return $imagesSizes !== [] ? $imagesSizes : false;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        /** @var $loggerManager LogManager */
-        $loggerManager = GeneralUtility::makeInstance(LogManager::class);
-
-        return $loggerManager->getLogger(static::class);
     }
 
     /**

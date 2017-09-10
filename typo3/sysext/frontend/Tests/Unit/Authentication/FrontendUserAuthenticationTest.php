@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -96,6 +97,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionManagerProphecy->getSessionBackend('FE')->willReturn($sessionBackendProphecy->reveal());
 
         $subject = new FrontendUserAuthentication();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
 
@@ -136,6 +138,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionBackendProphecy->update(Argument::cetera())->shouldNotBeCalled();
 
         $subject = new FrontendUserAuthentication();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
         $subject->storeSessionData();
@@ -183,6 +186,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionBackendProphecy->remove($uniqueSessionId)->shouldBeCalled();
 
         $subject = new FrontendUserAuthentication();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
         $subject->setSessionData('foo', 'bar');
@@ -243,6 +247,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         )->shouldBeCalled();
 
         $subject = new FrontendUserAuthentication();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
         $this->assertEmpty($subject->getSessionData($uniqueSessionId));
@@ -324,6 +329,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         );
 
         $subject = new FrontendUserAuthentication();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
 
@@ -371,6 +377,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
                 'getCookie',
             ])
             ->getMock();
+        $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
 
         // Mock a login attempt

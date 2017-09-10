@@ -192,7 +192,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             } elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
                 // Lock domain didn't match, so error:
                 $errorMessage = 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
-                $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'], $user['lockToDomain'], $this->authInfo['HTTP_HOST']);
+                $this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']);
                 $this->writelog(255, 3, 3, 1, $errorMessage, [
                     $this->authInfo['REMOTE_ADDR'],
                     $this->authInfo['REMOTE_HOST'],
@@ -227,11 +227,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
             ['uid' => (int)$uid]
         );
 
-        GeneralUtility::devLog(
-            sprintf('Automatic password update for user record in %s with uid %u', $this->pObj->user_table, $uid),
-            $this->extKey,
-            1
-        );
+        $this->logger->notice('Automatic password update for user record in ' . $this->pObj->user_table . ' with uid ' . $uid);
     }
 
     /**
@@ -251,13 +247,11 @@ class SaltedPasswordService extends AbstractAuthenticationService
         if (!empty($params)) {
             $message = vsprintf($message, $params);
         }
-        if (TYPO3_MODE === 'BE') {
-            $this->logger->notice($message);
-        } else {
+        if (TYPO3_MODE === 'FE') {
             /** @var TimeTracker $timeTracker */
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message);
         }
-        GeneralUtility::devLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
+        $this->logger->notice($message);
     }
 }

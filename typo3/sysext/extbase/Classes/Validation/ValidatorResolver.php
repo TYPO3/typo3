@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Validation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -115,7 +116,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
 
             return $validator;
         } catch (NoSuchValidatorException $e) {
-            GeneralUtility::devLog($e->getMessage(), 'extbase', GeneralUtility::SYSLOG_SEVERITY_INFO);
+            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->debug($e->getMessage());
             return null;
         }
     }

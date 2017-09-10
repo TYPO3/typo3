@@ -65,10 +65,16 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!is_array($user)) {
             // Failed login attempt (no username found)
             $this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
-            $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+            $this->logger->info('Login-attempt from username \'' . $this->login['uname'] . '\' not found!', [
+                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
+                'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
+            ]);
         } else {
             if ($this->writeDevLog) {
-                GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, [$this->db_user['userid_column'], $this->db_user['username_column']]), self::class);
+                $this->logger->debug('User found', [
+                    $this->db_user['userid_column'] => $user[$this->db_user['userid_column']],
+                    $this->db_user['username_column'] => $user[$this->db_user['username_column']]
+                ]);
             }
         }
         return $user;
@@ -99,10 +105,13 @@ class AuthenticationService extends AbstractAuthenticationService
                 // Failed login attempt (wrong password) - write that to the log!
                 if ($this->writeAttemptLog) {
                     $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']]);
-                    $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+                    $this->logger->info('Login-attempt username \'' . $this->login['uname'] . '\', password not accepted!', [
+                        'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
+                        'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
+                    ]);
                 }
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], self::class, 2);
+                    $this->logger->debug('Password not accepted: ' . $this->login['uident']);
                 }
             }
             // Checking the domain (lockToDomain)
@@ -110,7 +119,12 @@ class AuthenticationService extends AbstractAuthenticationService
                 // Lock domain didn't match, so error:
                 if ($this->writeAttemptLog) {
                     $this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', [$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']]);
-                    $this->logger->warning(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
+                    $this->logger->info('Login-attempt from username \'' . $user[$this->db_user['username_column']] . '\', locked domain did not match!', [
+                        'HTTP_HOST' => $this->authInfo['HTTP_HOST'],
+                        'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
+                        'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
+                        'lockToDomain' => $user['lockToDomain'],
+                    ]);
                 }
                 $OK = 0;
             }
@@ -151,7 +165,7 @@ class AuthenticationService extends AbstractAuthenticationService
             $groups = array_unique($groups);
             if (!empty($groups)) {
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('Get usergroups with id: ' . implode(',', $groups), __CLASS__);
+                    $this->logger->debug('Get usergroups with id: ' . implode(',', $groups));
                 }
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($this->db_groups['table']);
@@ -185,7 +199,7 @@ class AuthenticationService extends AbstractAuthenticationService
                 }
             } else {
                 if ($this->writeDevLog) {
-                    GeneralUtility::devLog('No usergroups found.', self::class, 2);
+                    $this->logger->debug('No usergroups found.');
                 }
             }
         }

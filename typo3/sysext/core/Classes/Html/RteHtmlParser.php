@@ -14,10 +14,11 @@ namespace TYPO3\CMS\Core\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
@@ -30,8 +31,10 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  * line breaks to LFs internally, however when all transformations are done, all LFs are transformed to CRLFs.
  * This means: RteHtmlParser always returns CRLFs to be maximum compatible with all formats.
  */
-class RteHtmlParser extends HtmlParser
+class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
      * @var string
@@ -374,7 +377,7 @@ class RteHtmlParser extends HtmlParser
                         } catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
                             // Log the fact the file could not be retrieved.
                             $message = sprintf('Could not find file with uid "%s"', $attribArray['data-htmlarea-file-uid']);
-                            $this->getLogger()->error($message);
+                            $this->logger->error($message);
                         }
                     }
                     if ($originalImageFile instanceof Resource\File) {
@@ -1310,17 +1313,5 @@ class RteHtmlParser extends HtmlParser
                 . '</a>';
         }
         return implode('', $blocks);
-    }
-
-    /**
-     * Instantiates a logger
-     *
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        /** @var $logManager LogManager */
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        return $logManager->getLogger(static::class);
     }
 }

@@ -14,16 +14,19 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
  */
-class ProcessedFileRepository extends AbstractRepository
+class ProcessedFileRepository extends AbstractRepository implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * The main object type of this class. In some cases (fileReference) this
      * repository can also return FileReference objects, implementing the
@@ -261,7 +264,6 @@ class ProcessedFileRepository extends AbstractRepository
             )
             ->execute();
 
-        $logger = $this->getLogger();
         $errorCount = 0;
 
         while ($row = $result->fetch()) {
@@ -273,7 +275,7 @@ class ProcessedFileRepository extends AbstractRepository
                 $file->getStorage()->setEvaluatePermissions(false);
                 $file->delete(true);
             } catch (\Exception $e) {
-                $logger->error(
+                $this->logger->error(
                     'Failed to delete file "' . $row['identifier'] . '" in storage uid ' . $row['storage'] . '.',
                     [
                         'exception' => $e
@@ -308,13 +310,5 @@ class ProcessedFileRepository extends AbstractRepository
         }
 
         return array_intersect_key($data, $this->tableColumns[$this->table]);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Log\Logger
-     */
-    protected function getLogger()
-    {
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 }

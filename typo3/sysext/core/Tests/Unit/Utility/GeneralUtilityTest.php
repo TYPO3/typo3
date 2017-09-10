@@ -2498,18 +2498,6 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->assertSame($testString, GeneralUtility::minifyJavaScript($testString));
     }
 
-    /**
-     * Callback function used in
-     * minifyJavaScriptReturnsErrorStringOfHookException and
-     * minifyJavaScriptWritesExceptionMessageToDevLog
-     *
-     * @throws \RuntimeException
-     */
-    public function minifyJavaScriptErroneousCallback()
-    {
-        throw new \RuntimeException('foo', 1344888548);
-    }
-
     ///////////////////////////////
     // Tests concerning fixPermissions
     ///////////////////////////////

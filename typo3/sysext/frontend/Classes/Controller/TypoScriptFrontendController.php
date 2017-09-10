@@ -1021,7 +1021,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->gr_list .= ',' . implode(',', $gr_array);
         }
         if ($this->fe_user->writeDevLog) {
-            GeneralUtility::devLog('Valid usergroups for TSFE: ' . $this->gr_list, __CLASS__);
+            $this->logger->debug('Valid usergroups for TSFE: ' . $this->gr_list);
         }
     }
 

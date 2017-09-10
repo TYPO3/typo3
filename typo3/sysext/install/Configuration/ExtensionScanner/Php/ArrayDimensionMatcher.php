@@ -49,6 +49,11 @@ return [
             'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enable_DLOG\']' => [
+        'restFiles' => [
+            'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+        ],
+    ],
 
     // Hooks
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'getFlexFormDSClass\']' => [
@@ -87,6 +92,11 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'allowSystemInstall\']' => [
         'restFiles' => [
             'Breaking-82377-OptionToAllowUploadingSystemExtensionsRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_div.php\'][\'devLog\']' => [
+        'restFiles' => [
+            'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
         ],
     ],
 ];

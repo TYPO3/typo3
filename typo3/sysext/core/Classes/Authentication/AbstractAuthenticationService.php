@@ -71,7 +71,9 @@ class AbstractAuthenticationService extends AbstractService
     public $writeAttemptLog = false;
 
     /**
-     * If the \TYPO3\CMS\Core\Utility\GeneralUtility::devLog() function should be used
+     * Write additional log entries
+     *
+     * Specifically useful during development of authentication services
      *
      * @var bool
      */

@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -265,7 +266,8 @@ class RequestHandler implements RequestHandlerInterface
         if ($sendTSFEContent) {
             $response->getBody()->write($this->controller->content);
         }
-        GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, ['_FLUSH' => true]);
+        GeneralUtility::makeInstance(LogManager::class)
+                      ->getLogger(get_class())->debug('END of FRONTEND session', ['_FLUSH' => true]);
         return $response;
     }
 

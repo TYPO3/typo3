@@ -127,8 +127,6 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         $message = $logTitle . ': ' . $message;
 
         $this->logger->log(LogLevel::NOTICE - $severity, $message);
-        // Write error message to devlog extension(s),
-        GeneralUtility::devLog($message, 'core', $severity + 1);
 
         // Write error message to TSlog (admin panel)
         $timeTracker = $this->getTimeTracker();

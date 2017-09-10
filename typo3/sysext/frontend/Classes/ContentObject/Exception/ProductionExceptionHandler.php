@@ -14,17 +14,19 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
 /**
  * Exception handler class for content object rendering
  */
-class ProductionExceptionHandler implements ExceptionHandlerInterface
+class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array
      */
@@ -71,14 +73,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      */
     protected function logException(\Exception $exception, $errorMessage, $code)
     {
-        $this->getLogger()->alert(sprintf($errorMessage, $code), ['exception' => $exception]);
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    protected function getLogger()
-    {
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->logger->alert(sprintf($errorMessage, $code), ['exception' => $exception]);
     }
 }
