@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use GuzzleHttp\Exception\RequestException;
+use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -3487,6 +3489,9 @@ class GeneralUtility
         // Register new singleton instance
         if ($instance instanceof SingletonInterface) {
             self::$singletonInstances[$finalClassName] = $instance;
+        }
+        if ($instance instanceof LoggerAwareInterface) {
+            $instance->setLogger(static::makeInstance(LogManager::class)->getLogger($className));
         }
         return $instance;
     }

@@ -17,11 +17,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFilesystemFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMakeInstanceInjectLoggerFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
@@ -3849,6 +3851,15 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $instance = GeneralUtility::makeInstance($className);
         GeneralUtility::purgeInstances();
         $this->assertNotSame($instance, GeneralUtility::makeInstance($className));
+    }
+
+    /**
+     * @test
+     */
+    public function makeInstanceInjectsLogger()
+    {
+        $instance = GeneralUtility::makeInstance(GeneralUtilityMakeInstanceInjectLoggerFixture::class);
+        $this->assertInstanceOf(LoggerInterface::class, $instance->getLogger());
     }
 
     /**
