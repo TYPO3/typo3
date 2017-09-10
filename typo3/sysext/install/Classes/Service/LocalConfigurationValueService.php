@@ -85,7 +85,8 @@ class LocalConfigurationValueService
             $newPath[] = $key;
 
             if ($descriptionType === 'container') {
-                $data = array_merge($data, $this->recursiveConfigurationFetching($value, $descriptionInfo, $newPath));
+                $valueFromCurrentConfiguration = $sectionsFromCurrentConfiguration[$key] ?? null;
+                $data = array_merge($data, $this->recursiveConfigurationFetching($value, $valueFromCurrentConfiguration, $descriptionInfo, $newPath));
             } elseif (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline') {
                 $itemData = [];
                 $itemData['key'] = implode('/', $newPath);
