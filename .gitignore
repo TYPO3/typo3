@@ -5,44 +5,58 @@
 #
 # Don't ignore .rej and .orig as we want to see/clean files after conflict resolution.
 #
-# If you feel this file needs adaption please report on http://forge.typo3.org/issues/13627.
-#
 # For local exclude patterns please edit .git/info/exclude.
 #
 ########################
 #
-# Ignore temporary files (left by editors)
+# Ignore temporary files (left by editors and OS)
 *~
 *.bak
 *.swp
+.DS_Store
 #
 # Ignore by common IDEs used directories/files
 nbproject
 *.idea
 *.project
 .buildpath
-.project
 .settings
 .TemporaryItems
 .webprj
-.php_cs.cache
 #
-# Ignore build stuff
-Build/bower_components/*
-Build/node_modules/*
+# Temporary files and folders
 .cache
+.php_cs.cache
 .sass-cache
 .session
+phantomjsdriver.log
+#
+# Ignore build stuff
+/Build/bower_components/*
+/Build/node_modules/*
+/Build/JavaScript
+/Build/typings/*
+!/Build/typings/no-def*
+/typo3/sysext/*/Resources/Private/TypeScript/*.js
+/typo3/sysext/*/Resources/Public/JavaScript/*.js.map
+#
+# TypeScript stuff
+.baseDir.ts
+.tscache
+#
+# Test folders
 typo3/sysext/core/Build/Configuration/Acceptance/Support/_generated/*
 typo3/sysext/core/Build/Configuration/Acceptance/Support/AcceptanceTester.php
 #
 # Ignore composer stuff
-bin/*
-vendor/*
+/bin/*
+/vendor/*
 #
-# Ignore common TYPO3 CMS directories
-typo3temp/*
-typo3conf/*
-fileadmin/*
-uploads/*
+# Ignore common TYPO3 CMS files/directories
+/typo3temp/*
+/typo3conf/*
+/fileadmin/*
+/uploads/*
+#
+# root .htaccess file
 /.htaccess
