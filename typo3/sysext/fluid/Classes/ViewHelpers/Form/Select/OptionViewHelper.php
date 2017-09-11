@@ -55,9 +55,8 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         }
         $childContent = $this->renderChildren();
         $this->tag->setContent($childContent);
-        if (!isset($this->arguments['value'])) {
-            $this->tag->addAttribute('value', $childContent);
-        }
+        $value = isset($this->arguments['value']) ? $this->arguments['value'] : $childContent;
+        $this->tag->addAttribute('value', $value);
         $parentRequestedFormTokenFieldName = $this->viewHelperVariableContainer->get(
             SelectViewHelper::class,
             'registerFieldNameForFormTokenGeneration'
