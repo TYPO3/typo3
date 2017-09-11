@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller;
 
 /*
@@ -16,9 +17,13 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Install\Service\SessionService;
 
 /**
- * Backend module controller to dispatch to the main modules or to an AJAX request
+ * Backend module controller to the install tool. Sets an install tool session
+ * marked as "initialized by a valid system administrator backend user" and
+ * redirects to the install tool entry point.
  *
  * This is a classic backend module that does not interfere with other code
  * within the install tool, it can be seen as a facade around install tool just
@@ -27,7 +32,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class BackendModuleController
 {
     /**
-     * Renders the maintenance tool action (or AJAX, if it was specifically requested)
+     * Initialize session and redirect to "maintenance"
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -35,11 +40,11 @@ class BackendModuleController
      */
     public function maintenanceAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $this->executeSpecificToolAction($request, 'maintenance');
+        return $this->setAuthorizedAndRedirect('maintenance');
     }
 
     /**
-     * Renders the settings tool action (or AJAX, if it was specifically requested)
+     * Initialize session and redirect to "settings"
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -47,11 +52,11 @@ class BackendModuleController
      */
     public function settingsAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $this->executeSpecificToolAction($request, 'settings');
+        return $this->setAuthorizedAndRedirect('settings');
     }
 
     /**
-     * Renders the upgrade tool action (or AJAX, if it was specifically requested)
+     * Initialize session and redirect to "upgrade"
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -59,11 +64,11 @@ class BackendModuleController
      */
     public function upgradeAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $this->executeSpecificToolAction($request, 'upgrade');
+        return $this->setAuthorizedAndRedirect('upgrade');
     }
 
     /**
-     * Renders the environment tool action (or AJAX, if it was specifically requested)
+     * Initialize session and redirect to "environment"
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -71,38 +76,21 @@ class BackendModuleController
      */
     public function environmentAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $this->executeSpecificToolAction($request, 'environment');
+        return $this->setAuthorizedAndRedirect('environment');
     }
 
     /**
-     * Sets the action inside the install tool to a specific action and calls the "toolcontroller" afterwards
+     * Starts / updates the session and redirects to the install tool
+     * with given action.
      *
-     * @param ServerRequestInterface $request
      * @param $action
      * @return ResponseInterface
      */
-    protected function executeSpecificToolAction(ServerRequestInterface $request, $action): ResponseInterface
+    protected function setAuthorizedAndRedirect(string $action): ResponseInterface
     {
-        $request = $request->withAttribute('context', 'backend');
-        // Can be moved into one controller in my opinion now, or should go into a dispatcher that
-        // also deals with actions
-        if ($request->getQueryParams()['install']['controller'] === 'ajax') {
-            return $this->handleAjaxRequest($request);
-        }
-        $queryParameters = $request->getQueryParams();
-        $queryParameters['install']['action'] = $action;
-        $request = $request->withQueryParams($queryParameters);
-        return (new ToolController())->execute($request);
-    }
-
-    /**
-     * Calls the AJAX controller (if requested as "controller")
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    protected function handleAjaxRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        return (new AjaxController())->execute($request);
+        $sessionService = new SessionService();
+        $sessionService->setAuthorizedBackendSession();
+        $redirectLocation = 'install.php?install[action]=' . $action . '&install[context]=backend';
+        return new RedirectResponse($redirectLocation, 303);
     }
 }

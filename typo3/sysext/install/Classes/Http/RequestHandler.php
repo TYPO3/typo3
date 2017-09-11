@@ -80,7 +80,6 @@ class RequestHandler implements RequestHandlerInterface
         /** @var AjaxController|ToolController $controller */
         $controller = GeneralUtility::makeInstance($controllerClassName);
         try {
-            $this->initializeSession();
             $this->checkSessionToken();
             $this->checkSessionLifetime();
 
@@ -114,12 +113,17 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(ServerRequestInterface $request)
     {
-        return
-            $this->isInstallToolAvailable()
-            && $this->bootstrap->checkIfEssentialConfigurationExists()
+        $basicIntegrity = $this->bootstrap->checkIfEssentialConfigurationExists()
             && !$this->isInitialInstallationInProgress()
-            && $this->isInstallToolPasswordSet()
-        ;
+            && $this->isInstallToolPasswordSet();
+        if (!$basicIntegrity) {
+            return false;
+        }
+        $this->initializeSession();
+        if ($this->session->isAuthorizedBackendUserSession()) {
+            return true;
+        }
+        return $this->isInstallToolAvailable();
     }
 
     /**

@@ -252,6 +252,21 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
+     * Marks this session as an "authorized by backend user" one.
+     * This is called by BackendModuleController from backend context.
+     */
+    public function setAuthorizedBackendSession()
+    {
+        $_SESSION['authorized'] = true;
+        $_SESSION['lastSessionId'] = time();
+        $_SESSION['tstamp'] = time();
+        $_SESSION['expires'] = time() + $this->expireTimeInMinutes * 60;
+        $_SESSION['isBackendSession'] = true;
+        // Renew the session id to avoid session fixation
+        $this->renewSession();
+    }
+
+    /**
      * Check if we have an already authorized session
      *
      * @return bool TRUE if this session has been authorized before (by a correct password)
@@ -259,6 +274,23 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface
     public function isAuthorized()
     {
         if (!$_SESSION['authorized']) {
+            return false;
+        }
+        if ($_SESSION['expires'] < time()) {
+            // This session has already expired
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check if we have an authorized session from a system maintainer
+     *
+     * @return bool TRUE if this session has been authorized before and initialized by a backend system maintainer
+     */
+    public function isAuthorizedBackendUserSession()
+    {
+        if (!$_SESSION['authorized'] || !$_SESSION['isBackendSession']) {
             return false;
         }
         if ($_SESSION['expires'] < time()) {
