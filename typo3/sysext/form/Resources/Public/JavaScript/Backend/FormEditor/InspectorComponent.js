@@ -25,8 +25,9 @@ define(['jquery',
         'TYPO3/CMS/Form/Backend/FormEditor/Helper',
         'TYPO3/CMS/Backend/Icons',
         'TYPO3/CMS/Backend/Notification',
+        'TYPO3/CMS/Backend/Modal',
         'TYPO3/CMS/Form/Backend/Vendor/jquery.mjs.nestedSortable'
-        ], function($, Helper, Icons, Notification) {
+        ], function($, Helper, Icons, Notification, Modal) {
         'use strict';
 
     return (function($, Helper, Icons, Notification) {
@@ -358,19 +359,13 @@ define(['jquery',
          *
          * @param string mode
          * @param string params
-         * @param int width
-         * @param int height
          */
-        function _openTypo3WinBrowser(mode, params, width, height) {
-            var openedPopupWindow, url;
-            url = TYPO3.settings.FormEditor.typo3WinBrowserUrl
-                + '&mode=' + mode + '&bparams=' + params;
-            openedPopupWindow = window.open(
-                url,
-                'Typo3WinBrowser',
-                'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1'
-            );
-            openedPopupWindow.focus();
+        function _openTypo3WinBrowser(mode, params) {
+            Modal.advanced({
+                type: Modal.types.iframe,
+                content: TYPO3.settings.FormEditor.typo3WinBrowserUrl + '&mode=' + mode + '&bparams=' + params,
+                size: Modal.sizes.large
+            });
         };
 
         /**
