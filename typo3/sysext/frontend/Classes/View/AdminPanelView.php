@@ -212,7 +212,7 @@ class AdminPanelView
         if ($val && isset($beUser->extAdminConfig['override.'][$sectionName . '.'][$val])) {
             return $beUser->extAdminConfig['override.'][$sectionName . '.'][$val];
         }
-        if (isset($beUser->extAdminConfig['override.'][$sectionName])) {
+        if (!$val && isset($beUser->extAdminConfig['override.'][$sectionName])) {
             return $beUser->extAdminConfig['override.'][$sectionName];
         }
 
