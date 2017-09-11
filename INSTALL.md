@@ -74,7 +74,6 @@ check if these are available.
   * openssl
   * pcre >= 8.38
   * session
-  * soap
   * SPL
   * standard
   * xml
