@@ -57,7 +57,6 @@ class Check implements CheckInterface
         'mysqli',
         'openssl',
         'session',
-        'soap',
         'SPL',
         'standard',
         'xml',
