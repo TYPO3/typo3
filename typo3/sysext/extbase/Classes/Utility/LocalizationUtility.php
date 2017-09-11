@@ -64,10 +64,14 @@ class LocalizationUtility
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found. If null and we are in the frontend, then the language_alt from TypoScript setup will be used
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      * @api
-     * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
      */
     public static function translate($key, $extensionName = null, $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null)
     {
+        if ((string)$key === '') {
+            // Early return guard: returns null if the key was empty, because the key may be a dynamic value
+            // (from for example Fluid). Returning null allows null coalescing to a default value when that happens.
+            return null;
+        }
         $value = null;
         if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
             $keyParts = explode(':', $key);
@@ -120,7 +124,10 @@ class LocalizationUtility
         }
 
         if (is_array($arguments) && $value !== null) {
-            return vsprintf($value, $arguments);
+            // This unrolls arguments from $arguments - instead of calling vsprintf which receives arguments as an array.
+            // The reason is that only sprintf() will return an error message if the number of arguments does not match
+            // the number of placeholders in the format string. Whereas, vsprintf would silently return nothing.
+            return sprintf($value, ...$arguments) ?: sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $value, count($arguments));
         }
         return $value;
     }
