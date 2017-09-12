@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
@@ -146,7 +147,11 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      */
     public function setProperty(string $key, $value)
     {
-        $this->properties[$key] = $value;
+        if (is_array($value) && is_array($this->properties[$key])) {
+            ArrayUtility::mergeRecursiveWithOverrule($this->properties[$key], $value);
+        } else {
+            $this->properties[$key] = $value;
+        }
     }
 
     /**
