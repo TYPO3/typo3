@@ -274,6 +274,13 @@
                 <source>The form has been successfully saved.</source>
             </trans-unit>
 
+            <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" xml:space="preserve">
+                <source>Save</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" xml:space="preserve">
+                <source>The form could not be saved:</source>
+            </trans-unit>
+
             <trans-unit id="formEditor.modals.validationErrors.dialogTitle" xml:space="preserve">
                 <source>Alert</source>
             </trans-unit>

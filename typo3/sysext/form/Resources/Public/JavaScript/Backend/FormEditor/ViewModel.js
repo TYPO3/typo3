@@ -518,7 +518,7 @@ define(['jquery',
         /**
          * @public
          *
-         * @param bool 
+         * @param bool
          * @return void
          */
         function setPreviewMode(previewMode) {
@@ -747,7 +747,7 @@ define(['jquery',
         /**
          * @public
          *
-         * @param bool 
+         * @param bool
          * @return void
          */
         function showValidationErrorsModal() {
@@ -1310,7 +1310,7 @@ define(['jquery',
         function removeAllStageElementSelectionsBatch() {
             getStage().getAllFormElementDomElements().removeClass(getHelper().getDomElementClassName('selectedFormElement'));
             removeStagePanelSelection();
-            getStage().getAllFormElementDomElements().parent().removeClass(getHelper().getDomElementClassName('sortableHover'));        
+            getStage().getAllFormElementDomElements().parent().removeClass(getHelper().getDomElementClassName('sortableHover'));
         };
 
         /**
@@ -1628,6 +1628,20 @@ define(['jquery',
         /**
          * @public
          *
+         * @return void
+         */
+        function showSaveErrorMessage(response) {
+            Notification.error(
+                getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageTitle'),
+                getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageMessage') +
+                  " " +
+                  response.message
+            );
+        };
+
+        /**
+         * @public
+         *
          * @param string
          * @param string
          * @return void
@@ -1725,6 +1739,7 @@ define(['jquery',
             showSaveButtonSaveIcon: showSaveButtonSaveIcon,
             showSaveButtonSpinnerIcon: showSaveButtonSpinnerIcon,
             showSaveSuccessMessage: showSaveSuccessMessage,
+            showSaveErrorMessage: showSaveErrorMessage,
             showValidationErrorsModal: showValidationErrorsModal
         };
     })($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification);

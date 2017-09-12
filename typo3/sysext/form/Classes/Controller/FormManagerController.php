@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Exception as FormException;
+use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -46,17 +47,6 @@ class FormManagerController extends AbstractBackendController
      * @var BackendTemplateView
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * Initialize the references action.
-     * This action use the Fluid JsonView::class as view.
-     *
-     * @internal
-     */
-    public function initializeReferencesAction()
-    {
-        $this->defaultViewObjectName = JsonView::class;
-    }
 
     /**
      * Displays the Form Manager
@@ -79,17 +69,27 @@ class FormManagerController extends AbstractBackendController
     }
 
     /**
+     * Initialize the create action.
+     * This action uses the Fluid JsonView::class as view.
+     *
+     * @internal
+     */
+    public function initializeCreateAction()
+    {
+        $this->defaultViewObjectName = JsonView::class;
+    }
+
+    /**
      * Creates a new Form and redirects to the Form Editor
      *
      * @param string $formName
      * @param string $templatePath
      * @param string $prototypeName
      * @param string $savePath
-     * @return string
      * @throws FormException
      * @internal
      */
-    public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath): string
+    public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath)
     {
         if (!$this->isValidTemplatePath($prototypeName, $templatePath)) {
             throw new FormException(sprintf('The template path "%s" is not allowed', $templatePath), 1329233410);
@@ -116,9 +116,38 @@ class FormManagerController extends AbstractBackendController
             }
         }
 
-        $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
+        $response = [
+            'status' => 'success',
+            'url' => $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+        ];
 
-        return $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor');
+        try {
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
+        } catch (PersistenceManagerException $e) {
+            $response = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ];
+        }
+
+        $this->view->assign('response', $response);
+        // createAction uses the Extbase JsonView::class.
+        // That's why we have to set the view variables in this way.
+        $this->view->setVariablesToRender([
+            'response',
+        ]);
+    }
+
+    /**
+     * Initialize the duplicate action.
+     * This action uses the Fluid JsonView::class as view.
+     *
+     * @internal
+     */
+    public function initializeDuplicateAction()
+    {
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     /**
@@ -127,10 +156,9 @@ class FormManagerController extends AbstractBackendController
      * @param string $formName
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
      * @param string $savePath
-     * @return string
      * @internal
      */
-    public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath): string
+    public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath)
     {
         $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formToDuplicate['label'] = $formName;
@@ -148,9 +176,38 @@ class FormManagerController extends AbstractBackendController
             }
         }
 
-        $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
+        $response = [
+            'status' => 'success',
+            'url' => $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+        ];
 
-        return $this->controllerContext->getUriBuilder()->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor');
+        try {
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
+        } catch (PersistenceManagerException $e) {
+            $response = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ];
+        }
+
+        $this->view->assign('response', $response);
+        // createAction uses the Extbase JsonView::class.
+        // That's why we have to set the view variables in this way.
+        $this->view->setVariablesToRender([
+            'response',
+        ]);
+    }
+
+    /**
+     * Initialize the references action.
+     * This action uses the Fluid JsonView::class as view.
+     *
+     * @internal
+     */
+    public function initializeReferencesAction()
+    {
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     /**

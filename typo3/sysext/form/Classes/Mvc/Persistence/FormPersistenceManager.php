@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -154,7 +155,15 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $fileToSave = $this->getOrCreateFile($persistenceIdentifier);
         }
 
-        $this->yamlSource->save($fileToSave, $formDefinition);
+        try {
+            $this->yamlSource->save($fileToSave, $formDefinition);
+        } catch (FileWriteException $e) {
+            throw new PersistenceManagerException(sprintf(
+                'The file "%s" could not be saved: %s',
+                $persistenceIdentifier,
+                $e->getMessage()
+            ), 1512582637, $e);
+        }
     }
 
     /**
@@ -503,7 +512,13 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         if (!$storage->hasFolder($pathinfo['dirname'])) {
             throw new PersistenceManagerException(sprintf('Could not create folder "%s".', $pathinfo['dirname']), 1471630579);
         }
-        $folder = $storage->getFolder($pathinfo['dirname']);
+
+        try {
+            $folder = $storage->getFolder($pathinfo['dirname']);
+        } catch (InsufficientFolderAccessPermissionsException $e) {
+            throw new PersistenceManagerException(sprintf('No read access to folder "%s".', $pathinfo['dirname']), 1512583307);
+        }
+
         if (!$storage->checkFolderActionPermission('write', $folder)) {
             throw new PersistenceManagerException(sprintf('No write access to folder "%s".', $pathinfo['dirname']), 1471630580);
         }

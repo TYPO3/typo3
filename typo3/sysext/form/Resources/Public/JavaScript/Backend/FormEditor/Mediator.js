@@ -214,6 +214,19 @@ define(['jquery',
              *
              * @param string
              * @param array
+             *              args[0] = object
+             * @return void
+             * @subscribe core/ajax/saveFormDefinition/error
+             */
+            getPublisherSubscriber().subscribe('core/ajax/saveFormDefinition/error', function(topic, args) {
+                getViewModel().showSaveErrorMessage(args[0]);
+            });
+
+            /**
+             * @private
+             *
+             * @param string
+             * @param array
              *              args[0] = html
              *              args[1] = pageIndex
              * @return void

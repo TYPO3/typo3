@@ -90,6 +90,12 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.savesuccessflashmessagemessage:
 .. include:: Form/formEditor/saveSuccessFlashMessageMessage.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.saveerrorflashmessagetitle:
+.. include:: Form/formEditor/saveErrorFlashMessageTitle.rst
+
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.saveerrorflashmessagemessage:
+.. include:: Form/formEditor/saveErrorFlashMessageMessage.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.modalvalidationerrorsdialogtitle:
 .. include:: Form/formEditor/modalValidationErrorsDialogTitle.rst
 

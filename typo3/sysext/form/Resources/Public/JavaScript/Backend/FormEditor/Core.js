@@ -546,7 +546,7 @@ define(['jquery'], function($) {
                                 if ('array' !== $.type(formElementTypeDefinition['propertyCollections'][collectionName][i]['editors'][j]['propertyValidators'])) {
                                     continue;
                                 }
-                                
+
                                 if (
                                     !utility().isUndefinedOrNull(formElementTypeDefinition['propertyCollections'][collectionName][i]['editors'][j]['propertyValidatorsMode'])
                                     && formElementTypeDefinition['propertyCollections'][collectionName][i]['editors'][j]['propertyValidatorsMode'] === 'OR'
@@ -1989,7 +1989,11 @@ define(['jquery'], function($) {
                         return;
                     }
                     _runningAjaxRequests['saveForm'] = null;
-                    publisherSubscriber().publish('core/ajax/saveFormDefinition/success', [data]);
+                    if (data['status'] === 'success') {
+                        publisherSubscriber().publish('core/ajax/saveFormDefinition/success', [data]);
+                    } else {
+                        publisherSubscriber().publish('core/ajax/saveFormDefinition/error', [data]);
+                    }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     publisherSubscriber().publish('core/ajax/error', [jqXHR, textStatus, errorThrown]);
                 });

@@ -48,8 +48,20 @@
             <trans-unit id="formManager.newFormWizard.step3.message" xml:space="preserve">
                 <source>Now you are ready to create your new form.</source>
             </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
+                <source>Create</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step4.errorMessage" xml:space="preserve">
+                <source>The form could not be saved:</source>
+            </trans-unit>
             <trans-unit id="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
                 <source>Duplicate form "{0}"</source>
+            </trans-unit>
+            <trans-unit id="formManager.duplicateFormWizard.step2.errorTitle" xml:space="preserve">
+                <source>Duplicate</source>
+            </trans-unit>
+            <trans-unit id="formManager.duplicateFormWizard.step2.errorMessage" xml:space="preserve">
+                <source>The form could not be saved:</source>
             </trans-unit>
             <trans-unit id="formManager.no_references" xml:space="preserve">
                 <source>There are no references yet</source>
