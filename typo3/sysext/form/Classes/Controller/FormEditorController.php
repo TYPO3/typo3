@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -130,14 +131,24 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
+     * Initialize the save action.
+     * This action uses the Fluid JsonView::class as view.
+     *
+     * @internal
+     */
+    public function initializeSaveFormAction()
+    {
+        $this->defaultViewObjectName = JsonView::class;
+    }
+
+    /**
      * Save a formDefinition which was build by the form editor.
      *
      * @param string $formPersistenceIdentifier
      * @param array $formDefinition
-     * @return string
      * @internal
      */
-    public function saveFormAction(string $formPersistenceIdentifier, array $formDefinition): string
+    public function saveFormAction(string $formPersistenceIdentifier, array $formDefinition)
     {
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
         $formDefinition = $this->convertJsonArrayToAssociativeArray($formDefinition);
@@ -157,8 +168,26 @@ class FormEditorController extends AbstractBackendController
             }
         }
 
-        $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
-        return '';
+        $response = [
+            'status' => 'success',
+        ];
+
+        try {
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
+        } catch (PersistenceManagerException $e) {
+            $response = [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ];
+        }
+
+        $this->view->assign('response', $response);
+        // saveFormAction uses the extbase JsonView::class.
+        // That's why we have to set the view variables in this way.
+        $this->view->setVariablesToRender([
+            'response',
+        ]);
     }
 
     /**

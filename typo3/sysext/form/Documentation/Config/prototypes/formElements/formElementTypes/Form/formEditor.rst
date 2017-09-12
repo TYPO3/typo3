@@ -61,6 +61,8 @@ formEditor
              _isTopLevelFormElement: true
              saveSuccessFlashMessageTitle: formEditor.elements.Form.saveSuccessFlashMessageTitle
              saveSuccessFlashMessageMessage: formEditor.elements.Form.saveSuccessFlashMessageMessage
+             saveErrorFlashMessageTitle: formEditor.elements.Form.saveErrorFlashMessageTitle
+             saveErrorFlashMessageMessage: formEditor.elements.Form.saveErrorFlashMessageMessage
              modalValidationErrorsDialogTitle: formEditor.modals.validationErrors.dialogTitle
              modalValidationErrorsConfirmButton: formEditor.modals.validationErrors.confirmButton
              modalInsertElementsDialogTitle: formEditor.modals.insertElements.dialogTitle

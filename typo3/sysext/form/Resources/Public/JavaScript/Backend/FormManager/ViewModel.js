@@ -62,7 +62,11 @@ define(['jquery',
                 showReferences: { identifier: '[data-identifier="showReferences"]' },
                 referenceLink: { identifier: '[data-identifier="referenceLink"]' },
 
-                tooltip: { identifier: '[data-toggle="tooltip"]' }
+                tooltip: { identifier: '[data-toggle="tooltip"]' },
+
+                moduleBody: { class: '.module-body.t3js-module-body' },
+                t3Logo: { class: '.t3-message-page-logo' },
+                t3Footer: { id: '#t3-footer' }
             }
         };
 
@@ -270,11 +274,23 @@ define(['jquery',
                             savePath: Wizard.setup.settings['savePath']
                         }
                     }, function(data, textStatus, jqXHR) {
-                        document.location = data;
+                        if (data['status'] === 'success') {
+                            document.location = data.url;
+                        } else {
+                            Notification.error(TYPO3.lang['formManager.newFormWizard.step4.errorTitle'], TYPO3.lang['formManager.newFormWizard.step4.errorMessage'] + " " + data['message']);
+                        }
                         Wizard.dismiss();
                     }).fail(function(jqXHR, textStatus, errorThrown) {
+                        var parser = new DOMParser(),
+                            responseDocument = parser.parseFromString(jqXHR.responseText, "text/html"),
+                            responseBody = $(responseDocument.body);
+
                         Notification.error(textStatus, errorThrown, 2);
                         Wizard.dismiss();
+
+                        $(getDomElementIdentifier('t3Logo', 'class'), responseBody).remove();
+                        $(getDomElementIdentifier('t3Footer', 'id'), responseBody).remove();
+                        $(getDomElementIdentifier('moduleBody', 'class')).html(responseBody.html());
                     });
                 }).done(function() {
                     Wizard.show();
@@ -403,11 +419,23 @@ define(['jquery',
                             savePath: Wizard.setup.settings['savePath']
                         }
                     }, function(data, textStatus, jqXHR) {
-                        document.location = data;
+                        if (data['status'] === 'success') {
+                            document.location = data.url;
+                        } else {
+                            Notification.error(TYPO3.lang['formManager.duplicateFormWizard.step2.errorTitle'], TYPO3.lang['formManager.duplicateFormWizard.step2.errorMessage'] + " " + data['message']);
+                        }
                         Wizard.dismiss();
                     }).fail(function(jqXHR, textStatus, errorThrown) {
+                        var parser = new DOMParser(),
+                            responseDocument = parser.parseFromString(jqXHR.responseText, "text/html"),
+                            responseBody = $(responseDocument.body);
+
                         Notification.error(textStatus, errorThrown, 2);
                         Wizard.dismiss();
+
+                        $(getDomElementIdentifier('t3Logo', 'class'), responseBody).remove();
+                        $(getDomElementIdentifier('t3Footer', 'id'), responseBody).remove();
+                        $(getDomElementIdentifier('moduleBody', 'class')).html(responseBody.html());
                     });
                 }).done(function() {
                     Wizard.show();
