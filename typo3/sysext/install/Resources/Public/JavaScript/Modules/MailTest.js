@@ -14,13 +14,15 @@
 /**
  * Module: TYPO3/CMS/Install/CreateAdmin
  */
-define(['jquery',
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity',
 	'bootstrap'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -38,21 +40,19 @@ define(['jquery',
 		},
 
 		send: function() {
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'mailTest',
-					'token': $(this.selectorSendToken).text(),
-					'email': $('.t3js-mailTest-email').val()
-				}
-			};
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'mailTest',
+						'token': $(this.selectorSendToken).text(),
+						'email': $('.t3js-mailTest-email').val()
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -66,9 +66,8 @@ define(['jquery',
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function () {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

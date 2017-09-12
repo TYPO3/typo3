@@ -16,12 +16,13 @@
  */
 define([
 	'jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity'
 ],
-function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -57,7 +58,6 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 		initialize: function() {
 			var self = this;
 
-			// Load main content on first open
 			// Load main content on first open
 			$(document).on('cardlayout:card-opened', function(event, $card) {
 				if ($card.hasClass(self.selectorGridderOpener) && !$card.data('isInitialized')) {
@@ -98,14 +98,10 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 
 		silentUpgrades: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsSilentUpgrades';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			$outputContainer.empty().html(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsSilentUpgrades'),
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -122,24 +118,19 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		blockingUpgradesDatabaseCharsetTest: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsBlockingDatabaseCharsetTest';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			var charsetTemplate = $(this.selectorWizardsBlockingCharsetTemplate).html();
 			$outputContainer.append().html(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsBlockingDatabaseCharsetTest'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -151,24 +142,18 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						}
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		blockingUpgradesDatabaseCharsetFix: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsBlockingDatabaseCharsetFix';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			$outputContainer.append().html(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsBlockingDatabaseCharsetFix'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -185,25 +170,19 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.append(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		blockingUpgradesDatabaseAdds: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsBlockingDatabaseAdds';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			var breakingAddsTemplate = $(this.selectorWizardsBlockingAddsTemplate).html();
 			$outputContainer.append().html(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsBlockingDatabaseAdds'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -235,24 +214,18 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.append(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		blockingUpgradesDatabaseAddsExecute: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsBlockingDatabaseExecute';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			$outputContainer.empty().html(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsBlockingDatabaseExecute'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -270,26 +243,20 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.append(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		wizardsList: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsList';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var listTemplate = $(this.selectorWizardsListTemplate);
 			var wizardTemplate = $(this.selectorWizardsListRowTemplate);
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			$outputContainer.append(self.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsList'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -329,31 +296,27 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.append(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		wizardInput: function(identifier) {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'upgradeWizardsInput',
-					'token': $(this.selectorWizardsInputToken).text(),
-					'identifier': identifier
-				}
-			};
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
 			var inputTemplate = $(this.selectorWizardsInputTemplate);
 			$outputContainer.empty().html(this.loadingMessage);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'upgradeWizardsInput',
+						'token': $(this.selectorWizardsInputToken).text(),
+						'identifier': identifier
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -374,22 +337,20 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 					}
 					$outputContainer.append(input);
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		wizardExecute: function(identifier) {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax';
 			var postData = {
 				'install[action]': 'upgradeWizardsExecute',
 				'install[token]': $(this.selectorWizardsExecuteToken).text(),
 				'install[identifier]': identifier
 			};
-			$($('.gridder-show ' + this.selectorOutputWizardsContainer + ' form').serializeArray()).each(function() {
+			$($(this.selectorOutputWizardsContainer + ' form').serializeArray()).each(function() {
 				postData[this.name] = this.value;
 			});
 			var $outputContainer = $(this.selectorOutputWizardsContainer);
@@ -398,7 +359,7 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 			$.ajax({
 				method: 'POST',
 				data: postData,
-				url: url,
+				url: Router.getUrl(),
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -417,25 +378,20 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		doneUpgrades: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=upgradeWizardsDoneUpgrades';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputDoneContainer);
 			var rowTemplate = $(this.selectorWizardsDoneRowTemplate).html();
 			var bodyTemplate = $(this.selectorWizardsDoneBodyTemplate).html();
 			$outputContainer.append(this.loadingMessage);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('upgradeWizardsDoneUpgrades'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -476,30 +432,26 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.append(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					self.removeLoadingMessage($outputContainer);
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		markUndone: function(identifier) {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'upgradeWizardsMarkUndone',
-					'token': $(this.selectorMarkUndoneToken).text(),
-					'identifier': identifier
-				}
-			};
 			var $outputContainer = $(this.selectorOutputDoneContainer);
 			$outputContainer.empty().html(this.loadingMessage);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'upgradeWizardsMarkUndone',
+						'token': $(this.selectorMarkUndoneToken).text(),
+						'identifier': identifier
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -515,9 +467,8 @@ function($, FlashMessage, ProgressBar, InfoBox, Severity) {
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},

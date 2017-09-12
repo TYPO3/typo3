@@ -14,7 +14,14 @@
 /**
  * Module: TYPO3/CMS/Install/ClearTypo3tempFiles
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -32,22 +39,20 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 		},
 
 		delete: function(folder) {
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'clearTypo3tempFiles',
-					'token': $(this.selectorDeleteToken).text(),
-					'folder': folder
-				}
-			};
 			var $container = $('.t3js-clearTypo3temp-container-' + folder);
 			var message = ProgressBar.render(Severity.loading, '', '');
 			var $outputContainer = $container.find(this.selectorOutputContainer);
 			$outputContainer.empty().html(message);
 			$.ajax({
 				method: 'POST',
-				data: postData,
-				url: url,
+				url: Router.getUrl(),
+				data: {
+					'install': {
+						'action': 'clearTypo3tempFiles',
+						'token': $(this.selectorDeleteToken).text(),
+						'folder': folder
+					}
+				},
 				cache: false,
 				success: function (data) {
 					$outputContainer.empty();
@@ -61,9 +66,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function () {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

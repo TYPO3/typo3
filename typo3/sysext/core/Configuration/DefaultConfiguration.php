@@ -303,8 +303,6 @@ return [
             'record' => \TYPO3\CMS\Core\LinkHandling\RecordLinkHandler::class,
         ],
         'livesearch' => [],  // Array: keywords used for commands to search for specific tables
-        'isInitialInstallationInProgress' => false,
-        'isInitialDatabaseImportDone' => true,
         'formEngine' => [
             'nodeRegistry' => [], // Array: Registry to add or overwrite FormEngine nodes. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeInterface.
             'nodeResolver' => [], // Array: Additional node resolver. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeResolverInterface.

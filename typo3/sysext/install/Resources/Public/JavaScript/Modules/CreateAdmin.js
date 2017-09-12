@@ -14,7 +14,15 @@
 /**
  * Module: TYPO3/CMS/Install/CreateAdmin
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity',
+	'TYPO3/CMS/Install/PasswordStrength',
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, PasswordStrength) {
 	'use strict';
 
 	return {
@@ -28,27 +36,28 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 				e.preventDefault();
 				self.create();
 			});
+			$(document).on('keyup', '.t3-install-form-password-strength', function() {
+				PasswordStrength.initialize('.t3-install-form-password-strength');
+			});
 		},
 
 		create: function() {
-			var token = $(this.selectorCreateToken).text();
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'createAdmin',
-					'token': token,
-					'userName': $('.t3js-createAdmin-user').val(),
-					'userPassword': $('.t3js-createAdmin-password').val(),
-					'userPasswordCheck': $('.t3js-createAdmin-password-check').val()
-				}
-			};
+			var self = this;
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'createAdmin',
+						'token': $(self.selectorCreateToken).text(),
+						'userName': $('.t3js-createAdmin-user').val(),
+						'userPassword': $('.t3js-createAdmin-password').val(),
+						'userPasswordCheck': $('.t3js-createAdmin-password-check').val()
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -62,9 +71,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function () {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

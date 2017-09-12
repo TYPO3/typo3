@@ -16,12 +16,13 @@
  */
 define([
     'jquery',
+    'TYPO3/CMS/Install/Router',
     'TYPO3/CMS/Install/FlashMessage',
     'TYPO3/CMS/Install/ProgressBar',
     'TYPO3/CMS/Install/InfoBox',
     'TYPO3/CMS/Install/Severity',
     'bootstrap'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
     'use strict';
 
     return {
@@ -42,18 +43,13 @@ define([
         },
 
         runTests: function() {
-            var self = this;
-            var url = location.href + '&install[controller]=ajax&install[action]=environmentCheckGetStatus';
-            if (location.hash) {
-                url = url.replace(location.hash, "");
-            }
             var $outputContainer = $(this.selectorOutputContainer);
             var $errorBadge = $(this.selectorGridderBadge);
             $errorBadge.text('').hide();
             var message = ProgressBar.render(Severity.loading, 'Loading...', '');
             $outputContainer.empty().append(message);
             $.ajax({
-                url: url,
+                url: Router.getUrl('environmentCheckGetStatus'),
                 cache: false,
                 success: function(data) {
                     $outputContainer.empty();
@@ -84,9 +80,8 @@ define([
                       $outputContainer.empty().append(message);
                     }
                 },
-                error: function() {
-                    var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-                    $outputContainer.empty().append(message);
+                error: function(xhr) {
+                    Router.handleAjaxError(xhr);
                 }
             });
         }

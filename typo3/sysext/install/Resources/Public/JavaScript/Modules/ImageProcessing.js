@@ -15,17 +15,17 @@
  * Module: TYPO3/CMS/Install/ImageProcessing
  */
 define(['jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity',
 	'bootstrap'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
     'use strict';
 
     return {
         selectorGridderOpener: 't3js-imageProcessing-open',
-        selectorImageProcessingToken: '#t3js-imageProcessing-token',
         selectorExecuteTrigger: '.t3js-imageProcessing-execute',
         selectorTestContainer: '.t3js-imageProcessing-twinContainer',
         selectorTwinImageTemplate: '.t3js-imageProcessing-twinImage-template',
@@ -58,17 +58,8 @@ define(['jquery',
                 var testType = $container.data('test');
                 var message = InfoBox.render(Severity.loading, 'Loading...', '');
                 $container.empty().html(message);
-                var postData = {
-                    'install': {
-                        'action': 'imageProcessing',
-                        'token': $(self.selectorImageProcessingToken).text(),
-                        'testType': testType
-                    }
-                };
                 $.ajax({
-                    method: 'POST',
-                    data: postData,
-                    url: location.href + '&install[controller]=ajax',
+                    url: Router.getUrl(testType),
                     cache: false,
                     success: function(data) {
                         if (data.success === true) {
@@ -100,9 +91,8 @@ define(['jquery',
                             $container.append($aTwin);
                         }
                     },
-                    error: function() {
-                        var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-                        $container.empty().html(message);
+                    error: function(xhr) {
+                        Router.handleAjaxError(xhr);
                     }
                 });
             });

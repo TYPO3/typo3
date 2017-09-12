@@ -14,19 +14,37 @@
 /**
  * Module: TYPO3/CMS/Install/LocalConfiguration
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity', 'bootstrap'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity',
+	'bootstrap'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
+		selectorGridderOpener: 't3js-localConfiguration-open',
 		selectorToggleAllTrigger: '.t3js-localConfiguration-toggleAll',
 		selectorWriteTrigger: '.t3js-localConfiguration-write',
 		selectorSearchTrigger: '.t3js-localConfiguration-search',
 		selectorWriteToken: '#t3js-localConfiguration-write-token',
+		selectorContentContainer: '.t3js-localConfiguration-content',
 		selectorOutputContainer: '.t3js-localConfiguration-output',
 
 		initialize: function() {
 			var self = this;
 
+			// Get configuration list on card open
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener)) {
+					self.getContent();
+				}
+			});
+
+			// Write out new settings
 			$(document).on('click', this.selectorWriteTrigger, function() {
 				self.write();
 			});
@@ -93,8 +111,28 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			});
 		},
 
+		getContent: function() {
+			var outputContainer = $(this.selectorContentContainer);
+			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+			outputContainer.empty().html(message);
+			$.ajax({
+				url: Router.getUrl('localConfigurationGetContent'),
+				cache: false,
+				success: function(data) {
+					if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+						outputContainer.empty().append(data.html);
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						outputContainer.empty().append(message);
+					}
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
+				}
+			});
+		},
+
 		write: function() {
-			var url = location.href + '&install[controller]=ajax';
 			var configurationValues = {};
 			$('.gridder-show .t3js-localConfiguration-pathValue').each(function(i, element) {
 				var $element = $(element);
@@ -108,20 +146,19 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 					configurationValues[$element.data('path')] = $element.val();
 				}
 			});
-			var postData = {
-				'install': {
-					'action': 'localConfigurationWrite',
-					'token': $(this.selectorWriteToken).text(),
-					'configurationValues': configurationValues
-				}
-			};
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'localConfigurationWrite',
+						'token': $(this.selectorWriteToken).text(),
+						'configurationValues': configurationValues
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -135,9 +172,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},

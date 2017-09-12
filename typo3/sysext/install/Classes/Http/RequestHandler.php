@@ -18,15 +18,24 @@ namespace TYPO3\CMS\Install\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
-use TYPO3\CMS\Install\Controller\AjaxController;
-use TYPO3\CMS\Install\Controller\Exception;
-use TYPO3\CMS\Install\Controller\ToolController;
-use TYPO3\CMS\Install\Exception\AuthenticationRequiredException;
+use TYPO3\CMS\Install\Controller\AbstractController;
+use TYPO3\CMS\Install\Controller\EnvironmentController;
+use TYPO3\CMS\Install\Controller\LayoutController;
+use TYPO3\CMS\Install\Controller\LoginController;
+use TYPO3\CMS\Install\Controller\MaintenanceController;
+use TYPO3\CMS\Install\Controller\SettingsController;
+use TYPO3\CMS\Install\Controller\UpgradeController;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Install\Service\SessionService;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
@@ -41,14 +50,16 @@ class RequestHandler implements RequestHandlerInterface
     protected $bootstrap;
 
     /**
-     * @var ServerRequestInterface
+     * @var array List of valid controllers
      */
-    protected $request;
-
-    /**
-     * @var \TYPO3\CMS\Install\Service\SessionService
-     */
-    protected $session = null;
+    protected $controllers = [
+        'layout' => LayoutController::class,
+        'login' => LoginController::class,
+        'maintenance' => MaintenanceController::class,
+        'settings' => SettingsController::class,
+        'upgrade' => UpgradeController::class,
+        'environment' => EnvironmentController::class,
+    ];
 
     /**
      * Constructor handing over the bootstrap
@@ -68,39 +79,116 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->request = $request;
-        $getPost = !empty($request->getQueryParams()['install']) ? $request->getQueryParams()['install'] : $request->getParsedBody()['install'];
-        $isAjaxRequest = $getPost['controller'] === 'ajax';
+        $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
+        $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';
+        $action = $actionName . 'Action';
 
-        if ($isAjaxRequest) {
-            $controllerClassName = \TYPO3\CMS\Install\Controller\AjaxController::class;
-        } else {
-            $controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
-        }
-        /** @var AjaxController|ToolController $controller */
-        $controller = GeneralUtility::makeInstance($controllerClassName);
-        try {
-            $this->checkSessionToken();
-            $this->checkSessionLifetime();
-
-            // logout if requested
-            $this->logoutIfRequested();
-
-            // authenticate if requested
-            $this->loginIfRequested();
-
-            if (!$this->session->isAuthorized()) {
-                return $controller->unauthorizedAction($this->request);
+        $session = $this->initializeSession();
+        if ($actionName === 'init') {
+            $controller = new LayoutController();
+            $response = $controller->initAction($request);
+        } elseif ($actionName === 'checkEnableInstallToolFile') {
+            $response = new JsonResponse([
+                'success' => $this->checkEnableInstallToolFile(),
+            ]);
+        } elseif ($actionName === 'showEnableInstallToolFile') {
+            $controller = new LoginController();
+            $response = $controller->showEnableInstallToolFileAction($request);
+        } elseif ($actionName === 'checkLogin') {
+            if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession()) {
+                throw new \RuntimeException('Not authorized', 1505563556);
             }
-            $this->session->refreshSession();
-
-            return $controller->execute($this->request);
-        } catch (AuthenticationRequiredException $e) {
-            // Show the login form (or, if AJAX call, just return "unauthorized"
-            return $controller->unauthorizedAction($this->request, $e->getMessageObject());
-        } catch (Exception\RedirectException $e) {
-            return $controller->redirectToSelfAction($request);
+            if ($session->isExpired() || !$session->isAuthorized()) {
+                // Session expired, log out user, start new session
+                $session->resetSession();
+                $session->startSession();
+                $response = new JsonResponse([
+                    'success' => false,
+                ]);
+            } else {
+                $session->refreshSession();
+                $response = new JsonResponse([
+                    'success' => true,
+                ]);
+            }
+        } elseif ($actionName === 'showLogin') {
+            if (!$this->checkEnableInstallToolFile()) {
+                throw new \RuntimeException('Not authorized', 1505564888);
+            }
+            $controller = new LoginController();
+            $response = $controller->showLoginAction($request);
+        } elseif ($actionName === 'login') {
+            if (!$this->checkEnableInstallToolFile()) {
+                throw new \RuntimeException('Not authorized', 1505567462);
+            }
+            $this->checkSessionToken($request, $session);
+            $this->checkSessionLifetime($session);
+            $password = $request->getParsedBody()['install']['password'] ?? null;
+            $authService = new AuthenticationService($session);
+            if ($authService->loginWithPassword($password)) {
+                $response = new JsonResponse([
+                    'success' => true,
+                ]);
+            } else {
+                if (is_null($password) || empty($password)) {
+                    $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+                        new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
+                    );
+                } else {
+                    $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
+                    $hashedPassword = $saltFactory->getHashedPassword($password);
+                    $messageQueue = (new FlashMessageQueue('install'))->enqueue(
+                        new FlashMessage(
+                            'Given password does not match the install tool login password. Calculated hash: ' . $hashedPassword,
+                            '',
+                            FlashMessage::ERROR
+                        )
+                    );
+                }
+                $response = new JsonResponse([
+                    'success' => false,
+                    'status' => $messageQueue,
+                ]);
+            }
+        } elseif ($actionName === 'logout') {
+            if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
+                EnableFileService::removeInstallToolEnableFile();
+            }
+            $formProtection = FormProtectionFactory::get(
+                InstallToolFormProtection::class
+            );
+            $formProtection->clean();
+            $session->destroySession();
+            $response = new JsonResponse([
+                'success' => true,
+            ]);
+        } else {
+            if (
+                !$this->checkSessionToken($request, $session)
+                || !$this->checkSessionLifetime($session)
+                || !$session->isAuthorized()
+            ) {
+                return new HtmlResponse('', 401, ['WWW-Authenticate' => 'FormBased']);
+            }
+            $session->refreshSession();
+            if (!array_key_exists($controllerName, $this->controllers)) {
+                throw new \RuntimeException(
+                    'Unknown controller ' . $controllerName,
+                    1505215756
+                );
+            }
+            /** @var AbstractController $controller */
+            $controller = new $this->controllers[$controllerName];
+            if (!method_exists($controller, $action)) {
+                throw new \RuntimeException(
+                    'Unknown action method ' . $action . ' in controller ' . $controllerName,
+                    1505216027
+                );
+            }
+            $response = $controller->$action($request);
         }
+
+        return $response;
     }
 
     /**
@@ -114,16 +202,12 @@ class RequestHandler implements RequestHandlerInterface
     public function canHandleRequest(ServerRequestInterface $request)
     {
         $basicIntegrity = $this->bootstrap->checkIfEssentialConfigurationExists()
-            && !$this->isInitialInstallationInProgress()
-            && $this->isInstallToolPasswordSet();
+            && !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])
+            && !EnableFileService::isFirstInstallAllowed();
         if (!$basicIntegrity) {
             return false;
         }
-        $this->initializeSession();
-        if ($this->session->isAuthorizedBackendUserSession()) {
-            return true;
-        }
-        return $this->isInstallToolAvailable();
+        return true;
     }
 
     /**
@@ -138,178 +222,81 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Checks if ENABLE_INSTALL_TOOL exists.
-     * Does not check for LocalConfiguration.php file as this is done within
-     * Bootstrap->checkIfEssentialConfigurationExists() before.
      *
      * @return bool
      */
-    protected function isInstallToolAvailable()
+    protected function checkEnableInstallToolFile()
     {
-        /** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolEnableService */
-        $installToolEnableService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\EnableFileService::class);
-        return $installToolEnableService->checkInstallToolEnableFile();
-    }
-
-    /**
-     * Checks if first installation is in progress
-     * Does not check for LocalConfiguration.php file as this is done within
-     * Bootstrap->checkIfEssentialConfigurationExists() before.
-     *
-     * @return bool TRUE if installation is in progress
-     */
-    protected function isInitialInstallationInProgress()
-    {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['isInitialInstallationInProgress']);
-    }
-
-    /**
-     * Check if the install tool password is set
-     */
-    protected function isInstallToolPasswordSet()
-    {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']);
+        return EnableFileService::checkInstallToolEnableFile();
     }
 
     /**
      * Initialize session object.
      * Subclass will throw exception if session can not be created or if
      * preconditions like a valid encryption key are not set.
+     *
+     * @return SessionService
      */
     protected function initializeSession()
     {
-        /** @var \TYPO3\CMS\Install\Service\SessionService $session */
-        $this->session = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SessionService::class);
-        if (!$this->session->hasSession()) {
-            $this->session->startSession();
+        $session = new SessionService();
+        if (!$session->hasSession()) {
+            $session->startSession();
         }
+        return $session;
     }
 
     /**
      * Use form protection API to find out if protected POST forms are ok.
      *
-     * @throws Exception
+     * @param SessionService $session
+     * @return bool
+     * @throws \RuntimeException
      */
-    protected function checkSessionToken()
+    protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
     {
-        $postValues = $this->request->getParsedBody()['install'];
-        // no post data is there, so no token necessary
+        $postValues = $request->getParsedBody()['install'];
+        // no post data is there, so no token check necessary
         if (empty($postValues)) {
             return true;
         }
         $tokenOk = false;
         // A token must be given as soon as there is POST data
         if (isset($postValues['token'])) {
-            /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
-            $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-                \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
+            $formProtection = FormProtectionFactory::get(
+                InstallToolFormProtection::class
             );
             $action = (string)$postValues['action'];
             if ($action === '') {
-                throw new Exception(
+                throw new \RuntimeException(
                     'No POST action given for token check',
                     1369326593
                 );
             }
             $tokenOk = $formProtection->validateToken($postValues['token'], 'installTool', $action);
         }
-
-        $this->handleSessionTokenCheck($tokenOk);
-    }
-
-    /**
-     * If session token was not ok, the session is reset and the login form is displayed.
-     *
-     * @param bool $tokenOk
-     * @throws AuthenticationRequiredException if a form token was submitted but was not valid
-     */
-    protected function handleSessionTokenCheck($tokenOk)
-    {
         if (!$tokenOk) {
-            $this->session->resetSession();
-            $this->session->startSession();
-
-            $message = new FlashMessage(
-                'The form protection token was invalid. You have been logged out, please log in and try again.',
-                'Invalid form token',
-                FlashMessage::ERROR
-            );
-            throw new AuthenticationRequiredException('Invalid form token', 1504030810, null, $message);
+            $session->resetSession();
+            $session->startSession();
         }
+        return $tokenOk;
     }
 
     /**
      * Check if session expired.
      * If the session has expired, the login form is displayed.
      *
-     * @throws AuthenticationRequiredException if the session has expired
+     * @param SessionService $session
+     * @return bool True if session lifetime is OK
      */
-    protected function checkSessionLifetime()
+    protected function checkSessionLifetime(SessionService $session): bool
     {
-        if ($this->session->isExpired()) {
+        $isExpired = $session->isExpired();
+        if ($isExpired) {
             // Session expired, log out user, start new session
-            $this->session->resetSession();
-            $this->session->startSession();
-
-            $message = new FlashMessage(
-                'Your Install Tool session has expired. You have been logged out, please log in and try again.',
-                'Session expired',
-                FlashMessage::ERROR
-            );
-            throw new AuthenticationRequiredException('Session expired', 1504030839, null, $message);
+            $session->resetSession();
+            $session->startSession();
         }
-    }
-
-    /**
-     * Logout user if requested
-     */
-    protected function logoutIfRequested()
-    {
-        $action = $this->request->getParsedBody()['install']['action'] ?? $this->request->getQueryParams()['install']['action'] ?? '';
-        if ($action === 'logout') {
-            if (EnableFileService::installToolEnableFileExists() && !EnableFileService::isInstallToolEnableFilePermanent()) {
-                EnableFileService::removeInstallToolEnableFile();
-            }
-
-            /** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
-            $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-                \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
-            );
-            $formProtection->clean();
-            $this->session->destroySession();
-            throw new Exception\RedirectException('Forced logout', 1504032052);
-        }
-    }
-
-    /**
-     * Validate install tool password and login user if requested
-     *
-     * @throws Exception\RedirectException on successful login
-     * @throws AuthenticationRequiredException when a login is requested but credentials are invalid
-     */
-    protected function loginIfRequested()
-    {
-        $action = $this->request->getParsedBody()['install']['action'] ?? $this->request->getQueryParams()['install']['action'] ?? '';
-        $postValues = $this->request->getParsedBody()['install'];
-        if ($action === 'login') {
-            $service = new AuthenticationService($this->session);
-            $result = $service->loginWithPassword($postValues['values']['password'] ?? null);
-            if ($result === true) {
-                throw new Exception\RedirectException('Login', 1504032046);
-            }
-            if (!isset($postValues['values']['password']) || $postValues['values']['password'] === '') {
-                $messageText = 'Please enter the install tool password';
-            } else {
-                $saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, 'BE');
-                $hashedPassword = $saltFactory->getHashedPassword($postValues['values']['password']);
-                $messageText = 'Given password does not match the install tool login password. ' .
-                    'Calculated hash: ' . $hashedPassword;
-            }
-            $message = new FlashMessage(
-                $messageText,
-                'Login failed',
-                FlashMessage::ERROR
-            );
-            throw new AuthenticationRequiredException('Login failed', 1504031978, null, $message);
-        }
+        return !$isExpired;
     }
 }

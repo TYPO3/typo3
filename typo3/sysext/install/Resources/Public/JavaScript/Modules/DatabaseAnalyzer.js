@@ -14,7 +14,14 @@
 /**
  * Module: TYPO3/CMS/Install/DatabaseAnalyzer
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -57,7 +64,6 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 
 		analyzeAjax: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=databaseAnalyzerAnalyze';
 			var $outputContainer = $(this.selectorOutputContainer);
 			var blockTemplate = $(this.selectorSuggestionBlock).html();
 			var lineTemplate = $(this.selectorSuggestionLine).html();
@@ -66,7 +72,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			$(this.selectorExecuteTrigger).prop('disabled', true);
 			$(this.selectorAnalyzeTrigger).prop('disabled', true);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('databaseAnalyzerAnalyze'),
 				cache: false,
 				success: function (data) {
 					if (data.success === true) {
@@ -117,16 +123,14 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		execute: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax';
 			var executeToken = $('#t3js-databaseAnalyzer-execute-token').text();
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			var $outputContainer = $('.t3js-databaseAnalyzer-output');
@@ -137,18 +141,16 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			$outputContainer.empty().html(message);
 			$(this.selectorExecuteTrigger).prop('disabled', true);
 			$(this.selectorAnalyzeTrigger).prop('disabled', true);
-			var postData = {
-				'install': {
-					'action': 'databaseAnalyzerExecute',
-					'token': executeToken,
-					'hashes': selectedHashes
-				}
-			};
-			$outputContainer.empty().html(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'databaseAnalyzerExecute',
+						'token': executeToken,
+						'hashes': selectedHashes
+					}
+				},
 				cache: false,
 				success: function(data) {
 					if (data.success === true) {
@@ -161,6 +163,9 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						}
 					}
 					self.analyzeAjax();
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

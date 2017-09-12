@@ -15,12 +15,13 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Secure session handling for the install tool.
  */
-class SessionService implements \TYPO3\CMS\Core\SingletonInterface
+class SessionService implements SingletonInterface
 {
     /**
      * The path to our typo3temp/var/ (where we can write our sessions). Set in the

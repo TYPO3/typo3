@@ -16,13 +16,14 @@
  */
 define([
 	'jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity',
 	'bootstrap',
 	'chosen'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -51,7 +52,6 @@ define([
 
 		getList: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=systemMaintainerGetList';
 			var $chosenContainer = $(this.selectorChosenContainer);
 			var $outputContainer = $(this.selectorOutputContainer);
 			var $chosenField = $(self.selectorChosenField);
@@ -60,7 +60,7 @@ define([
 			$chosenContainer.hide();
 			$chosenField.empty();
 			$.ajax({
-				url: url,
+				url: Router.getUrl('systemMaintainerGetList'),
 				cache: false,
 				success: function (data) {
 					if (data.success === true) {
@@ -98,9 +98,8 @@ define([
 						$chosenField.trigger('chosen:updated');
 					}
 				},
-				error: function() {
-					var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
@@ -112,7 +111,7 @@ define([
 			$outputContainer.append(message);
 			$.ajax({
 				method: 'POST',
-				url: location.href + '&install[controller]=ajax',
+				url: Router.getUrl(),
 				data: {
 					'install': {
 						'users': selectedUsers,
@@ -134,9 +133,8 @@ define([
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = InfoBox.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

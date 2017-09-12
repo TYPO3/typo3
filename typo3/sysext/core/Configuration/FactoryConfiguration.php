@@ -45,8 +45,6 @@ return [
         'jpg_quality' => '80',
     ],
     'SYS' => [
-        'isInitialInstallationInProgress' => true,
-        'isInitialDatabaseImportDone' => false,
         'sitename' => 'New TYPO3 site',
     ],
 ];

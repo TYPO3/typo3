@@ -39,7 +39,7 @@ class Application implements ApplicationInterface
      */
     protected $availableRequestHandlers = [
         \TYPO3\CMS\Install\Http\RequestHandler::class,
-        \TYPO3\CMS\Install\Http\RecoveryRequestHandler::class
+        \TYPO3\CMS\Install\Http\InstallerRequestHandler::class
     ];
 
     /**

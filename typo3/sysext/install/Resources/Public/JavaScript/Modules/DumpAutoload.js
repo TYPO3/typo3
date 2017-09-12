@@ -14,7 +14,14 @@
 /**
  * Module: TYPO3/CMS/Install/DumpAutoload
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -30,15 +37,11 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 		},
 
 		dump: function() {
-			var url = location.href + '&install[controller]=ajax&install[action]=dumpAutoload';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('dumpAutoload'),
 				cache: false,
 				success: function(data) {
 					if (data.success === true && Array.isArray(data.status)) {
@@ -54,9 +57,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

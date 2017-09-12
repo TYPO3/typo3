@@ -14,18 +14,43 @@
 /**
  * Module: TYPO3/CMS/Install/Presets
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressBar', 'TYPO3/CMS/Install/InfoBox', 'TYPO3/CMS/Install/Severity'], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity'
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
+		selectorGetContentToken: '#t3js-presets-getContent-token',
 		selectorActivateToken: '#t3js-presets-activate-token',
+		selectorGridderOpener: 't3js-presets-open',
 		selectorActivateTrigger: '.t3js-presets-activate',
-		selectorContentContainer: '.t3js-presets',
+		selectorContentContainer: '.t3js-presets-content',
 		selectorOutputContainer: '.t3js-presets-output',
+		selectorImageExecutable: '.t3js-presets-image-executable',
+		selectorImageExecutableTrigger: '.t3js-presets-image-executable-trigger',
 
 		initialize: function() {
 			var self = this;
 
+			// Get current system maintainer list on card open
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener)) {
+					self.getContent();
+				}
+			});
+
+			// Load content on click image executable path button
+			$(document).on('click', this.selectorImageExecutableTrigger, function(e) {
+				e.preventDefault();
+				self.getContent();
+			});
+
+			// Write out selected preset
 			$(document).on('click', this.selectorActivateTrigger, function(e) {
 				e.preventDefault();
 				self.activate();
@@ -37,21 +62,55 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 			});
 		},
 
+		getContent: function() {
+			var self = this;
+			var outputContainer = $(this.selectorContentContainer);
+			var executablePath = $(self.selectorImageExecutable).val();
+			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+			outputContainer.empty().html(message);
+			$.ajax({
+				url: Router.getUrl(),
+				method: 'POST',
+				data: {
+					'install': {
+						'token': $(this.selectorGetContentToken).text(),
+						'action': 'presetsGetContent',
+						'values': {
+							'Image': {
+								'additionalSearchPath': executablePath
+							}
+						}
+					}
+				},
+				cache: false,
+				success: function(data) {
+					if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+						outputContainer.empty().append(data.html);
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						outputContainer.empty().append(message);
+					}
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
+				}
+			});
+		},
+
 		activate: function() {
-			var url = location.href + '&install[controller]=ajax';
 			var postData = {};
 			$($(this.selectorContentContainer + ' form').serializeArray()).each(function() {
 				postData[this.name] = this.value;
 			});
-			postData['install[action]'] = 'presetActivate';
+			postData['install[action]'] = 'presetsActivate';
 			postData['install[token]'] = $(this.selectorActivateToken).text();
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
 				data: postData,
-				url: url,
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -65,9 +124,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/ProgressB
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

@@ -14,11 +14,20 @@
 /**
  * Module: TYPO3/CMS/Install/UpgradeDocs
  */
-define(['jquery', 'bootstrap', 'chosen'], function ($) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/ProgressBar',
+	'TYPO3/CMS/Install/InfoBox',
+	'TYPO3/CMS/Install/Severity',
+	'bootstrap',
+	'chosen'
+], function ($, Router, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
 		selectorGridderOpener: 't3js-upgradeDocs-open',
+		selectorContentContainer: '.t3js-upgradeDocs-content',
 		selectorMarkReadToken: '#t3js-upgradeDocs-markRead-token',
 		selectorUnmarkReadToken: '#t3js-upgradeDocs-unmarkRead-token',
 		selectorRestFileItem: '.upgrade_analysis_item_to_filter',
@@ -30,6 +39,13 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 
 		initialize: function() {
 			var self = this;
+
+			// Get content on card open
+			$(document).on('cardlayout:card-opened', function(event, $card) {
+				if ($card.hasClass(self.selectorGridderOpener)) {
+					self.getContent();
+				}
+			});
 
 			// Mark a file as read
 			$(document).on('click', '.t3js-upgradeDocs-markRead', function(event) {
@@ -45,21 +61,36 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 					return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
 				};
 			});
+		},
 
-			// Delayed initialize of some stuff on first open
-			// Load main content on first open
-			$(document).on('cardlayout:card-opened', function(event, $card) {
-				if ($card.hasClass(self.selectorGridderOpener)) {
-					$('[data-toggle="tooltip"]').tooltip({container: 'body'});
-					self.chosenField = $(self.selectorChosenField);
-					self.fulltextSearchField = $(self.selectorFulltextSearch);
-					self.initializeChosenSelector();
-					self.chosenField.on('change', function() {
-						self.combinedFilterSearch();
-					});
-					self.fulltextSearchField.on('keyup', function() {
-						self.combinedFilterSearch();
-					});
+		getContent: function() {
+			var self = this;
+			var outputContainer = $(this.selectorContentContainer);
+			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
+			outputContainer.empty().html(message);
+			$.ajax({
+				url: Router.getUrl('upgradeDocsGetContent'),
+				cache: false,
+				success: function(data) {
+					if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+						outputContainer.empty().append(data.html);
+						$('[data-toggle="tooltip"]').tooltip({container: 'body'});
+						self.chosenField = $(self.selectorChosenField);
+						self.fulltextSearchField = $(self.selectorFulltextSearch);
+						self.initializeChosenSelector();
+						self.chosenField.on('change', function() {
+							self.combinedFilterSearch();
+						});
+						self.fulltextSearchField.on('keyup', function() {
+							self.combinedFilterSearch();
+						});
+					} else {
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
+						outputContainer.empty().append(message);
+					}
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
@@ -157,13 +188,16 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 			$button.closest('.panel').appendTo('.panel-body-read');
 			$.ajax({
 				method: 'POST',
-				url: location.href + '&install[controller]=ajax',
+				url: Router.getUrl(),
 				data: {
 					'install': {
 						'ignoreFile': $button.data('filepath'),
 						'token': $(this.selectorMarkReadToken).text(),
 						'action': 'upgradeDocsMarkRead'
 					}
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
@@ -176,13 +210,16 @@ define(['jquery', 'bootstrap', 'chosen'], function ($) {
 			$button.closest('.panel').appendTo('*[data-group-version="' + version + '"] .panel-body');
 			$.ajax({
 				method: 'POST',
-				url: location.href + '&install[controller]=ajax',
+				url: Router.getUrl(),
 				data: {
 					'install': {
 						'ignoreFile': $button.data('filepath'),
 						'token': $(this.selectorUnmarkReadToken).text(),
 						action: 'upgradeDocsUnmarkRead'
 					}
+				},
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},

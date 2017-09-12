@@ -16,11 +16,12 @@
  */
 define([
 	'jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -36,16 +37,11 @@ define([
 		},
 
 		check: function() {
-			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=tcaMigrationsCheck';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('tcaMigrationsCheck'),
 				cache: false,
 				success: function(data) {
 					if (data.success === true && Array.isArray(data.status)) {
@@ -70,9 +66,8 @@ define([
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

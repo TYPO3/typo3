@@ -83,14 +83,14 @@ class BackendModuleController
      * Starts / updates the session and redirects to the install tool
      * with given action.
      *
-     * @param $action
+     * @param $controller
      * @return ResponseInterface
      */
-    protected function setAuthorizedAndRedirect(string $action): ResponseInterface
+    protected function setAuthorizedAndRedirect(string $controller): ResponseInterface
     {
         $sessionService = new SessionService();
         $sessionService->setAuthorizedBackendSession();
-        $redirectLocation = 'install.php?install[action]=' . $action . '&install[context]=backend';
+        $redirectLocation = 'install.php?install[controller]=' . $controller . '&install[context]=backend';
         return new RedirectResponse($redirectLocation, 303);
     }
 }

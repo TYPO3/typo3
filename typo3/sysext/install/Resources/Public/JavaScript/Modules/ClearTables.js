@@ -16,11 +16,12 @@
  */
 define([
 	'jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -63,7 +64,6 @@ define([
 
 		getStats: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=clearTablesStats';
 			var $outputContainer = $(this.selectorOutputContainer);
 			var $statContainer = $('.' + this.selectorStatContainer);
 			$statContainer.empty();
@@ -71,7 +71,7 @@ define([
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.append(message);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('clearTablesStats'),
 				cache: false,
 				success: function (data) {
 					if (data.success === true) {
@@ -94,29 +94,26 @@ define([
 						$outputContainer.append(message);
 					}
 				},
-				error: function () {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		clear: function(table) {
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'clearTablesClear',
-					'token': $(this.selectorClearToken).text(),
-					'table': table
-				}
-			};
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().append(message);
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'clearTablesClear',
+						'token': $(this.selectorClearToken).text(),
+						'table': table
+					}
+				},
 				cache: false,
 				success: function(data) {
 					$outputContainer.empty();
@@ -130,9 +127,8 @@ define([
 						$outputContainer.append(message);
 					}
 				},
-				error: function () {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

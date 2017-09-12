@@ -14,11 +14,17 @@
 /**
  * Module: TYPO3/CMS/Install/ExtensionScanner
  */
-define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
+define(['jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Backend/Notification'
+], function($, Router, Notification) {
 	'use strict';
 
 	return {
 		listOfAffectedRestFileHashes: [],
+		selectorFilesToken: '#t3js-extensionScanner-files-token',
+		selectorScanFileToken: '#t3js-extensionScanner-scan-file-token',
+		selectorMarkFullyScannedRestFilesToken: '#t3js-extensionScanner-mark-fully-scanned-rest-files-token',
 		selectorExtensionContainer: '.t3js-extensionScanner-extension',
 		selectorNumberOfFiles: '.t3js-extensionScanner-number-of-files',
 		selectorScanSingleTrigger: '.t3js-extensionScanner-scan-single',
@@ -111,8 +117,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 			var numberOfError = $(this.selectorExtensionContainer + '.t3js-extensionscan-finished.panel-danger').length;
 			var numberOfScannedExtensions = numberOfSuccess + numberOfWarning + numberOfError;
 			var percent = (numberOfScannedExtensions / numberOfExtensions) * 100;
-			var markFullyScannedFilesToken = $('#t3js-extensionScanner-mark-fully-scanned-rest-files-token').text();
-			var url = location.href + '&install[controller]=ajax';
 			$('.t3js-extensionScanner-progress-all-extension .progress-bar')
 				.css('width', percent + '%')
 				.attr('aria-valuenow', percent)
@@ -120,22 +124,24 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 				.text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
 			if (numberOfScannedExtensions === numberOfExtensions) {
 				Notification.success('Scan finished', 'All extensions have been scanned');
-				var postData = {
-					'install': {
-						'action': 'extensionScannerMarkFullyScannedRestFiles',
-						'token': markFullyScannedFilesToken,
-						'hashes': self.uniqueArray(this.listOfAffectedRestFileHashes)
-					}
-				};
 				$.ajax({
+					url: Router.getUrl(),
 					method: 'POST',
-					data: postData,
-					url: url,
+					data: {
+						'install': {
+							'action': 'extensionScannerMarkFullyScannedRestFiles',
+							'token': $(self.selectorMarkFullyScannedRestFilesToken).text(),
+							'hashes': self.uniqueArray(this.listOfAffectedRestFileHashes)
+						}
+					},
 					cache: false,
 					success: function(data) {
 						if (data.success === true) {
 							Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
 						}
+					},
+					error: function(xhr) {
+						Router.handleAjaxError(xhr);
 					}
 				});
 			}
@@ -161,19 +167,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 		scanSingleExtension: function(extension) {
 			var self = this;
 			var $extensionContainer = $(this.getExtensionSelector(extension));
-			var filesToken = $('#t3js-extensionScanner-files-token').text();
 			var hitTemplate = $('#t3js-extensionScanner-file-hit-template').html();
 			var restTemplate = $('#t3js-extensionScanner-file-hit-rest-template').html();
-			var scanFileToken = $('#t3js-extensionScanner-scan-file-token').text();
 			var hitFound = false;
-			var url = location.href + '&install[controller]=ajax';
-			var postData = {
-				'install': {
-					'action': 'extensionScannerFiles',
-					'token': filesToken,
-					'extension': extension
-				}
-			};
 			$extensionContainer.removeClass('panel-danger panel-warning panel-success t3js-extensionscan-finished');
 			$extensionContainer.data('hasRun', 'true');
 			$extensionContainer.find('.t3js-extensionScanner-scan-single').text('Scanning...').attr('disabled', 'disabled');
@@ -182,9 +178,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 			$extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').empty().text('0');
 			this.setProgressForAll();
 			$.ajax({
+				url: Router.getUrl(),
 				method: 'POST',
-				data: postData,
-				url: url,
+				data: {
+					'install': {
+						'action': 'extensionScannerFiles',
+						'token': $(self.selectorFilesToken).text(),
+						'extension': extension
+					}
+				},
 				cache: false,
 				success: function(data) {
 					if (data.success === true && Array.isArray(data.files)) {
@@ -194,18 +196,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 							$extensionContainer.find('.t3js-extensionScanner-extension-body').text('');
 							var doneFiles = 0;
 							data.files.forEach(function(file) {
-								var postData = {
-									'install': {
-										'action': 'extensionScannerScanFile',
-										'token': scanFileToken,
-										'extension': extension,
-										'file': file
-									}
-								};
 								$.ajax({
 									method: 'POST',
-									data: postData,
-									url: url,
+									data: {
+										'install': {
+											'action': 'extensionScannerScanFile',
+											'token': $(self.selectorScanFileToken).text(),
+											'extension': extension,
+											'file': file
+										}
+									},
+									url: Router.getUrl(),
 									cache: false,
 									success: function(fileData) {
 										doneFiles = doneFiles + 1;
@@ -298,9 +299,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification'], function($, Notification) {
 						console.error(data);
 					}
 				},
-				error: function(data) {
-					Notification.error('Oops, an error occurred', 'Please look at the console output for details');
-					console.error(data);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		}

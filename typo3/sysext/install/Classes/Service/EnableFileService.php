@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Basic Service to check and create install tool files
@@ -47,7 +48,7 @@ class EnableFileService
     public static function isFirstInstallAllowed()
     {
         $files = self::getFirstInstallFilePaths();
-        if (!empty($files) && !\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->checkIfEssentialConfigurationExists()) {
+        if (!empty($files)) {
             return true;
         }
         return false;
@@ -67,7 +68,7 @@ class EnableFileService
             $result = true;
             self::extendInstallToolEnableFileLifetime();
         }
-        \TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($installEnableFilePath);
+        GeneralUtility::fixPermissions($installEnableFilePath);
         return $result;
     }
 

@@ -1,0 +1,37 @@
+<p>
+	The configuration module suggests best matching configuration settings
+	based on your system setup.
+</p>
+<p>
+	Alternatively TYPO3 can be run in a specific <a
+	href="https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Bootstrapping/Index.html#bootstrapping-context"
+	target="_blank">application context</a>,
+	by setting an environment variable in the web server configuration.
+	The application context can then be accessed e.g. in the AdditionalConfiguration.php file or
+	TypoScript configuration to customize settings accordingly.
+</p>
+<p>
+	Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php
+	is not controlled by the TYPO3 CMS core and may override single settings again. Administrators
+	must maintain AdditionalConfiguration.php on their own and should use it with care.
+</p>
+
+<div style="display:none;">
+	<div id="t3js-presets-activate-token">{presetsActivateToken}</div>
+</div>
+
+<form method="post" class="form-horizontal">
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		<f:for each="{presetFeatures}" as="feature">
+			<f:render partial="Settings/Presets/{feature.name}" arguments="{_all}"/>
+		</f:for>
+	</div>
+</form>
+<div class="t3js-presets-output"></div>
+
+<button
+	class="btn btn-default t3js-presets-activate"
+	type="button"
+>
+	Activate
+</button>

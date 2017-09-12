@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Install\Controller\Exception\RedirectException;
+use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
@@ -130,7 +130,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('BE/loginSecurityLevel'), $this->equalTo($setting));
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -167,7 +167,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
             ->method('removeLocalConfigurationKeysByPath')
             ->will($this->returnValueMap($currentLocalConfiguration));
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('obsoleteLocalConfigurationSettings', $obsoleteLocalConfigurationSettings);
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
@@ -277,7 +277,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
             ->method('setLocalConfigurationValueByPath')
             ->with($this->equalTo('SYS/encryptionKey'), $this->isType('string'));
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -422,7 +422,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         }
 
         if ($localConfigurationNeedsUpdate) {
-            $this->expectException(RedirectException::class);
+            $this->expectException(ConfigurationChangedException::class);
         }
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
@@ -469,7 +469,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
                 [['GFX/imagefile_ext' => 'gif,jpg,jpeg,png']]
             );
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -555,7 +555,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
                             'GFX/processor_effects' => -1]]
             );
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -695,7 +695,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\TestingFramework\Core
         $configurationManager->removeLocalConfigurationKeysByPath(array_keys($oldValues))
             ->shouldBeCalled();
 
-        $this->expectException(RedirectException::class);
+        $this->expectException(ConfigurationChangedException::class);
 
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(

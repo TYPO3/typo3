@@ -215,12 +215,6 @@ SYS:
         generateApacheHtaccess:
             type: bool
             description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'
-        isInitialInstallationInProgress:
-            type: bool
-            description: 'If TRUE, the installation is ''in progress''. This value is handled within the install tool step installer internally.'
-        isInitialDatabaseImportDone:
-            type: bool
-            description: 'If TRUE, the database import is finished. This value is handled within the install tool step installer internally.'
         systemMaintainers:
             type: array
             description: 'A list of backend user IDs allowed to access the Install Tool'

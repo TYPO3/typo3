@@ -166,14 +166,14 @@ define(['jquery', 'bootstrap'], function ($) {
 			$('.gridder-close').removeClass('disabled');
 		}
 		if ($currentOpenCard.prev().prev().length === 0) {
-			$('.gridder-nav-prev').addClass('disabled')
+			$('.gridder-nav-prev').addClass('disabled');
 		} else {
-			$('.gridder-nav-prev').removeClass('disabled')
+			$('.gridder-nav-prev').removeClass('disabled');
 		}
 		if ($currentOpenCard.next().next().length === 0) {
-			$('.gridder-nav-next').addClass('disabled')
+			$('.gridder-nav-next').addClass('disabled');
 		} else {
-			$('.gridder-nav-next').removeClass('disabled')
+			$('.gridder-nav-next').removeClass('disabled');
 		}
 	};
 

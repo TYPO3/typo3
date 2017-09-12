@@ -14,7 +14,12 @@
 /**
  * Module: TYPO3/CMS/Install/CoreUpdate
  */
-define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'], function ($, FlashMessage, Severity) {
+define([
+	'jquery',
+	'TYPO3/CMS/Install/Router',
+	'TYPO3/CMS/Install/FlashMessage',
+	'TYPO3/CMS/Install/Severity'
+], function ($, Router, FlashMessage, Severity) {
 	'use strict';
 
 	return {
@@ -55,7 +60,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 			coreUpdateMove: {
 				loadingMessage: 'Moving core',
 				finishMessage: undefined,
-				nextActionName: 'clearAllCache'
+				nextActionName: 'coreUpdateClearAllCache'
 			},
 			clearAllCache: {
 				loadingMessage: 'Clearing caches',
@@ -133,7 +138,6 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 			var self = this;
 			var data = {
 				install: {
-					controller: 'ajax',
 					action: actionName
 				}
 			};
@@ -142,7 +146,7 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 			}
 			this.addLoadingMessage(this.actionQueue[actionName].loadingMessage);
 			$.ajax({
-				url: location.href,
+				url: Router.getUrl(),
 				data: data,
 				cache: false,
 				success: function (result) {
@@ -177,6 +181,8 @@ define(['jquery', 'TYPO3/CMS/Install/FlashMessage', 'TYPO3/CMS/Install/Severity'
 				if (successMessage) {
 					this.addMessage(Severity.ok, successMessage);
 				}
+			} else {
+				Router.handleAjaxError(xhr);
 			}
 			return canContinue;
 		},

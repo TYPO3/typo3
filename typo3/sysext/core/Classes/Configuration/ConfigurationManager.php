@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -399,6 +400,9 @@ class ConfigurationManager
                 $additionalFactoryConfigurationArray
             );
         }
+        $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
+        $localConfigurationArray['SYS']['encryptionKey'] = $randomKey;
+
         $this->writeLocalConfiguration($localConfigurationArray);
     }
 

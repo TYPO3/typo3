@@ -15,12 +15,13 @@
  * Module: TYPO3/CMS/Install/FolderStructure
  */
 define(['jquery',
+	'TYPO3/CMS/Install/Router',
 	'TYPO3/CMS/Install/FlashMessage',
 	'TYPO3/CMS/Install/ProgressBar',
 	'TYPO3/CMS/Install/InfoBox',
 	'TYPO3/CMS/Install/Severity',
 	'bootstrap'
-], function($, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 	'use strict';
 
 	return {
@@ -32,6 +33,7 @@ define(['jquery',
 		selectorErrorFixTrigger: '.t3js-folderStructure-errors-fix',
 		selectorOkContainer: '.t3js-folderStructure-ok',
 		selectorOkList: '.t3js-folderStructure-ok-list',
+		selectorPermissionContainer: '.t3js-folderStructure-permissions',
 
 		initialize: function() {
 			var self = this;
@@ -47,10 +49,6 @@ define(['jquery',
 
 		getStatus: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=folderStructureGetStatus';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputContainer);
 			var $errorContainer = $(this.selectorErrorContainer);
 			var $errorBadge = $(this.selectorGridderBadge);
@@ -58,10 +56,11 @@ define(['jquery',
 			var $errorList = $(this.selectorErrorList);
 			var $okContainer = $(this.selectorOkContainer);
 			var $okList = $(this.selectorOkList);
+			var $permissionContainer = $(this.selectorPermissionContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.append(message);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('folderStructureGetStatus'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
@@ -92,47 +91,47 @@ define(['jquery',
 							$okList.hide();
 						}
 					}
+					var element = data.folderStructureFilePermissionStatus;
+					message = InfoBox.render(element.severity, element.title, element.message);
+					$permissionContainer.empty().append(message);
+					element = data.folderStructureDirectoryPermissionStatus;
+					message = InfoBox.render(element.severity, element.title, element.message);
+					$permissionContainer.append(message);
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.append(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},
 
 		fix: function() {
 			var self = this;
-			var url = location.href + '&install[controller]=ajax&install[action]=folderStructureFix';
-			if (location.hash) {
-				url = url.replace(location.hash, "");
-			}
 			var $outputContainer = $(this.selectorOutputContainer);
 			var message = ProgressBar.render(Severity.loading, 'Loading...', '');
 			$outputContainer.empty().html(message);
 			$.ajax({
-				url: url,
+				url: Router.getUrl('folderStructureFix'),
 				cache: false,
 				success: function(data) {
 					self.removeLoadingMessage($outputContainer);
 					if (data.success === true && Array.isArray(data.fixedStatus)) {
 						if (data.fixedStatus.length > 0) {
 							data.fixedStatus.forEach(function(element) {
-								var message = InfoBox.render(element.severity, element.title, element.message);
+								message = InfoBox.render(element.severity, element.title, element.message);
 								$outputContainer.append(message);
 							});
 						} else {
-							var message = InfoBox.render(Severity.warning, 'Nothing fixed', '');
+							message = InfoBox.render(Severity.warning, 'Nothing fixed', '');
 							$outputContainer.append(message);
 						}
 						self.getStatus();
 					} else {
-						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						message = FlashMessage.render(Severity.error, 'Something went wrong', '');
 						$outputContainer.empty().html(message);
 					}
 				},
-				error: function() {
-					var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
-					$outputContainer.empty().html(message);
+				error: function(xhr) {
+					Router.handleAjaxError(xhr);
 				}
 			});
 		},

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\Uri;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
@@ -30,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * install.php?install[action]=importantActions&amp;install[context]=
  * </output>
  */
-class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ActionViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -42,8 +43,8 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('action', 'string', 'Target action');
-        $this->registerArgument('controller', 'string', 'Target controller.', false, 'tool');
+        $this->registerArgument('action', 'string', 'Target action', '');
+        $this->registerArgument('controller', 'string', 'Target controller.', false, 'maintenance');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
         $this->registerArgument('additionalParams', 'array', 'additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)', false, []);
@@ -71,7 +72,9 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
         $controller = $arguments['controller'];
         $arguments = $arguments['arguments'];
 
-        $arguments['action'] = $action;
+        if (!empty($arguments['action'])) {
+            $arguments['action'] = $action;
+        }
         $arguments['controller'] = $controller;
         if (!empty(GeneralUtility::_GET('install')['context'])) {
             $arguments['context'] = GeneralUtility::_GET('install')['context'];

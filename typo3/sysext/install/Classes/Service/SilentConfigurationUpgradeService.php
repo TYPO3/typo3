@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Controller\Exception\RedirectException;
+use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -27,7 +27,7 @@ use TYPO3\CMS\Install\Controller\Exception\RedirectException;
  * This class handles upgrades of these settings. It is called by
  * the step controller at an early point.
  *
- * Every change is encapsulated in one method an must throw a RedirectException
+ * Every change is encapsulated in one method an must throw a ConfigurationChangedException
  * if new data is written to LocalConfiguration. This is caught by above
  * step controller to initiate a redirect and start again with adapted configuration.
  */
@@ -117,7 +117,7 @@ class SilentConfigurationUpgradeService
 
     /**
      * Executed configuration upgrades. Single upgrade methods must throw a
-     * RedirectException if something was written to LocalConfiguration.
+     * ConfigurationChangedException if something was written to LocalConfiguration.
      */
     public function execute()
     {
@@ -151,7 +151,7 @@ class SilentConfigurationUpgradeService
 
         // If something was changed: Trigger a reload to have new values in next request
         if ($removed) {
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -167,10 +167,10 @@ class SilentConfigurationUpgradeService
             $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('BE/loginSecurityLevel');
             if ($rsaauthLoaded && $currentLoginSecurityLevelValue !== 'rsa') {
                 $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
-                $this->throwRedirectException();
+                $this->throwConfigurationChangedException();
             } elseif (!$rsaauthLoaded && $currentLoginSecurityLevelValue !== 'normal') {
                 $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-                $this->throwRedirectException();
+                $this->throwConfigurationChangedException();
             }
         } catch (\RuntimeException $e) {
             // If an exception is thrown, the value is not set in LocalConfiguration
@@ -178,7 +178,7 @@ class SilentConfigurationUpgradeService
                 'BE/loginSecurityLevel',
                 $rsaauthLoaded ? 'rsa' : 'normal'
             );
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -200,7 +200,7 @@ class SilentConfigurationUpgradeService
         if (empty($currentValue)) {
             $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
             $this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -389,7 +389,7 @@ class SilentConfigurationUpgradeService
             $changed = true;
         }
         if ($changed) {
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -450,7 +450,7 @@ class SilentConfigurationUpgradeService
         }
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -495,7 +495,7 @@ class SilentConfigurationUpgradeService
         }
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -566,18 +566,18 @@ class SilentConfigurationUpgradeService
 
         if (!empty(array_filter($changedSettings))) {
             $this->configurationManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
     /**
      * Throw exception after configuration change to trigger a redirect.
      *
-     * @throws RedirectException
+     * @throws ConfigurationChangedException
      */
-    protected function throwRedirectException()
+    protected function throwConfigurationChangedException()
     {
-        throw new RedirectException(
+        throw new ConfigurationChangedException(
             'Configuration updated, reload needed',
             1379024938
         );
@@ -600,7 +600,7 @@ class SilentConfigurationUpgradeService
         }
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -614,7 +614,7 @@ class SilentConfigurationUpgradeService
             // check if the current option is an integer/string and if it is active
             if (!is_bool($currentOption) && (int)$currentOption > 0) {
                 $this->configurationManager->setLocalConfigurationValueByPath('BE/lockSSL', true);
-                $this->throwRedirectException();
+                $this->throwConfigurationChangedException();
             }
         } catch (\RuntimeException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
@@ -736,7 +736,7 @@ class SilentConfigurationUpgradeService
 
         // Throw redirect if something was changed
         if (!empty($newSettings) || !empty($removeSettings)) {
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 
@@ -752,7 +752,7 @@ class SilentConfigurationUpgradeService
             $charset = $confManager->getLocalConfigurationValueByPath('DB/Connections/Default/charset');
             if (in_array($driver, ['mysqli', 'pdo_mysql', 'drizzle_pdo_mysql'], true) && $charset === 'utf-8') {
                 $confManager->setLocalConfigurationValueByPath('DB/Connections/Default/charset', 'utf8');
-                $this->throwRedirectException();
+                $this->throwConfigurationChangedException();
             }
         } catch (\RuntimeException $e) {
             // no incompatible charset configuration found, so nothing needs to be modified
@@ -846,7 +846,7 @@ class SilentConfigurationUpgradeService
 
         // Throw redirect if something was changed
         if (!empty($newSettings) || !empty($removeSettings)) {
-            $this->throwRedirectException();
+            $this->throwConfigurationChangedException();
         }
     }
 }
