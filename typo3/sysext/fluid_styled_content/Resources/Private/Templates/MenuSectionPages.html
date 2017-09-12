@@ -6,14 +6,14 @@
 		<ul>
 			<f:for each="{menu}" as="page">
 				<li>
-					<a href="{page.link}" target="{page.target}" title="{page.title}">
+					<a href="{page.link}"{f:if(condition: page.target, then: ' target="{page.target}"')} title="{page.title}">
 						<span>{page.title}</span>
 					</a>
 					<f:if condition="{page.content}">
 						<ul>
 							<f:for each="{page.content}" as="element">
 								<li>
-									<a href="{page.link}#c{element.data.uid}" target="{page.target}" title="{element.data.header}">
+									<a href="{page.link}#c{element.data.uid}"{f:if(condition: page.target, then: ' target="{page.target}"')} title="{element.data.header}">
 										<span>{element.data.header}</span>
 									</a>
 								</li>
