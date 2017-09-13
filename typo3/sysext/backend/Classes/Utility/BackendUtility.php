@@ -828,15 +828,14 @@ class BackendUtility
      */
     public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
     {
-        static $pagesTSconfig_cacheReference = [];
-        static $combinedTSconfig_cache = [];
-
         $id = (int)$id;
+
+        $cache = self::getRuntimeCache();
         if ($returnPartArray === false
             && $rootLine === null
-            && isset($pagesTSconfig_cacheReference[$id])
+            && $cache->has('pagesTsConfigIdToHash' . $id)
         ) {
-            return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
+            return $cache->get('pagesTsConfigHashToContent' . $cache->get('pagesTsConfigIdToHash' . $id));
         }
         $tsConfig = [];
         // No custom rootline, so the results can be cached
@@ -870,10 +869,11 @@ class BackendUtility
         }
 
         if ($useCacheForCurrentPageId) {
-            if (!isset($combinedTSconfig_cache[$cacheHash])) {
-                $combinedTSconfig_cache[$cacheHash] = $tsConfig;
-            }
-            $pagesTSconfig_cacheReference[$id] = $cacheHash;
+            // Many pages end up with the same ts config. To reduce memory usage, the cache
+            // entries are a linked list: One or more pids point to content hashes which then
+            // contain the cached content.
+            $cache->set('pagesTsConfigHashToContent' . $cacheHash, $tsConfig, ['pagesTsConfig']);
+            $cache->set('pagesTsConfigIdToHash' . $id, $cacheHash, ['pagesTsConfig']);
         }
 
         return $tsConfig;
