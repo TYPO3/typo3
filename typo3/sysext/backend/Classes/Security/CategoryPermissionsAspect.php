@@ -65,6 +65,15 @@ class CategoryPermissionsAspect
 
             if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
 
+                // Check the rootline against categoryMountPoints when tree was filtered
+                if ($dataProvider->getRootUid() !== null) {
+                    $uidsInRootline = $this->findUidsInRootline($dataProvider->getRootUid());
+                    if (!empty(array_intersect($categoryMountPoints, $uidsInRootline))) {
+                        // One of the parents was found in categoryMountPoints so all children are secure
+                        return;
+                    }
+                }
+
                 // First, remove all child nodes which must be analysed to be considered as "secure".
                 // The nodes were backed up in variable $treeNodeCollection beforehand.
                 $treeData->removeChildNodes();
@@ -117,5 +126,21 @@ class CategoryPermissionsAspect
             }
         }
         return $result;
+    }
+
+    /**
+     * Find parent uids in rootline
+     *
+     * @param integer $uid
+     * @return array
+     */
+    protected function findUidsInRootline($uid) {
+        $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('parent', $this->categoryTableName, 'uid=' . (int)$uid);
+        $parentUids = [];
+        if ($row['parent'] > 0) {
+            $parentUids = $this->findUidsInRootline($row['parent']);
+            $parentUids[] = $row['parent'];
+        }
+        return $parentUids;
     }
 }
