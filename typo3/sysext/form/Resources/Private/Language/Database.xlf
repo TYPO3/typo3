@@ -243,6 +243,9 @@
             <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" xml:space="preserve">
                 <source>Invalid form element</source>
             </trans-unit>
+            <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" xml:space="preserve">
+                <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+            </trans-unit>
 
             <trans-unit id="formEditor.formElementGroups.input.label" xml:space="preserve">
                 <source>Basic elements</source>
@@ -454,6 +457,18 @@
 
             <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" xml:space="preserve">
                 <source>Uploads save path</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" xml:space="preserve">
+                <source>Validators</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" xml:space="preserve">
+                <source>Add validator</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" xml:space="preserve">
+                <source>File size</source>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" xml:space="preserve">
+                <source>File size</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" xml:space="preserve">

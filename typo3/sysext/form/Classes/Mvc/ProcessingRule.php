@@ -143,6 +143,18 @@ class ProcessingRule
     }
 
     /**
+     * Removes the specified validator.
+     *
+     * @param ValidatorInterface $validator The validator to remove
+     * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
+     * @internal
+     */
+    public function removeValidator(ValidatorInterface $validator)
+    {
+        $this->validator->removeValidator($validator);
+    }
+
+    /**
      * @param mixed $value
      * @return mixed
      * @internal

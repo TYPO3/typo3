@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\File as File;
 use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
  * Class UploadedFileReferenceConverter
@@ -265,23 +267,32 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      */
     protected function getUploadErrorMessage(int $errorCode): string
     {
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
         switch ($errorCode) {
             case \UPLOAD_ERR_INI_SIZE:
-                return 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+                $logger->error('The uploaded file exceeds the upload_max_filesize directive in php.ini.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_FORM_SIZE:
-                return 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+                $logger->error('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_PARTIAL:
-                return 'The uploaded file was only partially uploaded';
+                $logger->error('The uploaded file was only partially uploaded.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530346', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_NO_FILE:
-                return 'No file was uploaded';
+                $logger->error('No file was uploaded.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530347', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_NO_TMP_DIR:
-                return 'Missing a temporary folder';
+                $logger->error('Missing a temporary folder.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_CANT_WRITE:
-                return 'Failed to write file to disk';
+                $logger->error('Failed to write file to disk.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_EXTENSION:
-                return 'File upload stopped by extension';
+                $logger->error('File upload stopped by extension.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             default:
-                return 'Unknown upload error';
+                $logger->error('Unknown upload error.', []);
+                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
         }
     }
 }

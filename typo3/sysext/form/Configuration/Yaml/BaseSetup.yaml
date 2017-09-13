@@ -362,6 +362,11 @@ TYPO3:
               #options:
                 #minimum: 0
                 #maximum: 0
+            FileSize:
+              implementationClassName: 'TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator'
+              #options:
+                #minimum: '0B'
+                #maximum: '10M'
 
       ########### MIXINS ###########
       mixins:

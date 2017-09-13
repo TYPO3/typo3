@@ -244,6 +244,12 @@ define(['jquery',
                     return getFormEditorApp().getFormElementPropertyValidatorDefinition('FormElementIdentifierWithinCurlyBracesInclusive')['errorMessage'] || 'invalid value';
                 }
             });
+
+            getFormEditorApp().addPropertyValidationValidator('FileSize', function(formElement, propertyPath) {
+                if (!formElement.get(propertyPath).match(/^(\d*\.?\d+)(B|K|M|G)$/i)) {
+                    return getFormEditorApp().getFormElementPropertyValidatorDefinition('FileSize')['errorMessage'] || 'invalid value';
+                }
+            });
         };
 
         /**

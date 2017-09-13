@@ -113,6 +113,8 @@ TYPO3:
                 errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label'
               FormElementIdentifierWithinCurlyBracesExclusive:
                 errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label'
+              FileSize:
+                errorMessage: 'formEditor.formElementPropertyValidatorsDefinition.FileSize.label'
 
             formElementGroups:
               input:
@@ -970,6 +972,14 @@ TYPO3:
                   options:
                     minimum: ''
                     maximum: ''
+            FileSize:
+              formEditor:
+                iconIdentifier: 't3-form-icon-validator'
+                label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+                predefinedDefaults:
+                  options:
+                    minimum: '0B'
+                    maximum: '10M'
 
       ########### MIXINS ###########
       mixins:
@@ -1267,6 +1277,34 @@ TYPO3:
                     10:
                       value: '1:/user_upload/'
                       label: '1:/user_upload/'
+                900:
+                  identifier: 'validators'
+                  templateName: 'Inspector-ValidatorsEditor'
+                  label: 'formEditor.elements.FileUploadMixin.editor.validators.label'
+                  selectOptions:
+                    10:
+                      value: ''
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label'
+                    20:
+                      value: 'FileSize'
+                      label: 'formEditor.elements.FileUploadMixin.editor.validators.FileSize.label'
+
+              propertyCollections:
+                validators:
+                  10:
+                    identifier: 'FileSize'
+                    editors:
+                      __inheritances:
+                        10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseCollectionEditorsMixin'
+                        20: 'TYPO3.CMS.Form.mixins.formElementMixins.MinimumMaximumEditorsMixin'
+                      100:
+                        label: 'formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label'
+                      200:
+                        propertyValidators:
+                          10: 'FileSize'
+                      300:
+                        propertyValidators:
+                          10: 'FileSize'
 
           formEmailFinisherMixin:
             editors:

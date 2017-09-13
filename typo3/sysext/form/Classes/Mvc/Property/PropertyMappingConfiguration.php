@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
@@ -55,8 +56,18 @@ class PropertyMappingConfiguration
 
             $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $renderable->getProperties()['allowedMimeTypes']]);
+
+            $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
+            $validators = [$mimeTypeValidator];
+            foreach ($processingRule->getValidators() as $validator) {
+                if (get_class($validator) !== NotEmptyValidator::class) {
+                    $validators[] = $validator;
+                    $processingRule->removeValidator($validator);
+                }
+            }
+
             $uploadConfiguration = [
-                UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => [$mimeTypeValidator],
+                UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => $validators,
                 UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
             ];
 
