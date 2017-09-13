@@ -3202,6 +3202,8 @@ Full default configuration
               enableDatePicker: true
               displayTimeSelector: false
           StaticText:
+            renderingOptions:
+              _isReadOnlyFormElement: true
             formEditor:
               editors:
                 100:
@@ -3231,6 +3233,8 @@ Full default configuration
             properties:
               text: ''
           ContentElement:
+            renderingOptions:
+              _isReadOnlyFormElement: true
             formEditor:
               editors:
                 100:
