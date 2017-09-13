@@ -89,6 +89,10 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
                     isset($renderingOptions['_isCompositeFormElement'])
                     && $renderingOptions['_isCompositeFormElement'] === true
                 )
+                || (
+                    isset($renderingOptions['_isReadOnlyFormElement'])
+                    && $renderingOptions['_isReadOnlyFormElement'] === true
+                )
             ) {
                 continue;
             }

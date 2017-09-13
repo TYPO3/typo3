@@ -342,6 +342,8 @@ TYPO3:
             __inheritances:
               10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
             implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+            renderingOptions:
+              _isReadOnlyFormElement: true
 
           FormElementMixin:
             __inheritances:
