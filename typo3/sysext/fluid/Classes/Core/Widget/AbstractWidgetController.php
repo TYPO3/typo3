@@ -65,15 +65,15 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         $widgetViewConfiguration = null;
         $parentConfiguration = $view->getTemplatePaths()->toArray();
         $rootConfiguration = $templatePaths->toArray();
-        if (!isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName])) {
-            $widgetViewConfiguration = array_merge_recursive($parentConfiguration, $rootConfiguration);
-        } else {
-            $widgetViewConfiguration = array_merge_recursive(
-                (array) $rootConfiguration,
-                (array) $parentConfiguration,
-                (array) $extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]
-            );
+        $pluginConfiguration = $extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName] ?? [];
+        if (isset($pluginConfiguration['templateRootPath']) && !isset($pluginConfiguration['templateRootPaths'])) {
+            $pluginConfiguration['templateRootPaths'][10] = $pluginConfiguration['templateRootPath'];
         }
+        $widgetViewConfiguration = array_merge_recursive(
+            (array) $rootConfiguration,
+            (array) $parentConfiguration,
+            (array) $pluginConfiguration
+        );
         $view->getTemplatePaths()->fillFromConfigurationArray($widgetViewConfiguration);
     }
 }
