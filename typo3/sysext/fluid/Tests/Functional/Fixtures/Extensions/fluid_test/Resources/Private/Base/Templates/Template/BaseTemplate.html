@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://xsd.helhum.io/ns/typo3/cms-fluid/master/ViewHelpers">
+
+<body>
+
+<f:layout name="BaseLayout" />
+
+<f:section name="main">
+    <f:widget.paginate objects="{objects}" as="object">
+    </f:widget.paginate>
+    Base Template
+    <f:render partial="BasePartial" section="main"/>
+</f:section>
+
+</body>
+</html>

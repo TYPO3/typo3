@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 
@@ -130,13 +129,9 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ]
             ]
         ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->once())->method('set');
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
         $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
         $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
         $subject->expects($this->once())->method('isFrontendMode')->willReturn(true);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
@@ -191,13 +186,9 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ]
             ]
         ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->once())->method('set');
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
         $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
         $subject->expects($this->once())->method('isBackendMode')->willReturn(true);
         $subject->expects($this->never())->method('isFrontendMode');
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
@@ -252,13 +243,9 @@ class TemplatePathsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 ]
             ]
         ]);
-        $cache = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
-        $cache->expects($this->once())->method('get')->willReturn(false);
-        $cache->expects($this->never())->method('set');
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
         $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('getRuntimeCache')->willReturn($cache);
         $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
         $subject->expects($this->once())->method('isFrontendMode')->willReturn(false);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
