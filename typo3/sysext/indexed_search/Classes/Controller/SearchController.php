@@ -345,6 +345,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (substr($this->searchData['sections'], 0, 2) === 'rl') {
             $result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . $this->getPathFromPageId(substr($this->searchData['sections'], 4)) . '"';
         }
+
+        if ($hookObj = $this->hookRequest('getDisplayResults_postProc')) {
+            $result = $hookObj->getDisplayResults_postProc($result);
+        }
+
         return $result;
     }
 

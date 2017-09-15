@@ -44,6 +44,25 @@ class PluginHook
     }
 
     /**
+     * Example of how the content displayed in the result rows can be extended or modified
+     * before the data is assigned to the fluid template as {resultsets}.
+     * The code example replaces all occurrences of the search string with the replacement
+     * string in the description of all rows in the result.
+     *
+     * @param array $result
+     * @return array
+     */
+    public function getDisplayResults_postProc(array $result): array
+    {
+        if ($result['count'] > 0) {
+            foreach ($result['rows'] as $rowIndex => $row) {
+                $result['rows'][$rowIndex]['description'] = \str_replace('foo', 'bar', $row['description']);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Providing an alternative search algorithm!
      *
      * @param array $sWArr Array of search words
