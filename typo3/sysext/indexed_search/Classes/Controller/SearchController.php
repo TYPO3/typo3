@@ -476,7 +476,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 // Suspicious, so linking to page instead...
                 $copiedRow = $row;
                 unset($copiedRow['cHashParams']);
-                $title = $this->linkPage($row['page_id'], htmlspecialchars($title), $copiedRow);
+                $title = $this->linkPageATagWrap(
+                    htmlspecialchars($title),
+                    $this->linkPage($row['page_id'], $copiedRow)
+                );
             }
         } else {
             // Else the page:
@@ -490,7 +493,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $markUpSwParams['sword_list'][] = $d['sword'];
                 }
             }
-            $title = $this->linkPage($row['data_page_id'], htmlspecialchars($title), $row, $markUpSwParams);
+            $title = $this->linkPageATagWrap(
+                htmlspecialchars($title),
+                $this->linkPage($row['data_page_id'], $row, $markUpSwParams)
+            );
         }
         $resultData['title'] = $title;
         $resultData['icon'] = $this->makeItemTypeIcon($row['item_type'], '', $specRowConf);
@@ -510,17 +516,27 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
                 $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
             }
+            $resultData['pathTitle'] = $row['data_filename'];
+            $resultData['pathUri'] = $row['data_filename'];
             $resultData['path'] = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($row['data_filename']) . '</a>';
         } else {
             $pathId = $row['data_page_id'] ?: $row['page_id'];
             $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
             $pathStr = $this->getPathFromPageId($pathId, $pathMP);
-            $resultData['path'] = $this->linkPage($pathId, $pathStr, [
-                'cHashParams' => $row['cHashParams'],
-                'data_page_type' => $row['data_page_type'],
-                'data_page_mp' => $pathMP,
-                'sys_language_uid' => $row['sys_language_uid']
-            ]);
+            $pathLinkData = $this->linkPage(
+                $pathId,
+                [
+                    'cHashParams' => $row['cHashParams'],
+                    'data_page_type' => $row['data_page_type'],
+                    'data_page_mp' => $pathMP,
+                    'sys_language_uid' => $row['sys_language_uid']
+                ]
+            );
+
+            $resultData['pathTitle'] = $pathStr;
+            $resultData['pathUri'] = $pathLinkData['uri'];
+            $resultData['path'] = $this->linkPageATagWrap($pathStr, $pathLinkData);
+
             // check if the access is restricted
             if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
                 $lockedIcon = GeneralUtility::getFileAbsFileName('EXT:indexed_search/Resources/Public/Icons/FileTypes/locked.gif');
@@ -1313,13 +1329,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Links the $linkText to page $pageUid
      *
      * @param int $pageUid Page id
-     * @param string $linkText Title to link (must already be escaped for HTML output)
      * @param array $row Result row
      * @param array $markUpSwParams Additional parameters for marking up search words
-     * @return string <A> tag wrapped title string.
-     * @todo make use of the UriBuilder
+     * @return array
      */
-    protected function linkPage($pageUid, $linkText, $row = [], $markUpSwParams = [])
+    protected function linkPage($pageUid, $row = [], $markUpSwParams = [])
     {
         $pageLanguage = $GLOBALS['TSFE']->sys_language_content;
         // Parameters for link
@@ -1338,24 +1352,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!is_array($this->domainRecords[$pageUid])) {
             $this->getPathFromPageId($pageUid);
         }
-        $target = '';
-        // If external domain, then link to that:
-        if (!empty($this->domainRecords[$pageUid])) {
-            $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-            $firstDomain = reset($this->domainRecords[$pageUid]);
-            $additionalParams = '';
-            if (is_array($urlParameters) && !empty($urlParameters)) {
-                $additionalParams = GeneralUtility::implodeArrayForUrl('', $urlParameters);
-            }
-            $uri = $scheme . $firstDomain . '/index.php?id=' . $pageUid . $additionalParams;
-            if ($target = $this->settings['detectDomainRecords.']['target']) {
-                $target = ' target="' . $target . '"';
-            }
-        } else {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
-            $uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($row['data_page_type'])->setUseCacheHash(true)->setArguments($urlParameters)->build();
-        }
-        return '<a href="' . htmlspecialchars($uri) . '"' . $target . '>' . $linkText . '</a>';
+
+        return $this->preparePageLink($pageUid, $row, $urlParameters);
     }
 
     /**
@@ -1586,6 +1584,56 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         return (in_array($numberOfResults, $this->availableResultsNumbers)) ?
             $numberOfResults : $this->defaultResultNumber;
+    }
+
+    /**
+     * Internal method to build the page uri and link target.
+     * @todo make use of the UriBuilder
+     *
+     * @param int $pageUid
+     * @param array $row
+     * @param array $urlParameters
+     * @return array
+     */
+    protected function preparePageLink(int $pageUid, array $row, array $urlParameters): array
+    {
+        $target = '';
+        // If external domain, then link to that:
+        if (!empty($this->domainRecords[$pageUid])) {
+            $scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+            $firstDomain = reset($this->domainRecords[$pageUid]);
+            $additionalParams = '';
+            if (is_array($urlParameters) && !empty($urlParameters)) {
+                $additionalParams = GeneralUtility::implodeArrayForUrl('', $urlParameters);
+            }
+            $uri = $scheme . $firstDomain . '/index.php?id=' . $pageUid . $additionalParams;
+            $target = $this->settings['detectDomainRecords.']['target'];
+        } else {
+            $uriBuilder = $this->controllerContext->getUriBuilder();
+            $uri = $uriBuilder->setTargetPageUid($pageUid)
+                ->setTargetPageType($row['data_page_type'])
+                ->setUseCacheHash(true)
+                ->setArguments($urlParameters)
+                ->build();
+        }
+
+        return ['uri' => $uri, 'target' => $target];
+    }
+
+    /**
+     * Create a tag for "path" key in search result
+     *
+     * @param string $linkText Link text (nodeValue)
+     * @param array $linkData
+     * @return string <A> tag wrapped title string.
+     */
+    protected function linkPageATagWrap(string $linkText, array $linkData): string
+    {
+        $target = !empty($linkData['target']) ? 'target="' . htmlspecialchars($linkData['target']) . '"' : '';
+
+        return '<a href="' . htmlspecialchars($linkData['uri']) . '" ' . $target . '>'
+            . htmlspecialchars($linkText)
+            . '</a>';
     }
 
     /**
