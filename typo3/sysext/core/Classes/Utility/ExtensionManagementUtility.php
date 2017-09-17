@@ -1581,7 +1581,13 @@ tt_content.' . $key . $suffix . ' {
             $cacheData = $codeCache->requireOnce($cacheIdentifier);
             if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
-                GeneralUtility::setSingletonInstance(CategoryRegistry::class, unserialize($cacheData['categoryRegistry'], [CategoryRegistry::class]));
+                GeneralUtility::setSingletonInstance(
+                    CategoryRegistry::class,
+                    unserialize(
+                        $cacheData['categoryRegistry'],
+                        ['allowed_classes' => [CategoryRegistry::class]]
+                    )
+                );
             } else {
                 static::buildBaseTcaFromSingleFiles();
                 static::createBaseTcaCacheFile();
