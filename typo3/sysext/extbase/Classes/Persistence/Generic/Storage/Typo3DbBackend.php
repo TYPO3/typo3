@@ -52,13 +52,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
     protected $pageRepository;
 
     /**
-     * A first-level TypoScript configuration cache
-     *
-     * @var array
-     */
-    protected $pageTSConfigCache = [];
-
-    /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
@@ -715,11 +708,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($storagePage === null) {
             return;
         }
-        if (!isset($this->pageTSConfigCache[$storagePage])) {
-            $this->pageTSConfigCache[$storagePage] = BackendUtility::getPagesTSconfig($storagePage);
-        }
-        if (isset($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd'])) {
-            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), true);
+
+        $pageTS = BackendUtility::getPagesTSconfig($storagePage);
+        if (isset($pageTS['TCEMAIN.']['clearCacheCmd'])) {
+            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($pageTS['TCEMAIN.']['clearCacheCmd']), true);
             $clearCacheCommands = array_unique($clearCacheCommands);
             foreach ($clearCacheCommands as $clearCacheCommand) {
                 if (MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
