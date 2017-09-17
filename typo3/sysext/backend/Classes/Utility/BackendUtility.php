@@ -822,19 +822,65 @@ class BackendUtility
         ) {
             return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
         }
-        $TSconfig = [];
+        $tsConfig = [];
+        // No custom rootline, so the results can be cached
         if (!is_array($rootLine)) {
-            $useCacheForCurrentPageId = true;
             $rootLine = self::BEgetRootLine($id, '', true);
+            $useCacheForCurrentPageId = true;
         } else {
+            trigger_error('Calling TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig() with a custom rootline handed over as second argument will be removed in TYPO3 v10. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead and parse PageTS yourself.', E_USER_DEPRECATED);
             $useCacheForCurrentPageId = false;
+        }
+
+        $TSdataArray = static::getRawPagesTSconfig($id, $rootLine);
+        if ($returnPartArray) {
+            trigger_error('Calling TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig() with a third parameter to return the unparsed array directly will be removed in TYPO3 v10. Use TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig() instead.', E_USER_DEPRECATED);
+            return $TSdataArray;
+        }
+        // Parsing the page TS-Config
+        $pageTs = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
+        /* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
+        $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
+        $res = $parseObj->parseTSconfig($pageTs, 'PAGES', $id, $rootLine);
+        if ($res) {
+            $tsConfig = $res['TSconfig'];
+        }
+        $cacheHash = $res['hash'];
+        // Get User TSconfig overlay
+        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
+        if (is_array($userTSconfig)) {
+            ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig);
+            $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
+        }
+
+        if ($useCacheForCurrentPageId) {
+            if (!isset($combinedTSconfig_cache[$cacheHash])) {
+                $combinedTSconfig_cache[$cacheHash] = $tsConfig;
+            }
+            $pagesTSconfig_cacheReference[$id] = $cacheHash;
+        }
+
+        return $tsConfig;
+    }
+
+    /**
+     * Returns the non-parsed Page TSconfig for page with id, $id
+     *
+     * @param int $id Page uid for which to create Page TSconfig
+     * @param array $rootLine If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
+     * @return array Non-parsed Page TSconfig
+     */
+    public static function getRawPagesTSconfig($id, array $rootLine = null)
+    {
+        if (!is_array($rootLine)) {
+            $rootLine = self::BEgetRootLine($id, '', true);
         }
 
         // Order correctly
         ksort($rootLine);
-        $TSdataArray = [];
+        $tsDataArray = [];
         // Setting default configuration
-        $TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
+        $tsDataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
         foreach ($rootLine as $k => $v) {
             if (trim($v['tsconfig_includes'])) {
                 $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
@@ -842,54 +888,30 @@ class BackendUtility
                 foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
                     if (strpos($includeTsConfigFile, 'EXT:') === 0) {
                         list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
-                                '/',
-                                substr($includeTsConfigFile, 4),
-                                2
-                            );
+                            '/',
+                            substr($includeTsConfigFile, 4),
+                            2
+                        );
                         if ((string)$includeTsConfigFileExtensionKey !== ''
-                                && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
-                                && (string)$includeTsConfigFilename !== ''
-                            ) {
+                            && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
+                            && (string)$includeTsConfigFilename !== ''
+                        ) {
                             $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
-                                    $includeTsConfigFilename;
+                                $includeTsConfigFilename;
                             if (file_exists($includeTsConfigFileAndPath)) {
-                                $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
+                                $tsDataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
                             }
                         }
                     }
                 }
             }
-            $TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
-        }
-        $TSdataArray = static::emitGetPagesTSconfigPreIncludeSignal($TSdataArray, $id, $rootLine, $returnPartArray);
-        $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
-        if ($returnPartArray) {
-            return $TSdataArray;
-        }
-        // Parsing the page TS-Config
-        $pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        /* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
-        $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
-        $res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
-        if ($res) {
-            $TSconfig = $res['TSconfig'];
-        }
-        $cacheHash = $res['hash'];
-        // Get User TSconfig overlay
-        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
-        if (is_array($userTSconfig)) {
-            ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
-            $cacheHash .= '_user' . $GLOBALS['BE_USER']->user['uid'];
+            $tsDataArray['uid_' . $v['uid']] = $v['TSconfig'];
         }
 
-        if ($useCacheForCurrentPageId) {
-            if (!isset($combinedTSconfig_cache[$cacheHash])) {
-                $combinedTSconfig_cache[$cacheHash] = $TSconfig;
-            }
-            $pagesTSconfig_cacheReference[$id] = $cacheHash;
-        }
+        $tsDataArray = static::emitGetPagesTSconfigPreIncludeSignal($tsDataArray, $id, $rootLine);
+        $tsDataArray = TypoScriptParser::checkIncludeLines_array($tsDataArray);
 
-        return $TSconfig;
+        return $tsDataArray;
     }
 
     /*******************************************
@@ -4401,19 +4423,17 @@ class BackendUtility
      * @param array $TSdataArray Current TSconfig data array - Can be modified by slots!
      * @param int $id Page ID we are handling
      * @param array $rootLine Rootline array of page
-     * @param bool $returnPartArray Whether TSdata should be parsed by TS parser or returned as plain text
      * @return array Modified Data array
      */
     protected static function emitGetPagesTSconfigPreIncludeSignal(
         array $TSdataArray,
         $id,
-        array $rootLine,
-        $returnPartArray
+        array $rootLine
     ) {
         $signalArguments = static::getSignalSlotDispatcher()->dispatch(
             __CLASS__,
             'getPagesTSconfigPreInclude',
-            [$TSdataArray, $id, $rootLine, $returnPartArray]
+            [$TSdataArray, $id, $rootLine, false]
         );
         return $signalArguments[0];
     }

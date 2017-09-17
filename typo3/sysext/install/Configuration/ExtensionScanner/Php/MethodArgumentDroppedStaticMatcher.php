@@ -27,4 +27,10 @@ return [
             'Breaking-74533-ThrowExceptionIfUserFunctionDoesNotExist.rst',
         ]
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-54152-DeprecateArgumentsOfBackendUtilityGetPagesTSconfig.rst',
+        ],
+    ],
 ];

@@ -101,7 +101,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
             }
         } else {
             if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
-                $TSparts = BackendUtility::getPagesTSconfig($this->pObj->id, null, true);
+                $TSparts = BackendUtility::getRawPagesTSconfig($this->pObj->id);
                 $lines = [];
                 $pUids = [];
 
