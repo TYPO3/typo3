@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -816,7 +817,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
                 $this->disableCache();
             }
-            $this->logger->warning($warning);
+            // note: we need to instantiate the logger manually here since the injection happens after the constructor
+            GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($warning);
         }
         $this->cHash = $cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
