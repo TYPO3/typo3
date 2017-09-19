@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Stanislas Rolland',
     'author_email' => 'typo3(arobas)sjbr.ca',
     'author_company' => 'SJBR',
-    'version' => '7.6.23',
+    'version' => '7.6.24',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.0-7.6.23',
+            'typo3' => '7.6.0-7.6.24',
         ],
         'conflicts' => [
             'rte_conf' => '',
