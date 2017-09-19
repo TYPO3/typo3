@@ -14,6 +14,8 @@ namespace TYPO3\CMS\SysNote\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Sys_note repository
  */
@@ -35,10 +37,39 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param string $pids Single PID or comma separated list of PIDs
      * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author The author
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */
     public function findByPidsAndAuthor($pids, \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author)
     {
-        $pids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', (string)$pids);
+        GeneralUtility::logDeprecatedFunction();
+        $pids = GeneralUtility::intExplode(',', (string)$pids);
+        $query = $this->createQuery();
+        $query->setOrderings([
+            'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+            'creationDate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+        ]);
+        $query->matching(
+            $query->logicalAnd(
+                $query->in('pid', $pids),
+                $query->logicalOr(
+                    $query->equals('personal', 0),
+                    $query->equals('author', $author)
+                )
+            )
+        );
+        return $query->execute();
+    }
+
+    /**
+     * Find notes by given pids and author
+     *
+     * @param string $pids Single PID or comma separated list of PIDs
+     * @param int $author author uid
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findByPidsAndAuthorId($pids, int $author)
+    {
+        $pids = GeneralUtility::intExplode(',', (string)$pids);
         $query = $this->createQuery();
         $query->setOrderings([
             'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,

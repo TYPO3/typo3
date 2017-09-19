@@ -25,24 +25,11 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected $sysNoteRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
-     */
-    protected $backendUserRepository;
-
-    /**
      * @param \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository
      */
     public function injectSysNoteRepository(\TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository)
     {
         $this->sysNoteRepository = $sysNoteRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository $backendUserRepository
-     */
-    public function injectBackendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository $backendUserRepository)
-    {
-        $this->backendUserRepository = $backendUserRepository;
     }
 
     /**
@@ -57,8 +44,7 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (empty($pids) || empty($GLOBALS['BE_USER']->user['uid'])) {
             return '';
         }
-        $author = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
-        $notes = $this->sysNoteRepository->findByPidsAndAuthor($pids, $author);
+        $notes = $this->sysNoteRepository->findByPidsAndAuthorId($pids, $GLOBALS['BE_USER']->user['uid']);
         $this->view->assign('notes', $notes);
     }
 }

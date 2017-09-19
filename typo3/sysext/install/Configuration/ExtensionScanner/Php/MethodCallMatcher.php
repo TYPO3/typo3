@@ -1226,4 +1226,11 @@ return [
             'Breaking-82398-RemoveSpecialConstantTSConstantEditor.rst',
         ],
     ],
+    '\TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository->findByPidsAndAuthor' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-82506-RemoveBackendUserRepositoryInjectionInNoteController.rst',
+        ],
+    ],
 ];
