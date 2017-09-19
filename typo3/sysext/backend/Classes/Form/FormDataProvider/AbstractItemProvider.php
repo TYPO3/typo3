@@ -415,8 +415,8 @@ abstract class AbstractItemProvider
             ) {
                 $fileExtensionList = $result['processedTca']['columns'][$fieldName]['config']['fileFolder_extList'];
             }
-            $recursionLevels = isset($fieldValue['config']['fileFolder_recursions'])
-                ? MathUtility::forceIntegerInRange($fieldValue['config']['fileFolder_recursions'], 0, 99)
+            $recursionLevels = isset($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'])
+                ? MathUtility::forceIntegerInRange($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'], 0, 99)
                 : 99;
             $fileArray = GeneralUtility::getAllFilesAndFoldersInPath([], $fileFolder, $fileExtensionList, 0, $recursionLevels);
             $fileArray = GeneralUtility::removePrefixPathFromList($fileArray, $fileFolder);
