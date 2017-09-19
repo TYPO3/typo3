@@ -72,18 +72,21 @@ trait MenuViewHelperTrait
         $pageUids = array_filter($pageUids);
 
         // If no pages have been defined, use the current page
-        if (empty($pageUids)) {
-            if ($entryLevel !== null) {
-                if ($entryLevel < 0) {
-                    $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
-                }
-                $pageUids = [$typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']];
-            } else {
-                $pageUids = [$typoScriptFrontendController->id];
-            }
+        if (!empty($pageUids)) {
+            return $pageUids;
         }
 
-        return $pageUids;
+        if ($entryLevel === null) {
+            return [$typoScriptFrontendController->id];
+        }
+
+        if ($entryLevel < 0) {
+            $entryLevel = count($typoScriptFrontendController->tmpl->rootLine) - 1 + $entryLevel;
+        }
+        if (isset($typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid'])) {
+            return [$typoScriptFrontendController->tmpl->rootLine[$entryLevel]['uid']];
+        }
+        return [];
     }
 
     /**
