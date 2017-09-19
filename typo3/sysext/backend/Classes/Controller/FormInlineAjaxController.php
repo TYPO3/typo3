@@ -134,10 +134,12 @@ class FormInlineAjaxController
 
         // Set language of new child record to the language of the parent record
         if ($parent['localizationMode'] !== 'keep' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
-            $parentRecord = BackendUtility::getRecord($parent['table'], $parent['uid']);
             $parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
             $childLanguageField = $GLOBALS['TCA'][$child['table']]['ctrl']['languageField'];
-            $childData['databaseRow'][$childLanguageField][0] = $parentRecord[$parentLanguageField];
+            if (!empty($parentLanguageField) && !empty($childLanguageField)) {
+                $parentRecord = BackendUtility::getRecord($parent['table'], $parent['uid']);
+                $childData['databaseRow'][$childLanguageField][0] = $parentRecord[$parentLanguageField];
+            }
         }
 
         if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
