@@ -462,9 +462,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if (GeneralUtility::getApplicationContext()->isDevelopment() && $this->isAdmin()) {
             return true;
         }
-        $allowedAdmins = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
-        if (!empty($allowedAdmins)) {
-            return in_array((int)$this->user['uid'], $allowedAdmins, true);
+        $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
+        if (!empty($systemMaintainers)) {
+            return in_array($this->getRealUserId(), $systemMaintainers, true);
         }
         // No system maintainers set up yet, so any admin is allowed to access the modules
         // but explicitly no system maintainers allowed (empty string in TYPO3_CONF_VARS).
@@ -474,6 +474,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return false;
         }
         return $this->isAdmin();
+    }
+
+    /**
+     * If a user has actually logged in and switched to a different user (admins can use the SU switch user method)
+     * the real UID is sometimes needed (when checking for permissions for example).
+     */
+    protected function getRealUserId(): int
+    {
+        return (int)($GLOBALS['BE_USER']->user['ses_backuserid'] ?: $this->user['uid']);
     }
 
     /**
