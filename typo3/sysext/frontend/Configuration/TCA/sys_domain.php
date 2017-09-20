@@ -24,7 +24,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 35,
-                'max' => 80,
+                'max' => 255,
                 'eval' => 'required,unique,lower,trim,domainname',
                 'softref' => 'substitute'
             ]
