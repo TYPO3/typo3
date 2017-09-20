@@ -102,6 +102,7 @@ class MenuProcessor implements DataProcessorInterface
         'alwaysActivePIDlist.',
         'protectLvar',
         'addQueryString',
+        'addQueryString.',
         'if',
         'if.',
         'levels',
