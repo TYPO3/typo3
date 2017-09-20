@@ -87,7 +87,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
                 || $element->getType() === 'Honeypot'
                 || (
                     isset($renderingOptions['_isCompositeFormElement'])
-                    && $renderingOptions['_isCompositeFormElement'] = true
+                    && $renderingOptions['_isCompositeFormElement'] === true
                 )
             ) {
                 continue;
