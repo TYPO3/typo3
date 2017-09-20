@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
 /**
  * Contains FLUIDTEMPLATE class object
@@ -162,6 +163,12 @@ class FluidTemplateContentObject extends AbstractContentObject
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
             // Fetch the Fluid template by template cObject
             $templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.']);
+            if ($templateSource === '') {
+                throw new ContentRenderingException(
+                    'Could not find template source for ' . $conf['template'],
+                    1437420865
+                );
+            }
             $this->view->setTemplateSource($templateSource);
         } else {
             // Fetch the Fluid template by file stdWrap
