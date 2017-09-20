@@ -321,9 +321,12 @@ class ElementInformationController
     protected function getPropertiesForTable() : array
     {
         $propertiesForTable = [];
-        $extraFields = [];
-
         $lang = $this->getLanguageService();
+
+        $extraFields = [
+            'uid' => htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.uid'))
+        ];
+
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
                 $extraFields['creation_date'] = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'));
@@ -344,7 +347,7 @@ class ElementInformationController
             foreach ($extraFields as $fieldName => $fieldLabel) {
                 if (isset($GLOBALS['TCA'][$this->table]['ctrl'][$fieldName])) {
                     $extraFields[$GLOBALS['TCA'][$this->table]['ctrl'][$fieldName]] = $fieldLabel;
-                } else {
+                } elseif ($fieldName !== 'uid') {
                     unset($extraFields[$fieldName]);
                 }
             }
