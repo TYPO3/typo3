@@ -29,7 +29,7 @@ class InstallWithMysqlCest
 
         // EnvironmentAndFolders step
         $I->waitForText('Installing TYPO3');
-        $I->see('System looks good. Continue!');
+        $I->waitForText('System looks good. Continue!');
         $I->click('System looks good. Continue!');
 
         // DatabaseConnection step
