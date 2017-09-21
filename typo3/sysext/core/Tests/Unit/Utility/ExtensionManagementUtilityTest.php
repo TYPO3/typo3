@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * Test case
@@ -1574,6 +1575,37 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
         $mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(false));
         $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
+    }
+
+    /**
+     * @test
+     */
+    public function loadBaseTcaCanBeCalledMultipleTimesWithoutError()
+    {
+        $tcaCache = [
+            'tca' => [
+                'pages' => [],
+            ],
+            'categoryRegistry' => serialize(new CategoryRegistry()),
+        ];
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)
+            ->setMethods(['getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockCache->expects($this->at(0))->method('requireOnce')->willReturn($tcaCache);
+        $mockCache->expects($this->at(1))->method('requireOnce')->willReturn(true);
+
+        /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
+        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
+            ->setMethods(['getCache'])
+            ->getMock();
+        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
+
+        EidUtility::initTCA();
+        ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
+
+        $this->assertSame($tcaCache['tca'], $GLOBALS['TCA']);
     }
 
     /////////////////////////////////////////

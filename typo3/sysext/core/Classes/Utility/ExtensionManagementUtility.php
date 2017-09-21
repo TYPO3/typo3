@@ -1688,7 +1688,11 @@ tt_content.' . $key . $suffix . ' {
             /** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
             $codeCache = static::getCacheManager()->getCache('cache_core');
             $cacheData = $codeCache->requireOnce($cacheIdentifier);
-            if ($cacheData) {
+            if ($cacheData === true) {
+                // requireOnce returns true if the file was already required before. Thus TCA is already loaded.
+                return;
+            }
+            if (is_array($cacheData)) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
                 GeneralUtility::setSingletonInstance(
                     CategoryRegistry::class,
