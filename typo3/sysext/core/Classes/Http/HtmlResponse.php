@@ -40,7 +40,7 @@ class HtmlResponse extends Response
         // Ensure that text/html header is set, if Content-Type was not set before
         if (!$this->hasHeader('Content-Type')) {
             $this->headers['Content-Type'][] = 'text/html; charset=utf-8';
-            $this->lowercasedHeaderNames['content-type'] = 'Content-type';
+            $this->lowercasedHeaderNames['content-type'] = 'Content-Type';
         }
     }
 }
