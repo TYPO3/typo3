@@ -201,7 +201,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->setUpBackend(['database' => 1]);
         $identifier = $this->getUniqueId('identifier');
         $this->backend->set($identifier, 'data');
-        $this->assertTrue($this->redis->exists('identData:' . $identifier));
+        $result = $this->redis->exists('identData:' . $identifier);
+        if (is_int($result)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $result = (bool)$result;
+        }
+        $this->assertTrue($result);
     }
 
     /**
@@ -615,7 +620,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $tag = 'thisTag';
         $this->backend->set($identifier, 'data', [$tag]);
         $this->backend->remove($identifier);
-        $this->assertFalse($this->redis->exists('identTags:' . $identifier));
+        $result = $this->redis->exists('identTags:' . $identifier);
+        if (is_int($result)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $result = (bool)$result;
+        }
+        $this->assertFalse($result);
     }
 
     /**
@@ -758,7 +768,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $tag = 'tag1';
         $this->backend->set($identifier, 'data', [$tag]);
         $this->backend->flushByTag($tag);
-        $this->assertFalse($this->redis->exists('identTags:' . $identifier));
+        $result = $this->redis->exists('identTags:' . $identifier);
+        if (is_int($result)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $result = (bool)$result;
+        }
+        $this->assertFalse($result);
     }
 
     /**
@@ -789,7 +804,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $tag = 'tag1';
         $this->backend->set($identifier, 'data', [$tag]);
         $this->backend->flushByTag($tag);
-        $this->assertFalse($this->redis->exists('tagIdents:' . $tag));
+        $result = $this->redis->exists('tagIdents:' . $tag);
+        if (is_int($result)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $result = (bool)$result;
+        }
+        $this->assertFalse($result);
     }
 
     /**
@@ -819,7 +839,12 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->backend->set($identifier . 'B', 'data', ['tag']);
         $this->redis->delete('identData:' . $identifier . 'A');
         $this->backend->collectGarbage();
-        $this->assertTrue($this->redis->exists('identData:' . $identifier . 'B'));
+        $result = $this->redis->exists('identData:' . $identifier . 'B');
+        if (is_int($result)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $result = (bool)$result;
+        }
+        $this->assertTrue($result);
     }
 
     /**
@@ -835,9 +860,19 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->redis->delete('identData:' . $identifier . 'A');
         $this->backend->collectGarbage();
         $expectedResult = [false, true];
+        $resultA = $this->redis->exists('identTags:' . $identifier . 'A');
+        $resultB = $this->redis->exists('identTags:' . $identifier . 'B');
+        if (is_int($resultA)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $resultA = (bool)$resultA;
+        }
+        if (is_int($resultB)) {
+            // Since 3.1.4 of phpredis/phpredis the return types has been changed
+            $resultB = (bool)$resultB;
+        }
         $actualResult = [
-            $this->redis->exists('identTags:' . $identifier . 'A'),
-            $this->redis->exists('identTags:' . $identifier . 'B')
+            $resultA,
+            $resultB
         ];
         $this->assertSame($expectedResult, $actualResult);
     }
