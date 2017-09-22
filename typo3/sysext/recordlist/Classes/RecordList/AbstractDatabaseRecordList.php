@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -1266,6 +1267,13 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      */
     protected function getSearchableWebmounts($id, $depth, $perms_clause)
     {
+        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+        $cacheIdentifier = md5('pidList_' . $id . '_' . $depth . '_' . $perms_clause);
+        $idList = $runtimeCache->get($cacheIdentifier);
+        if ($idList) {
+            return $idList;
+        }
+
         $backendUser = $this->getBackendUserAuthentication();
         /** @var PageTreeView $tree */
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
@@ -1285,7 +1293,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             }
             $idList = array_merge($idList, $tree->ids);
         }
-
+        $runtimeCache->set($cacheIdentifier, $idList);
         return $idList;
     }
 
@@ -1425,8 +1433,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         if ($searchLevels === 0) {
             $constraint = $expressionBuilder->eq($tableName . '.pid', (int)$this->id);
         } elseif ($searchLevels > 0) {
-            $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
-            $constraint = $expressionBuilder->in($tableName . '.pid', array_map('intval', $allowedMounts));
+            $allowedPidList = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
+            $constraint = $expressionBuilder->in($tableName . '.pid', array_map('intval', $allowedPidList));
         }
 
         if (!empty($this->getOverridePageIdList())) {
