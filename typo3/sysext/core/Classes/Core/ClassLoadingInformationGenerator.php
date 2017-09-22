@@ -80,18 +80,17 @@ class ClassLoadingInformationGenerator
         } else {
             $autoloadPsr4 = $this->getAutoloadSectionFromManifest($manifest, 'psr-4');
             if (!empty($autoloadPsr4)) {
-                $classLoaderPrefixesPsr4 = $this->classLoader->getPrefixesPsr4();
                 foreach ($autoloadPsr4 as $namespacePrefix => $paths) {
                     foreach ((array)$paths as $path) {
                         $namespacePath = $packagePath . $path;
+                        $namespaceRealPath = realpath($namespacePath);
                         if ($useRelativePaths) {
-                            $psr4[$namespacePrefix][] = $this->makePathRelative($namespacePath, realpath($namespacePath));
+                            $psr4[$namespacePrefix][] = $this->makePathRelative($namespacePath, $namespaceRealPath);
                         } else {
                             $psr4[$namespacePrefix][] = $namespacePath;
                         }
-                        if (!empty($classLoaderPrefixesPsr4[$namespacePrefix])) {
-                            // The namespace prefix has been registered already, which means there also might be
-                            // a class map which we need to override
+                        if (!empty($namespaceRealPath) && is_dir($namespaceRealPath)) {
+                            // Add all prs-4 classes to the class map for improved class loading performance
                             $classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, false, $namespacePrefix));
                         }
                     }
