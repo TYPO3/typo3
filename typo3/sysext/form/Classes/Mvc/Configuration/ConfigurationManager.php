@@ -17,10 +17,14 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Loader\FalYamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager as ExtbaseConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoConfigurationFoundException;
 
 /**
  * Extend the ExtbaseConfigurationManager to read YAML configurations.
@@ -35,20 +39,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $cache;
-
-    /**
-     * @var \TYPO3\CMS\Form\Mvc\Configuration\YamlSource
-     */
-    protected $yamlSource;
-
-    /**
-     * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
-     * @internal
-     */
-    public function injectYamlSource(\TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource)
-    {
-        $this->yamlSource = $yamlSource;
-    }
 
     /**
      * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
@@ -68,14 +58,14 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * Load and parse YAML files which are configured within the TypoScript
-     * path plugin.tx_extensionkey.settings.yamlConfigurations
+     * Load and parse a YAML configuration which is configured within
+     * plugin.tx_form.settings.configurationFile
      *
      * The following steps will be done:
      *
-     * * Convert each singe YAML file into an array
-     * * merge this arrays together
+     * * load a YAML file into an array
      * * resolve all declared inheritances
+     * * convert all boolean strings ('true' / 'false') into boolean values
      * * remove all keys if their values are NULL
      * * return all configuration paths within TYPO3.CMS
      * * sort by array keys, if all keys within the current nesting level are numerical keys
@@ -84,6 +74,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
      * @param string $extensionName
      * @return array
      * @throws ExtensionNameRequiredException
+     * @throws NoConfigurationFoundException
      */
     protected function getConfigurationFromYamlFile(string $extensionName): array
     {
@@ -97,25 +88,47 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
 
         $typoscriptSettings = $this->getTypoScriptSettings($extensionName);
 
-        $yamlSettingsFilePaths = isset($typoscriptSettings['yamlConfigurations'])
-            ? ArrayUtility::sortArrayWithIntegerKeys($typoscriptSettings['yamlConfigurations'])
-            : [];
-
-        $cacheKeySuffix = $extensionName . md5(json_encode($yamlSettingsFilePaths));
+        $cacheKeySuffix = $extensionName;
+        if (isset($typoscriptSettings['configurationFile'])) {
+            $cacheKeySuffix .= md5($typoscriptSettings['configurationFile']);
+        } elseif (isset($typoscriptSettings['yamlConfigurations'])) {
+            $cacheKeySuffix .= md5(json_encode($typoscriptSettings['yamlConfigurations']));
+        }
 
         $yamlSettings = $this->getYamlSettingsFromCache($cacheKeySuffix);
         if (!empty($yamlSettings)) {
             return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
         }
 
-        $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))
+        if (isset($typoscriptSettings['configurationFile'])) {
+            $configuration = $this->objectManager->get(Configuration::class)
+                ->setMergeLists(false);
+            $yamlSettings = $this->objectManager->get(FalYamlFileLoader::class, $configuration)
+                ->load($typoscriptSettings['configurationFile']);
+        } elseif (isset($typoscriptSettings['yamlConfigurations'])) {
+            trigger_error('EXT:form configuration registration via "<module|plugin>.tx_form.settings.yamlConfigurations" has been deprecated in v9 and will be removed in v10. Use "<module|plugin>.tx_form.settings.configurationFile" instead.', E_USER_DEPRECATED);
+            $yamlContent = $this->generateYamlFromLegacyYamlConfigurations(
+                $typoscriptSettings['yamlConfigurations']
+            );
+            $yamlSettings = $this->objectManager->get(YamlFileLoader::class)
+                ->loadFromContent($yamlContent);
+        } else {
+            throw new NoConfigurationFoundException(
+                'No YAML configurations could be found for extension ' . $extensionName,
+                1471473378
+            );
+        }
+
+        $yamlSettings = ArrayUtility::convertBooleanStringsToBooleanRecursive($yamlSettings);
+        $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
+        $yamlSettings = InheritancesResolverService::create($yamlSettings)
             ->getResolvedConfiguration();
 
-        $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
         $yamlSettings = is_array($yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName])
             ? $yamlSettings['TYPO3']['CMS'][$ucFirstExtensioName]
             : [];
         $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
+
         $this->setYamlSettingsIntoCache($cacheKeySuffix, $yamlSettings);
 
         return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
@@ -198,5 +211,49 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
             $extensionName
         );
+    }
+
+    /**
+     * Compatibility layer for the deprecated TypoScript option
+     * "plugin.tx_form.settings.yamlConfigurations"
+     *
+     * @param array $yamlConfigurations
+     * @return string
+     * @internal
+     */
+    protected function generateYamlFromLegacyYamlConfigurations(array $yamlConfigurations): string
+    {
+        $yamlConfigurations = ArrayUtility::sortArrayWithIntegerKeys($yamlConfigurations);
+        $yamlContent = 'imports:' . LF;
+
+        $baseExtFormConfigurations = [
+            'EXT:form/Configuration/Yaml/BaseSetup.yaml',
+            'EXT:form/Configuration/Yaml/FormEditorSetup.yaml',
+            'EXT:form/Configuration/Yaml/FormEngineSetup.yaml',
+            'EXT:form/Configuration/Yaml/FormSetup.yaml',
+        ];
+
+        $imports = '';
+        $baseExtFormConfigurationsExists = false;
+        foreach ($yamlConfigurations as $yamlConfiguration) {
+            if (in_array($yamlConfiguration, $baseExtFormConfigurations)) {
+                $baseExtFormConfigurationsExists = true;
+            } else {
+                $imports .= '  - { resource: "' . $yamlConfiguration . '" }' . LF;
+            }
+        }
+
+        // We assume that if one of the files defined within $baseExtFormConfigurations exists
+        // within plugin.tx_form.settings.yamlConfigurations, someone wants to load
+        // the base EXT:form setup files (old or new) and afterwards extend it with his own configuration.
+        // In this case, we define the new EXT:form/Configuration/Yaml/FormSetup.yaml file as the
+        // first file to import from.
+        if ($baseExtFormConfigurationsExists) {
+            $yamlContent .= '  - { resource: "EXT:form/Configuration/Yaml/FormSetup.yaml" }' . LF . $imports;
+        } else {
+            $yamlContent .= $imports;
+        }
+
+        return $yamlContent;
     }
 }

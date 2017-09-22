@@ -15,11 +15,12 @@ namespace TYPO3\CMS\Form\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Loader\FalYamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -98,8 +99,10 @@ class FormManagerController extends AbstractBackendController
             throw new FormException(sprintf('No form name', $templatePath), 1472312204);
         }
 
-        $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
-        $form = Yaml::parse(file_get_contents($templatePath));
+        /** @var \TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration */
+        $configuration = GeneralUtility::makeInstance(Configuration::class)
+            ->setMergeLists(false);
+        $form = $this->objectManager->get(FalYamlFileLoader::class, $configuration)->load($templatePath);
         $form['label'] = $formName;
         $form['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
         $form['prototypeName'] = $prototypeName;
@@ -160,7 +163,12 @@ class FormManagerController extends AbstractBackendController
      */
     public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath)
     {
-        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier);
+        /** @var \TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration */
+        $configuration = GeneralUtility::makeInstance(Configuration::class)
+            ->setProcessImports(false)
+            ->setRemoveImportsProperty(false)
+            ->setMergeLists(false);
+        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier, $configuration);
         $formToDuplicate['label'] = $formName;
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
 

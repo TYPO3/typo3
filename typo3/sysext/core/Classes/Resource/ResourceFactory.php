@@ -459,7 +459,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * - "file:23"
      *
      * @param string $input
-     * @return File|Folder
+     * @return File|Folder|null
      */
     public function retrieveFileOrFolderObject($input)
     {

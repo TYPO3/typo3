@@ -1,0 +1,9 @@
+imports:
+  - { resource: "EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/File4.yaml" }
+
+TYPO3:
+  CMS:
+    Form:
+      config:
+        value8: File 3
+        value9: File 3

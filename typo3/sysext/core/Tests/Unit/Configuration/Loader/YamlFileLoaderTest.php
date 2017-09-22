@@ -190,4 +190,17 @@ betterthanbefore: %firstset.myinitialversion%
         $output = $subject->_call('isPlaceholder', $placeholderValue);
         $this->assertSame($expected, $output);
     }
+
+    /**
+     * @test
+     */
+    public function loadFromContentThrowsExceptionIfContentIsInvalid()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1497332874);
+
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['dummy']);
+        $input = 'foo bar';
+        $subject->_call('loadFromContent', $input);
+    }
 }

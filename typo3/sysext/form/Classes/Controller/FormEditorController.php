@@ -18,13 +18,17 @@ namespace TYPO3\CMS\Form\Controller;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Loader\FalYamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Exception\InvalidFormDefinitionException;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -72,11 +76,14 @@ class FormEditorController extends AbstractBackendController
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
         }
 
-        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
+        $prototypeName = $prototypeName ?? $formDefinition['prototypeName'] ?? 'standard';
+        /** @var \TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration */
+        $configuration = GeneralUtility::makeInstance(Configuration::class)
+            ->setRemoveImportsProperty(false)
+            ->setMergeLists(false);
+        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier, $configuration);
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        if (empty($prototypeName)) {
-            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-        }
+        $formDefinition = $this->transformFormDefinitionWithImportsForFormEditor($formDefinition, is_array($formDefinition['imports']));
         $formDefinition['prototypeName'] = $prototypeName;
 
         $configurationService = $this->objectManager->get(ConfigurationService::class);
@@ -152,6 +159,7 @@ class FormEditorController extends AbstractBackendController
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
         $formDefinition = $formDefinition->getArrayCopy();
+
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormSave')) {
@@ -161,6 +169,12 @@ class FormEditorController extends AbstractBackendController
                 );
             }
         }
+
+        $formDefinition = $this->transformFormDefinitionWithImportsForFormFramework(
+            $formPersistenceIdentifier,
+            $formDefinition,
+            is_array($formDefinition['imports'])
+        );
 
         $response = [
             'status' => 'success',
@@ -196,15 +210,13 @@ class FormEditorController extends AbstractBackendController
      */
     public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
     {
-        if (empty($prototypeName)) {
-            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-        }
-
+        $prototypeName = $prototypeName ?? $formDefinition['prototypeName'] ?? 'standard';
         $formFactory = $this->objectManager->get(ArrayFormFactory::class);
         $formDefinition = $formFactory->build($formDefinition->getArrayCopy(), $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request, $this->response);
         $form->overrideCurrentPage($pageIndex);
+
         return $form->render();
     }
 
@@ -217,7 +229,6 @@ class FormEditorController extends AbstractBackendController
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
-        $formElementGroups = $this->prototypeConfiguration['formEditor']['formElementGroups'] ?? [];
         $formElementsByGroup = [];
 
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
@@ -243,7 +254,7 @@ class FormEditorController extends AbstractBackendController
         }
 
         $formGroups = [];
-        foreach ($formElementGroups as $groupName => $groupConfiguration) {
+        foreach ($this->prototypeConfiguration['formEditor']['formElementGroups'] ?? [] as $groupName => $groupConfiguration) {
             if (!isset($formElementsByGroup[$groupName])) {
                 continue;
             }
@@ -369,6 +380,232 @@ class FormEditorController extends AbstractBackendController
             $buttonBar->addButton($formSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
             $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
             $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+        }
+    }
+
+    /**
+     * @param array $array
+     * @param bool $hasImports
+     * @return array
+     * @throws PropertyException
+     */
+    protected function transformFormDefinitionWithImportsForFormEditor(array $array, bool $hasImports): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                if (
+                    $key === 'renderables'
+                    || $key === 'validators'
+                    || $key === 'finishers'
+                ) {
+                    if ($hasImports) {
+                        foreach ($value as $itemKey => $item) {
+                            if (is_int($itemKey)) {
+                                throw new InvalidFormDefinitionException(
+                                    'All array keys within "' . $key . '" must be strings.',
+                                    1505505524
+                                );
+                            }
+
+                            if ($itemKey !== $item['identifier']) {
+                                throw new InvalidFormDefinitionException(
+                                    'All items keys within "' . $key . '" must be equal to the "identifier" property.',
+                                    1505505525
+                                );
+                            }
+
+                            if (!isset($item['sorting'])) {
+                                throw new InvalidFormDefinitionException(
+                                    'All items within "' . $key . '" must have a "sorting" property.',
+                                    1505505526
+                                );
+                            }
+                        }
+                    }
+                    // transform string keys to integer keys
+                    $value = array_values($value);
+
+                    if ($hasImports) {
+                        // sort by "sorting"
+                        usort($value, function ($a, $b) {
+                            return (float)$a['sorting'] - (float)$b['sorting'];
+                        });
+                    }
+                }
+                $result[$key] = $this->transformFormDefinitionWithImportsForFormEditor($value, $hasImports);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param string $formPersistenceIdentifier
+     * @param array $formDefinition
+     * @param bool $hasImports
+     * @return array
+     */
+    protected function transformFormDefinitionWithImportsForFormFramework(
+        string $formPersistenceIdentifier,
+        array $formDefinition,
+        bool $hasImports
+    ): array {
+        if ($hasImports) {
+            $fakeYaml = $this->generateFakeYamlFromImports(
+                $formDefinition['imports']
+            );
+            /** @var \TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration */
+            $configuration = GeneralUtility::makeInstance(Configuration::class)
+                ->setMergeLists(false);
+            $importsFormDefinition = $this->objectManager->get(FalYamlFileLoader::class, $configuration)
+                ->loadFromContent($fakeYaml);
+            $importsFormDefinition = $this->castValuesToNumbers($importsFormDefinition);
+        }
+
+        $formDefinition = $this->castValuesToNumbers($formDefinition);
+        $formDefinition = $this->setIdentifiersAsKeys($formDefinition);
+        $formDefinition = $this->setNewSortings($formDefinition);
+
+        if ($hasImports) {
+            $this->makeFormDefinitionWithImportsDiff($formDefinition, $importsFormDefinition);
+        }
+        return $formDefinition;
+    }
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    public static function castValuesToNumbers(array $array): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = self::castValuesToNumbers($value);
+            } elseif (MathUtility::canBeInterpretedAsInteger($value)) {
+                $result[$key] = (int)$value;
+            } elseif (MathUtility::canBeInterpretedAsFloat($value)) {
+                $result[$key] = (float)$value;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $formDefinition
+     * @return array
+     */
+    protected function setNewSortings(array $formDefinition): array
+    {
+        $result = $formDefinition;
+
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                if (
+                    $key === 'renderables'
+                    || $key === 'validators'
+                    || $key === 'finishers'
+                ) {
+                    $sorting = 10;
+                    foreach ($value as $identifier => $item) {
+                        $value[$identifier]['sorting'] = $sorting;
+                        $sorting += 10;
+                    }
+                }
+                $result[$key] = $this->setNewSortings($value);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    protected function setIdentifiersAsKeys(array $array): array
+    {
+        $result = $array;
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                if (
+                    $key === 'renderables'
+                    || $key === 'validators'
+                    || $key === 'finishers'
+                ) {
+                    $newValue = [];
+                    foreach ($value as $itemKey => $item) {
+                        $newValue[$item['identifier']] = $item;
+                    }
+                    $value = $newValue;
+                }
+                $result[$key] = $this->setIdentifiersAsKeys($value);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $imports
+     * @return string
+     */
+    protected function generateFakeYamlFromImports(array $imports): string
+    {
+        $fakeYaml = 'imports:' . LF;
+        foreach ($imports as $import) {
+            foreach ($import as $resource) {
+                $fakeYaml .= '  - { resource: "' . $resource . '" }' . LF;
+            }
+        }
+        return $fakeYaml;
+    }
+
+    /**
+     * @param array &$newFullFormDefinition
+     * @param array $importsFormDefinition
+     * @param array $path
+     */
+    protected function makeFormDefinitionWithImportsDiff(
+        array &$newFullFormDefinition,
+        array $importsFormDefinition,
+        array $path = []
+    ) {
+        foreach ($importsFormDefinition as $key => $valueFromImportsFormDefinition) {
+            $currentPath = $path;
+            $currentPath[] = $key;
+            $currentPathString = implode('/', $currentPath);
+            if (is_array($valueFromImportsFormDefinition)) {
+                if (!ArrayUtility::isValidPath($newFullFormDefinition, $currentPathString)) {
+                    // Overwrite the value within the new formDefinition with null
+                    // because the value exists within one of the imports
+                    // but not within the new formDefinition which means
+                    // that the value should be deleted.
+                    $newFullFormDefinition = ArrayUtility::setValueByPath($newFullFormDefinition, $currentPathString, null);
+                } else {
+                    $this->makeFormDefinitionWithImportsDiff($newFullFormDefinition, $valueFromImportsFormDefinition, $currentPath);
+                    $value = ArrayUtility::getValueByPath($newFullFormDefinition, $currentPathString);
+                    // If values are deleted within deeper nestings, the array
+                    // keys still exists. If empty arrays exists within the new formDefinition
+                    // then they should be removed.
+                    if (is_array($value) && empty($value)) {
+                        $newFullFormDefinition = ArrayUtility::removeByPath($newFullFormDefinition, $currentPathString);
+                    }
+                }
+            } else {
+                if (
+                    ArrayUtility::isValidPath($newFullFormDefinition, $currentPathString)
+                    && ArrayUtility::getValueByPath($newFullFormDefinition, $currentPathString) === $valueFromImportsFormDefinition
+                ) {
+                    // Remove the value within the new formDefinition
+                    // because the value already exists within one of the imports.
+                    $newFullFormDefinition = ArrayUtility::removeByPath($newFullFormDefinition, $currentPathString);
+                } elseif (!ArrayUtility::isValidPath($newFullFormDefinition, $currentPathString)) {
+                    // Overwrite the value within the new formDefinition with null
+                    // because the value exists within one of the imports
+                    // but not within the new formDefinition which means
+                    // that the value should be deleted.
+                    $newFullFormDefinition = ArrayUtility::setValueByPath($newFullFormDefinition, $currentPathString, null);
+                }
+            }
         }
     }
 

@@ -1,0 +1,27 @@
+TYPO3:
+  CMS:
+    Form:
+      config:
+        value1: File2 (should be overridden by File1)
+        value2: File2 (should be removed by File1)
+        value4:
+          key1: File2 (the whole array should be overridden by File1)
+        value5: File2 (should be an array through File1)
+        value6:
+          key1: File2 (the whole array should be removed by File1)
+        value7: File 2
+        value11:
+          __inheritances:
+            10: 'TYPO3.CMS.Form.mixins.value11Mixin'
+        value12:
+          __inheritances:
+            10: 'TYPO3.CMS.Form.mixins.value12Mixin1'
+            20: 'TYPO3.CMS.Form.mixins.value12Mixin2'
+      mixins:
+        value11Mixin:
+          key1: File 2 (should be overridden by File1)
+          key2: File 2
+        value12Mixin1:
+          key1: File 2
+        value12Mixin2:
+          key2: File 2

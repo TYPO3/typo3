@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -55,7 +56,10 @@ class FormFrontendController extends ActionController
     {
         $formDefinition = [];
         if (!empty($this->settings['persistenceIdentifier'])) {
-            $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier']);
+            /** @var \TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration */
+            $configuration = $this->objectManager->get(Configuration::class)
+                ->setRemoveImportsProperty(false);
+            $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier'], $configuration);
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
             $formDefinition = $this->overrideByTypoScriptSettings($formDefinition);
             $formDefinition = $this->overrideByFlexFormSettings($formDefinition);

@@ -1,0 +1,67 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="form-editor">
+	<div class="t3-form-control-group form-group property-grid">
+		<label><span data-template-property="label" /></label>
+		<div data-editor="new-property-grid" data-template-property="newPropertyPath">
+			<table class="table table-hover" data-identifier="propertyGridContainer">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Label</th>
+						<th>Value</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-identifier="rowItem">
+						<td><span class="sort-row-field" data-identifier="sortRow"><core:icon identifier="actions-move-move" /></span></td>
+						<td data-identifier="labelContainer">
+							<input type="text" class="form-control" value="" data-identifier="label" />
+							<span class="input-group-btn" role="group" data-identifier="inspectorEditorFormElementSelectorControlsWrapper">
+								<span class="btn-group t3-form-dropdown-buttons" data-identifier="inspectorEditorFormElementSelectorSplitButtonContainer">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.formelement_selector.title')}">
+										<core:icon identifier="t3-form-icon-form-element-selector" />
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right" data-identifier="inspectorEditorFormElementSelectorSplitButtonListContainer"></ul>
+								</span>
+							</span>
+						</td>
+						<td data-identifier="valueContainer">
+							<input type="text" class="form-control" value="" data-identifier="value" />
+							<span class="input-group-btn" role="group" data-identifier="inspectorEditorFormElementSelectorControlsWrapper">
+								<span class="btn-group t3-form-dropdown-buttons" data-identifier="inspectorEditorFormElementSelectorSplitButtonContainer">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.formelement_selector.title')}">
+										<core:icon identifier="t3-form-icon-form-element-selector" />
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right" data-identifier="inspectorEditorFormElementSelectorSplitButtonListContainer"></ul>
+								</span>
+							</span>
+						</td>
+						<td>
+							<div class="btn-group btn-group-sm" role="group">
+								<button class="btn btn-default" title="Remove this row" data-identifier="deleteRow"><core:icon identifier="actions-delete" /></button>
+							</div>
+						</td>
+					</tr>
+					<tr data-identifier="addRowItem">
+						<td>
+							<div class="btn-group btn-group-sm" role="group">
+								<button class="btn btn-default" title="Add a new row" data-identifier="addRow"><core:icon identifier="actions-add" /></button>
+							</div>
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div data-editor="property-grid" data-template-property="propertyPath" class="t3-form-grid" />
+	</div>
+</div>
+</html>

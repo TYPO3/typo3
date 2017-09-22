@@ -1,0 +1,21 @@
+imports:
+  - { resource: "EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/File2.yaml" }
+  - { resource: "EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/File3.yaml" }
+
+TYPO3:
+  CMS:
+    Form:
+      config:
+        value1: File 1
+        value2: null
+        value3: File 1
+        value4: File 1
+        value5: File 1
+        value6: null
+        value12:
+          __inheritances:
+            20: null
+      mixins:
+        value11Mixin:
+          key1: File 1
+          key2: File 1

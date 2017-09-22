@@ -81,7 +81,7 @@ class RenderViewHelper extends AbstractViewHelper
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if (!empty($persistenceIdentifier)) {
             $formPersistenceManager = $objectManager->get(FormPersistenceManagerInterface::class);
-            $formConfiguration = $formPersistenceManager->load($persistenceIdentifier);
+            $formConfiguration = $formPersistenceManager->load($persistenceIdentifier, true, false);
             ArrayUtility::mergeRecursiveWithOverrule(
                 $formConfiguration,
                 $overrideConfiguration

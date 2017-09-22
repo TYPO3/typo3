@@ -17,6 +17,10 @@ namespace TYPO3\CMS\Form\Mvc\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\Loader\FalYamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader\Configuration as LoadConfiguration;
+use TYPO3\CMS\Core\Configuration\Writer\Exception\FileWriteException;
+use TYPO3\CMS\Core\Configuration\Writer\YamlFileWriter;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
@@ -27,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -41,11 +44,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 {
 
     /**
-     * @var \TYPO3\CMS\Form\Mvc\Configuration\YamlSource
-     */
-    protected $yamlSource;
-
-    /**
      * @var \TYPO3\CMS\Core\Resource\StorageRepository
      */
     protected $storageRepository;
@@ -54,15 +52,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * @var array
      */
     protected $formSettings;
-
-    /**
-     * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
-     * @internal
-     */
-    public function injectYamlSource(\TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource)
-    {
-        $this->yamlSource = $yamlSource;
-    }
 
     /**
      * @param \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository
@@ -88,11 +77,12 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Only files with the extension .yaml are loaded.
      *
      * @param string $persistenceIdentifier
+     * @param LoadConfiguration $loadConfiguration
      * @return array
      * @throws PersistenceManagerException
      * @internal
      */
-    public function load(string $persistenceIdentifier): array
+    public function load(string $persistenceIdentifier, LoadConfiguration $loadConfiguration = null): array
     {
         if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) !== 'yaml') {
             throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1477679819);
@@ -108,7 +98,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         try {
-            $yaml = $this->yamlSource->load([$file]);
+            $yaml = GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(FalYamlFileLoader::class, $loadConfiguration)
+                ->load($file);
         } catch (\Exception $e) {
             $yaml = [
                 'identifier' => $file->getCombinedIdentifier(),
@@ -150,13 +142,15 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             if (!array_key_exists(pathinfo($persistenceIdentifier, PATHINFO_DIRNAME) . '/', $this->getAccessibleExtensionFolders())) {
                 throw new PersistenceManagerException(sprintf('The file "%s" could not be saved.', $persistenceIdentifier), 1484073571);
             }
-            $fileToSave = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
+            $fileToSave = $persistenceIdentifier;
         } else {
             $fileToSave = $this->getOrCreateFile($persistenceIdentifier);
         }
 
         try {
-            $this->yamlSource->save($fileToSave, $formDefinition);
+            GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(YamlFileWriter::class)
+                ->save($fileToSave, $formDefinition);
         } catch (FileWriteException $e) {
             throw new PersistenceManagerException(sprintf(
                 'The file "%s" could not be saved: %s',
