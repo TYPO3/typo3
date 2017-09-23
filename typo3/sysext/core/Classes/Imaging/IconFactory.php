@@ -138,9 +138,6 @@ class IconFactory
     {
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
-        if (empty($overlayIdentifier)) {
-            $overlayIdentifier = null;
-        }
         return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
     }
 
@@ -475,7 +472,7 @@ class IconFactory
         $icon->setIdentifier($identifier);
         $icon->setSize($size);
         $icon->setState($iconConfiguration['state'] ?: new IconState());
-        if ($overlayIdentifier !== null) {
+        if (!empty($overlayIdentifier)) {
             $icon->setOverlayIcon($this->getIcon($overlayIdentifier, Icon::SIZE_OVERLAY));
         }
         if (!empty($iconConfiguration['options']['spinning'])) {
