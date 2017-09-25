@@ -174,6 +174,10 @@ abstract class AbstractFinisher implements FinisherInterface
             return $optionValue;
         }
 
+        if ($optionValue instanceof \Closure) {
+            return $optionValue;
+        }
+
         $formRuntime = $this->finisherContext->getFormRuntime();
 
         // You can encapsulate a option value with {}.
