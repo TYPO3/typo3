@@ -2581,7 +2581,8 @@ class BackendUtility
             }
         }
 
-        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
+        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '') . LF
+            . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($previewUrl) . ') { previewWin.location.reload(); };';
         return $onclickCode;
     }
 

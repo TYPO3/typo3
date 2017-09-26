@@ -872,7 +872,8 @@ class BackendUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']);
 
         $alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
-        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($alternativeUrl) . ',\'newTYPO3frontendWindow\');';
+        $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($alternativeUrl) . ',\'newTYPO3frontendWindow\');' . LF
+            . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($alternativeUrl) . ') { previewWin.location.reload(); };';
         $this->assertStringMatchesFormat(
             $onclickCode,
             BackendUtility::viewOnClick(null, null, null, null, $alternativeUrl, null, false)
