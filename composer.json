@@ -48,7 +48,7 @@
 		"typo3fluid/fluid": "^2.4",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"doctrine/dbal": "~2.5.4",
-		"nikic/php-parser": "~3.0.6"
+		"nikic/php-parser": "^3.1"
 	},
 	"require-dev": {
 		"typo3/testing-framework": "~1.1.0",
