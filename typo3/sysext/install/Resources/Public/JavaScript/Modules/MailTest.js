@@ -27,13 +27,13 @@ define([
 
 	return {
 		selectorSendToken: '#t3js-mailTest-token',
-		selectorSendTrigger: '.t3js-mailTest-send',
+		selectorForm: '#t3js-mailTest-form',
 		selectorEmail: '.t3js-mailTest-email',
 		selectorOutputContainer: '.t3js-mailTest-output',
 
 		initialize: function() {
 			var self = this;
-			$(document).on('click', this.selectorSendTrigger, function(e) {
+			$(this.selectorForm).submit(function(e) {
 				e.preventDefault();
 				self.send();
 			});
@@ -62,12 +62,14 @@ define([
 							$outputContainer.html(message);
 						});
 					} else {
-						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
+						var message = InfoBox.render(Severity.error, 'Something went wrong', '');
 						$outputContainer.empty().html(message);
 					}
 				},
 				error: function(xhr) {
-					Router.handleAjaxError(xhr);
+					// 500 can happen here if the mail configuration is broken
+					var message = InfoBox.render(Severity.error, 'Please check your mail settings', 'Sending test mail failed');
+					$outputContainer.empty().html(message);
 				}
 			});
 		}
