@@ -53,7 +53,6 @@ class MaintenanceController extends AbstractController
         $view->assignMultiple([
             'clearAllCacheOpcodeCaches' => (new OpcodeCacheService())->getAllActive(),
             'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
-            'clearTypo3tempFilesStats' => (new Typo3tempFileService())->getDirectoryStatistics(),
             'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
             'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
@@ -80,6 +79,21 @@ class MaintenanceController extends AbstractController
             'success' => true,
             'status' => $messageQueue,
         ]);
+    }
+
+    /**
+     * Clear typo3temp files statistics action
+     *
+     * @return ResponseInterface
+     */
+    public function clearTypo3tempFilesStatsAction(): ResponseInterface
+    {
+        return new JsonResponse(
+            [
+                'success' => true,
+                'stats' => (new Typo3tempFileService())->getDirectoryStatistics(),
+            ]
+        );
     }
 
     /**

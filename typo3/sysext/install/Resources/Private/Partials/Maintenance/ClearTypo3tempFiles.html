@@ -14,20 +14,30 @@
 		you can use this tool to remove the "_processed_" ones.
 	</p>
 
+	<div class="t3js-clearTypo3temp-output"></div>
 
-<div id="t3js-clearTypo3temp-delete-token" style="display:none;">{clearTypo3tempFilesToken}</div>
-
-<f:for each="{clearTypo3tempFilesStats}" as="folderStats" iteration="iterator">
-	<div class="t3js-clearTypo3temp-container t3js-clearTypo3temp-container-{folderStats.directory}">
-		<div class="t3js-clearTypo3temp-output"></div>
-		<button
-			class="btn btn-warning t3js-clearTypo3temp-delete" data-folder="{folderStats.directory}"
+	<button
+			class="btn btn-default t3js-clearTypo3temp-stats"
 			type="button"
+	>
+		Scan again
+	</button>
+	<hr>
+
+<div class="form-group">
+	<div class="t3js-clearTypo3temp-stat-container"></div>
+</div>
+
+<div style="display:none;">
+	<div id="t3js-clearTypo3temp-delete-token" style="display:none;">{clearTypo3tempFilesToken}</div>
+	<div class="t3js-clearTypo3temp-stat-template">
+		<button
+				class="btn btn-warning t3js-clearTypo3temp-delete"
+				type="button"
 		>
-			Delete {folderStats.numberOfFiles} in typo3temp/assets/{folderStats.directory}
+			Delete <span class="t3js-clearTypo3temp-stat-numberOfFiles"></span> files in
+			typo3temp/assets/<span class="t3js-clearTypo3temp-stat-directory"></span>
 		</button>
-		<f:if condition="!{iterator.isLast}">
-			<hr />
-		</f:if>
+		<hr class="t3js-clearTypo3temp-stat-lastRuler">
 	</div>
-</f:for>
+</div>
