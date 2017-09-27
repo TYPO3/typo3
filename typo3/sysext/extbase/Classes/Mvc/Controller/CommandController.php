@@ -131,6 +131,7 @@ class CommandController implements CommandControllerInterface
         $this->arguments = $this->objectManager->get(Arguments::class);
         $this->initializeCommandMethodArguments();
         $this->mapRequestArgumentsToControllerArguments();
+        $this->initializeBackendAuthentication();
         $this->callCommandMethod();
     }
 
@@ -200,6 +201,17 @@ class CommandController implements CommandControllerInterface
                 $argumentValue = $this->output->ask(sprintf('<comment>Please specify the required argument "%s":</comment> ', $commandArgumentDefinition->getDashedName()));
             }
             $argument->setValue($argumentValue);
+        }
+    }
+
+    /**
+     * Initializes and ensures authenticated backend access
+     */
+    protected function initializeBackendAuthentication()
+    {
+        $backendUserAuthentication = $this->getBackendUserAuthentication();
+        if ($backendUserAuthentication !== null) {
+            $backendUserAuthentication->backendCheckLogin();
         }
     }
 
