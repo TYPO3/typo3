@@ -2444,7 +2444,7 @@ class GeneralUtility
         } else {
             $mode = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename'];
         }
-        if (!file_exists($path) || $doNothing) {
+        if ($doNothing || !file_exists($path)) {
             // File not found, return filename unaltered
             $fullName = $file;
         } else {
