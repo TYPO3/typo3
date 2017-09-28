@@ -111,4 +111,10 @@ return [
             'Breaking-55298-DecoupledHistoryFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->__construct' => [
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Breaking-82572-RDCTFunctionalityRemoved.rst',
+        ],
+    ],
 ];

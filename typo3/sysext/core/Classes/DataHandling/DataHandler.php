@@ -8577,7 +8577,6 @@ class DataHandler
      *
      * The following cache_* are intentionally not cleared by 'all'
      *
-     * - cache_md5params:	RDCT redirects.
      * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
      * Imagemagick calls because the size informations have
      * to be fetched again after clearing.

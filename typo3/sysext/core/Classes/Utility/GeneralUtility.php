@@ -19,7 +19,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -3758,40 +3757,6 @@ class GeneralUtility
             ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);
         }
         return $error;
-    }
-
-    /**
-     * Create a shortened "redirect" URL with specified length from an incoming URL
-     *
-     * @param string $inUrl Input URL
-     * @param int $l URL string length limit
-     * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
-     * @return string Processed URL
-     */
-    public static function makeRedirectUrl($inUrl, $l = 0, $index_script_url = '')
-    {
-        if (strlen($inUrl) > $l) {
-            $md5 = substr(md5($inUrl), 0, 20);
-            $connection = self::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_md5params');
-            $count = $connection->count(
-                '*',
-                'cache_md5params',
-                ['md5hash' => $md5]
-            );
-            if (!$count) {
-                $connection->insert(
-                    'cache_md5params',
-                    [
-                        'md5hash' => $md5,
-                        'tstamp'  => $GLOBALS['EXEC_TIME'],
-                        'type'    => 2,
-                        'params'  => $inUrl
-                    ]
-                );
-            }
-            $inUrl = ($index_script_url ?: self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=' . $md5;
-        }
-        return $inUrl;
     }
 
     /**

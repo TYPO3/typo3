@@ -421,4 +421,11 @@ return [
             'Deprecation-81534-BackendUtilitygetListGroupNamesDeprecated.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::makeRedirectUrl' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-82572-RDCTFunctionalityRemoved.rst',
+        ],
+    ],
 ];

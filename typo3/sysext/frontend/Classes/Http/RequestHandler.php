@@ -106,7 +106,6 @@ class RequestHandler implements RequestHandlerInterface
         }
 
         $this->controller->connectToDB();
-        $this->controller->sendRedirect();
 
         // Output compression
         // Remove any output produced until now
@@ -332,8 +331,7 @@ class RequestHandler implements RequestHandlerInterface
             GeneralUtility::_GP('no_cache'),
             GeneralUtility::_GP('cHash'),
             null,
-            GeneralUtility::_GP('MP'),
-            GeneralUtility::_GP('RDCT')
+            GeneralUtility::_GP('MP')
         );
         // setting the global variable for the controller
         // We have to define this as reference here, because there is code around

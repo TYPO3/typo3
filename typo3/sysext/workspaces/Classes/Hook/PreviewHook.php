@@ -81,8 +81,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                 GeneralUtility::_GP('no_cache'),
                 GeneralUtility::_GP('cHash'),
                 null,
-                GeneralUtility::_GP('MP'),
-                GeneralUtility::_GP('RDCT')
+                GeneralUtility::_GP('MP')
             );
             $GLOBALS['TSFE'] = $this->tsfeObj;
             // Configuration after initialization of TSFE object.

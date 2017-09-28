@@ -189,6 +189,11 @@ return [
             'Breaking-82425-RemoveOldTyposcriptConstantsEditorOptionMOD_TSEDITABLE_CONSTANTS.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->RDCT' => [
+        'restFiles' => [
+            'Breaking-82572-RDCTFunctionalityRemoved.rst',
+        ],
+    ],
 
     // Deprecated public properties
 ];

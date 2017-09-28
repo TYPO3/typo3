@@ -177,11 +177,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $MP = '';
 
     /**
-     * @var string
-     */
-    public $RDCT = '';
-
-    /**
      * This can be set from applications as a way to tag cached versions of a page
      * and later perform some external cache management, like clearing only a part
      * of the cache of a page...
@@ -801,10 +796,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $cHash The value of GeneralUtility::_GP('cHash')
      * @param string $_2 previously was used to define the jumpURL
      * @param string $MP The value of GeneralUtility::_GP('MP')
-     * @param string $RDCT The value of GeneralUtility::_GP('RDCT')
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      */
-    public function __construct($_ = null, $id, $type, $no_cache = '', $cHash = '', $_2 = null, $MP = '', $RDCT = '')
+    public function __construct($_ = null, $id, $type, $no_cache = '', $cHash = '', $_2 = null, $MP = '')
     {
         // Setting some variables:
         $this->id = $id;
@@ -822,7 +816,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $this->cHash = $cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
-        $this->RDCT = $RDCT;
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         // Call post processing function for constructor:
@@ -884,38 +877,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $_params = ['pObj' => &$this];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-        }
-    }
-
-    /**
-     * Looks up the value of $this->RDCT in the database and if it is
-     * found to be associated with a redirect URL then the redirection
-     * is carried out with a 'Location:' header
-     * May exit after sending a location-header.
-     */
-    public function sendRedirect()
-    {
-        if ($this->RDCT) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('cache_md5params');
-
-            $row = $queryBuilder
-                ->select('params')
-                ->from('cache_md5params')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'md5hash',
-                        $queryBuilder->createNamedParameter($this->RDCT, \PDO::PARAM_STR)
-                    )
-                )
-                ->execute()
-                ->fetch();
-
-            if ($row) {
-                $this->updateMD5paramsRecord($this->RDCT);
-                header('Location: ' . $row['params']);
-                die;
             }
         }
     }
@@ -3790,27 +3751,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
         $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, 2);
         GeneralUtility::deprecationLog('TypoScript ' . $typoScriptProperty . ' is deprecated' . $explanationText);
-    }
-
-    /**
-     * Updates the tstamp field of a cache_md5params record to the current time.
-     *
-     * @param string $hash The hash string identifying the cache_md5params record for which to update the "tstamp" field to the current time.
-     * @access private
-     */
-    public function updateMD5paramsRecord($hash)
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('cache_md5params');
-        $connection->update(
-            'cache_md5params',
-            [
-                'tstamp' => $GLOBALS['EXEC_TIME']
-            ],
-            [
-                'md5hash' => $hash
-            ]
-        );
     }
 
     /********************************************
