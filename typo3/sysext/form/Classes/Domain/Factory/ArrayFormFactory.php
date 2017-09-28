@@ -71,7 +71,6 @@ class ArrayFormFactory extends AbstractFormFactory
         unset($configuration['renderables']);
         unset($configuration['type']);
         unset($configuration['identifier']);
-        unset($configuration['label']);
         $form->setOptions($configuration);
 
         $this->triggerFormBuildingFinished($form);
