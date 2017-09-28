@@ -73,6 +73,10 @@ call_user_func(function () {
         );
     }
 
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
+        \TYPO3\CMS\Form\Property\TypeConverter\FormDefinitionArrayConverter::class
+    );
+
     // Register "formvh:" namespace
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['formvh'][] = 'TYPO3\\CMS\\Form\\ViewHelpers';
 

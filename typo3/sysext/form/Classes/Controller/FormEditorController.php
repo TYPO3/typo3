@@ -29,6 +29,7 @@ use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Form\Type\FormDefinitionArray;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -145,14 +146,12 @@ class FormEditorController extends AbstractBackendController
      * Save a formDefinition which was build by the form editor.
      *
      * @param string $formPersistenceIdentifier
-     * @param array $formDefinition
+     * @param FormDefinitionArray $formDefinition
      * @internal
      */
-    public function saveFormAction(string $formPersistenceIdentifier, array $formDefinition)
+    public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
     {
-        $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        $formDefinition = $this->convertJsonArrayToAssociativeArray($formDefinition);
-
+        $formDefinition = $formDefinition->getArrayCopy();
         if (
             isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
@@ -194,22 +193,20 @@ class FormEditorController extends AbstractBackendController
      * Render a page from the formDefinition which was build by the form editor.
      * Use the frontend rendering and set the form framework to preview mode.
      *
-     * @param array $formDefinition
+     * @param FormDefinitionArray $formDefinition
      * @param int $pageIndex
      * @param string $prototypeName
      * @return string
      * @internal
      */
-    public function renderFormPageAction(array $formDefinition, int $pageIndex, string $prototypeName = null): string
+    public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
     {
-        $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
-        $formDefinition = $this->convertJsonArrayToAssociativeArray($formDefinition);
         if (empty($prototypeName)) {
             $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
         }
 
         $formFactory = $this->objectManager->get(ArrayFormFactory::class);
-        $formDefinition = $formFactory->build($formDefinition, $prototypeName);
+        $formDefinition = $formFactory->build($formDefinition->getArrayCopy(), $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request, $this->response);
         $form->overrideCurrentPage($pageIndex);
@@ -376,42 +373,6 @@ class FormEditorController extends AbstractBackendController
             $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
             $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
         }
-    }
-
-    /**
-     * Some data which is build by the form editor needs a transformation before
-     * it can be used by the framework.
-     * Multivalue elements like select elements produce data like:
-     *
-     * [
-     *   _label => 'label'
-     *   _value => 'value'
-     * ]
-     *
-     * This method transform this into:
-     *
-     * [
-     *   'value' => 'label'
-     * ]
-     *
-     * @param array $input
-     * @return array
-     */
-    protected function convertJsonArrayToAssociativeArray(array $input): array
-    {
-        $output = [];
-        foreach ($input as $key => $value) {
-            if (is_int($key) && is_array($value) && isset($value['_label']) && isset($value['_value'])) {
-                $key = $value['_value'];
-                $value = $value['_label'];
-            }
-            if (is_array($value)) {
-                $output[$key] = $this->convertJsonArrayToAssociativeArray($value);
-            } else {
-                $output[$key] = $value;
-            }
-        }
-        return $output;
     }
 
     /**

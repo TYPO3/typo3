@@ -1992,7 +1992,7 @@ define(['jquery'], function($) {
         _runningAjaxRequests['saveForm'] = $.post(_dataBackendEndpoints['saveForm'], {
           tx_form_web_formformbuilder: {
             formPersistenceIdentifier: _dataBackendPersistenceIdentifier,
-            formDefinition: utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))
+            formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')))
           }
         }, function(data, textStatus, jqXHR) {
           if (_runningAjaxRequests['saveForm'] !== jqXHR) {
