@@ -58,6 +58,7 @@ define(['jquery'], function ($) {
 	/**
 	 * Simple localStorage wrapper, to get value from localStorage
 	 * @param {String} key
+	 * @return {String}
 	 */
 	Storage.Client.get = function(key) {
 		return localStorage.getItem('t3-' + key);
@@ -69,7 +70,15 @@ define(['jquery'], function ($) {
 	 * @param {String} value
 	 */
 	Storage.Client.set = function(key, value) {
-		return localStorage.setItem('t3-' + key, value);
+		localStorage.setItem('t3-' + key, value);
+	};
+
+	/**
+	 * Simple localStorage wrapper, to unset value from localStorage
+	 * @param {String} key
+	 */
+	Storage.Client.unset = function(key) {
+		localStorage.removeItem('t3-' + key);
 	};
 
 	/**
@@ -87,7 +96,7 @@ define(['jquery'], function ($) {
 	 */
 	Storage.Client.isset = function(key) {
 		var value = this.get(key);
-		return (typeof value !== 'undefined' && typeof value !== 'null' && value != 'undefined');
+		return (typeof value !== 'undefined' && value !== null);
 	};
 
 	/**
