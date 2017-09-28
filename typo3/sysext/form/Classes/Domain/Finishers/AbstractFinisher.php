@@ -170,7 +170,7 @@ abstract class AbstractFinisher implements FinisherInterface
             return null;
         }
 
-        if (is_array($optionValue)) {
+        if (is_array($optionValue) || is_bool($optionValue)) {
             return $optionValue;
         }
 

@@ -122,6 +122,27 @@ class AbstractFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     /**
      * @test
      */
+    public function parseOptionReturnsBoolOptionValuesAsBool()
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $mockAbstractFinisher->_set('options', [
+            'foo1' => false,
+        ]);
+
+        $expected = false;
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'foo1'));
+    }
+
+    /**
+     * @test
+     */
     public function parseOptionReturnsValueFromFormRuntimeIfOptionNameReferenceAFormElementIdentifierWhoseValueIsAString()
     {
         $objectMangerProphecy = $this->prophesize(ObjectManager::class);

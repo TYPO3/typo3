@@ -283,39 +283,6 @@ class FormEditorControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
     /**
      * @test
      */
-    public function convertJsonArrayToAssociativeArrayReturnTransformedArray()
-    {
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $input = [
-            'francine' => 'stan',
-            'properties' => [
-                'options' => [
-                    0 => [
-                        '_label' => 'label',
-                        '_value' => 'value',
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = [
-            'francine' => 'stan',
-            'properties' => [
-                'options' => [
-                    'value' => 'label',
-                ],
-            ],
-        ];
-
-        $this->assertSame($expected, $mockController->_call('convertJsonArrayToAssociativeArray', $input));
-    }
-
-    /**
-     * @test
-     */
     public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet()
     {
         $this->expectException(RenderingException::class);
