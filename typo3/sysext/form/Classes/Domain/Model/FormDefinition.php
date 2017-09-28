@@ -349,6 +349,9 @@ class FormDefinition extends AbstractCompositeRenderable
         if (isset($options['rendererClassName'])) {
             $this->setRendererClassName($options['rendererClassName']);
         }
+        if (isset($options['label'])) {
+            $this->setLabel($options['label']);
+        }
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
                 if (is_array($value)) {
@@ -368,7 +371,7 @@ class FormDefinition extends AbstractCompositeRenderable
 
         ArrayUtility::assertAllArrayKeysAreValid(
             $options,
-            ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor']
+            ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor', 'label']
         );
     }
 
