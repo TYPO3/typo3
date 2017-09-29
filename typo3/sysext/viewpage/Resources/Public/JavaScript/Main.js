@@ -16,9 +16,9 @@
  */
 define([
 	'jquery',
-	'TYPO3/CMS/Backend/Storage',
+	'TYPO3/CMS/Backend/Storage/Persistent',
 	'jquery-ui/resizable'
-], function($, Storage) {
+], function($, PersistentStorage) {
 	'use strict';
 
 	/**
@@ -63,7 +63,7 @@ define([
 		if (ViewPage.queueIsRunning === false && ViewPage.queue.length >= 1) {
 			ViewPage.queueIsRunning = true;
 			var item = ViewPage.queue.shift();
-			Storage.Persistent.set(item.storageIdentifier, item.data).done(function() {
+			PersistentStorage.set(item.storageIdentifier, item.data).done(function() {
 				ViewPage.queueIsRunning = false;
 				ViewPage.persistQueue();
 			});

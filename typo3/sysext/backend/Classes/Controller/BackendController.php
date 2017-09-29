@@ -155,9 +155,9 @@ class BackendController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage', 'function(Storage) {
-			Storage.Persistent.load(' . json_encode($this->getBackendUser()->uc) . ');
-		}');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage/Persistent', 'function(PersistentStorage) {
+            PersistentStorage.load(' . json_encode($this->getBackendUser()->uc) . ');
+        }');
 
         // load debug console
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
@@ -255,86 +255,87 @@ class BackendController
         // @todo: remove this when ExtJS is removed
         $states = $this->getBackendUser()->uc['BackendComponents']['States'];
         $this->pageRenderer->addExtOnReadyCode('
-            var TYPO3ExtJSStateProviderBridge = function() {};
-            Ext.extend(TYPO3ExtJSStateProviderBridge, Ext.state.Provider, {
-                state: {},
-                queue: [],
-                dirty: false,
-                prefix: "BackendComponents.States.",
-                initState: function(state) {
-                    if (Ext.isArray(state)) {
-                        Ext.each(state, function(item) {
-                            this.state[item.name] = item.value;
-                        }, this);
-                    } else if (Ext.isObject(state)) {
-                        Ext.iterate(state, function(key, value) {
-                            this.state[key] = value;
-                        }, this);
-                    } else {
-                        this.state = {};
-                    }
-                    var me = this;
-                    window.setInterval(function() {
-                        me.submitState(me)
-                    }, 750);
-                },
-                get: function(name, defaultValue) {
-                    return TYPO3.Storage.Persistent.isset(this.prefix + name) ? TYPO3.Storage.Persistent.get(this.prefix + name) : defaultValue;
-                },
-                clear: function(name) {
-                    TYPO3.Storage.Persistent.unset(this.prefix + name);
-                },
-                set: function(name, value) {
-                    if (!name) {
-                        return;
-                    }
-                    this.queueChange(name, value);
-                },
-                queueChange: function(name, value) {
-                    var o = {};
-                    var i;
-                    var found = false;
-
-                    var lastValue = this.state[name];
-                    for (i = 0; i < this.queue.length; i++) {
-                        if (this.queue[i].name === name) {
-                            lastValue = this.queue[i].value;
+            require([\'TYPO3/CMS/Backend/Storage/Persistent\'], function(PersistentStorage) {
+                var TYPO3ExtJSStateProviderBridge = function() {};
+                Ext.extend(TYPO3ExtJSStateProviderBridge, Ext.state.Provider, {
+                    state: {},
+                    queue: [],
+                    dirty: false,
+                    prefix: "BackendComponents.States.",
+                    initState: function(state) {
+                        if (Ext.isArray(state)) {
+                            Ext.each(state, function(item) {
+                                this.state[item.name] = item.value;
+                            }, this);
+                        } else if (Ext.isObject(state)) {
+                            Ext.iterate(state, function(key, value) {
+                                this.state[key] = value;
+                            }, this);
+                        } else {
+                            this.state = {};
                         }
-                    }
-                    var changed = undefined === lastValue || lastValue !== value;
+                        var me = this;
+                        window.setInterval(function() {
+                            me.submitState(me)
+                        }, 750);
+                    },
+                    get: function(name, defaultValue) {
+                        return PersistentStorage.isset(this.prefix + name) ? PersistentStorage.get(this.prefix + name) : defaultValue;
+                    },
+                    clear: function(name) {
+                        PersistentStorage.unset(this.prefix + name);
+                    },
+                    set: function(name, value) {
+                        if (!name) {
+                            return;
+                        }
+                        this.queueChange(name, value);
+                    },
+                    queueChange: function(name, value) {
+                        var o = {};
+                        var i;
+                        var found = false;
 
-                    if (changed) {
-                        o.name = name;
-                        o.value = value;
+                        var lastValue = this.state[name];
                         for (i = 0; i < this.queue.length; i++) {
-                            if (this.queue[i].name === o.name) {
-                                this.queue[i] = o;
-                                found = true;
+                            if (this.queue[i].name === name) {
+                                lastValue = this.queue[i].value;
                             }
                         }
-                        if (false === found) {
-                            this.queue.push(o);
-                        }
-                        this.dirty = true;
-                    }
-                },
-                submitState: function(context) {
-                    if (!context.dirty) {
-                        return;
-                    }
-                    for (var i = 0; i < context.queue.length; ++i) {
-                        TYPO3.Storage.Persistent.set(context.prefix + context.queue[i].name, context.queue[i].value).done(function() {
-                            if (!context.dirty) {
-                                context.queue = [];
+                        var changed = undefined === lastValue || lastValue !== value;
+
+                        if (changed) {
+                            o.name = name;
+                            o.value = value;
+                            for (i = 0; i < this.queue.length; i++) {
+                                if (this.queue[i].name === o.name) {
+                                    this.queue[i] = o;
+                                    found = true;
+                                }
                             }
-                        });
+                            if (false === found) {
+                                this.queue.push(o);
+                            }
+                            this.dirty = true;
+                        }
+                    },
+                    submitState: function(context) {
+                        if (!context.dirty) {
+                            return;
+                        }
+                        for (var i = 0; i < context.queue.length; ++i) {
+                            PersistentStorage.set(context.prefix + context.queue[i].name, context.queue[i].value).done(function() {
+                                if (!context.dirty) {
+                                    context.queue = [];
+                                }
+                            });
+                        }
+                        context.dirty = false;
                     }
-                    context.dirty = false;
-                }
-            });
-            Ext.state.Manager.setProvider(new TYPO3ExtJSStateProviderBridge());
-            Ext.state.Manager.getProvider().initState(' . (!empty($states) ? json_encode($states) : []) . ');
-            ');
+                });
+                Ext.state.Manager.setProvider(new TYPO3ExtJSStateProviderBridge());
+                Ext.state.Manager.getProvider().initState(' . (!empty($states) ? json_encode($states) : []) . ');
+            });');
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page

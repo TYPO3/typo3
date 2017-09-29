@@ -18,9 +18,9 @@
 define([
 	'jquery',
 	'TYPO3/CMS/Backend/Icons',
-	'TYPO3/CMS/Backend/Storage',
+	'TYPO3/CMS/Backend/Storage/Persistent',
 	'TYPO3/CMS/Backend/Viewport'
-], function($, Icons, Storage, Viewport) {
+], function($, Icons, PersistentStorage, Viewport) {
 	'use strict';
 
 	/**
@@ -124,13 +124,13 @@ define([
 			requestedModule = $(e.currentTarget).data('modulename'),
 			timestamp = Math.floor((new Date()).getTime() / 1000);
 
-		if (Storage.Persistent.isset('systeminformation')) {
-			storedSystemInformationSettings = JSON.parse(Storage.Persistent.get('systeminformation'));
+		if (PersistentStorage.isset('systeminformation')) {
+			storedSystemInformationSettings = JSON.parse(PersistentStorage.get('systeminformation'));
 		}
 
 		moduleStorageObject[requestedModule] = {lastAccess: timestamp};
 		$.extend(true, storedSystemInformationSettings, moduleStorageObject);
-		var $ajax = Storage.Persistent.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
+		var $ajax = PersistentStorage.set('systeminformation', JSON.stringify(storedSystemInformationSettings));
 		$ajax.done(function() {
 			// finally, open the module now
 			TYPO3.ModuleMenu.App.showModule(requestedModule);

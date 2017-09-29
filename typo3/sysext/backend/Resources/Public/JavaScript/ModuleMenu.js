@@ -18,13 +18,13 @@
 require(
 	[
 		'jquery',
-		'TYPO3/CMS/Backend/Storage',
+		'TYPO3/CMS/Backend/Storage/Persistent',
 		'TYPO3/CMS/Backend/Icons',
 		'TYPO3/CMS/Backend/Viewport',
 		'TYPO3/CMS/Backend/Event/ClientRequest',
 		'TYPO3/CMS/Backend/Event/TriggerRequest'
 	],
-	function ($, Storage, Icons, Viewport, ClientRequest, TriggerRequest) {
+	function ($, PersistentStorage, Icons, Viewport, ClientRequest, TriggerRequest) {
 		if (typeof TYPO3.ModuleMenu !== 'undefined') {
 			return TYPO3.ModuleMenu.App;
 		}
@@ -61,7 +61,7 @@ require(
 
 				deferred.then(function() {
 					// check if module menu should be collapsed or not
-					var state = Storage.Persistent.get('BackendComponents.States.typo3-module-menu');
+					var state = PersistentStorage.get('BackendComponents.States.typo3-module-menu');
 					if (state && state.collapsed) {
 						TYPO3.ModuleMenu.App.toggleMenu(state.collapsed === 'true');
 					}
@@ -157,7 +157,7 @@ require(
 				}
 
 				// Persist collapsed state in the UC of the current user
-				Storage.Persistent.set(
+				PersistentStorage.set(
 					'BackendComponents.States.typo3-module-menu',
 					{
 						collapsed: collapse
@@ -394,8 +394,8 @@ require(
 			 * @returns {*}
 			 */
 			getCollapsedMainMenuItems: function () {
-				if (TYPO3.Storage.Persistent.isset('modulemenu')) {
-					return JSON.parse(TYPO3.Storage.Persistent.get('modulemenu'));
+				if (PersistentStorage.isset('modulemenu')) {
+					return JSON.parse(PersistentStorage.get('modulemenu'));
 				} else {
 					return {};
 				}
@@ -408,7 +408,7 @@ require(
 			addCollapsedMainMenuItem: function (item) {
 				var existingItems = this.getCollapsedMainMenuItems();
 				existingItems[item] = true;
-				TYPO3.Storage.Persistent.set('modulemenu', JSON.stringify(existingItems));
+				PersistentStorage.set('modulemenu', JSON.stringify(existingItems));
 			},
 
 			/**
@@ -418,7 +418,7 @@ require(
 			removeCollapseMainMenuItem: function (item) {
 				var existingItems = this.getCollapsedMainMenuItems();
 				delete existingItems[item];
-				TYPO3.Storage.Persistent.set('modulemenu', JSON.stringify(existingItems));
+				PersistentStorage.set('modulemenu', JSON.stringify(existingItems));
 			}
 
 		};

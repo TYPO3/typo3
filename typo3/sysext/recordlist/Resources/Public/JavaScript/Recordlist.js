@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Recordlist/Recordlist
  * Usability improvements for the record list
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], function($, Storage, Icons) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent', 'TYPO3/CMS/Backend/Icons'], function($, PersistentStorage, Icons) {
 	'use strict';
 
 	/**
@@ -54,15 +54,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage', 'TYPO3/CMS/Backend/Icons'], funct
 		// Store collapse state in UC
 		var storedModuleDataList = {};
 
-		if (Storage.Persistent.isset('moduleData.list')) {
-			storedModuleDataList = Storage.Persistent.get('moduleData.list');
+		if (PersistentStorage.isset('moduleData.list')) {
+			storedModuleDataList = PersistentStorage.get('moduleData.list');
 		}
 
 		var collapseConfig = {};
 		collapseConfig[table] = isExpanded ? 1 : 0;
 
 		$.extend(true, storedModuleDataList, collapseConfig);
-		Storage.Persistent.set('moduleData.list', storedModuleDataList).done(function() {
+		PersistentStorage.set('moduleData.list', storedModuleDataList).done(function() {
 			$target.data('state', isExpanded ? 'collapsed' : 'expanded');
 		});
 	};

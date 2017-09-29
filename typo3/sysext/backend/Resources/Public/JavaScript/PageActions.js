@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/PageActions
  * JavaScript implementations for page actions
  */
-define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, PersistentStorage) {
 	'use strict';
 
 	/**
@@ -99,7 +99,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
 			$hiddenElements.slideUp();
 		}
 
-		Storage.Persistent.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? 1 : 0).done(function() {
+		PersistentStorage.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? 1 : 0).done(function() {
 			$spinner.remove();
 			$me.show();
 		});
