@@ -1095,6 +1095,14 @@ return [
                 'type' => 'passthrough',
             ],
         ],
+        'passthrough_2' => [
+            'exclude' => 1,
+            'label' => 'passthrough_2 not shown, default applied',
+            'config' => [
+                'type' => 'passthrough',
+                'default' => 42,
+            ],
+        ],
 
 
         'user_1' => [
@@ -1382,7 +1390,7 @@ return [
                 --div--;none,
                     none_1, none_2, none_3, none_4, none_5,
                 --div--;passthrough,
-                    passthrough_1,
+                    passthrough_1, passthrough_2,
                 --div--;user,
                     user_1, user_2,
                 --div--;in flex,

@@ -141,6 +141,7 @@ CREATE TABLE tx_styleguide_elements_basic (
 	none_5 text,
 
 	passthrough_1 text,
+	passthrough_2 text,
 
 	user_1 text,
 	user_2 text,
