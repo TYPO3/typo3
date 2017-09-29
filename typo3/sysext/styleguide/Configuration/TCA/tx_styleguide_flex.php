@@ -148,10 +148,18 @@ return [
                                             <label>passthrough_1</label>
                                             <config>
                                                 <type>passthrough</type>
-                                                <value>passthrough default</value>
                                             </config>
                                         </TCEforms>
                                     </passthrough_1>
+                                    <passthrough_2>
+                                        <TCEforms>
+                                            <label>passthrough_2 with default value</label>
+                                            <config>
+                                                <type>passthrough</type>
+                                                <default>passthrough default</default>
+                                            </config>
+                                        </TCEforms>
+                                    </passthrough_2>
                                 </el>
                             </ROOT>
                         </T3DataStructure>
