@@ -1499,6 +1499,10 @@ initializeFormElement
 You can connect to the hook and initialize a form elements without defining a custom implementaion to access the element's ``initializeFormElement`` method.
 You only need a class which connects to this hook. Then detect the form element you wish to initialize.
 You can use this hook to prefill form element data for example from database tables.
+Note that this hook will be called **after** all properties from the prototype configuration are set in the form element but **before** the properties from
+the form definition are set in the form element.
+If you want to prefill form element data after the complete form element is configured you should use the :ref:`afterBuildingFinished<apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished>` hook.
+
 
 This hook is invoked by the methods ``TYPO3\CMS\Form\Domain\Model\FormElements\Page::createElement()`` and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::createElement()``.
 That means the hook will **not** be triggered for ``Pages``.
