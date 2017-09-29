@@ -143,6 +143,15 @@ return [
                                             </config>
                                         </TCEforms>
                                     </input_1>
+                                    <input_2>
+                                        <TCEforms>
+                                            <label>input_2, default value</label>
+                                            <config>
+                                                <type>input</type>
+                                                <default>foo</default>
+                                            </config>
+                                        </TCEforms>
+                                    </input_2>
                                     <passthrough_1>
                                         <TCEforms>
                                             <label>passthrough_1</label>
