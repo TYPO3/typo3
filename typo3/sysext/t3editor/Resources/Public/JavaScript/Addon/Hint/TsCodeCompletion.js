@@ -39,62 +39,26 @@ define([
 	/**
 	 * All external templates along the rootline have to be loaded,
 	 * this function retrieves the JSON code by committing a AJAX request
+	 *
+	 * @param {number} id
 	 */
-	TsCodeCompletion.loadExtTemplatesAsync = function() {
-		var id = TsCodeCompletion.getGetVar('id');
-		if (id === '') {
-			return;
+	TsCodeCompletion.loadExtTemplatesAsync = function(id) {
+		// Ensure id is an integer
+		id *= 1;
+		if (isNaN(id) || id === 0) {
+			return null;
 		}
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['t3editor_codecompletion_loadtemplates'],
 			data: {
 				pageId: id
 			},
+			dataType: 'json',
 			success: function(response) {
 				TsCodeCompletion.extTsObjTree.c = response;
 				TsCodeCompletion.resolveExtReferencesRec(TsCodeCompletion.extTsObjTree.c);
 			}
 		});
-	};
-
-	/**
-	 * Get the value of a given GET parameter
-	 *
-	 * @param {String} name
-	 * @return {String}
-	 */
-	TsCodeCompletion.getGetVar = function(name) {
-		var get_string = document.location.search,
-			return_value = '',
-			value;
-
-		do { //This loop is made to catch all instances of any get variable.
-			var name_index = get_string.indexOf(name + '=');
-			if (name_index !== -1) {
-				get_string = get_string.substr(name_index + name.length + 1, get_string.length - name_index);
-				var end_of_value = get_string.indexOf('&');
-				if (end_of_value !== -1) {
-					value = get_string.substr(0, end_of_value);
-				} else {
-					value = get_string;
-				}
-
-				if (return_value === '' || value === '') {
-					return_value += value;
-				} else {
-					return_value += ', ' + value;
-				}
-			}
-		} while (name_index !== -1);
-
-		// Restores all the blank spaces.
-		var space = return_value.indexOf('+');
-		while (space !== -1) {
-			return_value = return_value.substr(0, space) + ' ' + return_value.substr(space + 1, return_value.length);
-			space = return_value.indexOf('+');
-		}
-
-		return return_value;
 	};
 
 	/**
@@ -201,7 +165,7 @@ define([
 	$(function() {
 		TsCodeCompletion.parser = TsParser.init(TsCodeCompletion.tsRef, TsCodeCompletion.extTsObjTree);
 		TsCodeCompletion.tsRef.loadTsrefAsync();
-		TsCodeCompletion.loadExtTemplatesAsync();
+		TsCodeCompletion.loadExtTemplatesAsync($('input[name="effectivePid"]').first().val());
 	});
 
 	return TsCodeCompletion;
