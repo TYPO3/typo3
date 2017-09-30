@@ -111,14 +111,14 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
     ContextMenuActions.disableRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
+            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&redirect=' + ContextMenuActions.getReturnUrl()
         );
         top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
     };
 
     ContextMenuActions.enableRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&prErr=1&redirect=' + ContextMenuActions.getReturnUrl()
+            top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&redirect=' + ContextMenuActions.getReturnUrl()
         );
         top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
     };
@@ -145,7 +145,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         $modal.on('button.clicked', function (e) {
             if (e.target.name === 'delete') {
                 top.TYPO3.Backend.ContentContainer.setUrl(
-                    top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1&prErr=1'
+                    top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1'
                 );
                 if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
                     top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
@@ -212,7 +212,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var title = $anchorElement.data('title');
         var performPaste = function () {
             var url = '&CB[paste]=' + table + '%7C' + uid
-                + '&CB[pad]=normal&prErr=1&uPT=1'
+                + '&CB[pad]=normal'
                 + '&redirect=' + ContextMenuActions.getReturnUrl();
 
             top.TYPO3.Backend.ContentContainer.setUrl(

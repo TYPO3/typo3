@@ -145,7 +145,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
         var title = $anchorElement.data('title');
         var performPaste = function () {
             top.TYPO3.Backend.ContentContainer.setUrl(
-                    top.TYPO3.settings.FileCommit.moduleUrl + '&prErr=1&uPT=1&CB[paste]=FILE|' + top.rawurlencode(uid) + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl()
+                    top.TYPO3.settings.FileCommit.moduleUrl + '&CB[paste]=FILE|' + top.rawurlencode(uid) + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl()
             );
         };
         if (!$anchorElement.data('title')) {
@@ -186,7 +186,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
             + '&file['+ mode + '][0][data]=' + top.rawurlencode(uid)
             + '&file['+ mode + '][0][target]=' + top.rawurlencode(target)
             + '&redirect=' + ContextMenuActions.getReturnUrl()
-            + '&prErr=1'
         );
     };
     ContextMenuActions.dropMoveInto = function (table, uid) {

@@ -8753,10 +8753,8 @@ class DataHandler
 
     /**
      * Print log error messages from the operations of this script instance
-     *
-     * @param string $redirect Redirect URL (for creating link in message)
      */
-    public function printLogErrorMessages($redirect)
+    public function printLogErrorMessages()
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
         $queryBuilder->getRestrictions()->removeAll();

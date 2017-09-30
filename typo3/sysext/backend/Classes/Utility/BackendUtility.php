@@ -2639,11 +2639,7 @@ class BackendUtility
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
-        $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
-        ];
-        $url = self::getModuleUrl('tce_db', $urlParameters) . $parameters . '&redirect=';
+        $url = self::getModuleUrl('tce_db') . $parameters . '&redirect=';
         if ((int)$redirectUrl === -1) {
             $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
         } else {

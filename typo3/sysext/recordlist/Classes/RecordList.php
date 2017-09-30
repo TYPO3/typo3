@@ -380,7 +380,7 @@ class RecordList extends AbstractModule
                     if (isset($cmd['pages'])) {
                         BackendUtility::setUpdateSignal('updatePageTree');
                     }
-                    $tce->printLogErrorMessages(GeneralUtility::getIndpEnv('REQUEST_URI'));
+                    $tce->printLogErrorMessages();
                 }
             }
             // Initialize the listing object, dblist, for rendering the list:

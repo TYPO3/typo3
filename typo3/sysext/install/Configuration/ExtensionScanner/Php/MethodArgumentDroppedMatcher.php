@@ -117,4 +117,10 @@ return [
             'Breaking-82572-RDCTFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->printLogErrorMessages' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82629-TceDbOptionsPrErrAndUPTRemoved.rst',
+        ],
+    ],
 ];

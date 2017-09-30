@@ -194,6 +194,15 @@ return [
             'Breaking-82572-RDCTFunctionalityRemoved.rst',
         ],
     ],
-
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->prErr' => [
+        'restFiles' => [
+            'Breaking-82629-TceDbOptionsPrErrAndUPTRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->uPT' => [
+        'restFiles' => [
+            'Breaking-82629-TceDbOptionsPrErrAndUPTRemoved.rst',
+        ],
+    ],
     // Deprecated public properties
 ];

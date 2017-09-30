@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -51,11 +50,7 @@ class IssueCommandViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        /** @var BackendUserAuthentication $beUser */
-        $beUser = $GLOBALS['BE_USER'];
         $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
             'redirect' => $arguments['redirectUrl'] ?: GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
         if (isset($arguments['parameters'])) {

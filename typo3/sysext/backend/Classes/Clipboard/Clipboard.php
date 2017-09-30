@@ -612,8 +612,6 @@ class Clipboard
     public function pasteUrl($table, $uid, $setRedirect = true, array $update = null)
     {
         $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
             'CB[paste]' => $table . '|' . $uid,
             'CB[pad]' => $this->current
         ];
@@ -636,8 +634,6 @@ class Clipboard
     public function deleteUrl($setRedirect = 1, $file = 0)
     {
         $urlParameters = [
-            'prErr' => 1,
-            'uPT' => 1,
             'CB[delete]' => 1,
             'CB[pad]' => $this->current
         ];
