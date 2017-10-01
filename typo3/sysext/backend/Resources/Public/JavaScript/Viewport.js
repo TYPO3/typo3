@@ -21,10 +21,11 @@ define(
 	[
 		'jquery',
 		'TYPO3/CMS/Backend/Icons',
+		'TYPO3/CMS/Backend/Utility',
 		'TYPO3/CMS/Backend/Event/ConsumerScope',
 		'TYPO3/CMS/Backend/Event/TriggerRequest'
 	],
-	function ($, Icons, ConsumerScope, TriggerRequest) {
+	function ($, Icons, Utility, ConsumerScope, TriggerRequest) {
 		'use strict';
 
 		function resolveIFrameElement() {
@@ -217,7 +218,7 @@ define(
 				},
 				getIdFromUrl: function() {
 					if(this.getUrl) {
-						return TYPO3.Utility.getParameterFromUrl(this.getUrl, 'id');
+						return Utility.getParameterFromUrl(this.getUrl, 'id');
 					} else {
 						return 0;
 					}

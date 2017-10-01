@@ -7,6 +7,7 @@
 declare namespace TYPO3 {
   export let Popover: any;
   export let Storage: any;
+  export let Utility: any;
   export const lang: any;
   export const settings: any;
   export namespace CMS {
