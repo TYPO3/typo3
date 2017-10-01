@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Resource;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\FileCollectionRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -181,7 +182,14 @@ class FileCollector implements \Countable, LoggerAwareInterface
     {
         if ($folderIdentifier) {
             try {
-                $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
+                if (strpos($folderIdentifier, 't3://folder') === 0) {
+                    // a t3://folder link to a folder in FAL
+                    $linkService = GeneralUtility::makeInstance(LinkService::class);
+                    $data = $linkService->resolveByStringRepresentation($folderIdentifier);
+                    $folder = $data['folder'];
+                } else {
+                    $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
+                }
                 if ($folder instanceof Folder) {
                     $files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive);
                     $this->addFileObjects(array_values($files));
