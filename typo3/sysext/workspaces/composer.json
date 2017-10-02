@@ -24,6 +24,11 @@
 		"branch-alias": {
 			"dev-master": "9.x-dev"
 		},
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		},
 		"typo3/cms": {
 			"extension-key": "workspaces"
 		}

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TYPO3\CMS\Lowlevel\Command;
+namespace TYPO3\CMS\Workspaces\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -659,22 +658,20 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected function loadAllWorkspaceRecords(): array
     {
-        if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_workspace');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_workspace');
 
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            $result = $queryBuilder
-                ->select('uid', 'title')
-                ->from('sys_workspace')
-                ->execute();
+        $result = $queryBuilder
+            ->select('uid', 'title')
+            ->from('sys_workspace')
+            ->execute();
 
-            while ($workspaceRecord = $result->fetch()) {
-                $this->allWorkspaces[(int)$workspaceRecord['uid']] = $workspaceRecord['title'];
-            }
+        while ($workspaceRecord = $result->fetch()) {
+            $this->allWorkspaces[(int)$workspaceRecord['uid']] = $workspaceRecord['title'];
         }
         return $this->allWorkspaces;
     }
