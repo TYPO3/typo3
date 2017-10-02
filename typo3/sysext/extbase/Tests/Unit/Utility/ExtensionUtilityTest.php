@@ -330,4 +330,25 @@ class ExtensionUtilityTest extends UnitTestCase
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
         );
     }
+
+    /**
+     * A type converter added several times with the exact same class name must
+     * not be added more than once to the global array.
+     *
+     * @test
+     */
+    public function sameTypeConvertersRegisteredAreAddedOnlyOnce()
+    {
+        $typeConverterClassName = \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter::class;
+
+        $this->assertEmpty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
+
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
+
+        $this->assertContains($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
+        $this->assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
+
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
+        $this->assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
+    }
 }
