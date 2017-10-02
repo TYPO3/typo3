@@ -109,6 +109,11 @@ class SilentConfigurationUpgradeService
         'SYS/dbClientCompress',
         // #82430
         'SYS/syslogErrorReporting',
+        // #82639
+        'SYS/enable_DLOG',
+        'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLog',
+        'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLogBE',
+        'SC_OPTIONS/t3lib/class.t3lib_userauth.php/writeDevLogFE',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

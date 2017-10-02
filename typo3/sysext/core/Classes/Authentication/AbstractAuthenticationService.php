@@ -71,15 +71,6 @@ class AbstractAuthenticationService extends AbstractService
     public $writeAttemptLog = false;
 
     /**
-     * Write additional log entries
-     *
-     * Specifically useful during development of authentication services
-     *
-     * @var bool
-     */
-    public $writeDevLog = false;
-
-    /**
      * Initialize authentication service
      *
      * @param string $mode Subtype of the service which is used to call the service.
@@ -97,7 +88,6 @@ class AbstractAuthenticationService extends AbstractService
         $this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'], false);
         $this->db_groups = $this->getServiceOption('db_groups', $authInfo['db_groups'], false);
         $this->writeAttemptLog = $this->pObj->writeAttemptLog;
-        $this->writeDevLog = $this->pObj->writeDevLog;
     }
 
     /**

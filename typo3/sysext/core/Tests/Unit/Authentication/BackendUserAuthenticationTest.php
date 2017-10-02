@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -104,6 +105,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $GLOBALS['BE_USER']->user = ['uid' => $this->getUniqueId()];
+        $GLOBALS['BE_USER']->setLogger(new NullLogger());
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -111,6 +113,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $subject->setLogger(new NullLogger());
         $subject->logoff();
     }
 
@@ -266,6 +269,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
+        $subject->setLogger(new NullLogger());
         $subject->userTS = $completeConfiguration;
 
         $actualConfiguration = $subject->getTSConfig($objectString);
@@ -341,6 +345,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->method('isAdmin')
             ->will($this->returnValue(false));
 
+        $subject->setLogger(new NullLogger());
         $subject->userTS = [
             'permissions.' => [
                 'file.' => [
@@ -849,6 +854,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();
+        $subject->setLogger(new NullLogger());
         $subject->expects($this->any())
             ->method('isAdmin')
             ->will($this->returnValue($admin));

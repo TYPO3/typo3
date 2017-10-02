@@ -981,9 +981,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!empty($gr_array) && !$this->loginAllowedInBranch_mode) {
             $this->gr_list .= ',' . implode(',', $gr_array);
         }
-        if ($this->fe_user->writeDevLog) {
-            $this->logger->debug('Valid usergroups for TSFE: ' . $this->gr_list);
-        }
+        $this->logger->debug('Valid usergroups for TSFE: ' . $this->gr_list);
     }
 
     /**

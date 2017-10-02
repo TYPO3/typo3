@@ -70,12 +70,10 @@ class AuthenticationService extends AbstractAuthenticationService
                 'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
             ]);
         } else {
-            if ($this->writeDevLog) {
-                $this->logger->debug('User found', [
-                    $this->db_user['userid_column'] => $user[$this->db_user['userid_column']],
-                    $this->db_user['username_column'] => $user[$this->db_user['username_column']]
-                ]);
-            }
+            $this->logger->debug('User found', [
+                $this->db_user['userid_column'] => $user[$this->db_user['userid_column']],
+                $this->db_user['username_column'] => $user[$this->db_user['username_column']]
+            ]);
         }
         return $user;
     }
@@ -110,9 +108,7 @@ class AuthenticationService extends AbstractAuthenticationService
                         'REMOTE_HOST' => $this->authInfo['REMOTE_HOST'],
                     ]);
                 }
-                if ($this->writeDevLog) {
-                    $this->logger->debug('Password not accepted: ' . $this->login['uident']);
-                }
+                $this->logger->debug('Password not accepted: ' . $this->login['uident']);
             }
             // Checking the domain (lockToDomain)
             if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
@@ -164,9 +160,7 @@ class AuthenticationService extends AbstractAuthenticationService
             }
             $groups = array_unique($groups);
             if (!empty($groups)) {
-                if ($this->writeDevLog) {
-                    $this->logger->debug('Get usergroups with id: ' . implode(',', $groups));
-                }
+                $this->logger->debug('Get usergroups with id: ' . implode(',', $groups));
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($this->db_groups['table']);
                 if (!empty($this->authInfo['showHiddenRecords'])) {
@@ -198,9 +192,7 @@ class AuthenticationService extends AbstractAuthenticationService
                     $groupDataArr[$row['uid']] = $row;
                 }
             } else {
-                if ($this->writeDevLog) {
-                    $this->logger->debug('No usergroups found.');
-                }
+                $this->logger->debug('No usergroups found.');
             }
         }
         return $groupDataArr;

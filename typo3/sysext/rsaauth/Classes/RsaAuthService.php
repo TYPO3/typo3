@@ -66,14 +66,10 @@ class RsaAuthService extends AuthenticationService
                     $loginData['uident_text'] = $decryptedPassword;
                     $isProcessed = true;
                 } else {
-                    if ($this->pObj->writeDevLog) {
-                        $this->logger->debug('Process login data: Failed to RSA decrypt password');
-                    }
+                    $this->logger->debug('Process login data: Failed to RSA decrypt password');
                 }
             } else {
-                if ($this->pObj->writeDevLog) {
-                    $this->logger->debug('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.');
-                }
+                $this->logger->debug('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.');
             }
         }
         return $isProcessed;

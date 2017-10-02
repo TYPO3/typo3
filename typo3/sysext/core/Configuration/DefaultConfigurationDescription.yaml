@@ -105,9 +105,6 @@ SYS:
         devIPmask:
             type: text
             description: 'Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()</code> for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.'
-        enable_DLOG:
-            type: bool
-            description: 'Whether the developer log is enabled. This option has been deprecated in favor of the Logging API, and will be removed in TYPO3 v10. Do not depend on it.'
         ddmmyy:
             type: text
             description: 'Format of Date-Month-Year - see PHP-function <a href="http://php.net/date" target="_blank">date()</a>'

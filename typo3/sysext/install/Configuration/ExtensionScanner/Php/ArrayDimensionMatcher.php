@@ -56,7 +56,22 @@ return [
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'enable_DLOG\']' => [
         'restFiles' => [
-            'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'writeDevLog\']' => [
+        'restFiles' => [
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'writeDevLogFE\']' => [
+        'restFiles' => [
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauth.php\'][\'writeDevLogBE\']' => [
+        'restFiles' => [
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
         ],
     ],
 

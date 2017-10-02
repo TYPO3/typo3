@@ -278,15 +278,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
         // Get the info data for auth services
         $authInfo = $this->getAuthInfoArray();
-        if ($this->writeDevLog) {
-            if (is_array($this->user)) {
-                $this->logger->debug('Get usergroups for user', [
-                    $this->userid_column => $this->user[$this->userid_column],
-                    $this->username_column => $this->user[$this->username_column]
-                ]);
-            } else {
-                $this->logger->debug('Get usergroups for "anonymous" user');
-            }
+        if (is_array($this->user)) {
+            $this->logger->debug('Get usergroups for user', [
+                $this->userid_column => $this->user[$this->userid_column],
+                $this->username_column => $this->user[$this->username_column]
+            ]);
+        } else {
+            $this->logger->debug('Get usergroups for "anonymous" user');
         }
         $groupDataArr = [];
         // Use 'auth' service to find the groups for the user
@@ -302,16 +300,14 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             }
             unset($serviceObj);
         }
-        if ($this->writeDevLog) {
-            if ($serviceChain) {
-                $this->logger->debug($subType . ' auth services called: ' . $serviceChain);
-            }
-            if (empty($groupDataArr)) {
-                $this->logger->debug('No usergroups found by services');
-            }
-            if (!empty($groupDataArr)) {
-                $this->logger->debug(count($groupDataArr) . ' usergroup records found by services');
-            }
+        if ($serviceChain) {
+            $this->logger->debug($subType . ' auth services called: ' . $serviceChain);
+        }
+        if (empty($groupDataArr)) {
+            $this->logger->debug('No usergroups found by services');
+        }
+        if (!empty($groupDataArr)) {
+            $this->logger->debug(count($groupDataArr) . ' usergroup records found by services');
         }
         // Use 'auth' service to check the usergroups if they are really valid
         foreach ($groupDataArr as $groupData) {
@@ -324,12 +320,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 $serviceObj->initAuth($subType, [], $authInfo, $this);
                 if (!$serviceObj->authGroup($this->user, $groupData)) {
                     $validGroup = false;
-                    if ($this->writeDevLog) {
-                        $this->logger->debug($subType . ' auth service did not auth group', [
-                            'uid ' => $groupData['uid'],
-                            'title' => $groupData['title']
-                        ]);
-                    }
+                    $this->logger->debug($subType . ' auth service did not auth group', [
+                        'uid ' => $groupData['uid'],
+                        'title' => $groupData['title']
+                    ]);
                     break;
                 }
                 unset($serviceObj);

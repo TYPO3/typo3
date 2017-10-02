@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -30,6 +31,7 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\
     protected function setUp()
     {
         $this->subject = new AuthenticationService();
+        $this->subject->setLogger(new NullLogger());
         parent::setUp();
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
     }

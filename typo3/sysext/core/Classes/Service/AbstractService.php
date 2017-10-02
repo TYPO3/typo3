@@ -39,15 +39,6 @@ abstract class AbstractService implements LoggerAwareInterface
     public $error = [];
 
     /**
-     * Write additional log entries
-     *
-     * Specifically useful during development of authentication services
-     *
-     * @var bool
-     */
-    public $writeDevLog = false;
-
-    /**
      * @var string The output content. That's what the services produced as result.
      */
     public $out = '';
@@ -164,10 +155,7 @@ abstract class AbstractService implements LoggerAwareInterface
     public function devLog($msg, $severity = 0, $dataVar = false)
     {
         GeneralUtility::logDeprecatedFunction();
-        if ($this->writeDevLog) {
-            $message = $this->info['serviceKey'] . ': ' . $msg;
-            $this->logger->debug($message, (array)$dataVar);
-        }
+        $this->logger->debug($this->info['serviceKey'] . ': ' . $msg, (array)$dataVar);
     }
 
     /**

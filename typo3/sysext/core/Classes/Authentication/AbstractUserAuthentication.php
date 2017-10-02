@@ -328,15 +328,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $svConfig = [];
 
     /**
-     * Write additional log entries
-     *
-     * Specifically useful during development of authentication services
-     *
-     * @var bool
-     */
-    public $writeDevLog = false;
-
-    /**
      * @var array
      */
     public $uc;
@@ -380,19 +371,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (empty($this->loginType)) {
             throw new Exception('No loginType defined, should be set explicitly by subclass', 1476045345);
         }
-        // Enable dev logging if set
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog']) {
-            $this->writeDevLog = true;
-        }
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['writeDevLog' . $this->loginType]) {
-            $this->writeDevLog = true;
-        }
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-            $this->writeDevLog = true;
-        }
-        if ($this->writeDevLog) {
-            $this->logger->debug('## Beginning of auth logging.');
-        }
+        $this->logger->debug('## Beginning of auth logging.');
         // Init vars.
         $mode = '';
         $this->newSessionID = false;
@@ -496,10 +475,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             } else {
                 throw new Exception('Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].', 1254325546);
             }
-            if ($this->writeDevLog) {
-                $devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
-                $this->logger->debug($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''));
-            }
+            $this->logger->debug(
+                ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ')
+                . $this->id . ($cookieDomain ? ', ' . $cookieDomain : '')
+            );
         }
     }
 
@@ -584,16 +563,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $activeLogin = false;
         // Indicates if an active authentication failed (not auto login)
         $this->loginFailure = false;
-        if ($this->writeDevLog) {
-            $this->logger->debug('Login type: ' . $this->loginType);
-        }
+        $this->logger->debug('Login type: ' . $this->loginType);
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
-        if ($this->writeDevLog) {
-            $this->logger->debug('Login data', $loginData);
-        }
+        $this->logger->debug('Login data', $loginData);
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === 'logout') {
             if ($this->writeStdLog) {
@@ -620,9 +595,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Active login (eg. with login form).
         if (!$haveSession && $loginData['status'] === 'login') {
             $activeLogin = true;
-            if ($this->writeDevLog) {
-                $this->logger->debug('Active login (eg. with login form)');
-            }
+            $this->logger->debug('Active login (eg. with login form)');
             // check referrer for submitted login values
             if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
                 $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
@@ -646,18 +619,16 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $activeLogin = true;
         }
 
-        if ($this->writeDevLog) {
-            if ($haveSession) {
-                $this->logger->debug('User session found', [
-                    $this->userid_column => $authInfo['userSession'][$this->userid_column],
-                    $this->username_column => $authInfo['userSession'][$this->username_column],
-                ]);
-            } else {
-                $this->logger->debug('No user session found');
-            }
-            if (is_array($this->svConfig['setup'])) {
-                $this->logger->debug('SV setup', $this->svConfig['setup']);
-            }
+        if ($haveSession) {
+            $this->logger->debug('User session found', [
+                $this->userid_column => $authInfo['userSession'][$this->userid_column],
+                $this->username_column => $authInfo['userSession'][$this->username_column],
+            ]);
+        } else {
+            $this->logger->debug('No user session found');
+        }
+        if (is_array($this->svConfig['setup'])) {
+            $this->logger->debug('SV setup', $this->svConfig['setup']);
         }
 
         // Fetch user if ...
@@ -671,12 +642,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
-                    if ($this->writeDevLog) {
-                        $this->logger->debug('User found', [
-                            $this->userid_column => $row[$this->userid_column],
-                            $this->username_column => $row[$this->username_column],
-                        ]);
-                    }
+                    $this->logger->debug('User found', [
+                        $this->userid_column => $row[$this->userid_column],
+                        $this->username_column => $row[$this->username_column],
+                    ]);
                     // User found, just stop to search for more if not configured to go on
                     if (!$this->svConfig['setup'][$this->loginType . '_fetchAllUsers']) {
                         break;
@@ -684,13 +653,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 }
             }
 
-            if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
+            if ($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
                 $this->logger->debug($this->loginType . '_alwaysFetchUser option is enabled');
             }
-            if ($this->writeDevLog && empty($tempuserArr)) {
+            if (empty($tempuserArr)) {
                 $this->logger->debug('No user found by services');
-            }
-            if ($this->writeDevLog && !empty($tempuserArr)) {
+            } else {
                 $this->logger->debug(count($tempuserArr) . ' user records found by services');
             }
         }
@@ -701,19 +669,15 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $tempuser = $authInfo['userSession'];
             // User is authenticated because we found a user session
             $authenticated = true;
-            if ($this->writeDevLog) {
-                $this->logger->debug('User session used', [
-                    $this->userid_column => $authInfo['userSession'][$this->userid_column],
-                    $this->username_column => $authInfo['userSession'][$this->username_column],
-                ]);
-            }
+            $this->logger->debug('User session used', [
+                $this->userid_column => $authInfo['userSession'][$this->userid_column],
+                $this->username_column => $authInfo['userSession'][$this->username_column],
+            ]);
         }
         // Re-auth user when 'auth'-service option is set
         if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
             $authenticated = false;
-            if ($this->writeDevLog) {
-                $this->logger->debug('alwaysAuthUser option is enabled');
-            }
+            $this->logger->debug('alwaysAuthUser option is enabled');
         }
         // Authenticate the user if needed
         if (!empty($tempuserArr) && !$authenticated) {
@@ -721,9 +685,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // Use 'auth' service to authenticate the user
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
-                if ($this->writeDevLog) {
-                    $this->logger->debug('Auth user', $tempuser);
-                }
+                $this->logger->debug('Auth user', $tempuser);
                 $subType = 'authUser' . $this->loginType;
 
                 foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
@@ -772,7 +734,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 );
                 // The login session is started.
                 $this->loginSessionStarted = true;
-                if ($this->writeDevLog && is_array($this->user)) {
+                if (is_array($this->user)) {
                     $this->logger->debug('User session finally read', [
                         $this->userid_column => $this->user[$this->userid_column],
                         $this->username_column => $this->user[$this->username_column],
@@ -824,16 +786,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
-            if ($this->writeDevLog) {
-                $this->logger->debug(
-                    'Call checkLogFailures',
-                    [
-                        'warningEmail' => $this->warningEmail,
-                        'warningPeriod' => $this->warningPeriod,
-                        'warningMax' => $this->warningMax
-                    ]
-                );
-            }
+            $this->logger->debug(
+                'Call checkLogFailures',
+                [
+                    'warningEmail' => $this->warningEmail,
+                    'warningPeriod' => $this->warningPeriod,
+                    'warningMax' => $this->warningMax
+                ]
+            );
 
             // Hook to implement login failure tracking methods
             if (
@@ -879,7 +839,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $serviceObj->initAuth($subType, $loginData, $authInfo, $this);
             yield $serviceObj;
         }
-        if ($this->writeDevLog && $serviceChain) {
+        if ($serviceChain) {
             $this->logger->debug($subType . ' auth services called: ' . $serviceChain);
         }
     }
@@ -924,9 +884,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function createUserSession($tempuser)
     {
-        if ($this->writeDevLog) {
-            $this->logger->debug('Create session ses_id = ' . $this->id);
-        }
+        $this->logger->debug('Create session ses_id = ' . $this->id);
         // Delete any session entry first
         $this->getSessionBackend()->remove($this->id);
         // Re-create session entry
@@ -985,9 +943,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function fetchUserSession($skipSessionUpdate = false)
     {
-        if ($this->writeDevLog) {
-            $this->logger->debug('Fetch session ses_id = ' . $this->id);
-        }
+        $this->logger->debug('Fetch session ses_id = ' . $this->id);
         try {
             $sessionRecord = $this->getSessionBackend()->get($this->id);
         } catch (SessionNotFoundException $e) {
@@ -1044,9 +1000,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function logoff()
     {
-        if ($this->writeDevLog) {
-            $this->logger->debug('logoff: ses_id = ' . $this->id);
-        }
+        $this->logger->debug('logoff: ses_id = ' . $this->id);
         // Release the locked records
         BackendUtility::lockRecords();
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'])) {
@@ -1200,9 +1154,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             if (!is_array($variable)) {
                 $variable = $this->uc;
             }
-            if ($this->writeDevLog) {
-                $this->logger->debug('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column]);
-            }
+            $this->logger->debug('writeUC: ' . $this->userid_column . '=' . (int)$this->user[$this->userid_column]);
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table)->update(
                 $this->user_table,
                 ['uc' => serialize($variable)],
@@ -1299,9 +1251,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     {
         $this->sessionData[$key] = $data;
         $this->user['ses_data'] = serialize($this->sessionData);
-        if ($this->writeDevLog) {
-            $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->id);
-        }
+        $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->id);
         $updatedSession = $this->getSessionBackend()->update(
             $this->id,
             ['ses_data' => $this->user['ses_data']]
@@ -1352,9 +1302,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     {
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
-        if ($this->writeDevLog) {
-            $this->logger->debug('Login data before processing', $loginData);
-        }
+        $this->logger->debug('Login data before processing', $loginData);
         $serviceChain = '';
         $subType = 'processLoginData' . $this->loginType;
         $authInfo = $this->getAuthInfoArray();
@@ -1376,9 +1324,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
-            if ($this->writeDevLog) {
-                $this->logger->debug('Processed login data', $processedLoginData);
-            }
+            $this->logger->debug('Processed login data', $processedLoginData);
         }
         return $loginData;
     }

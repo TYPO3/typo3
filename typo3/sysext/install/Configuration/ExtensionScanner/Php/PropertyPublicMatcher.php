@@ -204,5 +204,16 @@ return [
             'Breaking-82629-TceDbOptionsPrErrAndUPTRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->writeDevLog' => [
+        'restFiles' => [
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Service\AbstractService->writeDevLog' => [
+        'restFiles' => [
+            'Breaking-82639-LoggingActivatedForAuthenticationAndServiceClasses.rst',
+        ],
+    ],
+
     // Deprecated public properties
 ];

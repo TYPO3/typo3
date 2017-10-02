@@ -77,7 +77,6 @@ return [
         'recursiveDomainSearch' => false,
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
-        'enable_DLOG' => false,
         'ddmmyy' => 'd-m-y',
         'hhmm' => 'H:i',
         'USdateFormat' => false,
