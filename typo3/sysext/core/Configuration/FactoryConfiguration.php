@@ -41,9 +41,6 @@ return [
     'FE' => [
         'loginSecurityLevel' => 'rsa',
     ],
-    'GFX' => [
-        'jpg_quality' => '80',
-    ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',
     ],

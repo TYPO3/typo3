@@ -278,7 +278,7 @@ class GraphicalFunctions
     /**
      * @var int
      */
-    public $jpegQuality = 75;
+    public $jpegQuality = 85;
 
     /**
      * @var string
@@ -346,7 +346,7 @@ class GraphicalFunctions
             $this->cmds['png'] = '';
         }
         // Setting default JPG parameters:
-        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
+        $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
         $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         if ($gfxConf['gdlib_png']) {
             $this->gifExtension = 'png';
