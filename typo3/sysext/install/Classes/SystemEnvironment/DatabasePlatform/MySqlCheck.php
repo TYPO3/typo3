@@ -89,7 +89,7 @@ class MySqlCheck implements CheckInterface
                     . ' ' . implode(', ', $detectedIncompatibleSqlModes) . '.'
                     . ' The listed modes are not compatible with TYPO3 CMS.'
                     . ' You have to change that setting in your MySQL environment'
-                    . ' or in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\']',
+                    . ' or in $GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'Default\'][\'initCommands\']',
                 'Incompatible SQL modes found!',
                 FlashMessage::ERROR
             ));

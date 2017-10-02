@@ -105,6 +105,7 @@ class SilentConfigurationUpgradeService
         // #82421
         'SYS/sqlDebug',
         'SYS/no_pconnect',
+        'SYS/setDBinit',
         'SYS/dbClientCompress',
         // #82430
         'SYS/syslogErrorReporting',

@@ -39,6 +39,11 @@ return [
             'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\']' => [
+        'restFiles' => [
+            'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',
+        ],
+    ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'no_pconnect\']' => [
         'restFiles' => [
             'Breaking-82421-DroppedOldDBRelatedConfigurationOptions.rst',

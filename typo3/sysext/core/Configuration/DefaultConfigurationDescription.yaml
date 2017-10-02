@@ -135,9 +135,6 @@ SYS:
         binSetup:
             type: multiline
             description: 'List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by <code>binPath</code>. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: <code>perl=/usr/bin/perl,unzip=/usr/local/bin/unzip</code>'
-        setDBinit:
-            type: multiline
-            description: 'These commands are executed after the database connection was established. Hint: The previous default "SET NAMES utf8;" is not required any more and will be removed automatically if set!'
         setMemoryLimit:
             type: int
             description: 'Integer: memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.'

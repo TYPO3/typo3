@@ -13,6 +13,7 @@ Some configuration options related to pre-doctrine era have been removed
 from :php:`$GLOBALS['TYPO3_CONF_VARS']`:
 
 * `SYS/sqlDebug` - Obsolete since version 8, no substitution
+* `SYS/setDBinit` - Obsolete since core version 8 and migrated automatically
 * `SYS/no_pconnect` - Obsolete since core version 8 and migrated automatically
 * `SYS/dbClientCompress` - Obsolete since core version 8 and migrated automatically
 

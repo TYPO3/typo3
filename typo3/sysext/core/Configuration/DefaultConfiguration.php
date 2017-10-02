@@ -87,7 +87,6 @@ return [
         'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,pdf,svg,ai,mp3,wav,mp4,ogg,flac,opus,webm,youtube,vimeo',
         'binPath' => '',
         'binSetup' => '',
-        'setDBinit' => '',
         'setMemoryLimit' => 0,
         'phpTimeZone' => '',
         'systemLog' => false,
