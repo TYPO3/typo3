@@ -414,7 +414,7 @@ return [
             'Deprecation-81201-EidUtilityinitTCA.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Utility\BackendUtility::getListGroupNames' => [
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getListGroupNames' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
