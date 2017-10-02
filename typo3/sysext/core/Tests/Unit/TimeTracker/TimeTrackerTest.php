@@ -26,7 +26,7 @@ class TimeTrackerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParseTimeReturnsZeroIfNoValuesAreSet()
+    public function getParseTimeReturnsZeroOrOneIfNoValuesAreSet()
     {
         unset(
             $GLOBALS['TYPO3_MISC']['microtime_end'],
@@ -35,7 +35,7 @@ class TimeTrackerTest extends UnitTestCase
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']
         );
         $parseTime = (new TimeTracker())->getParseTime();
-        self::assertSame(0, $parseTime);
+        self::assertLessThanOrEqual(1, $parseTime);
     }
 
     /**
