@@ -626,23 +626,12 @@ class BackendController
         }
         $t3Configuration = [
             'username' => htmlspecialchars($beUser->user['username']),
-            'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
             'inWorkspace' => $beUser->workspace !== 0,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false
         ];
         $this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-
-	/**
-	 * TypoSetup object.
-	 */
-	function typoSetup() {	//
-		this.username = TYPO3.configuration.username;
-		this.uniqueID = TYPO3.configuration.uniqueID;
-	}
-	var TS = new typoSetup();
-		//backwards compatibility
 	/**
 	 * Frameset Module object
 	 *
@@ -651,12 +640,11 @@ class BackendController
 	 *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.(int)$this->id.\'";
 	 * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
 	 */
-	function fsModules() {	//
-		this.recentIds=new Array();					// used by frameset modules to track the most recent used id for list frame.
-		this.navFrameHighlightedID=new Array();		// used by navigation frames to track which row id was highlighted last time
-		this.currentBank="0";
-	}
-	var fsMod = new fsModules();
+	var fsMod = {
+		recentIds: [],					// used by frameset modules to track the most recent used id for list frame.
+		navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
+		currentBank: "0"
+	};
 
 	top.goToModule = function(modName, cMR_flag, addGetVars) {
 		TYPO3.ModuleMenu.App.showModule(modName, addGetVars);

@@ -217,25 +217,12 @@ class PreviewController extends AbstractController
         }
         $t3Configuration = [
             'username' => htmlspecialchars($backendUser->user['username']),
-            'uniqueID' => GeneralUtility::shortMD5(uniqid('', true)),
             'pageModule' => $pageModule,
             'inWorkspace' => $backendUser->workspace !== 0,
             'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : false
         ];
 
-        return '
-		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-
-		/**
-		 * TypoSetup object.
-		 */
-		function typoSetup()	{	//
-			this.username = TYPO3.configuration.username;
-			this.uniqueID = TYPO3.configuration.uniqueID;
-		}
-		var TS = new typoSetup();
-			//backwards compatibility
-		';
+        return 'TYPO3.configuration = ' . json_encode($t3Configuration) . ';';
     }
 
     /**

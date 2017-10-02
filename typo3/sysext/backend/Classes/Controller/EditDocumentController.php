@@ -733,39 +733,22 @@ class EditDocumentController extends AbstractModule
 					formEl.checked = formEl.checked ? 0 : 1;
 				}
 			}
-'
-        );
-        $t3Configuration = [];
-
-        $javascript = '
-			TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-			// Object: TS:
-			// TS object overwrites the object declared in tbe_editor.js
-			function typoSetup() {	//
-				this.uniqueID = "";
-			}
-			var TS = new typoSetup();
 
 				// Info view:
-			function launchView(table,uid) {	//
+			function launchView(table,uid) {
 				var thePreviewWindow = window.open(
 					' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
-					"ShowItem" + TS.uniqueID,
+					"ShowItem" + Math.random().toString(16).slice(2),
 					"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0"
 				);
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
-			function deleteRecord(table,id,url) {	//
+			function deleteRecord(table,id,url) {
 				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
 			}
-		';
-
-        $previewCode = isset($_POST['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '';
-        $this->moduleTemplate->addJavaScriptCode(
-            'PreviewCode',
-            $javascript . $previewCode
+		' . (isset($_POST['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
         );
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');

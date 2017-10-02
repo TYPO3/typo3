@@ -94,8 +94,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Login'], function($, Login) {
 		// If the login screen is shown in the login_frameset window for re-login,
 		// then try to get the username of the current/former login from opening windows main frame:
 		try {
-			if (parent.opener && parent.opener.TS && parent.opener.TS.username) {
-				$usernameField.val(parent.opener.TS.username);
+			if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.configuration && parent.opener.TYPO3.configuration.username) {
+				$usernameField.val(parent.opener.TYPO3.configuration.username);
 			}
 		} catch (error) {} // continue
 

@@ -278,7 +278,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 * Opens the login form in a new window.
 	 */
 	LoginRefresh.showLoginPopup = function() {
-		var vHWin = window.open(LoginRefresh.loginFramesetUrl, 'relogin_' + TYPO3.configuration.uniqueID, 'height=450,width=700,status=0,menubar=0,location=1');
+		var vHWin = window.open(LoginRefresh.loginFramesetUrl, 'relogin_' + Math.random().toString(16).slice(2), 'height=450,width=700,status=0,menubar=0,location=1');
 		if (vHWin) {
 			vHWin.focus();
 		}
