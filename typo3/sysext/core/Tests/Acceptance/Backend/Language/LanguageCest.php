@@ -79,15 +79,15 @@ class LanguageCest
     {
         $I->wantTo('Install a language');
 
-        $I->seeElement('#language-da');
-        $I->seeElement('#language-da.disabled');
-        $I->click('#language-da td a.activateLanguageLink');
-        $I->seeElement('#language-da.enabled');
+        $I->seeElement('#language-pt_BR');
+        $I->seeElement('#language-pt_BR.disabled');
+        $I->click('#language-pt_BR td a.activateLanguageLink');
+        $I->seeElement('#language-pt_BR.enabled');
 
         $this->seeAlert($I, 'Success', 'Language was successfully activated.');
 
-        $I->click('#language-da td a.deactivateLanguageLink');
-        $I->seeElement('#language-da.disabled');
+        $I->click('#language-pt_BR td a.deactivateLanguageLink');
+        $I->seeElement('#language-pt_BR.disabled');
 
         $this->seeAlert($I, 'Success', 'Language was successfully deactivated.');
     }
@@ -105,9 +105,9 @@ class LanguageCest
         // Download only a single translation for a specific extension for performance reasons
         $I->wantTo('Download a single translation for a selected language');
 
-        $I->seeElement('#language-da');
-        $I->seeElement('#language-da.disabled');
-        $I->click('#language-da td a.activateLanguageLink');
+        $I->seeElement('#language-pt_BR');
+        $I->seeElement('#language-pt_BR.disabled');
+        $I->click('#language-pt_BR td a.activateLanguageLink');
 
         $I->selectOption('.t3-js-jumpMenuBox', 'Translation Overview');
         $I->waitForElementVisible('#typo3-translation-list');

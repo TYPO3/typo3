@@ -11,7 +11,7 @@ modules:
       port: 4444
       window_size: 1280x1024
       wait: 1
-      restart: true
+      restart: false
       capabilities:
         # Disable the "scroll to element before clicking" behavior as this breaks tests
         # where for example a fixed docbar is used. Selenium scrolls to the element before
