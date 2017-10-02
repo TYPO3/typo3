@@ -839,7 +839,7 @@ return [
         'warning_email_addr' => '',
         'warning_mode' => '',
         'lockIP' => 4,
-        'sessionTimeout' => 3600,
+        'sessionTimeout' => 28800,  // a backend user logged in for 8 hours
         'IPmaskList' => '',
         'lockBeUserToDBmounts' => true,
         'lockSSL' => false,

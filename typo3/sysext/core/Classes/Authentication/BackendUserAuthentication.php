@@ -246,7 +246,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $writeAttemptLog = true;
 
     /**
-     * Session timeout (on the server)
+     * Session timeout (on the server), defaults to 8 hours for backend user
      *
      * If >0: session-timeout in seconds.
      * If <=0: Instant logout after login.
@@ -254,7 +254,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @var int
      */
-    public $sessionTimeout = 6000;
+    public $sessionTimeout = 28800;
 
     /**
      * @var int
