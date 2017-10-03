@@ -111,6 +111,7 @@ class LanguageCest
 
         $I->selectOption('.t3-js-jumpMenuBox', 'Translation Overview');
         $I->waitForElementVisible('#typo3-translation-list');
+        $I->waitForElementVisible('#extension-beuser td a.updateTranslationLink');
         $I->click('#extension-beuser td a.updateTranslationLink');
         $I->waitForElement('#extension-beuser td:nth-child(3).complete');
         $this->seeAlert($I, 'Success', 'The translation update has been successfully completed.');
