@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f865c81ba4e151cc0d1e835c7df48792",
+    "content-hash": "6fe75c293c921d6156d6ebba4f283d0d",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1507,16 +1507,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.3.5",
+            "version": "2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "e807cd458eb9f7ae7464f33ad835a2f54aa73194"
+                "reference": "c3dd3b5d9e0b1ea6c2fcca52457736dc756716f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/e807cd458eb9f7ae7464f33ad835a2f54aa73194",
-                "reference": "e807cd458eb9f7ae7464f33ad835a2f54aa73194",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/c3dd3b5d9e0b1ea6c2fcca52457736dc756716f8",
+                "reference": "c3dd3b5d9e0b1ea6c2fcca52457736dc756716f8",
                 "shasum": ""
             },
             "require": {
@@ -1531,7 +1531,7 @@
                 "phpunit/phpunit": ">4.8.20 <7.0",
                 "phpunit/phpunit-mock-objects": ">2.3 <5.0",
                 "sebastian/comparator": ">1.1 <3.0",
-                "sebastian/diff": "^1.4",
+                "sebastian/diff": ">=1.4 <3.0",
                 "stecman/symfony-console-completion": "^0.7.0",
                 "symfony/browser-kit": ">=2.7 <4.0",
                 "symfony/console": ">=2.7 <4.0",
@@ -1547,7 +1547,6 @@
                 "flow/jsonpath": "~0.2",
                 "league/factory-muffin": "^3.0",
                 "league/factory-muffin-faker": "^1.0",
-                "mongodb/mongodb": "^1.0",
                 "monolog/monolog": "~1.8",
                 "pda/pheanstalk": "~3.0",
                 "php-amqplib/php-amqplib": "~2.4",
@@ -1598,20 +1597,20 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-08-10T20:28:02+00:00"
+            "time": "2017-09-28T23:19:49+00:00"
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.31",
+            "version": "2.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "e7f99694a6d5be5c7164b3cb92451a928bd589c0"
+                "reference": "6ed139fe6ee80867893148c96c5a09364175b8ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/e7f99694a6d5be5c7164b3cb92451a928bd589c0",
-                "reference": "e7f99694a6d5be5c7164b3cb92451a928bd589c0",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/6ed139fe6ee80867893148c96c5a09364175b8ca",
+                "reference": "6ed139fe6ee80867893148c96c5a09364175b8ca",
                 "shasum": ""
             },
             "bin": [
@@ -1636,7 +1635,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-07-25T06:40:48+00:00"
+            "time": "2017-09-01T22:21:13+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -2694,16 +2693,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "3.4.0",
+            "version": "3.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "86da4447676b2dfd00688ac43db102cf831682af"
+                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/86da4447676b2dfd00688ac43db102cf831682af",
-                "reference": "86da4447676b2dfd00688ac43db102cf831682af",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
+                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
                 "shasum": ""
             },
             "require-dev": {
@@ -2729,7 +2728,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2017-04-27T11:26:21+00:00"
+            "time": "2017-09-06T10:38:18+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
