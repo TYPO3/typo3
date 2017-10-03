@@ -64,13 +64,13 @@ class SearchCest
     public function searchForFancyTextAndCheckEmptyResultInfo(Admin $I)
     {
         $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
-        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
+        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
 
         // tod0: check why TYPO3 does not return a result for "Kasper" by itself
         $I->canSee('No results found.', self::$topBarModuleSelector);
 
         $I->click(self::$topBarModuleSelector . ' .close');
-        $I->waitForElementNotVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
+        $I->waitForElementNotVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
         $I->cantSeeInField('#live-search-box', 'Kasper = Jesus # joh316');
     }
 
