@@ -4122,6 +4122,29 @@ class TypoScriptFrontendController
         if (!is_array($this->pagesTSconfig)) {
             $TSdataArray = [];
             foreach ($this->rootLine as $k => $v) {
+                if (trim($v['tsconfig_includes'])) {
+                    $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
+                    // Traversing list
+                    foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
+                        if (strpos($includeTsConfigFile, 'EXT:') === 0) {
+                            list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
+                                '/',
+                                substr($includeTsConfigFile, 4),
+                                2
+                            );
+                            if ((string)$includeTsConfigFileExtensionKey !== ''
+                                && (string)$includeTsConfigFilename !== ''
+                                && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
+                            ) {
+                                $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey)
+                                    . $includeTsConfigFilename;
+                                if (file_exists($includeTsConfigFileAndPath)) {
+                                    $TSdataArray[] = file_get_contents($includeTsConfigFileAndPath);
+                                }
+                            }
+                        }
+                    }
+                }
                 $TSdataArray[] = $v['TSconfig'];
             }
             // Adding the default configuration:
