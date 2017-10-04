@@ -16,26 +16,35 @@ package core;
 import java.util.ArrayList;
 
 import com.atlassian.bamboo.specs.api.BambooSpec;
+import com.atlassian.bamboo.specs.api.builders.AtlassianModule;
 import com.atlassian.bamboo.specs.api.builders.BambooKey;
 import com.atlassian.bamboo.specs.api.builders.Variable;
+import com.atlassian.bamboo.specs.api.builders.notification.AnyNotificationRecipient;
+import com.atlassian.bamboo.specs.api.builders.notification.Notification;
 import com.atlassian.bamboo.specs.api.builders.plan.Job;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.BranchCleanup;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.PlanBranchManagement;
+import com.atlassian.bamboo.specs.api.builders.plan.configuration.AllOtherPluginsConfiguration;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
+import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.trigger.RemoteTrigger;
 import com.atlassian.bamboo.specs.builders.trigger.RepositoryPollingTrigger;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
+import com.atlassian.bamboo.specs.util.MapBuilder;
 
 /**
  * Core master pre-merge test plan.
  */
 @BambooSpec
 public class PreMergeSpec extends AbstractCoreSpec {
+
+    protected static String planName = "Core master pre-merge";
+    protected static String planKey = "GTC";
 
     protected int numberOfAcceptanceTestJobs = 8;
     protected int numberOfFunctionalMysqlJobs = 10;
@@ -48,16 +57,16 @@ public class PreMergeSpec extends AbstractCoreSpec {
      */
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
-        BambooServer bambooServer = new BambooServer("https://bamboo.typo3.com:443");
-        Plan plan = new PreMergeSpec().createPlan();
-        bambooServer.publish(plan);
+        BambooServer bambooServer = new BambooServer(bambooServerName);
+        bambooServer.publish(new PreMergeSpec().createPlan());
+        bambooServer.publish(new PreMergeSpec().getDefaultPlanPermissions(projectKey, planKey));
     }
 
     /**
      * Core master pre-merge plan is in "TYPO3 core" project of bamboo
      */
     Project project() {
-        return new Project().name("TYPO3 Core").key("CORE");
+        return new Project().name(projectName).key(projectKey);
     }
 
     /**
@@ -75,7 +84,6 @@ public class PreMergeSpec extends AbstractCoreSpec {
 
         Stage stagePreparation = new Stage("Preparation")
             .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
-
 
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
@@ -109,10 +117,10 @@ public class PreMergeSpec extends AbstractCoreSpec {
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
 
-
         // Compile plan
-        return new Plan(project(), "Core master pre-merge", "GTC")
+        return new Plan(project(), planName, planKey)
             .description("Execute TYPO3 core master pre-merge tests. Auto generated! See Build/bamboo of core git repository.")
+            .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
                 stageMainStage
@@ -133,7 +141,13 @@ public class PreMergeSpec extends AbstractCoreSpec {
                 new PlanBranchManagement()
                     .delete(new BranchCleanup())
                     .notificationForCommitters()
-            );
+            )
+            .notifications(new Notification()
+                .type(new PlanCompletedNotification())
+                .recipients(new AnyNotificationRecipient(new AtlassianModule("com.atlassian.bamboo.plugins.bamboo-slack:recipient.slack"))
+                    .recipientString("https://intercept.typo3.com/index.php")
+                )
+        );
     }
 
     /**
@@ -142,11 +156,34 @@ public class PreMergeSpec extends AbstractCoreSpec {
     protected Job getJobBuildLabels() {
         return new Job("Create build labels", new BambooKey("CLFB"))
             .description("Create changeId and patch set labels from variable access and parsing result of a dummy task")
+            .pluginConfigurations(new AllOtherPluginsConfiguration()
+                .configuration(new MapBuilder()
+                    .put("repositoryDefiningWorkingDirectory", -1)
+                    .put("custom", new MapBuilder()
+                        .put("auto", new MapBuilder()
+                            .put("regex", "https:\\/\\/review\\.typo3\\.org\\/(#\\/c\\/)?(\\d+)")
+                            .put("label", "change-\\2, patchset-${bamboo.patchset}")
+                            .build()
+                        )
+                        .put("buildHangingConfig.enabled", "false")
+                        .put("ncover.path", "")
+                        .put("clover", new MapBuilder()
+                            .put("path", "")
+                            .put("license", "")
+                            .put("useLocalLicenseKey", "true")
+                            .build()
+                        )
+                        .build()
+                    )
+                    .build()
+                )
+            )
             .tasks(
                 new ScriptTask()
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody("echo \"I'm just here for the labels!\"")
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 
     /**
@@ -155,6 +192,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     protected Job getJobCglCheckGitCommit() {
         return new Job("Integration CGL", new BambooKey("CGLCHECK"))
             .description("Check coding guidelines by executing Build/Scripts/cglFixMyCommit.sh script")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
@@ -171,6 +209,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
                 new Requirement("system.phpVersion")
                     .matchValue("7\\.0|7\\.1")
                     .matchType(Requirement.MatchType.MATCHES)
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 }

@@ -35,6 +35,9 @@ import com.atlassian.bamboo.specs.util.BambooServer;
 @BambooSpec
 public class NightlySpec extends AbstractCoreSpec {
 
+    protected static String planName = "Core master nightly";
+    protected static String planKey = "GTN";
+
     protected int numberOfAcceptanceTestJobs = 8;
     protected int numberOfFunctionalMysqlJobs = 6;
     protected int numberOfFunctionalMssqlJobs = 6;
@@ -46,16 +49,16 @@ public class NightlySpec extends AbstractCoreSpec {
      */
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
-        BambooServer bambooServer = new BambooServer("https://bamboo.typo3.com:443");
-        Plan plan = new NightlySpec().createPlan();
-        bambooServer.publish(plan);
+        BambooServer bambooServer = new BambooServer(bambooServerName);
+        bambooServer.publish(new PreMergeSpec().createPlan());
+        bambooServer.publish(new PreMergeSpec().getDefaultPlanPermissions(projectKey, planKey));
     }
 
     /**
      * Core master pre-merge plan is in "TYPO3 core" project of bamboo
      */
     Project project() {
-        return new Project().name("TYPO3 Core").key("CORE");
+        return new Project().name(projectName).key(projectKey);
     }
 
     /**
@@ -114,8 +117,9 @@ public class NightlySpec extends AbstractCoreSpec {
 
 
         // Compile plan
-        return new Plan(project(), "Core master nightly", "GTN")
+        return new Plan(project(), planName, planKey)
             .description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
+            .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
             .stages(
                 stagePreparation,
                 stageMainStage
@@ -145,6 +149,7 @@ public class NightlySpec extends AbstractCoreSpec {
     protected Job getJobCglCheckFullCore() {
         return new Job("Integration CGL", new BambooKey("CGLCHECK"))
             .description("Check coding guidelines of full core")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
@@ -161,6 +166,7 @@ public class NightlySpec extends AbstractCoreSpec {
             )
             .requirements(
                 this.getRequirementPhpVersion70Or71()
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 }
