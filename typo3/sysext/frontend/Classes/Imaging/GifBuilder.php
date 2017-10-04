@@ -378,7 +378,7 @@ class GifBuilder extends GraphicalFunctions
         $this->w = $XY[0];
         $this->h = $XY[1];
         // Transparent layer as background if set and requirements are met
-        if (!empty($this->setup['backColor']) && $this->setup['backColor'] === 'transparent' && $this->png_truecolor && !$this->setup['reduceColors'] && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
+        if (!empty($this->setup['backColor']) && $this->setup['backColor'] === 'transparent' && !$this->setup['reduceColors'] && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
             // Set transparency properties
             imagesavealpha($this->im, true);
             // Fill with a transparent background

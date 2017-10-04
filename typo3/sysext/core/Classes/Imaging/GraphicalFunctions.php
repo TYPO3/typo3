@@ -52,13 +52,6 @@ class GraphicalFunctions
     public $gdlibExtensions = '';
 
     /**
-     * Set to TRUE if generated png's should be truecolor by default
-     *
-     * @var bool
-     */
-    public $png_truecolor = false;
-
-    /**
      * defines the RGB colorspace to use
      *
      * @var string
@@ -133,7 +126,7 @@ class GraphicalFunctions
         'jpg' => '',
         'jpeg' => '',
         'gif' => '',
-        'png' => '-colors 64'
+        'png' => ''
     ];
 
     /**
@@ -329,9 +322,6 @@ class GraphicalFunctions
         if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
             $this->gdlibExtensions .= ',gif';
         }
-        if ($gfxConf['png_truecolor']) {
-            $this->png_truecolor = true;
-        }
 
         if ($gfxConf['processor_colorspace'] && in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true)) {
             $this->colorspace = $gfxConf['processor_colorspace'];
@@ -339,11 +329,6 @@ class GraphicalFunctions
 
         if (!$gfxConf['processor_enabled']) {
             $this->NO_IMAGE_MAGICK = 1;
-        }
-        // When GIFBUILDER gets used in truecolor mode
-        // No colors parameter if we generate truecolor images.
-        if ($this->png_truecolor) {
-            $this->cmds['png'] = '';
         }
         // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
@@ -2686,11 +2671,10 @@ class GraphicalFunctions
             $ext = strtolower($reg[0]);
             switch ($ext) {
                 case 'gif':
-
                 case 'png':
                     if ($this->ImageWrite($this->im, $file)) {
                         // ImageMagick operations
-                        if ($this->setup['reduceColors'] || !$this->png_truecolor) {
+                        if ($this->setup['reduceColors']) {
                             $reduced = $this->IMreduceColors($file, MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
                             if ($reduced) {
                                 @copy($reduced, $file);
@@ -2703,7 +2687,6 @@ class GraphicalFunctions
                     }
                     break;
                 case 'jpg':
-
                 case 'jpeg':
                     // Use the default
                     $quality = 0;

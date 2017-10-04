@@ -38,7 +38,6 @@ return [
         'processor_stripColorProfileCommand' => '+profile \'*\'',
         'processor_colorspace' => 'RGB',
         'jpg_quality' => 85,
-        'png_truecolor' => true,
     ],
     'SYS' => [
         // System related concerning both frontend and backend.

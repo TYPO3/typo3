@@ -62,9 +62,6 @@ GFX:
         jpg_quality:
             type: int
             description: 'Integer: Default JPEG generation quality'
-        png_truecolor:
-            type: bool
-            description: 'When creating png images, always use the full colorpalette, if disabled could reduce file sizes for scaled images, but the image quality will be let down.'
 SYS:
     type: container
     items:
