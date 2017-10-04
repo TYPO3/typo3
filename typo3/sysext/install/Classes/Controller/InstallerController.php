@@ -1117,7 +1117,6 @@ For each website you need a TypoScript template on the main page of your website
     protected function loadExtLocalconfDatabaseAndExtTables()
     {
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-            ->ensureClassLoadingInformationExists()
             ->loadTypo3LoadedExtAndExtLocalconf(false)
             ->unsetReservedGlobalVariables()
             ->loadBaseTca(false)

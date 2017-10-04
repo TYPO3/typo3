@@ -404,9 +404,6 @@ class Bootstrap
             ->setDefaultTimezone()
             ->initializeL10nLocales()
             ->setMemoryLimit();
-        if ($allowCaching) {
-            $this->ensureClassLoadingInformationExists();
-        }
         return $this;
     }
 
@@ -430,23 +427,6 @@ class Bootstrap
         $packageManager->injectDependencyResolver($dependencyResolver);
         $packageManager->initialize();
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
-        return $this;
-    }
-
-    /**
-     * Writes class loading information if not yet present
-     *
-     * @return Bootstrap
-     * @internal This is not a public API method, do not use in own extensions
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Use the Install Tool to dump autoload information.
-     */
-    public function ensureClassLoadingInformationExists()
-    {
-        if (!self::$usesComposerClassLoading && !ClassLoadingInformation::isClassLoadingInformationAvailable()) {
-            GeneralUtility::logDeprecatedFunction();
-            ClassLoadingInformation::dumpClassLoadingInformation();
-            ClassLoadingInformation::registerClassLoadingInformation();
-        }
         return $this;
     }
 

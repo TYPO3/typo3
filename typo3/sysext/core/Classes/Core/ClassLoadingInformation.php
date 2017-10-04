@@ -63,7 +63,7 @@ class ClassLoadingInformation
      */
     public static function isClassLoadingInformationAvailable()
     {
-        return !self::isTestingContext() && file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
+        return file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
     }
 
     /**

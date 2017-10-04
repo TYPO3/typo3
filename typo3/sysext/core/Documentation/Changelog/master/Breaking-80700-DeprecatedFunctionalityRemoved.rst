@@ -152,6 +152,7 @@ The following PHP class methods that have been previously deprecated for v8 have
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strrpos()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_strtrunc()
 * TYPO3\CMS\Core\Charset\CharsetConverter->utf8_substr()
+* TYPO3\CMS\Core\Core\Bootstrap->ensureClassLoadingInformationExists()
 * TYPO3\CMS\Core\Core\Bootstrap->loadExtensionTables()
 * TYPO3\CMS\Core\Database\RelationHandler->readyForInterface()
 * TYPO3\CMS\Core\Database\QueryView->tableWrap()

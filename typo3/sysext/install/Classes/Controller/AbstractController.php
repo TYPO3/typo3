@@ -57,7 +57,6 @@ class AbstractController
     protected function loadExtLocalconfDatabaseAndExtTables()
     {
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-            ->ensureClassLoadingInformationExists()
             ->loadTypo3LoadedExtAndExtLocalconf(false)
             ->unsetReservedGlobalVariables()
             ->loadBaseTca(false)

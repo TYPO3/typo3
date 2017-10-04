@@ -1254,4 +1254,11 @@ return [
             'Breaking-82572-RDCTFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Bootstrap->ensureClassLoadingInformationExists' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];
