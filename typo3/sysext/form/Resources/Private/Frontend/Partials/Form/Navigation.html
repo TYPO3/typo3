@@ -4,7 +4,7 @@
 		<div class="btn-group" role="group">
 			<f:if condition="{form.previousPage}">
 				<span class="previous">
-					<f:form.button property="__currentPage" value="{form.previousPage.index}" class="btn btn-cancel" formnovalidate="formnovalidate">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
+					<f:form.button property="__currentPage" value="{form.previousPage.index}" type="button" class="btn btn-cancel" formnovalidate="formnovalidate">{formvh:translateElementProperty(element: form.currentPage, renderingOptionProperty: 'previousButtonLabel')}</f:form.button>
 				</span>
 			</f:if>
 			<f:if condition="{form.nextPage}">
