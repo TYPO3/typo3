@@ -16,7 +16,13 @@ package core;
 import java.util.ArrayList;
 
 import com.atlassian.bamboo.specs.api.builders.BambooKey;
+import com.atlassian.bamboo.specs.api.builders.permission.PermissionType;
+import com.atlassian.bamboo.specs.api.builders.permission.Permissions;
+import com.atlassian.bamboo.specs.api.builders.permission.PlanPermissions;
 import com.atlassian.bamboo.specs.api.builders.plan.Job;
+import com.atlassian.bamboo.specs.api.builders.plan.PlanIdentifier;
+import com.atlassian.bamboo.specs.api.builders.plan.configuration.AllOtherPluginsConfiguration;
+import com.atlassian.bamboo.specs.api.builders.plan.configuration.PluginConfiguration;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
 import com.atlassian.bamboo.specs.api.builders.task.Task;
 import com.atlassian.bamboo.specs.builders.task.CheckoutItem;
@@ -26,11 +32,16 @@ import com.atlassian.bamboo.specs.builders.task.TestParserTask;
 import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.model.task.TestParserTaskProperties;
+import com.atlassian.bamboo.specs.util.MapBuilder;
 
 /**
  * Abstract class with common methods of pre-merge and nightly plan
  */
 abstract public class AbstractCoreSpec {
+
+    protected static String bambooServerName = "https://bamboo.typo3.com:443";
+    protected static String projectName = "TYPO3 Core";
+    protected static String projectKey = "CORE";
 
     protected String testingFrameworkBuildPath = "typo3/sysext/core/Build/";
 
@@ -42,18 +53,91 @@ abstract public class AbstractCoreSpec {
         " typo3InstallToolPassword=\"klaus\"";
 
     /**
+     * Default permissions on core plans
+     *
+     * @param projectName
+     * @param planName
+     * @return
+     */
+    protected PlanPermissions getDefaultPlanPermissions(String projectKey, String planKey) {
+        return new PlanPermissions(new PlanIdentifier(projectKey, planKey))
+            .permissions(new Permissions()
+            .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
+            .groupPermissions("TYPO3 Core Team", PermissionType.VIEW, PermissionType.BUILD)
+            .loggedInUserPermissions(PermissionType.VIEW)
+            .anonymousUserPermissionView()
+        );
+    }
+
+    /**
+     * Default plan plugin configuration
+     *
+     * @return
+     */
+    protected PluginConfiguration getDefaultPlanPluginConfiguration() {
+        return new AllOtherPluginsConfiguration()
+            .configuration(new MapBuilder()
+            .put("custom", new MapBuilder()
+                .put("artifactHandlers.useCustomArtifactHandlers", "false")
+                .put("buildExpiryConfig", new MapBuilder()
+                    .put("duration", "30")
+                    .put("period", "days")
+                    .put("labelsToKeep", "")
+                    .put("expiryTypeResult", "true")
+                    .put("buildsToKeep", "")
+                    .put("enabled", "true")
+                    .build()
+                )
+                .build()
+            )
+            .build()
+        );
+    }
+
+    /**
+     * Default job plugin configuration
+     *
+     * @return
+     */
+    protected PluginConfiguration getDefaultJobPluginConfiguration() {
+        return new AllOtherPluginsConfiguration()
+            .configuration(new MapBuilder()
+                .put("repositoryDefiningWorkingDirectory", -1)
+                .put("custom", new MapBuilder()
+                    .put("auto", new MapBuilder()
+                        .put("regex", "")
+                        .put("label", "")
+                        .build()
+                    )
+                    .put("buildHangingConfig.enabled", "false")
+                    .put("ncover.path", "")
+                    .put("clover", new MapBuilder()
+                        .put("path", "")
+                        .put("license", "")
+                        .put("useLocalLicenseKey", "true")
+                        .build()
+                    )
+                    .build()
+                )
+                .build()
+            );
+    }
+
+    /**
      * Job composer validate
      */
     protected Job getJobComposerValidate() {
         return new Job("Validate composer.json", new BambooKey("VC"))
         .description("Validate composer.json before actual tests are executed")
+        .pluginConfigurations(this.getDefaultJobPluginConfiguration())
         .tasks(
             this.getTaskGitCloneRepository(),
             this.getTaskGitCherryPick(),
             new CommandTask()
                 .description("composer validate")
                 .executable("composer").argument("validate")
-        );
+        )
+        .cleanWorkingDirectory(true);
     }
 
     /**
@@ -69,6 +153,7 @@ abstract public class AbstractCoreSpec {
         for (int i=0; i<numberOfChunks; i++) {
             jobs.add(new Job("Func mysql " + requirementIdentifier + " 0" + i, new BambooKey("FMY" + requirementIdentifier + "0" + i))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
+                .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
                     this.getTaskGitCherryPick(),
@@ -91,6 +176,7 @@ abstract public class AbstractCoreSpec {
                 .requirements(
                     requirement
                 )
+                .cleanWorkingDirectory(true)
             );
         }
 
@@ -104,6 +190,7 @@ abstract public class AbstractCoreSpec {
         // Exception code checker, xlf, permissions, rst file check
         return new Job("Integration various", new BambooKey("CDECC"))
             .description("Checks duplicate exceptions, git submodules, xlf files, permissions, rst")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
@@ -124,7 +211,8 @@ abstract public class AbstractCoreSpec {
                         this.getScriptTaskBashInlineBody() +
                         "./typo3/sysext/core/Build/Scripts/xlfcheck.sh"
                     )
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 
     /**
@@ -136,6 +224,7 @@ abstract public class AbstractCoreSpec {
     protected Job getJobLintPhp(Requirement requirement, String requirementIdentifier) {
         return new Job("Lint " + requirementIdentifier, new BambooKey("L" + requirementIdentifier))
             .description("Run php -l on source files for linting " + requirementIdentifier)
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
@@ -149,7 +238,8 @@ abstract public class AbstractCoreSpec {
             )
             .requirements(
                 requirement
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 
     /**
@@ -161,6 +251,7 @@ abstract public class AbstractCoreSpec {
     protected Job getJobUnitPhp(Requirement requirement, String requirementIdentifier) {
         return new Job("Unit " + requirementIdentifier, new BambooKey("UT" + requirementIdentifier))
             .description("Run unit tests " + requirementIdentifier)
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
             .tasks(
                 this.getTaskGitCloneRepository(),
                 this.getTaskGitCherryPick(),
@@ -180,7 +271,8 @@ abstract public class AbstractCoreSpec {
             )
             .requirements(
                 requirement
-            );
+            )
+            .cleanWorkingDirectory(true);
     }
 
     /**
