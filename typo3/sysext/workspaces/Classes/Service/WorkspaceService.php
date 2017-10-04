@@ -1071,7 +1071,7 @@ class WorkspaceService implements SingletonInterface
                         $movePointerQueryBuilder->getSQL()
                     )
                 )
-                ->groupBy('pageId')
+                ->groupBy('B.pid')
                 ->execute();
 
             $pageIds = [];
