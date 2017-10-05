@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fe75c293c921d6156d6ebba4f283d0d",
+    "content-hash": "40a731a4049571928ff8802e7a5f49b1",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2690,45 +2690,6 @@
                 "xunit"
             ],
             "time": "2017-03-03T06:30:20+00:00"
-        },
-        {
-            "name": "se/selenium-server-standalone",
-            "version": "3.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
-                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "bin/selenium-server-standalone"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache 2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Sven Eisenschmidt",
-                    "email": "sven.eisenschmidt@gmail.com"
-                }
-            ],
-            "description": "Composer distribution of Selenium Server Standalone, the browser automation framework. Adds a executable to your composer bin directory.",
-            "homepage": "https://github.com/sveneisenschmidt/selenium-server-standalone",
-            "keywords": [
-                "selenium",
-                "testing"
-            ],
-            "time": "2017-09-06T10:38:18+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

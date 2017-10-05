@@ -50,8 +50,8 @@ public class NightlySpec extends AbstractCoreSpec {
     public static void main(final String[] args) throws Exception {
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer(bambooServerName);
-        bambooServer.publish(new PreMergeSpec().createPlan());
-        bambooServer.publish(new PreMergeSpec().getDefaultPlanPermissions(projectKey, planKey));
+        bambooServer.publish(new NightlySpec().createPlan());
+        bambooServer.publish(new NightlySpec().getDefaultPlanPermissions(projectKey, planKey));
     }
 
     /**
