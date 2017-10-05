@@ -111,6 +111,9 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion71(), "PHP71"));
 
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion70(), "PHP70"));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion71(), "PHP71"));
+
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion71(), "PHP71"));
 

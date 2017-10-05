@@ -625,6 +625,39 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Job for unit testing deprecated PHP
+     *
+     * @param Requirement requirement
+     * @param String requirementIdentfier
+     */
+    protected Job getJobUnitDeprecatedPhp(Requirement requirement, String requirementIdentifier) {
+        return new Job("Unit deprecated " + requirementIdentifier, new BambooKey("UTD" + requirementIdentifier))
+            .description("Run deprecated unit tests " + requirementIdentifier)
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
+                new ScriptTask()
+                    .description("Run phpunit")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        this.getScriptTaskBashPhpNoXdebug() +
+                        "php_no_xdebug bin/phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "UnitTestsDeprecated.xml"
+                    )
+            )
+            .finalTasks(
+                new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                    .resultDirectories("test-reports/phpunit.xml")
+            )
+            .requirements(
+                requirement
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
      * Jobs for unit testing PHP in random test order
      *
      * @param int numberOfRuns
