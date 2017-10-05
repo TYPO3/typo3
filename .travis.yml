@@ -5,7 +5,6 @@ matrix:
 
   include:
     - php: 7
-      env: UNIT_TESTS=yes
 
 sudo: required
 
@@ -21,12 +20,7 @@ jdk:
 
 cache:
   directories:
-    - $HOME/.composer/cache
     - $HOME/.sonar/cache
-
-services:
-  - memcached
-  - redis-server
 
 notifications:
   irc:
@@ -47,15 +41,5 @@ notifications:
     on_failure: always
     on_start: never
 
-before_script:
-  - phpenv config-rm xdebug.ini
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - COMPOSER_ROOT_VERSION=dev-master composer install
-
 script:
-  - >
-    if [[ "$UNIT_TESTS" == "yes" ]]; then
-      ./bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml
-    fi
   - sonar-scanner -Dproject.settings=Build/.sonar-project.properties
