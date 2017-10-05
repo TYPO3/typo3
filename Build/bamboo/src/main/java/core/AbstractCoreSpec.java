@@ -710,26 +710,15 @@ abstract public class AbstractCoreSpec {
      */
     protected Task getTaskPrepareAcceptanceTest() {
         return new ScriptTask()
-            .description("Start xvfb, selenium, php web server, prepare chrome environment")
+            .description("Start php web server, chromedriver, prepare environment")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
-                "# start xvfb until chrome headless can be used\n" +
-                "/sbin/start-stop-daemon --start --quiet --pidfile xvfb.pid --make-pidfile --background --exec /usr/bin/Xvfb :99\n" +
-                "\n" +
-                "# the display chrome should render to (xvfb)\n" +
-                "export DISPLAY=\":99\"\n" +
-                "\n" +
-                "PATH=$PATH:./bin DBUS_SESSION_BUS_ADDRESS=/dev/null ./bin/selenium-server-standalone >/dev/null 2>&1 & \n" +
-                "echo $! > selenium.pid\n" +
-                "\n" +
-                "# Wait for selenium server to load\n" +
-                "until $(curl --output /dev/null --silent --head --fail http://localhost:4444/wd/hub); do\n" +
-                "    printf '.'\n    sleep 1\n" +
-                "done\n" +
-                "\n" +
                 "php -S localhost:8000 >/dev/null 2>&1 &\n" +
                 "echo $! > phpserver.pid\n" +
+                "\n" +
+                "./bin/chromedriver --url-base=/wd/hub >/dev/null 2>&1 &\n" +
+                "echo $! > chromedriver.pid\n" +
                 "\n" +
                 "mkdir -p typo3temp/var/tests/\n"
             );
@@ -804,13 +793,12 @@ abstract public class AbstractCoreSpec {
      */
     protected Task getTaskTearDownAcceptanceTestSetup() {
         return new ScriptTask()
-            .description("Stop acceptance test services like selenium and friends")
+            .description("Stop acceptance test services like chromedriver and friends")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
             .inlineBody(
                 this.getScriptTaskBashInlineBody() +
                 "kill `cat phpserver.pid`\n" +
-                "kill `cat selenium.pid`\n" +
-                "kill `cat xvfb.pid`\n"
+                "kill `cat chromedriver.pid`\n"
             );
     }
 

@@ -8,8 +8,7 @@ modules:
     WebDriver:
       url: http://localhost:8000/typo3temp/var/tests/acceptanceinstallpgsql
       browser: chrome
-      port: 4444
-      wait: 1
+      port: 9515
       capabilities:
         # Disable the "scroll to element before clicking" behavior as this breaks tests
         # where for example a fixed docbar is used. Selenium scrolls to the element before
