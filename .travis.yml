@@ -7,16 +7,22 @@ matrix:
     - php: 7
       env: UNIT_TESTS=yes
 
-sudo: false
+sudo: required
 
 addons:
   apt:
     packages:
       - language-pack-de
+  sonarcloud:
+    organization: "typo3"
+
+jdk:
+  - oraclejdk8
 
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.sonar/cache
 
 services:
   - memcached
@@ -52,3 +58,4 @@ script:
     if [[ "$UNIT_TESTS" == "yes" ]]; then
       ./bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml
     fi
+  - sonar-scanner -Dproject.settings=Build/.sonar-project.properties
