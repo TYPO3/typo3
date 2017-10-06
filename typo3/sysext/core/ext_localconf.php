@@ -5,14 +5,15 @@ defined('TYPO3_MODE') or die();
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 
+// FAL security checks for backend users
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Resource\ResourceFactory::class,
+    \TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage,
+    \TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect::class,
+    'addUserPermissionsToStorage'
+);
+
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
-    // FAL SECURITY CHECKS
-    $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Core\Resource\ResourceFactory::class,
-        \TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage,
-        \TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect::class,
-        'addUserPermissionsToStorage'
-    );
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class . '->isAllowedToShowEditForm';
