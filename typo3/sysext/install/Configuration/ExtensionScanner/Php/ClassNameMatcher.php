@@ -384,6 +384,11 @@ return [
             'Breaking-82406-RoutingBackendModulesRunThroughRegularDispatcher.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Module\AbstractModule' => [
+        'restFiles' => [
+            'Breaking-82689-BackendAbstractWizardControllerNotExtendsAbstractModule.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

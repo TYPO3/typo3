@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -24,7 +23,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Class AbstractWizardController
  */
-class AbstractWizardController extends AbstractModule
+class AbstractWizardController
 {
     /**
      * Checks access for element

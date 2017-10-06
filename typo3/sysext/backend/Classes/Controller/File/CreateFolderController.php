@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * Displays forms for creating folders (1 to 10), a media asset or a new file.
  */
-class CreateFolderController extends AbstractModule
+class CreateFolderController
 {
     /**
      * @var int
@@ -84,11 +84,18 @@ class CreateFolderController extends AbstractModule
     public $content;
 
     /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $GLOBALS['SOBE'] = $this;
         $this->init();
     }

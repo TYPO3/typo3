@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -27,7 +27,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Script Class for rendering the move-element wizard display
  */
-class MoveElementController extends AbstractModule
+class MoveElementController
 {
     /**
      * @var int
@@ -79,11 +79,18 @@ class MoveElementController extends AbstractModule
     public $content;
 
     /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
         $GLOBALS['SOBE'] = $this;
         $this->init();

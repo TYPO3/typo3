@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\History\RecordHistory;
-use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Controller for showing the history module of TYPO3s backend
  * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
-class ElementHistoryController extends AbstractModule
+class ElementHistoryController
 {
     /**
      * @var ServerRequestInterface
@@ -60,11 +60,18 @@ class ElementHistoryController extends AbstractModule
     protected $recordCache = [];
 
     /**
+     * ModuleTemplate object
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct();
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->view = $this->initializeView();
     }
 
