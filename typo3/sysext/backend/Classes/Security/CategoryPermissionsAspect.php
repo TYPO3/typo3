@@ -47,14 +47,14 @@ class CategoryPermissionsAspect
     }
 
     /**
-     * The slot for the signal in DatabaseTreeDataProvider.
+     * The slot for the signal in DatabaseTreeDataProvider, which only affects the TYPO3 Backend
      *
      * @param DatabaseTreeDataProvider $dataProvider
      * @param TreeNode $treeData
      */
     public function addUserPermissionsToCategoryTreeData(DatabaseTreeDataProvider $dataProvider, $treeData)
     {
-        if (!$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
+        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
 
             // Get User permissions related to category
             $categoryMountPoints = $this->backendUserAuthentication->getCategoryMountPoints();

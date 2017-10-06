@@ -60,7 +60,7 @@ class StoragePermissionsAspect
      */
     public function addUserPermissionsToStorage(ResourceFactory $resourceFactory, ResourceStorage $storage)
     {
-        if (!$this->backendUserAuthentication->isAdmin()) {
+        if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !$this->backendUserAuthentication->isAdmin()) {
             $storage->setEvaluatePermissions(true);
             if ($storage->getUid() > 0) {
                 $storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));

@@ -1,14 +1,15 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (TYPO3_MODE === 'BE') {
-    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-        \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
-        \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData,
-        \TYPO3\CMS\Backend\Security\CategoryPermissionsAspect::class,
-        'addUserPermissionsToCategoryTreeData'
-    );
+// sys_category tree check, which only affects Backend Users
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
+    \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class,
+    \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData,
+    \TYPO3\CMS\Backend\Security\CategoryPermissionsAspect::class,
+    'addUserPermissionsToCategoryTreeData'
+);
 
+if (TYPO3_MODE === 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433106] = \TYPO3\CMS\Backend\Backend\ToolbarItems\ClearCacheToolbarItem::class;
     $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433107] = \TYPO3\CMS\Backend\Backend\ToolbarItems\HelpToolbarItem::class;
     $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433108] = \TYPO3\CMS\Backend\Backend\ToolbarItems\LiveSearchToolbarItem::class;
