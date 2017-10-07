@@ -2054,7 +2054,7 @@ class GeneralUtility
         }
         // Ensure there is only one slash
         $fullPath = rtrim($directory, '/') . '/' . ltrim($deepDirectory, '/');
-        if ($fullPath !== '' && !is_dir($fullPath)) {
+        if ($fullPath !== '/' && !is_dir($fullPath)) {
             $firstCreatedPath = static::createDirectoryPath($fullPath);
             if ($firstCreatedPath !== '') {
                 static::fixPermissions($firstCreatedPath, true);
