@@ -53,24 +53,16 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCorrectlySetsNameAttributeAndContent()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(['addAttribute', 'setContent', 'render'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextarea');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('Current value');
-        $mockTagBuilder->expects($this->once())->method('render');
-        $this->viewHelper->_set('tag', $mockTagBuilder);
-
         $arguments = [
             'name' => 'NameOfTextarea',
             'value' => 'Current value'
         ];
         $this->viewHelper->setArguments($arguments);
 
-        $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-        $this->viewHelper->initializeArgumentsAndRender();
+        $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<textarea name="NameOfTextarea">Current value</textarea>';
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -87,24 +79,16 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderEscapesTextareaContent()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(['addAttribute', 'setContent', 'render'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextarea');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('some &lt;tag&gt; &amp; &quot;quotes&quot;');
-        $mockTagBuilder->expects($this->once())->method('render');
-        $this->viewHelper->setTagBuilder($mockTagBuilder);
-
         $arguments = [
             'name' => 'NameOfTextarea',
             'value' => 'some <tag> & "quotes"'
         ];
         $this->viewHelper->setArguments($arguments);
 
-        $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-        $this->viewHelper->initializeArgumentsAndRender();
+        $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<textarea name="NameOfTextarea">some &lt;tag&gt; &amp; &quot;quotes&quot;</textarea>';
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -112,22 +96,49 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderAddsPlaceholder()
     {
-        $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
-            ->setMethods(['addAttribute', 'setContent', 'render'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('placeholder', 'SomePlaceholder');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextarea');
-        $mockTagBuilder->expects($this->once())->method('render');
-        $this->viewHelper->setTagBuilder($mockTagBuilder);
-
         $arguments = [
             'name' => 'NameOfTextarea',
             'placeholder' => 'SomePlaceholder'
         ];
         $this->viewHelper->setArguments($arguments);
 
-        $this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
-        $this->viewHelper->initializeArgumentsAndRender();
+        $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<textarea placeholder="SomePlaceholder" name="NameOfTextarea"></textarea>';
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function renderAddsReadonly()
+    {
+        $arguments = [
+            'readonly' => 'foo',
+            'name' => 'NameOfTextarea',
+        ];
+        $this->viewHelper->setArguments($arguments);
+
+        $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<textarea readonly="foo" name="NameOfTextarea"></textarea>';
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function renderAddsRequired()
+    {
+        $arguments = [
+            'required' => true,
+            'name' => 'NameOfTextarea',
+        ];
+        $this->viewHelper->setArguments($arguments);
+
+        $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
+        $actual = $this->viewHelper->initializeArgumentsAndRender();
+        $expected = '<textarea name="NameOfTextarea" required="required"></textarea>';
+        $this->assertSame($expected, $actual);
     }
 }

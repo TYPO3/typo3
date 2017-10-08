@@ -50,6 +50,8 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textarea');
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
+        $this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the textarea', false);
+        $this->registerArgument('required', 'bool', 'Specifies whether the textarea is required', false, false);
         $this->registerUniversalTagAttributes();
     }
 
@@ -61,14 +63,17 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
      */
     public function render()
     {
+        $required = $this->arguments['required'];
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
         $this->setRespectSubmittedDataValue(true);
 
         $this->tag->forceClosingTag(true);
         $this->tag->addAttribute('name', $name);
+        if ($required === true) {
+            $this->tag->addAttribute('required', 'required');
+        }
         $this->tag->setContent(htmlspecialchars($this->getValueAttribute()));
-
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
 
