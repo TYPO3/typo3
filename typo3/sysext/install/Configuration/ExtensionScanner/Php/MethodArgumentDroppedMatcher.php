@@ -123,4 +123,10 @@ return [
             'Breaking-82629-TceDbOptionsPrErrAndUPTRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility->mkdir_deep' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-82702-SecondArgumentOfGeneralUtilitymkdir_deep.rst',
+        ],
+    ],
 ];

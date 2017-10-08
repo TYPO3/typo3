@@ -143,7 +143,7 @@ class TerService extends TerUtility implements SingletonInterface
                     throw new LanguageException('Given path is invalid.', 1352565336);
                 }
                 if (!is_dir($absoluteLanguagePath)) {
-                    GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
+                    GeneralUtility::mkdir_deep($absoluteLanguagePath);
                 }
                 GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $l10n[0]);
                 if (is_dir($absoluteExtensionLanguagePath)) {
@@ -220,7 +220,7 @@ class TerService extends TerUtility implements SingletonInterface
                     $fileName = array_pop($zipEntryPathSegments);
                     // It is a folder, because the last segment is empty, let's create it
                     if (empty($fileName)) {
-                        GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
+                        GeneralUtility::mkdir_deep($path . implode('/', $zipEntryPathSegments));
                     } else {
                         $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
                         if (trim($absoluteTargetPath) !== '') {

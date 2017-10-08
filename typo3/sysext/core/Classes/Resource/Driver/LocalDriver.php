@@ -231,7 +231,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
             $parts = array_map([$this, 'sanitizeFileName'], $parts);
             $newFolderName = implode('/', $parts);
             $newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
-            GeneralUtility::mkdir_deep($this->getAbsolutePath($parentFolderIdentifier) . '/', $newFolderName);
+            GeneralUtility::mkdir_deep($this->getAbsolutePath($parentFolderIdentifier) . '/' . $newFolderName);
         }
         return $newIdentifier;
     }

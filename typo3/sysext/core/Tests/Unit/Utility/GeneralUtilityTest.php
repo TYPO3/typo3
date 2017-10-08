@@ -2907,7 +2907,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         // Load fixture files and folders from disk
         FileStreamWrapper::init(PATH_site);
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', true);
-        GeneralUtility::mkdir_deep(PATH_site, $directoryToCreate);
+        GeneralUtility::mkdir_deep(PATH_site . $directoryToCreate);
         $this->assertTrue(is_dir(PATH_site . $directoryToCreate));
         FileStreamWrapper::destroy();
     }
@@ -2923,7 +2923,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $directory);
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $directory);
         $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
@@ -2942,7 +2942,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $subDirectory = $directory . '/bar';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
-        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+        GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
         $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
@@ -2963,7 +2963,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         @mkdir(($baseDirectory . $existingDirectory));
         $this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
         chmod($baseDirectory . $existingDirectory, 482);
-        GeneralUtility::mkdir_deep($baseDirectory, $existingDirectory . $newSubDirectory);
+        GeneralUtility::mkdir_deep($baseDirectory . $existingDirectory . $newSubDirectory);
         $this->assertEquals('0742', substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
     }
 
@@ -2976,7 +2976,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $directory);
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $directory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
@@ -2994,7 +2994,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
@@ -3012,7 +3012,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
             $directory = $this->getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/', $subDirectory);
+            GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/var/tests/' . $subDirectory);
             $this->testFilesToDelete[] = PATH_site . 'typo3temp/var/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(PATH_site . 'typo3temp/var/tests/' . $directory);
@@ -3031,7 +3031,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         vfsStreamWrapper::register();
         $baseDirectory = $this->getUniqueId('test_');
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
-        GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
+        GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/sub');
         $this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
     }
 

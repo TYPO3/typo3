@@ -2315,7 +2315,7 @@ class DataHandler
                             } elseif (@is_file($theFile)) {
                                 $dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
                                 if (!@is_dir($dest)) {
-                                    GeneralUtility::mkdir_deep(PATH_site, dirname($this->alternativeFilePath[$theFile]) . '/');
+                                    GeneralUtility::mkdir_deep($dest);
                                 }
                                 // Init:
                                 $maxSize = (int)$tcaFieldConf['max_size'];

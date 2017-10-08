@@ -298,7 +298,7 @@ class DocumentationService
                     $fileName = array_pop($zipEntryPathSegments);
                     // It is a folder, because the last segment is empty, let's create it
                     if (empty($fileName)) {
-                        GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
+                        GeneralUtility::mkdir_deep($path . implode('/', $zipEntryPathSegments));
                     } else {
                         $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
                         if (trim($absoluteTargetPath) !== '') {

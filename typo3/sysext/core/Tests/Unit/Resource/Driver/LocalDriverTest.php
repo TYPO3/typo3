@@ -1429,8 +1429,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName()
     {
         list($basePath, $subject) = $this->prepareRealTestEnvironment();
-        GeneralUtility::mkdir_deep($basePath, '/sourceFolder/subFolder');
-        GeneralUtility::mkdir_deep($basePath, '/targetFolder');
+        GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
+        GeneralUtility::mkdir_deep($basePath . '/targetFolder');
 
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
         $this->assertTrue(is_dir($basePath . '/targetFolder/newFolderName/subFolder'));
@@ -1442,8 +1442,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase
     public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName()
     {
         list($basePath, $subject) = $this->prepareRealTestEnvironment();
-        GeneralUtility::mkdir_deep($basePath, '/sourceFolder/subFolder');
-        GeneralUtility::mkdir_deep($basePath, '/targetFolder');
+        GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
+        GeneralUtility::mkdir_deep($basePath . '/targetFolder');
         file_put_contents($basePath . '/sourceFolder/subFolder/file', $this->getUniqueId());
         GeneralUtility::fixPermissions($basePath . '/sourceFolder/subFolder/file');
 

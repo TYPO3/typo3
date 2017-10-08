@@ -1996,7 +1996,7 @@ class GeneralUtility
             if (preg_match('#^(?:[[:alnum:]_]+/)+$#', $subdir)) {
                 $dirName .= $subdir;
                 if (!@is_dir($dirName)) {
-                    static::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
+                    static::mkdir_deep(PATH_site . 'typo3temp/' . $subdir);
                 }
             } else {
                 return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/+"';
@@ -2053,7 +2053,11 @@ class GeneralUtility
             throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
         }
         // Ensure there is only one slash
-        $fullPath = rtrim($directory, '/') . '/' . ltrim($deepDirectory, '/');
+        $fullPath = rtrim($directory, '/') . '/';
+        if ($deepDirectory !== '') {
+            trigger_error('Second argument $deepDirectory of GeneralUtility::mkdir_deep() will be removed in TYPO3 v10.0, use a combined string as first argument instead.', E_USER_DEPRECATED);
+            $fullPath .= ltrim($deepDirectory, '/');
+        }
         if ($fullPath !== '/' && !is_dir($fullPath)) {
             $firstCreatedPath = static::createDirectoryPath($fullPath);
             if ($firstCreatedPath !== '') {
