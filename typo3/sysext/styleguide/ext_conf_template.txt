@@ -129,3 +129,24 @@ compat_input_2 =
 compat_default_1 = value
 # cat=Compatibility/901/11; type=default; label=Input 2 - no value
 compat_default_2 =
+
+##########################
+### Nested declaration ###
+##########################
+
+nested {
+  # cat=Nested; type=input; label=Input 1
+  input_1 = aDefault
+  # cat=Nested; type=input; label=Input 2
+  input_2 =
+}
+
+##################################
+### Pre defined sub categories ###
+##################################
+
+    # cat=Pre defined/dims/10; type=int; label=Input 1
+predefined.int_1 = 42
+
+    # cat=Pre defined/enable/10; type=boolean; label=LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:extConfTemplateLocalizedLabel
+predefined.boolean_1 = 1

@@ -69,6 +69,9 @@
 			<trans-unit id="tcaDeleteActionOkBody" xml:space="preserve">
 				<source>The styleguide page tree and all styleguide records were deleted.</source>
 			</trans-unit>
+			<trans-unit id="extConfTemplateLocalizedLabel" xml:space="preserve">
+				<source>A localized label</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
