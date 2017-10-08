@@ -48,9 +48,6 @@
 									<showPossibleLocalizationRecords>1</showPossibleLocalizationRecords>
 									<showRemovedLocalizationRecords>1</showRemovedLocalizationRecords>
 								</appearance>
-								<behaviour type="array">
-									<localizeChildrenAtParentLocalization>1</localizeChildrenAtParentLocalization>
-								</behaviour>
 							</config>
 						</TCEforms>
 					</files>

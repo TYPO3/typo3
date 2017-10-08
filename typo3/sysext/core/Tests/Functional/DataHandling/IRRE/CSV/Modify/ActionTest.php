@@ -105,6 +105,40 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\CSV\
 
     /**
      * @test
+     * @see DataSet/copyParentContentToLanguage.csv
+     */
+    public function copyParentContentToLanguageWithAllChildren()
+    {
+        parent::copyParentContentToLanguage();
+        $this->assertAssertionDataSet('copyParentContentToLanguage');
+
+        $this->setUpFrontendRootPage(1, [
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.ts'
+        ]);
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
+     * @see DataSet/localizeParentContentWAllChildren.csv
+     */
+    public function localizeParentContentWithAllChildren()
+    {
+        parent::localizeParentContentWithAllChildren();
+        $this->assertAssertionDataSet('localizeParentContentWAllChildren');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+    }
+
+    /**
+     * @test
      * @see DataSet/localizeParentContentLanguageSynchronization.csv
      */
     public function localizeParentContentWithLanguageSynchronization()

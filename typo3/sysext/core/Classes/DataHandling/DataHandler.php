@@ -3159,9 +3159,7 @@ class DataHandler
      */
     protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, array $additionalData = null)
     {
-        $newValue = '';
         $foreignTable = $tcaFieldConf['foreign_table'];
-        $transOrigPointer = 0;
         $valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
         // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
         /** @var $dbAnalysis RelationHandler */
@@ -3174,17 +3172,15 @@ class DataHandler
             // update record in intermediate table (sorting & pointer uid to parent record)
             $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
             $newValue = $dbAnalysis->countItems(false);
+        } elseif ($this->getInlineFieldType($tcaFieldConf) === 'mm') {
+            // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
+            $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
+            $newValue = $valueArray[0];
         } else {
-            if ($this->getInlineFieldType($tcaFieldConf) === 'mm') {
-                // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
-                $valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
-                $newValue = $valueArray[0];
-            } else {
-                $valueArray = $dbAnalysis->getValueArray();
-                // Checking that the number of items is correct:
-                $valueArray = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
-                $newValue = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf);
-            }
+            $valueArray = $dbAnalysis->getValueArray();
+            // Checking that the number of items is correct:
+            $valueArray = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
+            $newValue = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf);
         }
         return $newValue;
     }
@@ -3861,13 +3857,11 @@ class DataHandler
         $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
         $mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
         $localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
-        $localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
-        $localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
+        // Localize referenced records of select fields:
+        $localizingNonManyToManyFieldReferences = empty($mmTable) && $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
         /** @var $dbAnalysis RelationHandler */
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
-        // Localize referenced records of select fields:
-        $localizingNonManyToManyFieldReferences = $localizeReferences && empty($mmTable);
         $purgeItems = false;
         if ($language > 0 && $localizingNonManyToManyFieldReferences) {
             foreach ($dbAnalysis->itemArray as $index => $item) {
@@ -3876,11 +3870,7 @@ class DataHandler
                 if ($recordLocalization) {
                     $dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
                 } elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === false) {
-                    if ($localizingNonManyToManyFieldReferences || $localizeChildren) {
-                        $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
-                    } else {
-                        unset($dbAnalysis->itemArray[$index]);
-                    }
+                    $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
                 }
             }
             $purgeItems = true;
@@ -3934,10 +3924,8 @@ class DataHandler
             $newId = null;
             // If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
             if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
-                // If children should be localized when the parent gets localized the first time, just do it:
-                if (isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
-                    $newId = $this->localize($v['table'], $v['id'], $language);
-                }
+                // Children should be localized when the parent gets localized the first time, just do it:
+                $newId = $this->localize($v['table'], $v['id'], $language);
             } else {
                 if (!MathUtility::canBeInterpretedAsInteger($realDestPid)) {
                     $newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);

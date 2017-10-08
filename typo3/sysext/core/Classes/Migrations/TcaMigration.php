@@ -87,6 +87,7 @@ class TcaMigration
         $tca = $this->migrateImageManipulationConfig($tca);
         $tca = $this->migrateinputDateTimeMax($tca);
         $tca = $this->migrateInlineOverrideChildTca($tca);
+        $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
         return $tca;
     }
 
@@ -2503,6 +2504,45 @@ class TcaMigration
             }
         }
 
+        return $tca;
+    }
+
+    /**
+     * Option $TCA[$table]['columns'][$columnName]['config']['behaviour']['localizeChildrenAtParentLocalization']
+     * is always on, so this option can be removed.
+     *
+     * @param array $tca
+     * @return array the modified TCA structure
+     */
+    protected function migrateLocalizeChildrenAtParentLocalization(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? null) !== 'inline') {
+                    continue;
+                }
+
+                $localizeChildrenAtParentLocalization = ($fieldConfig['config']['behaviour']['localizeChildrenAtParentLocalization'] ?? null);
+                if ($localizeChildrenAtParentLocalization === null) {
+                    continue;
+                }
+
+                if ($localizeChildrenAtParentLocalization) {
+                    $this->messages[] = 'The TCA setting \'localizeChildrenAtParentLocalization\' is deprecated '
+                        . ' and should be removed from TCA for ' . $table . '[\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'behaviour\'][\'localizeChildrenAtParentLocalization\']';
+                } else {
+                    $this->messages[] = 'The TCA setting \'localizeChildrenAtParentLocalization\' is deprecated '
+                        . ', as this functionality is always enabled. The option should be removed from TCA for '
+                        . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'behaviour\']'
+                        . '[\'localizeChildrenAtParentLocalization\']';
+                }
+                unset($fieldConfig['config']['behaviour']['localizeChildrenAtParentLocalization']);
+            }
+        }
         return $tca;
     }
 }

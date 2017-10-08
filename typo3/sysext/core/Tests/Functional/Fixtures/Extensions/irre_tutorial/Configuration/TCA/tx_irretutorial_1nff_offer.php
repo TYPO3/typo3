@@ -112,9 +112,6 @@ return [
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
                 ],
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => true,
-                ],
             ]
         ],
     ],

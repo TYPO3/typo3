@@ -576,10 +576,7 @@ class ExtensionManagementUtility
                     'hide' => true,
                     'delete' => true,
                 ],
-            ],
-            'behaviour' => [
-                'localizeChildrenAtParentLocalization' => true,
-            ],
+            ]
         ];
         ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
         return $fileFieldTCAConfig;

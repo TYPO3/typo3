@@ -24,9 +24,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
                 ],
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => true,
-                ],
             ]
         ],
         'tx_irretutorial_1ncsv_hotels' => [
@@ -41,9 +38,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                     'showRemovedLocalizationRecords' => 1,
-                ],
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => true,
                 ],
                 'default' => '',
             ]
