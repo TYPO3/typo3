@@ -19,7 +19,7 @@ version 2 of the License, or any later version.
 The GNU General Public License can be found at `
 *http://www.gnu.org/copyleft/gpl.html*
 <http://www.gnu.org/copyleft/gpl.html>`_ . A copy is found in the
-TYPO3 Sources at  *typo3/GPL.txt* .
+TYPO3 Sources at  *LICENSE.txt* .
 
 The modified Portable PHP password hashing framework, included in this
 extension, is retrieved from Drupal CMS. Drupal CMS is distributed

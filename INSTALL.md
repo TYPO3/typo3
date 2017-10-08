@@ -244,12 +244,10 @@ You end up with this files in your Document Root:
 ```
  .htaccess (only on Apache)
  web.config (only on IIS)
- ChangeLog
- GPL.txt
+ CONTRIBUTING.md
  index.php
  INSTALL.md
  LICENSE.txt
- NEWS.txt
  README.md
  typo3/
 ```
