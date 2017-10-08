@@ -1261,4 +1261,11 @@ return [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Version\DataHandler\CommandMap->setWorkspacesConsiderReferences' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82701-AlwaysConsiderPublishingReferencesInWorkspaces.rst',
+        ],
+    ],
 ];

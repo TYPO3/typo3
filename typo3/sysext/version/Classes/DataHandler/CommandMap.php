@@ -27,14 +27,11 @@ class CommandMap
     const SCOPE_WorkspacesSwap = 'SCOPE_WorkspacesSwap';
     const SCOPE_WorkspacesSetStage = 'SCOPE_WorkspacesSetStage';
     const SCOPE_WorkspacesClear = 'SCOPE_WorkspacesClear';
-    const KEY_ScopeErrorMessage = 'KEY_ScopeErrorMessage';
-    const KEY_ScopeErrorCode = 'KEY_ScopeErrorCode';
     const KEY_GetElementPropertiesCallback = 'KEY_GetElementPropertiesCallback';
     const KEY_GetCommonPropertiesCallback = 'KEY_GetCommonPropertiesCallback';
     const KEY_ElementConstructCallback = 'KEY_EventConstructCallback';
     const KEY_ElementCreateChildReferenceCallback = 'KEY_ElementCreateChildReferenceCallback';
     const KEY_ElementCreateParentReferenceCallback = 'KEY_ElementCreateParentReferenceCallback';
-    const KEY_PurgeWithErrorMessageGetIdCallback = 'KEY_PurgeWithErrorMessageGetIdCallback';
     const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
     const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 
@@ -69,11 +66,6 @@ class CommandMap
     protected $workspacesChangeStageMode;
 
     /**
-     * @var bool
-     */
-    protected $workspacesConsiderReferences;
-
-    /**
      * @var array
      */
     protected $scopes;
@@ -99,7 +91,6 @@ class CommandMap
         $this->setWorkspace($workspace);
         $this->setWorkspacesSwapMode($this->getTceMain()->BE_USER->getTSConfigVal('options.workspaces.swapMode'));
         $this->setWorkspacesChangeStageMode($this->getTceMain()->BE_USER->getTSConfigVal('options.workspaces.changeStageMode'));
-        $this->setWorkspacesConsiderReferences($this->getTceMain()->BE_USER->getTSConfigVal('options.workspaces.considerReferences'));
         $this->constructScopes();
     }
 
@@ -212,19 +203,6 @@ class CommandMap
     public function setWorkspacesChangeStageMode($workspacesChangeStageMode)
     {
         $this->workspacesChangeStageMode = (string)$workspacesChangeStageMode;
-        return $this;
-    }
-
-    /**
-     * Sets the workspace behaviour to automatically consider references
-     * (see options.workspaces.considerReferences)
-     *
-     * @param bool $workspacesConsiderReferences
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
-     */
-    public function setWorkspacesConsiderReferences($workspacesConsiderReferences)
-    {
-        $this->workspacesConsiderReferences = (bool)$workspacesConsiderReferences;
         return $this;
     }
 
@@ -488,7 +466,7 @@ class CommandMap
 
     /**
      * Applies the workspaces dependencies and removes incomplete structures or automatically
-     * completes them, depending on the options.workspaces.considerReferences setting
+     * completes them
      *
      * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
      * @param string $scope
@@ -512,34 +490,8 @@ class CommandMap
             // and the evaluation of all dependent records that should be used for this action instead:
             $intersectingElements = array_intersect_key($dependentElements, $elementsToBeVersioned);
             if (!empty($intersectingElements)) {
-                // If at least one element intersects but not all, throw away all elements of the depdendent structure:
-                if (count($intersectingElements) !== count($dependentElements) && $this->workspacesConsiderReferences === false) {
-                    $this->purgeWithErrorMessage($intersectingElements, $scope);
-                } else {
-                    $this->update(current($intersectingElements), $dependentElements, $scope);
-                }
+                $this->update(current($intersectingElements), $dependentElements, $scope);
             }
-        }
-    }
-
-    /**
-     * Purges incomplete structures from the command map and triggers an error message.
-     *
-     * @param array $elements
-     * @param string $scope
-     */
-    protected function purgeWithErrorMessage(array $elements, $scope)
-    {
-        /** @var $element ElementEntity */
-        foreach ($elements as $element) {
-            $table = $element->getTable();
-            $id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), [$element]);
-            $this->remove($table, $id, 'version');
-            $this->getTceMain()->log($table, $id, 5, 0, 1, $this->getScopeData($scope, self::KEY_ScopeErrorMessage), $this->getScopeData($scope, self::KEY_ScopeErrorCode), [
-                BackendUtility::getRecordTitle($table, BackendUtility::getRecord($table, $id)),
-                $table,
-                $id
-            ]);
         }
     }
 
@@ -757,9 +709,6 @@ class CommandMap
         $this->scopes = [
             // settings for publishing and swapping:
             self::SCOPE_WorkspacesSwap => [
-                // error message and error code
-                self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be swapped or published independently, because it is related to other new or modified records.',
-                self::KEY_ScopeErrorCode => 1288283630,
                 // callback functons used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
@@ -770,8 +719,6 @@ class CommandMap
                 // callback function used to determine whether an element is a valid child or parent reference (e.g. IRRE)
                 self::KEY_ElementCreateChildReferenceCallback => 'createNewDependentElementChildReferenceCallback',
                 self::KEY_ElementCreateParentReferenceCallback => 'createNewDependentElementParentReferenceCallback',
-                // callback function used to get the correct record uid to be used in the error message
-                self::KEY_PurgeWithErrorMessageGetIdCallback => 'getElementLiveIdCallback',
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementLiveIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
@@ -779,9 +726,6 @@ class CommandMap
             ],
             // settings for modifying the stage:
             self::SCOPE_WorkspacesSetStage => [
-                // error message and error code
-                self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be sent to another stage independently, because it is related to other new or modified records.',
-                self::KEY_ScopeErrorCode => 1289342524,
                 // callback functons used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
@@ -792,8 +736,6 @@ class CommandMap
                 // callback function used to determine whether an element is a valid child or parent reference (e.g. IRRE)
                 self::KEY_ElementCreateChildReferenceCallback => 'createNewDependentElementChildReferenceCallback',
                 self::KEY_ElementCreateParentReferenceCallback => 'createNewDependentElementParentReferenceCallback',
-                // callback function used to get the correct record uid to be used in the error message
-                self::KEY_PurgeWithErrorMessageGetIdCallback => 'getElementIdCallback',
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
@@ -801,9 +743,6 @@ class CommandMap
             ],
             // settings for clearing and flushing:
             self::SCOPE_WorkspacesClear => [
-                // error message and error code
-                self::KEY_ScopeErrorMessage => 'Record "%s" (%s:%s) cannot be flushed independently, because it is related to other new or modified records.',
-                self::KEY_ScopeErrorCode => 1300467990,
                 // callback functons used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
@@ -814,8 +753,6 @@ class CommandMap
                 // callback function used to determine whether an element is a valid child or parent reference (e.g. IRRE)
                 self::KEY_ElementCreateChildReferenceCallback => 'createClearDependentElementChildReferenceCallback',
                 self::KEY_ElementCreateParentReferenceCallback => 'createClearDependentElementParentReferenceCallback',
-                // callback function used to get the correct record uid to be used in the error message
-                self::KEY_PurgeWithErrorMessageGetIdCallback => 'getElementIdCallback',
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
