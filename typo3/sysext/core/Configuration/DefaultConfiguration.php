@@ -30,7 +30,7 @@ return [
         'processor_path' => '/usr/bin/',
         'processor_path_lzw' => '/usr/bin/',
         'processor' => 'ImageMagick',
-        'processor_effects' => 0,
+        'processor_effects' => false,
         'processor_allowUpscaling' => true,
         'processor_allowFrameSelection' => true,
         'processor_allowTemporaryMasksAsPng' => false,

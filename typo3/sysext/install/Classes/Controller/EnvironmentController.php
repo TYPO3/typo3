@@ -717,7 +717,7 @@ class EnvironmentController extends AbstractController
         $conf['niceText'] = 1;
         $conf['shadow.'] = [
             'offset' => '2,2',
-            'blur' => $imageProcessor->NO_IM_EFFECTS ? '90' : '20',
+            'blur' => '20',
             'opacity' => '50',
             'color' => 'black'
         ];
@@ -745,10 +745,9 @@ class EnvironmentController extends AbstractController
     {
         $imageProcessor = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $imageProcessor->init();
-        $imageProcessor->absPrefix = PATH_site;
-        $imageProcessor->dontCheckForExistingTempFile = 1;
+        $imageProcessor->dontCheckForExistingTempFile = true;
         $imageProcessor->filenamePrefix = 'installTool-';
-        $imageProcessor->dontCompress = 1;
+        $imageProcessor->dontCompress = true;
         $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
         return $imageProcessor;
     }
@@ -971,7 +970,7 @@ class EnvironmentController extends AbstractController
      */
     protected function getImagesPath(GraphicalFunctions $imageProcessor): string
     {
-        $imagePath = $imageProcessor->absPrefix . 'typo3temp/assets/images/';
+        $imagePath = PATH_site . 'typo3temp/assets/images/';
         if (!is_dir($imagePath)) {
             GeneralUtility::mkdir_deep($imagePath);
         }

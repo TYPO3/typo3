@@ -663,7 +663,7 @@ class GifBuilder extends GraphicalFunctions
      */
     public function getResource($file, $fileArray)
     {
-        if (!GeneralUtility::inList($this->imageFileExt, $fileArray['ext'])) {
+        if (!in_array($fileArray['ext'], $this->imageFileExt, true)) {
             $fileArray['ext'] = $this->gifExtension;
         }
         /** @var ContentObjectRenderer $cObj */

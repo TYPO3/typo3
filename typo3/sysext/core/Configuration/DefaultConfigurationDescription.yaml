@@ -35,12 +35,8 @@ GFX:
               'GraphicsMagick': 'Choose GraphicsMagick for processing images'
             description: 'Select which external software on the server should process images - see also the Preset functionality to see what is available.'
         processor_effects:
-            type: int
-            allowedValues:
-              '-1': 'Do not sharpen images by default'
-              '0': 'Disable all effects from ImageMagick/GraphicsMagick'
-              '1': 'All; blur and sharpening is allowed in ImageMagick'
-            description: 'Apply special ImageMagick functionality when processing images'
+            type: bool
+            description: 'If enabled, apply blur and sharpening in ImageMagick/GraphicMagick functions'
         processor_allowUpscaling:
             type: bool
             description: 'If set, images can be scaled up if told so (in <code>\TYPO3\CMS\Core\Imaging\GraphicalFunctions</code>)'

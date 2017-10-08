@@ -47,9 +47,9 @@ class GraphicalFunctions
     /**
      * File formats supported by gdlib. This variable get's filled in "init" method
      *
-     * @var string
+     * @var array
      */
-    public $gdlibExtensions = '';
+    protected $gdlibExtensions = [];
 
     /**
      * defines the RGB colorspace to use
@@ -100,24 +100,26 @@ class GraphicalFunctions
     public $truecolorColors = 16777215;
 
     /**
-     * Commalist of file extensions perceived as images by TYPO3.
-     * List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
+     * Allowed file extensions perceived as images by TYPO3.
+     * List should be set to 'gif,png,jpeg,jpg' if IM is not available.
      *
-     * @var string
+     * @var array
      */
-    public $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';
+    protected $imageFileExt = ['gif', 'jpg', 'jpeg', 'png', 'tif', 'bmp', 'tga', 'pcx', 'ai', 'pdf'];
 
     /**
-     * Commalist of web image extensions (can be shown by a webbrowser)
+     * Web image extensions (can be shown by a webbrowser)
      *
-     * @var string
+     * @var array
      */
-    public $webImageExt = 'gif,jpg,jpeg,png';
+    protected $webImageExt = ['gif', 'jpg', 'jpeg', 'png'];
 
     /**
-     * @var string
+     * Enable ImageMagick effects, disabled by default as IM5+ effects slow down the image generation
+     *
+     * @var bool
      */
-    public $NO_IM_EFFECTS = '';
+    protected $processorEffectsEnabled = false;
 
     /**
      * @var array
@@ -130,14 +132,14 @@ class GraphicalFunctions
     ];
 
     /**
-     * @var string
+     * @var bool
      */
-    public $NO_IMAGE_MAGICK = '';
+    protected $NO_IMAGE_MAGICK = false;
 
     /**
      * @var bool
      */
-    public $mayScaleUp = 1;
+    protected $mayScaleUp = true;
 
     /**
      * Filename prefix for images scaled in imageMagickConvert()
@@ -158,21 +160,14 @@ class GraphicalFunctions
      *
      * @var bool
      */
-    public $dontCheckForExistingTempFile = 0;
+    public $dontCheckForExistingTempFile = false;
 
     /**
      * Prevents imageMagickConvert() from compressing the gif-files with self::gifCompress()
      *
      * @var bool
      */
-    public $dontCompress = 0;
-
-    /**
-     * For debugging ONLY!
-     *
-     * @var bool
-     */
-    public $dontUnlinkTempFiles = 0;
+    public $dontCompress = false;
 
     /**
      * For debugging only.
@@ -203,13 +198,6 @@ class GraphicalFunctions
     protected $saveAlphaLayer = false;
 
     /**
-     * Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
-     *
-     * @var string
-     */
-    public $absPrefix = '';
-
-    /**
      * ImageMagick scaling command; "-geometry" or "-sample". Used in makeText() and imageMagickConvert()
      *
      * @var string
@@ -221,28 +209,28 @@ class GraphicalFunctions
      *
      * @var string
      */
-    public $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
+    protected $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
     /**
      * Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
      *
      * @var string
      */
-    public $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
+    protected $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
     /**
      * This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
      *
      * @var int
      */
-    public $pixelLimitGif = 10000;
+    protected $pixelLimitGif = 10000;
 
     /**
      * Array mapping HTML color names to RGB values.
      *
      * @var array
      */
-    public $colMap = [
+    protected $colMap = [
         'aqua' => [0, 255, 255],
         'black' => [0, 0, 0],
         'blue' => [0, 0, 255],
@@ -266,12 +254,12 @@ class GraphicalFunctions
      *
      * @var CharsetConverter
      */
-    public $csConvObj;
+    protected $csConvObj;
 
     /**
      * @var int
      */
-    public $jpegQuality = 85;
+    protected $jpegQuality = 85;
 
     /**
      * @var string
@@ -299,7 +287,7 @@ class GraphicalFunctions
     /**
      * @var array
      */
-    public $OFFSET;
+    protected $OFFSET;
 
     /**
      * @var resource
@@ -314,13 +302,14 @@ class GraphicalFunctions
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
         if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) {
-            $this->gdlibExtensions .= ',jpg,jpeg';
+            $this->gdlibExtensions[] = 'jpg';
+            $this->gdlibExtensions[] = 'jpeg';
         }
         if (function_exists('imagecreatefrompng') && function_exists('imagepng')) {
-            $this->gdlibExtensions .= ',png';
+            $this->gdlibExtensions[] = 'png';
         }
         if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
-            $this->gdlibExtensions .= ',gif';
+            $this->gdlibExtensions[] = 'gif';
         }
 
         if ($gfxConf['processor_colorspace'] && in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true)) {
@@ -328,7 +317,7 @@ class GraphicalFunctions
         }
 
         if (!$gfxConf['processor_enabled']) {
-            $this->NO_IMAGE_MAGICK = 1;
+            $this->NO_IMAGE_MAGICK = true;
         }
         // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 85);
@@ -336,24 +325,21 @@ class GraphicalFunctions
         if ($gfxConf['gdlib_png']) {
             $this->gifExtension = 'png';
         }
-        $this->imageFileExt = $gfxConf['imagefile_ext'];
+        $this->imageFileExt = GeneralUtility::trimExplode(',', $gfxConf['imagefile_ext']);
 
         // Boolean. This is necessary if using ImageMagick 5+.
         // Effects in Imagemagick 5+ tends to render very slowly!!
         // - therefore must be disabled in order not to perform sharpen, blurring and such.
-        $this->NO_IM_EFFECTS = 1;
         $this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
 
         // ... but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
-            $this->NO_IM_EFFECTS = 0;
+            $this->processorEffectsEnabled = true;
             $this->cmds['jpg'] .= $this->v5_sharpen(10);
             $this->cmds['jpeg'] .= $this->v5_sharpen(10);
         }
         // Secures that images are not scaled up.
-        if (!$gfxConf['processor_allowUpscaling']) {
-            $this->mayScaleUp = 0;
-        }
+        $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
         $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
     }
 
@@ -377,14 +363,14 @@ class GraphicalFunctions
         if ($conf['file'] && $conf['mask']) {
             $imgInf = pathinfo($conf['file']);
             $imgExt = strtolower($imgInf['extension']);
-            if (!GeneralUtility::inList($this->gdlibExtensions, $imgExt)) {
+            if (!in_array($imgExt, $this->gdlibExtensions, true)) {
                 $BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension);
             } else {
                 $BBimage = $this->getImageDimensions($conf['file']);
             }
             $maskInf = pathinfo($conf['mask']);
             $maskExt = strtolower($maskInf['extension']);
-            if (!GeneralUtility::inList($this->gdlibExtensions, $maskExt)) {
+            if (!in_array($maskExt, $this->gdlibExtensions, true)) {
                 $BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension);
             } else {
                 $BBmask = $this->getImageDimensions($conf['mask']);
@@ -441,11 +427,9 @@ class GraphicalFunctions
                     $im = $backIm;
                 }
                 // Unlink files from process
-                if (!$this->dontUnlinkTempFiles) {
-                    unlink($theDest);
-                    unlink($theImage);
-                    unlink($theMask);
-                }
+                unlink($theDest);
+                unlink($theImage);
+                unlink($theMask);
             }
         }
     }
@@ -461,7 +445,7 @@ class GraphicalFunctions
     public function copyImageOntoImage(&$im, $conf, $workArea)
     {
         if ($conf['file']) {
-            if (!GeneralUtility::inList($this->gdlibExtensions, $conf['BBOX'][2])) {
+            if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
                 $conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension);
                 $conf['file'] = $conf['BBOX'][3];
             }
@@ -641,7 +625,7 @@ class GraphicalFunctions
                 $this->ImageWrite($maskImg, $fileMask);
                 imagedestroy($maskImg);
                 // Downscales the mask
-                if ($this->NO_IM_EFFECTS) {
+                if (!$this->processorEffectsEnabled) {
                     $command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
                 } else {
                     $command = trim($conf['niceText.']['before'] . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . $conf['niceText.']['after'] . ' -negate');
@@ -670,11 +654,9 @@ class GraphicalFunctions
                     $im = $backIm;
                 }
                 // Deleting temporary files;
-                if (!$this->dontUnlinkTempFiles) {
-                    unlink($fileMenu);
-                    unlink($fileColor);
-                    unlink($fileMask);
-                }
+                unlink($fileMenu);
+                unlink($fileColor);
+                unlink($fileMask);
             }
         }
     }
@@ -1411,7 +1393,7 @@ class GraphicalFunctions
         $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', $conf['offset']));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
         // No effects if ImageMagick ver. 5+
-        if (!$blurRate || $this->NO_IM_EFFECTS) {
+        if (!$blurRate || !$this->processorEffectsEnabled) {
             $txtConf['fontColor'] = $conf['color'];
             $this->makeText($im, $txtConf, $workArea);
         } else {
@@ -1485,11 +1467,9 @@ class GraphicalFunctions
                 }
             }
             // Deleting temporary files;
-            if (!$this->dontUnlinkTempFiles) {
-                unlink($fileMenu);
-                unlink($fileColor);
-                unlink($fileMask);
-            }
+            unlink($fileMenu);
+            unlink($fileColor);
+            unlink($fileMask);
         }
     }
 
@@ -1597,12 +1577,12 @@ class GraphicalFunctions
                     $commands .= ' -gamma ' . (float)$value;
                     break;
                 case 'blur':
-                    if (!$this->NO_IM_EFFECTS) {
+                    if ($this->processorEffectsEnabled) {
                         $commands .= $this->v5_blur($value);
                     }
                     break;
                 case 'sharpen':
-                    if (!$this->NO_IM_EFFECTS) {
+                    if ($this->processorEffectsEnabled) {
                         $commands .= $this->v5_sharpen($value);
                     }
                     break;
@@ -1701,7 +1681,7 @@ class GraphicalFunctions
         $conf['offset'] = $cords[0] . ',' . $cords[1];
         $cords = $this->objPosition($conf, $this->workArea, [$cords[2], $cords[3]]);
         $newIm = imagecreatetruecolor($cords[2], $cords[3]);
-        $cols = $this->convertColor($conf['backColor'] ? $conf['backColor'] : $this->setup['backColor']);
+        $cols = $this->convertColor($conf['backColor'] ?: $this->setup['backColor']);
         $Bcolor = imagecolorallocate($newIm, $cols[0], $cols[1], $cols[2]);
         imagefilledrectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
         $newConf = [];
@@ -1747,11 +1727,9 @@ class GraphicalFunctions
                 // Clears workArea to total image
                 $this->setWorkArea('');
             }
-            if (!$this->dontUnlinkTempFiles) {
-                unlink($theFile);
-                if ($theNewFile[3] && $theNewFile[3] != $theFile) {
-                    unlink($theNewFile[3]);
-                }
+            unlink($theFile);
+            if ($theNewFile[3] && $theNewFile[3] != $theFile) {
+                unlink($theNewFile[3]);
             }
         }
     }
@@ -2092,7 +2070,7 @@ class GraphicalFunctions
             $newExt = $info[2];
         }
         if ($newExt === 'web') {
-            if (GeneralUtility::inList($this->webImageExt, $info[2])) {
+            if (in_array($info[2], $this->webImageExt, true)) {
                 $newExt = $info[2];
             } else {
                 $newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
@@ -2101,7 +2079,7 @@ class GraphicalFunctions
                 }
             }
         }
-        if (!GeneralUtility::inList($this->imageFileExt, $newExt)) {
+        if (!in_array($newExt, $this->imageFileExt, true)) {
             return null;
         }
 
@@ -2155,7 +2133,7 @@ class GraphicalFunctions
         }
         // Making the temporary filename:
         GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/assets/images/');
-        $output = $this->absPrefix . 'typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
+        $output = PATH_site . 'typo3temp/assets/images/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
         if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
@@ -2185,7 +2163,7 @@ class GraphicalFunctions
     public function getImageDimensions($imageFile)
     {
         preg_match('/([^\\.]*)$/', $imageFile, $reg);
-        if (file_exists($imageFile) && GeneralUtility::inList($this->imageFileExt, strtolower($reg[0]))) {
+        if (file_exists($imageFile) && in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
             if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
                 return $returnArr;
             }
@@ -2632,9 +2610,7 @@ class GraphicalFunctions
             $this->w = imagesx($im);
             $this->h = imagesy($im);
         }
-        if (!$this->dontUnlinkTempFiles) {
-            unlink($theFile);
-        }
+        unlink($theFile);
     }
 
     /**
@@ -2737,10 +2713,9 @@ class GraphicalFunctions
         $result = false;
         switch ($ext) {
             case 'jpg':
-
             case 'jpeg':
                 if (function_exists('imagejpeg')) {
-                    if ($quality == 0) {
+                    if ($quality === 0) {
                         $quality = $this->jpegQuality;
                     }
                     $result = imagejpeg($destImg, $theImage, $quality);
@@ -2791,7 +2766,6 @@ class GraphicalFunctions
                 }
                 break;
             case 'jpg':
-
             case 'jpeg':
                 if (function_exists('imagecreatefromjpeg')) {
                     return imagecreatefromjpeg($sourceImg);
@@ -2872,13 +2846,11 @@ class GraphicalFunctions
                 }
             }
             // Unlink files from process
-            if (!$this->dontUnlinkTempFiles) {
-                if ($origName) {
-                    @unlink($origName);
-                }
-                if ($postName) {
-                    @unlink($postName);
-                }
+            if ($origName) {
+                @unlink($origName);
+            }
+            if ($postName) {
+                @unlink($postName);
             }
         }
         return $retCol;

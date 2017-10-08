@@ -65,7 +65,6 @@ class LocalCropScaleMaskHelper
         /** @var $gifBuilder GifBuilder */
         $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
         $gifBuilder->init();
-        $gifBuilder->absPrefix = PATH_site;
 
         $configuration = $targetFile->getProcessingConfiguration();
         $configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters($configuration['additionalParameters'], $configuration);

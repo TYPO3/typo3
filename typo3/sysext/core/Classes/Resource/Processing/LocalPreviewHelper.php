@@ -119,7 +119,6 @@ class LocalPreviewHelper
             /** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
             $gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
             $gifBuilder->init();
-            $gifBuilder->absPrefix = PATH_site;
             $info = $gifBuilder->getImageDimensions($originalFileName);
             $newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], []);
             $result = [
