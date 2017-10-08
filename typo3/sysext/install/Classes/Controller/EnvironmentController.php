@@ -750,7 +750,6 @@ class EnvironmentController extends AbstractController
         $imageProcessor->filenamePrefix = 'installTool-';
         $imageProcessor->dontCompress = 1;
         $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
-        $imageProcessor->noFramePrepended = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowFrameSelection'];
         return $imageProcessor;
     }
 
