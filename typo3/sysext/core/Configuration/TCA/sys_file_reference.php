@@ -15,7 +15,6 @@ return [
         'cruser_id' => 'cruser_id',
         'type' => 'uid_local:type',
         'hideTable' => true,
-        'sortby' => 'sorting',
         'delete' => 'deleted',
         'versioningWS' => true,
         'languageField' => 'sys_language_uid',
