@@ -950,11 +950,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             return false;
         }
 
-        // Fail if user session is not in current IPLock Range
-        if ($sessionRecord['ses_iplock'] !== $this->ipLockClause_remoteIPNumber($this->lockIP) && $sessionRecord['ses_iplock'] !== '[DISABLED]') {
-            return false;
-        }
-
         $this->sessionData = unserialize($sessionRecord['ses_data']);
         // Session is anonymous so no need to fetch user
         if ($sessionRecord['ses_anonymous']) {
@@ -1058,7 +1053,16 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function isExistingSessionRecord($id)
     {
         try {
-            return !empty($this->getSessionBackend()->get($id));
+            $sessionRecord = $this->getSessionBackend()->get($id);
+            if (empty($sessionRecord)) {
+                return false;
+            }
+            // If the session does not match the current IP lock, it should be treated as invalid
+            // and a new session should be created.
+            if ($sessionRecord['ses_iplock'] !== $this->ipLockClause_remoteIPNumber($this->lockIP) && $sessionRecord['ses_iplock'] !== '[DISABLED]') {
+                return false;
+            }
+            return true;
         } catch (SessionNotFoundException $e) {
             return false;
         }
