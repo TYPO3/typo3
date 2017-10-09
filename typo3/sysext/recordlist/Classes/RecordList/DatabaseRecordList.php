@@ -919,6 +919,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         $tagAttributes = [
             'class' => ['t3js-entity'],
             'data-table' => $table,
+            'title' => 'id=' . $row['uid'],
         ];
 
         // Add special classes for first and last row
