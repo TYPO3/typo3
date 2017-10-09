@@ -3370,7 +3370,7 @@ class PageLayoutView implements LoggerAwareInterface
             'maxResults' => $this->iLimit ?: null
         ];
 
-        if ($this->iLimit !== null) {
+        if ($this->iLimit > 0) {
             $queryBuilder->setMaxResults($this->iLimit);
         }
 
