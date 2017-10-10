@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Lowlevel\View;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -29,13 +29,8 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 /**
  * Script class for the Config module
  */
-class ConfigurationView extends BaseScriptClass
+class ConfigurationView
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
     /**
      * The name of the module
      *
@@ -44,11 +39,22 @@ class ConfigurationView extends BaseScriptClass
     protected $moduleName = 'system_config';
 
     /**
-     * ModuleTemplate Container
+     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
      *
-     * @var ModuleTemplate
+     * @see init()
+     * @var array
      */
-    protected $moduleTemplate;
+    protected $MOD_MENU = [
+        'function' => []
+    ];
+
+    /**
+     * Current settings for the keys of the MOD_MENU array
+     *
+     * @see $MOD_MENU
+     * @var array
+     */
+    protected $MOD_SETTINGS = [];
 
     /**
      * Blind configurations which should not be visible
@@ -82,12 +88,17 @@ class ConfigurationView extends BaseScriptClass
     ];
 
     /**
-     * Constructor
+     * Injects the request object for the current request or subrequest
+     * Simply calls main() and init() and outputs the content
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
      */
-    public function __construct()
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->getRequest()->setControllerExtensionName('lowlevel');
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->getRequest()->setControllerExtensionName('lowlevel');
         // Prepare blinding for all database connection types
         foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
             if ($connectionName !== 'Default') {
@@ -95,23 +106,7 @@ class ConfigurationView extends BaseScriptClass
                     $this->blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
             }
         }
-    }
 
-    /**
-     * Initialization
-     */
-    public function init()
-    {
-        $this->menuConfig();
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
-    }
-
-    /**
-     * Menu Configuration
-     */
-    public function menuConfig()
-    {
         // MENU-ITEMS:
         // If array, then it's a selector box menu
         // If empty string it's just a variable, that'll be saved.
@@ -136,23 +131,20 @@ class ConfigurationView extends BaseScriptClass
         ];
         // CLEANSE SETTINGS
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
-    }
 
-    /**
-     * Main function
-     */
-    public function main()
-    {
+        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
+
         /** @var ArrayBrowser $arrayBrowser */
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
         $label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
         $search_field = GeneralUtility::_GP('search_field');
 
         $templatePathAndFilename = GeneralUtility::getFileAbsFileName('EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html');
-        $this->view->setTemplatePathAndFilename($templatePathAndFilename);
-        $this->view->assign('label', $label);
-        $this->view->assign('search_field', $search_field);
-        $this->view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
+        $view->setTemplatePathAndFilename($templatePathAndFilename);
+        $view->assign('label', $label);
+        $view->assign('search_field', $search_field);
+        $view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
 
         switch ($this->MOD_SETTINGS['function']) {
             case 0:
@@ -253,11 +245,11 @@ class ConfigurationView extends BaseScriptClass
         if (isset($this->blindedConfigurationOptions[$varName])) {
             ArrayUtility::mergeRecursiveWithOverrule($theVar, ArrayUtility::intersectRecursive($this->blindedConfigurationOptions[$varName], $theVar));
         }
-        $tree = $arrayBrowser->tree($theVar, '', '');
-        $this->view->assign('tree', $tree);
+        $tree = $arrayBrowser->tree($theVar, '');
+        $view->assign('tree', $tree);
 
         // Setting up the shortcut button for docheader
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($this->moduleName)
@@ -265,38 +257,7 @@ class ConfigurationView extends BaseScriptClass
             ->setSetVariables(['function']);
         $buttonBar->addButton($shortcutButton);
 
-        $this->getModuleMenu();
-
-        $this->content = '<form action="" id="ConfigurationView" method="post">';
-        $this->content .= $this->view->render();
-        $this->content .= '</form>';
-    }
-
-    /**
-     * Injects the request object for the current request or subrequest
-     * Simply calls main() and init() and outputs the content
-     *
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $GLOBALS['SOBE'] = $this;
-        $this->init();
-        $this->main();
-
-        $this->moduleTemplate->setContent($this->content);
-        $response->getBody()->write($this->moduleTemplate->renderContent());
-        return $response;
-    }
-
-    /**
-     * Generates the action menu
-     */
-    protected function getModuleMenu()
-    {
-        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('ConfigurationJumpMenu');
 
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
@@ -306,7 +267,7 @@ class ConfigurationView extends BaseScriptClass
                     BackendUtility::getModuleUrl(
                         $this->moduleName,
                         [
-                            'id' => $this->id,
+                            'id' => 0,
                             'SET' => [
                                 'function' => $controller
                             ]
@@ -319,6 +280,23 @@ class ConfigurationView extends BaseScriptClass
             }
             $menu->addMenuItem($item);
         }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
+        $content = '<form action="" id="ConfigurationView" method="post">';
+        $content .= $view->render();
+        $content .= '</form>';
+
+        $moduleTemplate->setContent($content);
+        $response->getBody()->write($moduleTemplate->renderContent());
+        return $response;
+    }
+
+    /**
+     * Returns the Backend User
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
