@@ -1351,6 +1351,16 @@ class FileList
         } else {
             $cells['rename'] = $this->spaceIcon;
         }
+
+        // upload files
+        if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
+            if ($fileOrFolderObject instanceof Folder) {
+                $url = BackendUtility::getModuleUrl('file_upload', ['target' => $fullIdentifier]);
+                $uploadOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
+                $cells['upload'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($uploadOnClick) . '"  title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.upload')) . '">' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
+            }
+        }
+
         if ($fileOrFolderObject->checkActionPermission('read')) {
             $infoOnClick = '';
             if ($fileOrFolderObject instanceof Folder) {
