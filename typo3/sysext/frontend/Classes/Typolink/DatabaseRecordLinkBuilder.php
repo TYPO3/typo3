@@ -64,6 +64,10 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         unset($conf['parameter.']);
         $typoScriptConfiguration = array_replace_recursive($conf, $typoScriptConfiguration);
 
+        if (!empty($linkDetails['fragment'])) {
+            $typoScriptConfiguration['section'] = $linkDetails['fragment'];
+        }
+
         // Build the full link to the record
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $localContentObjectRenderer->start($record, $linkHandlerConfiguration['table']);
