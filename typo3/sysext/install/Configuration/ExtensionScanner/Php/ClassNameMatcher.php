@@ -389,6 +389,11 @@ return [
             'Breaking-82689-BackendAbstractWizardControllerNotExtendsAbstractModule.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\ConfigurationForm' => [
+        'restFiles' => [
+            'Deprecation-82725-DeprecateConfigurationForm.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

@@ -1,0 +1,5 @@
+# cat=Basic/enable; type=user[TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=Frontend configuration check
+checkConfigurationFE=0
+
+# cat=Backend; type=boolean; label=Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.
+BE.forceSalted = 0

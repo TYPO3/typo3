@@ -158,10 +158,9 @@ class ExtensionManagerConfigurationUtility
      * $params['propertyName'] is set or not.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
      * @return array|string array with errorType and HTML or only the HTML as string
      */
-    public function checkConfigurationBackend(array $params, $pObj)
+    public function checkConfigurationBackend(array $params)
     {
         $this->init();
         $extConf = $this->extConf['BE'];
@@ -267,10 +266,9 @@ class ExtensionManagerConfigurationUtility
      * $params['propertyName'] is set or not.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
      * @return array|string array with errorType and HTML or only the HTML as string
      */
-    public function checkConfigurationFrontend(array $params, $pObj)
+    public function checkConfigurationFrontend(array $params)
     {
         $this->init();
         $extConf = $this->extConf['FE'];
@@ -356,11 +354,10 @@ class ExtensionManagerConfigurationUtility
      * Renders a selector element that allows to select the hash method to be used.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
      * @param string $disposal The configuration disposal ('FE' or 'BE')
      * @return string The HTML selector
      */
-    protected function buildHashMethodSelector(array $params, $pObj, $disposal)
+    protected function buildHashMethodSelector(array $params, $disposal)
     {
         $this->init();
         $propertyName = $params['propertyName'];
@@ -385,12 +382,11 @@ class ExtensionManagerConfigurationUtility
      * used (frontend disposal).
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
      * @return string The HTML selector
      */
-    public function buildHashMethodSelectorFE(array $params, $pObj)
+    public function buildHashMethodSelectorFE(array $params)
     {
-        return $this->buildHashMethodSelector($params, $pObj, 'FE');
+        return $this->buildHashMethodSelector($params, 'FE');
     }
 
     /**
@@ -398,12 +394,11 @@ class ExtensionManagerConfigurationUtility
      * be used (backend disposal)
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
      * @return string The HTML selector
      */
-    public function buildHashMethodSelectorBE(array $params, $pObj)
+    public function buildHashMethodSelectorBE(array $params)
     {
-        return $this->buildHashMethodSelector($params, $pObj, 'BE');
+        return $this->buildHashMethodSelector($params, 'BE');
     }
 
     /**

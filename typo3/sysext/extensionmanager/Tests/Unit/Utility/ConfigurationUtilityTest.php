@@ -123,49 +123,16 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
         $configurationUtility
             ->expects($this->once())
             ->method('getDefaultConfigurationRawString')
-            ->will($this->returnValue('foo'));
-
-        $tsStyleConfig = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)->getMock();
+            ->will($this->returnValue(file_get_contents(__DIR__ . '/Fixtures/ext_conf_template.txt')));
 
         $objectManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
         $configurationUtility->_set('objectManager', $objectManagerMock);
-        $objectManagerMock
-            ->expects($this->once())
-            ->method('get')
-            ->with(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)
-            ->will($this->returnValue($tsStyleConfig));
-
-        $constants = [
-            'checkConfigurationFE' => [
-                'cat' => 'basic',
-                'subcat_name' => 'enable',
-                'subcat' => 'a/enable/z',
-                'type' => 'user[TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]',
-                'label' => 'Frontend configuration check',
-                'name' => 'checkConfigurationFE',
-                'value' => '0',
-                'default_value' => '0'
-            ],
-            'BE.forceSalted' => [
-                'cat' => 'advancedbackend',
-                'subcat' => 'x/z',
-                'type' => 'boolean',
-                'label' => 'Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.',
-                'name' => 'BE.forceSalted',
-                'value' => '0',
-                'default_value' => '0'
-            ]
-        ];
-        $tsStyleConfig
-            ->expects($this->once())
-            ->method('ext_initTSstyleConfig')
-            ->will($this->returnValue($constants));
 
         $expected = [
             'checkConfigurationFE' => [
                 'cat' => 'basic',
                 'subcat_name' => 'enable',
-                'subcat' => 'a/enable/z',
+                'subcat' => 'a/enable/1z',
                 'type' => 'user[TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]',
                 'label' => 'Frontend configuration check',
                 'name' => 'checkConfigurationFE',
@@ -174,8 +141,8 @@ class ConfigurationUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                 'subcat_label' => 'Enable features',
             ],
             'BE.forceSalted' => [
-                'cat' => 'advancedbackend',
-                'subcat' => 'x/z',
+                'cat' => 'backend',
+                'subcat' => 'x/2z',
                 'type' => 'boolean',
                 'label' => 'Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.',
                 'name' => 'BE.forceSalted',

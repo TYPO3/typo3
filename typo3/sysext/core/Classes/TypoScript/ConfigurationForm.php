@@ -53,6 +53,14 @@ class ConfigurationForm extends ExtendedTemplateService
     protected $ext_realValues = [];
 
     /**
+     * Deprecate this class
+     */
+    public function __construct()
+    {
+        trigger_error('Class ConfigurationForm has been deprecated with v9 and will be removed in v10', E_USER_DEPRECATED);
+    }
+
+    /**
      * @param string $configTemplate
      * @return array
      */
