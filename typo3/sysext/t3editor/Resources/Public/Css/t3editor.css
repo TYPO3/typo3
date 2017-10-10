@@ -10,4 +10,4 @@
  * 
  * The TYPO3 project - inspiring people to share!
  */
-.CodeMirror-fullscreen{top:64px}.CodeMirror-panel{background:#f7f7f7;padding:3px 6px;font-size:.85em}.CodeMirror-panel-bottom{border-top:1px solid #ddd}div.CodeMirror span.CodeMirror-matchingbracket{color:#6ca52b}
+.CodeMirror-fullscreen{top:64px!important}.CodeMirror-panel{background:#f7f7f7;padding:3px 6px;font-size:.85em}.CodeMirror-panel-bottom{border-top:1px solid #ddd}div.CodeMirror span.CodeMirror-matchingbracket{color:#6ca52b}

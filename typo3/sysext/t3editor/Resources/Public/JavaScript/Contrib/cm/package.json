@@ -1,30 +1,30 @@
 {
-  "_from": "codemirror-minified",
-  "_id": "codemirror-minified@5.28.0",
+  "_from": "codemirror@^5.30.0",
+  "_id": "codemirror@5.30.0",
   "_inBundle": false,
-  "_integrity": "sha1-cWiy5Tfr/bJzySIdWNqNN/OKM6E=",
-  "_location": "/codemirror-minified",
+  "_integrity": "sha512-pfJV/7fLAUUenuGK3iANkQu1AxNLuWpeF7HV6YFDjSBMp53F8FTa2F6oPs9NKAHFweT2m08usmXUIA+7sohdew==",
+  "_location": "/codemirror",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "range",
     "registry": true,
-    "raw": "codemirror-minified",
-    "name": "codemirror-minified",
-    "escapedName": "codemirror-minified",
-    "rawSpec": "",
+    "raw": "codemirror@^5.30.0",
+    "name": "codemirror",
+    "escapedName": "codemirror",
+    "rawSpec": "^5.30.0",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "^5.30.0"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/codemirror-minified/-/codemirror-minified-5.28.0.tgz",
-  "_shasum": "7168b2e537ebfdb273c9221d58da8d37f38a33a1",
-  "_spec": "codemirror-minified",
+  "_resolved": "https://registry.npmjs.org/codemirror/-/codemirror-5.30.0.tgz",
+  "_shasum": "86e57dd5ea5535acbcf9c720797b4cefe05b5a70",
+  "_spec": "codemirror@^5.30.0",
   "_where": "/Volumes/VagrantCS/VagrantWMDB/vHosts/_typo3_src/master/Build",
   "bugs": {
-    "url": "https://github.com/Dominator008/CodeMirror-minified/issues"
+    "url": "http://github.com/codemirror/CodeMirror/issues"
   },
   "bundleDependencies": false,
   "contributors": [
@@ -236,6 +236,9 @@
       "name": "AQNOUCH Mohammed"
     },
     {
+      "name": "Aram Shatakhtsyan"
+    },
+    {
       "name": "areos"
     },
     {
@@ -413,6 +416,9 @@
       "name": "Chris Smith"
     },
     {
+      "name": "Christian Gruen"
+    },
+    {
       "name": "Christian Oyarzun"
     },
     {
@@ -438,6 +444,9 @@
     },
     {
       "name": "CodeAnimal"
+    },
+    {
+      "name": "CodeBitt"
     },
     {
       "name": "coderaiser"
@@ -489,6 +498,9 @@
     },
     {
       "name": "Daniel Parnell"
+    },
+    {
+      "name": "Daniel Thwaites"
     },
     {
       "name": "Danila Malyutin"
@@ -665,7 +677,13 @@
       "name": "Forrest Oliphant"
     },
     {
+      "name": "Franco Catena"
+    },
+    {
       "name": "Frank Wiegand"
+    },
+    {
+      "name": "Fredrik Borg"
     },
     {
       "name": "Gabriel Gheorghian"
@@ -791,6 +809,9 @@
       "name": "Ian Beck"
     },
     {
+      "name": "Ian Davies"
+    },
+    {
       "name": "Ian Dickinson"
     },
     {
@@ -911,6 +932,9 @@
       "name": "Jeff Blaisdell"
     },
     {
+      "name": "Jeff Hanke"
+    },
+    {
       "name": "Jeff Jenkins"
     },
     {
@@ -973,6 +997,9 @@
     },
     {
       "name": "Jonas Döbertin"
+    },
+    {
+      "name": "Jonas Helfer"
     },
     {
       "name": "Jonathan Malmaud"
@@ -1147,6 +1174,9 @@
     },
     {
       "name": "Lorenzo Stoakes"
+    },
+    {
+      "name": "Louis Mauchet"
     },
     {
       "name": "Luca Fabbri"
@@ -1347,6 +1377,9 @@
       "name": "Michael Lehenbauer"
     },
     {
+      "name": "Michael Walker"
+    },
+    {
       "name": "Michael Zhou"
     },
     {
@@ -1399,6 +1432,9 @@
     },
     {
       "name": "Moritz Schwörer"
+    },
+    {
+      "name": "Moshe Wajnberg"
     },
     {
       "name": "mps"
@@ -1588,6 +1624,9 @@
       "name": "Piët Delport"
     },
     {
+      "name": "Pieter Ouwerkerk"
+    },
+    {
       "name": "Pontus Melke"
     },
     {
@@ -1708,6 +1747,9 @@
       "name": "santec"
     },
     {
+      "name": "Sarah McAlear and Wenlin Zhang"
+    },
+    {
       "name": "Sascha Peilicke"
     },
     {
@@ -1733,6 +1775,9 @@
     },
     {
       "name": "Scott Goodhew"
+    },
+    {
+      "name": "Sebastian Wilzbach"
     },
     {
       "name": "Sebastian Zaha"
@@ -1814,6 +1859,9 @@
     },
     {
       "name": "Steffen Bruchmann"
+    },
+    {
+      "name": "Steffen Kowalski"
     },
     {
       "name": "Stephen Lavelle"
@@ -1984,6 +2032,9 @@
       "name": "Wesley Wiser"
     },
     {
+      "name": "Weston Ruter"
+    },
+    {
       "name": "Will Binns-Smith"
     },
     {
@@ -2020,6 +2071,9 @@
       "name": "Yuvi Panda"
     },
     {
+      "name": "Yvonnick Esnault"
+    },
+    {
       "name": "Zac Anger"
     },
     {
@@ -2042,30 +2096,19 @@
     }
   ],
   "deprecated": false,
-  "description": "Minified CodeMirror distribution",
+  "description": "Full-featured in-browser code editor",
   "devDependencies": {
-    "google-closure-compiler": "^20170806.0.0",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.7.0",
-    "gulp-flatmap": "^1.0.0"
+    "blint": "^1",
+    "node-static": "0.6.0",
+    "phantomjs-prebuilt": "^2.1.12",
+    "rollup": "^0.41.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-watch": "^3.2.0"
   },
   "directories": {
     "lib": "./lib"
   },
-  "files": [
-    "addon",
-    "keymap",
-    "lib",
-    "mode",
-    "theme",
-    "bower.json",
-    "package.json",
-    "AUTHORS",
-    "LICENSE",
-    "CHANGELOG.md",
-    "README.md"
-  ],
-  "homepage": "https://codemirror.net",
+  "homepage": "http://codemirror.net",
   "jspm": {
     "directories": {},
     "dependencies": {},
@@ -2074,21 +2117,29 @@
   "keywords": [
     "JavaScript",
     "CodeMirror",
-    "Editor",
-    "minified"
+    "Editor"
   ],
   "license": "MIT",
   "main": "lib/codemirror.js",
   "maintainers": [
     {
-      "name": "Michael Zhou",
-      "email": "zhoumotongxue008@gmail.com"
+      "name": "Marijn Haverbeke",
+      "email": "marijnh@gmail.com",
+      "url": "http://marijnhaverbeke.nl"
     }
   ],
-  "name": "codemirror-minified",
+  "name": "codemirror",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dominator008/CodeMirror-minified.git"
+    "url": "git+https://github.com/codemirror/CodeMirror.git"
   },
-  "version": "5.28.0"
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "bin/lint",
+    "prepare": "npm run-script build",
+    "test": "node ./test/run.js",
+    "watch": "rollup -w -c"
+  },
+  "style": "lib/codemirror.css",
+  "version": "5.30.0"
 }

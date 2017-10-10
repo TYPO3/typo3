@@ -390,6 +390,16 @@ module.exports = function (grunt) {
 						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.woff2'
 					}
 				]
+			},
+			t3editor: {
+				files: [
+					{
+						expand: true,
+						cwd: '<%= paths.npm %>codemirror',
+						dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/cm',
+						src: ['**/*', '!**/src/**', '!rollup.config.js']
+					}
+				]
 			}
 		},
 		npmcopy: {
@@ -407,14 +417,6 @@ module.exports = function (grunt) {
 					'plugins/': 'ckeditor/plugins/',
 					'skins/': 'ckeditor/skins/',
 					'lang/': 'ckeditor/lang/'
-				}
-			},
-			t3editor: {
-				options: {
-					destPrefix: "<%= paths.t3editor %>Public/JavaScript/Contrib"
-				},
-				files: {
-					'cm/': 'codemirror-minified/'
 				}
 			},
 			all: {
@@ -480,6 +482,22 @@ module.exports = function (grunt) {
 					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.npm %>chosen-js/chosen.jquery.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
 				}
+			},
+			t3editor: {
+				files: [
+					{
+						expand: true,
+						src: [
+							'<%= paths.t3editor %>Public/JavaScript/Contrib/cm/**/*.js',
+							'!<%= paths.t3editor %>Public/JavaScript/Contrib/cm/**/*.min.js'
+						],
+						dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/cm',
+						cwd: '.',
+						rename: function(dest, src) {
+							return src;
+						}
+					}
+				]
 			}
 		}
 	});

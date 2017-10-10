@@ -12,7 +12,7 @@ $panel-padding-horizontal: 6px;
 $color-matching-bracket: #6ca52b;
 
 .CodeMirror-fullscreen {
-    top: $fullscreen-top;
+    top: $fullscreen-top !important;
 }
 
 .CodeMirror-panel {
