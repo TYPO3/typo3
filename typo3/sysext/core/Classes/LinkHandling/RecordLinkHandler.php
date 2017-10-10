@@ -42,6 +42,10 @@ class RecordLinkHandler implements LinkHandlingInterface
         $urn = $this->baseUrn;
         $urn .= sprintf('?identifier=%s&uid=%s', $parameters['identifier'], $parameters['uid']);
 
+        if (!empty($parameters['fragment'])) {
+            $urn .= sprintf('#%s', $parameters['fragment']);
+        }
+
         return $urn;
     }
 
