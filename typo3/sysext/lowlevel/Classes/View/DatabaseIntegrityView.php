@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Lowlevel\View;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,6 +24,8 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -33,7 +34,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Script class for the DB int module
  */
-class DatabaseIntegrityView extends BaseScriptClass
+class DatabaseIntegrityView
 {
     /**
      * @var string
@@ -70,22 +71,48 @@ class DatabaseIntegrityView extends BaseScriptClass
     protected $moduleTemplate;
 
     /**
-     * Constructor
+     * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
+     *
+     * @see init()
+     * @var array
      */
-    public function __construct()
+    protected $MCONF = [
+        'name' => 'system_dbint',
+    ];
+
+    /**
+     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
+     *
+     * @see init()
+     * @var array
+     */
+    protected $MOD_MENU = [
+        'function' => []
+    ];
+
+    /**
+     * Current settings for the keys of the MOD_MENU array
+     *
+     * @see $MOD_MENU
+     * @var array
+     */
+    protected $MOD_SETTINGS = [];
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * Simply calls main() and init() and outputs the content
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         $this->getLanguageService()->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('lowlevel');
-    }
 
-    /**
-     * Initialization
-     */
-    public function init()
-    {
-        $this->MCONF['name'] = $this->moduleName;
         $this->menuConfig();
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->addJavaScriptCode(
@@ -97,12 +124,53 @@ class DatabaseIntegrityView extends BaseScriptClass
             }
             '
         );
+
+        switch ($this->MOD_SETTINGS['function']) {
+            case 'search':
+                $templateFilename = 'CustomSearch.html';
+                $this->func_search();
+                break;
+            case 'records':
+                $templateFilename = 'RecordStatistics.html';
+                $this->func_records();
+                break;
+            case 'relations':
+                $templateFilename = 'Relations.html';
+                $this->func_relations();
+                break;
+            case 'refindex':
+                $templateFilename = 'ReferenceIndex.html';
+                $this->func_refindex();
+                break;
+            default:
+                $templateFilename = 'IntegrityOverview.html';
+                $this->func_default();
+        }
+        $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . $templateFilename));
+        $content = '<form action="" method="post" id="DatabaseIntegrityView" name="' . $this->formName . '">';
+        $content .= $this->view->render();
+        $content .= '</form>';
+
+        // Setting up the shortcut button for docheader
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // Shortcut
+        $shortCutButton = $buttonBar->makeShortcutButton()
+            ->setModuleName($this->moduleName)
+            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
+            ->setSetVariables(['function', 'search', 'search_query_makeQuery']);
+        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+
+        $this->getModuleMenu();
+
+        $this->moduleTemplate->setContent($content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
+        return $response;
     }
 
     /**
      * Configure menu
      */
-    public function menuConfig()
+    protected function menuConfig()
     {
         $lang = $this->getLanguageService();
         // MENU-ITEMS:
@@ -188,68 +256,6 @@ class DatabaseIntegrityView extends BaseScriptClass
     }
 
     /**
-     * Main functions, is rendering the content
-     */
-    public function main()
-    {
-        switch ($this->MOD_SETTINGS['function']) {
-            case 'search':
-                $templateFilename = 'CustomSearch.html';
-                $this->func_search();
-                break;
-            case 'records':
-                $templateFilename = 'RecordStatistics.html';
-                $this->func_records();
-                break;
-            case 'relations':
-                $templateFilename = 'Relations.html';
-                $this->func_relations();
-                break;
-            case 'refindex':
-                $templateFilename = 'ReferenceIndex.html';
-                $this->func_refindex();
-                break;
-            default:
-                $templateFilename = 'IntegrityOverview.html';
-                $this->func_default();
-        }
-        $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . $templateFilename));
-        $this->content = '<form action="" method="post" id="DatabaseIntegrityView" name="' . $this->formName . '">';
-        $this->content .= $this->view->render();
-        $this->content .= '</form>';
-
-        // Setting up the shortcut button for docheader
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        // Shortcut
-        $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
-            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setSetVariables(['function', 'search', 'search_query_makeQuery']);
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-
-        $this->getModuleMenu();
-    }
-
-    /**
-     * Injects the request object for the current request or subrequest
-     * Simply calls main() and init() and outputs the content
-     *
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $GLOBALS['SOBE'] = $this;
-        $this->init();
-        $this->main();
-
-        $this->moduleTemplate->setContent($this->content);
-        $response->getBody()->write($this->moduleTemplate->renderContent());
-        return $response;
-    }
-
-    /**
      * Generates the action menu
      */
     protected function getModuleMenu()
@@ -264,7 +270,7 @@ class DatabaseIntegrityView extends BaseScriptClass
                     BackendUtility::getModuleUrl(
                         $this->moduleName,
                         [
-                            'id' => $this->id,
+                            'id' => 0,
                             'SET' => [
                                 'function' => $controller
                             ]
@@ -301,7 +307,7 @@ class DatabaseIntegrityView extends BaseScriptClass
     /**
      * Check and update reference index!
      */
-    public function func_refindex()
+    protected function func_refindex()
     {
         $readmeLocation = ExtensionManagementUtility::extPath('lowlevel', 'README.rst');
         $this->view->assign('ReadmeLink', PathUtility::getAbsoluteWebPath($readmeLocation));
@@ -320,7 +326,7 @@ class DatabaseIntegrityView extends BaseScriptClass
     /**
      * Search (Full / Advanced)
      */
-    public function func_search()
+    protected function func_search()
     {
         $lang = $this->getLanguageService();
         $searchMode = $this->MOD_SETTINGS['search'];
@@ -333,11 +339,11 @@ class DatabaseIntegrityView extends BaseScriptClass
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="checkbox"><label for="checkSearch_query_smallparts">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . $lang->getLL('showSQL') . '</label></div>';
-            $submenu .= '<div class="checkbox"><label for="checkSearch_result_labels">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . $lang->getLL('useFormattedStrings') . '</label></div>';
-            $submenu .= '<div class="checkbox"><label for="checkLabels_noprefix">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . $lang->getLL('dontUseOrigValues') . '</label></div>';
-            $submenu .= '<div class="checkbox"><label for="checkOptions_sortlabel">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'], '', '', 'id="checkOptions_sortlabel"') . $lang->getLL('sortOptions') . '</label></div>';
-            $submenu .= '<div class="checkbox"><label for="checkShow_deleted">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . $lang->getLL('showDeleted') . '</label></div>';
+            $submenu .= '<div class="checkbox"><label for="checkSearch_query_smallparts">' . BackendUtility::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . $lang->getLL('showSQL') . '</label></div>';
+            $submenu .= '<div class="checkbox"><label for="checkSearch_result_labels">' . BackendUtility::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . $lang->getLL('useFormattedStrings') . '</label></div>';
+            $submenu .= '<div class="checkbox"><label for="checkLabels_noprefix">' . BackendUtility::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . $lang->getLL('dontUseOrigValues') . '</label></div>';
+            $submenu .= '<div class="checkbox"><label for="checkOptions_sortlabel">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'], '', '', 'id="checkOptions_sortlabel"') . $lang->getLL('sortOptions') . '</label></div>';
+            $submenu .= '<div class="checkbox"><label for="checkShow_deleted">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . $lang->getLL('showDeleted') . '</label></div>';
         }
         $this->view->assign('submenu', $submenu);
         $this->view->assign('searchMode', $searchMode);
@@ -356,7 +362,7 @@ class DatabaseIntegrityView extends BaseScriptClass
     /**
      * Records overview
      */
-    public function func_records()
+    protected function func_records()
     {
         /** @var $admin DatabaseIntegrityCheck */
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
@@ -452,7 +458,7 @@ class DatabaseIntegrityView extends BaseScriptClass
     /**
      * Show list references
      */
-    public function func_relations()
+    protected function func_relations()
     {
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $fkey_arrays = $admin->getGroupFields('');
@@ -470,12 +476,19 @@ class DatabaseIntegrityView extends BaseScriptClass
     }
 
     /**
-     * Returns the ModuleTemplate container
-     *
-     * @return ModuleTemplate
+     * Returns the Language Service
+     * @return LanguageService
      */
-    public function getModuleTemplate()
+    protected function getLanguageService()
     {
-        return $this->moduleTemplate;
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
