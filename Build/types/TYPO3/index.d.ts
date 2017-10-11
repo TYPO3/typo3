@@ -75,3 +75,10 @@ declare module 'TYPO3/CMS/Core/Contrib/imagesloaded.pkgd.min' {
 }
 
 declare module 'cm/lib/codemirror';
+
+/**
+ * Required to make jQuery plugins "available" in TypeScript
+ */
+interface JQuery {
+  clearable(): JQuery;
+}
