@@ -81,7 +81,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
      */
     public function canHandleLink(array $linkParts): bool
     {
-        if (!$linkParts['url'] || !isset($linkParts['url']['identifier'])) {
+        if (!$linkParts['url'] || !isset($linkParts['url']['identifier']) || $linkParts['url']['identifier'] !== $this->identifier) {
             return false;
         }
 
