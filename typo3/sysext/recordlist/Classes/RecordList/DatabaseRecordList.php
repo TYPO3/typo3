@@ -33,6 +33,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -585,9 +587,16 @@ class DatabaseRecordList
 
     /**
      * Override/add urlparameters in listUrl() method
-     * @var string[]
+     * @var mixed[]
      */
     protected $overrideUrlParameters = [];
+
+    /**
+     * Current link: array with table names and uid
+     *
+     * @var array
+     */
+    protected $currentLink = [];
 
     /**
      * Only used to render translated records, used in list module to show page translations
@@ -1376,6 +1385,14 @@ class DatabaseRecordList
             'title' => 'id=' . $row['uid'],
         ];
 
+        // Add active class to record of current link
+        if (
+            isset($this->currentLink['tableNames'])
+            && (int)$this->currentLink['uid'] === (int)$row['uid']
+            && GeneralUtility::inList($this->currentLink['tableNames'], $table)
+        ) {
+            $tagAttributes['class'][] = 'active';
+        }
         // Add special classes for first and last row
         if ($cc == 1 && $indent == 0) {
             $tagAttributes['class'][] = 'firstcol';
@@ -2885,6 +2902,20 @@ class DatabaseRecordList
             );
         }
 
+        // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
+        $currentLinkValue = isset($this->overrideUrlParameters['P']['currentValue']) ? trim($this->overrideUrlParameters['P']['currentValue']) : '';
+        if ($currentLinkValue) {
+            $linkService = GeneralUtility::makeInstance(LinkService::class);
+            try {
+                $currentLinkParts = $linkService->resolve($currentLinkValue);
+                if ($currentLinkParts['type'] === 'record' && isset($currentLinkParts['identifier'])) {
+                    $this->currentLink['tableNames'] = $this->tableList;
+                    $this->currentLink['uid'] = (int)$currentLinkParts['uid'];
+                }
+            } catch (UnknownLinkHandlerException $e) {
+            }
+        }
+
         // $table might be NULL at this point in the code. As the expressionBuilder
         // is used to limit returned records based on the page permissions and the
         // uid field of the pages it can hardcoded to work on the pages table.
@@ -3837,6 +3868,10 @@ class DatabaseRecordList
      */
     public function setOverrideUrlParameters(array $urlParameters)
     {
+        $currentUrlParameter = GeneralUtility::_GP('curUrl');
+        if (isset($currentUrlParameter['url'])) {
+            $urlParameters['P']['currentValue'] = $currentUrlParameter['url'];
+        }
         $this->overrideUrlParameters = $urlParameters;
     }
 
