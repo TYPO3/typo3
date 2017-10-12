@@ -124,6 +124,7 @@ class SettingsController extends AbstractController
             ->fetchAll();
 
         $systemMaintainerList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
+        $systemMaintainerList = array_map('intval', $systemMaintainerList);
         $currentTime = time();
         foreach ($users as &$user) {
             $user['disable'] = $user['disable'] ||
@@ -172,6 +173,7 @@ class SettingsController extends AbstractController
             )->execute()->fetchAll();
 
         $validatedUserList = array_column($validatedUserList, 'uid');
+        $validatedUserList = array_map('intval', $validatedUserList);
 
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValuesByPathValuePairs(

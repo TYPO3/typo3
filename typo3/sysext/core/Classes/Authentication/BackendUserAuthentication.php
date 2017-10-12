@@ -463,6 +463,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
+        $systemMaintainers = array_map('intval', $systemMaintainers);
         if (!empty($systemMaintainers)) {
             return in_array($this->getRealUserId(), $systemMaintainers, true);
         }
