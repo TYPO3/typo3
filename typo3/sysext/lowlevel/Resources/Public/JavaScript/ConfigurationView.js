@@ -18,21 +18,20 @@
  */
 define(['jquery', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
 
-	var $searchFields = $('input[name="search_field"]');
-	var searchResultShown = ('' !== $searchFields.first().val());
+    var $searchFields = $('input[name="searchString"]');
+    var searchResultShown = ('' !== $searchFields.first().val());
 
-	// make search field clearable
-	$searchFields.clearable({
-		onClear: function() {
-			if (searchResultShown) {
-				$(this).closest('form').submit();
-			}
-		}
-	});
+    // make search field clearable
+    $searchFields.clearable({
+        onClear: function() {
+            if (searchResultShown) {
+                $(this).closest('form').submit();
+            }
+        }
+    });
 
-	// scroll page down, so the just opened subtree is visible after reload
-	// and not hidden by doc header
-	if (self.location.hash) {
-		window.scrollTo(window.pageXOffset, window.pageYOffset - 80);
-	}
+    if (self.location.hash) {
+        // scroll page down, so the just opened subtree is visible after reload and not hidden by doc header
+        $("html, body").scrollTop((document.documentElement.scrollTop || document.body.scrollTop) - 80);
+    }
 });

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\Controller;
 
 /*
@@ -20,44 +21,89 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 
 /**
- * Script class for the Config module
+ * View configuration arrays in the backend
  */
 class ConfigurationController
 {
     /**
-     * The name of the module
+     * Available trees to render.
+     *  * label is an LLL identifier
+     *  * type is used to identify the data source type
+     *  * globalKey (only for type=global) is the name of a global variable
      *
-     * @var string
-     */
-    protected $moduleName = 'system_config';
-
-    /**
-     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
-     *
-     * @see init()
      * @var array
      */
-    protected $MOD_MENU = [
-        'function' => []
+    protected $treeSetup = [
+        'confVars' => [
+            'label' => 'typo3ConfVars',
+            'type' => 'global',
+            'globalKey' => 'TYPO3_CONF_VARS',
+        ],
+        'tca' => [
+            'label' => 'tca',
+            'type' => 'global',
+            'globalKey' => 'TCA',
+        ],
+        'tcaDescr' => [
+            'label' => 'tcaDescr',
+            'type' => 'global',
+            'globalKey' => 'TCA_DESCR',
+        ],
+        'loadedExt' => [
+            'label' => 'loadedExt',
+            'type' => 'global',
+            'globalKey' => 'TYPO3_LOADED_EXT',
+        ],
+        'services' => [
+            'label' => 't3services',
+            'key' => 'services',
+            'type' => 'global',
+            'globalKey' => 'T3_SERVICES',
+        ],
+        'tbeModules' => [
+            'label' => 'tbemodules',
+            'type' => 'global',
+            'globalKey' => 'TBE_MODULES',
+        ],
+        'tbeModulesExt' => [
+            'label' => 'tbemodulesext',
+            'type' => 'global',
+            'globalKey' => 'TBE_MODULES_EXT',
+        ],
+        'tbeStyles' => [
+            'label' => 'tbeStyles',
+            'type' => 'global',
+            'globalKey' => 'TBE_STYLES',
+        ],
+        'userSettings' => [
+            'label' => 'usersettings',
+            'type' => 'global',
+            'globalKey' => 'TYPO3_USER_SETTINGS',
+        ],
+        'pagesTypes' => [
+            'label' => 'pagesTypes',
+            'type' => 'global',
+            'globalKey' => 'PAGES_TYPES',
+        ],
+        'beUserUc' => [
+            'label' => 'beUser',
+            'type' => 'uc',
+        ],
+        'beRoutes' => [
+            'label' => 'routes',
+            'type' => 'routes',
+        ],
     ];
 
     /**
-     * Current settings for the keys of the MOD_MENU array
-     *
-     * @see $MOD_MENU
-     * @var array
-     */
-    protected $MOD_SETTINGS = [];
-
-    /**
-     * Blind configurations which should not be visible
+     * Blind configurations which should not be visible to mortal admins
      *
      * @var array
      */
@@ -83,219 +129,139 @@ class ConfigurationController
             ],
             'SYS' => [
                 'encryptionKey' => '******'
-            ]
-        ]
+            ],
+        ],
     ];
 
     /**
-     * Injects the request object for the current request or subrequest
-     * Simply calls main() and init() and outputs the content
+     * Main controller action determines get/post values, takes care of
+     * stored backend user settings for this module, determines tree
+     * and renders it.
      *
      * @param ServerRequestInterface $request the current request
      * @param ResponseInterface $response
      * @return ResponseInterface the response with the content
+     * @throws \RuntimeException
      */
     public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
     {
+        $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+
+        $queryParams = $request->getQueryParams();
+        $postValues = $request->getParsedBody();
+
+        $moduleState = $backendUser->uc['moduleData']['system_config'] ?? [];
+
+        // Determine validated tree key and tree detail setup
+        $selectedTreeKey = $this->treeSetup[$queryParams['tree']] ? $queryParams['tree']
+            : ($this->treeSetup[$moduleState['tree']] ? $moduleState['tree'] : key($this->treeSetup));
+        $selectedTreeDetails = $this->treeSetup[$selectedTreeKey];
+        $moduleState['tree'] = $selectedTreeKey;
+
+        // Search string given or regex search enabled?
+        $searchString = (string)($postValues['searchString'] ? trim($postValues['searchString']) : '');
+        $moduleState['regexSearch'] = (bool)($postValues['regexSearch'] ?? $moduleState['regexSearch'] ?? false);
+
+        // Prepare main array
+        if ($selectedTreeDetails['type'] === 'global') {
+            $globalArrayKey = $selectedTreeDetails['globalKey'];
+            $renderArray = $GLOBALS[$globalArrayKey];
+            $blindedConfigurationOptions = $this->blindedConfigurationOptions;
+            if (isset($blindedConfigurationOptions[$globalArrayKey])) {
+                // Prepare blinding for all database connection types
+                foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
+                    if ($connectionName !== 'Default') {
+                        $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] =
+                            $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+                    }
+                }
+                ArrayUtility::mergeRecursiveWithOverrule(
+                    $renderArray,
+                    ArrayUtility::intersectRecursive($blindedConfigurationOptions[$globalArrayKey], $renderArray)
+                );
+            }
+        } elseif ($selectedTreeDetails['type'] === 'uc') {
+            $renderArray = $backendUser->uc;
+        } elseif ($selectedTreeDetails['type'] === 'routes') {
+            $router = GeneralUtility::makeInstance(Router::class);
+            $routes = $router->getRoutes();
+            $renderArray = [];
+            foreach ($routes as $identifier => $route) {
+                /** @var $route \TYPO3\CMS\Backend\Routing\Route */
+                $renderArray[$identifier] = [
+                    'path' => $route->getPath(),
+                    'options' => $route->getOptions()
+                ];
+            }
+        } else {
+            throw new \RuntimeException('Unknown array type "' . $selectedTreeDetails['type'] . '"', 1507845662);
+        }
+        ArrayUtility::naturalKeySortRecursive($renderArray);
+
+        // Prepare array renderer class, apply search and expand / collapse states
+        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
+        $arrayBrowser->dontLinkVar = true;
+        $arrayBrowser->searchKeysToo = true;
+        $arrayBrowser->regexMode = $moduleState['regexSearch'];
+        $node = $queryParams['node'];
+        if ($searchString) {
+            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($renderArray, '', $searchString, []);
+        } elseif (is_array($node)) {
+            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleState['node_' . $selectedTreeKey]);
+            $arrayBrowser->depthKeys = $newExpandCollapse;
+            $moduleState['node_' . $selectedTreeKey] = $newExpandCollapse;
+        } else {
+            $arrayBrowser->depthKeys = $moduleState['node_' . $selectedTreeKey] ?? [];
+        }
+
+        // Store new state
+        $backendUser->uc['moduleData']['system_config'] = $moduleState;
+        $backendUser->writeUC();
+
+        // Render main body
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->getRequest()->setControllerExtensionName('lowlevel');
-        // Prepare blinding for all database connection types
-        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
-            if ($connectionName !== 'Default') {
-                $this->blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] =
-                    $this->blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
-            }
-        }
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html'
+        ));
+        $view->assignMultiple([
+            'treeName' => $selectedTreeDetails['label'],
+            'searchString' => $searchString,
+            'regexSearch' => $moduleState['regexSearch'],
+            'tree' => $arrayBrowser->tree($renderArray, ''),
+        ]);
 
-        // MENU-ITEMS:
-        // If array, then it's a selector box menu
-        // If empty string it's just a variable, that'll be saved.
-        // Values NOT in this array will not be saved in the settings-array for the module.
-        $this->MOD_MENU = [
-            'function' => [
-                0 => LocalizationUtility::translate('typo3ConfVars', 'lowlevel'),
-                1 => LocalizationUtility::translate('tca', 'lowlevel'),
-                2 => LocalizationUtility::translate('tcaDescr', 'lowlevel'),
-                3 => LocalizationUtility::translate('loadedExt', 'lowlevel'),
-                4 => LocalizationUtility::translate('t3services', 'lowlevel'),
-                5 => LocalizationUtility::translate('tbemodules', 'lowlevel'),
-                6 => LocalizationUtility::translate('tbemodulesext', 'lowlevel'),
-                7 => LocalizationUtility::translate('tbeStyles', 'lowlevel'),
-                8 => LocalizationUtility::translate('beUser', 'lowlevel'),
-                9 => LocalizationUtility::translate('usersettings', 'lowlevel'),
-                10 => LocalizationUtility::translate('pagesTypes', 'lowlevel'),
-                11 => LocalizationUtility::translate('routes', 'lowlevel'),
-            ],
-            'regexsearch' => '',
-            'fixedLgd' => ''
-        ];
-        // CLEANSE SETTINGS
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
-
+        // Prepare module setup
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $moduleTemplate->setContent($view->render());
         $moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
 
-        /** @var ArrayBrowser $arrayBrowser */
-        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
-        $label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
-        $search_field = GeneralUtility::_GP('search_field');
+        // Shortcut in doc header
+        $shortcutButton = $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
+        $shortcutButton->setModuleName('system_config')
+            ->setDisplayName($languageService->sL(
+                'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:' . $selectedTreeDetails['label']
+            ))
+            ->setSetVariables(['tree']);
+        $moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
 
-        $templatePathAndFilename = GeneralUtility::getFileAbsFileName('EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html');
-        $view->setTemplatePathAndFilename($templatePathAndFilename);
-        $view->assign('label', $label);
-        $view->assign('search_field', $search_field);
-        $view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
-
-        switch ($this->MOD_SETTINGS['function']) {
-            case 0:
-                $theVar = $GLOBALS['TYPO3_CONF_VARS'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TYPO3_CONF_VARS';
-                break;
-            case 1:
-                $theVar = $GLOBALS['TCA'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TCA';
-                break;
-            case 2:
-                $theVar = $GLOBALS['TCA_DESCR'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TCA_DESCR';
-                break;
-            case 3:
-                $theVar = $GLOBALS['TYPO3_LOADED_EXT'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TYPO3_LOADED_EXT';
-                break;
-            case 4:
-                $theVar = $GLOBALS['T3_SERVICES'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$T3_SERVICES';
-                break;
-            case 5:
-                $theVar = $GLOBALS['TBE_MODULES'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TBE_MODULES';
-                break;
-            case 6:
-                $theVar = $GLOBALS['TBE_MODULES_EXT'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TBE_MODULES_EXT';
-                break;
-            case 7:
-                $theVar = $GLOBALS['TBE_STYLES'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TBE_STYLES';
-                break;
-            case 8:
-                $theVar = $GLOBALS['BE_USER']->uc;
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$BE_USER->uc';
-                break;
-            case 9:
-                $theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
-                break;
-            case 10:
-                $theVar = $GLOBALS['PAGES_TYPES'];
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = '$PAGES_TYPES';
-                break;
-            case 11:
-                $router = GeneralUtility::makeInstance(Router::class);
-                $routes = $router->getRoutes();
-                $theVar = [];
-                foreach ($routes as $identifier => $route) {
-                    $theVar[$identifier] = [
-                        'path' => $route->getPath(),
-                        'options' => $route->getOptions()
-                    ];
-                }
-                ArrayUtility::naturalKeySortRecursive($theVar);
-                $arrayBrowser->varName = 'BackendRoutes';
-                break;
-            default:
-                $theVar = [];
-        }
-        // Update node:
-        $update = 0;
-        $node = GeneralUtility::_GET('node');
-        // If any plus-signs were clicked, it's registered.
-        if (is_array($node)) {
-            $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]);
-            $update = 1;
-        }
-        if ($update) {
-            $this->getBackendUser()->pushModuleData($this->moduleName, $this->MOD_SETTINGS);
-        }
-        $arrayBrowser->dontLinkVar = true;
-        $arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
-        $arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
-        $arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
-        $arrayBrowser->searchKeysToo = true;
-
-        // If any POST-vars are send, update the condition array
-        if (GeneralUtility::_POST('search') && trim($search_field)) {
-            $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, []);
-        }
-
-        // mask sensitive information
-        $varName = trim($arrayBrowser->varName, '$');
-        if (isset($this->blindedConfigurationOptions[$varName])) {
-            ArrayUtility::mergeRecursiveWithOverrule($theVar, ArrayUtility::intersectRecursive($this->blindedConfigurationOptions[$varName], $theVar));
-        }
-        $tree = $arrayBrowser->tree($theVar, '');
-        $view->assign('tree', $tree);
-
-        // Setting up the shortcut button for docheader
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
-            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setSetVariables(['function']);
-        $buttonBar->addButton($shortcutButton);
-
+        // Main drop down in doc header
         $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('ConfigurationJumpMenu');
-
-        foreach ($this->MOD_MENU['function'] as $controller => $title) {
-            $item = $menu
-                ->makeMenuItem()
-                ->setHref(
-                    BackendUtility::getModuleUrl(
-                        $this->moduleName,
-                        [
-                            'id' => 0,
-                            'SET' => [
-                                'function' => $controller
-                            ]
-                        ]
-                    )
-                )
-                ->setTitle($title);
-            if ($controller === (int)$this->MOD_SETTINGS['function']) {
-                $item->setActive(true);
+        $menu->setIdentifier('tree');
+        foreach ($this->treeSetup as $treeKey => $treeDetails) {
+            $menuItem = $menu->makeMenuItem();
+            $menuItem->setHref(BackendUtility::getModuleUrl('system_config', ['tree' => $treeKey]))
+                ->setTitle($languageService->sL(
+                    'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:' . $treeDetails['label']
+                ));
+            if ($selectedTreeKey === $treeKey) {
+                $menuItem->setActive(true);
             }
-            $menu->addMenuItem($item);
+            $menu->addMenuItem($menuItem);
         }
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $moduleTemplate->addJavaScriptCode(
-            'jumpToUrl',
-            '
-            function jumpToUrl(URL) {
-                window.location.href = URL;
-                return false;
-            }
-            '
-        );
 
-        $content = '<form action="" id="ConfigurationView" method="post">';
-        $content .= $view->render();
-        $content .= '</form>';
-
-        $moduleTemplate->setContent($content);
         $response->getBody()->write($moduleTemplate->renderContent());
         return $response;
     }
@@ -307,5 +273,13 @@ class ConfigurationController
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
