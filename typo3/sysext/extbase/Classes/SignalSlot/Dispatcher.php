@@ -90,7 +90,9 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             'object' => $object,
             'passSignalInformation' => $passSignalInformation === true
         ];
-        if (!is_array($this->slots[$signalClassName][$signalName]) || !in_array($slot, $this->slots[$signalClassName][$signalName])) {
+        // The in_array() comparision needs to be strict to avoid potential issues
+        // with complex objects being registered as slot.
+        if (!is_array($this->slots[$signalClassName][$signalName]) || !in_array($slot, $this->slots[$signalClassName][$signalName], true)) {
             $this->slots[$signalClassName][$signalName][] = $slot;
         }
     }
