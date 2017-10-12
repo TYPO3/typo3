@@ -320,5 +320,14 @@ class ConfigurationView extends BaseScriptClass
             $menu->addMenuItem($item);
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $this->moduleTemplate->addJavaScriptCode(
+            'jumpToUrl',
+            '
+            function jumpToUrl(URL) {
+                window.location.href = URL;
+                return false;
+            }
+            '
+        );
     }
 }
