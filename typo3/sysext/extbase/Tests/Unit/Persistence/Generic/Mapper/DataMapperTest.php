@@ -18,6 +18,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
@@ -64,7 +65,26 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $className = $this->getUniqueId('Class');
         $classNameWithNS = __NAMESPACE__ . '\\' . $className;
         eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-		 public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty;
+		 
+		 /**
+		  * @var string
+		  */
+		 public $firstProperty; 
+		 
+		 /**
+		  * @var int
+		  */
+		 public $secondProperty; 
+		 
+		 /**
+		  * @var float
+		  */
+		 public $thirdProperty; 
+		 
+		 /**
+		  * @var bool
+		  */
+		 public $fourthProperty;
 		 }'
         );
         $object = new $classNameWithNS();
@@ -88,13 +108,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $classNameWithNS => $dataMap
         ];
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
-        $classSchema = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], [$classNameWithNS]);
-        $classSchema->addProperty('pid', 'integer');
-        $classSchema->addProperty('uid', 'integer');
-        $classSchema->addProperty('firstProperty', 'string');
-        $classSchema->addProperty('secondProperty', 'integer');
-        $classSchema->addProperty('thirdProperty', 'float');
-        $classSchema->addProperty('fourthProperty', 'boolean');
+        $classSchema = new ClassSchema($classNameWithNS);
         $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
             ->setMethods(['getClassSchema'])
             ->getMock();
@@ -189,17 +203,21 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $className = $this->getUniqueId('Class1');
         $classNameWithNS = __NAMESPACE__ . '\\' . $className;
-        eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { public $relationProperty; }');
-        $object = new $classNameWithNS();
 
         $className2 = $this->getUniqueId('Class2');
         $className2WithNS = __NAMESPACE__ . '\\' . $className2;
         eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { }');
+        eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' { 
+            /**
+             * @var ' . $className2WithNS . '
+             */
+            public $relationProperty; 
+        }');
+        $object = new $classNameWithNS();
         $child = new $className2WithNS();
 
         /** @var \TYPO3\CMS\Extbase\Reflection\ClassSchema|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $classSchema1 */
-        $classSchema1 = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class, ['dummy'], [$classNameWithNS]);
-        $classSchema1->addProperty('relationProperty', $className2WithNS);
+        $classSchema1 = new ClassSchema($classNameWithNS);
         $identifier = 1;
 
         $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();

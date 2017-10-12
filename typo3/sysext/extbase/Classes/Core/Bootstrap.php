@@ -31,13 +31,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     public $cObj;
 
     /**
-     * The application context
-     *
-     * @var string
-     */
-    protected $context;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
      */
     protected $configurationManager;
@@ -46,16 +39,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
@@ -86,8 +69,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         $this->initializeObjectManager();
         $this->initializeConfiguration($configuration);
         $this->configureObjectManager();
-        $this->initializeCache();
-        $this->initializeReflection();
         $this->initializePersistence();
     }
 
@@ -138,30 +119,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     }
 
     /**
-     * Initializes the cache framework
-     *
-     * @see initialize()
-     */
-    protected function initializeCache()
-    {
-        $this->cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-    }
-
-    /**
-     * Initializes the Reflection Service
-     *
-     * @see initialize()
-     */
-    protected function initializeReflection()
-    {
-        $this->reflectionService = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $this->reflectionService->setDataCache($this->cacheManager->getCache('extbase_reflection'));
-        if (!$this->reflectionService->isInitialized()) {
-            $this->reflectionService->initialize();
-        }
-    }
-
-    /**
      * Initializes the persistence framework
      *
      * @see initialize()
@@ -201,7 +158,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         // This happens for instance, when a USER object was converted to a USER_INT
         // @see TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::handleRequest()
         if ($response === null) {
-            $this->reflectionService->shutdown();
             $content = '';
         } else {
             $content = $response->shutdown();
@@ -221,7 +177,6 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     protected function resetSingletons()
     {
         $this->persistenceManager->persistAll();
-        $this->reflectionService->shutdown();
     }
 
     /**

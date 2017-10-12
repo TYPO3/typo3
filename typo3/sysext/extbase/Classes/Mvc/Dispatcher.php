@@ -26,11 +26,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
@@ -39,14 +34,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      * @var array
      */
     protected $settings = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
 
     /**
      * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher

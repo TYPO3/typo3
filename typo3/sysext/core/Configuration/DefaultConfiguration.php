@@ -183,17 +183,9 @@ return [
                     'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
                     'groups' => ['system'],
                 ],
-                'extbase_object' => [
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                    'options' => [
-                        'defaultLifetime' => 0,
-                    ],
-                    'groups' => ['system']
-                ],
                 'extbase_reflection' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
                     'options' => [
                         'defaultLifetime' => 0,
                     ],

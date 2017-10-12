@@ -256,7 +256,8 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 'array' => false,
                 'optional' => false,
                 'allowsNull' => false,
-                'type' => 'string'
+                'type' => 'string',
+                'hasDefaultValue' => false
             ],
             'arg2' => [
                 'position' => 1,
@@ -264,7 +265,8 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 'array' => true,
                 'optional' => true,
                 'defaultValue' => [21],
-                'allowsNull' => false
+                'allowsNull' => false,
+                'hasDefaultValue' => true
             ],
             'arg3' => [
                 'position' => 2,
@@ -273,7 +275,8 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
                 'optional' => true,
                 'defaultValue' => 42,
                 'allowsNull' => false,
-                'type' => 'string'
+                'type' => 'string',
+                'hasDefaultValue' => true
             ]
         ];
         $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);

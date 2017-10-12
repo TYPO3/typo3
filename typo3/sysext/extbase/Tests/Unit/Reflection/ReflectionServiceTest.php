@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
@@ -45,7 +46,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function getClassTagsValues()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $classValues = $service->getClassTagsValues(static::class);
         $this->assertEquals([
             'firsttest' => ['test for reflection'],
@@ -58,7 +59,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function getClassTagValues()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $classValues = $service->getClassTagValues(static::class, 'firsttest');
         $this->assertEquals([
             'test for reflection',
@@ -70,7 +71,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function hasMethod()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $this->assertTrue($service->hasMethod(static::class, 'fixtureMethodForMethodTagsValues'));
         $this->assertFalse($service->hasMethod(static::class, 'notExistentMethod'));
     }
@@ -80,7 +81,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function getMethodTagsValues()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $tagsValues = $service->getMethodTagsValues(static::class, 'fixtureMethodForMethodTagsValues');
         $this->assertEquals([
             'param' => ['array $foo The foo parameter'],
@@ -93,7 +94,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function getMethodParameters()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValues');
         $this->assertSame([
             'foo' => [
@@ -103,7 +104,12 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'optional' => false,
                 'allowsNull' => false,
                 'class' => null,
-                'type' => 'array'
+                'type' => 'array',
+                'nullable' => false,
+                'default' =>  null,
+                'hasDefaultValue' =>  false,
+                'defaultValue' =>  null,
+                'dependency' =>  null,
             ]
         ], $parameters);
     }
@@ -113,7 +119,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function getMethodParametersWithShortTypeNames()
     {
-        $service = new ReflectionService();
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
         $parameters = $service->getMethodParameters(static::class, 'fixtureMethodForMethodTagsValuesWithShortTypes');
         $this->assertSame([
             'dummy' => [
@@ -123,7 +129,12 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'optional' => false,
                 'allowsNull' => true,
                 'class' => null,
-                'type' => 'boolean'
+                'type' => 'boolean',
+                'nullable' => true,
+                'default' =>  null,
+                'hasDefaultValue' =>  false,
+                'defaultValue' =>  null,
+                'dependency' =>  null,
             ],
             'foo' => [
                 'position' => 1,
@@ -132,7 +143,12 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'optional' => false,
                 'allowsNull' => true,
                 'class' => null,
-                'type' => 'integer'
+                'type' => 'integer',
+                'nullable' => true,
+                'default' =>  null,
+                'hasDefaultValue' =>  false,
+                'defaultValue' =>  null,
+                'dependency' =>  null,
             ]
         ], $parameters);
     }

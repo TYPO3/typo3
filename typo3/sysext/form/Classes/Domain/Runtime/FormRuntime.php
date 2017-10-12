@@ -26,7 +26,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
-use TYPO3\CMS\Extbase\Reflection\PropertyReflection;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -700,7 +699,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return true;
         }
         if (property_exists($this, $identifier)) {
-            $propertyReflection = new PropertyReflection($this, $identifier);
+            $propertyReflection = new \ReflectionProperty($this, $identifier);
             return $propertyReflection->isPublic();
         }
 

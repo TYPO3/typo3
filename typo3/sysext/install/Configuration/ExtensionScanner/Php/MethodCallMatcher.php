@@ -1289,4 +1289,74 @@ return [
             'Deprecation-81217-TSFE-relatedLanguageMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Reflection\PropertyReflection->isTaggedWith' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\PropertyReflection->getTagsValues' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\PropertyReflection->getTagValues' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->addProperty' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->setModelType' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->getModelType' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->setUuidPropertyName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->getUuidPropertyName' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->markAsIdentityProperty' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassSchema->getIdentityProperties' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
 ];

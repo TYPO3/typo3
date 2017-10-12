@@ -235,7 +235,7 @@ class ActionController extends AbstractController
             if ($dataType === null) {
                 throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException('The argument type for parameter $' . $parameterName . ' of method ' . static::class . '->' . $this->actionMethodName . '() could not be detected.', 1253175643);
             }
-            $defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : null;
+            $defaultValue = $parameterInfo['hasDefaultValue'] === true ? $parameterInfo['defaultValue'] : null;
             $this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === false, $defaultValue);
         }
     }

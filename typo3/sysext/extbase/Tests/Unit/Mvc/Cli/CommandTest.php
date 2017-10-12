@@ -21,35 +21,32 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Cli\Command;
+use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command\MockCCommandController;
+
 /**
  * Test case
  */
 class CommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var array
      */
-    protected $command;
+    protected $singletonInstances;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\MethodReflection
-     */
-    protected $mockMethodReflection;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $mockObjectManager;
-
-    /**
-     */
     protected function setUp()
     {
-        $this->command = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, ['getCommandMethodReflection'], [], '', false);
-        $this->mockMethodReflection = $this->createMock(\TYPO3\CMS\Extbase\Reflection\MethodReflection::class);
-        $this->command->expects($this->any())->method('getCommandMethodReflection')->will($this->returnValue($this->mockMethodReflection));
-        $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $this->command->_set('objectManager', $this->mockObjectManager);
+        $this->singletonInstances = GeneralUtility::getSingletonInstances();
+        GeneralUtility::purgeInstances();
+    }
+
+    protected function tearDown()
+    {
+        GeneralUtility::resetSingletonInstances($this->singletonInstances);
+        parent::tearDown();
     }
 
     /**
@@ -101,52 +98,167 @@ class CommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         new \TYPO3\CMS\Extbase\Mvc\Cli\Command($controllerClassName, 'foo');
     }
 
-    /**
-     * @test
-     */
-    public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments()
+    public function testIsInternal()
     {
-        $this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue([]));
-        $this->assertFalse($this->command->hasArguments());
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertFalse($commandController->isInternal());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'internal'
+        );
+
+        static::assertTrue($commandController->isInternal());
     }
 
-    /**
-     * @test
-     */
-    public function hasArgumentsReturnsTrueIfCommandExpectsArguments()
+    public function testIsCliOnly()
     {
-        $mockParameterReflection = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ParameterReflection::class);
-        $this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue([$mockParameterReflection]));
-        $this->assertTrue($this->command->hasArguments());
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertFalse($commandController->isCliOnly());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'cliOnly'
+        );
+
+        static::assertTrue($commandController->isCliOnly());
     }
 
-    /**
-     * @test
-     */
-    public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments()
+    public function testIsFlushinCaches()
     {
-        $this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue([]));
-        $this->assertSame([], $this->command->getArgumentDefinitions());
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertFalse($commandController->isFlushingCaches());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'flushingCaches'
+        );
+
+        static::assertTrue($commandController->isFlushingCaches());
     }
 
-    /**
-     * @test
-     */
-    public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments()
+    public function testHasArguments()
     {
-        $mockParameterReflection = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ParameterReflection::class);
-        $mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $mockMethodParameters = ['argument1' => ['optional' => false], 'argument2' => ['optional' => true]];
-        $mockReflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->will($this->returnValue($mockMethodParameters));
-        $this->command->_set('reflectionService', $mockReflectionService);
-        $this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue([$mockParameterReflection]));
-        $this->mockMethodReflection->expects($this->atLeastOnce())->method('getTagsValues')->will($this->returnValue(['param' => ['@param $argument1 argument1 description', '@param $argument2 argument2 description']]));
-        $mockCommandArgumentDefinition1 = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class);
-        $mockCommandArgumentDefinition2 = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class);
-        $this->mockObjectManager->expects($this->at(0))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class, 'argument1', true, 'argument1 description')->will($this->returnValue($mockCommandArgumentDefinition1));
-        $this->mockObjectManager->expects($this->at(1))->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class, 'argument2', false, 'argument2 description')->will($this->returnValue($mockCommandArgumentDefinition2));
-        $expectedResult = [$mockCommandArgumentDefinition1, $mockCommandArgumentDefinition2];
-        $actualResult = $this->command->getArgumentDefinitions();
-        $this->assertSame($expectedResult, $actualResult);
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertFalse($commandController->hasArguments());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'withArguments'
+        );
+
+        static::assertTrue($commandController->hasArguments());
+    }
+
+    public function testGetArgumentDefinitions()
+    {
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertSame([], $commandController->getArgumentDefinitions());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'withArguments'
+        );
+
+        $expected = [
+            new CommandArgumentDefinition('foo', true, 'FooParamDescription'),
+            new CommandArgumentDefinition('bar', false, 'BarParamDescription'),
+        ];
+
+        static::assertEquals($expected, $commandController->getArgumentDefinitions());
+    }
+
+    public function testGetDescription()
+    {
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertSame('', $commandController->getDescription());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'withDescription'
+        );
+
+        $expected = 'Longer Description' . PHP_EOL .
+            'Multine' . PHP_EOL . PHP_EOL .
+            'Much Multiline';
+
+        static::assertEquals($expected, $commandController->getDescription());
+    }
+
+    public function testGetShortDescription()
+    {
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertSame('', $commandController->getShortDescription());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'withDescription'
+        );
+
+        $expected = 'Short Description';
+
+        static::assertEquals($expected, $commandController->getShortDescription());
+    }
+
+    public function testGetRelatedCommandIdentifiers()
+    {
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'empty'
+        );
+
+        static::assertSame([], $commandController->getRelatedCommandIdentifiers());
+
+        $commandController = GeneralUtility::makeInstance(ObjectManager::class)->get(
+            Command::class,
+            MockCCommandController::class,
+            'relatedCommandIdentifiers'
+        );
+
+        $expected = ['Foo:Bar:Baz'];
+        static::assertEquals($expected, $commandController->getRelatedCommandIdentifiers());
     }
 }

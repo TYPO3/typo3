@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
+use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
 /**
  * Test case
@@ -194,31 +195,9 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function getInstanceThrowsExceptionIfClassWasNotFound()
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1289386765);
+        $this->expectException(UnknownClassException::class);
+        $this->expectExceptionCode(1278450972);
         $this->container->getInstance('nonextistingclass_bla');
-    }
-
-    /**
-     * @test
-     */
-    public function getInstanceUsesClassNameMd5AsCacheKey()
-    {
-        $className = \TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\NamespacedClass::class;
-        $classNameHash = md5($className);
-        $mockedCache = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class)
-            ->setMethods(['has', 'set', 'get'])
-            ->getMock();
-        $container = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\Container\Container::class)
-            ->setMethods(['log', 'getClassInfoCache'])
-            ->getMock();
-        $container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
-        $mockedCache->expects($this->never())->method('has');
-        $mockedCache->expects($this->once())->method('get')->with($classNameHash)->will($this->returnValue(false));
-        $mockedCache->expects($this->once())->method('set')->with($classNameHash, $this->anything())->will($this->returnCallback([$this, 'setClassInfoCacheCallback']));
-        $container->getInstance($className);
-        $this->assertInstanceOf(\TYPO3\CMS\Extbase\Object\Container\ClassInfo::class, $this->cachedClassInfo);
-        $this->assertEquals($className, $this->cachedClassInfo->getClassName());
     }
 
     /**
@@ -228,17 +207,6 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $instance = $this->container->getInstance('t3lib_object_tests_initializable');
         $this->assertTrue($instance->isInitialized());
-    }
-
-    /**
-     * Callback for getInstanceUsesClassNameSha1AsCacheKey
-     *
-     * @param string $id
-     * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value
-     */
-    public function setClassInfoCacheCallback($id, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value)
-    {
-        $this->cachedClassInfo = $value;
     }
 
     /**

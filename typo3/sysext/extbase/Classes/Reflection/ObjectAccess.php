@@ -96,7 +96,11 @@ class ObjectAccess
         } elseif (is_object($subject)) {
             if ($forceDirectAccess) {
                 if (property_exists($subject, $propertyName)) {
-                    $propertyReflection = new PropertyReflection($subject, $propertyName);
+                    $propertyReflection = new \ReflectionProperty($subject, $propertyName);
+                    if ($propertyReflection->isPublic()) {
+                        return $propertyReflection->getValue($subject);
+                    }
+                    $propertyReflection->setAccessible(true);
                     return $propertyReflection->getValue($subject);
                 }
                 throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
@@ -183,7 +187,7 @@ class ObjectAccess
         $result = true;
         if ($forceDirectAccess) {
             if (property_exists($subject, $propertyName)) {
-                $propertyReflection = new PropertyReflection($subject, $propertyName);
+                $propertyReflection = new \ReflectionProperty($subject, $propertyName);
                 $propertyReflection->setAccessible(true);
                 $propertyReflection->setValue($subject, $propertyValue);
             } else {
@@ -195,7 +199,7 @@ class ObjectAccess
         if (is_callable([$subject, $setterMethodName])) {
             $subject->{$setterMethodName}($propertyValue);
         } elseif (property_exists($subject, $propertyName)) {
-            $reflection = new PropertyReflection($subject, $propertyName);
+            $reflection = new \ReflectionProperty($subject, $propertyName);
             if ($reflection->isPublic()) {
                 $subject->{$propertyName} = $propertyValue;
             } else {
@@ -348,7 +352,7 @@ class ObjectAccess
             return true;
         }
         if (property_exists($object, $propertyName)) {
-            $propertyReflection = new PropertyReflection($object, $propertyName);
+            $propertyReflection = new \ReflectionProperty($object, $propertyName);
             return $propertyReflection->isPublic();
         }
         return false;

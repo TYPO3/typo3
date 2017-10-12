@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
-use TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature;
 use TYPO3\CMS\Install\Configuration\Image\ImageFeature;
 use TYPO3\CMS\Install\Configuration\Mail\MailFeature;
 
@@ -31,7 +30,6 @@ class FeatureManager
     protected $featureRegistry = [
         ContextFeature::class,
         ImageFeature::class,
-        ExtbaseObjectCacheFeature::class,
         MailFeature::class,
     ];
 

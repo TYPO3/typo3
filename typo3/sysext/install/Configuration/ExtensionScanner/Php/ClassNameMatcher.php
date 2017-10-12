@@ -404,6 +404,39 @@ return [
             'Deprecation-82744-RenameExtlowlevelViewToLowlevelController.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Object\Container\ClassInfo' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Container\ClassInfoCache' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ClassReflection' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\MethodReflection' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Reflection\ParameterReflection' => [
+        'restFiles' => [
+            'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

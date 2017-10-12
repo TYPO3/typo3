@@ -349,7 +349,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
     public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = true)
     {
         $propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-        if ($enableLazyLoading === true && $propertyMetaData['lazy']) {
+        if ($enableLazyLoading === true && $propertyMetaData['annotations']['lazy']) {
             if ($propertyMetaData['type'] === \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class) {
                 $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue);
             } else {

@@ -48,19 +48,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface
     protected $identifierMap = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService)
-    {
-        $this->reflectionService = $reflectionService;
-    }
-
-    /**
      * Constructs a new Session
      */
     public function __construct()
