@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lowlevel\View;
+namespace TYPO3\CMS\Lowlevel\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -34,7 +34,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Script class for the DB int module
  */
-class DatabaseIntegrityView
+class DatabaseIntegrityController
 {
     /**
      * @var string

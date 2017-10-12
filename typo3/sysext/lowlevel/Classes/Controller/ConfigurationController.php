@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lowlevel\View;
+namespace TYPO3\CMS\Lowlevel\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -29,7 +29,7 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 /**
  * Script class for the Config module
  */
-class ConfigurationView
+class ConfigurationController
 {
     /**
      * The name of the module

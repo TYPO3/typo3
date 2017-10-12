@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::class . '::mainAction',
+            'routeTarget' => \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'system_dbint',
             'workspaces' => 'online',
@@ -22,7 +22,7 @@ if (TYPO3_MODE === 'BE') {
         '',
         '',
         [
-            'routeTarget' => \TYPO3\CMS\Lowlevel\View\ConfigurationView::class . '::mainAction',
+            'routeTarget' => \TYPO3\CMS\Lowlevel\Controller\ConfigurationController::class . '::mainAction',
             'access' => 'admin',
             'name' => 'system_config',
             'workspaces' => 'online',

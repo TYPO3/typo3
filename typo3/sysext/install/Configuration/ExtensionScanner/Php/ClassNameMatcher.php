@@ -394,6 +394,16 @@ return [
             'Deprecation-82725-DeprecateConfigurationForm.rst',
         ],
     ],
+    'TYPO3\CMS\Lowlevel\View\ConfigurationView' => [
+        'restFiles' => [
+            'Deprecation-82744-RenameExtlowlevelViewToLowlevelController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView' => [
+        'restFiles' => [
+            'Deprecation-82744-RenameExtlowlevelViewToLowlevelController.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [
