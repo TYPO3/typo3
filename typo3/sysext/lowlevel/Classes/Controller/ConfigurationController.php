@@ -281,6 +281,15 @@ class ConfigurationController
             $menu->addMenuItem($item);
         }
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->addJavaScriptCode(
+            'jumpToUrl',
+            '
+            function jumpToUrl(URL) {
+                window.location.href = URL;
+                return false;
+            }
+            '
+        );
 
         $content = '<form action="" id="ConfigurationView" method="post">';
         $content .= $view->render();
