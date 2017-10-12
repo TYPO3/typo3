@@ -16,7 +16,7 @@
 				<div class="col-xs-12 col-md-6">
 					<h4>Reference</h4>
 					<div class="bg-transparent-emulation">
-						<img src="../../../../{test.referenceFile -> i:file.relativePath()}?{time}" />
+						<img src="../{test.referenceFile -> i:file.relativePath()}?{time}" />
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-6">
@@ -26,7 +26,7 @@
 							<f:if condition="{i:file.exists(file:test.outputFile)}">
 								<f:then>
 									<div class="bg-transparent-emulation">
-										<img src="../../../../{test.outputFile -> i:file.relativePath()}?{time}" />
+										<img src="../{test.outputFile -> i:file.relativePath()}?{time}" />
 									</div>
 								</f:then>
 								<f:else>
