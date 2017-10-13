@@ -165,8 +165,8 @@ define(['jquery', 'TYPO3/CMS/Backend/ContextMenuActions'], function ($, ContextM
         var x = this.mousePos.X;
         var y = this.mousePos.Y;
         var dimsWindow = {
-            width: $(document).width() - 20, // saving margin for scrollbars
-            height: $(document).height()
+            width: $(window).width() - 20, // saving margin for scrollbars
+            height: $(window).height()
         };
 
         // dimensions for the context menu
