@@ -289,6 +289,16 @@ return [
         ],
         'fluid' => [
             'interceptors' => [],
+            'preProcessors' => [
+                \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor::class,
+                \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor::class,
+                \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor::class
+            ],
+            'expressionNodeTypes' => [
+                \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode::class,
+                \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode::class,
+                \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode::class
+            ],
             'namespaces' => [
                 'core' => [
                     'TYPO3\\CMS\\Core\\ViewHelpers'

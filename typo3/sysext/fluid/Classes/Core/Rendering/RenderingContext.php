@@ -25,9 +25,6 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
-use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -102,16 +99,11 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
             $this->setTemplateCompiler(new TemplateCompiler());
             $this->setViewHelperInvoker(new ViewHelperInvoker());
             $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
-            $this->setTemplateProcessors(
-                [
-                    new EscapingModifierTemplateProcessor(),
-                    new PassthroughSourceModifierTemplateProcessor(),
-                    new NamespaceDetectionTemplateProcessor()
-                ]
-            );
         }
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->setTemplateProcessors(array_map([$objectManager, 'get'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors']));
+        $this->setExpressionNodeTypes($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes']);
         $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
         $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
         $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
