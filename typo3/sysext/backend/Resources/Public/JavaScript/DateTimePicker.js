@@ -99,6 +99,8 @@ define(['jquery'], function($) {
 		var type = $element.data('dateType');
 		var options = {
 			sideBySide: true,
+			showTodayButton: true,
+			toolbarPlacement: 'bottom',
 			icons: {
 				time: 'fa fa-clock-o',
 				date: 'fa fa-calendar',
