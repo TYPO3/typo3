@@ -366,10 +366,11 @@ class PageProvider extends RecordProvider
      *
      * @return bool
      */
-    protected function canBeRemoved(): bool
+    protected function canBeDeleted(): bool
     {
         return !$this->isDeletePlaceholder()
             && !$this->isRecordLocked()
+            && !$this->isDeletionDisabledInTS()
             && $this->hasPagePermission(Permission::PAGE_DELETE);
     }
 

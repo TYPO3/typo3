@@ -486,15 +486,25 @@ class RecordProvider extends AbstractProvider
     }
 
     /**
+     * Checks if disableDelete flag is set in TSConfig for the current table
+     *
+     * @return bool
+     */
+    protected function isDeletionDisabledInTS(): bool
+    {
+        $disableDeleteTS = $this->backendUser->getTSConfig('options.disableDelete');
+        $disableDelete = (bool) trim($disableDeleteTS['properties'][$this->table] ?? (string)$disableDeleteTS['value']);
+        return $disableDelete;
+    }
+
+    /**
      * Checks if the user has the right to delete the page
      *
      * @return bool
      */
     protected function canBeDeleted(): bool
     {
-        $disableDeleteTS = $this->backendUser->getTSConfig('options.disableDelete');
-        $disableDelete = (bool) trim($disableDeleteTS['properties'][$this->table] ?? (string)$disableDeleteTS['value']);
-        return !$disableDelete && $this->canBeEdited();
+        return !$this->isDeletionDisabledInTS() && $this->canBeEdited();
     }
 
     /**
