@@ -113,7 +113,7 @@ require(
 					evt.preventDefault();
 					me.showModule(
 						$(this).attr('id'),
-						null,
+						'',
 						evt
 					);
 				});
@@ -135,8 +135,8 @@ require(
 						TYPO3.Backend.NavigationContainer.toggle();
 					}
 				);
-
 			},
+
 			/**
 			 * @param {Boolean} collapse
 			 */
@@ -167,7 +167,12 @@ require(
 				TYPO3.Backend.doLayout();
 			},
 
-			/* fetch the data for a submodule */
+			/**
+			 * Gets the module properties from module menu markup (data attributes)
+			 *
+			 * @param {string} name module name e.g. web_list
+			 * @return {Object}
+			 */
 			getRecordFromName: function (name) {
 				var $subModuleElement = $('#' + name);
 				return {
@@ -180,41 +185,47 @@ require(
 			},
 
 			/**
-			 * @param {string} mod
+			 * Event handler called after clicking on the module menu item
+			 *
+			 * @param {string} name module name e.g. web_layout
 			 * @param {string} params
 			 * @param {Event} [event]
 			 * @return {jQuery.Deferred}
 			 */
-			showModule: function (mod, params, event) {
+			showModule: function (name, params, event) {
 				params = params || '';
-				params = this.includeId(mod, params);
-				var record = this.getRecordFromName(mod);
+				params = this.includeId(name, params);
+				var moduleData = this.getRecordFromName(name);
 				return this.loadModuleComponents(
-					record,
+					moduleData,
 					params,
 					new ClientRequest('typo3.showModule', event)
 				);
 			},
 
 			/**
-			 * @param {object} record
+			 * Shows requested module (e.g. list/page)
+			 *
+			 * @param {Object} moduleData
 			 * @param {string} params
 			 * @param {InteractionRequest} [interactionRequest]
 			 * @return {jQuery.Deferred}
 			 */
-			loadModuleComponents: function (record, params, interactionRequest) {
-				var mod = record.name;
+			loadModuleComponents: function (moduleData, params, interactionRequest) {
+				var moduleName = moduleData.name;
 
+				// Allow other components e.g. Formengine to cancel switching between modules
+				// (e.g. you have unsaved changes in the form)
 				var deferred = TYPO3.Backend.ContentContainer.beforeSetUrl(interactionRequest);
 				deferred.then(
 					$.proxy(function() {
-						if (record.navigationComponentId) {
-							this.loadNavigationComponent(record.navigationComponentId);
-						} else if (record.navigationFrameScript) {
+						if (moduleData.navigationComponentId) {
+							this.loadNavigationComponent(moduleData.navigationComponentId);
+						} else if (moduleData.navigationFrameScript) {
 							TYPO3.Backend.NavigationContainer.show('typo3-navigationIframe');
 							this.openInNavFrame(
-								record.navigationFrameScript,
-								record.navigationFrameScriptParam,
+								moduleData.navigationFrameScript,
+								moduleData.navigationFrameScriptParam,
 								new TriggerRequest(
 									'typo3.loadModuleComponents',
 									interactionRequest
@@ -224,10 +235,10 @@ require(
 							TYPO3.Backend.NavigationContainer.hide();
 						}
 
-						this.highlightModuleMenuItem(mod);
-						this.loadedModule = mod;
+						this.highlightModuleMenuItem(moduleName);
+						this.loadedModule = moduleName;
 						this.openInContentFrame(
-							record.link,
+							moduleData.link,
 							params,
 							new TriggerRequest(
 								'typo3.loadModuleComponents',
@@ -236,8 +247,8 @@ require(
 						);
 
 						// compatibility
-						top.currentSubScript = record.link;
-						top.currentModuleLoaded = mod;
+						top.currentSubScript = moduleData.link;
+						top.currentModuleLoaded = moduleName;
 
 						TYPO3.Backend.doLayout();
 					}, this
@@ -246,12 +257,19 @@ require(
 				return deferred;
 			},
 
-			includeId: function (mod, params) {
-				if (typeof mod === 'undefined') {
+			/**
+			 * Prepends previously saved record id to the url params
+			 *
+			 * @param {string} moduleName module name e.g. web_list
+			 * @param {string} params query string parameters for module url
+			 * @return {string}
+			 */
+			includeId: function (moduleName, params) {
+				if (typeof moduleName === 'undefined') {
 					return params;
 				}
 				//get id
-				var section = mod.split('_')[0];
+				var section = moduleName.split('_')[0];
 				if (top.fsMod.recentIds[section]) {
 					params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
 				}
@@ -259,6 +277,11 @@ require(
 				return params;
 			},
 
+			/**
+			 * Renders registered (non-iframe) navigation component e.g. a page tree
+			 *
+			 * @param {string} navigationComponentId
+			 */
 			loadNavigationComponent: function (navigationComponentId) {
 				TYPO3.Backend.NavigationContainer.show(navigationComponentId);
 				if (navigationComponentId === this.loadedNavigationComponentId) {
@@ -271,7 +294,7 @@ require(
 					$('.t3js-scaffold-content-navigation')
 						.append('<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="navigationComponent-' + navigationComponentId + '"></div>');
 				}
-				// allow to render the pagetree hard-coded in order to have acceptance tests apply correctly
+				// allow to render the page tree hard-coded in order to have acceptance tests apply correctly
 				// and to ensure that something is loaded
 				var component = Ext.getCmp(navigationComponentId);
 				if (typeof this.availableNavigationComponents['typo3-pagetree'] === 'undefined') {

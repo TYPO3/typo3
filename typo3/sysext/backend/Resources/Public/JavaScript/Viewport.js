@@ -149,7 +149,7 @@ define(
 				}
 			},
 			/**
-			 * Contentcontainer
+			 * Content container manages the right site of the viewport (showing module specific content)
 			 */
 			ContentContainer: {
 				get: function() {
