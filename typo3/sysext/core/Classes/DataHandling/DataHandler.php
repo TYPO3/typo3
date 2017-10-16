@@ -932,7 +932,7 @@ class DataHandler implements LoggerAwareInterface
      * Processing the data-array
      * Call this function to process the data-array set by start()
      *
-     * @return void|FALSE
+     * @return bool|void
      */
     public function process_datamap()
     {
@@ -1013,12 +1013,11 @@ class DataHandler implements LoggerAwareInterface
                     $fieldArray = $this->newFieldArray($table);
                     // A pid must be set for new records.
                     if (isset($incomingFieldArray['pid'])) {
-                        // $value = the pid
                         $pid_value = $incomingFieldArray['pid'];
                         // Checking and finding numerical pid, it may be a string-reference to another value
-                        $OK = 1;
+                        $canProceed = true;
                         // If a NEW... id
-                        if (strstr($pid_value, 'NEW')) {
+                        if (strpos($pid_value, 'NEW') !== false) {
                             if ($pid_value[0] === '-') {
                                 $negFlag = -1;
                                 $pid_value = substr($pid_value, 1);
@@ -1032,35 +1031,12 @@ class DataHandler implements LoggerAwareInterface
                                 }
                                 $pid_value = (int)($negFlag * $this->substNEWwithIDs[$pid_value]);
                             } else {
-                                $OK = 0;
+                                $canProceed = false;
                             }
                         }
                         $pid_value = (int)$pid_value;
-                        // The $pid_value is now the numerical pid at this point
-                        if ($OK) {
-                            $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-                            // Points to a page on which to insert the element, possibly in the top of the page
-                            if ($pid_value >= 0) {
-                                // If this table is sorted we better find the top sorting number
-                                if ($sortRow) {
-                                    $fieldArray[$sortRow] = $this->getSortNumber($table, 0, $pid_value);
-                                }
-                                // The numerical pid is inserted in the data array
-                                $fieldArray['pid'] = $pid_value;
-                            } else {
-                                // points to another record before ifself
-                                // If this table is sorted we better find the top sorting number
-                                if ($sortRow) {
-                                    // Because $pid_value is < 0, getSortNumber returns an array
-                                    $tempArray = $this->getSortNumber($table, 0, $pid_value);
-                                    $fieldArray['pid'] = $tempArray['pid'];
-                                    $fieldArray[$sortRow] = $tempArray['sortNumber'];
-                                } else {
-                                    // Here we fetch the PID of the record that we point to...
-                                    $tempdata = $this->recordInfo($table, abs($pid_value), 'pid');
-                                    $fieldArray['pid'] = $tempdata['pid'];
-                                }
-                            }
+                        if ($canProceed) {
+                            $fieldArray = $this->resolveSortingAndPidForNewRecord($table, $pid_value, $fieldArray);
                         }
                     }
                     $theRealPid = $fieldArray['pid'];
@@ -1317,6 +1293,43 @@ class DataHandler implements LoggerAwareInterface
             $this->processClearCacheQueue();
             $this->resetElementsToBeDeleted();
         }
+    }
+
+    /**
+     * Sets the "sorting" DB field and the "pid" field of an incoming record that should be added (NEW1234)
+     * depending on the record that should be added or where it should be added.
+     *
+     * This method is called from process_datamap()
+     *
+     * @param string $table the table name of the record to insert
+     * @param int $pid the real PID (numeric) where the record should be
+     * @param array $fieldArray field+value pairs to add
+     * @return array the modified field array
+     */
+    protected function resolveSortingAndPidForNewRecord(string $table, int $pid, array $fieldArray): array
+    {
+        $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+        // Points to a page on which to insert the element, possibly in the top of the page
+        if ($pid >= 0) {
+            // The numerical pid is inserted in the data array
+            $fieldArray['pid'] = $pid;
+            // If this table is sorted we better find the top sorting number
+            if ($sortRow) {
+                $fieldArray[$sortRow] = $this->getSortNumber($table, 0, $pid);
+            }
+        } elseif ($sortRow) {
+            // Points to another record before itself
+            // If this table is sorted we better find the top sorting number
+            // Because $pid is < 0, getSortNumber() returns an array
+            $sortingInfo = $this->getSortNumber($table, 0, $pid);
+            $fieldArray['pid'] = $sortingInfo['pid'];
+            $fieldArray[$sortRow] = $sortingInfo['sortNumber'];
+        } else {
+            // Here we fetch the PID of the record that we point to
+            $record = $this->recordInfo($table, abs($pid), 'pid');
+            $fieldArray['pid'] = $record['pid'];
+        }
+        return $fieldArray;
     }
 
     /**
@@ -3300,7 +3313,7 @@ class DataHandler implements LoggerAwareInterface
         }
         /** @var $copyTCE DataHandler */
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($pasteDatamap, '', $this->BE_USER);
+        $copyTCE->start($pasteDatamap, [], $this->BE_USER);
         $copyTCE->process_datamap();
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
         unset($copyTCE);
@@ -3477,25 +3490,14 @@ class DataHandler implements LoggerAwareInterface
         // Initialize:
         $uid = (int)$uid;
         $destPid = (int)$destPid;
-        // Finding list of tables to copy.
-        // These are the tables, the user may modify
-        $copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']);
-        // If not all tables are allowed then make a list of allowed tables: That is the tables that figure in both allowed tables AND the copyTable-list
-        if (!strstr($this->copyWhichTables, '*')) {
-            $copyWhichTablesArray = array_flip(GeneralUtility::trimExplode(',', $this->copyWhichTables . ',pages'));
-            foreach ($copyTablesArray as $k => $table) {
-                // Pages are always going...
-                if (!$table || !isset($copyWhichTablesArray[$table])) {
-                    unset($copyTablesArray[$k]);
-                }
-            }
-        }
-        $copyTablesArray = array_unique($copyTablesArray);
+
+        $copyTablesAlongWithPage = $this->getAllowedTablesToCopyWhenCopyingAPage();
         // Begin to copy pages if we're allowed to:
-        if ($this->admin || in_array('pages', $copyTablesArray, true)) {
-            // Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)!
-            $theNewRootID = $this->copySpecificPage($uid, $destPid, $copyTablesArray, 1);
-            // If we're going to copy recursively...:
+        if ($this->admin || in_array('pages', $copyTablesAlongWithPage, true)) {
+            // Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)
+            // This method also copies the localizations of a page
+            $theNewRootID = $this->copySpecificPage($uid, $destPid, $copyTablesAlongWithPage, true);
+            // If we're going to copy recursively
             if ($theNewRootID && $this->copyTree) {
                 // Get ALL subpages to copy (read-permissions are respected!):
                 $CPtable = $this->int_pageTreeInfo([], $uid, (int)$this->copyTree, $theNewRootID);
@@ -3503,7 +3505,7 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($CPtable as $thePageUid => $thePagePid) {
                     $newPid = $this->copyMappingArray['pages'][$thePagePid];
                     if (isset($newPid)) {
-                        $this->copySpecificPage($thePageUid, $newPid, $copyTablesArray);
+                        $this->copySpecificPage($thePageUid, $newPid, $copyTablesAlongWithPage);
                     } else {
                         $this->log('pages', $uid, 5, 0, 1, 'Something went wrong during copying branch');
                         break;
@@ -3515,6 +3517,36 @@ class DataHandler implements LoggerAwareInterface
         }
     }
 
+    /**
+     * Compile a list of tables that should be copied along when a page is about to be copied.
+     *
+     * First, get the list that the user is allowed to modify (all if admin),
+     * and then check against a possible limitation within "DataHandler->copyWhichTables" if not set to "*"
+     * to limit the list further down
+     *
+     * @return array
+     */
+    protected function getAllowedTablesToCopyWhenCopyingAPage(): array
+    {
+        // Finding list of tables to copy.
+        // These are the tables, the user may modify
+        $copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']);
+        // If not all tables are allowed then make a list of allowed tables.
+        // That is the tables that figure in both allowed tables AND the copyTable-list
+        if (strpos($this->copyWhichTables, '*') === false) {
+            $definedTablesToCopy = GeneralUtility::trimExplode(',', $this->copyWhichTables, true);
+            // Pages are always allowed
+            $definedTablesToCopy[] = 'pages';
+            $definedTablesToCopy = array_flip($definedTablesToCopy);
+            foreach ($copyTablesArray as $k => $table) {
+                if (!$table || !isset($definedTablesToCopy[$table])) {
+                    unset($copyTablesArray[$k]);
+                }
+            }
+        }
+        $copyTablesArray = array_unique($copyTablesArray);
+        return $copyTablesArray;
+    }
     /**
      * Copying a single page ($uid) to $destPid and all tables in the array copyTablesArray.
      *
@@ -5287,7 +5319,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $uid = (int)$uid;
         if ($uid) {
-            $tableNames = array_keys($GLOBALS['TCA']);
+            $tableNames = $this->compileAdminTables();
             foreach ($tableNames as $table) {
                 if ($table !== 'pages') {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -6712,31 +6744,32 @@ class DataHandler implements LoggerAwareInterface
             // Not a number. Probably a new page
             return false;
         }
-        $allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-        $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
-        // If all tables is OK the return TRUE
-        if (strstr($allowedTableList, '*')) {
-            // OK...
+        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+        // If all tables are allowed, return early
+        if (strpos($allowedTableList, '*') !== false) {
             return false;
         }
+        $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
         $tableList = [];
-        foreach ($GLOBALS['TCA'] as $table => $_) {
+        $allTableNames = $this->compileAdminTables();
+        foreach ($allTableNames as $table) {
             // If the table is not in the allowed list, check if there are records...
-            if (!in_array($table, $allowedArray, true)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()->removeAll();
-                $count = $queryBuilder
-                    ->count('uid')
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
-                    ))
-                    ->execute()
-                    ->fetchColumn(0);
-                if ($count) {
-                    $tableList[] = $table;
-                }
+            if (in_array($table, $allowedArray, true)) {
+                continue;
+            }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+            $count = $queryBuilder
+                ->count('uid')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
+                ))
+                ->execute()
+                ->fetchColumn(0);
+            if ($count) {
+                $tableList[] = $table;
             }
         }
         return implode(',', $tableList);
@@ -8197,7 +8230,8 @@ class DataHandler implements LoggerAwareInterface
         }
 
         if (!empty($pageIds)) {
-            foreach ($GLOBALS['TCA'] as $table => $_) {
+            $tableNames = $this->compileAdminTables();
+            foreach ($tableNames as $table) {
                 $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $query->getRestrictions()
                     ->removeAll()
