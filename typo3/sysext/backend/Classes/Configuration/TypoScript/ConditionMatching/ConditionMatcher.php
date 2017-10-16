@@ -274,18 +274,6 @@ class ConditionMatcher extends AbstractConditionMatcher
     }
 
     /**
-     * Set/write a log message.
-     *
-     * @param string $message The log message to set/write
-     */
-    protected function log($message)
-    {
-        if (is_object($this->getBackendUserAuthentication())) {
-            $this->getBackendUserAuthentication()->writelog(3, 0, 1, 0, $message, []);
-        }
-    }
-
-    /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBackendUserAuthentication()

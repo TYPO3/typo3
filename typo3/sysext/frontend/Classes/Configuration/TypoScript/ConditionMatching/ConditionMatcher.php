@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  */
 
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
-use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -174,30 +173,10 @@ class ConditionMatcher extends AbstractConditionMatcher
     }
 
     /**
-     * Set/write a log message.
-     *
-     * @param string $message The log message to set/write
-     */
-    protected function log($message)
-    {
-        if ($this->getTimeTracker() !== null) {
-            $this->getTimeTracker()->setTSlogMessage($message, 3);
-        }
-    }
-
-    /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
     protected function getTypoScriptFrontendController()
     {
         return $GLOBALS['TSFE'];
-    }
-
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

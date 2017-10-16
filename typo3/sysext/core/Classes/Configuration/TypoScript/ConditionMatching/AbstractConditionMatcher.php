@@ -652,11 +652,4 @@ abstract class AbstractConditionMatcher
      * @return bool Determines if a user is logged in
      */
     abstract protected function isUserLoggedIn();
-
-    /**
-     * Sets a log message.
-     *
-     * @param string $message The log message to set/write
-     */
-    abstract protected function log($message);
 }
