@@ -61,6 +61,9 @@ lib.parseFunc_RTE {
             stripNL = 1
             stdWrap.parseFunc = < lib.parseFunc
         }
+        pre {
+            stdWrap.parseFunc < lib.parseFunc
+        }
         table {
             stripNL = 1
             stdWrap {
