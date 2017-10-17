@@ -163,6 +163,11 @@ class BackendController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
+        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', BackendUtility::getModuleUrl('db_new'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', BackendUtility::getModuleUrl('tce_db'));
+        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', BackendUtility::getModuleUrl('web_layout'));
 
         $this->css = '';
 
@@ -432,11 +437,6 @@ class BackendController
             foreach ($jsFiles as $jsFile) {
                 $this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
             }
-            $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
-            $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', BackendUtility::getModuleUrl('db_new'));
-            $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-            $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', BackendUtility::getModuleUrl('tce_db'));
-            $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', BackendUtility::getModuleUrl('web_layout'));
         }
     }
 
