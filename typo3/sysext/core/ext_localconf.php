@@ -131,3 +131,8 @@ unset($extractorRegistry);
         'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class
     ]
 );
+
+// add default notification options to every page
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    'TCEMAIN.translateToMessage = Translate to %s:'
+);

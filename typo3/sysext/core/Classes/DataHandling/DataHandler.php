@@ -4769,11 +4769,6 @@ class DataHandler implements LoggerAwareInterface
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
-                    if (empty($translateToMsg)) {
-                        $translateToMsg = 'Translate to ' . $langRec['title'] . ':';
-                    } else {
-                        $translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
-                    }
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'])) {
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $className) {
                             $hookObj = GeneralUtility::makeInstance($className);
@@ -4782,7 +4777,11 @@ class DataHandler implements LoggerAwareInterface
                             }
                         }
                     }
-                    $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+                    if (!empty($translateToMsg)) {
+                        $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+                    } else {
+                        $overrideValues[$fN] = $row[$fN];
+                    }
                 }
             } elseif (
                 ($fCfg['l10n_mode'] === 'exclude')
