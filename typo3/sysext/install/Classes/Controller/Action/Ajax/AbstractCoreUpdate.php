@@ -41,9 +41,20 @@ abstract class AbstractCoreUpdate extends AbstractAjaxAction
     protected $coreVersionService;
 
     /**
+     * @param \TYPO3\CMS\Install\View\FailsafeView $view
+     */
+    public function injectView(\TYPO3\CMS\Install\View\FailsafeView $view)
+    {
+        // dummy method to stop setting view to failsafeView while keeping
+        // compatibility with parent declaration (and thus errors on PHP7)
+        // while allowing dependency injection to inject correct view by
+        // using method below.
+    }
+
+    /**
      * @param \TYPO3\CMS\Install\View\JsonView $view
      */
-    public function injectView(\TYPO3\CMS\Install\View\JsonView $view)
+    public function injectJsonView(\TYPO3\CMS\Install\View\JsonView $view)
     {
         $this->view = $view;
     }
