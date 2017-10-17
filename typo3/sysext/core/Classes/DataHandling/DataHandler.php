@@ -4840,11 +4840,6 @@ class DataHandler
                         $translateToMsg = $GLOBALS['LANG'] ? $GLOBALS['LANG']->sL($TSConfig['translateToMessage']) : $TSConfig['translateToMessage'];
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
-                    if (empty($translateToMsg)) {
-                        $translateToMsg = 'Translate to ' . $langRec['title'] . ':';
-                    } else {
-                        $translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
-                    }
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'])) {
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $classRef) {
                             $hookObj = GeneralUtility::getUserObj($classRef);
@@ -4853,7 +4848,11 @@ class DataHandler
                             }
                         }
                     }
-                    $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+                    if (!empty($translateToMsg)) {
+                        $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+                    } else {
+                        $overrideValues[$fN] = $row[$fN];
+                    }
                 }
             } elseif (
                 ($fCfg['l10n_mode'] === 'exclude')

@@ -103,3 +103,8 @@ unset($textExtractorRegistry);
 $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
 $extractorRegistry->registerExtractionService(\TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor::class);
 unset($extractorRegistry);
+
+// add default notification options to every page
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    'TCEMAIN.translateToMessage = Translate to %s:'
+);
