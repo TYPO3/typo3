@@ -2595,12 +2595,23 @@ class TypoScriptFrontendController
                                 $this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
                                 break;
                             case 'content_fallback':
-                                $fallBackOrder = GeneralUtility::intExplode(',', $sys_language_content);
+                                // Setting content uid (but leaving the sys_language_uid) when a content_fallback
+                                // value was found.
+                                $fallBackOrder = GeneralUtility::trimExplode(',', $sys_language_content);
                                 foreach ($fallBackOrder as $orderValue) {
-                                    if ((string)$orderValue === '0' || !empty($this->sys_page->getPageOverlay($this->id, $orderValue))) {
-                                        $this->sys_language_content = $orderValue;
-                                        // Setting content uid (but leaving the sys_language_uid)
+                                    if ($orderValue === '0' || $orderValue === '') {
+                                        $this->sys_language_content = 0;
                                         break;
+                                    }
+                                    if (MathUtility::canBeInterpretedAsInteger($orderValue) && !empty($this->sys_page->getPageOverlay($this->id, (int)$orderValue))) {
+                                        $this->sys_language_content = (int)$orderValue;
+                                        break;
+                                    }
+                                    if ($orderValue === 'pageNotFound') {
+                                        // The existing fallbacks have not been found, but instead of continuing
+                                        // page rendering with default language, a "page not found" message should be shown
+                                        // instead.
+                                        $this->pageNotFoundAndExit('Page is not available in the requested language (fallbacks did not apply).');
                                     }
                                 }
                                 break;
