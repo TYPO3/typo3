@@ -6241,7 +6241,11 @@ class DataHandler
                 }
                 // Update in database (list of children (csv) or number of relations (foreign_field)):
                 if (!empty($field)) {
-                    $this->updateDB($table, $id, [$field => $newValue]);
+                    $fieldArray = [$field => $newValue];
+                    if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+                        $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+                    }
+                    $this->updateDB($table, $id, $fieldArray);
                 } elseif (!empty($additionalData['flexFormId']) && !empty($additionalData['flexFormPath'])) {
                     // Collect data to update FlexForms
                     $flexFormId = $additionalData['flexFormId'];
