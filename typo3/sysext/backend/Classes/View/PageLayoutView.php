@@ -2057,7 +2057,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function isDragAndDropAllowed(array $row)
     {
-        if ($this->getBackendUser()->user['admin']
+        if ($this->getBackendUser()->isAdmin()
             || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
             && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
@@ -2546,7 +2546,7 @@ class PageLayoutView implements LoggerAwareInterface
             }
             // Remove disallowed languages
             if (!empty($availableTranslations)
-                && !$this->getBackendUser()->user['admin']
+                && !$this->getBackendUser()->isAdmin()
                 && $this->getBackendUser()->groupData['allowed_languages'] !== ''
             ) {
                 $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));

@@ -85,7 +85,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper
             // On root-level of page tree
             // Make Icon
             $theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';
-            if ($GLOBALS['BE_USER']->user['admin']) {
+            if ($GLOBALS['BE_USER']->isAdmin()) {
                 $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', 0);
             }
         }

@@ -213,7 +213,7 @@ class RecyclerUtility
      */
     public static function getModifyableTables()
     {
-        if ((bool)$GLOBALS['BE_USER']->user['admin']) {
+        if ($GLOBALS['BE_USER']->isAdmin()) {
             $tables = array_keys($GLOBALS['TCA']);
         } else {
             $tables = explode(',', $GLOBALS['BE_USER']->groupData['tables_modify']);

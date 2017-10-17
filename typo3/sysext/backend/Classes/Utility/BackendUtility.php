@@ -2660,7 +2660,7 @@ class BackendUtility
             $suffix = '';
             // Find allowed languages (if none, all are allowed!)
             $allowedLanguages = null;
-            if (!$beUser->user['admin'] && $beUser->groupData['allowed_languages'] !== '') {
+            if (!$beUser->isAdmin() && $beUser->groupData['allowed_languages'] !== '') {
                 $allowedLanguages = array_flip(explode(',', $beUser->groupData['allowed_languages']));
             }
             // Traverse the view order, match first occurrence:

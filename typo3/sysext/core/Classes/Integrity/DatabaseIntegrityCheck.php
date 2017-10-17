@@ -264,7 +264,7 @@ class DatabaseIntegrityCheck
      */
     public function fixLostRecord($table, $uid)
     {
-        if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin']) {
+        if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->isAdmin()) {
             $updateFields = [
                 'pid' => 0
             ];

@@ -936,7 +936,7 @@ function jumpToUrl(URL) {
             // On root-level of page tree
             // Make Icon
             $iconImg = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
-            if ($GLOBALS['BE_USER']->user['admin']) {
+            if ($GLOBALS['BE_USER']->isAdmin()) {
                 $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', 0);
             } else {
                 $theIcon = $iconImg;

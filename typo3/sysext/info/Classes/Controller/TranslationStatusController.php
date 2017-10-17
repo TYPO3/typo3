@@ -356,7 +356,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
      */
     public function getSystemLanguages()
     {
-        if (!$this->getBackendUser()->user['admin'] && $this->getBackendUser()->groupData['allowed_languages'] !== '') {
+        if (!$this->getBackendUser()->isAdmin() && $this->getBackendUser()->groupData['allowed_languages'] !== '') {
             $allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

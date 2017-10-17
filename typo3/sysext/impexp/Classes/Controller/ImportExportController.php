@@ -330,7 +330,7 @@ class ImportExportController extends BaseScriptClass
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
         if ((string)$inData['action'] === 'import') {
-            if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->user['admin'] && !$this->id) {
+            if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->isAdmin() && !$this->id) {
                 if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
                     // View
                     $onClick = BackendUtility::viewOnClick(
@@ -824,8 +824,8 @@ class ImportExportController extends BaseScriptClass
     {
         $access = is_array($this->pageinfo) ? 1 : 0;
         $beUser = $this->getBackendUser();
-        if ($this->id && $access || $beUser->user['admin'] && !$this->id) {
-            if ($beUser->user['admin'] && !$this->id) {
+        if ($this->id && $access || $beUser->isAdmin() && !$this->id) {
+            if ($beUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             if ($inData['new_import']) {

@@ -95,8 +95,8 @@ class InfoModuleController extends BaseScriptClass
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         $access = is_array($this->pageinfo);
-        if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
-            if ($this->backendUser->user['admin'] && !$this->id) {
+        if ($this->id && $access || $this->backendUser->isAdmin() && !$this->id) {
+            if ($this->backendUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             // JavaScript
