@@ -373,9 +373,14 @@ class BrowseLinksController extends AbstractLinkBrowserController
             return '';
         }
 
-        $currentRel = $this->displayedLinkHandler === $this->currentLinkHandler && !empty($this->currentLinkParts)
-            ? $this->linkAttributeValues['rel']
-            : '';
+        $currentRel = '';
+        if ($this->displayedLinkHandler === $this->currentLinkHandler
+            && !empty($this->currentLinkParts)
+            && isset($this->linkAttributeValues['rel'])
+            && is_string($this->linkAttributeValues['rel'])
+        ) {
+            $currentRel = $this->linkAttributeValues['rel'];
+        }
 
         return '
             <form action="" name="lrelform" id="lrelform" class="t3js-dummyform form-horizontal">
