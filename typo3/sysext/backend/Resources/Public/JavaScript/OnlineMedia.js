@@ -35,6 +35,7 @@ define(['jquery',
 		me.target = me.$btn.data('target-folder');
 		me.irreObjectUid = me.$btn.data('file-irre-object');
 		me.allowed = me.$btn.data('online-media-allowed');
+		me.allowedHelpText = me.$btn.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
 		me.btnSubmit = me.$btn.data('data-btn-submit') || 'Add';
 		me.placeholder = me.$btn.data('placeholder') || 'Paste media url here...';
 
@@ -82,11 +83,14 @@ define(['jquery',
 		 * Trigger the modal
 		 */
 		me.triggerModal = function() {
+			var allowedExtMarkup = $.map(me.allowed.split(','), function(ext) {
+				return '<span class="label label-success">' + ext.toUpperCase() + '</span>';
+			});
 			var $modal = Modal.show(
 				me.$btn.attr('title'),
 				'<div class="form-control-wrap">' +
 					'<input type="text" class="form-control online-media-url" placeholder="' + me.placeholder + '" />' +
-				'</div>',
+				'</div><div class="help-block">' + me.allowedHelpText + '<br>' + allowedExtMarkup.join(' ') + '</div>',
 				Severity.notice,
 				[{
 					text: me.btnSubmit,

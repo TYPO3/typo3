@@ -59,6 +59,10 @@ $modal-danger-border: $btn-danger-border;
     margin: 0 auto;
     max-height: calc(100vh - 40px);
     max-width: calc(100vw - 40px);
+
+    .help-block {
+        margin-bottom: 0;
+    }
 }
 
 .modal-body {
