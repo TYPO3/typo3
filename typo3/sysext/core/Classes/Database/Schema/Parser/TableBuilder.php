@@ -22,7 +22,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateIndexDefinitionItem;
@@ -59,12 +59,7 @@ class TableBuilder
      */
     public function __construct(AbstractPlatform $platform = null)
     {
-        // Register custom data types as no connection might have
-        // been established yet so the types would not be available
-        // when building tables/columns.
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        foreach ($connectionPool->getCustomDoctrineTypes() as $type => $className) {
+        foreach (Connection::getCustomDoctrineTypes() as $type => $className) {
             if (!Type::hasType($type)) {
                 Type::addType($type, $className);
             }

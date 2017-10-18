@@ -19,11 +19,18 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaIndexDefinitionListener;
+use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
+use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterface
@@ -61,6 +68,31 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     const PARAM_BOOL = \PDO::PARAM_BOOL; // 5
 
     /**
+     * Prevents the duplicate registration of event handlers and types for this connection.
+     * If true the events will not be initialized any more in the connect() method.
+     *
+     * @var bool
+     */
+    private $customTypesAndEventsInitialized = false;
+
+    /**
+     * Returns the list of custom Doctrine data types implemented by TYPO3.
+     * This method is needed by the Schema parser to register the types as it
+     * does not require a database connection and thus the types don't get
+     * registered automatically.
+     *
+     * @internal
+     * @return array
+     */
+    public static function getCustomDoctrineTypes(): array
+    {
+        return [
+            EnumType::TYPE => EnumType::class,
+            SetType::TYPE => SetType::class,
+        ];
+    }
+
+    /**
      * Initializes a new instance of the Connection class.
      *
      * @param array $params The connection parameters.
@@ -74,6 +106,53 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         parent::__construct($params, $driver, $config, $em);
         $this->_expr = GeneralUtility::makeInstance(ExpressionBuilder::class, $this);
+    }
+
+    /**
+     * Establishes the connection with the database.
+     *
+     * @return bool true if the connection was successfully established, false if the connection is already open.
+     */
+    public function connect(): bool
+    {
+        // Early return if the connection is already open and custom setup has been done.
+        if (!parent::connect() || $this->customTypesAndEventsInitialized) {
+            return false;
+        }
+
+        // Register custom data types
+        foreach (static::getCustomDoctrineTypes() as $type => $className) {
+            if (!Type::hasType($type)) {
+                Type::addType($type, $className);
+            }
+        }
+
+        // Register all custom data types in the type mapping
+        foreach (static::getCustomDoctrineTypes() as $type => $className) {
+            $this->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
+        }
+
+        // Handler for building custom data type column definitions in the SchemaManager
+        $this->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaColumnDefinition,
+            GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class)
+        );
+
+        // Handler for enhanced index definitions in the SchemaManager
+        $this->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaIndexDefinition,
+            GeneralUtility::makeInstance(SchemaIndexDefinitionListener::class)
+        );
+
+        // Handler for adding custom database platform options to ALTER TABLE requests in the SchemaManager
+        $this->getDatabasePlatform()->getEventManager()->addEventListener(
+            Events::onSchemaAlterTable,
+            GeneralUtility::makeInstance(SchemaAlterTableListener::class)
+        );
+
+        $this->customTypesAndEventsInitialized = true;
+
+        return true;
     }
 
     /**
