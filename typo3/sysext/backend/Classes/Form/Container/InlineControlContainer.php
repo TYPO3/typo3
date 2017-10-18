@@ -528,11 +528,13 @@ class InlineControlContainer extends AbstractContainer
                     $buttonText = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button'));
                     $placeholder = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder'));
                     $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));
+                    $allowedMediaUrl = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowEmbedSources'));
                     $item .= '
 						<span class="btn btn-default t3js-online-media-add-btn ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 							' . $buttonStyle . '
 							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
+							data-online-media-allowed-help-text="' . $allowedMediaUrl . '"
 							data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
 							title="' . $buttonText . '"
 							data-btn-submit="' . $buttonSubmit . '"
