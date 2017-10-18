@@ -104,8 +104,7 @@ define([
 				}
 			},
 			beforeRender: function(container) {
-				// Unset height, width and z-index again, should be fixed by the plugin at a later point
-				container.attr('style', '').append('<hr><div>' +
+				container.append('<hr><div>' +
 					'<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
 						TYPO3.LLL.liveSearch.showAllResults +
 					'</a>' +
@@ -133,6 +132,9 @@ define([
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 			$(searchFieldSelector).val('').trigger('change');
 		});
+
+		// Unset height, width and z-index
+		$(toolbarItem).removeAttr('style');
 
 		$(searchFieldSelector).clearable({
 			onClear: function() {
