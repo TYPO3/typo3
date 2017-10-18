@@ -42,7 +42,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
     ContextMenuActions.editFileStorage = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
-            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[sys_file_storage][' + top.rawurlencode(uid) + ']=edit&returnUrl=' + ContextMenuActions.getReturnUrl()
+            top.TYPO3.settings.FormEngine.moduleUrl + '&edit[sys_file_storage][' + parseInt(uid, 10) + ']=edit&returnUrl=' + ContextMenuActions.getReturnUrl()
         );
     };
 
