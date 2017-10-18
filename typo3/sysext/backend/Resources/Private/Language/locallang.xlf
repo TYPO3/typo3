@@ -20,7 +20,7 @@
 Have a nice day.</source>
 			</trans-unit>
 			<trans-unit id="usermodule.su.list">
-				<source>Recently 'switched to' users</source>
+				<source>Recently switched to</source>
 			</trans-unit>
 			<trans-unit id="usermodule.su.tooltip">
 				<source>Switch to user %s</source>
