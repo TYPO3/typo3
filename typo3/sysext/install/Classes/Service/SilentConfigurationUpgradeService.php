@@ -118,6 +118,8 @@ class SilentConfigurationUpgradeService
         'SYS/enableDeprecationLog',
         // #82680
         'GFX/png_truecolor',
+        // #82803
+        'FE/content_doktypes',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

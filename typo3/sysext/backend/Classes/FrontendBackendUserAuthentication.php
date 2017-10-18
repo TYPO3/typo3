@@ -260,13 +260,6 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->in(
-                        'doktype',
-                        $queryBuilder->createNamedParameter(
-                            $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'],
-                            \PDO::PARAM_INT
-                        )
-                    ),
                     QueryHelper::stripLogicalOperatorPrefix($perms_clause)
                 )
                 ->execute();

@@ -816,10 +816,7 @@ class WorkspaceService implements SingletonInterface
         if ($pageUid > 0 && $workspaceUid > 0) {
             $pageRecord = BackendUtility::getRecord('pages', $pageUid);
             BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
-            if (
-                !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])
-                || VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
-            ) {
+            if (VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $result = false;
             }
         } else {
