@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend;
+namespace TYPO3\CMS\Backend\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * This is the ajax handler for backend login after timeout.
  */
-class AjaxLoginHandler
+class AjaxLoginController
 {
     /**
      * Handles the actual login process, more specifically it defines the response.

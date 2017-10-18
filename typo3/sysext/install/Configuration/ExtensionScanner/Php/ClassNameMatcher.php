@@ -437,6 +437,11 @@ return [
             'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\AjaxLoginHandler' => [
+        'restFiles' => [
+            'Deprecation-82805-RenamedAjaxLoginHandlerPHPClass.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

@@ -122,27 +122,27 @@ return [
     // Log in into backend
     'login' => [
         'path' => '/login',
-        'target' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '::loginAction',
+        'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::loginAction',
         'access' => 'public'
     ],
 
     // Log out from backend
     'logout' => [
         'path' => '/logout',
-        'target' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '::logoutAction',
+        'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::logoutAction',
         'access' => 'public'
     ],
 
     // Refresh login of backend
     'login_refresh' => [
         'path' => '/login/refresh',
-        'target' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '::refreshAction',
+        'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::refreshAction',
     ],
 
     // Check if backend session has timed out
     'login_timedout' => [
         'path' => '/login/timedout',
-        'target' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '::isTimedOutAction',
+        'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::isTimedOutAction',
         'access' => 'public',
         'parameters' => [
             'skipSessionUpdate' => 1

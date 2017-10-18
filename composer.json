@@ -70,6 +70,7 @@
 		"typo3/class-alias-loader": {
 			"always-add-alias-loader": true,
 			"class-alias-maps": [
+				"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/documentation/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php",
