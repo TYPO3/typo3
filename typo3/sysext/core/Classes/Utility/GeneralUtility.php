@@ -2459,6 +2459,7 @@ class GeneralUtility
         }
 
         $pathPrefix = $path . '/';
+        $allowedFileExtensionArray = self::trimExplode(',', $extensionList);
         $extensionList = ',' . str_replace(' ', '', $extensionList) . ',';
         $files = [];
         foreach ($rawFileList as $entry) {
@@ -2467,15 +2468,17 @@ class GeneralUtility
                 continue;
             }
 
-            if (
-                ($extensionList === ',,' || stripos($extensionList, ',' . pathinfo($entry, PATHINFO_EXTENSION) . ',') !== false)
-                && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $entry))
-            ) {
-                if ($order !== 'mtime') {
-                    $files[] = $entry;
-                } else {
-                    // Store the value in the key so we can do a fast asort later.
-                    $files[$entry] = filemtime($completePathToEntry);
+            foreach ($allowedFileExtensionArray as $allowedFileExtension) {
+                if (
+                    ($extensionList === ',,' || stripos($extensionList, ',' . substr($entry, strlen($allowedFileExtension)*-1, strlen($allowedFileExtension)) . ',') !== false)
+                    && ($excludePattern === '' || !preg_match(('/^' . $excludePattern . '$/'), $entry))
+                ) {
+                    if ($order !== 'mtime') {
+                        $files[] = $entry;
+                    } else {
+                        // Store the value in the key so we can do a fast asort later.
+                        $files[$entry] = filemtime($completePathToEntry);
+                    }
                 }
             }
         }
