@@ -965,20 +965,22 @@ class WorkspaceService implements SingletonInterface
      *
      * Result:
      * [
+     *   'sys_template' => [],
      *   'tt_content' => [
-     *     1 => 1,
-     *     11 => 11,
-     *     13 => 13,
-     *     15 => 15
+     *     1 => true,
+     *     11 => true,
+     *     13 => true,
+     *     15 => true
      *   ],
      *   'tx_something => [
-     *     15 => 15,
-     *     11 => 11,
-     *     21 => 21
+     *     15 => true,
+     *     11 => true,
+     *     21 => true
      *   ],
      * ]
      *
      * @param int $workspaceId
+     *
      * @return array
      */
     public function getPagesWithVersionsInTable($workspaceId)
@@ -999,10 +1001,10 @@ class WorkspaceService implements SingletonInterface
      *
      * Result:
      * [
-     *   1 => 1,
-     *   11 => 11,
-     *   13 => 13,
-     *   15 => 15
+     *   1 => true,
+     *   11 => true,
+     *   13 => true,
+     *   15 => true
      * ],
      *
      * @param int $workspaceId
