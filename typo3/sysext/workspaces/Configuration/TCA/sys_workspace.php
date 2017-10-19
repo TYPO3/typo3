@@ -277,12 +277,15 @@ return [
     ],
     'palettes' => [
         'stage.edit' => [
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.edit',
             'showitem' => 'edit_allow_notificaton_settings, edit_notification_preselection,',
         ],
         'stage.publish' => [
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.publish',
             'showitem' => 'publish_allow_notificaton_settings, publish_notification_preselection,',
         ],
         'stage.execute' => [
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.execute',
             'showitem' => 'execute_allow_notificaton_settings, execute_notification_preselection,',
         ]
     ],
@@ -294,9 +297,9 @@ return [
                 adminusers,members,
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,
                 stagechg_notification,
-                --palette--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.edit;stage.edit, edit_notification_defaults,
-                --palette--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.publish;stage.publish, publish_notification_defaults,
-                --palette--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.palette.stage.execute;stage.execute, execute_notification_defaults,
+                --palette--;;stage.edit, edit_notification_defaults,
+                --palette--;;stage.publish, publish_notification_defaults,
+                --palette--;;stage.execute, execute_notification_defaults,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.tabs.mountpoints,
                 db_mountpoints,file_mountpoints,
             --div--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.tabs.publishing,

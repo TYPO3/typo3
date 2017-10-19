@@ -117,10 +117,18 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter ++;
+                    $paletteLabel = $fieldConfiguration['fieldLabel'];
+                    if ($paletteLabel === null
+                        && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])
+                    ) {
+                        // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette" but
+                        // not "--palette--;LLL:aLabelReference;aPalette", then use ['palettes']['aPalette']['label'] if given.
+                        $paletteLabel = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'];
+                    }
                     $targetStructure[$mainStructureCounter] = [
                         'type' => 'palette',
                         'fieldName' => $fieldConfiguration['paletteName'],
-                        'fieldLabel' => $languageService->sL($fieldConfiguration['fieldLabel']),
+                        'fieldLabel' => $languageService->sL($paletteLabel),
                         'elements' => $paletteElementArray,
                     ];
                 }

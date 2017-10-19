@@ -229,42 +229,44 @@ return [
         // We leave the extensive definition of each type here anyway, to make clear that you can use it to differentiate between the types.
         '0' => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
             'showitem' => '
-				--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
+				--palette--;;basicoverlayPalette,
 				--palette--;;filePalette'
         ]
     ],
     'palettes' => [
         // Used for basic overlays: having a filelist etc
         'basicoverlayPalette' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette',
             'showitem' => 'title,description',
         ],
         // Used for everything that is an image (because it has a link and an alternative text)
         'imageoverlayPalette' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette',
             'showitem' => '
 				title,alternative,--linebreak--,
 				link,description,--linebreak--,crop
@@ -272,12 +274,14 @@ return [
         ],
         // Used for everything that is a video
         'videoOverlayPalette' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette',
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
         ],
         // Used for everything that is a audio file
         'audioOverlayPalette' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette',
             'showitem' => '
 				title,description,--linebreak--,autoplay
 				',
