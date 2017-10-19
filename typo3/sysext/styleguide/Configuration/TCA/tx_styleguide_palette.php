@@ -227,7 +227,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;palette,
-                    --palette--;palette_1;palette_1,
+                    --palette--;;palette_1,
                     --palette--;palette_2;palette_2,
                     --palette--;palette_3;palette_3,
                     --palette--;;palette_4,
@@ -242,6 +242,7 @@ return [
 
     'palettes' => [
         'palette_1' => [
+            'label' => 'palette_1',
             'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
         ],
         'palette_2' => [

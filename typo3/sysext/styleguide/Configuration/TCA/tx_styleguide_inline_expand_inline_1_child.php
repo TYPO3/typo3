@@ -152,22 +152,22 @@ return [
                     ],
                     'types' => [
                         0 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                         1 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                         2 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                         3 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                         4 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                         5 => [
-                            'showitem' => "\n\t\t\t\t\t\t\t--palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,\n\t\t\t\t\t\t\t--palette--;;filePalette",
+                            'showitem' => "--palette--;;imageoverlayPalette,--palette--;;filePalette",
                         ],
                     ],
                 ],
