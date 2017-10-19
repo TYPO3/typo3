@@ -47,6 +47,12 @@ class FileStreamWrapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'fileadmin' => [
                     'ext_typoscript_setup.txt' => 'test.Core.TypoScript = 1',
                     'test' => ['Foo.bar' => 'Baz'],
+                    'setup.typoscript' => 'test.TYPO3Forever.TypoScript = 1
+',
+                    'recursive_includes_setup.typoscript' => '@import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\'
+',
+                    'badfilename.php' => 'good.bad = ugly
+'
                 ],
             ],
         ];
