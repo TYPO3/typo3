@@ -27,4 +27,10 @@ return [
             'Deprecation-80485-MethodParameterOfTSFE-whichWorkspaceToReturnTheWorkspaceTitle.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->TS_AtagToAbs' => [
+        'unusedArgumentNumbers' => [ 2 ],
+        'restFiles' => [
+            'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+        ],
+    ],
 ];

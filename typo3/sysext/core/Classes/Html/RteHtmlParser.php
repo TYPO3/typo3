@@ -253,7 +253,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             $value = $this->TS_images_rte($value);
                             break;
                         case 'ts_links':
-                            $value = $this->TS_links_rte($value);
+                            $value = $this->TS_links_rte($value, true);
                             break;
                         case 'css_transform':
                             $value = $this->TS_transform_rte($value);
@@ -542,24 +542,25 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
 
-                $tagAttributes['href'] = $linkService->asString($linkInformation);
-                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
-                    . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
-                $parameters = [
-                    'currentBlock' => $v,
-                    'linkInformation' => $linkInformation,
-                    'url' => $linkInformation['href'],
-                    'attributes' => $tagAttributes
-                ];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] ?? [] as $className) {
-                    $processor = GeneralUtility::makeInstance($className);
-                    $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
+                // Modify parameters, this hook should be deprecated
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
+                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksDb_PostProc" will be removed in TYPO3 v10, use LinkService syntax to modify links to be stored in the database.', E_USER_DEPRECATED);
+                    $parameters = [
+                        'currentBlock' => $v,
+                        'linkInformation' => $linkInformation,
+                        'url' => $linkInformation['href'],
+                        'attributes' => $tagAttributes
+                    ];
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] ?? [] as $className) {
+                        $processor = GeneralUtility::makeInstance($className);
+                        $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
+                    }
+                } else {
+                    // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
+                    $tagAttributes['href'] = $linkService->asString($linkInformation);
+                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                        . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
                 }
-
-                // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
-                $tagAttributes['href'] = $linkService->asString($linkInformation);
-                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
-                    . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
             }
         }
         return implode('', $blockSplit);
@@ -573,16 +574,23 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * not be converted back to <link> tags anymore.
      *
      * @param string $value Content input
+     * @param bool $internallyCalledFromCore internal option for calls where the Core is still using this function, to supress method deprecations
      * @return string Content output
+     * @deprecated will be removed in TYPO3 v10, only ->TS_AtagToAbs() should be called directly, <link> syntax is deprecated
      */
-    public function TS_links_rte($value)
+    public function TS_links_rte($value, $internallyCalledFromCore = null)
     {
+        if ($internallyCalledFromCore === null) {
+            trigger_error('This method will be removed in TYPO3 v10, use TS_AtagToAbs() directly and do not use <link> syntax anymore', E_USER_DEPRECATED);
+        }
+        $hasLinkTags = false;
         $value = $this->TS_AtagToAbs($value);
         // Split content by the TYPO3 pseudo tag "<link>"
         $blockSplit = $this->splitIntoBlock('link', $value, true);
         foreach ($blockSplit as $k => $v) {
             // Block
             if ($k % 2) {
+                $hasLinkTags = true;
                 // Split away the first "<link " part
                 $typoLinkData = explode(' ', substr($this->getFirstTag($v), 0, -1), 2)[1];
                 $tagCode = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typoLinkData);
@@ -599,6 +607,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
                 // Modify parameters by a hook
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] ?? false)) {
+                    trigger_error('The hook "t3lib/class.t3lib_parsehtml_proc.php->modifyParams_LinksRte_PostProc" will be removed in TYPO3 v10, use the link service to properly use ', E_USER_DEPRECATED);
                     // backwards-compatibility: show an error message if the page is not found
                     $error = '';
                     if ($linkInformation['type'] === LinkService::TYPE_PAGE) {
@@ -629,10 +638,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
                     // Setting the <a> tag
                     $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($anchorAttributes, true) . '>'
-                        . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k]))
+                        . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k]), $internallyCalledFromCore)
                         . '</a>';
                 }
             }
+        }
+        if ($hasLinkTags) {
+            trigger_error('Content with <link> syntax was found, update your content to use the t3:// syntax, and migrate your content via the upgrade wizard in the install tool', E_USER_DEPRECATED);
         }
         return implode('', $blockSplit);
     }
@@ -716,9 +728,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @param string $value Content input
      * @return string Content output
+     * @deprecated since TYPO3 v9.0, will be removed in TYPO3 v10, see comment above, adding attribuet "rteerror" is not necessary anymore.
      */
     public function transformStyledATags($value)
     {
+        trigger_error('This method will be removed in TYPO3 v10. TYPO3 can handle style attribute in anchor tags properly since TYPO3 v8 LTS', E_USER_DEPRECATED);
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
             // If an A-tag was found
@@ -895,7 +909,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * @param string $value Value to process.
      * @param int $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p tags).
      * @param bool $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
-     * @return string Processed input value.
+     * @return string|array Processed input value.
      * @see setDivTags()
      */
     public function divideIntoLines($value, $count = 5, $returnArray = false)
@@ -1142,11 +1156,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
      *
      * @param string $value Content input
-     * @param bool $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set. (not in use anymore)
      * @return string Content output
      */
-    public function TS_AtagToAbs($value, $dontSetRTEKEEP = false)
+    public function TS_AtagToAbs($value)
     {
+        if (func_num_args() > 1) {
+            trigger_error('Second argument of TS_AtagToAbs() is not in use and is removed, however the argument in the callers code can be removed without side-effects.', E_USER_DEPRECATED);
+        }
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
             // Block

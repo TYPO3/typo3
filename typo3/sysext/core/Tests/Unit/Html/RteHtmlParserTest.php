@@ -188,33 +188,6 @@ class RteHtmlParserTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * Data provider for linkWithAtSignCorrectlyTransformedOnWayToRTE
-     */
-    public static function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider()
-    {
-        return [
-            'external url with @ sign' => [
-                '<link http://www.example.org/at@sign>link text</link>',
-                '<p><a href="http://www.example.org/at@sign">link text</a></p>'
-            ],
-            'email address with @ sign' => [
-                '<link name@example.org - mail "Opens window for sending email">link text</link>',
-                '<p><a href="mailto:name@example.org" class="mail" title="Opens window for sending email">link text</a></p>'
-            ]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider linkWithAtSignCorrectlyTransformedOnWayToRTEProvider
-     */
-    public function linkWithAtSignCorrectlyTransformedOnWayToRTE($content, $expectedResult)
-    {
-        $thisConfig = ['proc.' => $this->subject->procOptions];
-        $this->assertEquals($expectedResult, $this->subject->RTE_transform($content, [], 'rte', $thisConfig));
-    }
-
-    /**
      * Data provider for paragraphCorrectlyTransformedOnWayToDatabase
      */
     public static function paragraphCorrectlyTransformedOnWayToDatabaseProvider()

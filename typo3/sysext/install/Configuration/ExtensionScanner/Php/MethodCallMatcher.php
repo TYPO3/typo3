@@ -1535,4 +1535,18 @@ return [
             'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->transformStyledATags' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->TS_links_rte' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83252-Link-tagSyntaxProcesssing.rst',
+        ],
+    ],
 ];
