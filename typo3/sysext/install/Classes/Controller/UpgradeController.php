@@ -619,7 +619,7 @@ class UpgradeController extends AbstractController
                     break;
                 }
                 $parsedRestFile = array_pop($documentationFile->getListEntry(strtr(realpath($restFileLocation), '\\', '/')));
-                $version = GeneralUtility::trimExplode('/', $restFileLocation);
+                $version = GeneralUtility::trimExplode(DIRECTORY_SEPARATOR, $restFileLocation);
                 array_pop($version);
                 // something like "8.2" .. "8.7" .. "master"
                 $parsedRestFile['version'] = array_pop($version);
