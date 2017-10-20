@@ -57,11 +57,6 @@
 				"partOfMinimalUsableSystem": true
 			},
 			"extension-key": "core"
-		},
-		"typo3/class-alias-loader": {
-			"class-alias-maps": [
-				"Migrations/Code/ClassAliasMap.php"
-			]
 		}
 	},
 	"autoload": {
