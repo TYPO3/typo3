@@ -1359,4 +1359,11 @@ return [
             'Deprecation-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Scheduler\Scheduler->scheduleNextSchedulerRunUsingAtDaemon' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-82832-UseAtDaemonDroppedFromScheduler.rst',
+        ],
+    ],
 ];

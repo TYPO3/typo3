@@ -841,10 +841,6 @@ class SchedulerModuleController
      */
     protected function executeTasks()
     {
-        // Make sure next automatic scheduler-run is scheduled
-        if (GeneralUtility::_POST('go') !== null) {
-            $this->scheduler->scheduleNextSchedulerRunUsingAtDaemon();
-        }
         // Continue if some elements have been chosen for execution
         if (isset($this->submittedData['execute']) && !empty($this->submittedData['execute'])) {
             // Get list of registered classes

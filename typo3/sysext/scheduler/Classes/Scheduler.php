@@ -18,9 +18,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
@@ -44,9 +42,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['scheduler'], ['allowed_classes' => false]);
         if (empty($this->extConf['maxLifetime'])) {
             $this->extConf['maxLifetime'] = 1440;
-        }
-        if (empty($this->extConf['useAtdaemon'])) {
-            $this->extConf['useAtdaemon'] = 0;
         }
         // Clean up the serialized execution arrays
         $this->cleanExecutionArrays();
@@ -235,9 +230,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $result = false;
         }
-        if ($result) {
-            $this->scheduleNextSchedulerRunUsingAtDaemon();
-        }
         return $result;
     }
 
@@ -280,9 +272,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
                 );
         } else {
             $result = false;
-        }
-        if ($result) {
-            $this->scheduleNextSchedulerRunUsingAtDaemon();
         }
         return $result;
     }
@@ -463,66 +452,5 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($this->extConf['enableBELog'])) {
             $GLOBALS['BE_USER']->writelog(4, 0, $status, 0, '[scheduler]: ' . $code . ' - ' . $message, []);
         }
-    }
-
-    /**
-     * Schedule the next run of scheduler
-     * For the moment only the "at"-daemon is used, and only if it is enabled
-     *
-     * @return bool Successfully scheduled next execution using "at"-daemon
-     * @see tx_scheduler::fetchTask()
-     */
-    public function scheduleNextSchedulerRunUsingAtDaemon()
-    {
-        if ((int)$this->extConf['useAtdaemon'] !== 1) {
-            return false;
-        }
-        /** @var $registry Registry */
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        // Get at job id from registry and remove at job
-        $atJobId = $registry->get('tx_scheduler', 'atJobId');
-        if (MathUtility::canBeInterpretedAsInteger($atJobId)) {
-            shell_exec('atrm ' . (int)$atJobId . ' 2>&1');
-        }
-        // Can not use fetchTask() here because if tasks have just executed
-        // they are not in the list of next executions
-        $tasks = $this->fetchTasksWithCondition('');
-        $nextExecution = false;
-        foreach ($tasks as $task) {
-            try {
-                /** @var $task Task\AbstractTask */
-                $tempNextExecution = $task->getNextDueExecution();
-                if ($nextExecution === false || $tempNextExecution < $nextExecution) {
-                    $nextExecution = $tempNextExecution;
-                }
-            } catch (\OutOfBoundsException $e) {
-                // The event will not be executed again or has already ended - we don't have to consider it for
-                // scheduling the next "at" run
-            }
-        }
-        if ($nextExecution !== false) {
-            if ($nextExecution > $GLOBALS['EXEC_TIME']) {
-                $startTime = strftime('%H:%M %F', $nextExecution);
-            } else {
-                $startTime = 'now+1minute';
-            }
-            $cliDispatchPath = PATH_site . 'typo3/sysext/core/bin/typo3';
-            list($cliDispatchPathEscaped, $startTimeEscaped) =
-                CommandUtility::escapeShellArguments([$cliDispatchPath, $startTime]);
-            $cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler:run | at ' . $startTimeEscaped . ' 2>&1';
-            $output = shell_exec($cmd);
-            $outputParts = '';
-            foreach (explode(LF, $output) as $outputLine) {
-                if (GeneralUtility::isFirstPartOfStr($outputLine, 'job')) {
-                    $outputParts = explode(' ', $outputLine, 3);
-                    break;
-                }
-            }
-            if ($outputParts[0] === 'job' && MathUtility::canBeInterpretedAsInteger($outputParts[1])) {
-                $atJobId = (int)$outputParts[1];
-                $registry->set('tx_scheduler', 'atJobId', $atJobId);
-            }
-        }
-        return true;
     }
 }
