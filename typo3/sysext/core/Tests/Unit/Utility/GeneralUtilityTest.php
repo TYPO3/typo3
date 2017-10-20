@@ -3456,6 +3456,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'stuff.csv' => 'honey',
             ],
             'excludeMe.txt' => 'cocoa nibs',
+            'double.setup.typoscript' => 'cool TS',
             'testB.txt' => 'olive oil',
             'testA.txt' => 'eggs',
             'testC.txt' => 'carrots',
@@ -3510,16 +3511,16 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         return [
             'no space' => [
-                'txt,js,css'
+                'setup.typoscript,txt,js,css'
             ],
             'spaces' => [
-                'txt, js, css'
+                'setup.typoscript, txt, js, css'
             ],
             'mixed' => [
-                'txt,js, css'
+                'setup.typoscript , txt,js, css'
             ],
             'wild' => [
-                'txt,     js  ,         css'
+                'setup.typoscript,  txt,     js  ,         css'
             ]
         ];
     }
@@ -3532,6 +3533,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
+        $this->assertContains('double.setup.typoscript', $files);
         $this->assertContains('testA.txt', $files);
         $this->assertContains('test.js', $files);
         $this->assertContains('test.css', $files);
@@ -3580,7 +3582,7 @@ class GeneralUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $this->assertSame(
             array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false)),
-            ['.secret.txt', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
+            ['.secret.txt', 'double.setup.typoscript', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
         );
     }
 
