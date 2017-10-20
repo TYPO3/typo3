@@ -94,6 +94,7 @@ define([
 		else if (
 			typeof window.frames !== 'undefined' &&
 			typeof window.frames.frameElement !== 'undefined' &&
+			window.frames.frameElement !== null &&
 			window.frames.frameElement.classList.contains('t3js-modal-iframe')
 		) {
 			opener = window.frames.parent.frames.list_frame;
