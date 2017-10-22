@@ -315,32 +315,6 @@ border
          field = imageborder
 
 
-
-.. _objects-image-reference-bordercol:
-
-borderCol
-'''''''''
-
-.. container:: table-row
-
-   Property
-         borderCol
-
-   Data type
-         HTML-color / :ref:`stdWrap <t3tsref:stdwrap>`
-
-   Description
-         Color of the border, if ".border" is set.
-
-         This is used just to create the CSS class that will be added to an
-         image block that needs a border. The border itself will have to be
-         specified in CSS. See CSS section later.
-
-   Default
-         black
-
-
-
 .. _objects-image-reference-borderthick:
 
 borderThick
