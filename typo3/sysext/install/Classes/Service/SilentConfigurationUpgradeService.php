@@ -146,6 +146,7 @@ class SilentConfigurationUpgradeService
         $this->migrateDatabaseDriverOptions();
         $this->migrateLangDebug();
         $this->migrateCacheHashOptions();
+        $this->migrateExceptionErrors();
 
         // Should run at the end to prevent that obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -859,6 +860,23 @@ class SilentConfigurationUpgradeService
         // Throw redirect if something was changed
         if (!empty($newSettings) || !empty($removeSettings)) {
             $this->throwConfigurationChangedException();
+        }
+    }
+
+    /**
+     * Migrate SYS/exceptionalErrors to not contain E_USER_DEPRECATED
+     */
+    protected function migrateExceptionErrors()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $currentOption = (int)$confManager->getLocalConfigurationValueByPath('SYS/exceptionalErrors');
+            // make sure E_USER_DEPRECATED is not part of the exceptionalErrors
+            if ($currentOption & E_USER_DEPRECATED) {
+                $confManager->setLocalConfigurationValueByPath('SYS/exceptionalErrors', $currentOption & ~E_USER_DEPRECATED);
+            }
+        } catch (\RuntimeException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
         }
     }
 }
