@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -316,6 +317,8 @@ class InputLinkElement extends AbstractFormElement
         } catch (FileDoesNotExistException $e) {
             return $data;
         } catch (FolderDoesNotExistException $e) {
+            return $data;
+        } catch (UnknownLinkHandlerException $e) {
             return $data;
         }
 
