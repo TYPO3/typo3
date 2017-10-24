@@ -105,20 +105,19 @@ define(['jquery'], function($) {
 		var icon = [identifier, size, overlayIdentifier, state, markupIdentifier],
 			cacheIdentifier = icon.join('_');
 
-		if (Icons.isCached(cacheIdentifier)) {
-			return Icons.getFromCache(cacheIdentifier);
+		if (!Icons.isCached(cacheIdentifier)) {
+			Icons.putInCache(cacheIdentifier, $.ajax({
+				url: TYPO3.settings.ajaxUrls['icons'],
+				dataType: 'html',
+				data: {
+					icon: JSON.stringify(icon)
+				},
+				success: function(markup) {
+					return markup;
+				}
+			}).promise());
 		}
-
-		return $.ajax({
-			url: TYPO3.settings.ajaxUrls['icons'],
-			dataType: 'html',
-			data: {
-				icon: JSON.stringify(icon)
-			},
-			success: function(markup) {
-				Icons.putInCache(cacheIdentifier, markup);
-			}
-		});
+		return Icons.getFromCache(cacheIdentifier).done();
 	};
 
 	/**
