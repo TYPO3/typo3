@@ -14,7 +14,7 @@
 /**
  * Module: TYPO3/CMS/Backend/FormEngine/Element/SvgTree
  */
-define(['jquery', 'd3'], function ($, d3) {
+define(['jquery', 'd3', 'TYPO3/CMS/Backend/Icons'], function ($, d3, Icons) {
     'use strict';
 
     /**
@@ -136,6 +136,7 @@ define(['jquery', 'd3'], function ($, d3) {
                 .attr('class', 'nodes');
             if (this.settings.showIcons) {
                 this.iconsContainer = this.svg.append('defs');
+                this.data.icons = {};
             }
 
             this.updateScrollPosition();
@@ -219,9 +220,7 @@ define(['jquery', 'd3'], function ($, d3) {
                 });
             });
 
-            var iconHashes = [];
             this.data.links = [];
-            this.data.icons = [];
             this.data.nodes.forEach(function (n, i) {
                 //delete n.children;
                 n.x = n.depth * me.settings.indentWidth;
@@ -232,30 +231,35 @@ define(['jquery', 'd3'], function ($, d3) {
                         target: n
                     });
                 }
-                if (!n.iconHash && me.settings.showIcons && n.icon) {
-                    n.iconHash = Math.abs(me.hashCode(n.icon));
-                    if (iconHashes.indexOf(n.iconHash) === -1) {
-                        iconHashes.push(n.iconHash);
-                        me.data.icons.push({
-                            identifier: n.iconHash,
-                            icon: n.icon
-                        });
-                    }
-                    delete n.icon;
-                }
-                if (!n.iconOverlayHash && me.settings.showIcons && n.overlayIcon) {
-                    n.iconOverlayHash = Math.abs(me.hashCode(n.overlayIcon));
-                    if (iconHashes.indexOf(n.iconOverlayHash) === -1) {
-                        iconHashes.push(n.iconOverlayHash);
-                        me.data.icons.push({
-                            identifier: n.iconOverlayHash,
-                            icon: n.overlayIcon
-                        });
-                    }
-                    delete n.overlayIcon;
+
+                if (me.settings.showIcons) {
+                    me.fetchIcon(n.icon);
+                    me.fetchIcon(n.overlayIcon);
                 }
             });
             this.svg.attr('height', this.data.nodes.length * this.settings.nodeHeight);
+        },
+
+        /**
+         * Fetch icon from Icon API and store it in data.icons
+         *
+         * @param {String} iconName
+         */
+        fetchIcon: function (iconName) {
+            if (!iconName) {
+                return;
+            }
+            var me = this;
+            if (!(iconName in this.data.icons)) {
+                this.data.icons[iconName] = {
+                    identifier: iconName,
+                    icon: ''
+                };
+                Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function(icon) {
+                    me.data.icons[iconName].icon = icon.match(/<svg.*<\/svg>/im)[0];
+                    me.update();
+                });
+            }
         },
 
         /**
@@ -339,9 +343,10 @@ define(['jquery', 'd3'], function ($, d3) {
             me.textPosition = 10;
 
             if (me.settings.showIcons) {
+                var iconsArray = $.map(me.data.icons, function(value) {if (value.icon !== '') return value});
                 var icons = this.iconsContainer
                     .selectAll('.icon-def')
-                    .data(this.data.icons, function (i) {
+                    .data(iconsArray, function (i) {
                         return i.identifier;
                     });
                 icons
@@ -475,7 +480,7 @@ define(['jquery', 'd3'], function ($, d3) {
          * @returns {String}
          */
         getIconId: function (node) {
-            return '#icon-' + node.iconHash;
+            return '#icon-' + node.icon;
         },
         /**
          * Returns icon's href attribute value
@@ -484,7 +489,7 @@ define(['jquery', 'd3'], function ($, d3) {
          * @returns {String}
          */
         getIconOverlayId: function (node) {
-            return '#icon-' + node.iconOverlayHash;
+            return '#icon-' + node.overlayIcon;
         },
 
         /**
@@ -518,20 +523,6 @@ define(['jquery', 'd3'], function ($, d3) {
          */
         getNodeTransform: function (node) {
             return 'translate(' + node.x + ',' + node.y + ')';
-        },
-
-        /**
-         * Simple hash function used to create icon href's
-         *
-         * @param {String} s
-         * @returns {String}
-         */
-        hashCode: function (s) {
-            return s.split('')
-                .reduce(function (a, b) {
-                    a = ((a << 5) - a) + b.charCodeAt(0);
-                    return a & a
-                }, 0);
         },
 
         /**

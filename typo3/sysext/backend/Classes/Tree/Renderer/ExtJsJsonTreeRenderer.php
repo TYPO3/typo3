@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode;
 
 /**
@@ -59,21 +58,21 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      */
     protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node)
     {
-        $overlayIconMarkup  = '';
+        $overlayIconName  = '';
         if (is_object($node->getIcon())) {
-            $iconMarkup = $node->getIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+            $iconName = $node->getIcon()->getIdentifier();
             if (is_object($node->getIcon()->getOverlayIcon())) {
-                $overlayIconMarkup = $node->getIcon()->getOverlayIcon()->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE);
+                $overlayIconName = $node->getIcon()->getOverlayIcon()->getIdentifier();
             }
         } else {
-            $iconMarkup = $node->getIcon();
+            $iconName = $node->getIcon();
         }
         $nodeArray = [
             'identifier' => htmlspecialchars($node->getId()),
             // No need for htmlspecialchars() here as d3 is using 'textContent' property of the HTML DOM node
             'name' => $node->getLabel(),
-            'icon' => $iconMarkup,
-            'overlayIcon' => $overlayIconMarkup,
+            'icon' => $iconName,
+            'overlayIcon' => $overlayIconName,
             'depth' => $this->recursionLevel,
             'hasChildren' => (bool)$node->hasChildNodes(),
             'selectable' => true,
