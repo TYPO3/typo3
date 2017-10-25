@@ -961,6 +961,7 @@ abstract class AbstractItemProvider
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
         $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($foreignTableName);
 
@@ -974,7 +975,7 @@ abstract class AbstractItemProvider
             ->where($foreignTableClauseArray['WHERE']);
 
         if (!empty($foreignTableClauseArray['GROUPBY'])) {
-            $queryBuilder->groupBy($foreignTableClauseArray['GROUPBY']);
+            $queryBuilder->groupBy(...$foreignTableClauseArray['GROUPBY']);
         }
 
         if (!empty($foreignTableClauseArray['ORDERBY'])) {
