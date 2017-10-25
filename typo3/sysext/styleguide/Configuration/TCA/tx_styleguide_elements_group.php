@@ -146,13 +146,13 @@ return [
         ],
         'group_db_2' => [
             'exclude' => 1,
-            'label' => 'group_db_2 allowed=be_users,be_groups, recordOverview disabled',
+            'label' => 'group_db_2 allowed=be_users,be_groups, recordsOverview disabled',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'fieldWizard' => [
-                    'recordOverview' => [
+                    'recordsOverview' => [
                         'disabled' => true,
                     ],
                 ],
