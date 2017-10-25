@@ -343,6 +343,7 @@ class TranslationService implements SingletonInterface
                 foreach ($translationFiles as $translationFile) {
                     $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property, $optionValue);
                     $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property, $optionValue);
+                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property, $optionValue);
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $language);
