@@ -1797,7 +1797,11 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
-                            'foreign_table_where' => 'AND ftable.uid=1 GROUP BY groupField ORDER BY orderField LIMIT 1,2',
+                            'foreign_table_where' => '
+                                AND ftable.uid=1
+                                GROUP BY groupField
+                                ORDER BY orderField
+                                LIMIT 1,2',
                         ],
                     ],
                 ]
