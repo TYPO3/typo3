@@ -1754,7 +1754,7 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'foreign_table' => 'fTable',
                             'foreign_table_where' => '
                                 AND ftable.uid=1
-                                GROUP BY groupField
+                                GROUP BY groupField1, groupField2
                                 ORDER BY orderField
                                 LIMIT 1,2',
                         ],
@@ -1779,7 +1779,7 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->groupBy(['groupField'])->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
+        $queryBuilderProphet->groupBy('groupField1', 'groupField2')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->addOrderBy('orderField', null)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->setFirstResult(1)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->setMaxResults(2)->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
