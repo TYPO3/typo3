@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -4139,13 +4140,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param string $content Content to be converted.
      * @return string Converted content string.
+     * @throws \RuntimeException if an invalid charset was configured
      */
     public function convOutputCharset($content)
     {
         if ($this->metaCharset !== 'utf-8') {
             /** @var CharsetConverter $charsetConverter */
             $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset, true);
+            try {
+                $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset, true);
+            } catch (UnknownCharsetException $e) {
+                throw new \RuntimeException('Invalid config.metaCharset: ' . $e->getMessage(), 1508916185);
+            }
         }
         return $content;
     }
