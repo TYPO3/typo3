@@ -1856,6 +1856,11 @@ class PageRepository implements LoggerAwareInterface
         $isTableLocalizable = (
             !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
             && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+            // Only fetch references if the field is defined in TCA. This is a special use-case
+            // for pages_language_overlay because it may be possible that a field is defined in TCA
+            // of "pages" but not in "pages_language_overlay". Once pages_language_overlay is removed
+            // this check can be removed as well
+            && isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])
         );
         if ($isTableLocalizable && $localizedId !== null) {
             $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
