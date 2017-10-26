@@ -462,7 +462,7 @@ class ResourceCompressor
         } elseif (strpos($filename, '../') === 0) {
             $file = GeneralUtility::resolveBackPath(PATH_typo3 . $filename);
         } else {
-            $file = PATH_site . $fileNameWithoutSlash;
+            $file = PATH_site . $filename;
         }
 
         // check if the file exists, and if so, return the path relative to TYPO3_mainDir
