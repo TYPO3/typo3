@@ -1431,7 +1431,7 @@ class TemplateService
      * Basically this function takes care of issues such as type,id,alias and Mount Points, URL rewriting (through hooks), M5/B6 encoded parameters etc.
      * It is important to pass all links created through this function since this is the guarantee that globally configured settings for link creating are observed and that your applications will conform to the various/many configuration options in TypoScript Templates regarding this.
      *
-     * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, no_cache, title and sectionIndex_uid.
+     * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, title and sectionIndex_uid.
      * @param string $oTarget Default target string to use IF not $page['target'] is set.
      * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
      * @param string $_ not in use anymore
@@ -1491,7 +1491,7 @@ class TemplateService
         // Preserving the type number.
         $LD['orig_type'] = $LD['type'];
         // noCache
-        $LD['no_cache'] = trim($page['no_cache']) || $no_cache ? '&no_cache=1' : '';
+        $LD['no_cache'] = $no_cache ? '&no_cache=1' : '';
         // linkVars
         if ($addParams) {
             $LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '', false, true);

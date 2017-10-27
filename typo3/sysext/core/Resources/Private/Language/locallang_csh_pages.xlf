@@ -139,28 +139,12 @@ Combined:
 100 600x350 - Opens the page in a 600x350 popup with type=100
 2 _blank - Opens the page with target "_blank" and type=2</source>
 			</trans-unit>
-			<trans-unit id="no_cache.description">
-				<source>This option disables server caching of the page.</source>
-			</trans-unit>
-			<trans-unit id="no_cache.details" xml:space="preserve">
-				<source>Normally pages in TYPO3 are cached on the server after being constructed for the first time. This means a page is displayed much faster the second time it's requested.
-For most pages this presents no problems; indeed, it boosts the performance of the website.
-However you may need to disable caching for a page if it contains dynamic content which must not be cached under any circumstances. Normally the PHP-code rendering such content is programmed to disable the caching automatically. But with this option you can force the page not to be cached.</source>
-			</trans-unit>
-			<trans-unit id="_no_cache.seeAlso">
-				<source>pages:cache_timeout</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="cache_timeout.description">
 				<source>Sets the Cache Lifetime for the page.</source>
 			</trans-unit>
 			<trans-unit id="cache_timeout.details" xml:space="preserve">
 				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
 When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
-			</trans-unit>
-			<trans-unit id="_cache_timeout.seeAlso">
-				<source>pages:no_cache</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="no_search.description">
 				<source>If enabled, this option excludes the page from searching operations on the website.</source>

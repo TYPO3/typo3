@@ -75,7 +75,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
                     'uid',
                     'lastUpdated',
                     'newUntil',
-                    'no_cache',
                     'cache_timeout',
                     'php_tree_stop',
                     'TSconfig',

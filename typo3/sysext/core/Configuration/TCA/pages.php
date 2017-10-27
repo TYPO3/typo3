@@ -59,7 +59,7 @@ return [
         'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
     ],
     'interface' => [
-        'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
+        'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
         'maxDBListItems' => 30,
         'maxSingleDBListItems' => 50
     ],
@@ -434,18 +434,6 @@ return [
                 'size' => 30,
                 'max' => 255,
                 'eval' => ''
-            ]
-        ],
-        'no_cache' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache',
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache_checkbox_1_formlabel'
-                    ]
-                ]
             ]
         ],
         'no_search' => [
@@ -947,7 +935,7 @@ return [
             'showitem' => 'layout, lastUpdated, newUntil, no_search'
         ],
         '3' => [
-            'showitem' => 'alias, target, no_cache, cache_timeout, cache_tags'
+            'showitem' => 'alias, target, cache_timeout, cache_tags'
         ],
         '5' => [
             'showitem' => 'author, author_email',
@@ -1039,7 +1027,7 @@ return [
         ],
         'caching' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.caching',
-            'showitem' => 'cache_timeout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout_formlabel, cache_tags, no_cache;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_cache_formlabel',
+            'showitem' => 'cache_timeout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout_formlabel, cache_tags',
         ],
         'language' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.language',

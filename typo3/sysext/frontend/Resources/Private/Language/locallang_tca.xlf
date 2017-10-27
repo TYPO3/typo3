@@ -258,15 +258,6 @@
 			<trans-unit id="pages.tabs.behaviour">
 				<source>Behaviour</source>
 			</trans-unit>
-			<trans-unit id="pages.no_cache">
-				<source>No Cache:</source>
-			</trans-unit>
-			<trans-unit id="pages.no_cache_formlabel">
-				<source>Cache</source>
-			</trans-unit>
-			<trans-unit id="pages.no_cache_checkbox_1_formlabel">
-				<source>Disable</source>
-			</trans-unit>
 			<trans-unit id="pages.no_search">
 				<source>No Search:</source>
 			</trans-unit>

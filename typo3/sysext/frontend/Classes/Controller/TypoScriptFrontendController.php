@@ -1369,10 +1369,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ];
             $this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
         }
-        // Set no_cache if set
-        if ($this->page['no_cache']) {
-            $this->set_no_cache('no_cache is set in page properties');
-        }
         // Init SYS_LASTCHANGED
         $this->register['SYS_LASTCHANGED'] = (int)$this->page['tstamp'];
         if ($this->register['SYS_LASTCHANGED'] < (int)$this->page['SYS_LASTCHANGED']) {
