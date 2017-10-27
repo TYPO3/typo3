@@ -716,13 +716,6 @@ define(['jquery', 'moment'], function ($, moment) {
 				}
 
 				var year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
-				if ((year >= 0 && year < 38) || (year >= 70 && year < 100) || (year >= 1902 && year < 2038)) {
-					if (year < 100) {
-						year = (year < 38) ? year += 2000 : year += 1900;
-					}
-				} else {
-					year = FormEngineValidation.getYear(today);
-				}
 				var usMode = FormEngineValidation.USmode ? 1 : 2;
 				var month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
 				usMode = FormEngineValidation.USmode ? 2 : 1;
@@ -731,7 +724,6 @@ define(['jquery', 'moment'], function ($, moment) {
 
 				var theTime = moment.utc();
 				theTime.year(parseInt(year)).month(parseInt(month)-1).date(parseInt(day)).hour(0).minute(0).second(0);
-
 				FormEngineValidation.lastDate = theTime.unix();
 		}
 		FormEngineValidation.lastDate += add * 24 * 60 * 60;
@@ -836,13 +828,6 @@ define(['jquery', 'moment'], function ($, moment) {
 					add = FormEngineValidation.pol(values.valPol[2], FormEngineValidation.parseInt(values.values[2]));
 				}
 				var year = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : FormEngineValidation.getYear(today);
-				if ((year >= 0 && year < 38) || (year >= 70 && year<100) || (year >= 1902 && year < 2038)) {
-					if (year < 100) {
-						year = (year < 38) ? year += 2000 : year += 1900;
-					}
-				} else {
-					year = FormEngineValidation.getYear(today);
-				}
 				FormEngineValidation.lastYear = year;
 		}
 		FormEngineValidation.lastYear += add;

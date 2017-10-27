@@ -183,9 +183,9 @@ class ElementsBasicInputCest extends AbstractElementsBasicCest
                 ],
                 [
                     'inputValue' => '12',
-                    'expectedValue' => '2012',
-                    'expectedInternalValue' => '2012',
-                    'expectedValueAfterSave' => '2012',
+                    'expectedValue' => '12',
+                    'expectedInternalValue' => '12',
+                    'expectedValueAfterSave' => '12',
                     'comment' => '',
                 ],
                 [
