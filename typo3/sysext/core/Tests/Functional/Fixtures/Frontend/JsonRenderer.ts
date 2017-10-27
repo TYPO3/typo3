@@ -8,7 +8,8 @@ config {
 	sys_language_uid = 0
 	sys_language_mode = ignore
 	sys_language_overlay = 1
-	additionalHeaders = Content-Type: application/json; charset=utf-8
+	additionalHeaders.10.header = Content-Type: application/json; charset=utf-8
+	additionalHeaders.10.replace = 1
 
 	watcher {
 		tableFields {

@@ -6,7 +6,8 @@ fluidAjaxWidgetResponse {
 	config {
 		no_cache = 1
 		disableAllHeaderCode = 1
-		additionalHeaders = Content-Type: text/plain
+		additionalHeaders.10.header = Content-Type: text/plain
+		additionalHeaders.10.replace = 1
 		debug = 0
 	}
 	10 = USER_INT
