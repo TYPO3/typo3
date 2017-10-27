@@ -96,7 +96,7 @@ class ClassSchema
     /**
      * @var array
      */
-    private $tags;
+    private $tags = [];
 
     /**
      * @var array

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
 
 /**
  * Test case
@@ -31,7 +30,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
         $service = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $classSchema = $service->getClassSchema(DummyModel::class);
+        $classSchema = $service->getClassSchema(Fixture\DummyModel::class);
         $this->assertTrue($classSchema->isAggregateRoot());
     }
 
@@ -46,9 +45,17 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndConstructorArguments::class);
         static::assertTrue($classSchema->hasConstructor());
 
-        $methodDefinition = $classSchema->getMethod('__construct');
-        static::assertArrayHasKey('foo', $methodDefinition['params']);
-        static::assertArrayHasKey('bar', $methodDefinition['params']);
+        $constructorArguments = $classSchema->getConstructorArguments();
+        static::assertArrayHasKey('foo', $constructorArguments);
+        static::assertArrayHasKey('bar', $constructorArguments);
+
+        $classSchema = new ClassSchema(Fixture\DummyClassWithConstructorAndWithoutConstructorArguments::class);
+        static::assertTrue($classSchema->hasConstructor());
+        static::assertSame([], $classSchema->getConstructorArguments());
+
+        $classSchema = new ClassSchema(Fixture\DummyClassWithoutConstructor::class);
+        static::assertFalse($classSchema->hasConstructor());
+        static::assertSame([], $classSchema->getConstructorArguments());
     }
 
     public function testClassSchemaDetectsConstructorArgumentsWithDependencies()
@@ -59,6 +66,56 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $methodDefinition = $classSchema->getMethod('__construct');
         static::assertArrayHasKey('foo', $methodDefinition['params']);
         static::assertSame(Fixture\DummyClassWithGettersAndSetters::class, $methodDefinition['params']['foo']['dependency']);
+    }
+
+    public function testClassSchemaGetProperties()
+    {
+        static::assertSame(
+            [
+                'publicProperty',
+                'protectedProperty',
+                'privateProperty',
+                'publicStaticProperty',
+                'protectedStaticProperty',
+                'privateStaticProperty',
+                'propertyWithIgnoredTags',
+                'propertyWithInjectAnnotation',
+                'propertyWithTransientAnnotation',
+                'propertyWithCascadeAnnotation',
+                'propertyWithCascadeAnnotationWithoutVarAnnotation',
+                'propertyWithObjectStorageAnnotation'
+            ],
+            array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->getProperties())
+        );
+    }
+
+    public function testClassSchemaHasMethod()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
+        static::assertTrue($classSchema->hasMethod('publicMethod'));
+        static::assertFalse($classSchema->hasMethod('nonExistentMethod'));
+    }
+
+    public function testClassSchemaGetMethods()
+    {
+        static::assertSame(
+            [
+                'publicMethod',
+                'protectedMethod',
+                'privateMethod',
+                'methodWithIgnoredTags',
+                'injectSettings',
+                'injectMethodWithoutParam',
+                'injectMethodThatIsProtected',
+                'injectFoo',
+                'staticMethod',
+                'methodWithMandatoryParam',
+                'methodWithNullableParam',
+                'methodWithDefaultValueParam',
+                'methodWithTypeHintedParam'
+            ],
+            array_keys((new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class))->getMethods())
+        );
     }
 
     public function testClassSchemaDetectsMethodVisibility()
@@ -81,9 +138,22 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertTrue($methodDefinition['private']);
     }
 
+    public function testClassSchemaDetectsInjectProperties()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+        static::assertTrue($classSchema->hasInjectProperties());
+
+        $propertyDefinition = $classSchema->getProperty('propertyWithInjectAnnotation');
+        static::assertTrue($propertyDefinition['annotations']['inject']);
+
+        $injectProperties = $classSchema->getInjectProperties();
+        static::assertArrayHasKey('propertyWithInjectAnnotation', $injectProperties);
+    }
+
     public function testClassSchemaDetectsInjectMethods()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
+        static::assertTrue($classSchema->hasInjectMethods());
 
         $methodDefinition = $classSchema->getMethod('injectSettings');
         static::assertFalse($methodDefinition['injectMethod']);
@@ -96,6 +166,9 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $methodDefinition = $classSchema->getMethod('injectFoo');
         static::assertTrue($methodDefinition['injectMethod']);
+
+        $injectMethods = $classSchema->getInjectMethods();
+        static::assertArrayHasKey('injectFoo', $injectMethods);
     }
 
     public function testClassSchemaDetectsStaticMethods()
@@ -197,5 +270,60 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $propertyDefinition = $classSchema->getProperty('propertyWithObjectStorageAnnotation');
         static::assertSame(ObjectStorage::class, $propertyDefinition['type']);
         static::assertSame(Fixture\DummyClassWithAllTypesOfProperties::class, $propertyDefinition['elementType']);
+    }
+
+    public function testClassSchemaDetectsSingletons()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummySingleton::class))->isSingleton());
+    }
+
+    public function testClassSchemaDetectsModels()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isModel());
+        static::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isModel());
+    }
+
+    public function testClassSchemaDetectsEntities()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummyEntity::class))->isEntity());
+    }
+
+    public function testClassSchemaDetectsValueObjects()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummyValueObject::class))->isValueObject());
+    }
+
+    public function testClassSchemaDetectsClassName()
+    {
+        static::assertSame(Fixture\DummyModel::class, (new ClassSchema(Fixture\DummyModel::class))->getClassName());
+    }
+
+    public function testClassSchemaDetectsNonStaticProperties()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateProperty'));
+    }
+
+    public function testClassSchemaDetectsStaticProperties()
+    {
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
+        static::assertTrue((new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class))->hasProperty('privateStaticProperty'));
+    }
+
+    public function testClassSchemaGetTags()
+    {
+        $tags = (new ClassSchema(Fixture\DummyClassWithTags::class))->getTags();
+        static::assertArrayHasKey('foo', $tags);
+
+        // test ignored tags
+        static::assertArrayNotHasKey('package', $tags);
+        static::assertArrayNotHasKey('subpackage', $tags);
+        static::assertArrayNotHasKey('license', $tags);
+        static::assertArrayNotHasKey('copyright', $tags);
+        static::assertArrayNotHasKey('author', $tags);
+        static::assertArrayNotHasKey('version', $tags);
+        static::assertArrayNotHasKey('const', $tags);
     }
 }

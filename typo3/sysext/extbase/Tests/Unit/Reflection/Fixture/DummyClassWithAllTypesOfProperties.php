@@ -27,6 +27,21 @@ class DummyClassWithAllTypesOfProperties
 
     private $privateProperty;
 
+    public static $publicStaticProperty;
+
+    protected static $protectedStaticProperty;
+
+    private static $privateStaticProperty;
+
+    /**
+     * @license
+     * @copyright
+     * @author
+     * @version
+     * @const
+     */
+    public $propertyWithIgnoredTags;
+
     /**
      * @inject
      * @var DummyClassWithAllTypesOfProperties

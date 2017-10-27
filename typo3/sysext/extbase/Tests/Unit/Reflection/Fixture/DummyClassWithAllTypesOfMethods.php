@@ -33,6 +33,17 @@ class DummyClassWithAllTypesOfMethods
     {
     }
 
+    /**
+     * @license
+     * @copyright
+     * @author
+     * @version
+     * @const
+     */
+    public function methodWithIgnoredTags()
+    {
+    }
+
     public function injectSettings()
     {
         // Will fail, as injectSettings is blacklisted

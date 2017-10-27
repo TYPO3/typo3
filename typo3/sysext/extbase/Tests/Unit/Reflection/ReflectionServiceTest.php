@@ -52,6 +52,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'firsttest' => ['test for reflection'],
             'anothertest' => ['second test for reflection', 'second test for reflection with second value']
         ], $classValues);
+
+        $this->assertEquals(
+            [],
+            $service->getClassTagsValues('NonExistantNamespace\\NonExistantClass')
+        );
     }
 
     /**
@@ -64,6 +69,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $this->assertEquals([
             'test for reflection',
         ], $classValues);
+
+        $this->assertEquals(
+            [],
+            $service->getClassTagValues('NonExistantNamespace\\NonExistantClass', 'nonExistantTag')
+        );
     }
 
     /**
@@ -74,6 +84,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $service = GeneralUtility::makeInstance(ReflectionService::class);
         $this->assertTrue($service->hasMethod(static::class, 'fixtureMethodForMethodTagsValues'));
         $this->assertFalse($service->hasMethod(static::class, 'notExistentMethod'));
+        $this->assertFalse($service->hasMethod('NonExistantNamespace\\NonExistantClass', 'notExistentMethod'));
     }
 
     /**
@@ -87,6 +98,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'param' => ['array $foo The foo parameter'],
             'return' => ['string']
         ], $tagsValues);
+
+        $this->assertEquals(
+            [],
+            $service->getMethodTagsValues('NonExistantNamespace\\NonExistantClass', 'notExistentMethod')
+        );
     }
 
     /**
@@ -112,6 +128,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'dependency' =>  null,
             ]
         ], $parameters);
+
+        $this->assertSame(
+            [],
+            $service->getMethodParameters('NonExistantNamespace\\NonExistantClass', 'notExistentMethod')
+        );
     }
 
     /**
@@ -151,5 +172,137 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'dependency' =>  null,
             ]
         ], $parameters);
+    }
+
+    public function testIsClassTaggedWith()
+    {
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+        $this->assertTrue($service->isClassTaggedWith(
+            Fixture\DummyClassWithTags::class,
+            'foo'
+        ));
+
+        $this->assertFalse($service->isClassTaggedWith(
+            Fixture\DummyClassWithAllTypesOfProperties::class,
+            'bar'
+        ));
+
+        $this->assertFalse($service->isClassTaggedWith(
+            'NonExistantNamespace\\NonExistantClass',
+            'foo'
+        ));
+    }
+
+    public function testIsPropertyTaggedWith()
+    {
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+        $this->assertTrue($service->isPropertyTaggedWith(
+            Fixture\DummyClassWithAllTypesOfProperties::class,
+            'propertyWithInjectAnnotation',
+            'inject'
+        ));
+
+        $this->assertFalse($service->isPropertyTaggedWith(
+            Fixture\DummyClassWithAllTypesOfProperties::class,
+            'propertyWithInjectAnnotation',
+            'foo'
+        ));
+
+        $this->assertFalse($service->isPropertyTaggedWith(
+            Fixture\DummyClassWithAllTypesOfProperties::class,
+            'nonExistantProperty',
+            'foo'
+        ));
+
+        $this->assertFalse($service->isPropertyTaggedWith(
+            'NonExistantNamespace\\NonExistantClass',
+            'propertyWithInjectAnnotation',
+            'inject'
+        ));
+    }
+
+    public function testgetPropertyTagValues()
+    {
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+
+        $this->assertSame(
+            [],
+            $service->getPropertyTagValues(
+                Fixture\DummyClassWithAllTypesOfProperties::class,
+                'propertyWithInjectAnnotation',
+                'foo'
+            )
+        );
+
+        $this->assertSame(
+            [],
+            $service->getPropertyTagValues(
+            Fixture\DummyClassWithAllTypesOfProperties::class,
+            'propertyWithInjectAnnotation',
+            'inject'
+            )
+        );
+    }
+
+    public function testGetPropertyTagsValues()
+    {
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+
+        $this->assertSame(
+            [
+                'inject' => [],
+                'var' => [
+                    'DummyClassWithAllTypesOfProperties'
+                ]
+            ],
+            $service->getPropertyTagsValues(
+                Fixture\DummyClassWithAllTypesOfProperties::class,
+                'propertyWithInjectAnnotation'
+            )
+        );
+
+        $this->assertSame(
+            [],
+            $service->getPropertyTagsValues(
+                Fixture\DummyClassWithAllTypesOfProperties::class,
+                'nonExistantProperty'
+            )
+        );
+
+        $this->assertSame(
+            [],
+            $service->getPropertyTagsValues(
+                'NonExistantNamespace\\NonExistantClass',
+                'nonExistantProperty'
+            )
+        );
+    }
+
+    public function testGetClassPropertyNames()
+    {
+        $service = GeneralUtility::makeInstance(ReflectionService::class);
+
+        $this->assertSame(
+            [
+                'publicProperty',
+                'protectedProperty',
+                'privateProperty',
+                'publicStaticProperty',
+                'protectedStaticProperty',
+                'privateStaticProperty',
+                'propertyWithIgnoredTags',
+                'propertyWithInjectAnnotation',
+                'propertyWithTransientAnnotation',
+                'propertyWithCascadeAnnotation',
+                'propertyWithCascadeAnnotationWithoutVarAnnotation',
+                'propertyWithObjectStorageAnnotation'
+            ],
+            $service->getClassPropertyNames(Fixture\DummyClassWithAllTypesOfProperties::class)
+        );
+
+        $this->assertSame(
+            [],
+            $service->getClassPropertyNames('NonExistantNamespace\\NonExistantClass')
+        );
     }
 }

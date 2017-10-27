@@ -88,7 +88,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getClassTagsValues($className): array
     {
-        return $this->getClassSchema($className)->getTags();
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $classSchema->getTags();
     }
 
     /**
@@ -100,7 +106,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getClassTagValues($className, $tag): array
     {
-        return $this->getClassSchema($className)->getTags()[$tag];
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $classSchema->getTags()[$tag];
     }
 
     /**
@@ -111,7 +123,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getClassPropertyNames($className): array
     {
-        return array_keys($this->getClassSchema($className)->getProperties());
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return array_keys($classSchema->getProperties());
     }
 
     /**
@@ -141,7 +159,13 @@ class ReflectionService implements SingletonInterface
      */
     public function hasMethod($className, $methodName): bool
     {
-        return $this->getClassSchema($className)->hasMethod($methodName);
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $classSchema->hasMethod($methodName);
     }
 
     /**
@@ -153,7 +177,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getMethodTagsValues($className, $methodName): array
     {
-        return $this->getClassSchema($className)->getMethod($methodName)['tags'];
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $classSchema->getMethod($methodName)['tags'];
     }
 
     /**
@@ -166,7 +196,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getMethodParameters($className, $methodName): array
     {
-        return $this->getClassSchema($className)->getMethod($methodName)['params'];
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $classSchema->getMethod($methodName)['params'];
     }
 
     /**
@@ -178,7 +214,15 @@ class ReflectionService implements SingletonInterface
      */
     public function getPropertyTagsValues($className, $propertyName): array
     {
-        return $this->getClassSchema($className)->getProperty($propertyName)['tags'];
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        $propertyDefinition = $classSchema->getProperty($propertyName);
+
+        return isset($propertyDefinition['tags']) ? $propertyDefinition['tags'] : [];
     }
 
     /**
@@ -207,7 +251,13 @@ class ReflectionService implements SingletonInterface
      */
     public function isClassTaggedWith($className, $tag): bool
     {
-        foreach (array_keys($this->getClassSchema($className)->getTags()) as $tagName) {
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        foreach (array_keys($classSchema->getTags()) as $tagName) {
             if ($tagName === $tag) {
                 return true;
             }
