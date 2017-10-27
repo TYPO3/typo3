@@ -6,7 +6,8 @@ config {
 	disableAllHeaderCode = 1
 	sendCacheHeaders = 0
 	sys_language_uid = 0
-	additionalHeaders = Content-Type: application/json; charset=utf-8
+	additionalHeaders.10.header = Content-Type: application/json; charset=utf-8
+	additionalHeaders.10.replace = 1
 }
 
 plugin.tx_blogexample {
