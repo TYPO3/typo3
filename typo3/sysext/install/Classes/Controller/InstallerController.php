@@ -565,6 +565,7 @@ class InstallerController
         $view = $this->initializeStandaloneView('Installer/ShowDatabaseData.html');
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
+            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'executeDatabaseDataToken' => $formProtection->generateToken('installTool', 'executeDatabaseData'),
         ]);
         return new JsonResponse([
