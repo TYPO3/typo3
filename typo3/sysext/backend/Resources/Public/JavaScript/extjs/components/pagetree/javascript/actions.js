@@ -709,20 +709,12 @@ TYPO3.Components.PageTree.Actions = {
 	 * @return {void}
 	 */
 	singleClick: function(node, tree) {
-		tree.currentSelectedNode = node;
+		tree.selectNode(node);
 
 		var separator = '?';
 		if (currentSubScript.indexOf('?') !== -1) {
 			separator = '&';
 		}
-
-		node.select();
-		if (tree.stateHash) {
-			tree.stateHash.lastSelectedNode = node.id;
-		}
-
-		fsMod.recentIds['web'] = node.attributes.nodeData.id;
-
 		TYPO3.Backend.ContentContainer.setUrl(
 			currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 		);

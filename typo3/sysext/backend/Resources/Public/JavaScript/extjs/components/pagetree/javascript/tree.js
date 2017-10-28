@@ -296,6 +296,22 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	},
 
 	/**
+	 * Selects the given node in the tree and stores this
+	 * selection in various states, so that selection is kept when tree
+	 * is reloaded.
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 */
+	selectNode: function(node) {
+		node.select();
+		this.currentSelectedNode = node;
+		if (this.stateHash) {
+			this.stateHash.lastSelectedNode = node.id;
+		}
+		fsMod.recentIds['web'] = node.attributes.nodeData.id;
+	},
+
+	/**
 	 * Adds a tree loader implementation that uses the directFn feature
 	 *
 	 * return {void}

@@ -179,10 +179,20 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}
 
 			this.doLayout();
+			this.selectRequestedPageId();
 
 		}, this);
 
 		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
+	},
+
+	/**
+	 * Is true once initComponent has been called for rendering
+	 *
+	 * @returns {boolean}
+	 */
+	isInitialized: function() {
+		return this.mainTree !== null;
 	},
 
 	/**
@@ -306,15 +316,25 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	},
 
 	/**
-	 * Refreshes the tree and selects the node defined by fsMod.recentIds['web']
+	 * Refreshes the tree and then selects the node defined by fsMod.recentIds['web']
 	 *
 	 * @return {void}
 	 */
 	refreshTree: function() {
+		this.activeTree.refreshTree(function() {
+			this.selectRequestedPageId();
+		}, this);
+	},
+
+	/**
+	 * Selects the node defined by fsMod.recentIds['web']
+	 *
+	 * @return {void}
+	 */
+	selectRequestedPageId: function() {
 		if (!isNaN(fsMod.recentIds['web']) && fsMod.recentIds['web'] !== '') {
-			this.select(fsMod.recentIds['web'], true);
+			this.select(fsMod.recentIds['web']);
 		}
-		this.activeTree.refreshTree();
 	},
 
 	/**
@@ -367,7 +387,12 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		if (!allResults) {
 			nodePaths = [nodePaths[0]];
 		}
-		Ext.each(nodePaths, function(nodePath) { callback('/root/' + nodePath.join('/')); });
+		var self = this;
+		Ext.each(nodePaths, function(nodePath) {
+			callback('/root/' + nodePath.join('/'), 'id', function() {
+				self.mainTree.selectNode(self.getSelected());
+			});
+		});
 	},
 
 	/**

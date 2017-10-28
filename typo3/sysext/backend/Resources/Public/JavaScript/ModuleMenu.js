@@ -165,9 +165,17 @@ require(
 
 			showModule: function (mod, params) {
 				params = params || '';
-				params = this.includeId(mod, params);
 				var record = this.getRecordFromName(mod);
 				this.loadModuleComponents(record, params);
+				this.ensurePageInTreeSelected();
+			},
+
+			ensurePageInTreeSelected: function () {
+				if (this.loadedNavigationComponentId === 'typo3-pagetree'
+					&& this.availableNavigationComponents['typo3-pagetree'].isInitialized()
+				) {
+					this.availableNavigationComponents['typo3-pagetree'].selectRequestedPageId();
+				}
 			},
 
 			loadModuleComponents: function (record, params) {
@@ -183,6 +191,7 @@ require(
 
 				this.highlightModuleMenuItem(mod);
 				this.loadedModule = mod;
+				params = this.includeId(record, params);
 				this.openInContentFrame(record.link, params);
 
 				// compatibility
@@ -192,12 +201,17 @@ require(
 				TYPO3.Backend.doLayout();
 			},
 
-			includeId: function (mod, params) {
-				if (typeof mod === 'undefined') {
+			includeId: function (moduleData, params) {
+				if (!moduleData.navigationComponentId && !moduleData.navigationFrameScript) {
 					return params;
 				}
 				//get id
-				var section = mod.split('_')[0];
+				var section = '';
+				if (moduleData.navigationComponentId === 'typo3-pagetree') {
+					section = 'web';
+				} else {
+					section = moduleData.name.split('_')[0];
+				}
 				if (top.fsMod.recentIds[section]) {
 					params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
 				}
