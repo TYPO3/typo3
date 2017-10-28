@@ -74,7 +74,7 @@ define(
 				PageTree: {
 					refreshTree: function() {
 						if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
-							Ext.getCmp('typo3-pagetree').activeTree.refreshTree();
+							Ext.getCmp('typo3-pagetree').refreshTree();
 						}
 					}
 				},

@@ -194,13 +194,20 @@ require(
 			 */
 			showModule: function (name, params, event) {
 				params = params || '';
-				params = this.includeId(name, params);
 				var moduleData = this.getRecordFromName(name);
 				return this.loadModuleComponents(
 					moduleData,
 					params,
 					new ClientRequest('typo3.showModule', event)
 				);
+			},
+
+			ensurePageInTreeSelected: function () {
+				if (this.loadedNavigationComponentId === 'typo3-pagetree'
+					&& this.availableNavigationComponents['typo3-pagetree'].isInitialized()
+				) {
+					this.availableNavigationComponents['typo3-pagetree'].selectRequestedPageId();
+				}
 			},
 
 			/**
@@ -237,6 +244,7 @@ require(
 
 						this.highlightModuleMenuItem(moduleName);
 						this.loadedModule = moduleName;
+						params = this.includeId(moduleData, params);
 						this.openInContentFrame(
 							moduleData.link,
 							params,
@@ -251,6 +259,7 @@ require(
 						top.currentModuleLoaded = moduleName;
 
 						TYPO3.Backend.doLayout();
+						this.ensurePageInTreeSelected();
 					}, this
 				));
 
@@ -260,16 +269,21 @@ require(
 			/**
 			 * Prepends previously saved record id to the url params
 			 *
-			 * @param {string} moduleName module name e.g. web_list
+			 * @param {Object} moduleData
 			 * @param {string} params query string parameters for module url
 			 * @return {string}
 			 */
-			includeId: function (moduleName, params) {
-				if (typeof moduleName === 'undefined') {
+			includeId: function (moduleData, params) {
+				if (!moduleData.navigationComponentId && !moduleData.navigationFrameScript) {
 					return params;
 				}
 				//get id
-				var section = moduleName.split('_')[0];
+				var section = '';
+				if (moduleData.navigationComponentId === 'typo3-pagetree') {
+					section = 'web';
+				} else {
+					section = moduleData.name.split('_')[0];
+				}
 				if (top.fsMod.recentIds[section]) {
 					params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
 				}

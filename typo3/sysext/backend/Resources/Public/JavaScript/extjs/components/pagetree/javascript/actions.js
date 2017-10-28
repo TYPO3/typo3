@@ -723,13 +723,7 @@ require(['TYPO3/CMS/Backend/Utility'], function(Utility) {
 			TYPO3.Backend.ContentContainer.setUrl(
 				currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 			).then(function () {
-				node.select();
-				tree.currentSelectedNode = node;
-				if (tree.stateHash) {
-					tree.stateHash.lastSelectedNode = node.id;
-				}
-				fsMod.recentIds['web'] = node.attributes.nodeData.id;
-				fsMod.recentIds['system'] = node.attributes.nodeData.id;
+				tree.selectNode(selectNode);
 			});
 		},
 
