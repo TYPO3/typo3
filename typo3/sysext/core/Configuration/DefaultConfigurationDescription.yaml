@@ -352,7 +352,10 @@ FE:
             description: '<p>How TYPO3 should handle requests for non-existing/accessible pages.</p> <dl><dt>empty (default)</dt><dd>The next visible page upwards in the page tree is shown.</dd> <dt>''true'' or ''1''</dt><dd>An error message is shown.</dd><dt>String</dt><dd>Static HTML file to show (reads content and outputs with correct headers), e.g. ''notfound.html'' or ''http://www.example.org/errors/notfound.html''.</dd> <dt>Prefix "REDIRECT:"</dt><dd> If prefixed with "REDIRECT:" it will redirect to the URL/script after the prefix.</dd><dt>Prefix "READFILE:"</dt><dd>If prefixed with "READFILE" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/notfound.html".</dd> <dt>Prefix "USER_FUNCTION:"</dt><dd> If prefixed with "USER_FUNCTION:" a user function is called, e.g. "USER_FUNCTION:fileadmin/class.user_notfound.php:user_notFound->pageNotFound" where the file must contain a class "user_notFound" with a method "pageNotFound" inside with two parameters $param and $ref.</dd></dl>'
         pageNotFound_handling_statheader:
             type: text
-            description: 'If ''pageNotFound_handling'' is enabled, this string will always be sent as header before the actual handling.'
+            description: 'If ''pageNotFound_handling'' is enabled, this string will always be sent as header before the actual handling. This applies to non-access-restriction related errors.'
+        pageNotFound_handling_accessdeniedheader:
+            type: text
+            description: 'If ''pageNotFound_handling'' is enabled, this string will always be sent as header before the actual handling. This applies to access-restricted related errors.'
         pageNotFoundOnCHashError:
             type: bool
             description: 'If TRUE, a page not found call is made when cHash evaluation error occurs, otherwise caching is disabled and page output is displayed.'
