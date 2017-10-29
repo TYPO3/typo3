@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Exception\SqlErrorException;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 /**
@@ -471,6 +472,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Update database / process db updates from ext_tables
      *
      * @param string $rawDefinitions The raw SQL statements from ext_tables.sql
+     * @throws ExtensionManagerException
      * @return void
      */
     public function updateDbWithExtTablesSql($rawDefinitions)
@@ -481,14 +483,27 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
             $diff = $this->installToolSqlParser->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
             $updateStatements = $this->installToolSqlParser->getUpdateSuggestions($diff);
             $db = $this->getDatabaseConnection();
+            $errors = [];
             foreach ((array)$updateStatements['add'] as $string) {
-                $db->admin_query($string);
+                $res = $db->admin_query($string);
+                if ($res === false) {
+                    $errors[] = 'Error: You have an error in your SQL syntax;' . $string;
+                }
             }
             foreach ((array)$updateStatements['change'] as $string) {
-                $db->admin_query($string);
+                $res = $db->admin_query($string);
+                if ($res === false) {
+                    $errors[] = 'Error: You have an error in your SQL syntax;' . $string;
+                }
             }
             foreach ((array)$updateStatements['create_table'] as $string) {
-                $db->admin_query($string);
+                $res = $db->admin_query($string);
+                if ($res === false) {
+                    $errors[] = 'Error: You have an error in your SQL syntax;' . $string;
+                }
+            }
+            if (!empty($errors)) {
+                throw new SqlErrorException(implode(PHP_EOL, $errors), 1509303611);
             }
         }
     }
@@ -497,6 +512,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Import static SQL data (normally used for ext_tables_static+adt.sql)
      *
      * @param string $rawDefinitions
+     * @throws ExtensionManagerException
      * @return void
      */
     public function importStaticSql($rawDefinitions)
@@ -504,16 +520,22 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $statements = $this->installToolSqlParser->getStatementarray($rawDefinitions, 1);
         list($statementsPerTable, $insertCount) = $this->installToolSqlParser->getCreateTables($statements, 1);
         $db = $this->getDatabaseConnection();
+        $errors = [];
         // Traverse the tables
         foreach ($statementsPerTable as $table => $query) {
             $db->admin_query('DROP TABLE IF EXISTS ' . $table);
-            $db->admin_query($query);
-            if ($insertCount[$table]) {
+            $res = $db->admin_query($query);
+            if ($res === false) {
+                $errors[] = 'Error: You have an error in your SQL syntax;' . PHP_EOL . $string;
+            } elseif ($insertCount[$table]) {
                 $insertStatements = $this->installToolSqlParser->getTableInsertStatements($statements, $table);
                 foreach ($insertStatements as $statement) {
                     $db->admin_query($statement);
                 }
             }
+        }
+        if (!empty($errors)) {
+            throw new SqlErrorException(implode(PHP_EOL, $errors), 1509303783);
         }
     }
 
