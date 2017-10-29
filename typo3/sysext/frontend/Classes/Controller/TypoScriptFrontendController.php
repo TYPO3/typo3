@@ -1426,7 +1426,11 @@ class TypoScriptFrontendController
                 3 => 'ID was outside the domain',
                 4 => 'The requested page alias does not exist'
             ];
-            $this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
+            $header = '';
+            if ($this->pageNotFound === 1 || $this->pageNotFound === 2) {
+                $header = $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_accessdeniedheader'];
+            }
+            $this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound], $header);
         }
         // Set no_cache if set
         if ($this->page['no_cache']) {

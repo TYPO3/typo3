@@ -973,6 +973,7 @@ return [
         'compressionLevel' => 0,
         'pageNotFound_handling' => '',
         'pageNotFound_handling_statheader' => 'HTTP/1.0 404 Not Found',
+        'pageNotFound_handling_accessdeniedheader' => 'HTTP/1.0 403 Access denied',
         'pageNotFoundOnCHashError' => true,
         'pageUnavailable_handling' => '',
         'pageUnavailable_handling_statheader' => 'HTTP/1.0 503 Service Temporarily Unavailable',
