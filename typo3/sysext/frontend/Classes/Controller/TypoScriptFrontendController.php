@@ -1935,7 +1935,7 @@ class TypoScriptFrontendController
     /**
      * Page unavailable handler. Acts a wrapper for the pageErrorHandler method.
      *
-     * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+     * @param mixed $code See ['FE']['pageUnavailable_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      */
@@ -1947,7 +1947,7 @@ class TypoScriptFrontendController
     /**
      * Page not found handler. Acts a wrapper for the pageErrorHandler method.
      *
-     * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+     * @param mixed $code See docs of ['FE']['pageNotFound_handling'] for possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      */
@@ -1960,7 +1960,7 @@ class TypoScriptFrontendController
      * Generic error page handler.
      * Exits.
      *
-     * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+     * @param mixed $code See docs of ['FE']['pageNotFound_handling'] and ['FE']['pageUnavailable_handling'] for all possible values
      * @param string $header If set, this is passed directly to the PHP function, header()
      * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
      * @throws \RuntimeException
@@ -1988,7 +1988,11 @@ class TypoScriptFrontendController
                 'reasonText' => $reason,
                 'pageAccessFailureReasons' => $this->getPageAccessFailureReasons()
             ];
-            echo GeneralUtility::callUserFunction($funcRef, $params, $this);
+            try {
+                echo GeneralUtility::callUserFunction($funcRef, $params, $this);
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Error: 404 page by USER_FUNCTION "' . $funcRef . '" failed.', 1509296032, $e);
+            }
         } elseif (GeneralUtility::isFirstPartOfStr($code, 'READFILE:')) {
             $readFile = GeneralUtility::getFileAbsFileName(trim(substr($code, 9)));
             if (@is_file($readFile)) {
@@ -2036,7 +2040,11 @@ class TypoScriptFrontendController
                 'User-agent: ' . GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
                 'Referer: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
             ];
-            $res = GeneralUtility::getUrl($code, 1, $headerArr);
+            $report = [];
+            $res = GeneralUtility::getUrl($code, 1, $headerArr, $report);
+            if ((int)$report['error'] !== 0 && (int)$report['error'] !== 200) {
+                throw new \RuntimeException('Failed to fetch error page "' . $code . '", reason: ' . $report['message'], 1509296606);
+            }
             // Header and content are separated by an empty line
             list($header, $content) = explode(CRLF . CRLF, $res, 2);
             $content .= CRLF;

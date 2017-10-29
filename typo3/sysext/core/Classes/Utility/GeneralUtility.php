@@ -2048,7 +2048,7 @@ class GeneralUtility
                 $response = $requestFactory->request($url, 'GET', $configuration);
             } catch (RequestException $exception) {
                 if (isset($report)) {
-                    $report['error'] = $exception->getHandlerContext()['errno'];
+                    $report['error'] = $exception->getCode();
                     $report['message'] = $exception->getMessage();
                     $report['exception'] = $exception;
                 }
