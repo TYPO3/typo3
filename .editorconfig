@@ -74,6 +74,9 @@ indent_size = 2
 [*.typoscript]
 indent_style = space
 indent_size = 2
+[*.tsconfig]
+indent_style = space
+indent_size = 2
 
 # XLF-Files
 [*.xlf]
