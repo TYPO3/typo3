@@ -2801,29 +2801,49 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $getData = GeneralUtility::_GET();
         foreach ($linkVars as $linkVar) {
-            $test = ($value = '');
+            $test = $value = '';
             if (preg_match('/^(.*)\\((.+)\\)$/', $linkVar, $match)) {
                 $linkVar = trim($match[1]);
                 $test = trim($match[2]);
             }
-            if ($linkVar === '' || !isset($getData[$linkVar])) {
+
+            $keys = explode('|', $linkVar);
+            $numberOfLevels = count($keys);
+            $rootKey = trim($keys[0]);
+            if (!isset($getData[$rootKey])) {
                 continue;
             }
-            if (!is_array($getData[$linkVar])) {
-                $temp = rawurlencode($getData[$linkVar]);
-                if ($test !== '' && !PageGenerator::isAllowedLinkVarValue($temp, $test)) {
-                    // Error: This value was not allowed for this key
-                    continue;
+            $value = $getData[$rootKey];
+            for ($i = 1; $i < $numberOfLevels; $i++) {
+                $currentKey = trim($keys[$i]);
+                if (isset($value[$currentKey])) {
+                    $value = $value[$currentKey];
+                } else {
+                    $value = false;
+                    break;
                 }
-                $value = '&' . $linkVar . '=' . $temp;
-            } else {
-                if ($test !== '' && $test !== 'array') {
-                    // Error: This key must not be an array!
-                    continue;
-                }
-                $value = GeneralUtility::implodeArrayForUrl($linkVar, $getData[$linkVar]);
             }
-            $this->linkVars .= $value;
+            if ($value !== false) {
+                $parameterName = $keys[0];
+                for ($i = 1; $i < $numberOfLevels; $i++) {
+                    $parameterName .= '[' . $keys[$i] . ']';
+                }
+                if (!is_array($value)) {
+                    $temp = rawurlencode($value);
+                    if ($test !== '' && !PageGenerator::isAllowedLinkVarValue($temp, $test)) {
+                        // Error: This value was not allowed for this key
+                        continue;
+                    }
+                    $value = '&' . $parameterName . '=' . $temp;
+                } else {
+                    if ($test !== '' && $test !== 'array') {
+                        // Error: This key must not be an array!
+                        continue;
+                    }
+                    $value = GeneralUtility::implodeArrayForUrl($parameterName, $value);
+                }
+                $this->linkVars .= $value;
+            }
         }
     }
 
