@@ -164,7 +164,7 @@ define(['jquery'], function($) {
 			data: {
 				'action': 'show_change_owner_selector',
 				'page': page,
-				'ownerUid': $element.data('ownerUid'),
+				'ownerUid': $element.data('owner'),
 				'username': $element.data('username')
 			}
 		}).done(function(data) {
@@ -223,7 +223,7 @@ define(['jquery'], function($) {
 			data: {
 				'action': 'change_group',
 				'page': page,
-				'groupUid': $element.data('group'),
+				'groupUid': $element.data('groupId'),
 				'newGroupUid': $('#new_page_group').val()
 			}
 		}).done(function(data) {
@@ -248,7 +248,7 @@ define(['jquery'], function($) {
 			data: {
 				'action': 'show_change_group_selector',
 				'page': page,
-				'groupUid': $element.data('lockstate'),
+				'groupUid': $element.data('groupId'),
 				'groupname': $element.data('groupname')
 			}
 		}).done(function(data) {
@@ -280,7 +280,7 @@ define(['jquery'], function($) {
 		var aSelector = $('<a/>', {
 			'class': 'ug_selector changegroup',
 			'data-page': page,
-			'data-group': $element.data('group'),
+			'data-group': $element.data('groupId'),
 			'data-groupname': groupnameHtml,
 			'text': groupname
 		});
