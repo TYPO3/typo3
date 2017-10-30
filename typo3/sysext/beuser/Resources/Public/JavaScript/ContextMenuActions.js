@@ -36,7 +36,6 @@ define(function () {
             top.TYPO3.Backend.ContentContainer.setUrl(
                 top.TYPO3.settings.AccessPermissions.moduleUrl +
                     '&id=' + uid +
-                    '&tx_beuser_system_beusertxpermission[id]=' + uid +
                     '&tx_beuser_system_beusertxpermission[action]=edit' +
                     '&tx_beuser_system_beusertxpermission[controller]=Permission'
             );

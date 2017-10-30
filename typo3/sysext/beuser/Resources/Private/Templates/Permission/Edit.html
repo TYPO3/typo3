@@ -81,7 +81,7 @@
 		<f:form.hidden name="data[pages][{id}][perms_group]" value="{pageInfo.perms_group}" />
 		<f:form.hidden name="data[pages][{id}][perms_everybody]" value="{pageInfo.perms_everybody}" />
 		<f:form.hidden name="depth" value="{depth}" />
-		<f:form.hidden name="redirect" value="{f:uri.action(action: 'index', arguments: {lastEdited: id, id: returnId})}" />
+		<f:form.hidden name="returnUrl" value="{returnUrl}" />
 
 	</f:form>
 
