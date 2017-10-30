@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Authentication of users in TYPO3
@@ -202,13 +201,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $hash_length = 32;
 
     /**
-     * If set to 4, the session will be locked to the user's IP address (all four numbers).
-     * Reducing this to 1-3 means that only the given number of parts of the IP address is used.
-     * @var int
-     */
-    public $lockIP = 4;
-
-    /**
      * @var string
      */
     public $warningEmail = '';
@@ -303,6 +295,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $uc;
 
     /**
+     * @var IpLocker
+     */
+    protected $ipLocker;
+
+    /**
      * @var SessionBackendInterface
      */
     protected $sessionBackend;
@@ -331,6 +328,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (empty($this->loginType)) {
             throw new Exception('No loginType defined, must be set explicitly by subclass', 1476045345);
         }
+
+        $this->ipLocker = GeneralUtility::makeInstance(
+            IpLocker::class,
+            $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockIP'],
+            $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockIPv6']
+        );
     }
 
     /**
@@ -893,10 +896,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getNewSessionRecord($tempuser)
     {
-        $sessionIpLock = '[DISABLED]';
-        if ($this->lockIP && empty($tempuser['disableIPlock'])) {
-            $sessionIpLock = $this->ipLockClause_remoteIPNumber($this->lockIP);
-        }
+        $sessionIpLock = $this->ipLocker->getSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), empty($tempuser['disableIPlock']));
 
         return [
             'ses_id' => $this->id,
@@ -1041,10 +1041,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
             // If the session does not match the current IP lock, it should be treated as invalid
             // and a new session should be created.
-            if ($sessionRecord['ses_iplock'] !== $this->ipLockClause_remoteIPNumber($this->lockIP) && $sessionRecord['ses_iplock'] !== '[DISABLED]') {
-                return false;
-            }
-            return true;
+            return $this->ipLocker->validateRemoteAddressAgainstSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), $sessionRecord['ses_iplock']);
         } catch (SessionNotFoundException $e) {
             return false;
         }
@@ -1099,27 +1096,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
 
         return $restrictionContainer;
-    }
-
-    /**
-     * Returns the IP address to lock to.
-     * The IP address may be partial based on $parts.
-     *
-     * @param int $parts 1-4: Indicates how many parts of the IP address to return. 4 means all, 1 means only first number.
-     * @return string (Partial) IP address for REMOTE_ADDR
-     */
-    protected function ipLockClause_remoteIPNumber($parts)
-    {
-        $IP = GeneralUtility::getIndpEnv('REMOTE_ADDR');
-        if ($parts >= 4) {
-            return $IP;
-        }
-        $parts = MathUtility::forceIntegerInRange($parts, 1, 3);
-        $IPparts = explode('.', $IP);
-        for ($a = 4; $a > $parts; $a--) {
-            unset($IPparts[$a - 1]);
-        }
-        return implode('.', $IPparts);
     }
 
     /*************************

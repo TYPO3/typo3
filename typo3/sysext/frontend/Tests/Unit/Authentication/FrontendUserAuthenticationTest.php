@@ -184,6 +184,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     {
         $uniqueSessionId = $this->getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
         $currentTime = $GLOBALS['EXEC_TIME'];
 
         // This setup fakes the "getAuthInfoArray() db call
@@ -231,7 +232,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
-        $subject->lockIP = 0;
         $this->assertEmpty($subject->getSessionData($uniqueSessionId));
         $this->assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');

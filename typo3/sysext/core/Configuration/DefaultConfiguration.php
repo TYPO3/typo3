@@ -1067,6 +1067,7 @@ return [
         'warning_email_addr' => '',
         'warning_mode' => 0,
         'lockIP' => 4,
+        'lockIPv6' => 2,
         'sessionTimeout' => 28800,  // a backend user logged in for 8 hours
         'IPmaskList' => '',
         'lockBeUserToDBmounts' => true,
@@ -1247,6 +1248,7 @@ return [
         'addRootLineFields' => '',
         'checkFeUserPid' => true,
         'lockIP' => 2,
+        'lockIPv6' => 2,
         'loginSecurityLevel' => 'normal',
         'lifetime' => 0,
         'sessionTimeout' => 6000,

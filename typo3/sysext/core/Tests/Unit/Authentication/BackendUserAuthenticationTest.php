@@ -59,6 +59,12 @@ class BackendUserAuthenticationTest extends UnitTestCase
         'recursivedeleteFolder' => false
     ];
 
+    protected function setUp(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] = 4;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIPv6'] = 8;
+    }
+
     /**
      * Tear down
      */

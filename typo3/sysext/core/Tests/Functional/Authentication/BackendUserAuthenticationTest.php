@@ -52,6 +52,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName'] = 'be_typo_user';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] = '';
         $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'] = 4;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIPv6'] = 8;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] = 28800;
 
         $this->subject = new BackendUserAuthentication();
