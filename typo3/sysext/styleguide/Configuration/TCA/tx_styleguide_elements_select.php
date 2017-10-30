@@ -142,8 +142,6 @@ return [
         'select_single_2' => [
             'exclude' => 1,
             'label' => 'select_single_2 itemsProcFunc',
-            'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -277,6 +275,20 @@ return [
                     'selectIcons' => [
                         'disabled' => false,
                     ],
+                ],
+            ],
+        ],
+        'select_single_13' => [
+            'exclude' => 1,
+            'label' => 'select_single_13 l10n_display=defaultAsReadonly',
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['foo', 'foo'],
+                    ['bar', 'bar'],
                 ],
             ],
         ],
@@ -842,7 +854,7 @@ return [
             'showitem' => '
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
-                    select_single_7, select_single_12, select_single_8, select_single_10,
+                    select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
                     select_single_11,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1,
