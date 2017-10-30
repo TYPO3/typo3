@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Charset;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -774,6 +775,9 @@ class CharsetConverter implements SingletonInterface
                 }
                 return 2;
             }
+            GeneralUtility::makeInstance(LogManager::class)
+                ->getLogger(__CLASS__)
+                ->warning('Unknown charset "' . $charset . '" used for settings like config.metaCharset.');
             return false;
         }
         return 1;
