@@ -72,6 +72,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
 
         $this->assertEquals(
             [],
+            $service->getClassTagValues(static::class, 'nonExistantTag')
+        );
+
+        $this->assertEquals(
+            [],
             $service->getClassTagValues('NonExistantNamespace\\NonExistantClass', 'nonExistantTag')
         );
     }
@@ -98,6 +103,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
             'param' => ['array $foo The foo parameter'],
             'return' => ['string']
         ], $tagsValues);
+
+        $this->assertEquals(
+            [],
+            $service->getMethodTagsValues(static::class, 'notExistentMethod')
+        );
 
         $this->assertEquals(
             [],
@@ -128,6 +138,11 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
                 'dependency' =>  null,
             ]
         ], $parameters);
+
+        $this->assertSame(
+            [],
+            $service->getMethodParameters(static::class, 'notExistentMethod')
+        );
 
         $this->assertSame(
             [],

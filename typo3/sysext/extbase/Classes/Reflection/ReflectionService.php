@@ -61,14 +61,14 @@ class ReflectionService implements SingletonInterface
      *
      * @param CacheManager $cacheManager
      */
-    public function __construct(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager = null)
+    public function __construct(CacheManager $cacheManager = null)
     {
         if ($cacheManager instanceof CacheManager && $cacheManager->hasCache(static::CACHE_IDENTIFIER)) {
             $this->cachingEnabled = true;
             $this->dataCache = $cacheManager->getCache(static::CACHE_IDENTIFIER);
 
-            if (($classSchemata = $this->dataCache->has(static::CACHE_ENTRY_IDENTIFIER)) !== false) {
-                $this->classSchemata = $this->dataCache->get(static::CACHE_ENTRY_IDENTIFIER);
+            if (($classSchemata = $this->dataCache->get(static::CACHE_ENTRY_IDENTIFIER)) !== false) {
+                $this->classSchemata = $classSchemata;
             }
         }
     }
@@ -112,7 +112,7 @@ class ReflectionService implements SingletonInterface
             return [];
         }
 
-        return $classSchema->getTags()[$tag];
+        return $classSchema->getTags()[$tag] ?? [];
     }
 
     /**
@@ -183,7 +183,7 @@ class ReflectionService implements SingletonInterface
             return [];
         }
 
-        return $classSchema->getMethod($methodName)['tags'];
+        return $classSchema->getMethod($methodName)['tags'] ?? [];
     }
 
     /**
@@ -202,7 +202,7 @@ class ReflectionService implements SingletonInterface
             return [];
         }
 
-        return $classSchema->getMethod($methodName)['params'];
+        return $classSchema->getMethod($methodName)['params'] ?? [];
     }
 
     /**
@@ -220,9 +220,7 @@ class ReflectionService implements SingletonInterface
             return [];
         }
 
-        $propertyDefinition = $classSchema->getProperty($propertyName);
-
-        return isset($propertyDefinition['tags']) ? $propertyDefinition['tags'] : [];
+        return $classSchema->getProperty($propertyName)['tags'] ?? [];
     }
 
     /**
@@ -235,11 +233,13 @@ class ReflectionService implements SingletonInterface
      */
     public function getPropertyTagValues($className, $propertyName, $tag): array
     {
-        if (!$this->isPropertyTaggedWith($className, $propertyName, $tag)) {
+        try {
+            $classSchema = $this->getClassSchema($className);
+        } catch (\Exception $e) {
             return [];
         }
 
-        return $this->getClassSchema($className)->getProperty($propertyName)['tags'][$tag];
+        return $classSchema->getProperty($propertyName)['tags'][$tag] ?? [];
     }
 
     /**
@@ -297,15 +297,14 @@ class ReflectionService implements SingletonInterface
      * @param string $className
      * @throws Exception\UnknownClassException
      * @return ClassSchema The class schema
-     * @throws \ReflectionException
      */
     protected function buildClassSchema($className): ClassSchema
     {
-        if (!class_exists($className)) {
-            throw new Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
+        try {
+            $classSchema = new ClassSchema($className);
+        } catch (\ReflectionException $e) {
+            throw new Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972, $e);
         }
-
-        $classSchema = new ClassSchema($className);
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;
         return $classSchema;
