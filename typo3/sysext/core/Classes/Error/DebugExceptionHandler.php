@@ -46,24 +46,11 @@ class DebugExceptionHandler extends AbstractExceptionHandler
             : '';
         $backtraceCode = $this->getBacktraceCode($exception->getTrace());
         $this->writeLogEntries($exception, self::CONTEXT_WEB);
-        // Set the XML prologue
-        $xmlPrologue = '<?xml version="1.0" encoding="utf-8"?>';
-        // Set the doctype declaration
-        $docType = '<!DOCTYPE html
+        echo '<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
-        // Get the browser info
-        $browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(
-            \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-        );
-        // Put the XML prologue before or after the doctype declaration according to browser
-        if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
-            $headerStart = $docType . LF . $xmlPrologue;
-        } else {
-            $headerStart = $xmlPrologue . LF . $docType;
-        }
-        echo $headerStart . '
-			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 				<head>
 					<title>TYPO3 Exception</title>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
