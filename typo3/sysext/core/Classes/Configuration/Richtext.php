@@ -66,7 +66,7 @@ class Richtext
         // overlay preset configuration with pageTs
         ArrayUtility::mergeRecursiveWithOverrule(
             $configuration,
-            $this->cleanDotsFromEditorConfigKeys($pageTs)
+            $this->addFlattenedPageTsConfig($pageTs)
         );
 
         // Handle "mode" / "transformation" config when overridden
@@ -144,18 +144,22 @@ class Richtext
     }
 
     /**
-     * Strip dots from the 'editor.' part of a given TypoScript array
+     * Add all PageTS.RTE options keys to configuration without dots
      *
-     * @param array $typoScriptArray TypoScriptArray (with dots) that may contain an 'editor.' subarray
-     * @return array array with dots stripped from the editor subarray
+     * We need to keep the dotted keys for backwards compatibility like ext:rtehtmlarea
+     *
+     * @param array $typoScriptArray TypoScriptArray
+     * @return array array with config without dots added
      */
-    protected function cleanDotsFromEditorConfigKeys(array $typoScriptArray): array
+    protected function addFlattenedPageTsConfig(array $typoScriptArray): array
     {
-        if (isset($typoScriptArray['editor.'])) {
+        foreach ($typoScriptArray as $key => $data) {
+            if (substr($key, -1) !== '.') {
+                continue;
+            }
             /** @var TypoScriptService $typoScriptService */
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $typoScriptArray['editor'] = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray['editor.']);
-            unset($typoScriptArray['editor.']);
+            $typoScriptArray[substr($key, 0, -1)] = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray[$key]);
         }
 
         return $typoScriptArray;
