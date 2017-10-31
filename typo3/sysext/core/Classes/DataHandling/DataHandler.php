@@ -9113,11 +9113,11 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function createRelationHandlerInstance()
     {
-        $isVersionLoaded = ExtensionManagementUtility::isLoaded('version');
+        $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->setWorkspaceId($this->BE_USER->workspace);
-        $relationHandler->setUseLiveReferenceIds($isVersionLoaded);
-        $relationHandler->setUseLiveParentIds($isVersionLoaded);
+        $relationHandler->setUseLiveReferenceIds($isWorkspacesLoaded);
+        $relationHandler->setUseLiveParentIds($isWorkspacesLoaded);
         return $relationHandler;
     }
 

@@ -77,7 +77,6 @@
 				"typo3/sysext/fluid/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/info/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/lowlevel/Migrations/Code/ClassAliasMap.php",
-				"typo3/sysext/version/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/workspaces/Migrations/Code/ClassAliasMap.php"
 			]
 		},
@@ -170,7 +169,6 @@
 			"TYPO3\\CMS\\T3editor\\": "typo3/sysext/t3editor/Classes/",
 			"TYPO3\\CMS\\Taskcenter\\": "typo3/sysext/taskcenter/Classes/",
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
-			"TYPO3\\CMS\\Version\\": "typo3/sysext/version/Classes/",
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
 			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},

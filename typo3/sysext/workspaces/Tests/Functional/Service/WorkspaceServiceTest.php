@@ -26,7 +26,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['version', 'workspaces'];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * Set up

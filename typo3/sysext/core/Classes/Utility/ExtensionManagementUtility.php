@@ -112,6 +112,11 @@ class ExtensionManagementUtility
      */
     public static function isLoaded($key, $exitOnError = false)
     {
+        // safety net for extensions checking for "EXT:version", can be removed in TYPO3 v10.
+        if ($key === 'version') {
+            trigger_error('EXT:version has been moved into EXT:workspaces, you should check against "workspaces", as this might lead to unexpected behaviour in the future.', E_USER_DEPRECATED);
+            $key = 'workspaces';
+        }
         $isLoaded = static::$packageManager->isPackageActive($key);
         if ($exitOnError && !$isLoaded) {
             throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension "' . $key . '" is not loaded!', 1270853910);

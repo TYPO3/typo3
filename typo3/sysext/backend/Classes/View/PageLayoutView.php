@@ -3875,9 +3875,8 @@ class PageLayoutView implements LoggerAwareInterface
                     if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                         $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                     }
-                    if (ExtensionManagementUtility::isLoaded(
-                            'version'
-                        ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                    if (ExtensionManagementUtility::isLoaded('workspaces')
+                        && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         $fieldListArr[] = 't3ver_id';
                         $fieldListArr[] = 't3ver_state';
                         $fieldListArr[] = 't3ver_wsid';

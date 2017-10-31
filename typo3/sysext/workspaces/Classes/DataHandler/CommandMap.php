@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\DataHandler;
+namespace TYPO3\CMS\Workspaces\DataHandler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Version\DataHandler;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Version\Dependency\ElementEntity;
+use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -36,7 +36,7 @@ class CommandMap
     const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 
     /**
-     * @var \TYPO3\CMS\Version\Hook\DataHandlerHook
+     * @var \TYPO3\CMS\Workspaces\Hook\DataHandlerHook
      */
     protected $parent;
 
@@ -71,19 +71,19 @@ class CommandMap
     protected $scopes;
 
     /**
-     * @var \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+     * @var \TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor
      */
     protected $elementEntityProcessor;
 
     /**
      * Creates this object.
      *
-     * @param \TYPO3\CMS\Version\Hook\DataHandlerHook $parent
+     * @param \TYPO3\CMS\Workspaces\Hook\DataHandlerHook $parent
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
      * @param array $commandMap
      * @param int $workspace
      */
-    public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap, $workspace)
+    public function __construct(\TYPO3\CMS\Workspaces\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap, $workspace)
     {
         $this->setParent($parent);
         $this->setTceMain($tceMain);
@@ -108,7 +108,7 @@ class CommandMap
      * Sets the command map.
      *
      * @param array $commandMap
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
     public function set(array $commandMap)
     {
@@ -119,7 +119,7 @@ class CommandMap
     /**
      * Gets the parent object.
      *
-     * @return \TYPO3\CMS\Version\Hook\DataHandlerHook
+     * @return \TYPO3\CMS\Workspaces\Hook\DataHandlerHook
      */
     public function getParent()
     {
@@ -129,10 +129,10 @@ class CommandMap
     /**
      * Sets the parent object.
      *
-     * @param \TYPO3\CMS\Version\Hook\DataHandlerHook $parent
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @param \TYPO3\CMS\Workspaces\Hook\DataHandlerHook $parent
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
-    public function setParent(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent)
+    public function setParent(\TYPO3\CMS\Workspaces\Hook\DataHandlerHook $parent)
     {
         $this->parent = $parent;
         return $this;
@@ -152,7 +152,7 @@ class CommandMap
      * Sets the parent object.
      *
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
     public function setTceMain(\TYPO3\CMS\Core\DataHandling\DataHandler $tceMain)
     {
@@ -185,7 +185,7 @@ class CommandMap
      * (see options.workspaces.swapMode).
      *
      * @param string $workspacesSwapMode
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
     public function setWorkspacesSwapMode($workspacesSwapMode)
     {
@@ -198,7 +198,7 @@ class CommandMap
      * see options.workspaces.changeStageMode)
      *
      * @param string $workspacesChangeStageMode
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
     public function setWorkspacesChangeStageMode($workspacesChangeStageMode)
     {
@@ -209,13 +209,13 @@ class CommandMap
     /**
      * Gets the element entity processor.
      *
-     * @return \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+     * @return \TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor
      */
     protected function getElementEntityProcessor()
     {
         if (!isset($this->elementEntityProcessor)) {
             $this->elementEntityProcessor = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Version\Dependency\ElementEntityProcessor::class
+                \TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor::class
             );
             $this->elementEntityProcessor->setWorkspace($this->getWorkspace());
         }
@@ -225,7 +225,7 @@ class CommandMap
     /**
      * Processes the command map.
      *
-     * @return \TYPO3\CMS\Version\DataHandler\CommandMap
+     * @return \TYPO3\CMS\Workspaces\DataHandler\CommandMap
      */
     public function process()
     {
@@ -303,12 +303,12 @@ class CommandMap
     /**
      * Adds workspaces elements for swapping/publishing.
      *
-     * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
+     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
      * @param string $table
      * @param int $liveId
      * @param array $properties
      */
-    protected function addWorkspacesSwapElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $liveId, array $properties)
+    protected function addWorkspacesSwapElements(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency, $table, $liveId, array $properties)
     {
         $elementList = [];
         // Fetch accordant elements if the swapMode is 'any' or 'pages':
@@ -408,12 +408,12 @@ class CommandMap
     /**
      * Adds workspaces elements for staging.
      *
-     * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
+     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
      * @param string $table
      * @param string $versionId
      * @param array $properties
      */
-    protected function addWorkspacesSetStageElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $versionId, array $properties)
+    protected function addWorkspacesSetStageElements(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency, $table, $versionId, array $properties)
     {
         $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
     }
@@ -468,10 +468,10 @@ class CommandMap
      * Applies the workspaces dependencies and removes incomplete structures or automatically
      * completes them
      *
-     * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
+     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
      * @param string $scope
      */
-    protected function applyWorkspacesDependencies(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $scope)
+    protected function applyWorkspacesDependencies(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency, $scope)
     {
         $transformDependentElementsToUseLiveId = $this->getScopeData($scope, self::KEY_TransformDependentElementsToUseLiveId);
         $elementsToBeVersioned = $dependency->getElements();
@@ -680,12 +680,12 @@ class CommandMap
      * Gets an instance of the depency resolver utility.
      *
      * @param string $scope Scope identifier
-     * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
+     * @return \TYPO3\CMS\Workspaces\Dependency\DependencyResolver
      */
     protected function getDependencyUtility($scope)
     {
-        /** @var $dependency \TYPO3\CMS\Version\Dependency\DependencyResolver */
-        $dependency = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyResolver::class);
+        /** @var $dependency \TYPO3\CMS\Workspaces\Dependency\DependencyResolver */
+        $dependency = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver::class);
         $dependency->setWorkspace($this->getWorkspace());
         $dependency->setOuterMostParentsRequireReferences(true);
         if ($this->getScopeData($scope, self::KEY_ElementConstructCallback)) {
@@ -782,12 +782,12 @@ class CommandMap
      *
      * @param string $method
      * @param array $targetArguments
-     * @return \TYPO3\CMS\Version\Dependency\EventCallback
+     * @return \TYPO3\CMS\Workspaces\Dependency\EventCallback
      */
     protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
-            \TYPO3\CMS\Version\Dependency\EventCallback::class,
+            \TYPO3\CMS\Workspaces\Dependency\EventCallback::class,
             $this->getElementEntityProcessor(),
             $method,
             $targetArguments

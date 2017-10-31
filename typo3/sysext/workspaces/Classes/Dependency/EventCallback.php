@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Dependency;
+namespace TYPO3\CMS\Workspaces\Dependency;
 
 /*
  * This file is part of the TYPO3 CMS project.

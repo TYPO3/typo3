@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Dependency;
+namespace TYPO3\CMS\Workspaces\Dependency;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -105,7 +105,7 @@ class ElementEntityProcessor
      *
      * @param array $callerArguments
      * @param array $targetArgument
-     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
+     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $caller
      * @param string $eventName
      * @return NULL|string Skip response (if required)
      */

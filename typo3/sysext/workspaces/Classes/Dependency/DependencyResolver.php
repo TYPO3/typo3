@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Dependency;
+namespace TYPO3\CMS\Workspaces\Dependency;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,7 +25,7 @@ class DependencyResolver
     protected $workspace = 0;
 
     /**
-     * @var \TYPO3\CMS\Version\Dependency\DependencyEntityFactory
+     * @var \TYPO3\CMS\Workspaces\Dependency\DependencyEntityFactory
      */
     protected $factory;
 
@@ -73,10 +73,10 @@ class DependencyResolver
      * Sets a callback for a particular event.
      *
      * @param string $eventName
-     * @param \TYPO3\CMS\Version\Dependency\EventCallback $callback
-     * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
+     * @param \TYPO3\CMS\Workspaces\Dependency\EventCallback $callback
+     * @return \TYPO3\CMS\Workspaces\Dependency\DependencyResolver
      */
-    public function setEventCallback($eventName, \TYPO3\CMS\Version\Dependency\EventCallback $callback)
+    public function setEventCallback($eventName, \TYPO3\CMS\Workspaces\Dependency\EventCallback $callback)
     {
         $this->eventCallbacks[$eventName] = $callback;
         return $this;
@@ -93,7 +93,7 @@ class DependencyResolver
     public function executeEventCallback($eventName, $caller, array $callerArguments = [])
     {
         if (isset($this->eventCallbacks[$eventName])) {
-            /** @var $callback \TYPO3\CMS\Version\Dependency\EventCallback */
+            /** @var $callback \TYPO3\CMS\Workspaces\Dependency\EventCallback */
             $callback = $this->eventCallbacks[$eventName];
             return $callback->execute($callerArguments, $caller, $eventName);
         }
@@ -104,7 +104,7 @@ class DependencyResolver
      * Sets the condition that outermost parents required at least one child or parent reference.
      *
      * @param bool $outerMostParentsRequireReferences
-     * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
+     * @return \TYPO3\CMS\Workspaces\Dependency\DependencyResolver
      */
     public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences)
     {
@@ -118,7 +118,7 @@ class DependencyResolver
      * @param string $table
      * @param int $id
      * @param array $data
-     * @return \TYPO3\CMS\Version\Dependency\ElementEntity
+     * @return \TYPO3\CMS\Workspaces\Dependency\ElementEntity
      */
     public function addElement($table, $id, array $data = [])
     {
@@ -131,13 +131,13 @@ class DependencyResolver
     /**
      * Gets the outermost parents that define complete dependent structure each.
      *
-     * @return array|\TYPO3\CMS\Version\Dependency\ElementEntity[]
+     * @return array|\TYPO3\CMS\Workspaces\Dependency\ElementEntity[]
      */
     public function getOuterMostParents()
     {
         if (!isset($this->outerMostParents)) {
             $this->outerMostParents = [];
-            /** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
+            /** @var $element \TYPO3\CMS\Workspaces\Dependency\ElementEntity */
             foreach ($this->elements as $element) {
                 $this->processOuterMostParent($element);
             }
@@ -148,9 +148,9 @@ class DependencyResolver
     /**
      * Processes and registers the outermost parents accordant to the registered elements.
      *
-     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $element
      */
-    protected function processOuterMostParent(\TYPO3\CMS\Version\Dependency\ElementEntity $element)
+    protected function processOuterMostParent(\TYPO3\CMS\Workspaces\Dependency\ElementEntity $element)
     {
         if ($this->outerMostParentsRequireReferences === false || $element->hasReferences()) {
             $outerMostParent = $element->getOuterMostParent();
@@ -167,10 +167,10 @@ class DependencyResolver
      * Gets all nested elements (including the parent) of a particular outermost parent element.
      *
      * @throws \RuntimeException
-     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent
+     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $outerMostParent
      * @return array
      */
-    public function getNestedElements(\TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent)
+    public function getNestedElements(\TYPO3\CMS\Workspaces\Dependency\ElementEntity $outerMostParent)
     {
         $outerMostParentName = $outerMostParent->__toString();
         if (!isset($this->outerMostParents[$outerMostParentName])) {
@@ -193,12 +193,12 @@ class DependencyResolver
     /**
      * Gets an instance of the factory to keep track of element or reference entities.
      *
-     * @return \TYPO3\CMS\Version\Dependency\DependencyEntityFactory
+     * @return \TYPO3\CMS\Workspaces\Dependency\DependencyEntityFactory
      */
     public function getFactory()
     {
         if (!isset($this->factory)) {
-            $this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyEntityFactory::class);
+            $this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\DependencyEntityFactory::class);
         }
         return $this->factory;
     }

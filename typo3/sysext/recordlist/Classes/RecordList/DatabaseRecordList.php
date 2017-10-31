@@ -1842,7 +1842,7 @@ class DatabaseRecordList
     {
         $module = $this->getModule();
         $rowUid = $row['uid'];
-        if (ExtensionManagementUtility::isLoaded('version') && isset($row['_ORIG_uid'])) {
+        if (ExtensionManagementUtility::isLoaded('workspaces') && isset($row['_ORIG_uid'])) {
             $rowUid = $row['_ORIG_uid'];
         }
         $cells = [
@@ -3650,7 +3650,7 @@ class DatabaseRecordList
                         $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                     }
                     if (ExtensionManagementUtility::isLoaded(
-                            'version'
+                            'workspaces'
                         ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         $fieldListArr[] = 't3ver_id';
                         $fieldListArr[] = 't3ver_state';

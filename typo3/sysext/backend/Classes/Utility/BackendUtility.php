@@ -3841,7 +3841,7 @@ class BackendUtility
      */
     public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
     {
-        if (!ExtensionManagementUtility::isLoaded('version')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return;
         }
         // Check that the input record is an offline version from a table that supports versioning:
@@ -3903,7 +3903,7 @@ class BackendUtility
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {
-        if (!ExtensionManagementUtility::isLoaded('version')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return;
         }
         // If this is FALSE the placeholder is shown raw in the backend.
@@ -4021,7 +4021,7 @@ class BackendUtility
      */
     public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*')
     {
-        if (ExtensionManagementUtility::isLoaded('version')) {
+        if (ExtensionManagementUtility::isLoaded('workspaces')) {
             if ($workspace !== 0 && $GLOBALS['TCA'][$table] && self::isTableWorkspaceEnabled($table)) {
 
                 // Select workspace version of record:
@@ -4084,7 +4084,7 @@ class BackendUtility
      */
     public static function getLiveVersionIdOfRecord($table, $uid)
     {
-        if (!ExtensionManagementUtility::isLoaded('version')) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return null;
         }
         $liveVersionId = null;

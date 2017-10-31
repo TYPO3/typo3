@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Dependency;
+namespace TYPO3\CMS\Workspaces\Dependency;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Version\Dependency;
 class ReferenceEntity
 {
     /**
-     * @var \TYPO3\CMS\Version\Dependency\ElementEntity
+     * @var \TYPO3\CMS\Workspaces\Dependency\ElementEntity
      */
     protected $element;
 
@@ -32,10 +32,10 @@ class ReferenceEntity
     /**
      * Creates this object.
      *
-     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $element
      * @param string $field
      */
-    public function __construct(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field)
+    public function __construct(\TYPO3\CMS\Workspaces\Dependency\ElementEntity $element, $field)
     {
         $this->element = $element;
         $this->field = $field;
@@ -44,7 +44,7 @@ class ReferenceEntity
     /**
      * Gets the elements.
      *
-     * @return \TYPO3\CMS\Version\Dependency\ElementEntity
+     * @return \TYPO3\CMS\Workspaces\Dependency\ElementEntity
      */
     public function getElement()
     {

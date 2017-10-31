@@ -24,7 +24,7 @@ class ActionHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Function
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['version', 'workspaces'];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * Set up

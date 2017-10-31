@@ -372,7 +372,7 @@ class PlainDataResolver
      */
     protected function isWorkspaceEnabled()
     {
-        if (ExtensionManagementUtility::isLoaded('version')) {
+        if (ExtensionManagementUtility::isLoaded('workspaces')) {
             return BackendUtility::isTableWorkspaceEnabled($this->tableName);
         }
         return false;

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Version\Dependency;
+namespace TYPO3\CMS\Workspaces\Dependency;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -35,13 +35,13 @@ class DependencyEntityFactory
      * @param string $table
      * @param int $id
      * @param array $data (optional)
-     * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
-     * @return \TYPO3\CMS\Version\Dependency\ElementEntity
+     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
+     * @return \TYPO3\CMS\Workspaces\Dependency\ElementEntity
      */
-    public function getElement($table, $id, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function getElement($table, $id, array $data = [], \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency)
     {
         /** @var $element ElementEntity */
-        $element = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\ElementEntity::class, $table, $id, $data, $dependency);
+        $element = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\ElementEntity::class, $table, $id, $data, $dependency);
         $elementName = $element->__toString();
         if (!isset($this->elements[$elementName])) {
             $this->elements[$elementName] = $element;
@@ -52,15 +52,15 @@ class DependencyEntityFactory
     /**
      * Gets and registers a new reference.
      *
-     * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+     * @param \TYPO3\CMS\Workspaces\Dependency\ElementEntity $element
      * @param string $field
-     * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
+     * @return \TYPO3\CMS\Workspaces\Dependency\ReferenceEntity
      */
-    public function getReference(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field)
+    public function getReference(\TYPO3\CMS\Workspaces\Dependency\ElementEntity $element, $field)
     {
         $referenceName = $element->__toString() . '.' . $field;
         if (!isset($this->references[$referenceName][$field])) {
-            $this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\ReferenceEntity::class, $element, $field);
+            $this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\ReferenceEntity::class, $element, $field);
         }
         return $this->references[$referenceName][$field];
     }
@@ -72,12 +72,12 @@ class DependencyEntityFactory
      * @param int $id
      * @param string $field
      * @param array $data (optional)
-     * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
-     * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
+     * @param \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency
+     * @return \TYPO3\CMS\Workspaces\Dependency\ReferenceEntity
      * @see getElement
      * @see getReference
      */
-    public function getReferencedElement($table, $id, $field, array $data = [], \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency)
+    public function getReferencedElement($table, $id, $field, array $data = [], \TYPO3\CMS\Workspaces\Dependency\DependencyResolver $dependency)
     {
         return $this->getReference($this->getElement($table, $id, $data, $dependency), $field);
     }

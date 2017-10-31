@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Workspaces\Service\Dependency;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Version\Dependency;
+use TYPO3\CMS\Workspaces\Dependency;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
@@ -54,7 +54,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     public function getDependencyResolver()
     {
         if (!isset($this->dependencyResolver)) {
-            $this->dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyResolver::class);
+            $this->dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Dependency\DependencyResolver::class);
             $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
             $this->dependencyResolver->setWorkspace($this->getWorkspace());
 
@@ -87,7 +87,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface
     protected function getDependencyCallback($method, array $targetArguments = [])
     {
         return GeneralUtility::makeInstance(
-            \TYPO3\CMS\Version\Dependency\EventCallback::class,
+            \TYPO3\CMS\Workspaces\Dependency\EventCallback::class,
             $this->getElementEntityProcessor(),
             $method,
             $targetArguments
