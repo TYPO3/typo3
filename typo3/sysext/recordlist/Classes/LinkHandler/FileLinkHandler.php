@@ -132,8 +132,8 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             // Render the file or folderlist
             if ($selectedFolder->checkActionPermission('read')) {
                 $this->view->assign('selectedFolder', $selectedFolder);
-                $parameters = $this->linkBrowser->getUrlParameters();
-                $allowedExtensions = isset($parameters['allowedExtensions']) ? $parameters['allowedExtensions'] : '';
+                $parameters = $this->linkBrowser->getParameters();
+                $allowedExtensions = $parameters['params']['allowedExtensions'] ?? '';
                 $this->expandFolder($selectedFolder, $allowedExtensions);
             }
         }
