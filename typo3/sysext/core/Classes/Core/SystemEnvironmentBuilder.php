@@ -217,8 +217,6 @@ class SystemEnvironmentBuilder
      */
     protected static function initializeGlobalTimeTrackingVariables()
     {
-        // Set PARSETIME_START to the system time in milliseconds.
-        $GLOBALS['PARSETIME_START'] = GeneralUtility::milliseconds();
         // Microtime of (nearly) script start
         $GLOBALS['TYPO3_MISC']['microtime_start'] = microtime(true);
         // EXEC_TIME is set so that the rest of the script has a common value for the script execution time

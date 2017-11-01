@@ -143,7 +143,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\TestingFramework\Core\Unit\Uni
     public function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider()
     {
         return [
-            'PARSETIME_START' => ['PARSETIME_START'],
             'EXEC_TIME' => ['EXEC_TIME'],
             'ACCESS_TIME' => ['ACCESS_TIME'],
             'SIM_EXEC_TIME' => ['SIM_EXEC_TIME'],
