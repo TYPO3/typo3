@@ -66,12 +66,12 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
     }
 
     /**
-     * Load and parse yaml files which are configured within the TypoScript
+     * Load and parse YAML files which are configured within the TypoScript
      * path plugin.tx_extensionkey.settings.yamlConfigurations
      *
      * The following steps will be done:
      *
-     * * Convert each singe yaml file into an array
+     * * Convert each singe YAML file into an array
      * * merge this arrays together
      * * resolve all declared inheritances
      * * remove all keys if their values are NULL

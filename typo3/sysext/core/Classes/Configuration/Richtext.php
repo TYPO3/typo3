@@ -53,7 +53,7 @@ class Richtext
         // The main problem here is that all parameters that the processing needs is handed over to as TSconfig
         // "dotted array" syntax. We convert at least the processing information available under "processing"
         // together with pageTS, this way it can be overridden and understood in RteHtmlParser.
-        // However, all other parts of the core will depend on the non-dotted syntax (coming from Yaml directly)
+        // However, all other parts of the core will depend on the non-dotted syntax (coming from YAML directly)
 
         $pageTs = $this->getPageTsConfiguration($table, $field, $pid, $recordType);
 
@@ -113,7 +113,7 @@ class Richtext
 
     /**
      * Returns an array with Typoscript the old way (with dot)
-     * Since the functionality in Yaml is without the dots, but the new configuration is used without the dots
+     * Since the functionality in YAML is without the dots, but the new configuration is used without the dots
      * this functionality adds also an explicit = 1 to the arrays
      *
      * @param array $plainArray An array

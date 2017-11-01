@@ -188,7 +188,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Prepare the formElements.*.formEditor section from the yaml settings.
+     * Prepare the formElements.*.formEditor section from the YAML settings.
      * Sort all formElements into groups and add additional data.
      *
      * @param array $formElementsDefinition
@@ -248,7 +248,7 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Reduce the Yaml settings by the 'formEditor' keyword.
+     * Reduce the YAML settings by the 'formEditor' keyword.
      *
      * @return array
      */

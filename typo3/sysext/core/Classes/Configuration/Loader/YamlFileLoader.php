@@ -18,12 +18,12 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A Yaml file loader that allows to load YAML files, based on the Symfony/Yaml component
+ * A YAML file loader that allows to load YAML files, based on the Symfony/Yaml component
  *
- * In addition to just load a yaml file, it adds some special functionality.
+ * In addition to just load a YAML file, it adds some special functionality.
  *
- * - A special "imports" key in the yaml file allows to include other yaml files recursively
- *   where the actual yaml file gets loaded after the import statements, which are interpreted at the very beginning
+ * - A special "imports" key in the YAML file allows to include other YAML files recursively
+ *   where the actual YAML file gets loaded after the import statements, which are interpreted at the very beginning
  *
  * - Merging configuration options of import files when having simple "lists" will add items to the list instead
  *   of overwriting them.
@@ -155,7 +155,7 @@ class YamlFileLoader
     }
 
     /**
-     * Same as array_replace_recursive except that when in simple arrays (= yaml lists), the entries are
+     * Same as array_replace_recursive except that when in simple arrays (= YAML lists), the entries are
      * appended (array_merge)
      *
      * @param array $val1

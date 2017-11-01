@@ -142,7 +142,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  *
  * Often, it is not really useful to manually create the $prototypeConfiguration array.
  *
- * Most of it comes pre-configured inside the extensions's yaml settings,
+ * Most of it comes pre-configured inside the YAML settings of the extensions,
  * and the {@link \TYPO3\CMS\Form\Domain\Configuration\ConfigurationService} contains helper methods
  * which return the ready-to-use *$prototypeConfiguration*.
  *
