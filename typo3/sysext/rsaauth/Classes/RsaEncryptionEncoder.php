@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -63,7 +62,6 @@ class RsaEncryptionEncoder implements SingletonInterface
             // Register ajax handler url
             $code = 'var TYPO3RsaEncryptionPublicKeyUrl = ' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . 'index.php?eID=RsaPublicKeyGenerationController') . ';';
             $pageRenderer->addJsInlineCode('TYPO3RsaEncryptionPublicKeyUrl', $code);
-            $javascriptPath = ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
             if (!$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['debug']) {
                 $files = ['RsaEncryptionWithLib.min.js'];
             } else {
@@ -73,7 +71,7 @@ class RsaEncryptionEncoder implements SingletonInterface
                 ];
             }
             foreach ($files as $file) {
-                $pageRenderer->addJsFile($javascriptPath . $file);
+                $pageRenderer->addJsFile('EXT:rsaauth/Resources/Public/JavaScript/' . $file);
             }
         }
     }

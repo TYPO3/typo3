@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1435,7 +1434,7 @@ class EditDocumentController
      */
     public function shortCutLink()
     {
-        if ($this->returnUrl !== ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html') {
+        if ($this->returnUrl !== $this->getCloseUrl()) {
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton->setModuleName($this->MCONF['name'])
                 ->setGetVariables([
@@ -1455,10 +1454,10 @@ class EditDocumentController
      */
     public function openInNewWindowLink()
     {
-        $closeUrl = ExtensionManagementUtility::siteRelPath('backend') . 'Resources/Private/Templates/Close.html';
+        $closeUrl = $this->getCloseUrl();
         if ($this->returnUrl !== $closeUrl) {
             $aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(
-                ['returnUrl' => PathUtility::getAbsoluteWebPath($closeUrl)]
+                ['returnUrl' => $closeUrl]
             ))
                 . ','
                 . GeneralUtility::quoteJSvalue(md5($this->R_URI))
@@ -1474,6 +1473,18 @@ class EditDocumentController
                 ButtonBar::BUTTON_POSITION_RIGHT
             );
         }
+    }
+
+    /**
+     * Returns the URL (usually for the "returnUrl") which closes the current window.
+     * Used when editing a record in a popup.
+     *
+     * @return string
+     */
+    protected function getCloseUrl(): string
+    {
+        $closeUrl = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/Close.html');
+        return PathUtility::getAbsoluteWebPath($closeUrl);
     }
 
     /***************************

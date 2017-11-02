@@ -33,4 +33,10 @@ return [
             'Deprecation-54152-DeprecateArgumentsOfBackendUtilityGetPagesTSconfig.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-82899-ExtensionManagementUtilityMethods.rst',
+        ],
+    ],
 ];

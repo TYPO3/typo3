@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Documentation\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Misc utility.
@@ -59,16 +60,16 @@ class MiscUtility
         $documentPath = $basePath . $documentKey . '/';
 
         // Fallback icon
-        $icon = ExtensionManagementUtility::getExtensionIcon(ExtensionManagementUtility::extPath('documentation'));
-        $icon = ExtensionManagementUtility::siteRelPath('documentation') . $icon;
+        $icon = ExtensionManagementUtility::getExtensionIcon(ExtensionManagementUtility::extPath('documentation'), true);
+        $icon = PathUtility::stripPathSitePrefix($icon);
 
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($documentKey, 'typo3cms.extensions.')) {
             // Standard extension icon
             $extensionKey = substr($documentKey, 20);
             if (ExtensionManagementUtility::isLoaded($extensionKey)) {
                 $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-                $siteRelativePath = ExtensionManagementUtility::siteRelPath($extensionKey);
-                $icon = $siteRelativePath . ExtensionManagementUtility::getExtensionIcon($extensionPath);
+                $icon = ExtensionManagementUtility::getExtensionIcon($extensionPath, true);
+                $icon = PathUtility::stripPathSitePrefix($icon);
             }
         } elseif (is_file(PATH_site . $documentPath . 'icon.png')) {
             $icon = $documentPath . 'icon.png';

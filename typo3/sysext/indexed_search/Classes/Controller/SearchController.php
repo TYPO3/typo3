@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -517,8 +518,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             ]);
             // check if the access is restricted
             if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
-                $resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search')
-                    . 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="'
+                $lockedIcon = GeneralUtility::getFileAbsFileName('EXT:indexed_search/Resources/Public/Icons/FileTypes/locked.gif');
+                $lockedIcon = PathUtility::getAbsoluteWebPath($lockedIcon);
+                $resultData['access'] = '<img src="' . htmlspecialchars($lockedIcon) . '"'
+                    . ' width="12" height="15" vspace="5" title="'
                     . sprintf(LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))
                     . '" alt="" />';
             }

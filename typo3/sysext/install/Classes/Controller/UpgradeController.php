@@ -497,7 +497,7 @@ class UpgradeController extends AbstractController
         // and if their content is not in incoming "hashes" array, mark as "not affected"
         $documentationFile = new DocumentationFile();
         $finder = new Finder();
-        $restFilesBasePath = PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog';
+        $restFilesBasePath = ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog';
         $restFiles = $finder->files()->in($restFilesBasePath);
         $fullyScannedRestFilesNotAffected = [];
         foreach ($restFiles as $restFile) {
@@ -593,7 +593,7 @@ class UpgradeController extends AbstractController
         }
 
         // Prepare match output
-        $restFilesBasePath = PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog';
+        $restFilesBasePath = ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog';
         $documentationFile = new DocumentationFile();
         $preparedMatches = [];
         foreach ($matches as $match) {
@@ -1071,7 +1071,7 @@ class UpgradeController extends AbstractController
     {
         $documentationFileService = new DocumentationFile();
         $documentationFiles = $documentationFileService->findDocumentationFiles(
-            strtr(realpath(PATH_site . ExtensionManagementUtility::siteRelPath('core') . 'Documentation/Changelog'), '\\', '/')
+            strtr(realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog'), '\\', '/')
         );
         $documentationFiles = array_reverse($documentationFiles);
 

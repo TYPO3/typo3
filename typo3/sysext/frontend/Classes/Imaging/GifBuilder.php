@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -557,7 +556,7 @@ class GifBuilder extends GraphicalFunctions
         }
         $conf['fontFile'] = $this->checkFile($conf['fontFile']);
         if (!$conf['fontFile']) {
-            $conf['fontFile'] = ExtensionManagementUtility::siteRelPath('core') . 'Resources/Private/Font/nimbus.ttf';
+            $conf['fontFile'] = $this->checkFile('EXT:core/Resources/Private/Font/nimbus.ttf');
         }
         if (!$conf['iterations']) {
             $conf['iterations'] = 1;

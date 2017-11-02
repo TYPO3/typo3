@@ -44,10 +44,10 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
@@ -3634,16 +3634,17 @@ class ContentObjectRenderer
             $conf['icon.']['path'] = isset($conf['icon.']['path.'])
                 ? $this->stdWrap($conf['icon.']['path'], $conf['icon.']['path.'])
                 : $conf['icon.']['path'];
-            $iconP = !empty($conf['icon.']['path'])
+            $iconPath = !empty($conf['icon.']['path'])
                 ? $conf['icon.']['path']
-                : ExtensionManagementUtility::siteRelPath('frontend') . 'Resources/Public/Icons/FileIcons/';
+                : GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Icons/FileIcons/');
             $conf['icon.']['ext'] = isset($conf['icon.']['ext.'])
                 ? $this->stdWrap($conf['icon.']['ext'], $conf['icon.']['ext.'])
                 : $conf['icon.']['ext'];
             $iconExt = !empty($conf['icon.']['ext']) ? '.' . $conf['icon.']['ext'] : '.gif';
-            $icon = @is_file(($iconP . $fI['fileext'] . $iconExt))
-                ? $iconP . $fI['fileext'] . $iconExt
-                : $iconP . 'default' . $iconExt;
+            $icon = @is_file(($iconPath . $fI['fileext'] . $iconExt))
+                ? $iconPath . $fI['fileext'] . $iconExt
+                : $iconPath . 'default' . $iconExt;
+            $icon = PathUtility::stripPathSitePrefix($icon);
             // Checking for images: If image, then return link to thumbnail.
             $IEList = isset($conf['icon_image_ext_list.']) ? $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.']) : $conf['icon_image_ext_list'];
             $image_ext_list = str_replace(' ', '', strtolower($IEList));
@@ -3651,7 +3652,8 @@ class ContentObjectRenderer
                 if ($conf['iconCObject']) {
                     $icon = $this->cObjGetSingle($conf['iconCObject'], $conf['iconCObject.'], 'iconCObject');
                 } else {
-                    $notFoundThumb = ExtensionManagementUtility::siteRelPath('core') . 'Resources/Public/Images/NotFound.gif';
+                    $notFoundThumb = GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Images/NotFound.gif');
+                    $notFoundThumb = PathUtility::stripPathSitePrefix($notFoundThumb);
                     $sizeParts = [64, 64];
                     if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
                         // using the File Abstraction Layer to generate a preview image

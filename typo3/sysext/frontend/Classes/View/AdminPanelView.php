@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * View class for the admin panel in frontend editing.
@@ -360,8 +361,8 @@ class AdminPanelView
         $output[] = '  </div>';
         $output[] = '</form>';
         if ($this->getBackendUser()->uc['TSFE_adminConfig']['display_top']) {
-            $frontendPathExtBackend = htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix) . ExtensionManagementUtility::siteRelPath('backend');
-            $output[] = '<script type="text/javascript" src="' . $frontendPathExtBackend . 'Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
+            $evalFieldJavaScriptFile = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
+            $output[] = '<script type="text/javascript" src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($evalFieldJavaScriptFile)) . '"></script>';
             $output[] = '<script type="text/javascript">/*<![CDATA[*/' . GeneralUtility::minifyJavaScript('
 				var evalFunc = new evalFunc();
 					// TSFEtypo3FormFieldSet()
@@ -391,8 +392,8 @@ class AdminPanelView
 				}') . '/*]]>*/</script>';
             $output[] = '<script language="javascript" type="text/javascript">' . $this->extJSCODE . '</script>';
         }
-        $frontendPathExtFrontend = htmlspecialchars($this->getTypoScriptFrontendController()->absRefPrefix) . ExtensionManagementUtility::siteRelPath('frontend');
-        $output[] = '<link type="text/css" rel="stylesheet" href="' . $frontendPathExtFrontend . 'Resources/Public/Css/adminpanel.css" media="all" />';
+        $cssFileLocation = GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Css/adminpanel.css');
+        $output[] = '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($cssFileLocation)) . '" media="all" />';
         $output[] = $this->getAdminPanelHeaderData();
         $output[] = '<!-- TYPO3 admin panel end -->';
 

@@ -102,20 +102,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function isLoadedReturnsFalseIfExtensionIsNotLoadedAndExitIsDisabled()
+    public function isLoadedReturnsFalseIfExtensionIsNotLoaded()
     {
-        $this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar'), false));
-    }
-
-    /**
-     * @test
-     */
-    public function isLoadedThrowsExceptionIfExtensionIsNotLoaded()
-    {
-        $this->expectException(\BadFunctionCallException::class);
-        $this->expectExceptionCode(1270853910);
-
-        $this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar'), true));
+        $this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar')));
     }
 
     ///////////////////////////////
@@ -237,77 +226,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
     public function getClassNamePrefixForExtensionKey($extensionName, $expectedPrefix)
     {
         $this->assertSame($expectedPrefix, ExtensionManagementUtility::getCN($extensionName));
-    }
-
-    /////////////////////////////////////////////
-    // Tests concerning getExtensionKeyByPrefix
-    /////////////////////////////////////////////
-    /**
-     * @test
-     * @see ExtensionManagementUtility::getExtensionKeyByPrefix
-     */
-    public function getExtensionKeyByPrefixForLoadedExtensionWithUnderscoresReturnsExtensionKey()
-    {
-        ExtensionManagementUtility::clearExtensionKeyMap();
-        $uniqueSuffix = $this->getUniqueId('test');
-        $extensionKey = 'tt_news' . $uniqueSuffix;
-        $extensionPrefix = 'tx_ttnews' . $uniqueSuffix;
-        $package = $this->getMockBuilder(Package::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getPackageKey'])
-                ->getMock();
-        $package->expects($this->exactly(2))
-                ->method('getPackageKey')
-                ->will($this->returnValue($extensionKey));
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
-        $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['getActivePackages'])
-            ->getMock();
-        $packageManager->expects($this->once())
-                ->method('getActivePackages')
-                ->will($this->returnValue([$extensionKey => $package]));
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertEquals($extensionKey, ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
-    }
-
-    /**
-     * @test
-     * @see ExtensionManagementUtility::getExtensionKeyByPrefix
-     */
-    public function getExtensionKeyByPrefixForLoadedExtensionWithoutUnderscoresReturnsExtensionKey()
-    {
-        ExtensionManagementUtility::clearExtensionKeyMap();
-        $uniqueSuffix = $this->getUniqueId('test');
-        $extensionKey = 'kickstarter' . $uniqueSuffix;
-        $extensionPrefix = 'tx_kickstarter' . $uniqueSuffix;
-        $package = $this->getMockBuilder(Package::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getPackageKey'])
-                ->getMock();
-        $package->expects($this->exactly(2))
-                ->method('getPackageKey')
-                ->will($this->returnValue($extensionKey));
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
-        $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['getActivePackages'])
-            ->getMock();
-        $packageManager->expects($this->once())
-                ->method('getActivePackages')
-                ->will($this->returnValue([$extensionKey => $package]));
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertEquals($extensionKey, ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
-    }
-
-    /**
-     * @test
-     * @see ExtensionManagementUtility::getExtensionKeyByPrefix
-     */
-    public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse()
-    {
-        ExtensionManagementUtility::clearExtensionKeyMap();
-        $uniqueSuffix = $this->getUniqueId('test');
-        $extensionPrefix = 'tx_unloadedextension' . $uniqueSuffix;
-        $this->assertFalse(ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
     }
 
     //////////////////////////////////////
@@ -1730,23 +1648,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
     }
 
     /////////////////////////////////////////
-    // Tests concerning removeCacheFiles
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function removeCacheFilesFlushesSystemCaches()
-    {
-        /** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['flushCachesInGroup'])
-            ->getMock();
-        $mockCacheManager->expects($this->once())->method('flushCachesInGroup')->with('system');
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        ExtensionManagementUtility::removeCacheFiles();
-    }
-
-    /////////////////////////////////////////
     // Tests concerning getExtensionVersion
     /////////////////////////////////////////
     /**
@@ -1934,31 +1835,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\TestingFramework\Core\Unit\U
     /**
      * @test
      */
-    public function addPluginSetsTcaCorrectlyForGivenExtKeyAsGlobal()
-    {
-        $extKey = 'indexed_search';
-        $GLOBALS['TYPO3_LOADED_EXT'] = [];
-        $GLOBALS['TYPO3_LOADED_EXT'][$extKey]['ext_icon'] = 'foo.gif';
-        $GLOBALS['_EXTKEY'] = $extKey;
-        $expectedTCA = [
-            [
-                'label',
-                $extKey,
-                'EXT:' . $extKey . '/foo.gif'
-            ]
-        ];
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
-        ExtensionManagementUtility::addPlugin(['label', $extKey]);
-
-        $this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
-    }
-
-    /**
-     * @test
-     */
     public function addPluginThrowsExceptionForMissingExtkey()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1404068038);
 
         ExtensionManagementUtility::addPlugin('test');

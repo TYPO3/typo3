@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Lang\Domain\Model\Extension;
@@ -128,7 +130,8 @@ class ExtensionRepository
             $extensionIcon = ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
         }
         if (empty($extensionIcon)) {
-            $extensionIcon = ExtensionManagementUtility::siteRelPath('core') . 'Resources/Public/Icons/Extension.png';
+            $extensionIcon = GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/Extension.png');
+            $extensionIcon = PathUtility::stripPathSitePrefix($extensionIcon);
         } else {
             $extensionIcon = '../' . $extensionEntry['siteRelPath'] . '/' . $extensionIcon;
         }
