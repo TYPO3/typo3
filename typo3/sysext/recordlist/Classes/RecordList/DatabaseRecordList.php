@@ -589,6 +589,13 @@ class DatabaseRecordList
     protected $overrideUrlParameters = [];
 
     /**
+     * Only used to render translated records, used in list module to show page translations
+     *
+     * @var bool
+     */
+    protected $showOnlyTranslatedRecords = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -938,9 +945,13 @@ class DatabaseRecordList
         // Localization
         if ($l10nEnabled) {
             $this->fieldArray[] = '_LOCALIZATION_';
-            $this->fieldArray[] = '_LOCALIZATION_b';
+            // Do not show the "Localize to:" field when only translated records should be shown
+            if (!$this->showOnlyTranslatedRecords) {
+                $this->fieldArray[] = '_LOCALIZATION_b';
+            }
             // Only restrict to the default language if no search request is in place
-            if ($this->searchString === '') {
+            // And if only translations should be shown
+            if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
                 $addWhere = (string)$queryBuilder->expr()->orX(
                     $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
                     $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
@@ -1077,9 +1088,14 @@ class DatabaseRecordList
         }
         // If any records was selected, render the list:
         if ($dbCount) {
-            $tableTitle = htmlspecialchars($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
-            if ($tableTitle === '') {
-                $tableTitle = $table;
+            // Use a custom table title for translated pages
+            if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
+                $tableTitle = htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:pageTranslation'));
+            } else {
+                $tableTitle = htmlspecialchars($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
+                if ($tableTitle === '') {
+                    $tableTitle = $table;
+                }
             }
             // Header line is drawn
             $theData = [];
@@ -1267,6 +1283,36 @@ class DatabaseRecordList
         }
         // Return content:
         return $out;
+    }
+
+    /**
+     * Get viewOnClick link for pages or tt_content records
+     *
+     * @param string $table
+     * @param array $row
+     *
+     * @return string
+     */
+    protected function getOnClickForRow(string $table, array $row): string
+    {
+        if ($table === 'tt_content') {
+            // Link to a content element
+            $onClick = BackendUtility::viewOnClick($this->id, '', null, '#' . $row['uid']);
+        } elseif ($table === 'pages' && $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
+            // Link to a page translation
+            $onClick = BackendUtility::viewOnClick(
+                $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']],
+                '',
+                null,
+                '',
+                '',
+                '&L=' . $row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]
+            );
+        } else {
+            // Link to a page in the default language
+            $onClick = BackendUtility::viewOnClick($row['uid']);
+        }
+        return $onClick;
     }
 
     /**
@@ -1858,14 +1904,10 @@ class DatabaseRecordList
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
         if ($table === 'pages' || $table === 'tt_content') {
+            $onClick = $this->getOnClickForRow($table, $row);
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
-                . htmlspecialchars(
-                    BackendUtility::viewOnClick(
-                        ($table === 'tt_content' ? $this->id : $row['uid']),
-                        '',
-                        null,
-                        ($table === 'tt_content' ? '#c' . $row['uid'] : '')
-                    )
+                          . htmlspecialchars(
+                              $onClick
                 ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
             if ($table === 'pages') {
                 $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
@@ -3189,6 +3231,15 @@ class DatabaseRecordList
                     0
                 )
             );
+        } elseif (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && $this->showOnlyTranslatedRecords) {
+            // When only translated records should be shown, it is necessary to use l10n_parent=pageId, instead of
+            // a check to the PID
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $this->id
+                )
+            );
         }
 
         $hookName = static::class;
@@ -3478,11 +3529,8 @@ class DatabaseRecordList
             case 'show':
                 // "Show" link (only pages and tt_content elements)
                 if ($table === 'pages' || $table === 'tt_content') {
-                    $code = '<a href="#" onclick="' . htmlspecialchars(
-                            BackendUtility::viewOnClick(
-                                ($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid'])
-                            )
-                        ) . '" title="' . htmlspecialchars(
+                    $onClick = $this->getOnClickForRow($table, $row);
+                    $code = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars(
                             $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')
                         ) . '">' . $code . '</a>';
                 }
@@ -3830,7 +3878,16 @@ class DatabaseRecordList
             $searchLevels = 999;
         }
 
-        if ($searchLevels === 0) {
+        // When querying translated pages, the PID of the translated pages should be the same as the
+        // the PID of the current page
+        if ($tableName === 'pages' && $this->showOnlyTranslatedRecords) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $tableName . '.pid',
+                    $queryBuilder->createNamedParameter($this->pageRecord['pid'], \PDO::PARAM_INT)
+                )
+            );
+        } elseif ($searchLevels === 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $tableName . '.pid',
@@ -4199,6 +4256,17 @@ class DatabaseRecordList
             $htmlCode .= '</a>';
         }
         return $htmlCode;
+    }
+
+    /**
+     * If enabled, only translations are shown (= only with l10n_parent)
+     * See the use case in RecordList class, where a list of page translations is rendered before.
+     *
+     * @param bool $showOnlyTranslatedRecords
+     */
+    public function showOnlyTranslatedRecords(bool $showOnlyTranslatedRecords)
+    {
+        $this->showOnlyTranslatedRecords = $showOnlyTranslatedRecords;
     }
 
     /**

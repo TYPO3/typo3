@@ -461,10 +461,18 @@ class RecordList
         $this->moduleTemplate->setTitle($title);
 
         $output = '';
-        // Show the selector for new translations of the current page
+        // Show the selector to add page translations and the list of translations of the current page
         // but only when in "default" mode
         if ($this->id && !$dblist->csvOutput && !$this->search_field && !$this->cmd && !$this->table) {
             $output .= $this->languageSelector($this->id);
+            $pageTranslationsDatabaseRecordList = clone $dblist;
+            $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
+            $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
+            $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
+            $pageTranslationsDatabaseRecordList->hideTranslations = '';
+            $pageTranslationsDatabaseRecordList->iLimit = $pageTranslationsDatabaseRecordList->itemsLimitPerTable;
+            $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
+            $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
         }
 
         if (!empty($dblist->HTMLcode)) {
