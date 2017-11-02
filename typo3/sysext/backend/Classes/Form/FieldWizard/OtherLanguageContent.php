@@ -141,7 +141,7 @@ class OtherLanguageContent extends AbstractNode
                         0,
                         ' align="middle"'
                     ) .
-                    ($absFilePath ? BackendUtility::wrapClickMenuOnIcon($fileIcon, $absFilePath, 0) : $fileIcon) .
+                    ($absFilePath ? BackendUtility::wrapClickMenuOnIcon($fileIcon, $absFilePath) : $fileIcon) .
                     $imgPath .
                     '</span>';
             }

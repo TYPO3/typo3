@@ -353,7 +353,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param array $resultRows Result rows
      * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return string HTML
+     * @return array the result rows with additional information
      */
     protected function compileResultRows($resultRows, $freeIndexUid = -1)
     {
@@ -438,7 +438,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param array $row Search result row
      * @param int $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
-     * @return string HTML code
+     * @return array the result row with additional information
      */
     protected function compileSingleResultRow($row, $headerOnly = 0)
     {
@@ -798,7 +798,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $searchParams search params
      * @param array $searchWords Search Word array
      * @param int $count Number of hits
-     * @param int $pt Milliseconds the search took
+     * @param array $pt Milliseconds the search took (start time DB query + end time DB query + end time to compile results)
      */
     protected function writeSearchStat($searchParams, $searchWords, $count, $pt)
     {

@@ -5745,7 +5745,7 @@ class ContentObjectRenderer
      * Gets the query arguments and assembles them for URLs.
      * Arguments may be removed or set, depending on configuration.
      *
-     * @param string $conf Configuration
+     * @param array $conf Configuration
      * @param array $overruleQueryArguments Multidimensional key/value pairs that overrule incoming query arguments
      * @param bool $forceOverruleArguments If set, key/value pairs not in the query but the overrule array will be set
      * @return string The URL query part (starting with a &)

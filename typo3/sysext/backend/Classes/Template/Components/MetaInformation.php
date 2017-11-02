@@ -213,7 +213,7 @@ class MetaInformation
                 '">' .
                 $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
             if ($this->getBackendUser()->isAdmin()) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', 0);
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages');
             } else {
                 $theIcon = $iconImg;
             }
