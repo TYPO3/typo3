@@ -67,6 +67,7 @@ return [
         ],
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
+        'features' => [],
         'createGroup' => '',
         'sitename' => 'TYPO3',
         'encryptionKey' => '',

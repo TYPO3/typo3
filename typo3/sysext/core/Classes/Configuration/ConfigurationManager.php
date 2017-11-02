@@ -287,6 +287,30 @@ class ConfigurationManager
     }
 
     /**
+     * Enables a certain feature and writes the option to LocalConfiguration.php
+     * Short-hand method
+     *
+     * @param string $featureName something like "InlineSvgImages"
+     * @return bool true on successful writing the setting
+     */
+    public function enableFeature(string $featureName): bool
+    {
+        return $this->setLocalConfigurationValueByPath('SYS/features/' . $featureName, true);
+    }
+
+    /**
+     * Disables a feature and writes the option to LocalConfiguration.php
+     * Short-hand method
+     *
+     * @param string $featureName something like "InlineSvgImages"
+     * @return bool true on successful writing the setting
+     */
+    public function disableFeature(string $featureName): bool
+    {
+        return $this->setLocalConfigurationValueByPath('SYS/features/' . $featureName, false);
+    }
+
+    /**
      * Checks if the configuration can be written.
      *
      * @return bool
