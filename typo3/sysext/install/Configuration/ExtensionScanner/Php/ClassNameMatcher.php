@@ -442,6 +442,11 @@ return [
             'Deprecation-82805-RenamedAjaxLoginHandlerPHPClass.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ClientUtility' => [
+        'restFiles' => [
+            'Deprecation-82903-DeprecateClientUtility.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

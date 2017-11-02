@@ -24,9 +24,11 @@ class ClientUtility
      *
      * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
      * @return array Contains keys "browser", "version", "system
+     * @deprecated
      */
     public static function getBrowserInfo($userAgent)
     {
+        trigger_error('Method getBrowserInfo() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
         // Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo']:
         $getBrowserInfoHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo'];
         if (is_array($getBrowserInfoHooks)) {
@@ -174,9 +176,11 @@ class ClientUtility
      *
      * @param string $version A string with version number, eg. "/7.32 blablabla
      * @return float Returns double value, eg. "7.32
+     * @deprecated
      */
     public static function getVersion($version)
     {
+        trigger_error('Method getVersion() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
         return (float)preg_replace('/^[^0-9]*/', '', $version);
     }
 }
