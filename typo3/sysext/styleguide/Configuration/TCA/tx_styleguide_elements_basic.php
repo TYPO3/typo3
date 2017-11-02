@@ -469,7 +469,7 @@ return [
         ],
         'input_38' => [
             'exclude' => 1,
-            'label' => 'input_29 inputLink allowedExtensions=png',
+            'label' => 'input_38 inputLink allowedExtensions=png',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
