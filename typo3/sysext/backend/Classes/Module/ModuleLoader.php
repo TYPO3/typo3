@@ -140,6 +140,7 @@ class ModuleLoader
     {
         // Check for own way of configuring module
         if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
+            trigger_error('Registering a module using "configureModuleFunction" is deprecated and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
             $obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
             if (is_callable($obj)) {
                 $MCONF = call_user_func($obj, $name);
@@ -170,14 +171,8 @@ class ModuleLoader
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $this->addLabelsForModule($name, ($finalModuleConfiguration['labels'] ?? $setupInformation['labels']));
 
-        // Default script setup
-        if ($setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {
-            if ($setupInformation['configuration']['extbase']) {
-                $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
-            } else {
-                // just go through BackendModuleRequestHandler where the routeTarget is resolved
-                $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
-            }
+        if (isset($setupInformation['configuration']['routeTarget'])) {
+            $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
         } else {
             $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('dummy');
         }

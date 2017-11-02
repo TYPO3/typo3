@@ -491,4 +491,11 @@ return [
             'Deprecation-82899-ExtensionManagementUtilityMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-82902-CustomBackendModuleRegistrationMethods.rst',
+        ],
+    ],
 ];

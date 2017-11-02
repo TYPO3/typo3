@@ -158,6 +158,17 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
     }
 
     /**
+     * Returns the status code, if not set, uses the OK status code 200
+     *
+     * @return int
+     * @internal only use for backend module handling
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode ?: 200;
+    }
+
+    /**
      * Sets the specified HTTP header
      *
      * @param string $name Name of the header, for example "Location", "Content-Description" etc.
@@ -198,6 +209,17 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
             }
         }
         return $preparedHeaders;
+    }
+
+    /**
+     * Returns the HTTP headers grouped by name without the status header
+     *
+     * @return array all headers set for this request
+     * @internal only used within TYPO3 Core to convert to PSR-7 response headers
+     */
+    public function getUnpreparedHeaders(): array
+    {
+        return $this->headers;
     }
 
     /**

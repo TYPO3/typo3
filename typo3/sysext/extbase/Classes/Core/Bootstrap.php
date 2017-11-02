@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Extbase\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+
 /**
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, flexForm and returns the content to the v4 framework.
@@ -169,6 +174,62 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         }
 
         return $content;
+    }
+
+    /**
+     * Entrypoint for backend modules, handling PSR-7 requests/responses
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @internal
+     */
+    public function handleBackendRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        // build the configuration from the Server request / route
+        /** @var Route $route */
+        $route = $request->getAttribute('route');
+        $moduleConfiguration = $route->getOption('moduleConfiguration');
+        $configuration = [
+            'extensionName' => $moduleConfiguration['extensionName'],
+            'pluginName' => $route->getOption('moduleName')
+        ];
+        if (isset($moduleConfiguration['vendorName'])) {
+            $configuration['vendorName'] = $moduleConfiguration['vendorName'];
+        }
+
+        $this->initialize($configuration);
+
+        /** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver */
+        $requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
+        $requestHandler = $requestHandlerResolver->resolveRequestHandler();
+        /** @var Response $extbaseResponse */
+        $extbaseResponse = $requestHandler->handleRequest();
+
+        // Convert to PSR-7 response and hand it back to TYPO3 Core
+        $response = $this->convertExtbaseResponseToPsr7Response($extbaseResponse);
+        $this->resetSingletons();
+        $this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
+        return $response;
+    }
+
+    /**
+     * Converts a Extbase response object into a PSR-7 Response
+     *
+     * @param Response $extbaseResponse
+     * @return ResponseInterface
+     */
+    protected function convertExtbaseResponseToPsr7Response(Response $extbaseResponse): ResponseInterface
+    {
+        $response = new \TYPO3\CMS\Core\Http\Response(
+            'php://temp',
+            $extbaseResponse->getStatusCode(),
+            $extbaseResponse->getUnpreparedHeaders()
+        );
+        $content = $extbaseResponse->getContent();
+        if ($content !== null) {
+            $response->getBody()->write($content);
+        }
+        return $response;
     }
 
     /**

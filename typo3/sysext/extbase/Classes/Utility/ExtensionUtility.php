@@ -193,8 +193,7 @@ tt_content.' . $pluginSignature . ' {
             $moduleConfiguration['vendorName'] = $vendorName;
         }
         $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['configureModuleFunction'] = [\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule'];
-        $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
+        $moduleConfiguration['routeTarget'] = \TYPO3\CMS\Extbase\Core\Bootstrap::class . '::handleBackendRequest';
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = [];
         }
@@ -203,7 +202,7 @@ tt_content.' . $pluginSignature . ' {
                 'actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actions)
             ];
         }
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position);
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position, null, $moduleConfiguration);
     }
 
     /**

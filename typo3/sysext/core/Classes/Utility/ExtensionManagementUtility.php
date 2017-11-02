@@ -801,9 +801,11 @@ class ExtensionManagementUtility
      *
      * @param string $moduleSignature The module name
      * @return array Configuration of the module
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, addModule() works the same way nowadays.
      */
     public static function configureModule($moduleSignature)
     {
+        trigger_error('This method will be removed in TYPO3 v10, as the same functionality is found in addModule() as well.', E_USER_DEPRECATED);
         $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
 
         // Register the icon and move it too "iconIdentifier"

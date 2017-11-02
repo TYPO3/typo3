@@ -55,7 +55,7 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         }
 
         if ($route->getOption('module')) {
-            return $this->dispatchModule($request, $response);
+            $this->addAndValidateModuleConfiguration($request, $route);
         }
         $targetIdentifier = $route->getOption('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
@@ -92,18 +92,18 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
     }
 
     /**
-     * Executes the modules configured via Extbase
+     * Adds configuration for a module and checks module permissions for the
+     * current user.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface A PSR-7 response object
+     * @param Route $route
      * @throws \RuntimeException
      */
-    protected function dispatchModule(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    protected function addAndValidateModuleConfiguration(ServerRequestInterface $request, Route $route)
     {
-        $route = $request->getAttribute('route');
         $moduleName = $route->getOption('moduleName');
         $moduleConfiguration = $this->getModuleConfiguration($moduleName);
+        $route->setOption('moduleConfiguration', $moduleConfiguration);
 
         $backendUserAuthentication = $GLOBALS['BE_USER'];
 
@@ -123,37 +123,6 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
                 }
             }
         }
-
-        // Use regular Dispatching
-        // @todo: unify with the code above
-        $targetIdentifier = $route->getOption('target');
-        if (!empty($targetIdentifier)) {
-            // @internal routeParameters are a helper construct for the install tool only.
-            // @todo: remove this, after sub-actions in install tool can be addressed directly
-            if (!empty($moduleConfiguration['routeParameters'])) {
-                $request = $request->withQueryParams(array_merge_recursive(
-                    $request->getQueryParams(),
-                    $moduleConfiguration['routeParameters']
-                ));
-            }
-            return parent::dispatch($request, $response);
-        }
-        // extbase module
-        $configuration = [
-                'extensionName' => $moduleConfiguration['extensionName'],
-                'pluginName' => $moduleName
-            ];
-        if (isset($moduleConfiguration['vendorName'])) {
-            $configuration['vendorName'] = $moduleConfiguration['vendorName'];
-        }
-
-        // Run Extbase
-        $bootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
-        $content = $bootstrap->run('', $configuration);
-
-        $response->getBody()->write($content);
-
-        return $response;
     }
 
     /**
