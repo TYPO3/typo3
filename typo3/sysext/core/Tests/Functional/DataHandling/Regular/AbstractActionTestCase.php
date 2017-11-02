@@ -32,7 +32,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_LanguageIdSecond = 2;
 
     const TABLE_Page = 'pages';
-    const TABLE_PageOverlay = 'pages_language_overlay';
     const TABLE_Content = 'tt_content';
 
     /**
@@ -305,17 +304,22 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
     public function localizePage()
     {
+        // in these test cases we expect new pages not to be hidden in order to
+        // verify proper overlaying behavior during the frontend render process
+        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
-        $this->recordIds['localizedPageOverlayId'] = $localizedTableIds[self::TABLE_PageOverlay][self::VALUE_PageId];
     }
 
     public function localizePageWithLanguageSynchronization()
     {
-        $GLOBALS['TCA']['pages_language_overlay']['columns']['title']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        unset($GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['l10n_mode']);
+        $GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        // in these test cases we expect new pages not to be hidden in order to
+        // verify proper overlaying behavior during the frontend render process
+        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
-        $this->recordIds['localizedPageOverlayId'] = $localizedTableIds[self::TABLE_PageOverlay][self::VALUE_PageId];
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 

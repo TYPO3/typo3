@@ -693,19 +693,19 @@ class WorkspaceService implements SingletonInterface
         // If the language is not default, check state of overlay
         if ($language > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages_language_overlay');
+                ->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $row = $queryBuilder->select('t3ver_state')
-                ->from('pages_language_overlay')
+                ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pid',
+                        'l10n_parent',
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'],
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
@@ -769,7 +769,7 @@ class WorkspaceService implements SingletonInterface
         $viewUrl = '';
 
         // Directly use determined direct page id
-        if ($table === 'pages_language_overlay' || $table === 'tt_content') {
+        if ($table === 'tt_content') {
             $viewUrl = BackendUtility::viewOnClick($previewPageId, '', null, '', '', $additionalParameters);
         } elseif (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
             // Analyze Page TSconfig options.workspaces.previewPageId
@@ -1137,17 +1137,17 @@ class WorkspaceService implements SingletonInterface
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages_language_overlay');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
 
         $result = $queryBuilder->select('sys_language_uid')
-            ->from('pages_language_overlay')
+            ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'pid',
+                    'l10n_parent',
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )

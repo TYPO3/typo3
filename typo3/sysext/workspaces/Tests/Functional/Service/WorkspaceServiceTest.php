@@ -239,7 +239,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
             'sys_file_metadata' => [],
             'sys_file_reference' => [],
             'backend_layout' => [],
-            'pages_language_overlay' => [],
             'sys_template' => [],
             'tt_content' => [
                 1 => true,

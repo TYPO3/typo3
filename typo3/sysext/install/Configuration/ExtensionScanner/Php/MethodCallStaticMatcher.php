@@ -498,4 +498,11 @@ return [
             'Deprecation-82902-CustomBackendModuleRegistrationMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-82445-PageTranslationRelatedFunctionality.rst',
+        ],
+    ],
 ];

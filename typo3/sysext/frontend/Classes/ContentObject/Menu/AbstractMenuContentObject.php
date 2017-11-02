@@ -1286,7 +1286,7 @@ abstract class AbstractMenuContentObject
                         if ($languageUid && ($this->conf['protectLvar'] === 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
                             $olRec = $tsfe->sys_page->getPageOverlay($data['uid'], $languageUid);
                             if (empty($olRec)) {
-                                // If no pages_language_overlay record then page can NOT be accessed in
+                                // If no page translation record then page can NOT be accessed in
                                 // the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
                                 $data['_ADD_GETVARS'] .= '&L=0';
                             }

@@ -90,7 +90,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getPreviousStageForElementCollection(
         $workspaceItems,
-        array $byTableName = ['tt_content', 'pages', 'pages_language_overlay']
+        array $byTableName = ['tt_content', 'pages']
     ) {
         $currentStage = [];
         $previousStage = [];
@@ -138,7 +138,7 @@ class StagesService implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getNextStageForElementCollection(
         $workspaceItems,
-        array $byTableName = ['tt_content', 'pages', 'pages_language_overlay']
+        array $byTableName = ['tt_content', 'pages']
     ) {
         $currentStage = [];
         $usedStages = [];

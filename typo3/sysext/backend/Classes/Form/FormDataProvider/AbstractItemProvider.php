@@ -655,8 +655,7 @@ abstract class AbstractItemProvider
         $table = $result['tableName'];
         $backendUser = $this->getBackendUser();
         // Guard clause returns if not correct table and field or if user is admin
-        if ($table !== 'pages' && $table !== 'pages_language_overlay'
-            || $fieldName !== 'doktype' || $backendUser->isAdmin()
+        if ($table !== 'pages' || $fieldName !== 'doktype' || $backendUser->isAdmin()
         ) {
             return $items;
         }

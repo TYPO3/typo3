@@ -110,37 +110,36 @@ class TranslationConfigurationProvider
         if (!is_array($row)) {
             return 'Record "' . $table . '_' . $uid . '" was not found';
         }
-        $translationTable = $this->getTranslationTable($table);
-        if ($translationTable === '') {
+        if (!BackendUtility::isTableLocalizable($table)) {
             return 'Translation is not supported for this table!';
         }
-        if ($translationTable === $table && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
+        if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
             return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a language value "' . $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] . '", relation to record "' . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] . '")';
         }
-        if ($translationTable === $table && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0) {
+        if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0) {
             return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a relation to record "' . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] . '")';
         }
         // Look for translations of this record, index by language field value:
         if (!$selFieldList) {
-            $selFieldList = 'uid,' . $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'];
+            $selFieldList = 'uid,' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($translationTable);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $selFieldList))
-            ->from($translationTable)
+            ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA'][$translationTable]['ctrl']['transOrigPointerField'],
+                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter(
-                        ($table === 'pages' ? $row['uid'] : $row['pid']),
+                        $row['pid'],
                         \PDO::PARAM_INT
                     )
                 )
@@ -148,7 +147,7 @@ class TranslationConfigurationProvider
         if (!$languageUid) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->gt(
-                    $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'],
+                    $GLOBALS['TCA'][$table]['ctrl']['languageField'],
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             );
@@ -156,7 +155,7 @@ class TranslationConfigurationProvider
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA'][$translationTable]['ctrl']['languageField'],
+                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
                     )
                 );
@@ -168,10 +167,10 @@ class TranslationConfigurationProvider
         $translations = [];
         $translationsErrors = [];
         foreach ($translationRecords as $translationRecord) {
-            if (!isset($translations[$translationRecord[$GLOBALS['TCA'][$translationTable]['ctrl']['languageField']]])) {
-                $translations[$translationRecord[$GLOBALS['TCA'][$translationTable]['ctrl']['languageField']]] = $translationRecord;
+            if (!isset($translations[$translationRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]])) {
+                $translations[$translationRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = $translationRecord;
             } else {
-                $translationsErrors[$translationRecord[$GLOBALS['TCA'][$translationTable]['ctrl']['languageField']]][] = $translationRecord;
+                $translationsErrors[$translationRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]][] = $translationRecord;
             }
         }
         return [
@@ -179,7 +178,6 @@ class TranslationConfigurationProvider
             'uid' => $uid,
             'CType' => $row['CType'],
             'sys_language_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']],
-            'translation_table' => $translationTable,
             'translations' => $translations,
             'excessive_translations' => $translationsErrors
         ];
@@ -190,10 +188,12 @@ class TranslationConfigurationProvider
      *
      * @param string $table The table name
      * @return string
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
      */
     public function getTranslationTable($table)
     {
-        return $this->isTranslationInOwnTable($table) ? $table : $this->foreignTranslationTable($table);
+        trigger_error('getTranslationTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        return BackendUtility::isTableLocalizable($table) ? $table : '';
     }
 
     /**
@@ -201,21 +201,27 @@ class TranslationConfigurationProvider
      *
      * @param string $table The table name
      * @return bool
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
      */
     public function isTranslationInOwnTable($table)
     {
-        return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && $table !== 'pages_language_overlay';
+        trigger_error('isTranslationInOwnTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
     }
 
     /**
-     * Returns foreign translation table, if any
+     * Returns foreign translation table, if any.
+     * Since TYPO3 v9, even "pages" translations are stored in the same table, having this method return always
+     * empty, as with other tables as well.
      *
      * @param string $table The table name
      * @return string Translation foreign table
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10 as foreign translation table is not supported anymore
      */
     public function foreignTranslationTable($table)
     {
-        return $table === 'pages' ? 'pages_language_overlay' : '';
+        trigger_error('foreignTranslationTable() will be removed in TYPO3 v10, as the translation table is always the same as the original table.', E_USER_DEPRECATED);
+        return '';
     }
 
     /**

@@ -135,9 +135,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
         if ($result['inlineCompileExistingChildren']) {
             $tableNameWithDefaultRecords = $result['tableName'];
-            if ($tableNameWithDefaultRecords === 'pages_language_overlay') {
-                $tableNameWithDefaultRecords = 'pages';
-            }
             $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
                 $result['processedTca']['columns'][$fieldName]['config'],
                 $tableNameWithDefaultRecords,

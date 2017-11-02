@@ -210,7 +210,7 @@ class TranslatedContentTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandlin
     }
 
     /**
-     * Dutch language has pages_language_overlay record and some content elements are translated
+     * Dutch language has pages record and some content elements are translated
      *
      * @return array
      */

@@ -306,7 +306,7 @@ class PageLayoutController
         $this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 
-        // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
+        // First, select all localized page records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $queryBuilder->getRestrictions()->removeAll();
         if ($this->id) {
@@ -314,38 +314,38 @@ class PageLayoutController
                 ->from('sys_language')
                 ->join(
                     'sys_language',
-                    'pages_language_overlay',
-                    'pages_language_overlay',
+                    'pages',
+                    'pages',
                     $queryBuilder->expr()->eq(
                         'sys_language.uid',
-                        $queryBuilder->quoteIdentifier('pages_language_overlay.sys_language_uid')
+                        $queryBuilder->quoteIdentifier('pages.sys_language_uid')
                     )
                 )
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pages_language_overlay.deleted',
+                        'pages.deleted',
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'pages_language_overlay.pid',
+                        'pages.l10n_parent',
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->gte(
-                            'pages_language_overlay.t3ver_state',
+                            'pages.t3ver_state',
                             $queryBuilder->createNamedParameter(
                                 (string)new VersionState(VersionState::DEFAULT_STATE),
                                 \PDO::PARAM_INT
                             )
                         ),
                         $queryBuilder->expr()->eq(
-                            'pages_language_overlay.t3ver_wsid',
+                            'pages.t3ver_wsid',
                             $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, \PDO::PARAM_INT)
                         )
                     )
                 )
                 ->groupBy(
-                    'pages_language_overlay.sys_language_uid',
+                    'pages.sys_language_uid',
                     'sys_language.uid',
                     'sys_language.pid',
                     'sys_language.tstamp',
@@ -634,16 +634,19 @@ class PageLayoutController
     {
         if ($this->current_sys_language > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages_language_overlay');
+                ->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-            $overlayRecord = $queryBuilder
+            $localizedPage = $queryBuilder
                 ->select('*')
-                ->from('pages_language_overlay')
+                ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        'l10n_parent',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->eq(
                         'sys_language_uid',
                         $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
@@ -652,8 +655,8 @@ class PageLayoutController
                 ->setMaxResults(1)
                 ->execute()
                 ->fetch();
-            BackendUtility::workspaceOL('pages_language_overlay', $overlayRecord);
-            return $overlayRecord['title'];
+            BackendUtility::workspaceOL('pages', $localizedPage);
+            return $localizedPage['title'];
         }
         return $this->pageinfo['title'];
     }
@@ -998,20 +1001,20 @@ class PageLayoutController
         if (!$this->modTSconfig['properties']['disableIconToolbar']) {
             // Edit page properties and page language overlay icons
             if ($this->pageIsNotLockedForEditors() && $this->getBackendUser()->checkLanguageAccess(0)) {
-                // Edit localized page_language_overlay only when one specific language is selected
+                // Edit localized pages only when one specific language is selected
                 if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('pages_language_overlay');
+                        ->getQueryBuilderForTable('pages');
                     $queryBuilder->getRestrictions()
                         ->removeAll()
                         ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                         ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
                     $overlayRecord = $queryBuilder
                         ->select('uid')
-                        ->from('pages_language_overlay')
+                        ->from('pages')
                         ->where(
                             $queryBuilder->expr()->eq(
-                                'pid',
+                                'l10n_parent',
                                 $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
@@ -1025,7 +1028,7 @@ class PageLayoutController
                     // Edit button
                     $urlParameters = [
                         'edit' => [
-                            'pages_language_overlay' => [
+                            'pages' => [
                                 $overlayRecord['uid'] => 'edit'
                             ]
                         ],

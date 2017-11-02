@@ -9,15 +9,6 @@ CREATE TABLE pages (
     tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL
 );
 
-
-#
-# Table structure for table 'pages_language_overlay'
-#
-CREATE TABLE pages_language_overlay (
-    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL
-);
-
-
 #
 # Table structure for table 'tt_content'
 #

@@ -155,6 +155,9 @@ class FormDataCompiler
             // Parent page record is either the full row of the parent page the record is located at or should
             // be added to, or it is NULL, if a record is added or edited below the root page node.
             'parentPageRow' => null,
+            // If a translated page is handled, the page row of the default language (the page against all page checks
+            // are made) is set here
+            'defaultLanguagePageRow' => null,
             // Holds the "neighbor" row if incoming vanillaUid is negative and record creation is relative to a row of the same table.
             'neighborRow' => null,
             // For "new" this is the fully initialized row with defaults

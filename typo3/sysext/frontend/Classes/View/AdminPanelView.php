@@ -963,14 +963,14 @@ class AdminPanelView
         // Edit Page Overlay
         if ($perms & Permission::PAGE_EDIT && $tsfe->sys_language_uid && $langAllowed) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages_language_overlay');
+                ->getQueryBuilderForTable('pages');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $row = $queryBuilder
                 ->select('uid', 'pid', 't3ver_state')
-                ->from('pages_language_overlay')
+                ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'pid',
+                        'l10n_parent',
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
@@ -981,12 +981,12 @@ class AdminPanelView
                 ->setMaxResults(1)
                 ->execute()
                 ->fetch();
-            $tsfe->sys_page->versionOL('pages_language_overlay', $row);
+            $tsfe->sys_page->versionOL('pages', $row);
             if (is_array($row)) {
                 $link = BackendUtility::getModuleUrl(
                     'record_edit',
                     [
-                        'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
+                        'edit[pages][' . $row['uid'] . ']' => 'edit',
                         'noView' => 1,
                         'returnUrl' => $returnUrl
                     ]

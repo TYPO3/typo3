@@ -192,20 +192,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent'], function($, Persisten
 		$field.attr('disabled', 'disabled');
 
 		var parameters = {},
-			pagesTable,
 			recordUid;
 
 		if (PageActions.settings.language.pageOverlayId === 0) {
-			pagesTable = 'pages';
 			recordUid = PageActions.settings.pageId;
 		} else {
-			pagesTable = 'pages_language_overlay';
 			recordUid = PageActions.settings.language.pageOverlayId;
 		}
 
 		parameters.data = {};
-		parameters.data[pagesTable] = {};
-		parameters.data[pagesTable][recordUid] = {title: $field.val()};
+		parameters.data['pages'] = {};
+		parameters.data['pages'][recordUid] = {title: $field.val()};
 
 		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function(DataHandler) {
 			DataHandler.process(parameters).done(function() {

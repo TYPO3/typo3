@@ -917,8 +917,7 @@ class DatabaseRecordList
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
         $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
-                     && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-                     && $table !== 'pages_language_overlay';
+                     && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         $tableCollapsed = (bool)$this->tablesCollapsed[$table];
         // prepare space icon
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
@@ -1435,7 +1434,6 @@ class DatabaseRecordList
         $theData['uid'] = $row['uid'];
         if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
             && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-            && $table !== 'pages_language_overlay'
         ) {
             $theData['_l10nparent_'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         }
@@ -1619,8 +1617,8 @@ class DatabaseRecordList
                                     . $spriteIcon->render() . '</a>';
                             } else {
                                 $params = '&edit[' . $table . '][' . $this->id . ']=new';
-                                if ($table === 'pages_language_overlay') {
-                                    $params .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRow['doktype'];
+                                if ($table === 'pages') {
+                                    $params .= '&overrideVals[pages][doktype]=' . (int)$this->pageRow['doktype'];
                                 }
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
                                     . '" title="' . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
@@ -1850,6 +1848,9 @@ class DatabaseRecordList
             'primary' => [],
             'secondary' => []
         ];
+        // Enables to hide the move elements for localized records - doesn't make much sense to perform these options for them
+        // For page translations these icons should never be shown
+        $isL10nOverlay = ($this->localizationView || $table === 'pages') && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = 0;
         if ($table === 'pages') {
@@ -1902,10 +1903,14 @@ class DatabaseRecordList
         $this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
         // "Move" wizard link for pages/tt_content elements:
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
-            $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
-            $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
-            $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
-            $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
+            if ($isL10nOverlay) {
+                $moveAction = $this->spaceIcon;
+            } else {
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
+                $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
+                $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
+                $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
+            }
             $this->addActionToCellGroup($cells, $moveAction, 'move');
         }
         // If the table is NOT a read-only table, then show these links:
@@ -1919,17 +1924,23 @@ class DatabaseRecordList
             $this->addActionToCellGroup($cells, $historyAction, 'history');
             // "Edit Perms" link:
             if ($table === 'pages' && $this->getBackendUserAuthentication()->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
-                $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
-                $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
-                    . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
-                    . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a>';
+                if ($isL10nOverlay) {
+                    $permsAction = $this->spaceIcon;
+                } else {
+                    $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
+                    $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
+                        . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
+                        . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a>';
+                }
                 $this->addActionToCellGroup($cells, $permsAction, 'perms');
             }
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
             // or if default values can depend on previous record):
             if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
                 if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
-                    if ($this->showNewRecLink($table)) {
+                    if ($table === 'pages' && $isL10nOverlay) {
+                        $this->addActionToCellGroup($cells, $this->spaceIcon, 'new');
+                    } elseif ($this->showNewRecLink($table)) {
                         $params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
@@ -1945,7 +1956,7 @@ class DatabaseRecordList
             }
             // "Up/Down" links
             if ($permsEdit && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField && !$this->searchLevels) {
-                if (isset($this->currentTable['prev'][$row['uid']])) {
+                if (!$isL10nOverlay && isset($this->currentTable['prev'][$row['uid']])) {
                     // Up
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
                     $moveUpAction = '<a class="btn btn-default" href="#" onclick="'
@@ -1957,7 +1968,7 @@ class DatabaseRecordList
                 }
                 $this->addActionToCellGroup($cells, $moveUpAction, 'moveUp');
 
-                if ($this->currentTable['next'][$row['uid']]) {
+                if (!$isL10nOverlay && $this->currentTable['next'][$row['uid']]) {
                     // Down
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
                     $moveDownAction = '<a class="btn btn-default" href="#" onclick="'
@@ -2050,10 +2061,10 @@ class DatabaseRecordList
                         . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
                         . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
-                    $this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
+                    $this->addActionToCellGroup($cells, $isL10nOverlay ? $this->spaceIcon : $moveLeftAction, 'moveLeft');
                 }
                 // Down (Paste as subpage to the page right above)
-                if ($this->currentTable['prevUid'][$row['uid']]) {
+                if (!$isL10nOverlay && $this->currentTable['prevUid'][$row['uid']]) {
                     $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
                     if ($localCalcPerms & Permission::PAGE_NEW) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
@@ -2148,8 +2159,9 @@ class DatabaseRecordList
         }
         $cells = [];
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
-        //enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-        $isL10nOverlay = $this->localizationView && $table !== 'pages_language_overlay' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
+        // For page translations these icons should never be shown
+        $isL10nOverlay = ($this->localizationView || $table === 'pages') && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // Return blank, if disabled:
         // Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
         // For the "Normal" pad:
@@ -2194,7 +2206,7 @@ class DatabaseRecordList
                         $cells['cut'] = $this->spaceIcon;
                     }
                 } else {
-                    if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT) {
+                    if ($this->calcPerms & Permission::CONTENT_EDIT) {
                         $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
                         . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), ['returnUrl' => ''])) . ');')
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
@@ -2241,7 +2253,7 @@ class DatabaseRecordList
         }
         // Now, looking for elements in general:
         $elFromTable = $this->clipObj->elFromTable('');
-        if ($table === 'pages' && !empty($elFromTable)) {
+        if ($table === 'pages' && !$isL10nOverlay && !empty($elFromTable)) {
             $cells['pasteInto'] = '<a class="btn btn-default t3js-modal-trigger"'
                 . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
@@ -2266,9 +2278,7 @@ class DatabaseRecordList
                 $cells = $hookObject->makeClip($table, $row, $cells, $this);
             }
         }
-        // Compile items into a DIV-element:
-        return '<!-- CLIPBOARD PANEL: ' . $table . ':' . $row['uid'] . ' -->
-			<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
+        return '<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
     }
 
     /**
@@ -3181,9 +3191,7 @@ class DatabaseRecordList
         }
 
         // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-        if (
-            $table !== 'pages_language_overlay'
-            && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
             && (GeneralUtility::inList($this->hideTranslations, $table) || $this->hideTranslations === '*')
         ) {
             $queryBuilder->andWhere(
@@ -4088,17 +4096,17 @@ class DatabaseRecordList
     {
         // Look up page overlays:
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages_language_overlay');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $result = $queryBuilder
             ->select('*')
-            ->from('pages_language_overlay')
+            ->from('pages')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->gt(
                         'sys_language_uid',
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)

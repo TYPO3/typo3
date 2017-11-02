@@ -166,7 +166,7 @@ class PagesLanguageOverlayVisibleFieldsTest extends \TYPO3\TestingFramework\Core
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
-        $formResult = $formEngineTestService->createNewRecordForm('pages_language_overlay', ['doktype' => $doktype]);
+        $formResult = $formEngineTestService->createNewRecordForm('pages', ['doktype' => $doktype]);
 
         foreach ($expectedFields as $expectedField) {
             $this->assertNotFalse(

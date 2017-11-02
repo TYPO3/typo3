@@ -329,13 +329,13 @@ class ViewModuleController extends ActionController
             ->from('sys_language')
             ->join(
                 'sys_language',
-                'pages_language_overlay',
+                'pages',
                 'o',
                 $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('sys_language.uid'))
             )
             ->where(
                 $queryBuilder->expr()->eq(
-                    'o.pid',
+                    'o.l10n_parent',
                     $queryBuilder->createNamedParameter($pageIdToShow, \PDO::PARAM_INT)
                 )
             )

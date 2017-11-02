@@ -36,7 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Response;
  *      to that value) or "ignore" (just render the page and the content as this translation would exist).
  *      When set to "0" or not set "", this means that the page request is using the default language for content
  *      and page properties.
- *      Content fallback is evaluated on page level, not on the CE level. So it only makes a difference when the pages_language_overlay
+ *      Content fallback is evaluated on page level, not on the CE level. So it only makes a difference when the page translation
  *      for the requested language does not exist.
  *
  * config.sys_language_overlay = [0, 1, hideNonTranslated]
@@ -272,7 +272,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
     }
 
     /**
-     * Dutch language has pages_language_overlay record and some content elements are translated
+     * Dutch language has page translation record and some content elements are translated
      *
      * @return array
      */

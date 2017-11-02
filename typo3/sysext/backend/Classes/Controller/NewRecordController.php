@@ -557,9 +557,6 @@ class NewRecordController
                                     $iconFile[$_EXTKEY] = '';
                                 }
                             } else {
-                                if ($table === 'pages_language_overlay' && !$this->checkIfLanguagesExist()) {
-                                    continue;
-                                }
                                 $_EXTKEY = 'system';
                                 $thisTitle = $lang->getLL('system_records');
                                 $iconFile['system'] = $this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
@@ -656,8 +653,8 @@ class NewRecordController
         if ($table === 'pages' && $addContentTable) {
             $urlParameters['tt_content']['prev'] = 'new';
             $urlParameters['returnNewPageId'] = 1;
-        } elseif ($table === 'pages_language_overlay') {
-            $urlParameters['overrideVals']['pages_language_overlay']['doktype'] = (int)$this->pageinfo['doktype'];
+        } elseif ($table === 'pages') {
+            $urlParameters['overrideVals']['pages']['doktype'] = (int)$this->pageinfo['doktype'];
         }
         $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';

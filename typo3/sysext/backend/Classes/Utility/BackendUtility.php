@@ -302,11 +302,6 @@ class BackendUtility
     {
         $recordLocalization = false;
 
-        // Pages still stores translations in the pages_language_overlay table, all other tables store in themself
-        if ($table === 'pages') {
-            $table = 'pages_language_overlay';
-        }
-
         if (self::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
@@ -546,16 +541,15 @@ class BackendUtility
     }
 
     /**
-     * Gets the original translation pointer table.
-     * That is now the same table, apart from pages_language_overlay
-     * where pages is the original.
+     * Gets the original translation pointer table, which is always the same table
      *
      * @param string $table Name of the table
      * @return string Pointer table (if any)
      */
     public static function getOriginalTranslationTable($table)
     {
-        return $table === 'pages_language_overlay' ? 'pages' : $table;
+        trigger_error('Starting with TYPO3 v9, the translation table is always the same as the original table, because pages_language_overlay has been migrated into pages table.', E_USER_DEPRECATED);
+        return $table;
     }
 
     /**
@@ -3691,10 +3685,8 @@ class BackendUtility
     public static function translationCount($table, $ref, $msg = '')
     {
         $count = null;
-        if ($table !== 'pages'
-            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
+        if ($GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-            && $table !== 'pages_language_overlay'
         ) {
             $queryBuilder = static::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()

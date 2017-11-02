@@ -273,7 +273,7 @@ class RootlineUtility
     /**
      * Resolve relations as defined in TCA and add them to the provided $pageRecord array.
      *
-     * @param int $uid Either pages.uid or pages_language_overlay.uid if localized
+     * @param int $uid page ID
      * @param array $pageRecord Page record (possibly overlaid) to be extended with relations
      * @throws \RuntimeException
      * @return array $pageRecord with additional relations
@@ -336,7 +336,7 @@ class RootlineUtility
                             $queryBuilder->expr()->eq(
                                 trim($configuration['foreign_table_field']),
                                 $queryBuilder->createNamedParameter(
-                                    (int)$this->languageUid > 0 ? 'pages_language_overlay' : 'pages',
+                                    'pages',
                                     \PDO::PARAM_STR
                                 )
                             )

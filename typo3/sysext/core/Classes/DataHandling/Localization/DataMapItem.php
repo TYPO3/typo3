@@ -162,32 +162,6 @@ class DataMapItem
     }
 
     /**
-     * Gets the table name used to resolve the language parent record.
-     *
-     * @return string
-     */
-    public function getFromTableName(): string
-    {
-        if ($this->tableName === 'pages_language_overlay') {
-            return 'pages';
-        }
-        return $this->tableName;
-    }
-
-    /**
-     * Gets the table name used to resolve any kind of translations.
-     *
-     * @return string
-     */
-    public function getForTableName(): string
-    {
-        if ($this->tableName === 'pages') {
-            return 'pages_language_overlay';
-        }
-        return $this->tableName;
-    }
-
-    /**
      * Gets the id of this data-map item.
      *
      * @return mixed

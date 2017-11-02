@@ -22,6 +22,8 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -32,6 +34,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
@@ -465,10 +468,16 @@ class RecordList
         $this->body = $this->moduleTemplate->header($title);
         $this->moduleTemplate->setTitle($title);
 
+        $output = '';
+        // Show the selector for new translations of the current page
+        // but only when in "default" mode
+        if ($this->id && !$dblist->csvOutput && !$this->search_field && !$this->cmd && !$this->table) {
+            $output .= $this->languageSelector($this->id);
+        }
+
         if (!empty($dblist->HTMLcode)) {
-            $output = $dblist->HTMLcode;
+            $output .= $dblist->HTMLcode;
         } else {
-            $output = '';
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $lang->getLL('noRecordsOnThisPage'),
@@ -594,6 +603,146 @@ class RecordList
         $this->moduleTemplate->setContent($this->content);
         $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
+    }
+
+    /**
+     * Make selector box for creating new translation in a language
+     * Displays only languages which are not yet present for the current page and
+     * that are not disabled with page TS.
+     *
+     * @param int $id Page id for which to create a new translation record of pages
+     * @return string <select> HTML element (if there were items for the box anyways...)
+     */
+    protected function languageSelector(int $id): string
+    {
+        if ($this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
+            // First, select all
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            $statement = $queryBuilder->select('uid', 'title')
+                ->from('sys_language')
+                ->orderBy('sorting')
+                ->execute();
+            $availableTranslations = [];
+            while ($row = $statement->fetch()) {
+                if ($this->getBackendUserAuthentication()->checkLanguageAccess($row['uid'])) {
+                    $availableTranslations[(int)$row['uid']] = $row['title'];
+                }
+            }
+            // Then, subtract the languages which are already on the page:
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
+                ->from('sys_language')
+                ->join(
+                    'sys_language',
+                    'pages',
+                    'pages',
+                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.sys_language_uid'))
+                )
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'pages.deleted',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        'pages.l10n_parent',
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->gte(
+                            'pages.t3ver_state',
+                            $queryBuilder->createNamedParameter(
+                                (string)new VersionState(VersionState::DEFAULT_STATE),
+                                \PDO::PARAM_INT
+                            )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'pages.t3ver_wsid',
+                            $queryBuilder->createNamedParameter($this->getBackendUserAuthentication()->workspace, \PDO::PARAM_INT)
+                        )
+                    )
+                )
+                ->groupBy(
+                    'pages.sys_language_uid',
+                    'sys_language.uid',
+                    'sys_language.pid',
+                    'sys_language.tstamp',
+                    'sys_language.hidden',
+                    'sys_language.title',
+                    'sys_language.language_isocode',
+                    'sys_language.static_lang_isocode',
+                    'sys_language.flag',
+                    'sys_language.sorting'
+                )
+                ->orderBy('sys_language.sorting');
+            if (!$this->getBackendUserAuthentication()->isAdmin()) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        'sys_language.hidden',
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    )
+                );
+            }
+            $statement = $queryBuilder->execute();
+            while ($row = $statement->fetch()) {
+                unset($availableTranslations[(int)$row['uid']]);
+            }
+            // Remove disallowed languages
+            if (!empty($availableTranslations)
+                && !$this->getBackendUserAuthentication()->isAdmin()
+                && $this->getBackendUserAuthentication()->groupData['allowed_languages'] !== ''
+            ) {
+                $allowed_languages = array_flip(explode(',', $this->getBackendUserAuthentication()->groupData['allowed_languages']));
+                if (!empty($allowed_languages)) {
+                    foreach ($availableTranslations as $key => $value) {
+                        if (!isset($allowed_languages[$key]) && $key != 0) {
+                            unset($availableTranslations[$key]);
+                        }
+                    }
+                }
+            }
+            // Remove disabled languages
+            $modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
+            $disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
+                ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], true)
+                : [];
+            if (!empty($availableTranslations) && !empty($disableLanguages)) {
+                foreach ($disableLanguages as $language) {
+                    if ($language != 0 && isset($availableTranslations[$language])) {
+                        unset($availableTranslations[$language]);
+                    }
+                }
+            }
+            // If any languages are left, make selector:
+            if (!empty($availableTranslations)) {
+                $output = '<option value="">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language')) . '</option>';
+                foreach ($availableTranslations as $languageUid => $languageTitle) {
+                    // Build localize command URL to DataHandler (tce_db)
+                    // which redirects to FormEngine (record_edit)
+                    // which, when finished editing should return back to the current page (returnUrl)
+                    $parameters = [
+                        'justLocalized' => 'pages:' . $id . ':' . $languageUid,
+                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    ];
+                    $redirectUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
+                    $targetUrl = BackendUtility::getLinkToDataHandlerAction(
+                        '&cmd[pages][' . $id . '][localize]=' . $languageUid,
+                        $redirectUrl
+                    );
+
+                    $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
+                }
+
+                return '<div class="form-inline form-inline-spaced">'
+                    . '<div class="form-group">'
+                    . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
+                    . $output
+                    . '</select></div></div>';
+            }
+        }
+        return '';
     }
 
     /**

@@ -322,8 +322,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => [
                         'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                         ],
@@ -896,7 +902,6 @@ return [
                 sys_filemounts.after = be_users
                 sys_file_storage.after = sys_filemounts
                 sys_language.after = sys_file_storage
-                pages_language_overlay.before = pages
                 fe_users.after = fe_groups
                 fe_users.before = pages
                 sys_template.after = pages

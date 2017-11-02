@@ -379,7 +379,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
     public function localizePage()
     {
         parent::localizePage();
-        $this->actionService->publishRecord(self::TABLE_PageOverlay, $this->recordIds['localizedPageOverlayId']);
+        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
         $this->assertAssertionDataSet('localizePage');
 
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();

@@ -444,6 +444,11 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             );
         }
 
+        // Only show records in default language
+        $queryBuilder->andWhere(
+            $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+        );
+
         if ($searchFilter !== '') {
             $searchParts = $expressionBuilder->orX();
             if (is_numeric($searchFilter) && $searchFilter > 0) {

@@ -804,9 +804,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         }
 
         // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-        if (
-            $table !== 'pages_language_overlay'
-            && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
             && (GeneralUtility::inList($this->hideTranslations, $table) || $this->hideTranslations === '*')
         ) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq(

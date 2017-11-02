@@ -2160,7 +2160,6 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                 'config' => [
                                     'type' => 'input',
                                 ],
-                                'l10n_mode' => 'any-possible-value',
                             ],
                         ],
                     ],
@@ -2170,21 +2169,13 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                 'config' => [
                                     'type' => 'input',
                                 ],
+                                'l10n_mode' => 'any-possible-value',
                             ],
                         ],
                     ],
                 ],
                 [
                     'pages' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'pages_language_overlay' => [
                         'columns' => [
                             'aColumn' => [
                                 'config' => [
@@ -2203,6 +2194,15 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'aColumn' => [
                                 'config' => [
                                     'type' => 'input',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'pages_language_overlay' => [
+                        'columns' => [
+                            'aColumn' => [
+                                'config' => [
+                                    'type' => 'input',
                                     'behaviour' => [
                                         'allowLanguageSynchronization' => true,
                                     ]
@@ -2210,28 +2210,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             ],
                         ],
                     ],
-                    'pages_language_overlay' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                ],
-                            ],
-                        ],
-                    ],
                 ],
                 [
                     'pages' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                    'behaviour' => []
-                                ],
-                            ],
-                        ],
-                    ],
-                    'pages_language_overlay' => [
                         'columns' => [
                             'aColumn' => [
                                 'config' => [
@@ -2269,15 +2250,6 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'aColumn' => [],
                         ],
                     ],
-                    'pages_language_overlay' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                ],
-                            ],
-                        ],
-                    ],
                 ]
             ],
             'superfluous allowLanguageSynchronization' => [
@@ -2303,15 +2275,11 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 [
                     'pages' => [
                         'columns' => [
-                            'aColumn' => [],
-                        ],
-                    ],
-                    'pages_language_overlay' => [
-                        'columns' => [
                             'aColumn' => [
                                 'config' => [
-                                    'type' => 'input',
-                                    'behaviour' => []
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ]
                                 ],
                             ],
                         ],

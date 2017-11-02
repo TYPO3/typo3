@@ -88,6 +88,7 @@ class TcaMigration
         $tca = $this->migrateinputDateTimeMax($tca);
         $tca = $this->migrateInlineOverrideChildTca($tca);
         $tca = $this->migrateLocalizeChildrenAtParentLocalization($tca);
+        $tca = $this->migratePagesLanguageOverlayRemoval($tca);
         return $tca;
     }
 
@@ -975,70 +976,36 @@ class TcaMigration
     protected function migratePageLocalizationDefinitions(array $tca)
     {
         if (
-            empty($tca['pages']['columns'])
-            ||  empty($tca['pages_language_overlay']['columns'])
+            empty($tca['pages_language_overlay']['columns'])
         ) {
             return $tca;
         }
 
         // ensure, that localization settings are defined for
-        // pages_language_overlay and not only for pages
-        foreach ($tca['pages']['columns'] as $fieldName => &$fieldConfig) {
+        // pages and not for pages_language_overlay
+        foreach ($tca['pages_language_overlay']['columns'] as $fieldName => &$fieldConfig) {
             $l10nMode = $fieldConfig['l10n_mode'] ?? null;
             $allowLanguageSynchronization = $fieldConfig['config']['behaviour']['allowLanguageSynchronization'] ?? null;
 
-            $oppositeFieldConfig = $tca['pages_language_overlay']['columns'][$fieldName] ?? [];
+            $oppositeFieldConfig = $tca['pages']['columns'][$fieldName] ?? [];
             $oppositeL10nMode = $oppositeFieldConfig['l10n_mode'] ?? null;
             $oppositeAllowLanguageSynchronization = $oppositeFieldConfig['config']['behaviour']['allowLanguageSynchronization'] ?? null;
 
             if ($l10nMode !== null) {
                 if (!empty($oppositeFieldConfig) && $oppositeL10nMode !== 'exclude') {
-                    $tca['pages_language_overlay']['columns'][$fieldName]['l10n_mode'] = $l10nMode;
+                    $tca['pages']['columns'][$fieldName]['l10n_mode'] = $l10nMode;
                     $this->messages[] = 'The TCA setting \'l10n_mode\' was migrated '
-                        . 'to TCA pages_language_overlay[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\'] '
-                        . 'from TCA pages[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
+                        . 'to TCA pages[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\'] '
+                        . 'from TCA pages_language_overlay[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
                 }
-                unset($fieldConfig['l10n_mode']);
-                $this->messages[] = 'The TCA setting \'l10n_mode\' was removed '
-                    . 'in TCA pages[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
             }
 
-            if (!empty($allowLanguageSynchronization)) {
-                if (!empty($oppositeFieldConfig) && empty($oppositeAllowLanguageSynchronization)) {
-                    $tca['pages_language_overlay']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization'] = (bool)$allowLanguageSynchronization;
-                    $this->messages[] = 'The TCA setting \'allowLanguageSynchronization\' was migrated '
-                        . 'to TCA pages_language_overlay[\'columns\'][\'' . $fieldName . '\']'
-                        . '[\'config\'][\'behaviour\'][\'allowLanguageSynchronization\'] '
-                        . 'from TCA pages[\'columns\'][\'' . $fieldName . '\']'
-                        . '[\'config\'][\'behaviour\'][\'allowLanguageSynchronization\']';
-                }
-                unset($fieldConfig['config']['behaviour']['allowLanguageSynchronization']);
-                $this->messages[] = 'The TCA setting \'allowLanguageSynchronization\' was removed '
-                    . 'in TCA pages[\'columns\'][\'' . $fieldName . '\']'
-                    . '[\'config\'][\'behaviour\'][\'allowLanguageSynchronization\']';
-            }
-        }
-
-        // clean up localization settings in pages_language_overlay that cannot
-        // be used since the fields in pages are just not configured/available
-        foreach ($tca['pages_language_overlay']['columns'] as $fieldName => &$fieldConfig) {
-            $l10nMode = $fieldConfig['l10n_mode'] ?? null;
-            $allowLanguageSynchronization = $fieldConfig['config']['behaviour']['allowLanguageSynchronization'] ?? null;
-            $oppositeFieldConfig = $tca['pages']['columns'][$fieldName] ?? [];
-
-            if (!empty($oppositeFieldConfig)) {
-                continue;
-            }
-
-            if ($l10nMode !== null) {
-                unset($fieldConfig['l10n_mode']);
-                $this->messages[] = 'The TCA setting \'l10n_mode\' was removed '
-                    . 'in TCA pages_language_overlay[\'columns\'][\'' . $fieldName . '\'][\'l10n_mode\']';
-            }
-            if (!empty($allowLanguageSynchronization)) {
-                unset($fieldConfig['config']['behaviour']['allowLanguageSynchronization']);
-                $this->messages[] = 'The TCA setting \'allowLanguageSynchronization\' was removed '
-                    . 'in TCA pages[\'columns\'][\'' . $fieldName . '\']'
+            if (!empty($allowLanguageSynchronization) && empty($oppositeAllowLanguageSynchronization)) {
+                $tca['pages']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization'] = (bool)$allowLanguageSynchronization;
+                $this->messages[] = 'The TCA setting \'allowLanguageSynchronization\' was migrated '
+                    . 'to TCA pages[\'columns\'][\'' . $fieldName . '\']'
+                    . '[\'config\'][\'behaviour\'][\'allowLanguageSynchronization\'] '
+                    . 'from TCA pages_language_overlay[\'columns\'][\'' . $fieldName . '\']'
                     . '[\'config\'][\'behaviour\'][\'allowLanguageSynchronization\']';
             }
         }
@@ -2558,6 +2525,23 @@ class TcaMigration
                 }
                 unset($fieldConfig['config']['behaviour']['localizeChildrenAtParentLocalization']);
             }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA['pages_language_overlay'] if defined.
+     *
+     * @param array $tca
+     * @return array the modified TCA structure
+     */
+    protected function migratePagesLanguageOverlayRemoval(array $tca)
+    {
+        if (isset($tca['pages_language_overlay'])) {
+            $this->messages[] = 'The TCA table \'pages_language_overlay\' is'
+                . ' not used anymore and has been removed automatically in'
+                . ' order to avoid negative side-effects.';
+            unset($tca['pages_language_overlay']);
         }
         return $tca;
     }

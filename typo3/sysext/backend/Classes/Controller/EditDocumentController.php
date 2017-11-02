@@ -1509,14 +1509,20 @@ class EditDocumentController
         if ($this->getBackendUser()->check('tables_modify', $table)
             && $languageField
             && $transOrigPointerField
-            && $table !== 'pages_language_overlay'
         ) {
             if (is_null($pid)) {
                 $row = BackendUtility::getRecord($table, $uid, 'pid');
                 $pid = $row['pid'];
             }
             // Get all available languages for the page
-            $langRows = $this->getLanguages($pid);
+            // If editing a page, the translations of the current UID need to be fetched
+            if ($table === 'pages') {
+                $row = BackendUtility::getRecord($table, $uid, 'l10n_parent');
+                // Ensure the check is always done against the default language page
+                $langRows = $this->getLanguages($row['l10n_parent'] ?: $uid);
+            } else {
+                $langRows = $this->getLanguages($pid);
+            }
             // Page available in other languages than default language?
             if (is_array($langRows) && count($langRows) > 1) {
                 $rowsByLang = [];
@@ -1631,7 +1637,6 @@ class EditDocumentController
     public function localizationRedirect($justLocalized)
     {
         list($table, $origUid, $language) = explode(':', $justLocalized);
-        $table = $table === 'pages' ? 'pages_language_overlay' : $table;
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
@@ -1674,7 +1679,7 @@ class EditDocumentController
      *
      * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT
      *                hidden. If set to another value, the query will select all sys_language records that has a
-     *                pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+     *                translation record on that page (and is not hidden, unless you are admin user)
      * @return array Language records including faked record for default language
      */
     public function getLanguages($id)
@@ -1718,11 +1723,11 @@ class EditDocumentController
                 $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
             }
 
-            // Add join with pages_languages_overlay table to only show active languages
-            $queryBuilder->from('pages_language_overlay', 'o')
+            // Add join with pages translations to only show active languages
+            $queryBuilder->from('pages', 'o')
                 ->where(
                     $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('s.uid')),
-                    $queryBuilder->expr()->eq('o.pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('o.l10n_parent', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
                 );
         }
 

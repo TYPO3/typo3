@@ -460,19 +460,19 @@ class PageRepository implements LoggerAwareInterface
             }
             // NOTE regarding the query restrictions
             // Currently the showHiddenRecords of TSFE set will allow
-            // pages_language_overlay records to be selected as they are
+            // page translation records to be selected as they are
             // child-records of a page.
             // However you may argue that the showHiddenField flag should
             // determine this. But that's not how it's done right now.
             // Selecting overlay record:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages_language_overlay');
+                ->getQueryBuilderForTable('pages');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $result = $queryBuilder->select('*')
-                ->from('pages_language_overlay')
+                ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in(
-                        'pid',
+                        'l10n_parent',
                         $queryBuilder->createNamedParameter($page_ids, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->eq(
@@ -484,12 +484,12 @@ class PageRepository implements LoggerAwareInterface
 
             $overlays = [];
             while ($row = $result->fetch()) {
-                $this->versionOL('pages_language_overlay', $row);
+                $this->versionOL('pages', $row);
                 if (is_array($row)) {
                     $row['_PAGES_OVERLAY'] = true;
                     $row['_PAGES_OVERLAY_UID'] = $row['uid'];
                     $row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
-                    $origUid = $row['pid'];
+                    $origUid = $row['l10n_parent'];
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid']);
                     unset($row['pid']);
@@ -545,7 +545,7 @@ class PageRepository implements LoggerAwareInterface
             if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
                 // Return record for ALL languages untouched
                 // TODO: Fix call stack to prevent this situation in the first place
-                if ($table !== 'pages_language_overlay' && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
+                if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
                     // Will not be able to work with other tables (Just didn't implement it yet;
                     // Requires a scan over all tables [ctrl] part for first FIND the table that
                     // carries localization information for this table (which could even be more
@@ -702,6 +702,10 @@ class PageRepository implements LoggerAwareInterface
                 $queryBuilder->expr()->in(
                     $relationField,
                     $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
@@ -1301,7 +1305,7 @@ class PageRepository implements LoggerAwareInterface
         if ($show_hidden === -1 && is_object($this->getTypoScriptFrontendController())) {
             // If show_hidden was not set from outside and if TSFE is an object, set it
             // based on showHiddenPage and showHiddenRecords from TSFE
-            $show_hidden = $table === 'pages' || $table === 'pages_language_overlay'
+            $show_hidden = $table === 'pages'
                 ? $this->getTypoScriptFrontendController()->showHiddenPage
                 : $this->getTypoScriptFrontendController()->showHiddenRecords;
         }
@@ -1849,18 +1853,9 @@ class PageRepository implements LoggerAwareInterface
             $localizedId = $element['_PAGES_OVERLAY_UID'];
         }
 
-        if ($tableName === 'pages') {
-            $tableName = 'pages_language_overlay';
-        }
-
         $isTableLocalizable = (
             !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
             && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-            // Only fetch references if the field is defined in TCA. This is a special use-case
-            // for pages_language_overlay because it may be possible that a field is defined in TCA
-            // of "pages" but not in "pages_language_overlay". Once pages_language_overlay is removed
-            // this check can be removed as well
-            && isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])
         );
         if ($isTableLocalizable && $localizedId !== null) {
             $localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);

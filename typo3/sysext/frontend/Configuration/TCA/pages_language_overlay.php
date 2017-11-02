@@ -24,6 +24,10 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-content-page-language-overlay'
         ],
+        // disabled until all migration has been done
+        'hideTable' => true,
+        // This option needs to be set to the record is not shown in the be_groups ACLs
+        'adminOnly' => true,
         'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url'
     ],
     'interface' => [
@@ -68,7 +72,6 @@ return [
             ]
         ],
         'title' => [
-            'l10n_mode' => 'prefixLangTitle',
             'label' => $GLOBALS['TCA']['pages']['columns']['title']['label'],
             'config' => [
                 'type' => 'input',

@@ -579,7 +579,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return Permission::ALL;
         }
         // Return 0 if page is not within the allowed web mount
-        if (!$this->isInWebMount($row['uid'])) {
+        // Always do this for the default language page record
+        if (!$this->isInWebMount($row['l10n_parent'] ?: $row['uid'])) {
             return Permission::NOTHING;
         }
         $out = Permission::NOTHING;
@@ -731,25 +732,16 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function checkFullLanguagesAccess($table, $record)
     {
         $recordLocalizationAccess = $this->checkLanguageAccess(0);
-        if ($recordLocalizationAccess && (BackendUtility::isTableLocalizable($table) || $table === 'pages')) {
-            if ($table === 'pages') {
-                $l10nTable = 'pages_language_overlay';
-                $pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
-                $pointerValue = $record['uid'];
-            } else {
-                $l10nTable = $table;
-                $pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
-                $pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
-            }
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($l10nTable);
+        if ($recordLocalizationAccess && BackendUtility::isTableLocalizable($table)) {
+            $pointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+            $pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
             $recordLocalization = $queryBuilder->select('*')
-                ->from($l10nTable)
+                ->from($table)
                 ->where(
                     $queryBuilder->expr()->eq(
                         $pointerField,
@@ -762,7 +754,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
             if (is_array($recordLocalization)) {
                 $languageAccess = $this->checkLanguageAccess(
-                    $recordLocalization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]
+                    $recordLocalization[$GLOBALS['TCA'][$table]['ctrl']['languageField']]
                 );
                 $recordLocalizationAccess = $recordLocalizationAccess && $languageAccess;
             }
@@ -807,6 +799,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
         // Checking languages:
+        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+            return false;
+        }
         if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
             // Language field must be found in input row - otherwise it does not make sense.
             if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
@@ -826,11 +821,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '" was not found in testing record!';
                 return false;
             }
-        } elseif (
-            $table === 'pages' && $checkFullLanguageAccess &&
-            !$this->checkFullLanguagesAccess($table, $idOrRow)
-        ) {
-            return false;
         }
         // Checking authMode fields:
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {

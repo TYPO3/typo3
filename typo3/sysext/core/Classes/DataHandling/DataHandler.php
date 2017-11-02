@@ -1043,7 +1043,12 @@ class DataHandler implements LoggerAwareInterface
                     // Now, check if we may insert records on this pid.
                     if ($theRealPid >= 0) {
                         // Checks if records can be inserted on this $pid.
-                        $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
+                        // If this is a page translation, the check needs to be done for the l10n_parent record
+                        if ($table === 'pages' && $incomingFieldArray['sys_language_uid'] > 0 && $incomingFieldArray['l10n_parent'] > 0) {
+                            $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray['l10n_parent']);
+                        } else {
+                            $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
+                        }
                         if ($recordAccess) {
                             $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray);
                             $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true);
@@ -1417,19 +1422,26 @@ class DataHandler implements LoggerAwareInterface
             if (is_array($incomingFieldArray) && is_array($checkValueRecord)) {
                 ArrayUtility::mergeRecursiveWithOverrule($checkValueRecord, $incomingFieldArray);
             }
+            $currentRecord = $checkValueRecord;
         } else {
             // We must use the current values as basis for this!
             $currentRecord = ($checkValueRecord = $this->recordInfo($table, $id, '*'));
-            // This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
+            // This is done to make the pid positive for offline versions; Necessary to have diff-view for page translations in workspaces.
             BackendUtility::fixVersioningPid($table, $currentRecord);
-            // Get original language record if available:
-            if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
-                $lookUpTable = $table === 'pages_language_overlay' ? 'pages' : $table;
-                $originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
-                BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
-                $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
-            }
         }
+
+        // Get original language record if available:
+        if (is_array($currentRecord)
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']
+            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
+            && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+            && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
+            $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
+            BackendUtility::workspaceOL($table, $originalLanguageRecord);
+            $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
+        }
+
         $this->checkValue_currentRecord = $checkValueRecord;
         // In the following all incoming value-fields are tested:
         // - Are the user allowed to change the field?
@@ -1464,8 +1476,6 @@ class DataHandler implements LoggerAwareInterface
                         $value = (int)$fieldValue;
                         switch ($field) {
                             case 'perms_userid':
-                                $fieldArray[$field] = $value;
-                                break;
                             case 'perms_groupid':
                                 $fieldArray[$field] = $value;
                                 break;
@@ -1518,6 +1528,17 @@ class DataHandler implements LoggerAwareInterface
                     }
             }
         }
+
+        // Dealing with a page translation, setting "sorting", "pid", "perms_*" to the same values as the original record
+        if ($table === 'pages' && is_array($originalLanguageRecord)) {
+            $fieldArray['sorting'] = $originalLanguageRecord['sorting'];
+            $fieldArray['perms_userid'] = $originalLanguageRecord['perms_userid'];
+            $fieldArray['perms_groupid'] = $originalLanguageRecord['perms_groupid'];
+            $fieldArray['perms_user'] = $originalLanguageRecord['perms_user'];
+            $fieldArray['perms_group'] = $originalLanguageRecord['perms_group'];
+            $fieldArray['perms_everybody'] = $originalLanguageRecord['perms_everybody'];
+        }
+
         // Add diff-storage information:
         if ($diffStorageFlag && !isset($fieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']])) {
             // If the field is set it would probably be because of an undo-operation - in which case we should not update the field of course...
@@ -1552,7 +1573,7 @@ class DataHandler implements LoggerAwareInterface
         $res = [];
 
         // Processing special case of field pages.doktype
-        if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
+        if ($table === 'pages' && $field === 'doktype') {
             // If the user may not use this specific doktype, we issue a warning
             if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
                 if ($this->enableLogging) {
@@ -3381,7 +3402,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $fullLanguageCheckNeeded = $table !== 'pages';
-        //Used to check language and general editing rights
+        // Used to check language and general editing rights
         if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded)) {
             $this->log($table, $uid, 1, 0, 1, 'Attempt to copy record "%s:%s" without having permissions to do so. [' . $this->BE_USER->errorMsg . '].', -1, [$table, $uid]);
             return null;
@@ -4174,8 +4195,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function copyL10nOverlayRecords($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '')
     {
-        // There's no need to perform this for page-records or for tables that are not localizable
-        if (!BackendUtility::isTableLocalizable($table) ||  $table === 'pages' || $table === 'pages_language_overlay') {
+        // There's no need to perform this for tables that are not localizable
+        if (!BackendUtility::isTableLocalizable($table)) {
             return;
         }
 
@@ -4396,6 +4417,20 @@ class DataHandler implements LoggerAwareInterface
         if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
             $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
         }
+
+        // Check if this is a translation of a page, if so then it just needs to be kept "sorting" in sync
+        // Usually called from moveL10nOverlayRecords()
+        $originalTranslationRecord = null;
+        if ($table === 'pages') {
+            $fullRecord = $this->recordInfo($table, $uid, 'sys_language_uid, l10n_parent');
+            if ($fullRecord['sys_language_uid'] > 0) {
+                $originalTranslationRecord = $this->recordInfo($table, $fullRecord['l10n_parent'], 'pid,' . $sortRow);
+                $updateFields[$sortRow] = $originalTranslationRecord[$sortRow];
+                // Ensure that the PID is always the same as the original page
+                $destPid = $originalTranslationRecord['pid'];
+            }
+        }
+
         // Insert as first element on page (where uid = $destPid)
         if ($destPid >= 0) {
             if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
@@ -4405,7 +4440,7 @@ class DataHandler implements LoggerAwareInterface
                 // Setting PID
                 $updateFields['pid'] = $destPid;
                 // Table is sorted by 'sortby'
-                if ($sortRow) {
+                if ($sortRow && !isset($updateFields[$sortRow])) {
                     $sortNumber = $this->getSortNumber($table, $uid, $destPid);
                     $updateFields[$sortRow] = $sortNumber;
                 }
@@ -4464,9 +4499,11 @@ class DataHandler implements LoggerAwareInterface
                 if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
                     // clear cache before moving
                     $this->registerRecordIdForPageCacheClearing($table, $uid);
-                    // We now update the pid and sortnumber
+                    // We now update the pid and sortnumber (if not set for page translations)
                     $updateFields['pid'] = $destPid;
-                    $updateFields[$sortRow] = $sortInfo['sortNumber'];
+                    if (!isset($updateFields[$sortRow])) {
+                        $updateFields[$sortRow] = $sortInfo['sortNumber'];
+                    }
                     // Check for child records that have also to be moved
                     $this->moveRecord_procFields($table, $uid, $destPid);
                     // Create query for update:
@@ -4582,8 +4619,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid)
     {
-        // There's no need to perform this for page-records or not localizable tables
-        if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
+        // There's no need to perform this for non-localizable tables
+        if (!BackendUtility::isTableLocalizable($table)) {
             return;
         }
 
@@ -4652,10 +4689,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $this->registerNestedElementCall($table, $uid, 'localize');
-        if ((!$GLOBALS['TCA'][$table]['ctrl']['languageField']
-                || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-                || $table === 'pages_language_overlay')
-            && $table !== 'pages') {
+        if (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
             $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
             return false;
         }
@@ -4680,8 +4714,7 @@ class DataHandler implements LoggerAwareInterface
         // Make sure that records which are translated from another language than the default language have a correct
         // localization source set themselves, before translating them to another language.
         if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
-            && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
-            && $table !== 'pages') {
+            && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
             $localizationParentRecord = BackendUtility::getRecord(
                 $table,
                 $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
@@ -4694,41 +4727,12 @@ class DataHandler implements LoggerAwareInterface
 
         // Default language records must never have a localization parent as they are the origin of any translation.
         if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
-            && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0
-            && $table !== 'pages') {
+            && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
             $this->newlog('Localization failed; Source record contained a reference to an original default record but is a default record itself (which is strange)!', 1);
             return false;
         }
 
-        if ($table === 'pages') {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages_language_overlay');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            $recordCount = $queryBuilder->count('*')
-                ->from('pages_language_overlay')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter((int)$langRec['uid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->execute()
-                ->fetchColumn(0);
-
-            $pass = !$recordCount;
-            $Ttable = 'pages_language_overlay';
-        } else {
-            $pass = !BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], 'AND pid=' . (int)$row['pid']);
-            $Ttable = $table;
-        }
+        $pass = !BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
 
         if (!$pass) {
             $this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
@@ -4739,26 +4743,26 @@ class DataHandler implements LoggerAwareInterface
         $overrideValues = [];
         $excludeFields = [];
         // Set override values:
-        $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
+        $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $langRec['uid'];
         // If the translated record is a default language record, set it's uid as localization parent of the new record.
         // If translating from any other language, no override is needed; we just can copy the localization parent of
         // the original record (which is pointing to the correspondent default language record) to the new record.
         // In copy / free mode the TransOrigPointer field is always set to 0, as no connection to the localization parent is wanted in that case.
-        if (($this->useTransOrigPointerField && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0)
-            || $table === 'pages') {
-            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+        // For pages, there is no "copy/free mode".
+        if (($this->useTransOrigPointerField || $table === 'pages') && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $uid;
         } elseif (!$this->useTransOrigPointerField) {
-            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = 0;
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = 0;
         }
         if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
-            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['translationSource']] = $uid;
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = $uid;
         }
         // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
-            $overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['type'])) {
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
         }
         // Set exclude Fields:
-        foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
+        foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fCfg) {
             $translateToMsg = '';
             // Check if we are just prefixing:
             if ($fCfg['l10n_mode'] === 'prefixLangTitle') {
@@ -4785,15 +4789,16 @@ class DataHandler implements LoggerAwareInterface
                 }
             } elseif (
                 ($fCfg['l10n_mode'] === 'exclude')
-                    && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField']
-                    && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']
+                    && $fN != $GLOBALS['TCA'][$table]['ctrl']['languageField']
+                    && $fN != $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
              ) {
                 // Otherwise, do not copy field (unless it is the language field or
                 // pointer to the original language)
                 $excludeFields[] = $fN;
             }
         }
-        if ($Ttable === $table) {
+
+        if ($table !== 'pages') {
             // Get the uid of record after which this localized record should be inserted
             $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
             // Execute the copy:
@@ -4803,16 +4808,17 @@ class DataHandler implements LoggerAwareInterface
                 $this->triggerRemapAction($table, $newId, [$this, 'placeholderShadowing'], [$table, $autoVersionNewId], true);
             }
         } else {
-            // Create new record:
+            // Create new page which needs to contain the same pid as the original page
+            $overrideValues['pid'] = $row['pid'];
             $temporaryId = StringUtility::getUniqueId('NEW');
             $copyTCE = $this->getLocalTCE();
-            $copyTCE->start([$Ttable => [$temporaryId => $overrideValues]], [], $this->BE_USER);
+            $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER);
             $copyTCE->process_datamap();
             // Getting the new UID as if it had been copied:
             $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId];
             if ($theNewSQLID) {
-                // If is by design that $Ttable is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
-                $this->copyMappingArray[$Ttable][$uid] = $theNewSQLID;
+                // If is by design that $table is used and not $table! See "l10nmgr" extension. Could be debated, but this is what I chose for this "pseudo case"
+                $this->copyMappingArray[$table][$uid] = $theNewSQLID;
                 $newId = $theNewSQLID;
             }
         }
@@ -4883,7 +4889,6 @@ class DataHandler implements LoggerAwareInterface
         $foreignTable = $config['foreign_table'];
 
         $transOrigPointer = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
-        $transOrigTable = BackendUtility::getOriginalTranslationTable($table);
         $childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
 
         if (!$parentRecord || !is_array($parentRecord) || $language <= 0 || !$transOrigPointer) {
@@ -4895,14 +4900,14 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
-        $transOrigRecord = BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
+        $transOrigRecord = BackendUtility::getRecordWSOL($table, $transOrigPointer);
 
         $removeArray = [];
         $mmTable = $inlineSubType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
         // Fetch children from original language parent:
         /** @var $dbAnalysisOriginal RelationHandler */
         $dbAnalysisOriginal = $this->createRelationHandlerInstance();
-        $dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
+        $dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
         $elementsOriginal = [];
         foreach ($dbAnalysisOriginal->itemArray as $item) {
             $elementsOriginal[$item['id']] = $item;
@@ -5090,7 +5095,15 @@ class DataHandler implements LoggerAwareInterface
 
         // Checking if there is anything else disallowing deleting the record by checking if editing is allowed
         $deletedRecord = $forceHardDelete || $undeleteRecord;
-        $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $deletedRecord, true);
+        $fullLanguageAccessCheck = true;
+        if ($table === 'pages') {
+            // If this is a page translation, the full language access check should not be done
+            $recordInfo = $this->recordInfo($table, $uid, 'l10n_parent');
+            if ($recordInfo['l10n_parent'] > 0) {
+                $fullLanguageAccessCheck = false;
+            }
+        }
+        $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $deletedRecord, $fullLanguageAccessCheck);
         if (!$hasEditAccess) {
             $this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions');
             return;
@@ -5403,9 +5416,19 @@ class DataHandler implements LoggerAwareInterface
     public function canDeletePage($uid)
     {
         $uid = (int)$uid;
+        $isTranslatedPage = null;
 
         // If we may at all delete this page
-        if (!$this->doesRecordExist('pages', $uid, 'delete')) {
+        // If this is a page translation, do the check against the perms_* of the default page
+        // Because it is currently only deleting the translation
+        $fullRecord = $this->recordInfo('pages', $uid, 'l10n_parent');
+        if ($fullRecord['l10n_parent'] > 0) {
+            if ($this->doesRecordExist('pages', (int)$fullRecord['l10n_parent'], 'delete')) {
+                $isTranslatedPage = $fullRecord['l10n_parent'] > 0;
+            } else {
+                return 'Attempt to delete page without permissions';
+            }
+        } elseif (!$this->doesRecordExist('pages', $uid, 'delete')) {
             return 'Attempt to delete page without permissions';
         }
 
@@ -5433,7 +5456,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         foreach ($pagesInBranch as $pageInBranch) {
-            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, true)) {
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, $isTranslatedPage ? false : true)) {
                 return 'Attempt to delete page which has prohibited localizations.';
             }
         }
@@ -5563,8 +5586,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function deleteL10nOverlayRecords($table, $uid)
     {
-        // Check whether table can be localized or has a different table defined to store localizations:
-        if (!BackendUtility::isTableLocalizable($table) || $table === 'pages' || $table === 'pages_language_overlay') {
+        // Check whether table can be localized
+        if (!BackendUtility::isTableLocalizable($table)) {
             return;
         }
 
@@ -6062,8 +6085,14 @@ class DataHandler implements LoggerAwareInterface
                     $thePidToUpdate = $this->registerDBPids[$table][$uid];
                     $thePidToUpdate = $this->copyMappingArray_merged['pages'][$thePidToUpdate];
                 }
+
                 // Update child records if change to pid is required (only if the current record is not on a workspace):
                 if ($thePidToUpdate) {
+                    // Ensure that only the default language page is used as PID
+                    $localizationParent = $this->recordInfo('pages', $thePidToUpdate, 'l10n_parent');
+                    if ($localizationParent['l10n_parent'] > 0) {
+                        $thePidToUpdate = $localizationParent['l10n_parent'];
+                    }
                     // ensure, only live page ids are used as 'pid' values
                     $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
                     if ($liveId !== null) {
@@ -6448,7 +6477,15 @@ class DataHandler implements LoggerAwareInterface
             if (isset($this->recUpdateAccessCache[$table][$id])) {
                 return $this->recUpdateAccessCache[$table][$id];
             }
-            if ($this->doesRecordExist($table, $id, 'edit')) {
+            // permissions check for page translations need to be done on the parent page
+            if ($table === 'pages') {
+                $defaultLanguagePage = $this->recordInfo($table, $id, 'l10n_parent');
+                if ($defaultLanguagePage['l10n_parent'] > 0) {
+                    $res = $this->doesRecordExist($table, $defaultLanguagePage['l10n_parent'], 'edit');
+                } else {
+                    $res = $this->doesRecordExist($table, $id, 'edit') ? 1 : 0;
+                }
+            } elseif ($this->doesRecordExist($table, $id, 'edit')) {
                 $res = 1;
             }
             // Cache the result
@@ -8368,9 +8405,11 @@ class DataHandler implements LoggerAwareInterface
         if (empty($TSConfig['clearCache_disable'])) {
             // If table is "pages":
             $pageIdsThatNeedCacheFlush = [];
-            if ($table === 'pages' || $table === 'pages_language_overlay') {
-                if ($table === 'pages_language_overlay') {
-                    $pageUid = $this->getPID($table, $uid);
+            if ($table === 'pages') {
+                // Find out if the record is a get the original page
+                $row = $this->recordInfo($table, $uid, 'pid,sys_language_uid,l10n_parent');
+                if ((int)$row['l10n_parent'] > 0) {
+                    $pageUid = $row['l10n_parent'];
                 } else {
                     $pageUid = $uid;
                 }

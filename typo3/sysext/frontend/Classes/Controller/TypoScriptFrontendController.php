@@ -263,7 +263,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Flag indicating that hidden records should be shown. This includes
-     * sys_template, pages_language_overlay and even fe_groups in addition to all
+     * sys_template and even fe_groups in addition to all
      * other regular content. So in effect, this includes everything except pages.
      * @var bool
      */

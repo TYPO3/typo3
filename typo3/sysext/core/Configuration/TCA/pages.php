@@ -15,6 +15,10 @@ return [
         'cruser_id' => 'cruser_id',
         'editlock' => 'editlock',
         'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -128,6 +132,7 @@ return [
             ]
         ],
         'title' => [
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:title',
             'config' => [
                 'type' => 'input',
@@ -138,6 +143,7 @@ return [
         ],
         'TSconfig' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'TSconfig:',
             'config' => [
                 'type' => 'text',
@@ -149,6 +155,7 @@ return [
         ],
         'php_tree_stop' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:php_tree_stop',
             'config' => [
                 'type' => 'check',
@@ -169,6 +176,7 @@ return [
         ],
         'editlock' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:editlock',
             'config' => [
                 'type' => 'check',
@@ -181,6 +189,7 @@ return [
         ],
         'hidden' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden',
             'config' => [
                 'type' => 'check',
@@ -194,6 +203,7 @@ return [
         ],
         'starttime' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
@@ -204,6 +214,7 @@ return [
         ],
         'endtime' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
@@ -215,8 +226,55 @@ return [
                 ]
             ]
         ],
+        'l10n_parent' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0
+                    ]
+                ],
+                'foreign_table' => 'pages',
+                // no sys_language_uid = -1 allowed explicitly!
+                'foreign_table_where' => 'AND pages.uid=###CURRENT_PID### AND pages.sys_language_uid = 0',
+                'default' => 0
+            ]
+        ],
+        'sys_language_uid' => [
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'sys_language',
+                'foreign_table_where' => 'ORDER BY sys_language.sorting',
+                'items' => [], // no default language here, as the pages table is always the default language
+                'default' => 0,
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough'
+            ]
+        ],
         'layout' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.layout',
             'config' => [
                 'type' => 'select',
@@ -244,6 +302,7 @@ return [
         ],
         'fe_group' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => [
                 'type' => 'select',
@@ -272,6 +331,7 @@ return [
         ],
         'extendToSubpages' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.extendToSubpages',
             'config' => [
                 'type' => 'check',
@@ -294,6 +354,7 @@ return [
         ],
         'nav_hide' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide',
             'config' => [
                 'type' => 'check',
@@ -306,6 +367,7 @@ return [
         ],
         'subtitle' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle',
             'config' => [
                 'type' => 'input',
@@ -316,6 +378,7 @@ return [
         ],
         'target' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target',
             'config' => [
                 'type' => 'input',
@@ -332,6 +395,7 @@ return [
         'alias' => [
             'exclude' => true,
             'displayCond' => 'VERSION:IS:false',
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.alias',
             'config' => [
                 'type' => 'input',
@@ -348,7 +412,10 @@ return [
                 'size' => 23,
                 'max' => 255,
                 'eval' => 'trim,required',
-                'softref' => 'url'
+                'softref' => 'url',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'lastUpdated' => [
@@ -358,7 +425,10 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-                'default' => 0
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'newUntil' => [
@@ -368,11 +438,15 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'date',
-                'default' => 0
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'cache_timeout' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout',
             'config' => [
                 'type' => 'select',
@@ -428,6 +502,7 @@ return [
         ],
         'cache_tags' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_tags',
             'config' => [
                 'type' => 'input',
@@ -445,6 +520,9 @@ return [
                     '1' => [
                         '0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search_checkbox_1_formlabel'
                     ]
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
                 ]
             ]
         ],
@@ -462,7 +540,10 @@ return [
                         'additionalSearchFields' => 'nav_title, alias, url'
                     ]
                 ],
-                'default' => 0
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'shortcut_mode' => [
@@ -489,11 +570,15 @@ return [
                         \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE
                     ]
                 ],
-                'default' => 0
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'content_from_pid' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid',
             'config' => [
                 'type' => 'group',
@@ -506,6 +591,7 @@ return [
             ]
         ],
         'mount_pid' => [
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid',
             'config' => [
                 'type' => 'group',
@@ -519,6 +605,7 @@ return [
         ],
         'keywords' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.keywords',
             'config' => [
                 'type' => 'text',
@@ -528,6 +615,7 @@ return [
         ],
         'description' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
@@ -537,6 +625,7 @@ return [
         ],
         'abstract' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract',
             'config' => [
                 'type' => 'text',
@@ -551,7 +640,10 @@ return [
                 'type' => 'input',
                 'size' => 23,
                 'eval' => 'trim',
-                'max' => 80
+                'max' => 80,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'author_email' => [
@@ -562,7 +654,10 @@ return [
                 'size' => 23,
                 'eval' => 'trim',
                 'max' => 80,
-                'softref' => 'email[subst]'
+                'softref' => 'email[subst]',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ]
             ]
         ],
         'media' => [
@@ -606,11 +701,15 @@ return [
                             ]
                         ],
                     ],
+                    'behaviour' => [
+                        'allowLanguageSynchronization' => true
+                    ]
                 ]
             )
         ],
         'is_siteroot' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.is_siteroot',
             'config' => [
                 'type' => 'check',
@@ -623,6 +722,7 @@ return [
         ],
         'mount_pid_ol' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol',
             'config' => [
                 'type' => 'radio',
@@ -640,6 +740,7 @@ return [
         ],
         'module' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module',
             'config' => [
                 'type' => 'select',
@@ -661,6 +762,7 @@ return [
         ],
         'fe_login_mode' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_login_mode',
             'config' => [
                 'type' => 'select',
@@ -687,6 +789,7 @@ return [
         ],
         'l18n_cfg' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg',
             'config' => [
                 'type' => 'check',
@@ -704,6 +807,7 @@ return [
         ],
         'backend_layout' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel',
             'config' => [
                 'type' => 'select',
@@ -719,11 +823,12 @@ return [
                     ],
                 ],
                 'size' => 1,
-                'maxitems' => 1,
+                'maxitems' => 1
             ]
         ],
         'backend_layout_next_level' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
             'config' => [
                 'type' => 'select',
@@ -739,11 +844,12 @@ return [
                     ],
                 ],
                 'size' => 1,
-                'maxitems' => 1,
+                'maxitems' => 1
             ]
         ],
         'tsconfig_includes' => [
             'exclude' => true,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
             'config' => [
                 'type' => 'select',
