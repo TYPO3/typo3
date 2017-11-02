@@ -299,7 +299,7 @@ class GridDataService implements LoggerAwareInterface
     protected function setDataArrayIntoCache(array $versions, $filterTxt)
     {
         $hash = $this->calculateHash($versions, $filterTxt);
-        $this->workspacesCache->set($hash, $this->dataArray, [$this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid']]);
+        $this->workspacesCache->set($hash, $this->dataArray, [(string)$this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid']]);
     }
 
     /**
