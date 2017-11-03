@@ -270,12 +270,6 @@ class PageGenerator
                 self::addCssToPageRenderer($stylesFromPlugins, false, 'InlineDefaultCss');
             }
         }
-        if ($tsfe->pSetup['stylesheet']) {
-            $ss = $tsfe->tmpl->getFileName($tsfe->pSetup['stylesheet']);
-            if ($ss) {
-                $pageRenderer->addCssFile($ss);
-            }
-        }
         /**********************************************************************/
         /* config.includeCSS / config.includeCSSLibs
         /**********************************************************************/

@@ -825,7 +825,6 @@
 				'strftime': kw('strftime'),
 				'stripHtml': kw('stripHtml'),
 				'styles': kw('styles'),
-				'stylesheet': kw('stylesheet'),
 				'submenuObjSuffixes': kw('submenuObjSuffixes'),
 				'subMenuOffset': kw('subMenuOffset'),
 				'submit': kw('submit'),

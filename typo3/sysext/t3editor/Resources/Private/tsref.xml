@@ -5072,14 +5072,6 @@ This must be a valid ".ico"-file (iconfile)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="stylesheet" type="string">
-			<description><![CDATA[Inserts a stylesheet in the <HEAD>-section of the page;
-page.stylesheet = myStyleSheet.css
-leads to
-<link rel="stylesheet" href="myStyleSheet.css">]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="typeNum" type="int">
 			<description><![CDATA[This decides the the typeId of the page. The value defaults to 0 for the first
 found PAGE object, but it MUST be set and be unique as soon you use more than one such object (watch this if you use frames on your page)!]]></description>
