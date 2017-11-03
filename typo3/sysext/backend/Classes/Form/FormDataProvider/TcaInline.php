@@ -307,6 +307,10 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
+            // Give incoming returnUrl down to children so they generate a returnUrl back to
+            // the originally opening record, also see "originalReturnUrl" in inline container
+            // and FormInlineAjaxController
+            'returnUrl' => $result['returnUrl'],
             'isInlineChild' => true,
             'inlineStructure' => $result['inlineStructure'],
             'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],

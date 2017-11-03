@@ -196,7 +196,7 @@ class InlineRecordContainer extends AbstractContainer
 							' . $this->renderForeignRecordHeader($data) . '
 						</div>
 					</div>
-					<div class="panel-collapse" id="' . htmlspecialchars($objectId) . '_fields" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $html . $combinationHtml . '</div>
+					<div class="panel-collapse" id="' . htmlspecialchars($objectId) . '_fields">' . $html . $combinationHtml . '</div>
 				</div>';
         }
 
@@ -521,7 +521,7 @@ class InlineRecordContainer extends AbstractContainer
                 if ($backendUser->check('tables_modify', 'sys_file_metadata')) {
                     $url = BackendUtility::getModuleUrl('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $this->data['returnUrl']
                     ]);
                     $title = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata');
                     $cells['edit'] = '
