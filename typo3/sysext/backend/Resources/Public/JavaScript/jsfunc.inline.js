@@ -46,11 +46,10 @@ var inline = {
 		var $recordHeader = $triggerElement.closest('.panel-heading');
 		inline.expandCollapseRecord(
 			$recordHeader.attr('id').replace(/_header$/, ''),
-			$recordHeader.attr('data-expandSingle'),
-			$recordHeader.attr('data-returnURL')
+			$recordHeader.attr('data-expandSingle')
 		);
 	},
-	expandCollapseRecord: function (objectId, expandSingle, returnURL) {
+	expandCollapseRecord: function (objectId, expandSingle) {
 		var currentUid = this.parseObjectId('none', objectId, 1);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var escapedObjectId = this.escapeObjectId(objectId);
@@ -68,7 +67,7 @@ var inline = {
 				inline.progress.configure({parent: headerIdentifier, showSpinner: false});
 				inline.progress.start();
 			});
-			return this.getRecordDetails(objectId, returnURL);
+			return this.getRecordDetails(objectId);
 		}
 
 		var isCollapsed = $currentObject.hasClass(this.classCollapsed);
@@ -146,9 +145,9 @@ var inline = {
 		}
 	},
 
-	getRecordDetails: function (objectId, returnURL) {
+	getRecordDetails: function (objectId) {
 		var context = this.getContext(this.parseObjectId('full', objectId, 0, 1));
-		inline.makeAjaxCall('details', [objectId, returnURL], true, context);
+		inline.makeAjaxCall('details', [objectId], true, context);
 		return false;
 	},
 

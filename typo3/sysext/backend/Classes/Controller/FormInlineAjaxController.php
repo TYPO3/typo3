@@ -204,6 +204,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             ],
             'tableName' => $parent['table'],
             'inlineFirstPid' => $inlineFirstPid,
+            // Hand over given original return url to compile stack. Needed if inline children compile links to
+            // another view (eg. edit metadata in a nested inline situation like news with inline content element image),
+            // so the back link is still the link from the original request. See issue #82525. This is additionally
+            // given down in TcaInline data provider to compiled children data.
+            'returnUrl' => $parentConfig['originalReturnUrl'],
         ];
 
         // Child, a record from this table should be rendered
@@ -475,6 +480,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'command' => 'edit',
             'tableName' => $childTableName,
             'vanillaUid' => (int)$childUid,
+            'returnUrl' => $parentData['returnUrl'],
             'isInlineChild' => true,
             'inlineStructure' => $inlineStructure,
             'inlineFirstPid' => $parentData['inlineFirstPid'],

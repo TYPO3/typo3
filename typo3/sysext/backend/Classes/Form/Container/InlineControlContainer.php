@@ -130,12 +130,17 @@ class InlineControlContainer extends AbstractContainer
         }
         $inlineStackProcessor->pushStableStructureItem($newStructureItem);
 
-        // Transport the flexform DS identifier fields to the FormAjaxInlineController
+        // Transport the flexform DS identifier fields to the FormInlineAjaxController
         if (!empty($newStructureItem['flexform'])
             && isset($this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'])
         ) {
             $config['dataStructureIdentifier'] = $this->data['processedTca']['columns'][$field]['config']['dataStructureIdentifier'];
         }
+
+        // Hand over original returnUrl to FormInlineAjaxController. Needed if opening for instance a
+        // nested element in a new view to then go back to the original returnUrl and not the url of
+        // the inline ajax controller
+        $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[<table>][<uid>][<field>]
         $nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix();
