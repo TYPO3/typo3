@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Resizes a given image (if required) and renders the respective img tag
@@ -113,13 +114,13 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
      *
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws Exception
      * @return string Rendered tag
      */
     public function render()
     {
         if ((is_null($this->arguments['src']) && is_null($this->arguments['image'])) || (!is_null($this->arguments['src']) && !is_null($this->arguments['image']))) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
+            throw new Exception('You must either specify a string src or a File object.', 1382284106);
         }
 
         try {
@@ -165,12 +166,16 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
             }
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
+            throw new Exception($e->getMessage(), 1509741911, $e);
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
+            throw new Exception($e->getMessage(), 1509741912, $e);
         } catch (\RuntimeException $e) {
             // RuntimeException thrown if a file is outside of a storage
+            throw new Exception($e->getMessage(), 1509741913, $e);
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
+            throw new Exception($e->getMessage(), 1509741914, $e);
         }
 
         return $this->tag->render();
