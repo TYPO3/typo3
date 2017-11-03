@@ -32,11 +32,25 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Some Text with Tags and an &Uuml;mlaut. (strip_tags() applied. Note: encoded entities are not decoded)
  * </output>
  *
+ * <code title="default notation with allowedTags">
+ * <f:format.stripTags allowedTags="<p><span><div><script>"><p>paragraph</p><span>span</span><div>divider</div><iframe>iframe</iframe><script>script</script></f:format.stripTags>
+ * </code>
+ * <output>
+ * <p>paragraph</p><span>span</span><div>divider</div>iframe<script>script</script>
+ * </output>
+ *
  * <code title="inline notation">
  * {text -> f:format.stripTags()}
  * </code>
  * <output>
  * Text without tags (strip_tags() applied)
+ * </output>
+ *
+ * <code title="inline notation with allowedTags">
+ * {text -> f:format.stripTags(allowedTags: "<p><span><div><script>")}
+ * </code>
+ * <output>
+ * Text with p, span, div and script Tags inside, all other tags are removed
  * </output>
  *
  * @api
