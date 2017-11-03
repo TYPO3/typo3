@@ -113,7 +113,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (!empty($MPvarAcc)) {
             // Add "&MP" var:
             $addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
-        } elseif (strpos($addQueryParams, '&MP=') === false && $tsfe->config['config']['typolinkCheckRootline']) {
+        } elseif (strpos($addQueryParams, '&MP=') === false) {
             // We do not come here if additionalParams had '&MP='. This happens when typoLink is called from
             // menu. Mount points always work in the content of the current domain and we must not change
             // domain if MP variables exist.

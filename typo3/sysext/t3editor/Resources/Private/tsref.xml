@@ -819,13 +819,6 @@ Internally, the value is depending on whether a Alternative Page Language record
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="typolinkCheckRootline" type="boolean">
-			<description><![CDATA[If set, then every "typolink" is checked whether it's linking to a page within the current rootline of the site.
-If not, then TYPO3 searches for the first found domain record (without redirect) in that rootline from out to in.
-If found (another domain), then that domain is prepended the link, the external target is used instead and thus the link jumps to the page in the correct domain.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="typolinkEnableLinksAcrossDomains" type="boolean">
 			<description><![CDATA[This option enables to create links across domains using current domain's linking scheme.
 
@@ -836,8 +829,6 @@ If this option is not set, then all cross-domain links will be generated as
 - linking scheme (i.e. all use RealURL or CoolURI but not any mixture)
 - all domains have identical localization settings (config.sys_language_XXX directives)
 - all domains have the same set of languages defined
-
-This option implies "config.typolinkCheckRootline=1", which will be activated automatically. Setting value of "config. typolinkCheckRootline" inside TS template will have no effect.
 
 Disclaimer: it must be understood that while link is generated to another domain, it is still generated in the context of current domain. No side effects are known at the time of writing of this documentation but they may exist. If any side effects are found, this documentation will be updated to include them.]]></description>
 			<default><![CDATA[

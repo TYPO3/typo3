@@ -2460,8 +2460,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (is_array($this->pSetup['config.'])) {
                         ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
                     }
-                    if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
-                        $this->config['config']['typolinkCheckRootline'] = true;
+                    // @deprecated since TYPO3 v9, can be removed in TYPO3 v10
+                    if ($this->config['config']['typolinkCheckRootline']) {
+                        $this->logDeprecatedTyposcript('config.typolinkCheckRootline', 'The functionality is always enabled since TYPO3 v9 and can be removed from your TypoScript code');
                     }
                     // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
                     if (!isset($this->config['config']['removeDefaultJS'])) {

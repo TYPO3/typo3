@@ -902,7 +902,6 @@
 				'typeNum': kw('typeNum'),
 				'types': kw('types'),
 				'typolink': A,
-				'typolinkCheckRootline': kw('typolinkCheckRootline'),
 				'uid': B,
 				'uidInList': kw('uidInList'),
 				'uniqueGlobal': B,
