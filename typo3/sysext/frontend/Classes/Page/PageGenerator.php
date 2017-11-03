@@ -348,16 +348,8 @@ class PageGenerator
             }
         }
 
-        // Stylesheets
-        $style = '';
-        // Setting body tag margins in CSS:
-        if (isset($tsfe->pSetup['bodyTagMargins']) && $tsfe->pSetup['bodyTagMargins.']['useCSS']) {
-            $margins = (int)$tsfe->pSetup['bodyTagMargins'];
-            $style .= '
-	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
-        }
         // CSS_inlineStyle from TS
-        $style .= trim($tsfe->pSetup['CSS_inlineStyle']);
+        $style = trim($tsfe->pSetup['CSS_inlineStyle']);
         $style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'], 'cssInline.');
         if (trim($style)) {
             self::addCssToPageRenderer($style, true, 'additionalTSFEInlineStyle');
@@ -733,13 +725,6 @@ class PageGenerator
         } else {
             $defBT = $tsfe->pSetup['bodyTagCObject'] ? $tsfe->cObj->cObjGetSingle($tsfe->pSetup['bodyTagCObject'], $tsfe->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '<body>';
             $bodyTag = $tsfe->pSetup['bodyTag'] ? $tsfe->pSetup['bodyTag'] : $defBT;
-            if (isset($tsfe->pSetup['bodyTagMargins'])) {
-                $margins = (int)$tsfe->pSetup['bodyTagMargins'];
-                if ($tsfe->pSetup['bodyTagMargins.']['useCSS']) {
-                } else {
-                    $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
-                }
-            }
             if (trim($tsfe->pSetup['bodyTagAdd'])) {
                 $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($tsfe->pSetup['bodyTagAdd']) . '>';
             }

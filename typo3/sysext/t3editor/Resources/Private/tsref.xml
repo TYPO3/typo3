@@ -4851,18 +4851,6 @@ page.bodyTag = <body bgcolor="{$bgCol}">]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="bodyTagMargins" type="int">
-			<description><![CDATA[margins in the bodytag.
-
-Property:
-.useCSS = 1 (boolean) - will set a "BODY {margin: ...}" line in the in-document style declaration - for XHTML compliance.
-
-Example:
-value 4
-adds leftmargin="4" topmargin="4" marginwidth="4" marginheight="4"  to the bodyTag.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="cssInline" type="CARRAY">
 			<description><![CDATA[Use cObjects for creating inline CSS
 

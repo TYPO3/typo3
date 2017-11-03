@@ -121,7 +121,6 @@
 				'bodyTag': kw('bodyTag'),
 				'bodyTagAdd': kw('bodyTagAdd'),
 				'bodyTagCObject': kw('bodyTagCObject'),
-				'bodyTagMargins': kw('bodyTagMargins'),
 				'bodytext': kw('bodytext'),
 				'border': kw('border'),
 				'borderCol': kw('borderCol'),
