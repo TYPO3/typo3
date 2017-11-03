@@ -99,7 +99,6 @@ abstract class AbstractController extends ActionController
     {
         if ($view instanceof BackendTemplateView) {
             parent::initializeView($view);
-            $view->getModuleTemplate()->getPageRenderer()->loadExtJS();
             $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
         }
     }
