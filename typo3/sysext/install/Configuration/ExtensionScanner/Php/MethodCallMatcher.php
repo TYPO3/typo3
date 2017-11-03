@@ -1374,4 +1374,11 @@ return [
             'Breaking-82832-UseAtDaemonDroppedFromScheduler.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getDomainNameForPid' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-82926-DomainRelatedApiMethodInTSFE.rst',
+        ],
+    ],
 ];

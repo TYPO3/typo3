@@ -4331,7 +4331,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_domain');
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
             $result = $queryBuilder
-                ->select('uid', 'pid', 'domainName', 'forced')
+                ->select('uid', 'pid', 'domainName')
                 ->from('sys_domain')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -4343,17 +4343,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 ->execute();
 
             while ($row = $result->fetch()) {
-                // if there is already an entry for this pid, check if we should overwrite it
-                if (isset($sysDomainData[$row['pid']])) {
-                    // There is already a "forced" entry, which must not be overwritten
-                    if ($sysDomainData[$row['pid']]['forced']) {
-                        continue;
-                    }
-
-                    // The current domain record is also NOT-forced, keep the old unless the new one matches the current request
-                    if (!$row['forced'] && !$this->domainNameMatchesCurrentRequest($row['domainName'])) {
-                        continue;
-                    }
+                // If there is already an entry for this pid, we should not override it
+                // Except if it is the current domain
+                if (isset($sysDomainData[$row['pid']]) && !$this->domainNameMatchesCurrentRequest($row['domainName'])) {
+                    continue;
                 }
 
                 // as we passed all previous checks, we save this domain for the current pid
@@ -4361,7 +4354,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     'uid' => $row['uid'],
                     'pid' => $row['pid'],
                     'domainName' => rtrim($row['domainName'], '/'),
-                    'forced' => $row['forced'],
                 ];
             }
             $runtimeCache->set($entryIdentifier, $sysDomainData);
@@ -4385,8 +4377,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Obtains domain data for the target pid. Domain data is an array with
-     * 'pid', 'domainName' and 'forced' members (see sys_domain table for
-     * meaning of these fields.
+     * 'pid' and 'domainName' members (see sys_domain table for meaning of these fields).
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain data or NULL
@@ -4420,9 +4411,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param int $targetPid Target page id
      * @return mixed Return domain name or NULL if not found
+     * @deprecated will be removed in TYPO3 v10, as getDomainDataForPid could work
      */
     public function getDomainNameForPid($targetPid)
     {
+        trigger_error('This method will be removed in TYPO3 v10, use $TSFE->getDomainDataForPid() instead.', E_USER_DEPRECATED);
         $domainData = $this->getDomainDataForPid($targetPid);
         return $domainData ? $domainData['domainName'] : null;
     }

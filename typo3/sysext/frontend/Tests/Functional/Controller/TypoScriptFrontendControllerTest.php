@@ -100,19 +100,16 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
                 'uid' => '1',
                 'pid' => '1',
                 'domainName' => 'typo3.org',
-                'forced' => 0,
             ],
             'foo.bar' => [
                 'uid' => '2',
                 'pid' => '1',
                 'domainName' => 'foo.bar',
-                'forced' => 0,
             ],
             'example.com' => [
                 'uid' => '3',
                 'pid' => '1',
                 'domainName' => 'example.com',
-                'forced' => 0,
             ],
         ];
 
@@ -141,65 +138,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\TestingFramework\Core\Func
         ];
 
         $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @param string $currentDomain
-     * @test
-     * @dataProvider getSysDomainCacheDataProvider
-     */
-    public function getSysDomainCacheReturnsForcedDomainRecord($currentDomain)
-    {
-        GeneralUtility::flushInternalRuntimeCaches();
-
-        $_SERVER['HTTP_HOST'] = $currentDomain;
-        $domainRecords = [
-            'typo3.org' => [
-                'uid' => '1',
-                'pid' => '1',
-                'domainName' => 'typo3.org',
-                'forced' => 0,
-            ],
-            'foo.bar' => [
-                'uid' => '2',
-                'pid' => '1',
-                'domainName' => 'foo.bar',
-                'forced' => 1,
-            ],
-            'example.com' => [
-                'uid' => '3',
-                'pid' => '1',
-                'domainName' => 'example.com',
-                'forced' => 0,
-            ],
-        ];
-
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_domain');
-
-        $sqlServerIdentityDisabled = false;
-        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-            $connection->exec('SET IDENTITY_INSERT sys_domain ON');
-            $sqlServerIdentityDisabled = true;
-        }
-
-        foreach ($domainRecords as $domainRecord) {
-            $connection->insert(
-                'sys_domain',
-                $domainRecord
-            );
-        }
-
-        if ($sqlServerIdentityDisabled) {
-            $connection->exec('SET IDENTITY_INSERT sys_domain OFF');
-        }
-
-        GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
-        $expectedResult = [
-            $domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
-        ];
-        $actualResult = $this->tsFrontendController->_call('getSysDomainCache');
-
         $this->assertEquals($expectedResult, $actualResult);
     }
 

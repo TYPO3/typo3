@@ -71,21 +71,13 @@ return [
                 'type' => 'check',
                 'default' => 0
             ]
-        ],
-        'forced' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.forced',
-            'exclude' => true,
-            'config' => [
-                'type' => 'check',
-                'default' => 0
-            ]
         ]
     ],
     'types' => [
         '1' => [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    domainName,--palette--;;1, prepend_params, forced,
+                    domainName,--palette--;;1, prepend_params,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     hidden,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

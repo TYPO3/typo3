@@ -142,7 +142,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 }
             }
 
-            $targetDomain = $tsfe->getDomainNameForPid($page['uid']);
+            $targetDomainRecord = $tsfe->getDomainDataForPid($page['uid']);
+            $targetDomain = $targetDomainRecord ? $targetDomainRecord['domainName'] : null;
             // Do not prepend the domain if it is the current hostname
             if (!$targetDomain || $tsfe->domainNameMatchesCurrentRequest($targetDomain)) {
                 $targetDomain = '';

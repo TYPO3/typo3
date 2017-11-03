@@ -501,9 +501,6 @@
 			<trans-unit id="sys_domain.prepend_params">
 				<source>Transfer parameters to Redirect URL:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.forced">
-				<source>Always prepend this domain in links:</source>
-			</trans-unit>
 			<trans-unit id="sys_template">
 				<source>Template</source>
 			</trans-unit>

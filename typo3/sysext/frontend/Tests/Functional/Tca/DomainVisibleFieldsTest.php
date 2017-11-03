@@ -25,8 +25,7 @@ class DomainVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\Fu
         'domainName',
         'redirectTo',
         'redirectHttpStatusCode',
-        'prepend_params',
-        'forced',
+        'prepend_params'
     ];
 
     /**
