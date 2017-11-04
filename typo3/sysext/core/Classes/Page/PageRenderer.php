@@ -431,6 +431,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             '<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
             '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
         ];
+
+        $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
     /**

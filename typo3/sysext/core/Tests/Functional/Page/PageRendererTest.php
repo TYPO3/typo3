@@ -118,6 +118,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertContains('<meta name="dc.author" content="&lt;evil tag&gt;" />', $renderedString);
         $this->assertNotContains('<meta name="randomtag" content="foobar">', $renderedString);
         $this->assertNotContains('<meta name="randomtag" content="foobar" />', $renderedString);
+        $this->assertContains('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
     }
 
     /**
