@@ -1032,7 +1032,7 @@ class UpgradeController extends AbstractController
         if (isset($extension['ext_localconf.php']) && $extension['ext_localconf.php']) {
             // $_EXTKEY and $_EXTCONF are available in ext_localconf.php
             // and are explicitly set in cached file as well
-            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extension['ext_localconf.php'];
         }
     }
@@ -1057,7 +1057,7 @@ class UpgradeController extends AbstractController
         if (isset($extension['ext_tables.php']) && $extension['ext_tables.php']) {
             // $_EXTKEY and $_EXTCONF are available in ext_tables.php
             // and are explicitly set in cached file as well
-            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+            $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
             require $extension['ext_tables.php'];
         }
     }
