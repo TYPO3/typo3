@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -445,19 +444,6 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             );
         }
 
-        $excludedDoktypes = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.excludeDoktypes');
-        if (!empty($excludedDoktypes)) {
-            $queryBuilder->andWhere(
-                $expressionBuilder->notIn(
-                    'doktype',
-                    $queryBuilder->createNamedParameter(
-                        GeneralUtility::intExplode(',', $excludedDoktypes, true),
-                        Connection::PARAM_INT_ARRAY
-                    )
-                )
-            );
-        }
-
         if ($searchFilter !== '') {
             $searchParts = $expressionBuilder->orX();
             if (is_numeric($searchFilter) && $searchFilter > 0) {
@@ -467,15 +453,6 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             }
             $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
             $useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-            $useAlias = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.searchInAlias');
-
-            $aliasExpression = '';
-            if ($useAlias) {
-                $aliasExpression = $expressionBuilder->like(
-                    'alias',
-                    $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
-                );
-            }
 
             if ($useNavTitle) {
                 $searchWhereAlias = $expressionBuilder->orX(
@@ -494,9 +471,6 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                         )
                     )
                 );
-                if (strlen($aliasExpression)) {
-                    $searchWhereAlias->add($aliasExpression);
-                }
                 $searchParts->add($searchWhereAlias);
             } else {
                 $searchParts->add(
@@ -505,12 +479,15 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                         $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
                     )
                 );
-
-                if (strlen($aliasExpression)) {
-                    $searchParts->add($aliasExpression);
-                }
             }
 
+            // Also search for the alias
+            $searchParts->add(
+                $expressionBuilder->like(
+                    'alias',
+                    $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
+                )
+            );
             $queryBuilder->andWhere($searchParts);
         }
         return $queryBuilder;

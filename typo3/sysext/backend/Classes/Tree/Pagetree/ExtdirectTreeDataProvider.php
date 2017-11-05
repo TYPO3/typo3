@@ -178,10 +178,8 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTree
                 'recursiveDeleteDialogMessage' => htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recursiveDeleteWarning'))
             ],
             'Configuration' => [
-                'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
                 'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::DELETE),
                 'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == true,
-                'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
                 'temporaryMountPoint' => Commands::getMountPointPath()
             ],
             'Icons' => [

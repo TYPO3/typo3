@@ -123,13 +123,7 @@ require(['TYPO3/CMS/Backend/Utility'], function(Utility) {
 			TYPO3.Components.PageTree.TopPanel.superclass.initComponent.apply(this, arguments);
 
 			this.addDragDropNodeInsertionFeature();
-
-			if (!TYPO3.Components.PageTree.Configuration.hideFilter
-				|| TYPO3.Components.PageTree.Configuration.hideFilter === '0'
-			) {
-				this.addFilterFeature();
-			}
-
+      this.addFilterFeature();
 			this.getTopToolbar().addItem({xtype: 'tbfill'});
 			this.addRefreshTreeFeature();
 		},

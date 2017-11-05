@@ -267,7 +267,6 @@
 				'disableDelete': kw('disableDelete'),
 				'disableDocSelector': kw('disableDocSelector'),
 				'disableHideAtCopy': kw('disableHideAtCopy'),
-				'disableIconLinkToContextmenu': kw('disableIconLinkToContextmenu'),
 				'disableItems': kw('disableItems'),
 				'disableNewContentElementWizard': kw('disableNewContentElementWizard'),
 				'disableNoMatchingValueElement': kw('disableNoMatchingValueElement'),

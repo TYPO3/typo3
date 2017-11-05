@@ -124,11 +124,6 @@ class FileSystemNavigationFrameController
             $this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);
             $this->foldertree->thisScript = BackendUtility::getModuleUrl('file_navframe');
         }
-        // Only set ext_IconMode if we are not running an ajax request from the ElementBrowser,
-        // which has this property hardcoded to "titlelink".
-        if (!$this->foldertree instanceof ElementBrowserFolderTreeView) {
-            $this->foldertree->ext_IconMode = $this->getBackendUser()->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
-        }
     }
 
     /**
