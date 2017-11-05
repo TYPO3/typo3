@@ -364,6 +364,7 @@
 				'fixAttrib': kw('fixAttrib'),
 				'flip': kw('flip'),
 				'flop': kw('flop'),
+				'FLUIDTEMPLATE': kw('FLUIDTEMPLATE'),
 				'folder': A,
 				'folders': kw('folders'),
 				'folderTree': A,

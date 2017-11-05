@@ -1063,6 +1063,29 @@ color denotes the color of the border.]]></description>
 ]]></default>
 		</property>
 	</type>
+	<type id="extbase" name="extbase">
+		<property name="pluginName" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Sets variables for initializing extbase.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="controllerExtensionName" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Sets the extension name of the controller.
+			Important: This is for example essential if you have translations at the usual paths in your extension and want to use them right away in your template via <f:translate/>.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="controllerName" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Sets the name of the controller.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="controllerActionName" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+			Sets the name of the action.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+	</type>
 	<type id="FILE">
 		<property name="altText" type="stdWrap">
 			<description><![CDATA[For <img> output only!
@@ -1155,6 +1178,99 @@ The maximum filesize of documents to be read is set to 1024 kb internally!]]></d
 			The cObject used for rendering the files. It is executed once for every file.
 			Note that during each execution you can find information about the current file using
 			the getText property "file" with the "current" keyword.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[stdWrap]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+	</type>
+	<type id="FLUIDTEMPLATE">
+		<property name="templateName" type="stdWrap">
+			<description><![CDATA[string/stdwrap
+This name is used together with the set format to find the template in the given templateRootPaths. Use this property to define a content object, which should be used as template file. It is an alternative to ".file". If ".templateName" is set, it takes precedence.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="template" type="cObject">
+			<description><![CDATA[cObject
+Use this property to define a content object, which should be used as template file. It is an alternative to ".file"; if ".template" is set, it takes precedence. While any content object can be used here, the cObject FILE might be the usual choice.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="file" type="stdWrap">
+			<description><![CDATA[string/stdWrap
+The fluid template file. It is an alternative to ".template" and is used only, if ".template" is not set.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="templateRootPaths" type="array">
+			<description><![CDATA[array of file paths with stdWrap
+Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top). The first folder where the desired layout is found, is used. If the array keys are numeric, they are first sorted and then tried in reversed order.
+Useful in combination with the templateName property.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="layoutRootPath" type="stdWrap">
+			<description><![CDATA[file path/stdWrap
+Sets a specific layout path; usually it is Layouts/ underneath the template file.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="layoutRootPaths" type="array">
+			<description><![CDATA[array of file paths with stdWrap
+Used to define several paths for layouts, which will be tried in reversed order (the paths are searched from bottom to top). The first folder where the desired layout is found, is used. If the array keys are numeric, they are first sorted and then tried in reversed order.
+If property layoutRootPath (singular) is also used, it will be placed as the first option in the list of fall back paths.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="partialRootPath" type="stdWrap">
+			<description><![CDATA[file path/stdWrap
+Sets a specific partials path; usually it is Partials/ underneath the template file.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="layoutRootPaths" type="array">
+			<description><![CDATA[array of file paths with stdWrap
+Sets the format of the current request.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="format" type="stdWrap">
+			<description><![CDATA[keyword / stdWrap
+			Used to define several paths for partials, which will be tried in reversed order. The first folder where the desired partial is found, is used. The keys of the array define the order.
+See layoutRootPaths for more details.]]></description>
+			<default><![CDATA[html]]></default>
+		</property>
+		<property name="extbase" type="extbase">
+			<description><![CDATA[Additional Extbase configuration]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="variables" type="array">
+			<description><![CDATA[array
+			Sets variables that should be available in the fluid template. The keys are the variable names in Fluid.
+Reserved variables are "data" and "current", which are filled automatically with the current data set.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="settings" type="array">
+			<description><![CDATA[array
+			Sets the given settings array in the fluid template. In the view, the value can then be used.
+
+Example:
+
+page = PAGE
+page {
+    10 = FLUIDTEMPLATE
+    10 {
+        file = fileadmin/templates/MyTemplate.html
+        settings {
+            copyrightYear = 2013
+        }
+    }
+}
+
+To access copyrightYear in the template file use this:
+
+{settings.copyrightYear}
+
+Apart from just setting a key-value pair as done in the example, you can also reference objects or access constants as well.]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="dataProcessing" type="array">
+			<description><![CDATA[array
+			Add one or multiple processors to manipulate the $data variable of the currently rendered content object, like tt_content or page. The sub-property options can be used to pass parameters to the processor class.]]></description>
 			<default><![CDATA[]]></default>
 		</property>
 		<property name="stdWrap" type="stdWrap">
