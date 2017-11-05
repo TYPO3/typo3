@@ -360,6 +360,7 @@ var typoscriptWords = {
 	'fixAttrib': 'reserved',
 	'flip': 'reserved',
 	'flop': 'reserved',
+	'FLUIDTEMPLATE': 'keyword',
 	'folder': 'keyword2',
 	'folders': 'reserved',
 	'folderTree': 'keyword2',
