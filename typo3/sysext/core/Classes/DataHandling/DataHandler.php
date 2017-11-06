@@ -8449,6 +8449,8 @@ class DataHandler
         $cacheManager = $this->getCacheManager();
         $cacheManager->flushCachesInGroupByTags('pages', array_keys($tagsToClear));
 
+        // Filter duplicate cache commands from cacheQueue
+        $clearCacheCommands = array_unique($clearCacheCommands);
         // Execute collected clear cache commands from page TSConfig
         foreach ($clearCacheCommands as $command) {
             $this->clear_cacheCmd($command);
