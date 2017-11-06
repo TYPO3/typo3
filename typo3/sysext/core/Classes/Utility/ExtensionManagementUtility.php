@@ -1613,7 +1613,7 @@ tt_content.' . $key . $suffix . ' {
             if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess) && isset($extensionInformation['ext_localconf.php'])) {
                 // $_EXTKEY and $_EXTCONF are available in ext_localconf.php
                 // and are explicitly set in cached file as well
-                $_EXTCONF = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]) ? $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] : null;
+                $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
                 require $extensionInformation['ext_localconf.php'];
             }
         }
@@ -1644,7 +1644,7 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = '';
                 // Set $_EXTKEY and $_EXTCONF for this extension
                 $phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY] ?? null;';
                 $phpCodeToCache[] = '';
                 // Add ext_localconf.php content of extension
                 $phpCodeToCache[] = trim(file_get_contents($extensionDetails['ext_localconf.php']));
@@ -1870,7 +1870,7 @@ tt_content.' . $key . $suffix . ' {
             if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess) && $extensionInformation['ext_tables.php']) {
                 // $_EXTKEY and $_EXTCONF are available in ext_tables.php
                 // and are explicitly set in cached file as well
-                $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+                $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;
                 require $extensionInformation['ext_tables.php'];
             }
         }
@@ -1904,7 +1904,7 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = '';
                 // Set $_EXTKEY and $_EXTCONF for this extension
                 $phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+                $phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY] ?? null;';
                 $phpCodeToCache[] = '';
                 // Add ext_tables.php content of extension
                 $phpCodeToCache[] = trim(file_get_contents($extensionDetails['ext_tables.php']));
