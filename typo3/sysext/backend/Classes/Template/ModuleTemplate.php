@@ -270,10 +270,10 @@ class ModuleTemplate
      */
     protected function loadStylesheets()
     {
-        if ($GLOBALS['TBE_STYLES']['stylesheet']) {
+        if (!empty($GLOBALS['TBE_STYLES']['stylesheet'])) {
             $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet']);
         }
-        if ($GLOBALS['TBE_STYLES']['stylesheet2']) {
+        if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
             $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
         }
     }

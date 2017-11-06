@@ -294,7 +294,7 @@ class ExtensionManagementUtility
 
             $fieldExists = false;
             $newPosition = '';
-            if (is_array($GLOBALS['TCA'][$table]['palettes'])) {
+            if (is_array($GLOBALS['TCA'][$table]['palettes'] ?? false)) {
                 // Get the palette names used in current showitem
                 $paletteCount = preg_match_all('/(?:^|,)                    # Line start or a comma
 					(?:
@@ -305,6 +305,9 @@ class ExtensionManagementUtility
                     $paletteNames = array_filter(array_merge($paletteMatches[1], $paletteMatches[2]));
                     if (!empty($paletteNames)) {
                         foreach ($paletteNames as $paletteName) {
+                            if (!isset($GLOBALS['TCA'][$table]['palettes'][$paletteName])) {
+                                continue;
+                            }
                             $palette = $GLOBALS['TCA'][$table]['palettes'][$paletteName];
                             switch ($positionIdentifier) {
                                 case 'after':
@@ -901,9 +904,9 @@ class ExtensionManagementUtility
         $options = [
             'module' => true,
             'moduleName' => $fullModuleSignature,
-            'access' => $moduleConfiguration['access'] ?: 'user,group'
+            'access' => !empty($moduleConfiguration['access']) ? $moduleConfiguration['access'] : 'user,group'
         ];
-        if ($moduleConfiguration['routeTarget']) {
+        if (!empty($moduleConfiguration['routeTarget'])) {
             $options['target'] = $moduleConfiguration['routeTarget'];
         }
 
@@ -979,10 +982,10 @@ class ExtensionManagementUtility
         if (empty($key)) {
             throw new \RuntimeException('No extension key set in addLLrefForTCAdescr(). Provide it as third parameter', 1507321596);
         }
-        if (!is_array($GLOBALS['TCA_DESCR'][$key])) {
+        if (!is_array($GLOBALS['TCA_DESCR'][$key] ?? false)) {
             $GLOBALS['TCA_DESCR'][$key] = [];
         }
-        if (!is_array($GLOBALS['TCA_DESCR'][$key]['refs'])) {
+        if (!is_array($GLOBALS['TCA_DESCR'][$key]['refs'] ?? false)) {
             $GLOBALS['TCA_DESCR'][$key]['refs'] = [];
         }
         $GLOBALS['TCA_DESCR'][$key]['refs'][] = $file;

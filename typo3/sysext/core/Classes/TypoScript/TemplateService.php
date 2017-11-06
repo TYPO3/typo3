@@ -947,20 +947,27 @@ class TemplateService
 
         // @todo Change to use new API
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
-            if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_constants.typoscript'] || $files['ext_typoscript_setup.txt'] || $files['ext_typoscript_setup.typoscript'])) {
+            if ((is_array($files) || $files instanceof \ArrayAccess)
+                && (
+                    !empty($files['ext_typoscript_constants.txt'])
+                    || !empty($files['ext_typoscript_constants.typoscript'])
+                    || !empty($files['ext_typoscript_setup.txt'])
+                    || !empty($files['ext_typoscript_setup.typoscript'])
+                )
+            ) {
                 $mExtKey = str_replace('_', '', $extKey);
                 $constants = '';
                 $config = '';
 
-                if ($files['ext_typoscript_constants.typoscript']) {
+                if (!empty($files['ext_typoscript_constants.typoscript'])) {
                     $constants = @file_get_contents($files['ext_typoscript_constants.typoscript']);
-                } elseif ($files['ext_typoscript_constants.txt']) {
+                } elseif (!empty($files['ext_typoscript_constants.txt'])) {
                     $constants = @file_get_contents($files['ext_typoscript_constants.txt']);
                 }
 
-                if ($files['ext_typoscript_setup.typoscript']) {
+                if (!empty($files['ext_typoscript_setup.typoscript'])) {
                     $config = @file_get_contents($files['ext_typoscript_setup.typoscript']);
-                } elseif ($files['ext_typoscript_setup.txt']) {
+                } elseif (!empty($files['ext_typoscript_setup.txt'])) {
                     $config = @file_get_contents($files['ext_typoscript_setup.txt']);
                 }
 

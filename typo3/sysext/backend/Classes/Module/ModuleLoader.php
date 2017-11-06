@@ -139,7 +139,7 @@ class ModuleLoader
     public function checkMod($name)
     {
         // Check for own way of configuring module
-        if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
+        if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'] ?? false)) {
             trigger_error('Registering a module using "configureModuleFunction" is deprecated and will be removed in TYPO3 v10.', E_USER_DEPRECATED);
             $obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
             if (is_callable($obj)) {
@@ -159,14 +159,13 @@ class ModuleLoader
         if (empty($setupInformation['configuration'])) {
             return 'notFound';
         }
-        if (
-            $setupInformation['configuration']['shy']
+        $finalModuleConfiguration = $setupInformation['configuration'];
+        if (!empty($finalModuleConfiguration['shy'])
             || !$this->checkModAccess($name, $setupInformation['configuration'])
             || !$this->checkModWorkspace($name, $setupInformation['configuration'])
         ) {
             return false;
         }
-        $finalModuleConfiguration = $setupInformation['configuration'];
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $this->addLabelsForModule($name, ($finalModuleConfiguration['labels'] ?? $setupInformation['labels']));
@@ -193,9 +192,12 @@ class ModuleLoader
         }
 
         // check if there is a navigation component (like the pagetree)
-        if (is_array($this->navigationComponents[$name])) {
+        if (is_array($this->navigationComponents[$name] ?? false)) {
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
-        } elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+        } elseif ($mainModule
+            && is_array($this->navigationComponents[$mainModule] ?? false)
+            && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+
             // navigation component can be overridden by the main module component
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
         }

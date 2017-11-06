@@ -1641,7 +1641,7 @@ class GeneralUtility
             // Closing tag.
             $tagName = $tagName[0] === 'n' && MathUtility::canBeInterpretedAsInteger($testNtag) ? (int)$testNtag : $tagName;
             // Test for alternative index value:
-            if ((string)$val['attributes']['index'] !== '') {
+            if ((string)($val['attributes']['index'] ?? '') !== '') {
                 $tagName = $val['attributes']['index'];
             }
             // Setting tag-values, manage stack:

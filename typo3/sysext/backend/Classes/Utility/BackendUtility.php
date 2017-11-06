@@ -362,7 +362,7 @@ class BackendUtility
         $output = [];
         $pid = $uid;
         $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . implode(',', $additionalFields) : '');
-        if (is_array($BEgetRootLine_cache[$ident])) {
+        if (is_array($BEgetRootLine_cache[$ident] ?? false)) {
             $output = $BEgetRootLine_cache[$ident];
         } else {
             $loopCheck = 100;
@@ -378,7 +378,20 @@ class BackendUtility
                 }
             }
             if ($uid == 0) {
-                $theRowArray[] = ['uid' => 0, 'title' => ''];
+                $theRowArray[] = [
+                    'uid' => 0,
+                    'pid' => null,
+                    'title' => '',
+                    'doktype' => null,
+                    'tsconfig_includes' => null,
+                    'TSconfig' => null,
+                    'is_siteroot' => null,
+                    't3ver_oid' => null,
+                    't3ver_wsid' => null,
+                    't3ver_state' => null,
+                    't3ver_stage' => null,
+                    'backend_layout_next_level' => null
+                ];
             }
             $c = count($theRowArray);
             foreach ($theRowArray as $val) {
@@ -422,7 +435,7 @@ class BackendUtility
     {
         static $getPageForRootline_cache = [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
-        if (is_array($getPageForRootline_cache[$ident])) {
+        if (is_array($getPageForRootline_cache[$ident]) ?? false) {
             $row = $getPageForRootline_cache[$ident];
         } else {
             $queryBuilder = static::getQueryBuilderForTable('pages');
@@ -846,7 +859,7 @@ class BackendUtility
         }
         $cacheHash = $res['hash'];
         // Get User TSconfig overlay
-        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
+        $userTSconfig = static::getBackendUserAuthentication()->userTS['page.'] ?? null;
         if (is_array($userTSconfig)) {
             ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig);
             $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
@@ -1587,10 +1600,7 @@ class BackendUtility
     public static function getLabelFromItemlist($table, $col, $key)
     {
         // Check, if there is an "items" array:
-        if (is_array($GLOBALS['TCA'][$table])
-            && is_array($GLOBALS['TCA'][$table]['columns'][$col])
-            && is_array($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'])
-        ) {
+        if (is_array($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] ?? false)) {
             // Traverse the items-array...
             foreach ($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'] as $v) {
                 // ... and return the first found label where the value was equal to $key
@@ -1722,7 +1732,7 @@ class BackendUtility
         $recordTitle = '';
         if (is_array($GLOBALS['TCA'][$table])) {
             // If configured, call userFunc
-            if ($GLOBALS['TCA'][$table]['ctrl']['label_userFunc']) {
+            if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'])) {
                 $params['table'] = $table;
                 $params['row'] = $row;
                 $params['title'] = '';
@@ -1744,8 +1754,8 @@ class BackendUtility
                     $row['uid'],
                     $forceResult
                 );
-                if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']
-                    && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$recordTitle === '')
+                if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])
+                    && (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) || (string)$recordTitle === '')
                 ) {
                     $altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
                     $tA = [];
@@ -1879,7 +1889,7 @@ class BackendUtility
                 break;
             case 'inline':
             case 'select':
-                if ($theColConf['MM']) {
+                if (!empty($theColConf['MM'])) {
                     if ($uid) {
                         // Display the title of MM related records in lists
                         if ($noRecordLookup) {
@@ -1955,7 +1965,7 @@ class BackendUtility
                         }
                     }
                     $l = self::getLabelsFromItemsList($table, $col, $value, $columnTsConfig);
-                    if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
+                    if (!empty($theColConf['foreign_table']) && !$l && !empty($GLOBALS['TCA'][$theColConf['foreign_table']])) {
                         if ($noRecordLookup) {
                             $l = $value;
                         } else {
@@ -2206,7 +2216,7 @@ class BackendUtility
                 }
         }
         // If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
-        if (stristr($theColConf['eval'], 'password')) {
+        if (!empty($theColConf['eval']) && stristr($theColConf['eval'], 'password')) {
             $l = '';
             $randomNumber = rand(5, 12);
             for ($i = 0; $i < $randomNumber; $i++) {
