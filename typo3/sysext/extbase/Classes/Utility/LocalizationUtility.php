@@ -212,7 +212,7 @@ class LocalizationUtility
     {
         $configurationManager = static::getConfigurationManager();
         $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
-        if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
+        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
             return;
         }
         self::$LOCAL_LANG_UNSET[$extensionName] = [];

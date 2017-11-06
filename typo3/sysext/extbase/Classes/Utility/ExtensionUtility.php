@@ -60,7 +60,7 @@ class ExtensionUtility
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
+        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] ?? false)) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = [];
         }
         foreach ($controllerActions as $controllerName => $actionsList) {

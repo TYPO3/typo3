@@ -1066,14 +1066,14 @@ class PageLayoutController
         $this->buttonBar->addButton($shortcutButton);
 
         // Cache
-        if (!$this->modTSconfig['properties']['disableAdvanced']) {
+        if (empty($this->modTSconfig['properties']['disableAdvanced'])) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
-        if (!$this->modTSconfig['properties']['disableIconToolbar']) {
+        if (empty($this->modTSconfig['properties']['disableIconToolbar'])) {
             // Edit page properties and page language overlay icons
             if ($this->pageIsNotLockedForEditors() && $this->getBackendUser()->checkLanguageAccess(0)) {
                 // Edit localized page_language_overlay only when one specific language is selected

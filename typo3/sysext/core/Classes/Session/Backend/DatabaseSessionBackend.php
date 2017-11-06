@@ -51,7 +51,7 @@ class DatabaseSessionBackend implements SessionBackendInterface
      */
     public function initialize(string $identifier, array $configuration)
     {
-        $this->hasAnonymousSessions = (bool)$configuration['has_anonymous'];
+        $this->hasAnonymousSessions = (bool)($configuration['has_anonymous'] ?? false);
         $this->configuration = $configuration;
     }
 

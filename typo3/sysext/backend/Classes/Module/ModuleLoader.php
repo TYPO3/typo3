@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Module;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This document provides a class that loads the modules for the TYPO3 interface.
@@ -139,7 +139,7 @@ class ModuleLoader
     public function checkMod($name)
     {
         // Check for own way of configuring module
-        if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
+        if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'] ?? false)) {
             $obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
             if (is_callable($obj)) {
                 $MCONF = call_user_func($obj, $name);
@@ -158,20 +158,19 @@ class ModuleLoader
         if (empty($setupInformation['configuration'])) {
             return 'notFound';
         }
-        if (
-            $setupInformation['configuration']['shy']
+        $finalModuleConfiguration = $setupInformation['configuration'];
+        if (!empty($finalModuleConfiguration['shy'])
             || !$this->checkModAccess($name, $setupInformation['configuration'])
             || !$this->checkModWorkspace($name, $setupInformation['configuration'])
         ) {
             return false;
         }
-        $finalModuleConfiguration = $setupInformation['configuration'];
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $this->addLabelsForModule($name, ($finalModuleConfiguration['labels'] ?? $setupInformation['labels']));
 
         // Default script setup
-        if ($setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {
+        if (!empty($setupInformation['configuration']['script']) && $setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {
             if ($setupInformation['configuration']['extbase']) {
                 $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
             } else {
@@ -198,9 +197,12 @@ class ModuleLoader
         }
 
         // check if there is a navigation component (like the pagetree)
-        if (is_array($this->navigationComponents[$name])) {
+        if (is_array($this->navigationComponents[$name] ?? false)) {
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
-        } elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+        } elseif ($mainModule
+            && is_array($this->navigationComponents[$mainModule] ?? false)
+            && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+
             // navigation component can be overridden by the main module component
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
         }

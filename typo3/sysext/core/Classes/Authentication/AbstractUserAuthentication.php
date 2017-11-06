@@ -393,7 +393,7 @@ abstract class AbstractUserAuthentication
         $this->newSessionID = false;
         // $id is set to ses_id if cookie is present. Else set to FALSE, which will start a new session
         $id = $this->getCookie($this->name);
-        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'];
+        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
 
         // If fallback to get mode....
         if (!$id && $this->getFallBack && $this->get_name) {

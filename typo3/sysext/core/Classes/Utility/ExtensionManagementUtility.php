@@ -308,7 +308,7 @@ class ExtensionManagementUtility
 
             $fieldExists = false;
             $newPosition = '';
-            if (is_array($GLOBALS['TCA'][$table]['palettes'])) {
+            if (is_array($GLOBALS['TCA'][$table]['palettes'] ?? false)) {
                 // Get the palette names used in current showitem
                 $paletteCount = preg_match_all('/(?:^|,)                    # Line start or a comma
 					(?:
@@ -319,6 +319,9 @@ class ExtensionManagementUtility
                     $paletteNames = array_filter(array_merge($paletteMatches[1], $paletteMatches[2]));
                     if (!empty($paletteNames)) {
                         foreach ($paletteNames as $paletteName) {
+                            if (!isset($GLOBALS['TCA'][$table]['palettes'][$paletteName])) {
+                                continue;
+                            }
                             $palette = $GLOBALS['TCA'][$table]['palettes'][$paletteName];
                             switch ($positionIdentifier) {
                                 case 'after':
@@ -1074,10 +1077,10 @@ class ExtensionManagementUtility
     public static function addLLrefForTCAdescr($tca_descr_key, $file_ref)
     {
         if ($tca_descr_key) {
-            if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key])) {
+            if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key] ?? false)) {
                 $GLOBALS['TCA_DESCR'][$tca_descr_key] = [];
             }
-            if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'])) {
+            if (!is_array($GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'] ?? false)) {
                 $GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'] = [];
             }
             $GLOBALS['TCA_DESCR'][$tca_descr_key]['refs'][] = $file_ref;
