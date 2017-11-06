@@ -1343,20 +1343,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.3.1",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "cb25a053cdba0fcc43a9f56f5e086f77eed6b916"
+                "reference": "6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/cb25a053cdba0fcc43a9f56f5e086f77eed6b916",
-                "reference": "cb25a053cdba0fcc43a9f56f5e086f77eed6b916",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb",
+                "reference": "6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0.0"
+                "composer-plugin-api": "^1.0.0",
+                "php": ">=7.0.0 <7.2"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -1366,13 +1367,13 @@
                 "netresearch/composer-installers": "*"
             },
             "require-dev": {
-                "composer/composer": "1.*"
+                "composer/composer": "^1.2"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -1407,7 +1408,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2016-07-05T09:38:42+00:00"
+            "time": "2017-10-16T23:04:29+00:00"
         },
         {
             "name": "typo3fluid/fluid",
