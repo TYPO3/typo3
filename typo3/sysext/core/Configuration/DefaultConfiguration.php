@@ -1031,7 +1031,7 @@ return [
         'disableNoCacheParameter' => false,
         'cacheHash' => [
             'cachedParametersWhiteList' => [],
-            'excludedParameters' => ['L', 'pk_campaign', 'pk_kwd', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'],
+            'excludedParameters' => ['L', 'pk_campaign', 'pk_kwd', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'],
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
             'excludedParametersIfEmpty' => []
