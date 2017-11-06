@@ -1391,21 +1391,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.4.4",
+            "version": "1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb"
+                "reference": "0ef630f82f12aa611fb44a3e1e5491fc98b97e78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb",
-                "reference": "6b891a8d5ffb9dec290d2a757bcb5f91c4d21dcb",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/0ef630f82f12aa611fb44a3e1e5491fc98b97e78",
+                "reference": "0ef630f82f12aa611fb44a3e1e5491fc98b97e78",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": ">=7.0.0 <7.2"
+                "php": ">=7.0.0 <7.3"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -1456,7 +1456,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2017-10-16T23:04:29+00:00"
+            "time": "2017-11-06T11:44:16+00:00"
         },
         {
             "name": "typo3fluid/fluid",
