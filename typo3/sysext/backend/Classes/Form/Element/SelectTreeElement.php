@@ -149,7 +149,7 @@ class SelectTreeElement extends AbstractFormElement
 
         // add necessary labels for tree header
         if ($showHeader) {
-            $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:lang/Resources/Private/Language/locallang_csh_corebe.xlf';
+            $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
         $resultArray['requireJsModules']['selectTreeElement'] = [
             'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => 'function (SelectTreeElement) { SelectTreeElement.initialize(); }'
