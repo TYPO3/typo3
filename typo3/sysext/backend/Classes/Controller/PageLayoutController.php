@@ -640,7 +640,7 @@ class PageLayoutController
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
             $overlayRecord = $queryBuilder
-                ->select('title')
+                ->select('*')
                 ->from('pages_language_overlay')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
@@ -652,6 +652,7 @@ class PageLayoutController
                 ->setMaxResults(1)
                 ->execute()
                 ->fetch();
+            BackendUtility::workspaceOL('pages_language_overlay', $overlayRecord);
             return $overlayRecord['title'];
         }
         return $this->pageinfo['title'];
