@@ -219,7 +219,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
     {
         foreach ($this->getFormValues() as $elementIdentifier => $elementValue) {
             if (
-                $elementValue === null
+                ($elementValue === null || $elementValue === '')
                 && isset($elementsConfiguration[$elementIdentifier])
                 && isset($elementsConfiguration[$elementIdentifier]['skipIfValueIsEmpty'])
                 && $elementsConfiguration[$elementIdentifier]['skipIfValueIsEmpty'] === true

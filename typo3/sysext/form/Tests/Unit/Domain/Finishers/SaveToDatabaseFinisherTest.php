@@ -90,6 +90,64 @@ class SaveToDatabaseFinisherTest extends \TYPO3\TestingFramework\Core\Unit\UnitT
     }
 
     /**
+     * @return array
+     */
+    public function skipIfValueIsEmptyDataProvider()
+    {
+        return [
+            'null value' => [
+                'value' => null,
+                'expectedEmpty' => true,
+            ],
+            'empty string' => [
+                'value' => '',
+                'expectedEmpty' => true,
+            ],
+            'false value' => [
+                'value' => false,
+                'expectedEmpty' => false,
+            ],
+            'space character' => [
+                'value' => ' ',
+                'expectedEmpty' => false,
+            ],
+            'zero' => [
+                'value' => 0,
+                'expectedEmpty' => false,
+            ],
+            'zero float' => [
+                'value' => 0.0,
+                'expectedEmpty' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider skipIfValueIsEmptyDataProvider
+     * @param mixed $value
+     * @param bool $expectedEmpty
+     */
+    public function skipIfValueIsEmptyDetectsEmptyValues($value, bool $expectedEmpty)
+    {
+        $elementsConfiguration = [
+            'foo' => [
+                'mapOnDatabaseColumn' => 'bar',
+                'skipIfValueIsEmpty' => true,
+            ]
+        ];
+
+        $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
+        $saveToDatabaseFinisher->method('getFormValues')->willReturn([
+            'foo' => $value
+        ]);
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
+
+        self:self::assertSame($expectedEmpty, empty($databaseData));
+    }
+
+    /**
      * @test
      */
     public function executeInternalProcessesMultipleTables()
