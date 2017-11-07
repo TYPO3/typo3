@@ -117,6 +117,9 @@
 			<trans-unit id="folderSelector">
 				<source>Folder selector</source>
 			</trans-unit>
+			<trans-unit id="page_id">
+				<source>Page ID</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
