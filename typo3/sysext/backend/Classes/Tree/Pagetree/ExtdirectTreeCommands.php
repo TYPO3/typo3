@@ -86,7 +86,7 @@ class ExtdirectTreeCommands
             Commands::deleteNode($node);
             $returnValue = [];
             if (static::getBackendUser()->workspace) {
-                $record = Commands::getNodeRecord($node->getId());
+                $record = BackendUtility::getRecordWSOL('pages', $node->getId(), '*', '', true, true);
                 if ($record['_ORIG_uid']) {
                     $newNode = Commands::getNewNode($record);
                     $returnValue = $newNode->toArray();

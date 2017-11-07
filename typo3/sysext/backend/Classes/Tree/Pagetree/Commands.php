@@ -227,7 +227,7 @@ class Commands
      */
     public static function getNode($nodeId, $unsetMovePointers = true)
     {
-        $record = self::getNodeRecord($nodeId, $unsetMovePointers);
+        $record = BackendUtility::getRecordWSOL('pages', $nodeId, '*', '', true, $unsetMovePointers);
         return self::getNewNode($record);
     }
 
@@ -252,7 +252,7 @@ class Commands
         array_shift($rootline);
         $path = [];
         foreach ($rootline as $rootlineElement) {
-            $record = self::getNodeRecord($rootlineElement['uid']);
+            $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
             $text = $record['title'];
             if (self::$useNavTitle && trim($record['nav_title']) !== '') {
                 $text = $record['nav_title'];
@@ -260,19 +260,6 @@ class Commands
             $path[] = htmlspecialchars($text);
         }
         return '/' . implode('/', $path);
-    }
-
-    /**
-     * Returns a node record from a given id
-     *
-     * @param int $nodeId
-     * @param bool $unsetMovePointers
-     * @return array
-     */
-    public static function getNodeRecord($nodeId, $unsetMovePointers = true)
-    {
-        $record = BackendUtility::getRecordWSOL('pages', $nodeId, '*', '', true, $unsetMovePointers);
-        return $record;
     }
 
     /**

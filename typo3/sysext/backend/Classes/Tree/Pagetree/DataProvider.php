@@ -127,16 +127,15 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             if (!(int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']) {
                 $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
                 $mountPoints = array_unique($mountPoints);
-                if (!in_array(0, $mountPoints)) {
+                if (!in_array(0, $mountPoints, true)) {
                     // using a virtual root node
                     // so then return the mount points here as "subpages" of the first node
                     $isVirtualRootNode = true;
                     $subpages = [];
                     foreach ($mountPoints as $webMountPoint) {
-                        $subpages[] = [
-                            'uid' => $webMountPoint,
-                            'isMountPoint' => true
-                        ];
+                        $subpage = BackendUtility::getRecordWSOL('pages', $webMountPoint, '*', '', true, true);
+                        $subpage['isMountPoint'] = true;
+                        $subpages[] = $subpage;
                     }
                 }
             }
@@ -144,18 +143,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
         if (is_array($subpages) && !empty($subpages)) {
             $lastRootline = [];
             foreach ($subpages as $subpage) {
-                if (in_array($subpage['uid'], $this->hiddenRecords)) {
+                if (in_array($subpage['t3ver_oid'] ?: $subpage['uid'], $this->hiddenRecords)) {
                     continue;
                 }
-                // must be calculated above getRecordWithWorkspaceOverlay,
+                // must be calculated before getRecordWSOL(),
                 // because the information is lost otherwise
                 $isMountPoint = $subpage['isMountPoint'] === true;
                 if ($isVirtualRootNode) {
-                    $mountPoint = (int)$subpage['uid'];
-                }
-                $subpage = $this->getRecordWithWorkspaceOverlay($subpage['uid'], true);
-                if (!$subpage) {
-                    continue;
+                    $mountPoint = (int)$subpage['t3ver_oid'] ?: $subpage['uid'];
                 }
                 $subNode = Commands::getNewNode($subpage, $mountPoint);
                 $subNode->setIsMountPoint($isMountPoint);
@@ -175,7 +170,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                     $subNode->setChildNodes($childNodes);
                     $this->nodeCounter += $childNodes->count();
                 } else {
-                    $subNode->setLeaf(!$this->hasNodeSubPages($subNode->getId()));
+                    $subNode->setLeaf(!$this->hasNodeSubPages((int)$subNode->getId()));
                 }
                 if (!$GLOBALS['BE_USER']->isAdmin() && (int)$subpage['editlock'] === 1) {
                     $subNode->setLabelIsEditable(false);
@@ -191,18 +186,6 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
     }
 
     /**
-     * Wrapper method for \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL
-     *
-     * @param int $uid The page id
-     * @param bool $unsetMovePointers Whether to unset move pointers
-     * @return array
-     */
-    protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = false)
-    {
-        return BackendUtility::getRecordWSOL('pages', $uid, '*', '', true, $unsetMovePointers);
-    }
-
-    /**
      * Returns a node collection of filtered nodes
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
@@ -214,7 +197,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
     {
         /** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
         $nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
-        $records = $this->getSubpages(-1, $searchFilter);
+        $records = $this->getPagesByQuery($searchFilter);
         if (!is_array($records) || empty($records)) {
             return $nodeCollection;
         }
@@ -234,24 +217,29 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
         $nodeId = (int)$node->getId();
         $processedRecordIds = [];
         foreach ($records as $record) {
-            if ((int)$record['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace && (int)$record['t3ver_wsid'] !== 0) {
-                continue;
-            }
-            $liveVersion = BackendUtility::getLiveVersionOfRecord('pages', $record['uid'], 'uid');
-            if ($liveVersion !== null) {
-                $record = $liveVersion;
-            }
-
-            $record = Commands::getNodeRecord($record['uid'], false);
-            if ((int)$record['pid'] === -1
-                || in_array($record['uid'], $this->hiddenRecords)
-                || in_array($record['uid'], $processedRecordIds)
+            $uid = (int)$record['t3ver_oid'] ?: $record['uid'];
+            if (in_array($uid, $this->hiddenRecords) || in_array($uid, $processedRecordIds, true)
+                || (
+                    (int)$record['pid'] === -1 && (
+                        (int)$record['t3ver_wsid'] === 0
+                        || (int)$record['t3ver_wsid'] !== (int)$GLOBALS['BE_USER']->workspace
+                    )
+                )
             ) {
                 continue;
             }
-            $processedRecordIds[] = $record['uid'];
+            $processedRecordIds[] = $uid;
 
-            $rootline = BackendUtility::BEgetRootLine($record['uid'], '', $GLOBALS['BE_USER']->workspace != 0);
+            $rootline = BackendUtility::BEgetRootLine(
+                $uid,
+                '',
+                $GLOBALS['BE_USER']->workspace != 0,
+                [
+                    'hidden',
+                    'starttime',
+                    'endtime',
+                ]
+            );
             $rootline = array_reverse($rootline);
             if (!in_array(0, $mountPoints, true)) {
                 $isInsideMountPoints = false;
@@ -268,6 +256,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             $reference = $nodeCollection;
             $inFilteredRootline = false;
             $amountOfRootlineElements = count($rootline);
+            // render the root line elements up to the search result
             for ($i = 0; $i < $amountOfRootlineElements; ++$i) {
                 $rootlineElement = $rootline[$i];
                 $rootlineElement['uid'] = (int)$rootlineElement['uid'];
@@ -288,7 +277,6 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 if (!$inFilteredRootline || $rootlineElement['uid'] === $mountPoint) {
                     continue;
                 }
-                $rootlineElement = Commands::getNodeRecord($rootlineElement['uid'], false);
                 $ident = (int)$rootlineElement['sorting'] . (int)$rootlineElement['uid'];
                 if ($reference && $reference->offsetExists($ident)) {
                     /** @var $refNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
@@ -353,7 +341,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
         if (!$mountPoints) {
             $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
-            if (!in_array(0, $mountPoints)) {
+            if (!in_array(0, $mountPoints, true)) {
                 $rootNodeIsVirtual = true;
                 // use a virtual root
                 // the real mountpoints will be fetched in getNodes() then
@@ -370,13 +358,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
 
         foreach ($mountPoints as $mountPoint) {
             if ($mountPoint === 0) {
-                $sitename = 'TYPO3';
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] !== '') {
-                    $sitename = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-                }
                 $record = [
                     'uid' => 0,
-                    'title' => $sitename
+                    'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
                 ];
                 $subNode = Commands::getNewNode($record);
                 $subNode->setLabelIsEditable(false);
@@ -391,7 +375,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
                 if (in_array($mountPoint, $this->hiddenRecords)) {
                     continue;
                 }
-                $record = $this->getRecordWithWorkspaceOverlay($mountPoint);
+                $record = BackendUtility::getRecordWSOL('pages', $mountPoint);
                 if (!$record) {
                     continue;
                 }
@@ -427,25 +411,15 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      * Sets the Doctrine where clause for fetching pages
      *
      * @param QueryBuilder $queryBuilder
-     * @param int $id
      * @param string $searchFilter
      * @return QueryBuilder
      */
-    protected function setWhereClause(QueryBuilder $queryBuilder, $id, $searchFilter = ''): QueryBuilder
+    protected function setWhereClause(QueryBuilder $queryBuilder, $searchFilter = ''): QueryBuilder
     {
         $expressionBuilder = $queryBuilder->expr();
         $queryBuilder->where(
-            QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1))
-        );
-
-        if (is_numeric($id) && $id >= 0) {
-            $queryBuilder->andWhere(
-                $expressionBuilder->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-            );
-        }
-
-        // Only show records in default language
-        $queryBuilder->andWhere(
+            QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1)),
+            // Only show records in default language
             $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
         );
 
@@ -499,13 +473,12 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
     }
 
     /**
-     * Returns all sub-pages of a given id
+     * Returns all sub-pages of a given ID
      *
      * @param int $id
-     * @param string $searchFilter
      * @return array
      */
-    protected function getSubpages($id, $searchFilter = '')
+    protected function getSubpages(int $id): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -513,34 +486,84 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         $result = [];
-        $queryBuilder = $this->setWhereClause($queryBuilder, $id, $searchFilter);
-        $queryResult = $queryBuilder->select('uid', 't3ver_wsid')
+        $queryBuilder->select('*')
             ->from('pages')
-            ->orderBy('sorting')
-            ->execute();
+            ->where(
+                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1)),
+                // Only show records in default language
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            )
+            ->orderBy('sorting');
+        if ((int)$id >= 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+            );
+        }
+        $queryResult = $queryBuilder->execute();
         while ($row = $queryResult->fetch()) {
-            $result[$row['uid']] = $row;
+            BackendUtility::workspaceOL('pages', $row, -99, true);
+            if ($row) {
+                $result[] = $row;
+            }
         }
         return $result;
     }
 
     /**
-     * Returns TRUE if the node has child's
+     * Returns all pages with a query.
      *
-     * @param int $id
-     * @return bool
+     * @param string $searchFilter
+     * @return array
      */
-    protected function hasNodeSubPages($id)
+    protected function getPagesByQuery(string $searchFilter = ''): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-        $queryBuilder = $this->setWhereClause($queryBuilder, $id);
-        $count = $queryBuilder->count('uid')
+        $result = [];
+        $queryBuilder = $this->setWhereClause($queryBuilder, $searchFilter);
+        $queryResult = $queryBuilder->select('*')
             ->from('pages')
-            ->execute()
+            ->orderBy('sorting')
+            ->execute();
+        while ($row = $queryResult->fetch()) {
+            BackendUtility::workspaceOL('pages', $row, -99, true);
+            if ($row) {
+                $result[] = $row;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Returns true if the node has children.
+     *
+     * @param int $id
+     * @return bool
+     */
+    protected function hasNodeSubPages(int $id): bool
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
+        $queryBuilder->count('uid')
+            ->from('pages')
+            ->where(
+                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(1)),
+                // Only show records in default language
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            )
+            ->orderBy('sorting');
+        if ((int)$id >= 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+            );
+        }
+        $count = $queryBuilder->execute()
             ->fetchColumn(0);
         return (bool)$count;
     }

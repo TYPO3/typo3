@@ -353,14 +353,15 @@ class BackendUtility
      *          stops the process if we meet a page, the user has no reading access to.
      * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is
      *          usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+     * @param string[] $additionalFields Additional Fields to select for rootline records
      * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
      */
-    public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false)
+    public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false, array $additionalFields = [])
     {
         static $BEgetRootLine_cache = [];
         $output = [];
         $pid = $uid;
-        $ident = $pid . '-' . $clause . '-' . $workspaceOL;
+        $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . implode(',', $additionalFields) : '');
         if (is_array($BEgetRootLine_cache[$ident])) {
             $output = $BEgetRootLine_cache[$ident];
         } else {
@@ -368,7 +369,7 @@ class BackendUtility
             $theRowArray = [];
             while ($uid != 0 && $loopCheck) {
                 $loopCheck--;
-                $row = self::getPageForRootline($uid, $clause, $workspaceOL);
+                $row = self::getPageForRootline($uid, $clause, $workspaceOL, $additionalFields);
                 if (is_array($row)) {
                     $uid = $row['pid'];
                     $theRowArray[] = $row;
@@ -382,20 +383,22 @@ class BackendUtility
             $c = count($theRowArray);
             foreach ($theRowArray as $val) {
                 $c--;
-                $output[$c] = [
-                    'uid' => $val['uid'],
-                    'pid' => $val['pid'],
-                    'title' => $val['title'],
-                    'doktype' => $val['doktype'],
-                    'tsconfig_includes' => $val['tsconfig_includes'],
-                    'TSconfig' => $val['TSconfig'],
-                    'is_siteroot' => $val['is_siteroot'],
-                    't3ver_oid' => $val['t3ver_oid'],
-                    't3ver_wsid' => $val['t3ver_wsid'],
-                    't3ver_state' => $val['t3ver_state'],
-                    't3ver_stage' => $val['t3ver_stage'],
-                    'backend_layout_next_level' => $val['backend_layout_next_level']
+                $fields = [
+                    'uid',
+                    'pid',
+                    'title',
+                    'doktype',
+                    'tsconfig_includes',
+                    'TSconfig',
+                    'is_siteroot',
+                    't3ver_oid',
+                    't3ver_wsid',
+                    't3ver_state',
+                    't3ver_stage',
+                    'backend_layout_next_level',
                 ];
+                $fields = array_merge($fields, $additionalFields);
+                $output[$c] = array_intersect_key($val, array_combine($fields, $fields));
                 if (isset($val['_ORIG_pid'])) {
                     $output[$c]['_ORIG_pid'] = $val['_ORIG_pid'];
                 }
@@ -411,10 +414,11 @@ class BackendUtility
      * @param int $uid Page id for which to create the root line.
      * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
      * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+     * @param string[] $additionalFields AdditionalFields to fetch from the root line
      * @return array Cached page record for the rootline
      * @see BEgetRootLine
      */
-    protected static function getPageForRootline($uid, $clause, $workspaceOL)
+    protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [])
     {
         static $getPageForRootline_cache = [];
         $ident = $uid . '-' . $clause . '-' . $workspaceOL;
@@ -439,7 +443,8 @@ class BackendUtility
                     't3ver_wsid',
                     't3ver_state',
                     't3ver_stage',
-                    'backend_layout_next_level'
+                    'backend_layout_next_level',
+                    ...$additionalFields
                 )
                 ->from('pages')
                 ->where(
