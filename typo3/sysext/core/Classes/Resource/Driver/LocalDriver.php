@@ -535,21 +535,26 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
         while ($iterator->valid()) {
             /** @var $entry \SplFileInfo */
             $entry = $iterator->current();
-            // skip non-files/non-folders, and empty entries
-            if ((!$entry->isFile() && !$entry->isDir()) || $entry->getFilename() == '' ||
-                ($entry->isFile() && !$includeFiles) || ($entry->isDir() && !$includeDirs)) {
+            $isFile = $entry->isFile();
+            $isDirectory = $isFile ? false : $entry->isDir();
+            if (
+                (!$isFile && !$isDirectory) // skip non-files/non-folders
+                || ($isFile && !$includeFiles) // skip files if they are excluded
+                || ($isDirectory && !$includeDirs) // skip directories if they are excluded
+                || $entry->getFilename() === '' // skip empty entries
+            ) {
                 $iterator->next();
                 continue;
             }
             $entryIdentifier = '/' . substr($entry->getPathname(), $pathLength);
             $entryName = PathUtility::basename($entryIdentifier);
-            if ($entry->isDir()) {
+            if ($isDirectory) {
                 $entryIdentifier .= '/';
             }
             $entryArray = [
                 'identifier' => $entryIdentifier,
                 'name' => $entryName,
-                'type' => $entry->isDir() ? 'dir' : 'file'
+                'type' => $isDirectory ? 'dir' : 'file'
             ];
             $directoryEntries[$entryIdentifier] = $entryArray;
             $iterator->next();
