@@ -333,6 +333,7 @@ class ElementHistoryController
 
             $singleLine['title'] = $this->generateTitle($entry['tablename'], $entry['recuid']);
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
+            $singleLine['actiontype'] = $entry['actiontype'];
             if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY) {
                 // show changes
                 if (!$this->showDiff) {

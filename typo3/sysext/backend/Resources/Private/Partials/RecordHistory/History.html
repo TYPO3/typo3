@@ -35,7 +35,7 @@
 					<f:if condition="{historyRow.originalBackendUserName}"> ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {historyRow.originalBackendUserName})</f:if>
 				</td>
 				<td>
-					<a href="{elementUrl}" title="{f:translate('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title}</a>
+					<a href="{elementUrl}" title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:linkRecordHistory')}">{historyRow.title -> f:format.raw()}</a>
 				</td>
 				<td>
 					<f:switch expression="{historyRow.actiontype}">
