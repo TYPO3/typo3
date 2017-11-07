@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -958,10 +959,27 @@ class RecordHistory
         }
 
         if (!isset($this->pageAccessCache[$pageId])) {
-            $this->pageAccessCache[$pageId] = BackendUtility::readPageAccess(
-                $pageId,
-                $this->getBackendUser()->getPagePermsClause(1)
-            );
+            $isDeletedPage = false;
+            if ($this->showInsertDelete && isset($GLOBALS['TCA']['pages']['ctrl']['delete'])) {
+                $deletedField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
+                $pageRecord = $this->getRecord('pages', $pageId);
+                $isDeletedPage = (bool)$pageRecord[$deletedField];
+            }
+            if ($isDeletedPage) {
+                // The page is deleted, so we fake its uid to be the one of the parent page.
+                // By doing so, the following API will use this id to traverse the rootline
+                // and check whether it is in the users' web mounts.
+                // We check however if the user has (or better had) access to the deleted page itself.
+                // Since the only way we got here is by requesting the history of the parent page
+                // we can be sure this parent page actually exists.
+                $pageRecord['uid'] = $pageRecord['pid'];
+                $this->pageAccessCache[$pageId] = $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::PAGE_SHOW);
+            } else {
+                $this->pageAccessCache[$pageId] = BackendUtility::readPageAccess(
+                    $pageId,
+                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                );
+            }
         }
 
         return $this->pageAccessCache[$pageId] !== false;
