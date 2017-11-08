@@ -204,9 +204,6 @@ return [
                                                         </enabledControls>
                                                         <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
                                                     </appearance>
-                                                    <behaviour type="array">
-                                                        <localizeChildrenAtParentLocalization>1</localizeChildrenAtParentLocalization>
-                                                    </behaviour>
                                                     <overrideChildTca>
                                                         <types type="array">
                                                             <numIndex index="0">

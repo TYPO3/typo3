@@ -128,9 +128,6 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_inline_11_child',
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => true,
-                ],
                 'appearance' => [
                     'showSynchronizationLink' => true,
                     'showAllLocalizationLink' => true,

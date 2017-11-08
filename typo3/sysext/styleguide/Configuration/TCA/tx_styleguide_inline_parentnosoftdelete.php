@@ -159,9 +159,6 @@ return [
                         ],
                     ],
                 ],
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => 1,
-                ],
             ],
         ],
 

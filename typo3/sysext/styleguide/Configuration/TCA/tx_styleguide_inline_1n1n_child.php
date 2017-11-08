@@ -140,9 +140,6 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_1n1n_childchild',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
-                'behaviour' => [
-                    'localizeChildrenAtParentLocalization' => true,
-                ],
             ],
         ],
 
