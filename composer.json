@@ -54,7 +54,7 @@
 		"typo3/testing-framework": "~1.1.0",
 		"codeception/codeception": "^2.3",
 		"enm1989/chromedriver": "~2.30",
-		"typo3/cms-styleguide": "~8.0.8",
+		"typo3/cms-styleguide": "~9.0.0",
 		"friendsofphp/php-cs-fixer": "^2.0",
 		"fiunchinho/phpunit-randomizer": "~3.0.0"
 	},

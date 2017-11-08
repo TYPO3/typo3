@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b603bc5f3ec745ae1db133cca1fc6d46",
+    "content-hash": "f8ebffa676af5146bdaa2b87785bc3d8",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4099,16 +4099,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "8.0.13",
+            "version": "9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "fd49466bad8aa9ce395d14443ce81cff711cb305"
+                "reference": "a33efbb4279fd218087376739da4a0aeec85a607"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/fd49466bad8aa9ce395d14443ce81cff711cb305",
-                "reference": "fd49466bad8aa9ce395d14443ce81cff711cb305",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/a33efbb4279fd218087376739da4a0aeec85a607",
+                "reference": "a33efbb4279fd218087376739da4a0aeec85a607",
                 "shasum": ""
             },
             "replace": {
@@ -4144,7 +4144,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2017-11-08T12:44:36+00:00"
+            "time": "2017-11-08T14:50:48+00:00"
         },
         {
             "name": "typo3/testing-framework",
