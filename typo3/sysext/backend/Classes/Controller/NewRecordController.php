@@ -194,8 +194,13 @@ class NewRecordController
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule(
             'TYPO3/CMS/Backend/Wizard/NewContentElement',
             'function(NewContentElement) {
-                $(".t3js-toggle-new-content-element-wizard").click(function() {
-                    NewContentElement.wizard($(this).data("url"), $(this).data("title"));
+                require([\'jquery\'], function($) {
+                    $(function() {
+                        $(\'.t3js-toggle-new-content-element-wizard\').click(function() {
+                            var $me = $(this);
+                            NewContentElement.wizard($me.data(\'url\'), $me.data(\'title\'));
+                        });
+                    });
                 });
             }'
         );
