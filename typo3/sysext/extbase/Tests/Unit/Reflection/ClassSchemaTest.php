@@ -140,14 +140,21 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     public function testClassSchemaDetectsInjectProperties()
     {
-        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+        $classSchema = new ClassSchema(Fixture\DummyClassWithInjectDoctrineAnnotation::class);
         static::assertTrue($classSchema->hasInjectProperties());
 
-        $propertyDefinition = $classSchema->getProperty('propertyWithInjectAnnotation');
-        static::assertTrue($propertyDefinition['annotations']['inject']);
-
         $injectProperties = $classSchema->getInjectProperties();
-        static::assertArrayHasKey('propertyWithInjectAnnotation', $injectProperties);
+        static::assertArrayHasKey('propertyWithFullQualifiedClassName', $injectProperties);
+        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']);
+
+        static::assertArrayHasKey('propertyWithRelativeClassName', $injectProperties);
+        static::assertSame('DummyClassWithInjectDoctrineAnnotation', $injectProperties['propertyWithRelativeClassName']);
+
+        static::assertArrayHasKey('propertyWithImportedClassName', $injectProperties);
+        static::assertSame('ClassSchemaTest', $injectProperties['propertyWithImportedClassName']);
+
+        static::assertArrayHasKey('propertyWithImportedAndAliasedClassName', $injectProperties);
+        static::assertSame('AliasedClassSchemaTest', $injectProperties['propertyWithImportedAndAliasedClassName']);
     }
 
     public function testClassSchemaDetectsInjectMethods()

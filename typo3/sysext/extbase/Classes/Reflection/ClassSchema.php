@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Extbase\Reflection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -91,11 +93,6 @@ class ClassSchema
     /**
      * @var array
      */
-    protected static $ignoredTags = ['package', 'subpackage', 'license', 'copyright', 'author', 'version', 'const'];
-
-    /**
-     * @var array
-     */
     private $tags = [];
 
     /**
@@ -136,15 +133,9 @@ class ClassSchema
             $this->modelType = static::MODELTYPE_VALUEOBJECT;
         }
 
-        $docCommentParser = new DocCommentParser();
+        $docCommentParser = new DocCommentParser(true);
         $docCommentParser->parseDocComment($reflectionClass->getDocComment());
-        foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-            if (in_array($tag, static::$ignoredTags, true)) {
-                continue;
-            }
-
-            $this->tags[$tag] = $values;
-        }
+        $this->tags = $docCommentParser->getTagsValues();
 
         $this->reflectProperties($reflectionClass);
         $this->reflectMethods($reflectionClass);
@@ -155,6 +146,8 @@ class ClassSchema
      */
     protected function reflectProperties(\ReflectionClass $reflectionClass)
     {
+        $annotationReader = new AnnotationReader();
+
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
 
@@ -170,14 +163,10 @@ class ClassSchema
                 'tags'        => []
             ];
 
-            $docCommentParser = new DocCommentParser();
+            $docCommentParser = new DocCommentParser(true);
             $docCommentParser->parseDocComment($reflectionProperty->getDocComment());
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                if (in_array($tag, static::$ignoredTags, true)) {
-                    continue;
-                }
-
-                $this->properties[$propertyName]['tags'][$tag] = $values;
+                $this->properties[$propertyName]['tags'][strtolower($tag)] = $values;
             }
 
             $this->properties[$propertyName]['annotations']['inject'] = false;
@@ -187,7 +176,25 @@ class ClassSchema
             $this->properties[$propertyName]['annotations']['cascade'] = null;
             $this->properties[$propertyName]['annotations']['dependency'] = null;
 
+            if ($propertyName !== 'settings'
+                && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class)) instanceof Inject
+            ) {
+                try {
+                    $varValue = ltrim($docCommentParser->getTagValues('var')[0], '\\');
+                    $this->properties[$propertyName]['annotations']['inject'] = true;
+                    $this->properties[$propertyName]['annotations']['type'] = $varValue;
+                    $this->properties[$propertyName]['annotations']['dependency'] = $varValue;
+
+                    $this->injectProperties[] = $propertyName;
+                } catch (\Exception $e) {
+                }
+            }
+
             if ($propertyName !== 'settings' && $docCommentParser->isTaggedWith('inject')) {
+                trigger_error(
+                    'Tagging properties with @inject is deprecated and will be removed in TYPO3 v10.0.',
+                    E_USER_DEPRECATED
+                );
                 try {
                     $varValues = $docCommentParser->getTagValues('var');
                     $this->properties[$propertyName]['annotations']['inject'] = true;
@@ -253,13 +260,9 @@ class ClassSchema
             $this->methods[$methodName]['params']       = [];
             $this->methods[$methodName]['tags']         = [];
 
-            $docCommentParser = new DocCommentParser();
+            $docCommentParser = new DocCommentParser(true);
             $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                if (in_array($tag, static::$ignoredTags, true)) {
-                    continue;
-                }
-
                 $this->methods[$methodName]['tags'][$tag] = $values;
             }
 

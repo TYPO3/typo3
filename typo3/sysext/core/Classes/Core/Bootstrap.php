@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -219,6 +221,27 @@ class Bootstrap
         if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
             self::$usesComposerClassLoading = true;
         }
+
+        /** @see initializeAnnotationRegistry */
+        AnnotationRegistry::registerLoader([$classLoader, 'loadClass']);
+
+        /*
+         * All annotations defined by and for Extbase need to be
+         * ignored during their deprecation. Later their usage may and
+         * should throw an Exception
+         */
+        AnnotationReader::addGlobalIgnoredName('inject');
+        AnnotationReader::addGlobalIgnoredName('transient');
+        AnnotationReader::addGlobalIgnoredName('lazy');
+        AnnotationReader::addGlobalIgnoredName('validate');
+        AnnotationReader::addGlobalIgnoredName('cascade');
+        AnnotationReader::addGlobalIgnoredName('ignorevalidation');
+        AnnotationReader::addGlobalIgnoredName('firsttest');
+        AnnotationReader::addGlobalIgnoredName('anothertest');
+        AnnotationReader::addGlobalIgnoredName('test');
+        AnnotationReader::addGlobalIgnoredName('const');
+        // ...
+
         return $this;
     }
 
