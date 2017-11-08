@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -102,13 +103,24 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             if ($table === 'pages') {
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
                 $pid = is_null($liveVersionId) ? $row['uid'] : $liveVersionId;
-            } elseif ($row['pid'] < 0) {
+            } elseif (($row['pid'] ?? 0) < 0) {
                 $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
                 $pid = $prevRec['pid'];
             } else {
-                $pid = $row['pid'];
+                $pid = $row['pid'] ?? 0;
             }
-            $result['inlineFirstPid'] = (int)$pid;
+            if (MathUtility::canBeInterpretedAsInteger($pid)) {
+                $pageRecord = BackendUtility::getRecord('pages', (int)$pid);
+                if ((int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
+                    $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+                }
+            } elseif (strpos($pid, 'NEW') !== 0) {
+                throw new \RuntimeException(
+                    'inlineFirstPid should either be an integer or a "NEW..." string',
+                    1521220142
+                );
+            }
+            $result['inlineFirstPid'] = $pid;
         }
         return $result;
     }
