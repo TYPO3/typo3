@@ -543,7 +543,7 @@ class PageLayoutController
     {
         if ($this->current_sys_language > 0) {
             $overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-                'title',
+                '*',
                 'pages_language_overlay',
                 'pid = ' . (int)$this->id .
                 ' AND sys_language_uid = ' . (int)$this->current_sys_language .
@@ -553,6 +553,7 @@ class PageLayoutController
                 '',
                 ''
             );
+            BackendUtility::workspaceOL('pages_language_overlay', $overlayRecord);
             return $overlayRecord['title'];
         } else {
             return $this->pageinfo['title'];
