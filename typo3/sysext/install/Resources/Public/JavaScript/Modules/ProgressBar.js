@@ -39,7 +39,7 @@ define(['jquery', 'TYPO3/CMS/Install/Severity'], function ($, Severity) {
 			progressBar.attr('aria-valuenow',progresss);
 		}
 		if (title) {
-			progressBar.find('.sr-only').html(title);
+			progressBar.find('.sr-only').text(title);
 		}
 		return progressBar;
 	};

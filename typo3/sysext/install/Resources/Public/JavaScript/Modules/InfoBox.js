@@ -35,10 +35,10 @@ define(['jquery', 'TYPO3/CMS/Install/Severity'], function ($, Severity) {
 		var infoBox = this.template.clone();
 		infoBox.addClass('callout-' + Severity.getCssClass(severity));
 		if (title) {
-			infoBox.find('h4').html(title);
+			infoBox.find('h4').text(title);
 		}
 		if (message) {
-			infoBox.find('.callout-body').html(message);
+			infoBox.find('.callout-body').text(message);
 		} else {
 			infoBox.find('.callout-body').remove();
 		}

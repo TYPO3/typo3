@@ -244,7 +244,7 @@ define([
 				domButton.find('button').data('action', action);
 			}
 			if (title) {
-				domButton.find('button').html(title);
+				domButton.find('button').text(title);
 			}
 			$(this.selectorOutput).append(domButton);
 		},

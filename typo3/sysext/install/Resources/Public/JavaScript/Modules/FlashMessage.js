@@ -35,10 +35,10 @@ define(['jquery', 'TYPO3/CMS/Install/Severity'], function ($, Severity) {
 		var flashMessage = this.template.clone();
 		flashMessage.addClass('alert-' + Severity.getCssClass(severity));
 		if (title) {
-			flashMessage.find('h4').html(title);
+			flashMessage.find('h4').text(title);
 		}
 		if (message) {
-			flashMessage.find('.messageText').html(message);
+			flashMessage.find('.messageText').text(message);
 		} else {
 			flashMessage.find('.messageText').remove();
 		}

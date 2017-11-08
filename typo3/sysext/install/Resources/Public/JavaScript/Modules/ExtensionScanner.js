@@ -219,8 +219,8 @@ define(['jquery',
 												var aMatch = $(hitTemplate).clone();
 												aMatch.find('.t3js-extensionScanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
 												aMatch.find('.t3js-extensionScanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
-												aMatch.find('.t3js-extensionScanner-hit-filename').html(file);
-												aMatch.find('.t3js-extensionScanner-hit-message').html(match.message);
+												aMatch.find('.t3js-extensionScanner-hit-filename').text(file);
+												aMatch.find('.t3js-extensionScanner-hit-message').text(match.message);
 												if (match.indicator === 'strong') {
 													aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
 														.append('<span class="badge" title="Reliable match, false positive unlikely">strong</span>');
@@ -241,8 +241,8 @@ define(['jquery',
 														aRest.find('.t3js-extensionScanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);
 														aRest.find('.t3js-extensionScanner-hit-rest-panel-head .badge').empty().text(restFile.version);
 														aRest.find('.t3js-extensionScanner-hit-rest-panel-body').attr('id', 'collapse' + restFile.uniqueId);
-														aRest.find('.t3js-extensionScanner-hit-rest-headline').html(restFile.headline);
-														aRest.find('.t3js-extensionScanner-hit-rest-body').html(restFile.content);
+														aRest.find('.t3js-extensionScanner-hit-rest-headline').text(restFile.headline);
+														aRest.find('.t3js-extensionScanner-hit-rest-body').text(restFile.content);
 														aRest.addClass('panel-' + restFile.class);
 														aMatch.find('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
 														self.listOfAffectedRestFileHashes.push(restFile.file_hash);

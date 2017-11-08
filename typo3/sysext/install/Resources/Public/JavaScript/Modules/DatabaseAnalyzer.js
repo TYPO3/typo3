@@ -102,13 +102,13 @@ define([
 										aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox').attr('checked', 'checked');
 									}
 									aLine.find('.t3js-databaseAnalyzer-suggestion-line-label').attr('for', 't3-install-db-' + hash);
-									aLine.find('.t3js-databaseAnalyzer-suggestion-line-statement').html(line.statement);
+									aLine.find('.t3js-databaseAnalyzer-suggestion-line-statement').text(line.statement);
 									if (line.current !== undefined) {
-										aLine.find('.t3js-databaseAnalyzer-suggestion-line-current-value').html(line.current);
+										aLine.find('.t3js-databaseAnalyzer-suggestion-line-current-value').text(line.current);
 										aLine.find('.t3js-databaseAnalyzer-suggestion-line-current').show();
 									}
 									if (line.rowCount !== undefined) {
-										aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').html(line.rowCount);
+										aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').text(line.rowCount);
 										aLine.find('.t3js-databaseAnalyzer-suggestion-line-count').show();
 									}
 									aBlock.find('.t3js-databaseAnalyzer-suggestion-block-line').append(aLine);

@@ -273,7 +273,7 @@ function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 									numberOfWizardsTodo = numberOfWizardsTodo +1;
 									aRow.removeClass('t3js-upgradeWizards-list-row-template');
 									aRow.find(self.selectorWizardsListRowTitle).empty().text(element.title);
-									aRow.find(self.selectorWizardsListRowExplanation).empty().html(element.explanation);
+									aRow.find(self.selectorWizardsListRowExplanation).empty().text(element.explanation);
 									aRow.find(self.selectorWizardsListRowExecute).data('identifier', element.identifier);
 									list.find(self.selectorWizardsListRows).append(aRow);
 								}
@@ -419,7 +419,7 @@ function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
 								hasBodyContent = true;
 								var aRow = $(rowTemplate).clone();
 								aRow.find(self.selectorWizardsDoneRowMarkUndone).data('identifier', element.identifier);
-								aRow.find(self.selectorWizardsDoneRowTitle).html(element.title);
+								aRow.find(self.selectorWizardsDoneRowTitle).text(element.title);
 								$wizardsDoneContainer.append(aRow);
 							});
 						}
