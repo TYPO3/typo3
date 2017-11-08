@@ -93,13 +93,15 @@ class Generator
 
             if (!empty($sysLanguageStyleguideDemoUids)) {
                 foreach ($sysLanguageStyleguideDemoUids as $languageUid) {
-                    $newIdOfPageLanguageOverlay = StringUtility::getUniqueId('NEW');
-                    $data['pages_language_overlay'][$newIdOfPageLanguageOverlay] = [
+                    $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
+                    $data['pages'][$newIdOfLocalizedPage] = [
                         'title' => str_replace('_', ' ', substr($mainTable . " - language " . $languageUid, strlen('tx_styleguide_'))),
                         'tx_styleguide_containsdemo' => $mainTable,
                         'hidden' => 0,
-                        'pid' => $newIdOfPage,
+                        'pid' => $neighborPage,
                         'sys_language_uid' => $languageUid,
+                        'l10n_parent' => $newIdOfPage,
+                        'l10n_source' => $newIdOfPage,
                     ];
                 }
             }
