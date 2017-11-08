@@ -48,6 +48,12 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $domObjectId = $ajaxArguments[0];
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
+        if (!MathUtility::canBeInterpretedAsInteger($inlineFirstPid) && strpos($inlineFirstPid, 'NEW') !== 0) {
+            throw new \RuntimeException(
+                'inlineFirstPid should either be an integer or a "NEW..." string',
+                1521220491
+            );
+        }
         $childChildUid = null;
         if (isset($ajaxArguments[1]) && MathUtility::canBeInterpretedAsInteger($ajaxArguments[1])) {
             $childChildUid = (int)$ajaxArguments[1];
@@ -70,7 +76,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $childVanillaUid = -1 * abs((int)$child['uid']);
         } else {
             // Else inline first Pid is the storage pid of new inline records
-            $childVanillaUid = (int)$inlineFirstPid;
+            $childVanillaUid = $inlineFirstPid;
         }
 
         $childTableName = $parentConfig['foreign_table'];
@@ -118,17 +124,17 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $formDataCompilerInput = [
                     'command' => 'new',
                     'tableName' => $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'],
-                    'vanillaUid' => (int)$inlineFirstPid,
+                    'vanillaUid' => $inlineFirstPid,
                     'isInlineChild' => true,
                     'isInlineAjaxOpeningContext' => true,
                     'inlineStructure' => $inlineStackProcessor->getStructure(),
-                    'inlineFirstPid' => (int)$inlineFirstPid,
+                    'inlineFirstPid' => $inlineFirstPid,
                 ];
                 $childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput);
             }
         }
 
-        $childData['inlineParentUid'] = (int)$parent['uid'];
+        $childData['inlineParentUid'] = $parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $childResult = $nodeFactory->create($childData)->render();

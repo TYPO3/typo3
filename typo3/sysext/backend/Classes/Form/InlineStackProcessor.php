@@ -158,7 +158,7 @@ class InlineStackProcessor
     /**
      * DOM object-id for this inline level
      *
-     * @param int $inlineFirstPid Pid of top level inline element storage
+     * @param int|string $inlineFirstPid Pid of top level inline element storage or "NEW..."
      * @return string
      */
     public function getCurrentStructureDomObjectIdPrefix($inlineFirstPid)

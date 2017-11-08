@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Create and return a defined array of data ready to be used by the
  * container / element render part of FormEngine
@@ -82,8 +84,8 @@ class FormDataCompiler
                 }
             }
             if ($dataKey === 'vanillaUid') {
-                if (!is_int($dataValue)) {
-                    throw new \InvalidArgumentException('$vanillaUid is not an integer', 1437654247);
+                if (!MathUtility::canBeInterpretedAsInteger($dataValue) && strpos($dataValue, 'NEW') !== 0) {
+                    throw new \InvalidArgumentException('$vanillaUid is not an integer or "NEW..." string ID', 1437654247);
                 }
                 if (isset($initialData['command']) && $initialData['command'] === 'edit' && $dataValue < 0) {
                     throw new \InvalidArgumentException('Negative $vanillaUid is not supported with $command="edit', 1437654332);
@@ -140,13 +142,14 @@ class FormDataCompiler
             'command' => '',
             // Table name of the handled row
             'tableName' => '',
-            // Forced integer of otherwise not changed uid of the record, meaning of value depends on context (new / edit)
+            // Not changed uid of the record, meaning of value depends on context (new / edit)
             // * If $command is "edit"
             // ** $vanillaUid is a positive integer > 0 pointing to the record in the table
             // * If $command is "new":
             // ** If $vanillaUid > 0, it is the uid of a page the record should be added at
             // ** If $vanillaUid < 0, it is the uid of a record in the same table after which the new record should be added
             // ** If $vanillaUid = 0, a new record is added on page 0
+            // ** If $vanillaUid = "NEW..." Id of a parent page record if an inline child is added to a not yet persisted page
             'vanillaUid' => 0,
             // Url to return to
             'returnUrl' => null,
@@ -240,7 +243,8 @@ class FormDataCompiler
             'inlineExpandCollapseStateArray' => [],
             // The "entry" pid for inline records. Nested inline records can potentially hang around on different
             // pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes
-            // place on the page structure.
+            // place on the page structure. This is usually an int, but can be a "NEW..." string if an inline relation
+            // is added to a currently being created page.
             'inlineFirstPid' => null,
             // The "config" section of an inline parent, prepared and sanitized by TcaInlineConfiguration provider
             'inlineParentConfig' => [],
