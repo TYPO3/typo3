@@ -20,7 +20,7 @@ var __values = (this && this.__values) || function (o) {
         }
     };
 };
-define(["require", "exports", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity", "jquery", "bootstrap"], function (require, exports, Modal, Severity, $) {
+define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity", "bootstrap"], function (require, exports, $, Modal, Severity) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /**

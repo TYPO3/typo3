@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require", "exports", "TYPO3/CMS/Backend/FormEngine", "jquery", "bootstrap"], function (require, exports, FormEngine, $) {
+define(["require", "exports", "jquery", "TYPO3/CMS/Backend/FormEngine", "bootstrap"], function (require, exports, $, FormEngine) {
     "use strict";
     /**
      * Module: TYPO3/CMS/Backend/FormEngineReview

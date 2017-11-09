@@ -12,8 +12,8 @@
  */
 
 import 'bootstrap';
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import $ = require('jquery');
+import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngineReview

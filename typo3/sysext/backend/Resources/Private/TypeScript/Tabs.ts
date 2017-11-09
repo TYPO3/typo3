@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
 import 'bootstrap';
+import $ = require('jquery');
 import Client = require('./Storage/Client');
 
 /**

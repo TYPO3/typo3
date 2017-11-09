@@ -75,6 +75,7 @@ define(["require", "exports"], function (require, exports) {
         return Utility;
     }());
     var utilityObject = new Utility();
+    // @deprecated since TYPO3 v9, will be removed in TYPO3 v10. Use the TYPO3/CMS/Backend/Utility module in AMD instead
     TYPO3.Utility = utilityObject;
     return utilityObject;
 });
