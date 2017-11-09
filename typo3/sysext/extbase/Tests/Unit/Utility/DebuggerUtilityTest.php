@@ -52,6 +52,16 @@ class DebuggerUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function varDumpHandlesVariadicArguments()
+    {
+        $result = DebuggerUtility::var_dump(function (...$args) {
+        }, null, 8, true, false, true);
+        $this->assertContains('function (...$args)', $result);
+    }
+
+    /**
+     * @test
+     */
     public function varDumpRespectsBlacklistedProperties()
     {
         $testClass = new \stdClass();

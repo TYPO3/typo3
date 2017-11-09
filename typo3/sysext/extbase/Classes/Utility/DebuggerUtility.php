@@ -376,13 +376,16 @@ class DebuggerUtility
                     if ($parameter->isPassedByReference()) {
                         $parameterDump .= '&';
                     }
+                    if ($parameter->isVariadic()) {
+                        $parameterDump .= '...';
+                    }
                     if ($plainText) {
                         $parameterDump .= self::ansiEscapeWrap('$' . $parameter->name, '37', $ansiColors);
                     } else {
                         $parameterDump .= '<span class="extbase-debug-property">'
                             . htmlspecialchars('$' . $parameter->name) . '</span>';
                     }
-                    if ($parameter->isOptional()) {
+                    if ($parameter->isDefaultValueAvailable()) {
                         $parameterDump .= ' = ';
                         if ($plainText) {
                             $parameterDump .= self::ansiEscapeWrap(var_export($parameter->getDefaultValue(), true), '33', $ansiColors);
