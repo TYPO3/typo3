@@ -5,3 +5,4 @@ editor:
     typo3link: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/typo3link.js", route: "rteckeditor_wizard_browse_links" }
     # This is a plugin, found here: https://github.com/ufdada/quicktable
     quicktable: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/quicktable/plugin.js" }
+    autolinking: { resource: "EXT:rte_ckeditor/Resources/Public/JavaScript/Plugins/autolinking.js" }
