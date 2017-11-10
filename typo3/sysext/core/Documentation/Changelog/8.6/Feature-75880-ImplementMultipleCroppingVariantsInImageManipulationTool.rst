@@ -165,6 +165,8 @@ as this is the default field name for image manipulation in `sys_file_reference`
 It is also possible to set the cropping configuration only for a specific tt_content element type by using the
 `columnOverrides` feature:
 
+.. code-block:: php
+
     $GLOBALS['TCA']['tt_content']['types']['textmedia']['columnsOverrides']['assets']['config']['overrideChildTca']['columns']['crop']['config'] = [
         'cropVariants' => [
            'default' => [
