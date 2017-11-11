@@ -650,6 +650,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'd0' => [
                 'name' => [
                     'd1' => [
+                        0 => 'd12.txt',
                         'd2' => [
                             'd3' => 'd.txt'
                         ]
@@ -657,6 +658,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
                 'type' => [
                     'd1' => [
+                        0 => 'text/plain',
                         'd2' => [
                             'd3' => 'text/plain'
                         ]
@@ -664,6 +666,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
                 'tmp_name' => [
                     'd1' => [
+                        0 => '/private/var/tmp/phpMf9Qx9',
                         'd2' => [
                             'd3' => '/private/var/tmp/phprR3fax'
                         ]
@@ -671,6 +674,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
                 'error' => [
                     'd1' => [
+                        0 => 0,
                         'd2' => [
                             'd3' => 0
                         ]
@@ -678,6 +682,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                 ],
                 'size' => [
                     'd1' => [
+                        0 => 200,
                         'd2' => [
                             'd3' => 400
                         ]
@@ -725,6 +730,13 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         ]
                     ]
                 ]
+            ],
+            'error' => [
+                'name' => 'error_file.txt',
+                'type' => 'text/plain',
+                'tmp_name' => '/private/var/tmp/phpADDu87fE',
+                'error' => 0,
+                'size' => 120
             ]
         ];
         $untangledFiles = [
@@ -755,6 +767,13 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ],
             'd0' => [
                 'd1' => [
+                    0 => [
+                        'name' => 'd12.txt',
+                        'type' => 'text/plain',
+                        'tmp_name' => '/private/var/tmp/phpMf9Qx9',
+                        'error' => 0,
+                        'size' => 200
+                    ],
                     'd2' => [
                         'd3' => [
                             'name' => 'd.txt',
@@ -785,6 +804,13 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                         ]
                     ]
                 ]
+            ]     ,
+            'error' => [
+                'name' => 'error_file.txt',
+                'type' => 'text/plain',
+                'tmp_name' => '/private/var/tmp/phpADDu87fE',
+                'error' => 0,
+                'size' => 120
             ]
         ];
         $requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, ['dummy'], [], '', false);
