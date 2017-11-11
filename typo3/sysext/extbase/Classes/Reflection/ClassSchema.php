@@ -194,6 +194,13 @@ class ClassSchema
                     $this->properties[$propertyName]['annotations']['type'] = ltrim($varValues[0], '\\');
                     $this->properties[$propertyName]['annotations']['dependency'] = ltrim($varValues[0], '\\');
 
+                    if (!$reflectionProperty->isPublic()) {
+                        trigger_error(
+                            'Using @inject with non-public properties is deprecated since TYPO3 v9.0 and will stop working in TYPO3 v10.0.',
+                            E_USER_DEPRECATED
+                        );
+                    }
+
                     $this->injectProperties[] = $propertyName;
                 } catch (\Exception $e) {
                 }
