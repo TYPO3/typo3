@@ -142,7 +142,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
         // Get Template
         $templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/Resources/Private/Templates/FrontendLogin.html';
-        $template = $this->getTypoScriptFrontendController()->tmpl->getFileName($templateFile);
+        $template = GeneralUtility::getFileAbsFileName($templateFile);
         if ($template !== null && file_exists($template)) {
             $this->template = file_get_contents($template);
         }
