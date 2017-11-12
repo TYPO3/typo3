@@ -719,10 +719,11 @@ class ArrayUtility
             }
             // Do the filtering:
             if (is_array($keepItems) && !empty($keepItems)) {
+                $keepItems = array_flip($keepItems);
                 foreach ($array as $key => $value) {
                     // Get the value to compare by using the callback function:
                     $keepValue = isset($getValueFunc) ? call_user_func($getValueFunc, $value) : $value;
-                    if (!in_array($keepValue, $keepItems)) {
+                    if (!isset($keepItems[$keepValue])) {
                         unset($array[$key]);
                     }
                 }
