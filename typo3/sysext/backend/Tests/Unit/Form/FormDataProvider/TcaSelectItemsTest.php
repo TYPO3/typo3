@@ -52,10 +52,6 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected function setUp()
     {
         $this->singletonInstances = GeneralUtility::getSingletonInstances();
-        $this->subject = $this->getMockBuilder(TcaSelectItems::class)
-            ->setMethods(['getDatabaseRow'])
-            ->getMock();
-
         $this->subject = new TcaSelectItems();
     }
 
@@ -2080,6 +2076,10 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                     0 => 'removeMe',
                                     1 => 'remove',
                                 ],
+                                2 => [
+                                    0 => 'removeMe',
+                                    1 => 0,
+                                ],
                             ],
                             'maxitems' => 99999,
                         ],
@@ -2104,7 +2104,10 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
-        unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
+        unset(
+            $expected['processedTca']['columns']['aField']['config']['items'][1],
+            $expected['processedTca']['columns']['aField']['config']['items'][2]
+        );
 
         $this->assertEquals($expected, $this->subject->addData($input));
     }
@@ -2271,6 +2274,12 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                                     0 => 'removeMe',
                                     1 => 'remove',
                                 ],
+                                2 => [
+                                    0 => 'keep me',
+                                    1 => 0,
+                                    null,
+                                    null,
+                                ],
                             ],
                             'maxitems' => 99999,
                         ],
@@ -2296,7 +2305,68 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
+        $expected['processedTca']['columns']['aField']['config']['items'] = array_values($expected['processedTca']['columns']['aField']['config']['items']);
+        $this->assertEquals($expected, $this->subject->addData($input));
+    }
 
+    /**
+     * @test
+     */
+    public function addDataRemovesItemsByZeroValueRemoveItemsPageTsConfig()
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => ''
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'keepMe',
+                                    1 => 'keep',
+                                    null,
+                                    null,
+                                ],
+                                1 => [
+                                    0 => 'keepMe',
+                                    1 => 'keepMe2',
+                                    null,
+                                    null,
+                                ],
+                                2 => [
+                                    0 => 'remove me',
+                                    1 => 0,
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ]
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'removeItems' => '0',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var LanguageService|ObjectProphecy $languageService */
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = [];
+        unset($expected['processedTca']['columns']['aField']['config']['items'][2]);
         $this->assertEquals($expected, $this->subject->addData($input));
     }
 

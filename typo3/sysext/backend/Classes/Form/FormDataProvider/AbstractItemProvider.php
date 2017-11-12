@@ -533,8 +533,7 @@ abstract class AbstractItemProvider
         }
 
         // If keepItems is set but is an empty list all current items get removed
-        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'])
-            && $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'] !== '0') {
+        if ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'] === '') {
             return [];
         }
 
@@ -560,19 +559,20 @@ abstract class AbstractItemProvider
     protected function removeItemsByRemoveItemsPageTsConfig(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
-        if (empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
+        if (!isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
             || !is_string($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'])
+            || $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'] === ''
         ) {
             return $items;
         }
 
-        $removeItems = GeneralUtility::trimExplode(
+        $removeItems = array_flip(GeneralUtility::trimExplode(
             ',',
             $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'],
             true
-        );
+        ));
         foreach ($items as $key => $itemValues) {
-            if (in_array($itemValues[1], $removeItems)) {
+            if (isset($removeItems[$itemValues[1]])) {
                 unset($items[$key]);
             }
         }

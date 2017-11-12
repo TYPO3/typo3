@@ -496,22 +496,22 @@ class NewContentElementController
                         $authModeDeny = $config['type'] === 'select' && $config['authMode']
                             && !$backendUser->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
                         // explode TSconfig keys only as needed
-                        if (!isset($removeItems[$fN])) {
-                            $removeItems[$fN] = GeneralUtility::trimExplode(
+                        if (!isset($removeItems[$fN]) && isset($TCEFORM_TSconfig[$fN]['removeItems']) && $TCEFORM_TSconfig[$fN]['removeItems'] !== '') {
+                            $removeItems[$fN] = array_flip(GeneralUtility::trimExplode(
                                 ',',
                                 $TCEFORM_TSconfig[$fN]['removeItems'],
                                 true
-                            );
+                            ));
                         }
-                        if (!isset($keepItems[$fN])) {
-                            $keepItems[$fN] = GeneralUtility::trimExplode(
+                        if (!isset($keepItems[$fN]) && isset($TCEFORM_TSconfig[$fN]['keepItems']) && $TCEFORM_TSconfig[$fN]['keepItems'] !== '') {
+                            $keepItems[$fN] = array_flip(GeneralUtility::trimExplode(
                                 ',',
                                 $TCEFORM_TSconfig[$fN]['keepItems'],
                                 true
-                            );
+                            ));
                         }
-                        $isNotInKeepItems = !empty($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
-                        if ($authModeDeny || $fN === 'CType' && (in_array($fV, $removeItems[$fN]) || $isNotInKeepItems)) {
+                        $isNotInKeepItems = !empty($keepItems[$fN]) && !isset($keepItems[$fN][$fV]);
+                        if ($authModeDeny || ($fN === 'CType' && (isset($removeItems[$fN][$fV]) || $isNotInKeepItems))) {
                             // Remove element all together:
                             unset($wizardItems[$key]);
                             break;

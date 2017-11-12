@@ -1964,6 +1964,7 @@ class ArrayUtilityTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function keepItemsInArrayWorksWithOneArgumentDataProvider()
     {
         $array = [
+            0 => 0,
             'one' => 'one',
             'two' => 'two',
             'three' => 'three'
