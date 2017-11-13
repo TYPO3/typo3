@@ -227,7 +227,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                 $row = $queryBuilder
-                    ->select('uid', 'username', 'password', 'email')
+                    ->select('*')
                     ->from($userTable)
                     ->where(
                         $queryBuilder->expr()->orX(
