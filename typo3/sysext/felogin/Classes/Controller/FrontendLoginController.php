@@ -232,7 +232,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                 $row = $queryBuilder
-                    ->select('uid', 'username', 'password', 'email')
+                    ->select('*')
                     ->from($userTable)
                     ->where(
                         $queryBuilder->expr()->orX(
