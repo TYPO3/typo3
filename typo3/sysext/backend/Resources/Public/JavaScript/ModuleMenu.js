@@ -233,15 +233,18 @@ require(
 				}
 				// allow to render the pagetree hard-coded in order to have acceptance tests apply correctly
 				// and to ensure that something is loaded
-				var component = Ext.getCmp(navigationComponentId);
+				var component;
 				if (typeof this.availableNavigationComponents['typo3-pagetree'] === 'undefined') {
+					if ($('.t3js-scaffold-content-navigation [data-component="typo3-pagetree"]').length < 1) {
+						$('.t3js-scaffold-content-navigation')
+							.append('<div class="scaffold-content-navigation-component" data-component="typo3-pagetree" id="navigationComponent-typo3-pagetree"></div>');
+					}
 					component = new TYPO3.Components.PageTree.App();
-					component.render('navigationComponent-' + navigationComponentId);
+					component.render('navigationComponent-typo3-pagetree');
 					this.availableNavigationComponents['typo3-pagetree'] = component;
-					// re-evaluate the component
-					component = Ext.getCmp(navigationComponentId);
 				}
 
+				component = $('#' + navigationComponentId)[0];
 				if (typeof component === 'undefined') {
 					var self = this,
 						deferredComponentExists = $.Deferred();
