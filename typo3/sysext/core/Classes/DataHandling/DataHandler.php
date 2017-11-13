@@ -1316,6 +1316,11 @@ class DataHandler implements LoggerAwareInterface
         $sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         // Points to a page on which to insert the element, possibly in the top of the page
         if ($pid >= 0) {
+            // Ensure that the "pid" is not a translated page ID, but the default page ID
+            $localizationParent = $this->recordInfo('pages', $pid, 'l10n_parent');
+            if ($localizationParent['l10n_parent'] > 0) {
+                $pid = (int)$localizationParent['l10n_parent'];
+            }
             // The numerical pid is inserted in the data array
             $fieldArray['pid'] = $pid;
             // If this table is sorted we better find the top sorting number
@@ -1332,7 +1337,13 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Here we fetch the PID of the record that we point to
             $record = $this->recordInfo($table, abs($pid), 'pid');
-            $fieldArray['pid'] = $record['pid'];
+            $pid = $record['pid'];
+            // Ensure that the "pid" is not a translated page ID, but the default page ID
+            $localizationParent = $this->recordInfo('pages', $pid, 'l10n_parent');
+            if ($localizationParent['l10n_parent'] > 0) {
+                $pid = (int)$localizationParent['l10n_parent'];
+            }
+            $fieldArray['pid'] = $pid;
         }
         return $fieldArray;
     }

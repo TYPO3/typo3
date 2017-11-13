@@ -106,6 +106,10 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             } else {
                 $pid = $row['pid'];
             }
+            $pageRecord = BackendUtility::getRecord('pages', $pid);
+            if ((int)$pageRecord['l10n_parent'] > 0) {
+                $pid = (int)$pageRecord['l10n_parent'];
+            }
             $result['inlineFirstPid'] = (int)$pid;
         }
         return $result;

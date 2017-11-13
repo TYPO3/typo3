@@ -493,4 +493,22 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
+
+    public function localizePageWithSynchronizationAndCustomLocalizedHotel()
+    {
+        // in these test cases we expect new pages not to be hidden in order to
+        // verify proper overlaying behavior during the frontend render process
+        $GLOBALS['TCA'][self::TABLE_Page]['columns']['hidden']['config']['default'] = 0;
+        $GLOBALS['TCA'][self::TABLE_Page]['columns'][self::FIELD_PageHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        // Using "localized page ID" on purpose because BE editing uses a "page" record and data handler
+        $this->actionService->modifyRecords(
+            $this->recordIds['localizedPageId'],
+            [
+                self::TABLE_Page => ['uid' => $this->recordIds['localizedPageId'], self::FIELD_PageHotel => '6,__nextUid'],
+                self::TABLE_Hotel => ['uid' => '__NEW', 'sys_language_uid' => self::VALUE_LanguageId, 'title' => 'Hotel in dansk page only'],
+            ]
+        );
+    }
 }

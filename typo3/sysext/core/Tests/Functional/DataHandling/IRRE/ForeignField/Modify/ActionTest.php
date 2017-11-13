@@ -548,6 +548,24 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
     }
 
     /**
+     * Checks for a page having a IRRE record. The page is then localized and
+     * an IRRE record is then added to the localized page
+     *
+     * @test
+     * @see DataSet/localizePageWithSynchronizationAndCustomLocalizedHotel.csv
+     */
+    public function localizePageWithSynchronizationAndCustomLocalizedHotel()
+    {
+        parent::localizePageWithSynchronizationAndCustomLocalizedHotel();
+        $this->assertAssertionDataSet('localizePageWithSynchronizationAndCustomLocalizedHotel');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Page . ':' . self::VALUE_PageId)->setRecordField(self::FIELD_PageHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #0'));
+    }
+
+    /**
      * @test
      * @see DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv
      */
