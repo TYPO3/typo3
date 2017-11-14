@@ -899,12 +899,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $dblist->thumbs = $this->getBackendUser()->uc['thumbnailsByDefault'];
             $dblist->returnUrl = $this->taskObject->returnUrl;
             $dblist->allFields = 1;
-            $dblist->localizationView = 1;
             $dblist->showClipboard = 0;
             $dblist->disableSingleTableView = 1;
             $dblist->pageRow = $this->pageinfo;
             $dblist->counter++;
-            $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => '', 'localization' => ''];
+            $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => ''];
             $dblist->modTSconfig = $this->taskObject->modTSconfig;
             $dblist->dontShowClipControlPanels = (!$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current === 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
             // Initialize the listing object, dblist, for rendering the list:

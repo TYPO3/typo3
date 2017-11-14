@@ -101,14 +101,6 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     public $allFields = 0;
 
     /**
-     * Whether to show localization view or not
-     *
-     * @var bool
-     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
-     */
-    public $localizationView = false;
-
-    /**
      * If set, csvList is outputted.
      *
      * @var bool
@@ -470,11 +462,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 HttpUtility::redirect($returnUrl);
             }
         }
-
-        // Initialize languages:
-        if ($this->localizationView) {
-            $this->initializeLanguages();
-        }
+        $this->initializeLanguages();
     }
 
     /**

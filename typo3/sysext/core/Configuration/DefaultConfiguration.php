@@ -896,7 +896,6 @@ return [
         'defaultPageTSconfig' => '
             mod.web_list.enableDisplayBigControlPanel=selectable
             mod.web_list.enableClipBoard=selectable
-            mod.web_list.enableLocalizationView=selectable
             mod.web_list.tableDisplayOrder {
                 be_users.after = be_groups
                 sys_filemounts.after = be_users

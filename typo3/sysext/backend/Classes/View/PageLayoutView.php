@@ -196,13 +196,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $showLimit = 0;
 
     /**
-     * Whether to show localization view or not
-     *
-     * @var bool
-     */
-    public $localizationView = false;
-
-    /**
      * Shared module configuration, used by localization features
      *
      * @var array
@@ -3034,11 +3027,7 @@ class PageLayoutView implements LoggerAwareInterface
                 HttpUtility::redirect($returnUrl);
             }
         }
-
-        // Initialize languages:
-        if ($this->localizationView) {
-            $this->initializeLanguages();
-        }
+        $this->initializeLanguages();
     }
 
     /**

@@ -140,13 +140,6 @@ class DatabaseRecordList
     public $pageRow = [];
 
     /**
-     * Whether to show localization view or not
-     *
-     * @var bool
-     */
-    public $localizationView = false;
-
-    /**
      * Shared module configuration, used by localization features
      *
      * @var array
@@ -943,7 +936,7 @@ class DatabaseRecordList
             $this->fieldArray[] = '_PATH_';
         }
         // Localization
-        if ($this->localizationView && $l10nEnabled) {
+        if ($l10nEnabled) {
             $this->fieldArray[] = '_LOCALIZATION_';
             $this->fieldArray[] = '_LOCALIZATION_b';
             // Only restrict to the default language if no search request is in place
@@ -1168,10 +1161,10 @@ class DatabaseRecordList
                         $cc++;
                         $this->translations = false;
                         $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, $thumbsCol);
-                        // If localization view is enabled and no search happened it means that the selected
+                        // If no search happened it means that the selected
                         // records are either default or All language and here we will not select translations
                         // which point to the main record:
-                        if ($this->localizationView && $l10nEnabled && $this->searchString === '') {
+                        if ($l10nEnabled && $this->searchString === '') {
                             // For each available translation, render the record:
                             if (is_array($this->translations)) {
                                 foreach ($this->translations as $lRow) {
@@ -1850,7 +1843,7 @@ class DatabaseRecordList
         ];
         // Enables to hide the move elements for localized records - doesn't make much sense to perform these options for them
         // For page translations these icons should never be shown
-        $isL10nOverlay = ($this->localizationView || $table === 'pages') && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isL10nOverlay = $table === 'pages' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = 0;
         if ($table === 'pages') {
@@ -2161,7 +2154,7 @@ class DatabaseRecordList
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
         // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
         // For page translations these icons should never be shown
-        $isL10nOverlay = ($this->localizationView || $table === 'pages') && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
+        $isL10nOverlay = $table === 'pages' && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         // Return blank, if disabled:
         // Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
         // For the "Normal" pad:
@@ -2854,11 +2847,7 @@ class DatabaseRecordList
                 HttpUtility::redirect($returnUrl);
             }
         }
-
-        // Initialize languages:
-        if ($this->localizationView) {
-            $this->initializeLanguages();
-        }
+        $this->initializeLanguages();
     }
 
     /**

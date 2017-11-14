@@ -87,11 +87,11 @@ class Inline1nCest
         $I->click('a[title="Close"]');
         $I->wait(3);
 
-        $I->executeJS('$(\'a[data-table="pages_language_overlay"] .icon-actions-view-list-collapse\').click();');
+        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-collapse\').click();');
         $I->wait(1);
 
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > a');
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2) > a');
+        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2) > a');
     }
 
     /**
@@ -107,7 +107,7 @@ class Inline1nCest
         $I->click('a[title="Close"]');
         $I->wait(3);
 
-        $I->executeJS('$(\'a[data-table="pages_language_overlay"] .icon-actions-view-list-collapse\').click();');
+        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-collapse\').click();');
         $I->wait(1);
 
         $I->wantTo('Check new sorting');

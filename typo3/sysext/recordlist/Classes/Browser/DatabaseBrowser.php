@@ -238,7 +238,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]));
         $dbList->thisScript = $this->thisScript;
         $dbList->thumbs = false;
-        $dbList->localizationView = true;
         $dbList->setIsEditable(false);
         $dbList->calcPerms = $backendUser->calcPerms($pageInfo);
         $dbList->noControlPanels = true;

@@ -248,7 +248,6 @@ class RecordList
         $this->MOD_MENU = [
             'bigControlPanel' => '',
             'clipBoard' => '',
-            'localization' => ''
         ];
         // Loading module configuration:
         $this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
@@ -309,12 +308,6 @@ class RecordList
                 $this->MOD_SETTINGS['clipBoard'] = true;
             }
         }
-        // Set predefined value for LocalizationView:
-        if ($this->modTSconfig['properties']['enableLocalizationView'] === 'activated') {
-            $this->MOD_SETTINGS['localization'] = true;
-        } elseif ($this->modTSconfig['properties']['enableLocalizationView'] === 'deactivated') {
-            $this->MOD_SETTINGS['localization'] = false;
-        }
 
         // Initialize the dblist object:
         /** @var $dblist RecordList\DatabaseRecordList */
@@ -324,7 +317,6 @@ class RecordList
         $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
         $dblist->returnUrl = $this->returnUrl;
         $dblist->allFields = $this->MOD_SETTINGS['bigControlPanel'] || $this->table ? 1 : 0;
-        $dblist->localizationView = $this->MOD_SETTINGS['localization'];
         $dblist->showClipboard = 1;
         $dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
         $dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];
@@ -336,7 +328,7 @@ class RecordList
         $dblist->newWizards = $this->modTSconfig['properties']['newWizards'] ? 1 : 0;
         $dblist->pageRow = $this->pageinfo;
         $dblist->counter++;
-        $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => '', 'localization' => ''];
+        $dblist->MOD_MENU = ['bigControlPanel' => '', 'clipBoard' => ''];
         $dblist->modTSconfig = $this->modTSconfig;
         $clickTitleMode = trim($this->modTSconfig['properties']['clickTitleMode']);
         $dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
@@ -504,7 +496,7 @@ class RecordList
             $this->body .= '
 
 					<!--
-						Listing options for extended view, clipboard and localization view
+						Listing options for extended view and clipboard view
 					-->
 					<div class="typo3-listOptions">
 						<form action="" method="post">';
@@ -529,16 +521,6 @@ class RecordList
                         '</label>' .
                         '</div>';
                 }
-            }
-
-            // Add "localization view" checkbox:
-            if ($this->modTSconfig['properties']['enableLocalizationView'] === 'selectable') {
-                $this->body .= '<div class="checkbox">' .
-                    '<label for="checkLocalization">' .
-                    BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"') .
-                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('localization'))) .
-                    '</label>' .
-                    '</div>';
             }
 
             $this->body .= '
