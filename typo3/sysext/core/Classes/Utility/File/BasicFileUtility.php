@@ -53,23 +53,17 @@ class BasicFileUtility
      * Allowed and denied file extensions
      * @var array
      */
-    protected $fileExtensionPermissions = [];
+    protected $fileExtensionPermissions = [
+        'allow' => '*',
+        'deny' => PHP_EXTENSIONS_DEFAULT
+
+    ];
 
     /**********************************
      *
      * Checking functions
      *
      **********************************/
-
-    /**
-     * Constructor,
-     * Initializes the internal array $this->fileExtensionPermissions based on TYPO3_CONF_VARS
-     */
-    public function __construct()
-    {
-        $this->fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow']));
-        $this->fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny']));
-    }
 
     /**
      * Sets the file permissions, used in DataHandler e.g.

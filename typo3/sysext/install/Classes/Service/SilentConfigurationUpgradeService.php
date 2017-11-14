@@ -120,6 +120,8 @@ class SilentConfigurationUpgradeService
         'GFX/png_truecolor',
         // #82803
         'FE/content_doktypes',
+        // #83081
+        'BE/fileExtensions'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

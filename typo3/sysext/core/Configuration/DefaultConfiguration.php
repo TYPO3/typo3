@@ -987,14 +987,6 @@ return [
         // String (exclude).Enter lines of default Page TSconfig.
         'defaultPermissions' => [],
         'defaultUC' => [],
-        // The control of file extensions goes in two categories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
-        // The control is done like this: If an extension matches 'allow' then the check returns TRUE. If not and an extension matches 'deny' then the check return FALSE. If no match at all, returns TRUE.
-        // You list extensions comma-separated. If the value is a '*' every extension is matched
-        // If no file extension, TRUE is returned if 'allow' is '*', FALSE if 'deny' is '*' and TRUE if none of these matches
-        // This configuration below accepts everything in ftpspace and everything in webspace except php3,php4,php5 or php files
-        'fileExtensions' => [
-            'webspace' => ['allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT]
-        ],
         'customPermOptions' => [], // Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language split', 'items' => array('key' => array('label, language split','icon reference', 'Description text, language split'))). Keys cannot contain ":|," characters.
         'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT,
         'interfaces' => 'backend',

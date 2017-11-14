@@ -719,34 +719,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function checkFileExtensionPermission($fileName)
     {
         $fileName = $this->driver->sanitizeFileName($fileName);
-        $isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
-        if ($isAllowed && $this->evaluatePermissions) {
-            $fileExtension = strtolower(PathUtility::pathinfo($fileName, PATHINFO_EXTENSION));
-            // Set up the permissions for the file extension
-            $fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
-            $fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['allow']));
-            $fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['deny']));
-            if ($fileExtension !== '') {
-                // If the extension is found amongst the allowed types, we return TRUE immediately
-                if ($fileExtensionPermissions['allow'] === '*' || GeneralUtility::inList($fileExtensionPermissions['allow'], $fileExtension)) {
-                    return true;
-                }
-                // If the extension is found amongst the denied types, we return FALSE immediately
-                if ($fileExtensionPermissions['deny'] === '*' || GeneralUtility::inList($fileExtensionPermissions['deny'], $fileExtension)) {
-                    return false;
-                }
-                // If no match we return TRUE
-                return true;
-            }
-            if ($fileExtensionPermissions['allow'] === '*') {
-                return true;
-            }
-            if ($fileExtensionPermissions['deny'] === '*') {
-                return false;
-            }
-            return true;
-        }
-        return $isAllowed;
+        return GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
     }
 
     /**

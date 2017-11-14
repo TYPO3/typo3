@@ -124,4 +124,14 @@ return [
             'Deprecation-82438-DeprecationMethods.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'fileExtensions\'][\'webspace\'][\'allow\']' => [
+        'restFiles' => [
+            'Breaking-83081-RemovedConfigurationOptionBeFileExtensionsWebspace.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'fileExtensions\'][\'webspace\'][\'deny\']' => [
+        'restFiles' => [
+            'Breaking-83081-RemovedConfigurationOptionBeFileExtensionsWebspace.rst',
+        ],
+    ],
 ];

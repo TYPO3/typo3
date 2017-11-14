@@ -154,57 +154,6 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @return array
      */
-    public function fileExtensionPermissionDataProvider()
-    {
-        return [
-            'Permissions evaluated, extension not in allowed list' => [
-                'fileName' => 'foo.txt',
-                'configuration' => ['allow' => 'jpg'],
-                'evaluatePermissions' => true,
-                'isAllowed' => true,
-            ],
-            'Permissions evaluated, extension in deny list' => [
-                'fileName' => 'foo.txt',
-                'configuration' => ['deny' => 'txt'],
-                'evaluatePermissions' => true,
-                'isAllowed' => false,
-            ],
-            'Permissions not evaluated, extension is php' => [
-                'fileName' => 'foo.php',
-                'configuration' => [],
-                'evaluatePermissions' => false,
-                'isAllowed' => false,
-            ],
-            'Permissions evaluated, extension is php' => [
-                'fileName' => 'foo.php',
-                // It is not possible to allow php file extension through configuration
-                'configuration' => ['allow' => 'php'],
-                'evaluatePermissions' => true,
-                'isAllowed' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @param string $fileName
-     * @param array $configuration
-     * @param bool $evaluatePermissions
-     * @param bool $isAllowed
-     * @test
-     * @dataProvider fileExtensionPermissionDataProvider
-     */
-    public function fileExtensionPermissionIsWorkingCorrectly($fileName, array $configuration, $evaluatePermissions, $isAllowed)
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'] = $configuration;
-        $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
-        $subject = $this->getAccessibleMock(ResourceStorage::class, ['dummy'], [$driverMock, []]);
-        $subject->_set('evaluatePermissions', $evaluatePermissions);
-        $this->assertSame($isAllowed, $subject->_call('checkFileExtensionPermission', $fileName));
-    }
-
-    /**
-     * @return array
-     */
     public function capabilitiesDataProvider()
     {
         return [
