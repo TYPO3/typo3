@@ -29,6 +29,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     const VALUE_HotelIdFirst = 3;
     const VALUE_HotelIdSecond = 4;
     const VALUE_HotelIdThird = 5;
+    const VALUE_OfferIdLast = 8;
     const VALUE_LanguageId = 1;
     const VALUE_LanguageIdSecond = 2;
 
@@ -304,6 +305,48 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newHoteId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newHotelId];
         $this->recordIds['newOfferId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newOfferId];
         $this->recordIds['newPriceId'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newPriceId];
+    }
+
+    /**
+     * @see DataSet/localizeParentContentSelectWSynchronization.csv
+     */
+    public function localizeParentContentAndSetInvalidChildReferenceWithLanguageSynchronization()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        // modify IRRE relation value of localized record (which should be sanitized and filtered)
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], [self::FIELD_ContentHotel => '0']);
+    }
+
+    /**
+     * @see DataSet/localizeParentContentSelectWSynchronization.csv
+     */
+    public function localizeParentContentAndSetInvalidChildReferenceWithLateLanguageSynchronization()
+    {
+        // disable language synchronization
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = false;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = false;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['allowLanguageSynchronization'] = false;
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->recordIds['localizedHotelId'] = $newTableIds[self::TABLE_Hotel][self::VALUE_HotelIdThird];
+        $this->recordIds['localizedOfferId'] = $newTableIds[self::TABLE_Offer][self::VALUE_OfferIdLast];
+        // now enable language synchronization
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        // modify IRRE relation values of localized records (which should be sanitized and filtered)
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['uid' => $this->recordIds['localizedContentId'], self::FIELD_ContentHotel => '0'],
+                self::TABLE_Hotel => ['uid' => $this->recordIds['localizedHotelId'], self::FIELD_ContentHotel => '0'],
+                self::TABLE_Offer => ['uid' => $this->recordIds['localizedOfferId'], self::FIELD_ContentHotel => '0'],
+            ]
+        );
     }
 
     public function localizeChildrenHavingStandaloneChildrenInSelectModeAndLanguageSynchronization()
