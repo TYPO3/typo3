@@ -627,14 +627,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         } else {
             $this->logger->debug('No user session found');
         }
-        if (is_array($this->svConfig['setup'])) {
+        if (is_array($this->svConfig['setup'] ?? false)) {
             $this->logger->debug('SV setup', $this->svConfig['setup']);
         }
 
         // Fetch user if ...
         if (
-            $activeLogin || $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']
-            || !$haveSession && $this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession']
+            $activeLogin || !empty($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser'])
+            || !$haveSession && !empty($this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession'])
         ) {
             // Use 'auth' service to find the user
             // First found user will be used
@@ -675,7 +675,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ]);
         }
         // Re-auth user when 'auth'-service option is set
-        if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
+        if (!empty($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser'])) {
             $authenticated = false;
             $this->logger->debug('alwaysAuthUser option is enabled');
         }
@@ -952,7 +952,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         $this->sessionData = unserialize($sessionRecord['ses_data']);
         // Session is anonymous so no need to fetch user
-        if ($sessionRecord['ses_anonymous']) {
+        if (!empty($sessionRecord['ses_anonymous'])) {
             return $sessionRecord;
         }
 

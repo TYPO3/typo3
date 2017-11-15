@@ -1208,12 +1208,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($key !== '') {
             if (count($parts) > 1 && $parts[1] !== '') {
                 // Go on, get the next level
-                if (is_array($config[$key . '.'])) {
+                if (is_array($config[$key . '.'] ?? false)) {
                     $TSConf = $this->getTSConfig($parts[1], $config[$key . '.']);
                 }
             } else {
-                $TSConf['value'] = $config[$key];
-                $TSConf['properties'] = $config[$key . '.'];
+                $TSConf['value'] = $config[$key] ?? null;
+                $TSConf['properties'] = $config[$key . '.'] ?? null;
             }
         }
         return $TSConf;
@@ -2060,7 +2060,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     protected function initializeDbMountpointsInWorkspace()
     {
-        $dbMountpoints = trim($this->workspaceRec['db_mountpoints']);
+        $dbMountpoints = trim($this->workspaceRec['db_mountpoints'] ?? '');
         if ($this->workspace > 0 && $dbMountpoints != '') {
             $filteredDbMountpoints = [];
             // Notice: We cannot call $this->getPagePermsClause(1);
