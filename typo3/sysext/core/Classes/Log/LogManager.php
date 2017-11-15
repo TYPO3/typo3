@@ -183,6 +183,9 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
         // Walk from general to special (t3lib, t3lib.db, t3lib.db.foo)
         // and search for the most specific configuration
         foreach ($explodedName as $partOfClassName) {
+            if (!isset($configuration[$partOfClassName])) {
+                break;
+            }
             if (!empty($configuration[$partOfClassName][$configurationKey])) {
                 $result = $configuration[$partOfClassName][$configurationKey];
             }
