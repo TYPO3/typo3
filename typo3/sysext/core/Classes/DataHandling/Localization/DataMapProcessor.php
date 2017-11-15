@@ -173,10 +173,15 @@ class DataMapProcessor
             );
         }
 
-        $dependencies = $this->fetchDependencies(
-            $forTableName,
-            $this->filterNewItemIds($forTableName, array_keys($idValues))
-        );
+        $dependencies = [];
+        // Fetching dependent localizations does not make sense for pages_language_overlay
+        // (pages_language_overlay records depend on one page and cannot be localized further)
+        if ($tableName !== 'pages_language_overlay') {
+            $dependencies = $this->fetchDependencies(
+                $forTableName,
+                $this->filterNewItemIds($forTableName, array_keys($idValues))
+            );
+        }
 
         foreach ($idValues as $id => $values) {
             $item = $this->findItem($tableName, $id);
