@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Install\Updates\RowUpdater;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -70,7 +69,7 @@ class L10nModeUpdater implements RowUpdaterInterface
      */
     public function updateTableRow(string $tableName, array $inputRow): array
     {
-        $currentId = $inputRow['uid'];
+        $currentId = (int)$inputRow['uid'];
 
         if (empty($this->payload[$tableName]['localizations'][$currentId])) {
             return $inputRow;
@@ -91,38 +90,20 @@ class L10nModeUpdater implements RowUpdaterInterface
         // the admin user is required to defined workspace state when working with DataHandler
         $fakeAdminUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $fakeAdminUser->user = ['uid' => 0, 'username' => '_migration_', 'admin' => 1];
-        $fakeAdminUser->workspace = ($inputRow['t3ver_wsid'] ?? 0);
+        $fakeAdminUser->workspace = (int)($inputRow['t3ver_wsid'] ?? 0);
         $GLOBALS['BE_USER'] = $fakeAdminUser;
 
         $tablePayload = $this->payload[$tableName];
-        $parentId = $tablePayload['localizations'][$currentId];
-        $parentTableName = ($tableName === 'pages_language_overlay' ? 'pages' : $tableName);
 
         $liveId = $currentId;
         if (!empty($inputRow['t3ver_wsid'])
             && !empty($inputRow['t3ver_oid'])
             && !VersionState::cast($inputRow['t3ver_state'])
                 ->equals(VersionState::NEW_PLACEHOLDER_VERSION)) {
-            $liveId = $inputRow['t3ver_oid'];
+            $liveId = (int)$inputRow['t3ver_oid'];
         }
 
         $dataMap = [];
-
-        // simulate modifying a parent record to trigger dependent updates
-        if (in_array('exclude', $tablePayload['fieldModes'])) {
-            $parentRecord = $this->getRow($parentTableName, $parentId);
-            foreach ($tablePayload['fieldModes'] as $fieldName => $fieldMode) {
-                if ($fieldMode !== 'exclude') {
-                    continue;
-                }
-                $dataMap[$parentTableName][$parentId][$fieldName] = $parentRecord[$fieldName];
-            }
-            $dataMap = DataMapProcessor::instance($dataMap, $fakeAdminUser)->process();
-            unset($dataMap[$parentTableName][$parentId]);
-            if (empty($dataMap[$parentTableName])) {
-                unset($dataMap[$parentTableName]);
-            }
-        }
 
         // define localization states and thus trigger updates later
         if (State::isApplicable($tableName)) {
@@ -138,33 +119,38 @@ class L10nModeUpdater implements RowUpdaterInterface
                 }
             }
 
+            // fetch the language state upfront, so that calling DataMapProcessor below
+            // will handle mergeIfNotBlank fields properly
             $languageState = State::create($tableName);
             $languageState->update($stateUpdates);
-            // only consider field names that still used mergeIfNotBlank
-            $modifiedFieldNames = array_intersect(
-                array_keys($tablePayload['fieldModes']),
-                $languageState->getModifiedFieldNames()
-            );
-            if (!empty($modifiedFieldNames)) {
-                $dataMap = [
-                    $tableName => [
-                        $liveId => [
-                            'l10n_state' => $languageState->toArray()
-                        ]
+            $dataMap = [
+                $tableName => [
+                    $liveId => [
+                        'l10n_state' => $languageState->toArray()
                     ]
-                ];
+                ]
+            ];
+        }
+
+        // simulate modifying a parent record to trigger dependent updates
+        if (in_array('exclude', $tablePayload['fieldModes'], true)) {
+            $record = $this->getRow($tableName, $liveId);
+            foreach ($tablePayload['fieldModes'] as $fieldName => $fieldMode) {
+                if ($fieldMode !== 'exclude') {
+                    continue;
+                }
+                $dataMap[$tableName][$liveId][$fieldName] = $record[$fieldName];
             }
         }
 
-        if (empty($dataMap)) {
-            return $inputRow;
+        // in case $dataMap is empty, nothing has to be updated
+        if (!empty($dataMap)) {
+            // let DataHandler process all updates, $inputRow won't change
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->enableLogging = false;
+            $dataHandler->start($dataMap, [], $fakeAdminUser);
+            $dataHandler->process_datamap();
         }
-
-        // let DataHandler process all updates, $inputRow won't change
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->enableLogging = false;
-        $dataHandler->start($dataMap, [], $fakeAdminUser);
-        $dataHandler->process_datamap();
 
         if (!empty($dataHandlerHooks)) {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php'] = $dataHandlerHooks;
