@@ -166,7 +166,15 @@ class ConfigurationController
         if ($selectedTreeDetails['type'] === 'global') {
             $globalArrayKey = $selectedTreeDetails['globalKey'];
             $renderArray = $GLOBALS[$globalArrayKey];
+
+            // Hook for Processing blindedConfigurationOptions
             $blindedConfigurationOptions = $this->blindedConfigurationOptions;
+
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['modifyBlindedConfigurationOptions'] ?? [] as $classReference) {
+                $processingObject = GeneralUtility::makeInstance($classReference);
+                $blindedConfigurationOptions = $processingObject->modifyBlindedConfigurationOptions($blindedConfigurationOptions, $this);
+            }
+
             if (isset($blindedConfigurationOptions[$globalArrayKey])) {
                 // Prepare blinding for all database connection types
                 foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
