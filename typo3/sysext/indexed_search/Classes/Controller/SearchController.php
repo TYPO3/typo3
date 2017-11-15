@@ -261,6 +261,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             // index configuration is disabled
             $freeIndexUid = -1;
         }
+
+        if (!empty($searchData['extendedSearch'])) {
+            $this->view->assignMultiple($this->processExtendedSearchParameters());
+        }
+
         $indexCfgs = GeneralUtility::intExplode(',', $freeIndexUid);
         $resultsets = [];
         foreach ($indexCfgs as $freeIndexUid) {
@@ -992,38 +997,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign('sword', $this->getSword());
         // Extended search
         if (!empty($searchData['extendedSearch'])) {
-            // "Search for"
-            $allSearchTypes = $this->getAllAvailableSearchTypeOptions();
-            $this->view->assign('allSearchTypes', $allSearchTypes);
-            $allDefaultOperands = $this->getAllAvailableOperandsOptions();
-            $this->view->assign('allDefaultOperands', $allDefaultOperands);
-            $showTypeSearch = !empty($allSearchTypes) || !empty($allDefaultOperands);
-            $this->view->assign('showTypeSearch', $showTypeSearch);
-            // "Search in"
-            $allMediaTypes = $this->getAllAvailableMediaTypesOptions();
-            $this->view->assign('allMediaTypes', $allMediaTypes);
-            $allLanguageUids = $this->getAllAvailableLanguageOptions();
-            $this->view->assign('allLanguageUids', $allLanguageUids);
-            $showMediaAndLanguageSearch = !empty($allMediaTypes) || !empty($allLanguageUids);
-            $this->view->assign('showMediaAndLanguageSearch', $showMediaAndLanguageSearch);
-            // Sections
-            $allSections = $this->getAllAvailableSectionsOptions();
-            $this->view->assign('allSections', $allSections);
-            // Free Indexing Configurations
-            $allIndexConfigurations = $this->getAllAvailableIndexConfigurationsOptions();
-            $this->view->assign('allIndexConfigurations', $allIndexConfigurations);
-            // Sorting
-            $allSortOrders = $this->getAllAvailableSortOrderOptions();
-            $this->view->assign('allSortOrders', $allSortOrders);
-            $allSortDescendings = $this->getAllAvailableSortDescendingOptions();
-            $this->view->assign('allSortDescendings', $allSortDescendings);
-            $showSortOrders = !empty($allSortOrders) || !empty($allSortDescendings);
-            $this->view->assign('showSortOrders', $showSortOrders);
-            // Limits
-            $allNumberOfResults = $this->getAllAvailableNumberOfResultsOptions();
-            $this->view->assign('allNumberOfResults', $allNumberOfResults);
-            $allGroups = $this->getAllAvailableGroupOptions();
-            $this->view->assign('allGroups', $allGroups);
+            $this->view->assignMultiple($this->processExtendedSearchParameters());
         }
         $this->view->assign('searchParams', $searchData);
     }
@@ -1535,6 +1509,43 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function multiplePagesType($item_type)
     {
         return is_object($this->externalParsers[$item_type]) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
+    }
+
+    /**
+     * Process variables related to indexed_search extendedSearch needed by frontend view.
+     * Populate select boxes and setting some flags.
+     * The returned data should be passed into the view by assignMultiple()
+     *
+     * @return array Variables to pass into the view so they can be used in fluid template
+     */
+    protected function processExtendedSearchParameters()
+    {
+        // "Search for"
+        $extendedSearchParameters['allSearchTypes'] = $this->getAllAvailableSearchTypeOptions();
+        $extendedSearchParameters['allDefaultOperands'] = $this->getAllAvailableOperandsOptions();
+        $extendedSearchParameters['showTypeSearch'] = !empty($allSearchTypes) || !empty($allDefaultOperands);
+
+        // "Search in"
+        $extendedSearchParameters['allMediaTypes'] = $this->getAllAvailableMediaTypesOptions();
+        $extendedSearchParameters['allLanguageUids'] = $this->getAllAvailableLanguageOptions();
+        $extendedSearchParameters['showMediaAndLanguageSearch'] = !empty($allMediaTypes) || !empty($allLanguageUids);
+
+        // Sections
+        $extendedSearchParameters['allSections'] = $this->getAllAvailableSectionsOptions();
+
+        // Free Indexing Configurations
+        $extendedSearchParameters['allIndexConfigurations'] = $this->getAllAvailableIndexConfigurationsOptions();
+
+        // Sorting
+        $extendedSearchParameters['allSortOrders'] = $this->getAllAvailableSortOrderOptions();
+        $extendedSearchParameters['allSortDescendings'] = $this->getAllAvailableSortDescendingOptions();
+        $extendedSearchParameters['showSortOrders'] = !empty($allSortOrders) || !empty($allSortDescendings);
+
+        // Limits
+        $extendedSearchParameters['allNumberOfResults'] = $this->getAllAvailableNumberOfResultsOptions();
+        $extendedSearchParameters['allGroups'] = $this->getAllAvailableGroupOptions();
+
+        return $extendedSearchParameters;
     }
 
     /**
