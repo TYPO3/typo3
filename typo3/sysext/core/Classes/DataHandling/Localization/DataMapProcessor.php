@@ -130,7 +130,29 @@ class DataMapProcessor
             $this->enrich($this->nextItems);
         }
 
+        $this->allDataMap = $this->purgeDataMap($this->allDataMap);
         return $this->allDataMap;
+    }
+
+    /**
+     * Purges superfluous empty data-map sections.
+     *
+     * @param array $dataMap
+     * @return array
+     */
+    protected function purgeDataMap(array $dataMap): array
+    {
+        foreach ($dataMap as $tableName => $idValues) {
+            foreach ($idValues as $id => $values) {
+                if (empty($values)) {
+                    unset($dataMap[$tableName][$id]);
+                }
+            }
+            if (empty($dataMap[$tableName])) {
+                unset($dataMap[$tableName]);
+            }
+        }
+        return $dataMap;
     }
 
     /**
@@ -203,7 +225,7 @@ class DataMapProcessor
     }
 
     /**
-     * Sanitizes the submitted data-map and removes fields which are not
+     * Sanitizes the submitted data-map items and removes fields which are not
      * defined as custom and thus rely on either parent or source values.
      *
      * @param DataMapItem[] $items
@@ -253,7 +275,7 @@ class DataMapProcessor
         foreach ($item->getApplicableScopes() as $scope) {
             $fieldNames = array_merge(
                 $fieldNames,
-                $this->getFieldNamesForItemScope($item, $scope, !$item->isNew())
+                $this->getFieldNamesForItemScope($item, $scope, false)
             );
         }
 
@@ -669,7 +691,7 @@ class DataMapProcessor
             $suggestedAncestorIds = $this->mapRelationItemId($relationHandler->itemArray);
         }
 
-        return $suggestedAncestorIds;
+        return array_filter($suggestedAncestorIds);
     }
 
     /**
@@ -701,7 +723,7 @@ class DataMapProcessor
             $persistedIds = $this->mapRelationItemId($relationHandler->itemArray);
         }
 
-        return $persistedIds;
+        return array_filter($persistedIds);
     }
 
     /**
