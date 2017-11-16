@@ -370,7 +370,7 @@ class Clipboard
     public function getContentFromTab($pad)
     {
         $lines = [];
-        if (is_array($this->clipData[$pad]['el'])) {
+        if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
@@ -752,7 +752,7 @@ class Clipboard
         $params = [];
         $params['tx_impexp']['action'] = 'export';
         // Traverse items:
-        if (is_array($this->clipData[$pad]['el'])) {
+        if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
@@ -808,7 +808,7 @@ class Clipboard
      */
     public function currentMode()
     {
-        return $this->clipData[$this->current]['mode'] === 'copy' ? 'copy' : 'cut';
+        return ($this->clipData[$this->current]['mode'] ?? '') === 'copy' ? 'copy' : 'cut';
     }
 
     /**
@@ -817,7 +817,7 @@ class Clipboard
      */
     public function cleanCurrent()
     {
-        if (is_array($this->clipData[$this->current]['el'])) {
+        if (is_array($this->clipData[$this->current]['el'] ?? false)) {
             foreach ($this->clipData[$this->current]['el'] as $k => $v) {
                 list($table, $uid) = explode('|', $k);
                 if ($table !== '_FILE') {
@@ -853,7 +853,7 @@ class Clipboard
     {
         $pad = $pad ? $pad : $this->current;
         $list = [];
-        if (is_array($this->clipData[$pad]['el'])) {
+        if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
                     list($table, $uid) = explode('|', $k);
@@ -883,7 +883,7 @@ class Clipboard
     public function isSelected($table, $uid)
     {
         $k = $table . '|' . $uid;
-        return $this->clipData[$this->current]['el'][$k] ? ($this->current === 'normal' ? $this->currentMode() : 1) : '';
+        return !empty($this->clipData[$this->current]['el'][$k]) ? ($this->current === 'normal' ? $this->currentMode() : 1) : '';
     }
 
     /**

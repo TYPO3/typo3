@@ -843,7 +843,7 @@ class ExtensionManagementUtility
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
         if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
-            list($place, $modRef) = GeneralUtility::trimExplode(':', $position, true);
+            list($place, $modRef) = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
             $modules = ',' . $GLOBALS['TBE_MODULES'][$main] . ',';
             if ($place === null || ($modRef !== null && !GeneralUtility::inList($modules, $modRef))) {
                 $place = 'bottom';
@@ -1779,7 +1779,7 @@ tt_content.' . $key . $suffix . ' {
         global $_EXTKEY;
         // Load each ext_tables.php file of loaded extensions
         foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
-            if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess) && $extensionInformation['ext_tables.php']) {
+            if ((is_array($extensionInformation) || $extensionInformation instanceof \ArrayAccess) && !empty($extensionInformation['ext_tables.php'])) {
                 // $_EXTKEY and $_EXTCONF are available in ext_tables.php
                 // and are explicitly set in cached file as well
                 $_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? null;

@@ -121,7 +121,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
         switch ($configurationType) {
             case self::CONFIGURATION_TYPE_SETTINGS:
                 $configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-                return $configuration['settings'];
+                return $configuration['settings'] ?? [];
             case self::CONFIGURATION_TYPE_FRAMEWORK:
                 return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
             case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:

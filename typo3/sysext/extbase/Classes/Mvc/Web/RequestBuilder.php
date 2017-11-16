@@ -173,7 +173,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
         $request->setMethod($this->environmentService->getServerRequestMethod());
-        if (is_string($parameters['format']) && $parameters['format'] !== '') {
+        if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {
             $request->setFormat($this->defaultFormat);

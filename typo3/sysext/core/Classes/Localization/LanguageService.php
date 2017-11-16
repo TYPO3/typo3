@@ -272,7 +272,7 @@ class LanguageService
         if (is_array($localLanguage) && !empty($localLanguage)) {
             // it depends on, whether we should return the result or set it in the global $LOCAL_LANG array
             if ($setGlobal) {
-                $globalLanguage = (array)$GLOBALS['LOCAL_LANG'];
+                $globalLanguage = (array)($GLOBALS['LOCAL_LANG'] ?? []);
                 ArrayUtility::mergeRecursiveWithOverrule($globalLanguage, $localLanguage);
             } else {
                 $globalLanguage = $localLanguage;

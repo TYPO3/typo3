@@ -86,12 +86,12 @@ class BackendConfigurationManager extends AbstractConfigurationManager
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];
-        if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'])) {
+        if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'] ?? false)) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
         }
         if ($pluginName !== null) {
             $pluginSignature = strtolower($extensionName . '_' . $pluginName);
-            if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
+            if (is_array($setup['module.']['tx_' . $pluginSignature . '.'] ?? false)) {
                 $overruleConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']);
                 ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $overruleConfiguration);
             }
@@ -112,7 +112,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
      */
     protected function getSwitchableControllerActions($extensionName, $pluginName)
     {
-        $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'];
+        $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] ?? false;
         if (!is_array($switchableControllerActions)) {
             $switchableControllerActions = [];
         }

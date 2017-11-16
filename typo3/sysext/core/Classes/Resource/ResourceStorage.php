@@ -1570,7 +1570,7 @@ class ResourceStorage implements ResourceStorageInterface
             foreach ($allStorages as $storage) {
                 // To circumvent the permission check of the folder, we use the factory to create it "manually" instead of directly using $storage->getProcessingFolder()
                 // See #66695 for details
-                list($storageUid, $processingFolderIdentifier) = GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder']);
+                list($storageUid, $processingFolderIdentifier) = array_pad(GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder']), 2, null);
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }

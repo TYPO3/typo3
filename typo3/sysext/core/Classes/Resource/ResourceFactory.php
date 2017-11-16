@@ -142,7 +142,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if ($uid === 0 && $fileIdentifier !== null) {
             $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
         }
-        if (!$this->storageInstances[$uid]) {
+        if (empty($this->storageInstances[$uid])) {
             $storageConfiguration = null;
             $storageObject = null;
             list($_, $uid, $recordData, $fileIdentifier) = $this->emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier);
@@ -374,7 +374,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of file has to be numeric. UID given: "' . $uid . '"', 1300096564);
         }
-        if (!$this->fileInstances[$uid]) {
+        if (empty($this->fileInstances[$uid])) {
             // Fetches data in case $fileData is empty
             if (empty($fileData)) {
                 $fileData = $this->getFileIndexRepository()->findOneByUid($uid);

@@ -564,10 +564,10 @@ class FileList
         $colType = ($colType === 'th') ? 'th' : 'td';
         $noWrap = $this->no_noWrap ? '' : ' nowrap';
         // Start up:
-        $l10nParent = isset($data['_l10nparent_']) ? (int)$data['_l10nparent_'] : 0;
+        $l10nParent = (int)($data['_l10nparent_'] ?? 0);
         $out = '
 		<!-- Element, begin: -->
-		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
+		<tr ' . $rowParams . ' data-uid="' . (int)($data['uid'] ?? 0) . '" data-l10nparent="' . $l10nParent . '">';
         // Show icon and lines
         if ($this->showIcon) {
             $out .= '
@@ -601,12 +601,12 @@ class FileList
         foreach ($fields as $vKey) {
             if (isset($data[$vKey])) {
                 if ($lastKey) {
-                    $cssClass = $this->addElement_tdCssClass[$lastKey];
+                    $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
                     if ($this->oddColumnsCssClass && $ccount % 2 == 0) {
-                        $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
+                        $cssClass = implode(' ', [$cssClass, $this->oddColumnsCssClass]);
                     }
                     $out .= '
-						<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+						<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . ($this->addElement_tdParams[$lastKey] ?? '') . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;
@@ -624,12 +624,12 @@ class FileList
             }
         }
         if ($lastKey) {
-            $cssClass = $this->addElement_tdCssClass[$lastKey];
+            $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
             if ($this->oddColumnsCssClass) {
-                $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
+                $cssClass = implode(' ', [$cssClass, $this->oddColumnsCssClass]);
             }
             $out .= '
-				<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+				<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . ($this->addElement_tdParams[$lastKey] ?? '') . '>' . $data[$lastKey] . '</' . $colType . '>';
         }
         // End row
         $out .= '
@@ -919,7 +919,7 @@ class FileList
                             $theData[$field] = $this->makeRef($folderObject);
                             break;
                         default:
-                            $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field], $this->fixedL);
+                            $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field] ?? '', $this->fixedL);
                     }
                 }
             }
@@ -1430,7 +1430,7 @@ class FileList
         }
 
         // Hook for manipulating edit icons.
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] ?? false)) {
             $cells['__fileOrFolderObject'] = $fileOrFolderObject;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);

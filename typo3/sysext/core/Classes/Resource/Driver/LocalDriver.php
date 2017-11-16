@@ -1370,10 +1370,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
     public function getRole($folderIdentifier)
     {
         $name = PathUtility::basename($folderIdentifier);
-        $role = $this->mappingFolderNameToRole[$name];
-        if (empty($role)) {
-            $role = FolderInterface::ROLE_DEFAULT;
-        }
+        $role = $this->mappingFolderNameToRole[$name] ?? FolderInterface::ROLE_DEFAULT;
         return $role;
     }
 

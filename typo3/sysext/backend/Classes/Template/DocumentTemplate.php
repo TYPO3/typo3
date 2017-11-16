@@ -256,7 +256,7 @@ function jumpToUrl(URL) {
         $this->scriptID = ltrim(GeneralUtility::_GET('route'), '/');
         $this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/', '-', $this->scriptID);
         // Individual configuration per script? If so, make a recursive merge of the arrays:
-        if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {
+        if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID] ?? false)) {
             // Make copy
             $ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];
             // merge styles.
@@ -265,16 +265,16 @@ function jumpToUrl(URL) {
             unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);
         }
         // Main Stylesheets:
-        if ($GLOBALS['TBE_STYLES']['stylesheet']) {
+        if (!empty($GLOBALS['TBE_STYLES']['stylesheet'])) {
             $this->styleSheetFile = $GLOBALS['TBE_STYLES']['stylesheet'];
         }
-        if ($GLOBALS['TBE_STYLES']['stylesheet2']) {
+        if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
             $this->styleSheetFile2 = $GLOBALS['TBE_STYLES']['stylesheet2'];
         }
-        if ($GLOBALS['TBE_STYLES']['styleSheetFile_post']) {
+        if (!empty($GLOBALS['TBE_STYLES']['styleSheetFile_post'])) {
             $this->styleSheetFile_post = $GLOBALS['TBE_STYLES']['styleSheetFile_post'];
         }
-        if ($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle']) {
+        if (!empty($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'])) {
             $this->inDocStylesArray['TBEstyle'] = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
         }
         // include all stylesheets

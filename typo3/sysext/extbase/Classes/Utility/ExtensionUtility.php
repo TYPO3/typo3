@@ -194,7 +194,7 @@ tt_content.' . $pluginSignature . ' {
         }
         $moduleConfiguration['extensionName'] = $extensionName;
         $moduleConfiguration['routeTarget'] = \TYPO3\CMS\Extbase\Core\Bootstrap::class . '::handleBackendRequest';
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
+        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] ?? false)) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = [];
         }
         foreach ($controllerActions as $controllerName => $actions) {

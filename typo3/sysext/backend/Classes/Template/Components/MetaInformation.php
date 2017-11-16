@@ -57,7 +57,7 @@ class MetaInformation
         $pageRecord = $this->recordArray;
         $title = '';
         // Is this a real page
-        if (is_array($pageRecord) && $pageRecord['uid']) {
+        if (is_array($pageRecord) && !empty($pageRecord['uid'])) {
             $title = substr($pageRecord['_thePathFull'], 0, -1);
             // Remove current page title
             $pos = strrpos($title, $pageRecord['title']);
@@ -174,7 +174,7 @@ class MetaInformation
         $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
         // Add icon with context menu, etc:
         // If there IS a real page
-        if (is_array($pageRecord) && $pageRecord['uid']) {
+        if (is_array($pageRecord) && !empty($pageRecord['uid'])) {
             $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
             $iconImg = '<span ' . $toolTip . '>' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
@@ -185,7 +185,7 @@ class MetaInformation
             // If the module is about a FAL resource
             try {
                 $resourceObject = ResourceFactory::getInstance()->getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
-                $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'];
+                $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'] ?? '';
                 $title = $fileMountTitle ?: $resourceObject->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder
                 if ($resourceObject instanceof FolderInterface && !$resourceObject->getStorage()->isWithinFileMountBoundaries($resourceObject)) {

@@ -438,7 +438,7 @@ class FileListController extends ActionController
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
                         'SET[bigControlPanel]',
-                        $this->MOD_SETTINGS['bigControlPanel'],
+                        $this->MOD_SETTINGS['bigControlPanel'] ?? '',
                         '',
                         '',
                         'id="bigControlPanel"'
@@ -450,7 +450,7 @@ class FileListController extends ActionController
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
                         'SET[displayThumbs]',
-                        $this->MOD_SETTINGS['displayThumbs'],
+                        $this->MOD_SETTINGS['displayThumbs'] ?? '',
                         '',
                         '',
                         'id="checkDisplayThumbs"'
@@ -462,7 +462,7 @@ class FileListController extends ActionController
                     'html' => BackendUtility::getFuncCheck(
                         $this->id,
                         'SET[clipBoard]',
-                        $this->MOD_SETTINGS['clipBoard'],
+                        $this->MOD_SETTINGS['clipBoard'] ?? '',
                         '',
                         '',
                         'id="checkClipBoard"'

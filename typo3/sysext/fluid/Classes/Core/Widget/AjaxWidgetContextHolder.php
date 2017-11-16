@@ -52,7 +52,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
         if (TYPO3_MODE === 'FE') {
             $this->widgetContexts = unserialize($GLOBALS['TSFE']->fe_user->getKey('ses', $this->widgetContextsStorageKey));
         } else {
-            $this->widgetContexts = unserialize($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]);
+            $this->widgetContexts = isset($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) ? unserialize($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) : [];
             $GLOBALS['BE_USER']->writeUC();
         }
     }

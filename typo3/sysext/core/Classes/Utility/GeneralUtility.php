@@ -205,7 +205,7 @@ class GeneralUtility
      */
     public static function _POST($var = null)
     {
-        $value = $var === null ? $_POST : (empty($var) ? null : $_POST[$var]);
+        $value = $var === null ? $_POST : (empty($var) || !isset($_POST[$var]) ? null : $_POST[$var]);
         // This is there for backwards-compatibility, in order to avoid NULL
         if (isset($value) && !is_array($value)) {
             $value = (string)$value;
@@ -1664,13 +1664,13 @@ class GeneralUtility
                     break;
                 case 'complete':
                     // If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
-                    if ($val['attributes']['base64']) {
+                    if (!empty($val['attributes']['base64'])) {
                         $current[$tagName] = base64_decode($val['value']);
                     } else {
                         // Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
-                        $current[$tagName] = (string)$val['value'];
+                        $current[$tagName] = (string)($val['value'] ?? '');
                         // Cast type:
-                        switch ((string)$val['attributes']['type']) {
+                        switch ((string)($val['attributes']['type'] ?? '')) {
                             case 'integer':
                                 $current[$tagName] = (int)$current[$tagName];
                                 break;
@@ -2458,7 +2458,7 @@ class GeneralUtility
             if (!$mode) {
                 // If use of .htaccess rule is not configured,
                 // we use the default query-string method
-                if ($lookupFile[1]) {
+                if (!empty($lookupFile[1])) {
                     $separator = '&';
                 } else {
                     $separator = '?';
@@ -2606,7 +2606,7 @@ class GeneralUtility
                 break;
             case 'REQUEST_URI':
                 // Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
-                if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']) {
+                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar'])) {
                     // This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
                     list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
                     $retVal = $GLOBALS[$v][$n];

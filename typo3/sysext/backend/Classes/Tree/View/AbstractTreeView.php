@@ -603,7 +603,7 @@ abstract class AbstractTreeView
      */
     public function expandNext($id)
     {
-        return $this->stored[$this->bank][$id] || $this->expandAll ? 1 : 0;
+        return !empty($this->stored[$this->bank][$id]) || $this->expandAll ? 1 : 0;
     }
 
     /**

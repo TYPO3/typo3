@@ -304,13 +304,13 @@ class PathUtility
                 $theDirPartsCount--;
             }
             // "." in path: remove element
-            if ($theDirParts[$partCount] === '.') {
+            if (($theDirParts[$partCount] ?? '') === '.') {
                 array_splice($theDirParts, $partCount, 1);
                 $partCount--;
                 $theDirPartsCount--;
             }
             // ".." in path:
-            if ($theDirParts[$partCount] === '..') {
+            if (($theDirParts[$partCount] ?? '') === '..') {
                 if ($partCount >= 1) {
                     // Rremove this and previous element
                     array_splice($theDirParts, $partCount - 1, 2);
