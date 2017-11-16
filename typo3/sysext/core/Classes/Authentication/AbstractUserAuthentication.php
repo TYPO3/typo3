@@ -650,15 +650,15 @@ abstract class AbstractUserAuthentication
             } else {
                 GeneralUtility::devLog('No user session found.', self::class, 2);
             }
-            if (is_array($this->svConfig['setup'])) {
+            if (is_array($this->svConfig['setup'] ?? false)) {
                 GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), self::class, 0);
             }
         }
 
         // Fetch user if ...
         if (
-            $activeLogin || $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']
-            || !$haveSession && $this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession']
+            $activeLogin || !empty($this->svConfig['setup'][$this->loginType . '_alwaysFetchUser'])
+            || !$haveSession && !empty($this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession'])
         ) {
             // Use 'auth' service to find the user
             // First found user will be used
@@ -699,7 +699,7 @@ abstract class AbstractUserAuthentication
             }
         }
         // Re-auth user when 'auth'-service option is set
-        if ($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser']) {
+        if (!empty($this->svConfig['setup'][$this->loginType . '_alwaysAuthUser'])) {
             $authenticated = false;
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('alwaysAuthUser option is enabled', self::class);
@@ -969,7 +969,7 @@ abstract class AbstractUserAuthentication
 
         $this->sessionData = unserialize($sessionRecord['ses_data']);
         // Session is anonymous so no need to fetch user
-        if ($sessionRecord['ses_anonymous']) {
+        if (!empty($sessionRecord['ses_anonymous'])) {
             return $sessionRecord;
         }
 
