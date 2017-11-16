@@ -1408,7 +1408,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getPageAndRootline()
     {
-        $this->page = $this->sys_page->getPage($this->id);
+        $this->resolveTranslatedPageId();
         if (empty($this->page)) {
             // If no page, we try to find the page before in the rootLine.
             // Page is 'not found' in case the id itself was not an accessible page. code 1
@@ -1504,6 +1504,27 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
             }
         }
+    }
+
+    /**
+     * If $this->id contains a translated page record, this needs to be resolved to the default language
+     * in order for all rootline functionality and access restrictions to be in place further on.
+     *
+     * Additionally, if a translated page is found, $this->sys_language_uid/sys_language_content is set as well.
+     */
+    protected function resolveTranslatedPageId()
+    {
+        $this->page = $this->sys_page->getPage($this->id);
+        // Accessed a default language page record, nothing to resolve
+        if (empty($this->page) || (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] === 0) {
+            return;
+        }
+        $this->sys_language_uid = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+        $this->sys_language_content = $this->sys_language_uid;
+        $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
+        $this->id = $this->page['uid'];
+        // For common best-practice reasons, this is set, however, will be optional for new routing mechanisms
+        $this->mergingWithGetVars(['L' => $this->sys_language_uid]);
     }
 
     /**
@@ -2510,8 +2531,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->metaCharset = $this->config['config']['metaCharset'];
         }
 
-        // Get values from TypoScript:
-        $this->sys_language_uid = ($this->sys_language_content = (int)$this->config['config']['sys_language_uid']);
+        // Get values from TypoScript, if not set before
+        if ($this->sys_language_uid === 0) {
+            $this->sys_language_uid = ($this->sys_language_content = (int)$this->config['config']['sys_language_uid']);
+        }
         list($this->sys_language_mode, $sys_language_content) = GeneralUtility::trimExplode(';', $this->config['config']['sys_language_mode']);
         $this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
         // If sys_language_uid is set to another language than default:
