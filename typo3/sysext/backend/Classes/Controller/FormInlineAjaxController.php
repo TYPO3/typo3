@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -362,6 +364,23 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             $oldItems = $this->getInlineRelatedRecordsUidArray($oldItemList);
             $newItems = $this->getInlineRelatedRecordsUidArray($newItemList);
+
+            // Render error messages from DataHandler
+            $tce->printLogErrorMessages();
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+            if (!empty($messages)) {
+                foreach ($messages as $message) {
+                    $jsonArray['messages'][] = [
+                        'title'    => $message->getTitle(),
+                        'message'  => $message->getMessage(),
+                        'severity' => $message->getSeverity()
+                    ];
+                    if ($message->getSeverity() === AbstractMessage::ERROR) {
+                        $jsonArray['hasErrors'] = true;
+                    }
+                }
+            }
 
             // Set the items that should be removed in the forms view:
             $removedItems = array_diff($oldItems, $newItems);
