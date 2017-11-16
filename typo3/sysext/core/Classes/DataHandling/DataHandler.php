@@ -8758,7 +8758,7 @@ class DataHandler
      */
     public function newlog($message, $error = 0)
     {
-        return $this->log('', 0, 0, 0, $error, '[newlog()] ' . $message, -1);
+        return $this->log('', 0, 0, 0, $error, $message, -1);
     }
 
     /**
