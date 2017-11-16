@@ -968,11 +968,11 @@ class AdminPanelView
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'l10n_parent',
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'sys_language_uid',
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter($tsfe->sys_language_uid, \PDO::PARAM_INT)
                     )
                 )

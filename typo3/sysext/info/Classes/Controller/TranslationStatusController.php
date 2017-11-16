@@ -397,13 +397,13 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'l10n_parent',
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    'sys_language_uid',
+                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                     $queryBuilder->createNamedParameter($langId, \PDO::PARAM_INT)
                 )
             )

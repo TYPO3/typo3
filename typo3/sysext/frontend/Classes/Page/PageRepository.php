@@ -468,11 +468,11 @@ class PageRepository implements LoggerAwareInterface
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->in(
-                        'l10n_parent',
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($page_ids, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->eq(
-                        'sys_language_uid',
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter($lUid, \PDO::PARAM_INT)
                     )
                 )
@@ -485,7 +485,7 @@ class PageRepository implements LoggerAwareInterface
                     $row['_PAGES_OVERLAY'] = true;
                     $row['_PAGES_OVERLAY_UID'] = $row['uid'];
                     $row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
-                    $origUid = $row['l10n_parent'];
+                    $origUid = $row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                     // Unset vital fields that are NOT allowed to be overlaid:
                     unset($row['uid']);
                     unset($row['pid']);
@@ -696,7 +696,7 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                 ),
                 $queryBuilder->expr()->eq(
-                    'sys_language_uid',
+                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($this->where_hid_del),

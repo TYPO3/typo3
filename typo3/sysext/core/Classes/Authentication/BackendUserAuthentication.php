@@ -579,7 +579,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // Return 0 if page is not within the allowed web mount
         // Always do this for the default language page record
-        if (!$this->isInWebMount($row['l10n_parent'] ?: $row['uid'])) {
+        if (!$this->isInWebMount($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $row['uid'])) {
             return Permission::NOTHING;
         }
         $out = Permission::NOTHING;

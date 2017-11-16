@@ -1517,9 +1517,9 @@ class EditDocumentController
             // Get all available languages for the page
             // If editing a page, the translations of the current UID need to be fetched
             if ($table === 'pages') {
-                $row = BackendUtility::getRecord($table, $uid, 'l10n_parent');
+                $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
                 // Ensure the check is always done against the default language page
-                $langRows = $this->getLanguages($row['l10n_parent'] ?: $uid);
+                $langRows = $this->getLanguages($row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid);
             } else {
                 $langRows = $this->getLanguages($pid);
             }
@@ -1726,8 +1726,8 @@ class EditDocumentController
             // Add join with pages translations to only show active languages
             $queryBuilder->from('pages', 'o')
                 ->where(
-                    $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('s.uid')),
-                    $queryBuilder->expr()->eq('o.l10n_parent', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'], $queryBuilder->quoteIdentifier('s.uid')),
+                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'], $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
                 );
         }
 

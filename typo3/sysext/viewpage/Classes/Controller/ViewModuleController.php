@@ -306,6 +306,8 @@ class ViewModuleController extends ActionController
      */
     protected function getPreviewLanguages()
     {
+        $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
         $pageIdToShow = (int)GeneralUtility::_GP('id');
         $modSharedTSconfig = BackendUtility::getModTSconfig($pageIdToShow, 'mod.SHARED');
         if ($modSharedTSconfig['properties']['view.']['disableLanguageSelector'] === '1') {
@@ -331,11 +333,11 @@ class ViewModuleController extends ActionController
                 'sys_language',
                 'pages',
                 'o',
-                $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('sys_language.uid'))
+                $queryBuilder->expr()->eq('o.' . $languageField, $queryBuilder->quoteIdentifier('sys_language.uid'))
             )
             ->where(
                 $queryBuilder->expr()->eq(
-                    'o.l10n_parent',
+                    'o.' . $localizationParentField,
                     $queryBuilder->createNamedParameter($pageIdToShow, \PDO::PARAM_INT)
                 )
             )

@@ -318,7 +318,7 @@ class PageLayoutController
                     'pages',
                     $queryBuilder->expr()->eq(
                         'sys_language.uid',
-                        $queryBuilder->quoteIdentifier('pages.sys_language_uid')
+                        $queryBuilder->quoteIdentifier('pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'])
                     )
                 )
                 ->where(
@@ -327,7 +327,7 @@ class PageLayoutController
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'pages.l10n_parent',
+                        'pages.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
@@ -345,7 +345,7 @@ class PageLayoutController
                     )
                 )
                 ->groupBy(
-                    'pages.sys_language_uid',
+                    'pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                     'sys_language.uid',
                     'sys_language.pid',
                     'sys_language.tstamp',
@@ -644,11 +644,11 @@ class PageLayoutController
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'l10n_parent',
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'sys_language_uid',
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
                     )
                 )
@@ -994,6 +994,8 @@ class PageLayoutController
             if ($this->pageIsNotLockedForEditors() && $this->getBackendUser()->checkLanguageAccess(0)) {
                 // Edit localized pages only when one specific language is selected
                 if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
+                    $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+                    $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('pages');
                     $queryBuilder->getRestrictions()
@@ -1005,11 +1007,11 @@ class PageLayoutController
                         ->from('pages')
                         ->where(
                             $queryBuilder->expr()->eq(
-                                'l10n_parent',
+                                $localizationParentField,
                                 $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
-                                'sys_language_uid',
+                                $languageField,
                                 $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
                             )
                         )

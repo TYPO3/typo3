@@ -2448,7 +2448,7 @@ class PageLayoutView implements LoggerAwareInterface
                     'sys_language',
                     'pages',
                     'pages',
-                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.sys_language_uid'))
+                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField']))
                 )
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -2456,7 +2456,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'pages.l10n_parent',
+                        'pages.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
@@ -2474,7 +2474,7 @@ class PageLayoutView implements LoggerAwareInterface
                     )
                 )
                 ->groupBy(
-                    'pages.sys_language_uid',
+                    'pages.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                     'sys_language.uid',
                     'sys_language.pid',
                     'sys_language.tstamp',
@@ -4292,9 +4292,12 @@ class PageLayoutView implements LoggerAwareInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->gt(
-                        'sys_language_uid',
+                        $GLOBALS['TCA']['pages']['ctrl']['languageField'],
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     )
                 )
@@ -4303,7 +4306,7 @@ class PageLayoutView implements LoggerAwareInterface
 
         $this->pageOverlays = [];
         while ($row = $result->fetch()) {
-            $this->pageOverlays[$row['sys_language_uid']] = $row;
+            $this->pageOverlays[$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]] = $row;
         }
 
         $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);

@@ -751,6 +751,8 @@ class FileList
     public function initializeLanguages()
     {
         // Look up page overlays:
+        $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -762,9 +764,12 @@ class FileList
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq(
+                        $localizationParentField,
+                        $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                    ),
                     $queryBuilder->expr()->gt(
-                        'sys_language_uid',
+                        $languageField,
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     )
                 )
@@ -773,7 +778,7 @@ class FileList
 
         $this->pageOverlays = [];
         while ($row = $result->fetch()) {
-            $this->pageOverlays[$row['sys_language_uid']] = $row;
+            $this->pageOverlays[$row[$languageField]] = $row;
         }
 
         $this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);

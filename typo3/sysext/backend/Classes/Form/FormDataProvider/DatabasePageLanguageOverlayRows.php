@@ -60,7 +60,10 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
 
         $rows = $queryBuilder->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq(
+                $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+            ))
             ->execute()
             ->fetchAll();
 

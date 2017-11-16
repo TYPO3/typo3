@@ -618,6 +618,8 @@ class RecordList
                 }
             }
             // Then, subtract the languages which are already on the page:
+            $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+            $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
             $queryBuilder->getRestrictions()->removeAll();
             $queryBuilder->select('sys_language.uid AS uid', 'sys_language.title AS title')
@@ -626,7 +628,7 @@ class RecordList
                     'sys_language',
                     'pages',
                     'pages',
-                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.sys_language_uid'))
+                    $queryBuilder->expr()->eq('sys_language.uid', $queryBuilder->quoteIdentifier('pages.' . $languageField))
                 )
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -634,7 +636,7 @@ class RecordList
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        'pages.l10n_parent',
+                        'pages.' . $localizationParentField,
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
@@ -652,7 +654,7 @@ class RecordList
                     )
                 )
                 ->groupBy(
-                    'pages.sys_language_uid',
+                    'pages.' . $languageField,
                     'sys_language.uid',
                     'sys_language.pid',
                     'sys_language.tstamp',

@@ -701,7 +701,7 @@ class WorkspaceService implements SingletonInterface
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        'l10n_parent',
+                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
@@ -1141,7 +1141,7 @@ class WorkspaceService implements SingletonInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    'l10n_parent',
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )

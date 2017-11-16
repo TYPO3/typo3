@@ -1040,8 +1040,8 @@ class DataHandler implements LoggerAwareInterface
                     if ($theRealPid >= 0) {
                         // Checks if records can be inserted on this $pid.
                         // If this is a page translation, the check needs to be done for the l10n_parent record
-                        if ($table === 'pages' && $incomingFieldArray['sys_language_uid'] > 0 && $incomingFieldArray['l10n_parent'] > 0) {
-                            $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray['l10n_parent']);
+                        if ($table === 'pages' && $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
+                            $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
                         } else {
                             $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
                         }
@@ -1313,10 +1313,7 @@ class DataHandler implements LoggerAwareInterface
         // Points to a page on which to insert the element, possibly in the top of the page
         if ($pid >= 0) {
             // Ensure that the "pid" is not a translated page ID, but the default page ID
-            $localizationParent = $this->recordInfo('pages', $pid, 'l10n_parent');
-            if ($localizationParent['l10n_parent'] > 0) {
-                $pid = (int)$localizationParent['l10n_parent'];
-            }
+            $pid = $this->getDefaultLanguagePageId($pid);
             // The numerical pid is inserted in the data array
             $fieldArray['pid'] = $pid;
             // If this table is sorted we better find the top sorting number
@@ -1333,13 +1330,8 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Here we fetch the PID of the record that we point to
             $record = $this->recordInfo($table, abs($pid), 'pid');
-            $pid = $record['pid'];
             // Ensure that the "pid" is not a translated page ID, but the default page ID
-            $localizationParent = $this->recordInfo('pages', $pid, 'l10n_parent');
-            if ($localizationParent['l10n_parent'] > 0) {
-                $pid = (int)$localizationParent['l10n_parent'];
-            }
-            $fieldArray['pid'] = $pid;
+            $fieldArray['pid'] = $this->getDefaultLanguagePageId($record['pid']);
         }
         return $fieldArray;
     }
@@ -4419,13 +4411,12 @@ class DataHandler implements LoggerAwareInterface
 
         // Check if this is a translation of a page, if so then it just needs to be kept "sorting" in sync
         // Usually called from moveL10nOverlayRecords()
-        $originalTranslationRecord = null;
         if ($table === 'pages') {
-            $fullRecord = $this->recordInfo($table, $uid, 'sys_language_uid, l10n_parent');
-            if ($fullRecord['sys_language_uid'] > 0) {
-                $originalTranslationRecord = $this->recordInfo($table, $fullRecord['l10n_parent'], 'pid,' . $sortRow);
+            $defaultLanguagePageId = $this->getDefaultLanguagePageId((int)$uid);
+            if ($defaultLanguagePageId !== (int)$uid) {
+                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageId, 'pid,' . $sortRow);
                 $updateFields[$sortRow] = $originalTranslationRecord[$sortRow];
-                // Ensure that the PID is always the same as the original page
+                // Ensure that the PID is always the same as the default language page
                 $destPid = $originalTranslationRecord['pid'];
             }
         }
@@ -5096,8 +5087,8 @@ class DataHandler implements LoggerAwareInterface
         $fullLanguageAccessCheck = true;
         if ($table === 'pages') {
             // If this is a page translation, the full language access check should not be done
-            $recordInfo = $this->recordInfo($table, $uid, 'l10n_parent');
-            if ($recordInfo['l10n_parent'] > 0) {
+            $defaultLanguagePageId = $this->getDefaultLanguagePageId($uid);
+            if ($defaultLanguagePageId !== $uid) {
                 $fullLanguageAccessCheck = false;
             }
         }
@@ -5421,10 +5412,10 @@ class DataHandler implements LoggerAwareInterface
         // If we may at all delete this page
         // If this is a page translation, do the check against the perms_* of the default page
         // Because it is currently only deleting the translation
-        $fullRecord = $this->recordInfo('pages', $uid, 'l10n_parent');
-        if ($fullRecord['l10n_parent'] > 0) {
-            if ($this->doesRecordExist('pages', (int)$fullRecord['l10n_parent'], 'delete')) {
-                $isTranslatedPage = $fullRecord['l10n_parent'] > 0;
+        $defaultLanguagePageId = $this->getDefaultLanguagePageId($uid);
+        if ($defaultLanguagePageId !== $uid) {
+            if ($this->doesRecordExist('pages', (int)$defaultLanguagePageId, 'delete')) {
+                $isTranslatedPage = true;
             } else {
                 return 'Attempt to delete page without permissions';
             }
@@ -6089,10 +6080,7 @@ class DataHandler implements LoggerAwareInterface
                 // Update child records if change to pid is required (only if the current record is not on a workspace):
                 if ($thePidToUpdate) {
                     // Ensure that only the default language page is used as PID
-                    $localizationParent = $this->recordInfo('pages', $thePidToUpdate, 'l10n_parent');
-                    if ($localizationParent['l10n_parent'] > 0) {
-                        $thePidToUpdate = $localizationParent['l10n_parent'];
-                    }
+                    $thePidToUpdate = $this->getDefaultLanguagePageId($thePidToUpdate);
                     // ensure, only live page ids are used as 'pid' values
                     $liveId = BackendUtility::getLiveVersionIdOfRecord('pages', $theUidToUpdate);
                     if ($liveId !== null) {
@@ -6479,12 +6467,8 @@ class DataHandler implements LoggerAwareInterface
             }
             // permissions check for page translations need to be done on the parent page
             if ($table === 'pages') {
-                $defaultLanguagePage = $this->recordInfo($table, $id, 'l10n_parent');
-                if ($defaultLanguagePage['l10n_parent'] > 0) {
-                    $res = $this->doesRecordExist($table, $defaultLanguagePage['l10n_parent'], 'edit');
-                } else {
-                    $res = $this->doesRecordExist($table, $id, 'edit') ? 1 : 0;
-                }
+                $defaultLanguagePageId = $this->getDefaultLanguagePageId($id);
+                $res = $this->doesRecordExist($table, $defaultLanguagePageId, 'edit') ? 1 : 0;
             } elseif ($this->doesRecordExist($table, $id, 'edit')) {
                 $res = 1;
             }
@@ -7517,7 +7501,7 @@ class DataHandler implements LoggerAwareInterface
                             $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
-                            'sys_language_uid',
+                            $GLOBALS['TCA'][$table]['ctrl']['languageField'],
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->lt(
@@ -8407,12 +8391,7 @@ class DataHandler implements LoggerAwareInterface
             $pageIdsThatNeedCacheFlush = [];
             if ($table === 'pages') {
                 // Find out if the record is a get the original page
-                $row = $this->recordInfo($table, $uid, 'pid,sys_language_uid,l10n_parent');
-                if ((int)$row['l10n_parent'] > 0) {
-                    $pageUid = $row['l10n_parent'];
-                } else {
-                    $pageUid = $uid;
-                }
+                $pageUid = $this->getDefaultLanguagePageId($uid);
 
                 // Builds list of pages on the SAME level as this page (siblings)
                 $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -8746,6 +8725,23 @@ class DataHandler implements LoggerAwareInterface
      * Internal (do not use outside Core!)
      *
      *****************************/
+
+    /**
+     * Find out if the record is a get the original page
+     *
+     * @param int $pageId the page UID (can be the default page record, or a page translation record ID)
+     * @return int the page UID of the default page record
+     */
+    protected function getDefaultLanguagePageId(int $pageId): int
+    {
+        $localizationParentFieldName = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+        $row = $this->recordInfo('pages', $pageId, $localizationParentFieldName);
+        $localizationParent = (int)$row[$localizationParentFieldName];
+        if ($localizationParent > 0) {
+            return $localizationParent;
+        }
+        return $pageId;
+    }
 
     /**
      * Preprocesses field array based on field type. Some fields must be adjusted
