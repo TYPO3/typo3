@@ -233,6 +233,11 @@ var inline = {
 		if (!json && xhr) {
 			json = xhr.responseJSON;
 		}
+		if (json.hasErrors) {
+			$.each(json.messages, function(position, message) {
+				top.TYPO3.Notification.error(message.title, message.message);
+			});
+		}
 		// If there are elements the should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
 		if (json.stylesheetFiles) {
 			$.each(json.stylesheetFiles, function (index, stylesheetFile) {
