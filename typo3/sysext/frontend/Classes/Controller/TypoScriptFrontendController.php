@@ -1720,7 +1720,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkPagerecordForIncludeSection($row)
     {
-        return !$row['extendToSubpages'] || $this->checkEnableFields($row) ? 1 : 0;
+        return !$row['extendToSubpages'] || $this->checkEnableFields($row);
     }
 
     /**

@@ -477,7 +477,7 @@ class TimeTracker implements SingletonInterface
         foreach ($arr as $k => $v) {
             if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
                 $c++;
-                $deeper = is_array($arr[$k . '.']) ? 1 : 0;
+                $deeper = is_array($arr[$k . '.']);
                 $LN = $ac == $c ? 'blank' : 'line';
 
                 $BTM = $ac == $c ? 'bottom' : '';

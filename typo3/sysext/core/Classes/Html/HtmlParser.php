@@ -64,7 +64,7 @@ class HtmlParser
         // We skip the first element in foreach loop
         $partsSliced = array_slice($parts, 1, null, true);
         foreach ($partsSliced as $v) {
-            $isEndTag = substr($content, $pointer, 2) === '</' ? 1 : 0;
+            $isEndTag = substr($content, $pointer, 2) === '</';
             $tagLen = strcspn(substr($content, $pointer), '>') + 1;
             // We meet a start-tag:
             if (!$isEndTag) {

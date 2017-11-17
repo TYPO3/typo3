@@ -215,14 +215,14 @@ class FrontendEditPanel
         $iconImg = '<span title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', false) . '" style="' . ($conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : '') . '">'
             . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render('inline')
             . '</span>';
-        $nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
+        $noView = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 
         $url = BackendUtility::getModuleUrl(
             'record_edit',
             [
                 'edit[' . $table . '][' . $editUid . ']' => 'edit',
                 'columnsOnly' => $fieldList,
-                'noView' => $nV,
+                'noView' => $noView,
                 'feEdit' => 1
             ]
         ) . $addUrlParamStr;
@@ -257,10 +257,10 @@ class FrontendEditPanel
      */
     protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '')
     {
-        $nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
+        $noView = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
         if ($cmd === 'edit') {
             $rParts = explode(':', $currentRecord);
-            $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $nV, 'feEdit' => 1]), $currentRecord);
+            $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $noView, 'feEdit' => 1]), $currentRecord);
         } elseif ($cmd === 'new') {
             $rParts = explode(':', $currentRecord);
             if ($rParts[0] === 'pages') {
@@ -269,7 +269,7 @@ class FrontendEditPanel
                 if (!(int)$nPid) {
                     $nPid = MathUtility::canBeInterpretedAsInteger($rParts[1]) ? -$rParts[1] : $this->frontendController->id;
                 }
-                $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $nV]), $currentRecord);
+                $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $noView]), $currentRecord);
             }
         } else {
             if ($confirm && $this->backendUser->jsConfirmation(JsConfirmation::FE_EDIT)) {

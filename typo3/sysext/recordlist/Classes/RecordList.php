@@ -276,7 +276,7 @@ class RecordList
         $lang = $this->getLanguageService();
         // Loading current page record and checking access:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $access = is_array($this->pageinfo) ? 1 : 0;
+        $access = is_array($this->pageinfo);
         // Start document template object:
         // We need to keep this due to deeply nested dependencies
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);

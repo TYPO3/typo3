@@ -61,9 +61,9 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * If TRUE, users/groups are shown in the page info box.
      *
-     * @var int
+     * @var bool
      */
-    public $pI_showUser = 0;
+    public $pI_showUser = false;
 
     /**
      * The number of successive records to edit when showing content elements.
@@ -75,16 +75,16 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * If TRUE, disables the edit-column icon for tt_content elements
      *
-     * @var int
+     * @var bool
      */
-    public $pages_noEditColumns = 0;
+    public $pages_noEditColumns = false;
 
     /**
      * If TRUE, new-wizards are linked to rather than the regular new-element list.
      *
-     * @var int
+     * @var bool
      */
-    public $option_newWizard = 1;
+    public $option_newWizard = true;
 
     /**
      * If set to "1", will link a big button to content element wizard.
@@ -96,9 +96,9 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
      *
-     * @var int
+     * @var bool
      */
-    public $doEdit = 1;
+    public $doEdit = true;
 
     /**
      * Age prefixes for displaying times. May be set externally to localized values.

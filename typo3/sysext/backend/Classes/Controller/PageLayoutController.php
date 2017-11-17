@@ -688,7 +688,7 @@ class PageLayoutController
         $lang = $this->getLanguageService();
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
-        $access = is_array($this->pageinfo) ? 1 : 0;
+        $access = is_array($this->pageinfo);
         // Content
         $content = '';
         if ($this->id && $access) {
@@ -816,8 +816,8 @@ class PageLayoutController
         $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dbList->id = $this->id;
         $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
-        $dbList->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
-        $dbList->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
+        $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
+        $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
         if (!$dbList->nextThree) {
             $dbList->nextThree = 1;
         }

@@ -144,13 +144,13 @@ class ElementInformationController
         if ($this->uid && $this->getBackendUser()->check('tables_select', $this->table)) {
             if ((string)$this->table === 'pages') {
                 $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause);
-                $this->access = is_array($this->pageInfo) ? 1 : 0;
+                $this->access = is_array($this->pageInfo);
                 $this->row = $this->pageInfo;
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
                 if ($this->row) {
                     $this->pageInfo = BackendUtility::readPageAccess($this->row['pid'], $this->permsClause);
-                    $this->access = is_array($this->pageInfo) ? 1 : 0;
+                    $this->access = is_array($this->pageInfo);
                 }
             }
         }

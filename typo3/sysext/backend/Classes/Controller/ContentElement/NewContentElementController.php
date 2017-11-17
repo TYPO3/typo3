@@ -174,7 +174,7 @@ class NewContentElementController
         // Getting the current page and receiving access information (used in main())
         $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
-        $this->access = is_array($this->pageInfo) ? 1 : 0;
+        $this->access = is_array($this->pageInfo);
     }
 
     /**

@@ -822,7 +822,7 @@ class ImportExportController extends BaseScriptClass
      */
     public function importData($inData)
     {
-        $access = is_array($this->pageinfo) ? 1 : 0;
+        $access = is_array($this->pageinfo);
         $beUser = $this->getBackendUser();
         if ($this->id && $access || $beUser->isAdmin() && !$this->id) {
             if ($beUser->isAdmin() && !$this->id) {

@@ -6477,11 +6477,11 @@ class DataHandler implements LoggerAwareInterface
                     $res = $hookObj->checkRecordUpdateAccess($table, $id, $data, $res, $this);
                 }
             }
-            if ($res === 1 || $res === 0) {
-                return $res;
+            if (isset($res)) {
+                return (bool)$res;
             }
         }
-        $res = 0;
+        $res = false;
 
         if ($GLOBALS['TCA'][$table] && (int)$id > 0) {
             // If information is cached, return it
@@ -6491,9 +6491,9 @@ class DataHandler implements LoggerAwareInterface
             // permissions check for page translations need to be done on the parent page
             if ($table === 'pages') {
                 $defaultLanguagePageId = $this->getDefaultLanguagePageId($id);
-                $res = $this->doesRecordExist($table, $defaultLanguagePageId, 'edit') ? 1 : 0;
-            } elseif ($this->doesRecordExist($table, $id, 'edit')) {
-                $res = 1;
+                $res = $this->doesRecordExist($table, $defaultLanguagePageId, 'edit');
+            } else {
+                $res = $this->doesRecordExist($table, $id, 'edit');
             }
             // Cache the result
             $this->recUpdateAccessCache[$table][$id] = $res;

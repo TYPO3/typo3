@@ -77,9 +77,9 @@ class Clipboard
     /**
      * If set, clipboard is displaying files.
      *
-     * @var int
+     * @var bool
      */
-    public $fileMode = 0;
+    public $fileMode = false;
 
     /**
      * @var IconFactory
@@ -299,7 +299,7 @@ class Clipboard
             );
             $title = $languageService
                 ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipboard.delete_elements');
-            $returnUrl = $this->deleteUrl(1, ($this->fileMode ? 1 : 0));
+            $returnUrl = $this->deleteUrl(true, $this->fileMode);
             $btnOkText = $languageService
                 ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
             $btnCancelText = $languageService
@@ -627,11 +627,11 @@ class Clipboard
     /**
      * deleteUrl for current pad
      *
-     * @param bool|int $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
-     * @param bool|int $file If set, then the URL will link to the tce_file.php script in the typo3/ dir.
+     * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
+     * @param bool $file If set, then the URL will link to the tce_file.php script in the typo3/ dir.
      * @return string
      */
-    public function deleteUrl($setRedirect = 1, $file = 0)
+    public function deleteUrl($setRedirect = true, $file = false)
     {
         $urlParameters = [
             'CB[delete]' => 1,

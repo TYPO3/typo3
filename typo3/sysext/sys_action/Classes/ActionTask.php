@@ -887,7 +887,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         }
         // Loading current page record and checking access:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->taskObject->perms_clause);
-        $access = is_array($this->pageinfo) ? 1 : 0;
+        $access = is_array($this->pageinfo);
         // If there is access to the page, then render the list contents and set up the document template object:
         if ($access) {
             // Initialize the dblist object:

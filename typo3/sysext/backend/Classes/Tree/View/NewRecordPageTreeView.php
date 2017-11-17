@@ -29,6 +29,6 @@ class NewRecordPageTreeView extends PageTreeView
      */
     public function expandNext($id)
     {
-        return $id == $GLOBALS['SOBE']->id ? 1 : 0;
+        return $id == $GLOBALS['SOBE']->id;
     }
 }

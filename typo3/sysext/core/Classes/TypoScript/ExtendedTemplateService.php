@@ -409,7 +409,7 @@ class ExtendedTemplateService extends TemplateService
             // This excludes all constants starting with '_' from being shown.
             if ($this->bType !== 'const' || $depth[0] !== '_') {
                 $goto = substr(md5($depth), 0, 6);
-                $deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes) ? 1 : 0;
+                $deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes);
                 $PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
                 $HTML .= $depthData . '<li>';
                 if ($PM !== 'join') {

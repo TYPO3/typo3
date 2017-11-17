@@ -622,7 +622,7 @@ class RelationHandler
         $tableC = count($this->tableArray);
         if ($tableC) {
             // Boolean: does the field "tablename" need to be filled?
-            $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship ? 1 : 0;
+            $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
             $c = 0;
             $additionalWhere_tablenames = '';
             if ($this->MM_is_foreign && $prep) {

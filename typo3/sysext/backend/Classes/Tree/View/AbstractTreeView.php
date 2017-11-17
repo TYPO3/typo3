@@ -35,15 +35,15 @@ abstract class AbstractTreeView
     // EXTERNAL, static:
     // If set, the first element in the tree is always expanded.
     /**
-     * @var int
+     * @var bool
      */
-    public $expandFirst = 0;
+    public $expandFirst = false;
 
     // If set, then ALL items will be expanded, regardless of stored settings.
     /**
-     * @var int
+     * @var bool
      */
-    public $expandAll = 0;
+    public $expandAll = false;
 
     // Holds the current script to reload to.
     /**
@@ -603,7 +603,7 @@ abstract class AbstractTreeView
      */
     public function expandNext($id)
     {
-        return !empty($this->stored[$this->bank][$id]) || $this->expandAll ? 1 : 0;
+        return !empty($this->stored[$this->bank][$id]) || $this->expandAll;
     }
 
     /**

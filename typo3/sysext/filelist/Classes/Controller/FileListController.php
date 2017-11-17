@@ -348,7 +348,7 @@ class FileListController extends ActionController
             $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
             // Create clipboard object and initialize that
             $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
-            $this->filelist->clipObj->fileMode = 1;
+            $this->filelist->clipObj->fileMode = true;
             $this->filelist->clipObj->initializeClipboard();
             $CB = GeneralUtility::_GET('CB');
             if ($this->cmd === 'setCB') {

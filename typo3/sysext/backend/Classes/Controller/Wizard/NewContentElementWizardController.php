@@ -190,7 +190,7 @@ class NewContentElementWizardController
         // Getting the current page and receiving access information (used in main())
         $permissionsClause = $this->getBackendUser()->getPagePermsClause(1);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $permissionsClause);
-        $this->access = is_array($this->pageInfo) ? 1 : 0;
+        $this->access = is_array($this->pageInfo);
     }
 
     /**

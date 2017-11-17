@@ -63,7 +63,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist->showIcon = 0;
         $dblist->setLMargin = 0;
         $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
-        $dblist->pI_showUser = 1;
+        $dblist->pI_showUser = true;
 
         switch ((int)$this->pObj->MOD_SETTINGS['pages']) {
             case 1:
