@@ -31,4 +31,29 @@ When configuring a RTE field in a TYPO3 extension the defaultExtras part should 
 set to `richtext:rte_transform` instead of  `richtext:rte_transform[mode=ts_css]`
 in order to render the RTE.
 
+
+Flexform
+--------
+
+Example for an RTE Field, used in a Flexform with CMS 8 after migration
+
+
+.. code-block:: xml
+
+   <text>
+       <TCEforms>
+           <label>LLL:EXT:extension_name/Resources/Private/Language/locallang_db.xlf:flexform.text.element.labelname</label>
+           <config>
+               <type>text</type>
+               <size>10</size>
+               <rows>5</rows>
+               <enableRichtext>true</enableRichtext>
+           </config>
+           <defaultExtras>
+               <richtext>rte_transform</richtext>
+           </defaultExtras>
+       </TCEforms>
+   </text>
+
+
 .. index:: TSConfig, Backend, RTE
