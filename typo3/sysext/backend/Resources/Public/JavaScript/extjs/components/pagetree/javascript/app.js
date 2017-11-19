@@ -347,7 +347,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	},
 
 	/**
-	 * Selects a node defined by the page id.
+	 * Selects a node on the main tree defined by the page id.
 	 *
 	 * @param {int} pageId
 	 */
@@ -390,13 +390,13 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 		var self = this;
 		Ext.each(nodePaths, function(nodePath) {
 			callback('/root/' + nodePath.join('/'), 'id', function() {
-				self.mainTree.selectNode(self.getSelected());
+				self.mainTree.selectNode(self.mainTree.getSelectionModel().getSelectedNode());
 			});
 		});
 	},
 
 	/**
-	 * Returns the currently selected node
+	 * Returns the currently selected node of the currently active tree
 	 *
 	 * @return {Ext.tree.TreeNode}
 	 */

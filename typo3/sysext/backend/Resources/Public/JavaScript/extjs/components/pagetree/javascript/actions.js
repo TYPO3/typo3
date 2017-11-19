@@ -723,7 +723,7 @@ require(['TYPO3/CMS/Backend/Utility'], function(Utility) {
 			TYPO3.Backend.ContentContainer.setUrl(
 				currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 			).then(function () {
-				tree.selectNode(selectNode);
+				tree.selectNode(node);
 			});
 		},
 

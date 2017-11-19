@@ -233,7 +233,7 @@ require(['TYPO3/CMS/Backend/Utility'], function(Utility) {
 					this.filteringIndicator = null;
 				}
 			} else {
-				var selectedNode = this.app.getSelected();
+				var selectedNodeOnMainTree = this.app.getSelected();
 				this.app.activeTree = this.filteringTree;
 
 				if (!this.filteringIndicator) {
@@ -245,8 +245,13 @@ require(['TYPO3/CMS/Backend/Utility'], function(Utility) {
 				textField.setHideTrigger(false);
 				this.tree.hide();
 				this.filteringTree.show().refreshTree(function () {
-					if (selectedNode) {
-						this.app.select(selectedNode.attributes.nodeData.id, false);
+					if (selectedNodeOnMainTree) {
+						// Try to select the currently selected node in the main tree in the filter tree
+						var tree = this.app.getTree();
+						var node = tree.getRootNode().findChild('realId', selectedNodeOnMainTree.attributes.nodeData.id, true);
+						if (node) {
+							tree.selectPath(node.getPath());
+						}
 					}
 					textField.focus();
 				}, this);
