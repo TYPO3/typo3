@@ -1246,17 +1246,17 @@ class ExtendedTemplateService extends TemplateService
                         case 'boolean':
                             $sel = $fV ? 'checked' : '';
                             $p_field =
-                                '<label class="btn btn-default btn-checkbox">'
-                                    . '<input type="hidden" name="' . $fN . '" value="0" />'
-                                    . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
-                                    . '<span class="t3-icon fa"></span>'
+                                '<input type="hidden" name="' . $fN . '" value="0" />'
+                                . '<label class="btn btn-default btn-checkbox">'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<span class="t3-icon fa"></span>'
                                 . '</label>';
                             break;
                         case 'comment':
                             $sel = $fV ? 'checked' : '';
                             $p_field =
-                                '<label class="btn btn-default btn-checkbox">'
-                                . '<input type="hidden" name="' . $fN . '" value="#" />'
+                                '<input type="hidden" name="' . $fN . '" value="#" />'
+                                . '<label class="btn btn-default btn-checkbox">'
                                 . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
                                 . '<span class="t3-icon fa"></span>'
                                 . '</label>';
