@@ -271,30 +271,31 @@ TYPO3.Components.PageTree.Actions = {
 	 * @param {TYPO3.Components.PageTree.Tree} tree
 	 * @return {void}
 	 */
-	mountAsTreeRoot: function(node, tree) {
+	mountAsTreeRoot: function (node, tree) {
 		TYPO3.Components.PageTree.Commands.setTemporaryMountPoint(
 			node.attributes.nodeData,
-			function(response) {
+			function (response) {
+				var app = Ext.getCmp('typo3-pagetree-tree').app;
 				if (TYPO3.Components.PageTree.Configuration.temporaryMountPoint) {
-					TYPO3.Backend.NavigationContainer.PageTree.removeIndicator(
-						TYPO3.Backend.NavigationContainer.PageTree.temporaryMountPointInfoIndicator
+					app.removeIndicator(
+						app.temporaryMountPointInfoIndicator
 					);
 				}
 
 				TYPO3.Components.PageTree.Configuration.temporaryMountPoint = response;
-				Ext.getCmp('typo3-pagetree-tree').app.addTemporaryMountPointIndicator();
+				app.addTemporaryMountPointIndicator();
 
-				var selectedNode = Ext.getCmp('typo3-pagetree-tree').app.getSelected();
+				var selectedNode = app.getSelected();
 				tree.stateId = 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint;
-				tree.refreshTree(function() {
+				tree.refreshTree(function () {
 					var nodeIsSelected = false;
 					if (selectedNode) {
-						nodeIsSelected = TYPO3.Backend.NavigationContainer.PageTree.select(
+						nodeIsSelected = app.select(
 							selectedNode.attributes.nodeData.id
 						);
 					}
 
-					var node = (nodeIsSelected ? TYPO3.Backend.NavigationContainer.PageTree.getSelected() : null);
+					var node = (nodeIsSelected ? app.getSelected() : null);
 					if (node) {
 						this.singleClick(node, tree);
 					} else {
