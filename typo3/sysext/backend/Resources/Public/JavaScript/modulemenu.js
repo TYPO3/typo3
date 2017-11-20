@@ -34,7 +34,9 @@ TYPO3.ModuleMenu.App = {
 			me.showModule(top.startInModule[0], top.startInModule[1]);
 		} else {
 			// fetch first module
-			me.showModule(TYPO3.jQuery('.t3js-mainmodule:first').attr('id'));
+			if (TYPO3.jQuery('.t3js-mainmodule:first').length) {
+				me.showModule(TYPO3.jQuery('.t3js-mainmodule:first').attr('id'));
+			}
 		}
 
 		// check if there are collapsed items in the users' configuration

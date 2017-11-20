@@ -87,10 +87,12 @@ define(['jquery', 'jquery/autocomplete', 'TYPO3/CMS/Backend/jquery.clearable'], 
 			evt.preventDefault();
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 		});
-		$(containerSelector + ' .' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function(evt) {
-			evt.preventDefault();
-			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
-		});
+		if ($(searchFieldSelector).length) {
+			$(containerSelector + ' .' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function(evt) {
+				evt.preventDefault();
+				jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
+			});
+		}
 
 		$(searchFieldSelector).clearable({
 			onClear: function() {
