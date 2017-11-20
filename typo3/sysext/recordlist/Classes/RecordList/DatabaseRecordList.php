@@ -1031,14 +1031,12 @@ class DatabaseRecordList
         // Implode it into a list of fields for the SQL-statement.
         $selFieldList = implode(',', $selectFields);
         $this->selFieldList = $selFieldList;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof RecordListGetTableHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
-                }
-                $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof RecordListGetTableHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListGetTableHookInterface::class, 1195114460);
             }
+            $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
         }
         $additionalConstraints = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
         $selFieldList = GeneralUtility::trimExplode(',', $selFieldList, true);
@@ -1613,14 +1611,12 @@ class DatabaseRecordList
                      *        (shown above the clipboard checkboxes when a clipboard other than "Normal" is selected),
                      *        or other "Action" functions which perform operations on the listed records.
                      */
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
-                            $hookObject = GeneralUtility::makeInstance($className);
-                            if (!$hookObject instanceof RecordListHookInterface) {
-                                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
-                            }
-                            $cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
+                        $hookObject = GeneralUtility::makeInstance($className);
+                        if (!$hookObject instanceof RecordListHookInterface) {
+                            throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
                         }
+                        $cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
                     }
                     $theData[$fCol] = '';
                     if (isset($cells['edit']) && isset($cells['delete'])) {
@@ -1736,14 +1732,12 @@ class DatabaseRecordList
          *        Containing the labels of all shown fields and additional icons to create new records for this
          *        table or perform special clipboard tasks like mark and copy all listed records to clipboard, etc.
          */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567855);
-                }
-                $theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof RecordListHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567855);
             }
+            $theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
         }
 
         // Create and return header table row:
@@ -2119,10 +2113,11 @@ class DatabaseRecordList
         /*
          * hook: recStatInfoHooks: Allows to insert HTML before record icons on various places
          */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [];
+        if (!empty($hooks)) {
             $stat = '';
             $_params = [$table, $row['uid']];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
+            foreach ($hooks as $_funcRef) {
                 $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
             $this->addActionToCellGroup($cells, $stat, 'stat');
@@ -2134,7 +2129,7 @@ class DatabaseRecordList
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
          */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? false)) {
             // for compatibility reason, we move all icons to the rootlevel
             // before calling the hooks
             foreach ($cells as $section => $actions) {
@@ -2304,14 +2299,12 @@ class DatabaseRecordList
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
          */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567845);
-                }
-                $cells = $hookObject->makeClip($table, $row, $cells, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof RecordListHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567845);
             }
+            $cells = $hookObject->makeClip($table, $row, $cells, $this);
         }
         return '<div class="btn-group" role="group">' . implode('', $cells) . '</div>';
     }

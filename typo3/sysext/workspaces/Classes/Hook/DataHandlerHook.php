@@ -605,11 +605,9 @@ class DataHandlerHook
             unset($tempEmailMessage);
             $markers['###SPLITTED_PREVIEW_LINK###'] = $this->workspaceService->generateWorkspaceSplittedPreviewLink($elementUid, true);
             // Hook for preprocessing of the content for formmails:
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $className) {
-                    $_procObj = GeneralUtility::makeInstance($className);
-                    $markers = $_procObj->postModifyMarkers($markers, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] ?? [] as $className) {
+                $_procObj = GeneralUtility::makeInstance($className);
+                $markers = $_procObj->postModifyMarkers($markers, $this);
             }
             // send an email to each individual user, to ensure the
             // multilanguage version of the email

@@ -504,14 +504,12 @@ class Indexer
      */
     public function initializeExternalParsers()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $className) {
-                $this->external_parsers[$extension] = GeneralUtility::makeInstance($className);
-                $this->external_parsers[$extension]->pObj = $this;
-                // Init parser and if it returns FALSE, unset its entry again:
-                if (!$this->external_parsers[$extension]->initParser($extension)) {
-                    unset($this->external_parsers[$extension]);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
+            $this->external_parsers[$extension] = GeneralUtility::makeInstance($className);
+            $this->external_parsers[$extension]->pObj = $this;
+            // Init parser and if it returns FALSE, unset its entry again:
+            if (!$this->external_parsers[$extension]->initParser($extension)) {
+                unset($this->external_parsers[$extension]);
             }
         }
     }
@@ -2062,10 +2060,8 @@ class Indexer
         $fieldArray['rl0'] = (int)$this->conf['rootline_uids'][0];
         $fieldArray['rl1'] = (int)$this->conf['rootline_uids'][1];
         $fieldArray['rl2'] = (int)$this->conf['rootline_uids'][2];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel) {
-                $fieldArray[$fieldName] = (int)$this->conf['rootline_uids'][$rootLineLevel];
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
+            $fieldArray[$fieldName] = (int)$this->conf['rootline_uids'][$rootLineLevel];
         }
     }
 

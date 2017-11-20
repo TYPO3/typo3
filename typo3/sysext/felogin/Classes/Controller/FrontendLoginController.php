@@ -181,34 +181,24 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 $content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning'), $this->conf['cookieWarning_stdWrap.']);
             } else {
                 // Add hook for extra processing before redirect
-                if (
-                    isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']) &&
-                    is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'])
-                ) {
-                    $_params = [
-                        'loginType' => $this->logintype,
-                        'redirectUrl' => &$this->redirectUrl
-                    ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'] as $_funcRef) {
-                        if ($_funcRef) {
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                        }
+                $_params = [
+                    'loginType' => $this->logintype,
+                    'redirectUrl' => &$this->redirectUrl
+                ];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'] ?? [] as $_funcRef) {
+                    if ($_funcRef) {
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                     }
                 }
                 \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirectUrl);
             }
         }
         // Adds hook for processing of extra item markers / special
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])
-        ) {
-            $_params = [
-                'content' => $content
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] as $_funcRef) {
-                $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'content' => $content
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] ?? [] as $_funcRef) {
+            $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
     }
@@ -482,18 +472,13 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         }
         $msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password'), $user['username'], $link, $validEndString);
         // Add hook for extra processing of mail message
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])
-        ) {
-            $params = [
-                'message' => &$msg,
-                'user' => &$user
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'] as $reference) {
-                if ($reference) {
-                    GeneralUtility::callUserFunction($reference, $params, $this);
-                }
+        $params = [
+            'message' => &$msg,
+            'user' => &$user
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'] ?? [] as $reference) {
+            if ($reference) {
+                GeneralUtility::callUserFunction($reference, $params, $this);
             }
         }
         if ($user['email']) {
@@ -552,12 +537,10 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 $markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
                 $subpartArray['###LOGIN_FORM###'] = '';
                 // Hook for general actions after after login has been confirmed (by Thomas Danzl <thomas@danzl.org>)
-                if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed']) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] ?? [] as $_funcRef) {
                     $_params = [];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] as $_funcRef) {
-                        if ($_funcRef) {
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                        }
+                    if ($_funcRef) {
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                     }
                 }
                 // show logout form directly
@@ -567,15 +550,10 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 }
             } else {
                 // Hook for general actions on login error
-                if (
-                    isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'])
-                    && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'])
-                ) {
-                    $params = [];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'] as $funcRef) {
-                        if ($funcRef) {
-                            GeneralUtility::callUserFunction($funcRef, $params, $this);
-                        }
+                $params = [];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'] ?? [] as $funcRef) {
+                    if ($funcRef) {
+                        GeneralUtility::callUserFunction($funcRef, $params, $this);
                     }
                 }
                 // login error
@@ -611,13 +589,11 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 }
             }
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
-                list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
-                $onSubmitAr[] = $onSub;
-                $extraHiddenAr[] = $hid;
-            }
+        $_params = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] ?? [] as $funcRef) {
+            list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
+            $onSubmitAr[] = $onSub;
+            $extraHiddenAr[] = $hid;
         }
         if (!empty($onSubmitAr)) {
             $onSubmit = implode('; ', $onSubmitAr) . '; return true;';
@@ -814,12 +790,10 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 } elseif ($this->logintype === 'logout') {
                     // after logout
                     // Hook for general actions after after logout has been confirmed
-                    if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed']) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] ?? [] as $_funcRef) {
                         $_params = [];
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] as $_funcRef) {
-                            if ($_funcRef) {
-                                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                            }
+                        if ($_funcRef) {
+                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                         }
                     }
                     switch ($redirMethod) {

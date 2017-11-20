@@ -46,16 +46,15 @@ class VariableFrontend extends AbstractFrontend
                 throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058269);
             }
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'] as $_funcRef) {
-                $params = [
-                    'entryIdentifier' => &$entryIdentifier,
-                    'variable' => &$variable,
-                    'tags' => &$tags,
-                    'lifetime' => &$lifetime
-                ];
-                GeneralUtility::callUserFunction($_funcRef, $params, $this);
-            }
+
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'] ?? [] as $_funcRef) {
+            $params = [
+                'entryIdentifier' => &$entryIdentifier,
+                'variable' => &$variable,
+                'tags' => &$tags,
+                'lifetime' => &$lifetime
+            ];
+            GeneralUtility::callUserFunction($_funcRef, $params, $this);
         }
         if (!$this->backend instanceof TransientBackendInterface) {
             $variable = serialize($variable);

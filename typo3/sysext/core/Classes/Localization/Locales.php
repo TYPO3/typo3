@@ -137,11 +137,9 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         $instance = GeneralUtility::makeInstance(self::class);
         $instance->isoMapping = array_flip($instance->isoReverseMapping);
         // Allow user-defined locales
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] as $locale => $name) {
-                if (!isset($instance->languages[$locale])) {
-                    $instance->languages[$locale] = $name;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] ?? [] as $locale => $name) {
+            if (!isset($instance->languages[$locale])) {
+                $instance->languages[$locale] = $name;
             }
         }
         // Initializes the locale dependencies with TYPO3 supported locales
@@ -152,9 +150,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
         // Merge user-provided locale dependencies
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'])) {
-            ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
-        }
+        ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] ?? []);
     }
 
     /**

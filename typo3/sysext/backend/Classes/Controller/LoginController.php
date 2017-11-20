@@ -446,14 +446,10 @@ class LoginController
      */
     protected function validateAndSortLoginProviders()
     {
-        if (
-            !isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
-            || empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
-        ) {
+        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] ?? [];
+        if (empty($providers) || !is_array($providers)) {
             throw new \RuntimeException('No login providers are registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'loginProviders\'].', 1433417281);
         }
-        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'];
         foreach ($providers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
                 throw new \RuntimeException('Missing configuration for login provider "' . $identifier . '".', 1433416043);

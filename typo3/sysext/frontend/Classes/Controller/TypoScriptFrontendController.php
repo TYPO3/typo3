@@ -808,11 +808,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         // Call post processing function for constructor:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         $this->cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
         $this->initCaches();
@@ -862,11 +859,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Call post processing function for DB connection:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['connectToDB'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -912,11 +907,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->fe_user->unpack_uc();
 
         // Call hook for possible manipulation of frontend user object
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // For every 60 seconds the is_online timestamp is updated.
         if (is_array($this->fe_user->user) && $this->fe_user->user['uid'] && $this->fe_user->user['is_online'] < $GLOBALS['EXEC_TIME'] - 60) {
@@ -994,11 +987,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->siteScript = GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
         // Call post processing function for custom URL methods.
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkAlternativeIdMethods-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -1034,11 +1025,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function initializeBackendUser()
     {
         // PRE BE_USER HOOK
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
-                $_params = [];
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] ?? [] as $_funcRef) {
+            $_params = [];
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         $backendUserObject = null;
         // If the backend cookie is set,
@@ -1067,13 +1056,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(true);
         }
         // POST BE_USER HOOK
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
-            $_params = [
-                'BE_USER' => &$backendUserObject
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'BE_USER' => &$backendUserObject
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $backendUserObject;
     }
@@ -1087,11 +1074,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function determineId()
     {
         // Call pre processing function for id determination
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] as $functionReference) {
-                $parameters = ['parentObject' => $this];
-                GeneralUtility::callUserFunction($functionReference, $parameters, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
+            $parameters = ['parentObject' => $this];
+            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
         }
         // If there is a Backend login we are going to check for any preview settings:
         $this->getTimeTracker()->push('beUserLogin', '');
@@ -1193,11 +1178,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Make sure it's an integer
         $this->type = (int)$this->type;
         // Call post processing function for id determination:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -1376,11 +1359,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->register['SYS_LASTCHANGED'] < (int)$this->page['SYS_LASTCHANGED']) {
             $this->register['SYS_LASTCHANGED'] = (int)$this->page['SYS_LASTCHANGED'];
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] as $functionReference) {
-                $parameters = ['parentObject' => $this];
-                GeneralUtility::callUserFunction($functionReference, $parameters, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] ?? [] as $functionReference) {
+            $parameters = ['parentObject' => $this];
+            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
         }
     }
 
@@ -1678,14 +1659,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function checkEnableFields($row, $bypassGroupCheck = false)
     {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields'])) {
-            $_params = ['pObj' => $this, 'row' => &$row, 'bypassGroupCheck' => &$bypassGroupCheck];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields'] as $_funcRef) {
-                // Call hooks: If one returns FALSE, method execution is aborted with result "This record is not available"
-                $return = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                if ($return === false) {
-                    return false;
-                }
+        $_params = ['pObj' => $this, 'row' => &$row, 'bypassGroupCheck' => &$bypassGroupCheck];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields'] ?? [] as $_funcRef) {
+            // Call hooks: If one returns FALSE, method execution is aborted with result "This record is not available"
+            $return = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            if ($return === false) {
+                return false;
             }
         }
         if ((!$row['hidden'] || $this->showHiddenPage) && $row['starttime'] <= $GLOBALS['SIM_ACCESS_TIME'] && ($row['endtime'] == 0 || $row['endtime'] > $GLOBALS['SIM_ACCESS_TIME']) && ($bypassGroupCheck || $this->checkPageGroupAccess($row))) {
@@ -2272,11 +2251,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // we have data from cache
 
                     // Call hook when a page is retrieved from cache:
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'])) {
-                        $_params = ['pObj' => &$this, 'cache_pages_row' => &$row];
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] as $_funcRef) {
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                        }
+                    $_params = ['pObj' => &$this, 'cache_pages_row' => &$row];
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] ?? [] as $_funcRef) {
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                     }
                     // Fetches the lowlevel config stored with the cached data
                     $this->config = $row['cache_data'];
@@ -2344,11 +2321,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Call hook for possible by-pass of requiring of page cache (for recaching purpose)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'])) {
-            $_params = ['pObj' => &$this, 'disableAcquireCacheData' => &$disableAcquireCacheData];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this, 'disableAcquireCacheData' => &$disableAcquireCacheData];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $disableAcquireCacheData;
     }
@@ -2406,14 +2381,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $hashParameters['all'] = $this->all;
         }
         // Call hook to influence the hash calculation
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'])) {
-            $_params = [
-                'hashParameters' => &$hashParameters,
-                'createLockHashBase' => $createLockHashBase
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'hashParameters' => &$hashParameters,
+            'createLockHashBase' => $createLockHashBase
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return serialize($hashParameters);
     }
@@ -2510,11 +2483,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             GeneralUtility::_GETset($modifiedGetVars);
         }
         // Hook for postProcessing the configuration array
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'])) {
-            $params = ['config' => &$this->config['config']];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] as $funcRef) {
-                GeneralUtility::callUserFunction($funcRef, $params, $this);
-            }
+        $params = ['config' => &$this->config['config']];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'] ?? [] as $funcRef) {
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
     }
 
@@ -2532,11 +2503,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function settingLanguage()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'])) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
 
         // Initialize charset settings etc.
@@ -2641,11 +2610,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'])) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -2717,11 +2684,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function handleDataSubmission()
     {
         // Hook for processing data submission to extensions
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $className) {
-                $_procObj = GeneralUtility::makeInstance($className);
-                $_procObj->checkDataSubmission($this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            $_procObj->checkDataSubmission($this);
         }
     }
 
@@ -2732,14 +2697,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initializeRedirectUrlHandlers()
     {
-        if (
-            empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'])
-        ) {
+        $urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'] ?? false;
+        if (!$urlHandlers) {
             return;
         }
 
-        $urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'];
         foreach ($urlHandlers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
                 throw new \RuntimeException('Missing configuration for URL handler "' . $identifier . '".', 1442052263);
@@ -2995,22 +2957,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Hook for deciding whether page cache should be written to the cache backend or not
         // NOTE: as hooks are called in a loop, the last hook will have the final word (however each
         // hook receives the current status of the $usePageCache flag)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] as $className) {
-                $_procObj = GeneralUtility::makeInstance($className);
-                $usePageCache = $_procObj->usePageCache($this, $usePageCache);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            $usePageCache = $_procObj->usePageCache($this, $usePageCache);
         }
         // Write the page to cache, if necessary
         if ($usePageCache) {
             $this->setPageCacheContent($this->content, $this->config, $timeOutTime);
         }
         // Hook for cache post processing (eg. writing static files!)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] as $className) {
-                $_procObj = GeneralUtility::makeInstance($className);
-                $_procObj->insertPageIncache($this, $timeOutTime);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            $_procObj->insertPageIncache($this, $timeOutTime);
         }
     }
 
@@ -3274,20 +3232,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->set_no_cache('no_cache has been set before the page was generated - safety check', true);
         }
         // Hook for post-processing of page content cached/non-cached:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // Processing if caching is enabled:
         if (!$this->no_cache) {
             // Hook for post-processing of page content before being cached:
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'])) {
-                $_params = ['pObj' => &$this];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'] as $_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'] ?? [] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
         // Convert char-set for output: (should be BEFORE indexing of the content (changed 22/4 2005)),
@@ -3297,11 +3250,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // to utf-8 so the content MUST be in metaCharset already!
         $this->content = $this->convOutputCharset($this->content);
         // Hook for indexing pages
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $className) {
-                $_procObj = GeneralUtility::makeInstance($className);
-                $_procObj->hook_indexContent($this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] ?? [] as $className) {
+            $_procObj = GeneralUtility::makeInstance($className);
+            $_procObj->hook_indexContent($this);
         }
         // Storing for cache:
         if (!$this->no_cache) {
@@ -3492,11 +3443,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Initialize by status if there is a Redirect URL
         $enableOutput = empty($this->activeUrlHandlers);
         // Call hook for possible disabling of output:
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'])) {
-            $_params = ['pObj' => &$this, 'enableOutput' => &$enableOutput];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this, 'enableOutput' => &$enableOutput];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $enableOutput;
     }
@@ -3535,11 +3484,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->contentStrReplace();
         }
         // Hook for post-processing of page content before output:
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -3636,17 +3583,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $replace[] = $this->fe_user->get_URL_ID;
         }
         // Hook for supplying custom search/replace data
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'])) {
-            $contentStrReplaceHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
-            if (is_array($contentStrReplaceHooks)) {
-                $_params = [
-                    'search' => &$search,
-                    'replace' => &$replace
-                ];
-                foreach ($contentStrReplaceHooks as $_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'] ?? [] as $_funcRef) {
+            $_params = [
+                'search' => &$search,
+                'replace' => &$replace
+            ];
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         if (!empty($search)) {
             $this->content = str_replace($search, $replace, $this->content);
@@ -3668,11 +3610,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         if ($this->fePreview !== 0) {
             $previewInfo = '';
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'])) {
-                $_params = ['pObj' => &$this];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'] as $_funcRef) {
-                    $previewInfo .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+            $_params = ['pObj' => &$this];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo'] ?? [] as $_funcRef) {
+                $previewInfo .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
             $this->content = str_ireplace('</body>', $previewInfo . '</body>', $this->content);
         }
@@ -3683,12 +3623,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function hook_eofe()
     {
-        // Call hook for end-of-frontend processing:
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'])) {
-            $_params = ['pObj' => &$this];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -4048,11 +3985,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Calculate the timeout time for records on the page and adjust cache timeout if necessary
             $cacheTimeout = min($this->calculatePageCacheTimeout(), $cacheTimeout);
 
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'] as $_funcRef) {
-                    $params = ['cacheTimeout' => $cacheTimeout];
-                    $cacheTimeout = GeneralUtility::callUserFunction($_funcRef, $params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'] ?? [] as $_funcRef) {
+                $params = ['cacheTimeout' => $cacheTimeout];
+                $cacheTimeout = GeneralUtility::callUserFunction($_funcRef, $params, $this);
             }
             $runtimeCache->set($cachedCacheLifetimeIdentifier, $cacheTimeout);
             $cachedCacheLifetime = $cacheTimeout;

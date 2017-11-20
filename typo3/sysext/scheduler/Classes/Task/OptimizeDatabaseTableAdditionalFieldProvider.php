@@ -147,10 +147,8 @@ class OptimizeDatabaseTableAdditionalFieldProvider implements AdditionalFieldPro
         $optimizableTables = $this->getOptimizableTablesForConnection($defaultConnection);
 
         // Retrieve additional optimizable tables that have been remapped to a different connection
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-        ) {
-            $tableMap = $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'];
+        $tableMap = $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'] ?? false;
+        if ($tableMap) {
             // Remove all remapped tables from the list of optimizable tables
             // These tables will be rechecked and possibly re-added to the list
             // of optimizable tables. This ensures that no orphaned table from

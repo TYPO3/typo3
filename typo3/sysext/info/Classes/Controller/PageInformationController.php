@@ -115,12 +115,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
             . $dblist->HTMLcode;
 
         // Additional footer content
-        $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
-        if (is_array($footerContentHook)) {
-            foreach ($footerContentHook as $hook) {
-                $params = [];
-                $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
+            $params = [];
+            $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         return $theOutput;
     }

@@ -1752,21 +1752,19 @@ class GeneralUtility
      */
     public static function minifyJavaScript($script, &$error = '')
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'])) {
-            $fakeThis = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] as $hookMethod) {
-                try {
-                    $parameters = ['script' => $script];
-                    $script = static::callUserFunction($hookMethod, $parameters, $fakeThis);
-                } catch (\Exception $e) {
-                    $errorMessage = 'Error minifying java script: ' . $e->getMessage();
-                    $error .= $errorMessage;
-                    static::getLogger()->warning($errorMessage, [
-                        'JavaScript' => $script,
-                        'hook' => $hookMethod,
-                        'exception' => $e,
-                    ]);
-                }
+        $fakeThis = false;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
+            try {
+                $parameters = ['script' => $script];
+                $script = static::callUserFunction($hookMethod, $parameters, $fakeThis);
+            } catch (\Exception $e) {
+                $errorMessage = 'Error minifying java script: ' . $e->getMessage();
+                $error .= $errorMessage;
+                static::getLogger()->warning($errorMessage, [
+                    'JavaScript' => $script,
+                    'hook' => $hookMethod,
+                    'exception' => $e,
+                ]);
             }
         }
         return $script;
@@ -3543,14 +3541,7 @@ class GeneralUtility
      */
     protected static function classHasImplementation($className)
     {
-        // If we are early in the bootstrap, the configuration might not yet be present
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])) {
-            return false;
-        }
-
-        return isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
-                && !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
+        return !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
     }
 
     /**
@@ -3777,12 +3768,10 @@ class GeneralUtility
     public static function initSysLog()
     {
         // Init custom logging
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
-            $params = ['initLog' => true];
-            $fakeThis = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {
-                self::callUserFunction($hookMethod, $params, $fakeThis);
-            }
+        $params = ['initLog' => true];
+        $fakeThis = false;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] ?? [] as $hookMethod) {
+            self::callUserFunction($hookMethod, $params, $fakeThis);
         }
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = true;
@@ -3813,8 +3802,8 @@ class GeneralUtility
         if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit']) {
             self::initSysLog();
         }
-        // Do custom logging
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
+        // Do custom logging; avoid calling debug_backtrace if there are no custom loggers.
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'])) {
             $params = ['msg' => $msg, 'extKey' => $extKey, 'backTrace' => debug_backtrace(), 'severity' => $severity];
             $fakeThis = false;
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog'] as $hookMethod) {

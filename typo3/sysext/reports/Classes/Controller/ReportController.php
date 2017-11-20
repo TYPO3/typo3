@@ -97,20 +97,7 @@ class ReportController extends ActionController
     public function detailAction($extension, $report)
     {
         $content = ($error = '');
-        $reportClass = null;
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension])
-            && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report])
-            && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'])
-        ) {
-            $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'];
-        }
-
-        // If extension has been uninstalled/removed redirect to index
-        if ($reportClass === null) {
-            $this->redirect('index');
-        }
+        $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? $this->redirect('index');
 
         $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
         if ($reportInstance instanceof ReportInterface) {

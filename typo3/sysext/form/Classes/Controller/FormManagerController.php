@@ -106,18 +106,13 @@ class FormManagerController extends AbstractBackendController
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath);
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'beforeFormCreate')) {
-                    $form = $hookObj->beforeFormCreate(
-                        $formPersistenceIdentifier,
-                        $form
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'beforeFormCreate')) {
+                $form = $hookObj->beforeFormCreate(
+                    $formPersistenceIdentifier,
+                    $form
+                );
             }
         }
 
@@ -143,18 +138,13 @@ class FormManagerController extends AbstractBackendController
 
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath);
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'beforeFormDuplicate')) {
-                    $formToDuplicate = $hookObj->beforeFormDuplicate(
-                        $formPersistenceIdentifier,
-                        $formToDuplicate
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'beforeFormDuplicate')) {
+                $formToDuplicate = $hookObj->beforeFormDuplicate(
+                    $formPersistenceIdentifier,
+                    $formToDuplicate
+                );
             }
         }
 
@@ -190,17 +180,12 @@ class FormManagerController extends AbstractBackendController
     public function deleteAction(string $formPersistenceIdentifier)
     {
         if (empty($this->getReferences($formPersistenceIdentifier))) {
-            if (
-                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'])
-            ) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] as $className) {
-                    $hookObj = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObj, 'beforeFormDelete')) {
-                        $hookObj->beforeFormDelete(
-                            $formPersistenceIdentifier
-                        );
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'beforeFormDelete')) {
+                    $hookObj->beforeFormDelete(
+                        $formPersistenceIdentifier
+                    );
                 }
             }
 

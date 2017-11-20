@@ -256,11 +256,9 @@ class SetupModuleController
                 // If email and name is changed, set it in the users record:
                 $be_user_data = $d['be_users'];
                 // Possibility to modify the transmitted values. Useful to do transformations, like RSA password decryption
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'])) {
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] as $function) {
-                        $params = ['be_user_data' => &$be_user_data];
-                        GeneralUtility::callUserFunction($function, $params, $this);
-                    }
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] ?? [] as $function) {
+                    $params = ['be_user_data' => &$be_user_data];
+                    GeneralUtility::callUserFunction($function, $params, $this);
                 }
                 $this->passwordIsSubmitted = (string)$be_user_data['password'] !== '';
                 $passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
@@ -364,11 +362,9 @@ class SetupModuleController
     protected function getJavaScript()
     {
         $javaScript = '';
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'] as $function) {
-                $params = [];
-                $javaScript .= GeneralUtility::callUserFunction($function, $params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'] ?? [] as $function) {
+            $params = [];
+            $javaScript .= GeneralUtility::callUserFunction($function, $params, $this);
         }
         return $javaScript;
     }

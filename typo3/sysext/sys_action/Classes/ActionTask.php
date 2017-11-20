@@ -67,10 +67,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         $this->moduleUrl = BackendUtility::getModuleUrl('user_task');
         $this->taskObject = $taskObject;
         $this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'] as $className) {
-                $this->hookObjects[] = GeneralUtility::makeInstance($className);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'] ?? [] as $className) {
+            $this->hookObjects[] = GeneralUtility::makeInstance($className);
         }
     }
 

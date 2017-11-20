@@ -135,13 +135,10 @@ class Avatar
      */
     protected function validateSortAndInitiateAvatarProviders()
     {
-        if (
-            empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'])
-        ) {
+        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'] ?? [];
+        if (empty($providers)) {
             return;
         }
-        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'];
         foreach ($providers as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
                 throw new \RuntimeException(

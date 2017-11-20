@@ -77,14 +77,12 @@ class FileDumpController
             }
 
             // Hook: allow some other process to do some security/access checks. Hook should issue 403 if access is rejected
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] as $className) {
-                    $hookObject = GeneralUtility::makeInstance($className);
-                    if (!$hookObject instanceof FileDumpEIDHookInterface) {
-                        throw new \UnexpectedValueException($className . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
-                    }
-                    $hookObject->checkFileAccess($file);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof FileDumpEIDHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
                 }
+                $hookObject->checkFileAccess($file);
             }
             $file->getStorage()->dumpFileContents($file);
             // @todo Refactor FAL to not echo directly, but to implement a stream for output here and use response

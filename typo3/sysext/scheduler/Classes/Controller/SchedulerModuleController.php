@@ -1358,17 +1358,15 @@ class SchedulerModuleController
     protected function getRegisteredClasses()
     {
         $list = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] as $class => $registrationInformation) {
-                $title = isset($registrationInformation['title']) ? $this->getLanguageService()->sL($registrationInformation['title']) : '';
-                $description = isset($registrationInformation['description']) ? $this->getLanguageService()->sL($registrationInformation['description']) : '';
-                $list[$class] = [
-                    'extension' => $registrationInformation['extension'],
-                    'title' => $title,
-                    'description' => $description,
-                    'provider' => isset($registrationInformation['additionalFields']) ? $registrationInformation['additionalFields'] : ''
-                ];
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $class => $registrationInformation) {
+            $title = isset($registrationInformation['title']) ? $this->getLanguageService()->sL($registrationInformation['title']) : '';
+            $description = isset($registrationInformation['description']) ? $this->getLanguageService()->sL($registrationInformation['description']) : '';
+            $list[$class] = [
+                'extension' => $registrationInformation['extension'],
+                'title' => $title,
+                'description' => $description,
+                'provider' => isset($registrationInformation['additionalFields']) ? $registrationInformation['additionalFields'] : ''
+            ];
         }
         return $list;
     }

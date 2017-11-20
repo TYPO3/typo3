@@ -940,16 +940,13 @@ class WorkspaceService implements SingletonInterface
             }
         }
 
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'])) {
-            $parameters = [
-                'workspaceId' => $workspaceId,
-                'pageId' => $pageId,
-                'versionsOnPageCache' => &$this->versionsOnPageCache,
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
-            }
+        $parameters = [
+            'workspaceId' => $workspaceId,
+            'pageId' => $pageId,
+            'versionsOnPageCache' => &$this->versionsOnPageCache,
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'] ?? [] as $hookFunction) {
+            GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
         }
 
         return $this->versionsOnPageCache[$workspaceId][$pageId];
@@ -1080,16 +1077,13 @@ class WorkspaceService implements SingletonInterface
 
             $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
 
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'])) {
-                $parameters = [
-                    'workspaceId' => $workspaceId,
-                    'tableName' => $tableName,
-                    'pagesWithVersionsInTable' => &$this->pagesWithVersionsInTable,
-                ];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'] as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
-                }
+            $parameters = [
+                'workspaceId' => $workspaceId,
+                'tableName' => $tableName,
+                'pagesWithVersionsInTable' => &$this->pagesWithVersionsInTable,
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'] ?? [] as $hookFunction) {
+                GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
             }
         }
 

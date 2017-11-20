@@ -1430,20 +1430,18 @@ class FileList
         }
 
         // Hook for manipulating edit icons.
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] ?? false)) {
-            $cells['__fileOrFolderObject'] = $fileOrFolderObject;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof FileListEditIconHookInterface) {
-                    throw new \UnexpectedValueException(
-                        $className . ' must implement interface ' . FileListEditIconHookInterface::class,
-                        1235225797
-                    );
-                }
-                $hookObject->manipulateEditIcons($cells, $this);
+        $cells['__fileOrFolderObject'] = $fileOrFolderObject;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof FileListEditIconHookInterface) {
+                throw new \UnexpectedValueException(
+                    $className . ' must implement interface ' . FileListEditIconHookInterface::class,
+                    1235225797
+                );
             }
-            unset($cells['__fileOrFolderObject']);
+            $hookObject->manipulateEditIcons($cells, $this);
         }
+        unset($cells['__fileOrFolderObject']);
         // Compile items into a DIV-element:
         return '<div class="btn-group">' . implode('', $cells) . '</div>';
     }

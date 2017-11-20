@@ -455,16 +455,11 @@ function jumpToUrl(URL) {
     public function startPage($title)
     {
         // hook pre start page
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'])) {
-            $preStartPageHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
-            if (is_array($preStartPageHook)) {
-                $hookParameters = [
-                    'title' => &$title
-                ];
-                foreach ($preStartPageHook as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'] ?? [] as $hookFunction) {
+            $hookParameters = [
+                'title' => &$title
+            ];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
         // alternative template for Header and Footer
         if ($this->pageHeaderFooterTemplateFile) {
@@ -508,16 +503,11 @@ function jumpToUrl(URL) {
         $this->pageRenderer->addJsFile('EXT:core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
 
         // hook for additional headerData
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
-            $preHeaderRenderHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'];
-            if (is_array($preHeaderRenderHook)) {
-                $hookParameters = [
-                    'pageRenderer' => &$this->pageRenderer
-                ];
-                foreach ($preHeaderRenderHook as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'] ?? [] as $hookFunction) {
+            $hookParameters = [
+                'pageRenderer' => &$this->pageRenderer
+            ];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
         // Construct page header.
         $str = $this->pageRenderer->render(PageRenderer::PART_HEADER);
@@ -796,7 +786,7 @@ function jumpToUrl(URL) {
             }
         }
         // Hook for adding more markers/content to the page, like the version selector
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'])) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'] ?? [] as $funcRef) {
             $params = [
                 'moduleTemplateFilename' => &$this->moduleTemplateFilename,
                 'moduleTemplate' => &$this->moduleTemplate,
@@ -804,9 +794,7 @@ function jumpToUrl(URL) {
                 'markers' => &$markerArray,
                 'parentObject' => &$this
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'] as $funcRef) {
-                GeneralUtility::callUserFunction($funcRef, $params, $this);
-            }
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
         // Replacing all markers with the finished markers and return the HTML content
         return $this->templateService->substituteMarkerArray($moduleBody, $markerArray, '###|###');
@@ -859,15 +847,13 @@ function jumpToUrl(URL) {
             $markers['BUTTONLIST_' . strtoupper($key)] = str_replace(LF, '', $buttonTemplate);
         }
         // Hook for manipulating docHeaderButtons
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'])) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] ?? [] as $funcRef) {
             $params = [
                 'buttons' => $buttons,
                 'markers' => &$markers,
                 'pObj' => &$this
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef) {
-                GeneralUtility::callUserFunction($funcRef, $params, $this);
-            }
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
         return $markers;
     }

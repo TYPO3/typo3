@@ -542,25 +542,24 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 $linkService = GeneralUtility::makeInstance(LinkService::class);
                 $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
 
-                // Modify parameters, this hook should be deprecated
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])
-                    && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
-                    $parameters = [
-                        'currentBlock' => $v,
-                        'linkInformation' => $linkInformation,
-                        'url' => $linkInformation['href'],
-                        'attributes' => $tagAttributes
-                    ];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $className) {
-                        $processor = GeneralUtility::makeInstance($className);
-                        $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
-                    }
-                } else {
-                    // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
-                    $tagAttributes['href'] = $linkService->asString($linkInformation);
-                    $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
-                        . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
+                $tagAttributes['href'] = $linkService->asString($linkInformation);
+                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                    . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
+                $parameters = [
+                    'currentBlock' => $v,
+                    'linkInformation' => $linkInformation,
+                    'url' => $linkInformation['href'],
+                    'attributes' => $tagAttributes
+                ];
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] ?? [] as $className) {
+                    $processor = GeneralUtility::makeInstance($className);
+                    $blockSplit[$k] = $processor->modifyParamsLinksDb($parameters, $this);
                 }
+
+                // Otherwise store the link as <a> tag as default by TYPO3, with the new link service syntax
+                $tagAttributes['href'] = $linkService->asString($linkInformation);
+                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                    . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
             }
         }
         return implode('', $blockSplit);
@@ -599,7 +598,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 }
 
                 // Modify parameters by a hook
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] ?? false)) {
                     // backwards-compatibility: show an error message if the page is not found
                     $error = '';
                     if ($linkInformation['type'] === LinkService::TYPE_PAGE) {

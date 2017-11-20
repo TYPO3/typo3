@@ -241,12 +241,10 @@ class RemoteServer extends AbstractHandler
         }
         // Hook for modifying the difference and live arrays
         // (this may be used by custom or dynamically-defined fields)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'modifyDifferenceArray')) {
-                    $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'modifyDifferenceArray')) {
+                $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
             }
         }
         $commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);

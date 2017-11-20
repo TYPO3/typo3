@@ -350,7 +350,7 @@ class TaskModuleController extends BaseScriptClass
         $tasks = [];
         $defaultIcon = 'EXT:taskcenter/Resources/Public/Icons/module-taskcenter.svg';
         // Render the tasks only if there are any available
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'])) {
+        if (count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] ?? [])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
                 foreach ($extensionReports as $taskClass => $task) {
                     if (!$this->checkAccess($extKey, $taskClass)) {

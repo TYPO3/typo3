@@ -90,16 +90,14 @@ class ConnectionPool
             return static::$connections[$connectionName];
         }
 
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName])
-        ) {
+        $connectionParams = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] ?? [];
+        if (empty($connectionParams)) {
             throw new \RuntimeException(
                 'The requested database connection named "' . $connectionName . '" has not been configured.',
                 1459422492
             );
         }
 
-        $connectionParams = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName];
         if (empty($connectionParams['wrapperClass'])) {
             $connectionParams['wrapperClass'] = Connection::class;
         }

@@ -54,15 +54,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] as $classData) {
-                $hookObject = GeneralUtility::makeInstance($classData);
-                if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
-                    throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
-                }
-                /** @var $hookObject TypolinkModifyLinkConfigForPageLinksHookInterface */
-                $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] ?? [] as $classData) {
+            $hookObject = GeneralUtility::makeInstance($classData);
+            if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
+                throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
             }
+            /** @var $hookObject TypolinkModifyLinkConfigForPageLinksHookInterface */
+            $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
         }
         $enableLinksAcrossDomains = $tsfe->config['config']['typolinkEnableLinksAcrossDomains'];
         if ($conf['no_cache.']) {

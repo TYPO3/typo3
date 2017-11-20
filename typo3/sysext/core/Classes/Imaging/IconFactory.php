@@ -323,13 +323,10 @@ class IconFactory
         }
 
         // Hook to define an alternative iconName
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'])) {
-            $hookObjects = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'];
-            foreach ($hookObjects as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'postOverlayPriorityLookup')) {
-                    $iconName = $hookObject->postOverlayPriorityLookup($table, $row, $status, $iconName);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['overrideIconOverlay'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'postOverlayPriorityLookup')) {
+                $iconName = $hookObject->postOverlayPriorityLookup($table, $row, $status, $iconName);
             }
         }
 

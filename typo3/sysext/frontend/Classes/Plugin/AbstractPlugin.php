@@ -517,16 +517,12 @@ class AbstractPlugin
      */
     public function pi_list_browseresults($showResultCount = 1, $tableParams = '', $wrapArr = [], $pointerName = 'pointer', $hscText = true, $forceOutput = false)
     {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['pi_list_browseresults'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['pi_list_browseresults'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['pi_list_browseresults'] as $classRef) {
-                $hookObj = GeneralUtility::makeInstance($classRef);
-                if (method_exists($hookObj, 'pi_list_browseresults')) {
-                    $pageBrowser = $hookObj->pi_list_browseresults($showResultCount, $tableParams, $wrapArr, $pointerName, $hscText, $forceOutput, $this);
-                    if (is_string($pageBrowser) && trim($pageBrowser) !== '') {
-                        return $pageBrowser;
-                    }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['pi_list_browseresults'] ?? [] as $classRef) {
+            $hookObj = GeneralUtility::makeInstance($classRef);
+            if (method_exists($hookObj, 'pi_list_browseresults')) {
+                $pageBrowser = $hookObj->pi_list_browseresults($showResultCount, $tableParams, $wrapArr, $pointerName, $hscText, $forceOutput, $this);
+                if (is_string($pageBrowser) && trim($pageBrowser) !== '') {
+                    return $pageBrowser;
                 }
             }
         }

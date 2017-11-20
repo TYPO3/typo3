@@ -43,20 +43,16 @@ class FileInfo extends \SplFileInfo implements TypeInterface
             }
         }
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuessers'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuesser'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuesser'] as $mimeTypeGuesser) {
-                $hookParameters = [
-                    'mimeType' => &$mimeType
-                ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuesser'] ?? [] as $mimeTypeGuesser) {
+            $hookParameters = [
+                'mimeType' => &$mimeType
+            ];
 
-                \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(
-                    $mimeTypeGuesser,
-                    $hookParameters,
-                    $this
-                );
-            }
+            \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(
+                $mimeTypeGuesser,
+                $hookParameters,
+                $this
+            );
         }
 
         return $mimeType;

@@ -68,18 +68,13 @@ class RenderRenderableViewHelper extends AbstractViewHelper
             ->getViewHelperVariableContainer()
             ->get(self::class, 'formRuntime');
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'beforeRendering')) {
-                    $hookObj->beforeRendering(
-                        $formRuntime,
-                        $arguments['renderable']
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'beforeRendering')) {
+                $hookObj->beforeRendering(
+                    $formRuntime,
+                    $arguments['renderable']
+                );
             }
         }
 

@@ -540,12 +540,9 @@ class RecordList
             $this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
         }
         // Additional footer content
-        $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook'];
-        if (is_array($footerContentHook)) {
-            foreach ($footerContentHook as $hook) {
-                $params = [];
-                $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook'] ?? [] as $hook) {
+            $params = [];
+            $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         // Setting up the buttons for docheader
         $dblist->getDocHeaderButtons($this->moduleTemplate);

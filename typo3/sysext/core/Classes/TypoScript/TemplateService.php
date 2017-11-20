@@ -658,17 +658,15 @@ class TemplateService
         }
 
         // Hook into the default TypoScript to add custom typoscript logic
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'])) {
-            $hookParameters = [
-                'extensionStaticsProcessed' => &$this->extensionStaticsProcessed,
-                'isDefaultTypoScriptAdded'  => &$this->isDefaultTypoScriptAdded,
-                'absoluteRootLine' => &$this->absoluteRootLine,
-                'rootLine'         => &$this->rootLine,
-                'startTemplateUid' => $start_template_uid,
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] as $listener) {
-                GeneralUtility::callUserFunction($listener, $hookParameters, $this);
-            }
+        $hookParameters = [
+            'extensionStaticsProcessed' => &$this->extensionStaticsProcessed,
+            'isDefaultTypoScriptAdded'  => &$this->isDefaultTypoScriptAdded,
+            'absoluteRootLine' => &$this->absoluteRootLine,
+            'rootLine'         => &$this->rootLine,
+            'startTemplateUid' => $start_template_uid,
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] ?? [] as $listener) {
+            GeneralUtility::callUserFunction($listener, $hookParameters, $this);
         }
 
         // Process extension static files if not done yet, but explicitly requested
@@ -850,16 +848,14 @@ class TemplateService
     public function includeStaticTypoScriptSources($idList, $templateID, $pid, $row)
     {
         // Call function for link rendering:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'])) {
-            $_params = [
-                'idList' => &$idList,
-                'templateId' => &$templateID,
-                'pid' => &$pid,
-                'row' => &$row
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'idList' => &$idList,
+            'templateId' => &$templateID,
+            'pid' => &$pid,
+            'row' => &$row
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // If "Include before all static templates if root-flag is set" is set:
         if ($row['static_file_mode'] == 3 && strpos($templateID, 'sys_') === 0 && $row['root']) {
@@ -898,16 +894,14 @@ class TemplateService
             $this->addExtensionStatics($idList, $templateID, $pid, $row);
         }
         // Include Static Template Records after all other TypoScript has been included.
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'])) {
-            $_params = [
-                'idList' => &$idList,
-                'templateId' => &$templateID,
-                'pid' => &$pid,
-                'row' => &$row
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'idList' => &$idList,
+            'templateId' => &$templateID,
+            'pid' => &$pid,
+            'row' => &$row
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -1512,15 +1506,13 @@ class TemplateService
         // Compile the normal total url
         $LD['totalURL'] = rtrim($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken, '?') . $LD['sectionIndex'];
         // Call post processing function for link rendering:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
-            $_params = [
-                'LD' => &$LD,
-                'args' => ['page' => $page, 'oTarget' => $oTarget, 'no_cache' => $no_cache, 'script' => $script, 'overrideArray' => $overrideArray, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain],
-                'typeNum' => $typeNum
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = [
+            'LD' => &$LD,
+            'args' => ['page' => $page, 'oTarget' => $oTarget, 'no_cache' => $no_cache, 'script' => $script, 'overrideArray' => $overrideArray, 'addParams' => $addParams, 'typeOverride' => $typeOverride, 'targetDomain' => $targetDomain],
+            'typeNum' => $typeNum
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         // Return the LD-array
         return $LD;

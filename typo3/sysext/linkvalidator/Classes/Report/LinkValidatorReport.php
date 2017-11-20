@@ -162,20 +162,18 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         } else {
             $this->searchLevel = $this->pObj->MOD_SETTINGS['searchlevel'];
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $value) {
-                // Compile list of all available types. Used for checking with button "Check Links".
-                if (strpos($this->modTS['linktypes'], $linkType) !== false) {
-                    $this->availableOptions[$linkType] = 1;
-                }
-                // Compile list of types currently selected by the checkboxes
-                if ($this->pObj->MOD_SETTINGS[$linkType] && empty($set) || $set[$linkType]) {
-                    $this->checkOpt[$linkType] = 1;
-                    $this->pObj->MOD_SETTINGS[$linkType] = 1;
-                } else {
-                    $this->pObj->MOD_SETTINGS[$linkType] = 0;
-                    unset($this->checkOpt[$linkType]);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $value) {
+            // Compile list of all available types. Used for checking with button "Check Links".
+            if (strpos($this->modTS['linktypes'], $linkType) !== false) {
+                $this->availableOptions[$linkType] = 1;
+            }
+            // Compile list of types currently selected by the checkboxes
+            if ($this->pObj->MOD_SETTINGS[$linkType] && empty($set) || $set[$linkType]) {
+                $this->checkOpt[$linkType] = 1;
+                $this->pObj->MOD_SETTINGS[$linkType] = 1;
+            } else {
+                $this->pObj->MOD_SETTINGS[$linkType] = 0;
+                unset($this->checkOpt[$linkType]);
             }
         }
         $this->getBackendUser()->pushModuleData('web_info', $this->pObj->MOD_SETTINGS);
@@ -235,10 +233,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function initialize()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $className) {
-                $this->hookObjectsArr[$linkType] = GeneralUtility::makeInstance($className);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $className) {
+            $this->hookObjectsArr[$linkType] = GeneralUtility::makeInstance($className);
         }
 
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);

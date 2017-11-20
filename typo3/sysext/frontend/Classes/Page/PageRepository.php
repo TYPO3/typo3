@@ -244,14 +244,12 @@ class PageRepository implements LoggerAwareInterface
     public function getPage($uid, $disableGroupAccessCheck = false)
     {
         // Hook to manipulate the page uid for special overlay handling
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageRepositoryGetPageHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
-                }
-                $hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof PageRepositoryGetPageHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
             }
+            $hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
         }
         $cacheKey = md5(
             implode(
@@ -432,18 +430,16 @@ class PageRepository implements LoggerAwareInterface
             $lUid = $this->sys_language_uid;
         }
         $row = null;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
-            foreach ($pagesInput as &$origPage) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $className) {
-                    $hookObject = GeneralUtility::makeInstance($className);
-                    if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
-                        throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
-                    }
-                    $hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
+        foreach ($pagesInput as &$origPage) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
                 }
+                $hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
             }
-            unset($origPage);
         }
+        unset($origPage);
         // If language UID is different from zero, do overlay:
         if ($lUid) {
             $page_ids = [];
@@ -532,14 +528,12 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '')
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
-                }
-                $hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
             }
+            $hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
         }
         if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel, true))) {
             if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
@@ -615,14 +609,12 @@ class PageRepository implements LoggerAwareInterface
                 }
             }
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
-                }
-                $hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
             }
+            $hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
         }
         return $row;
     }
@@ -1377,18 +1369,16 @@ class PageRepository implements LoggerAwareInterface
                     // Call hook functions for additional enableColumns
                     // It is used by the extension ingmar_accessctrl which enables assigning more
                     // than one usergroup to content and page records
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'])) {
-                        $_params = [
-                            'table' => $table,
-                            'show_hidden' => $show_hidden,
-                            'ignore_array' => $ignore_array,
-                            'ctrl' => $ctrl
-                        ];
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] as $_funcRef) {
-                            $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
-                                GeneralUtility::callUserFunction($_funcRef, $_params, $this)
-                            );
-                        }
+                    $_params = [
+                        'table' => $table,
+                        'show_hidden' => $show_hidden,
+                        'ignore_array' => $ignore_array,
+                        'ctrl' => $ctrl
+                    ];
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] ?? [] as $_funcRef) {
+                        $constraints[] = QueryHelper::stripLogicalOperatorPrefix(
+                            GeneralUtility::callUserFunction($_funcRef, $_params, $this)
+                        );
                     }
                 }
             }

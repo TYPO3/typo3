@@ -61,17 +61,12 @@ abstract class AbstractFormFactory implements FormFactoryInterface
     protected function triggerFormBuildingFinished(FormDefinition $form)
     {
         foreach ($form->getRenderablesRecursively() as $renderable) {
-            if (
-                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'])
-            ) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'] as $className) {
-                    $hookObj = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObj, 'afterBuildingFinished')) {
-                        $hookObj->afterBuildingFinished(
-                            $renderable
-                        );
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'afterBuildingFinished')) {
+                    $hookObj->afterBuildingFinished(
+                        $renderable
+                    );
                 }
             }
         }

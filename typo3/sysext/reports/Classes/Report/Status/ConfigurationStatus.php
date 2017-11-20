@@ -102,15 +102,14 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getConfiguredMemcachedServers()
     {
+        $configurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $memcachedServers = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $table => $conf) {
-                if (is_array($conf)) {
-                    foreach ($conf as $key => $value) {
-                        if (!is_array($value) && $value === \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend::class) {
-                            $memcachedServers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$table]['options']['servers'];
-                            break;
-                        }
+        foreach ($configurations as $table => $conf) {
+            if (is_array($conf)) {
+                foreach ($conf as $key => $value) {
+                    if ($value === \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend::class) {
+                        $memcachedServers = $configurations[$table]['options']['servers'];
+                        break;
                     }
                 }
             }

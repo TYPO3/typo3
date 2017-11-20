@@ -81,11 +81,9 @@ class PageTreeView extends BrowseTreeView
         }
         // Call stats information hook
         $stat = '';
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = ['pages', $row['uid']];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['pages', $row['uid']];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [] as $_funcRef) {
+            $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $dragDropIcon . $lockIcon . $pageIdStr . $stat;
     }
@@ -102,13 +100,12 @@ class PageTreeView extends BrowseTreeView
     public function wrapTitle($title, $row, $bank = 0)
     {
         // Hook for overriding the page title
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
-            $_params = ['title' => &$title, 'row' => &$row];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-            unset($_params);
+
+        $_params = ['title' => &$title, 'row' => &$row];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+
         $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
         $clickMenuParts = BackendUtility::wrapClickMenuOnIcon('', 'pages', $row['uid'], 'tree', '', '', true);
 

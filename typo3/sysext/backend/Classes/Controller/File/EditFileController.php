@@ -167,18 +167,13 @@ class EditFileController
 
         $this->getButtons();
         // Hook: before compiling the output
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
-            $preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
-            if (is_array($preOutputProcessingHook)) {
-                $hookParameters = [
-                    'content' => &$this->content,
-                    'target' => &$this->target,
-                    'dataColumnDefinition' => &$dataColumnDefinition,
-                ];
-                foreach ($preOutputProcessingHook as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'] ?? [] as $hookFunction) {
+            $hookParameters = [
+                'content' => &$this->content,
+                'target' => &$this->target,
+                'dataColumnDefinition' => &$dataColumnDefinition,
+            ];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
 
         $assigns = [];
@@ -262,17 +257,12 @@ class EditFileController
         $pageContent = $view->render();
 
         // Hook: after compiling the output
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
-            $postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
-            if (is_array($postOutputProcessingHook)) {
-                $hookParameters = [
-                    'pageContent' => &$pageContent,
-                    'target' => &$this->target
-                ];
-                foreach ($postOutputProcessingHook as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'] ?? [] as $hookFunction) {
+            $hookParameters = [
+                'pageContent' => &$pageContent,
+                'target' => &$this->target
+            ];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
 
         $this->content .= $pageContent;

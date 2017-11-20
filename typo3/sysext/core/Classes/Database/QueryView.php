@@ -397,9 +397,7 @@ class QueryView
     public function queryMaker()
     {
         $output = '';
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'])) {
-            $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'];
-        }
+        $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
         $msg = $this->procesStoreControl();
         if (!$this->backendUserAuthentication->userTS['mod.']['dbint.']['disableStoreControl']) {
             $output .= '<h2>Load/Save Query</h2>';

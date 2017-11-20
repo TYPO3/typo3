@@ -59,11 +59,7 @@ class ContextMenu
      */
     protected function getAvailableProviders(string $table, string $identifier, string $context): array
     {
-        $providers = $this->itemProviders;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'])) {
-            $providers = array_merge($this->itemProviders, $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders']);
-        }
-
+        $providers = array_merge($this->itemProviders, $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'] ?? []);
         $availableProviders = [];
         foreach ($providers as $providerClass) {
             $provider = GeneralUtility::makeInstance($providerClass, $table, $identifier, $context);

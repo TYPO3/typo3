@@ -142,18 +142,13 @@ class FormEditorController extends AbstractBackendController
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
         $formDefinition = $this->convertJsonArrayToAssociativeArray($formDefinition);
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'beforeFormSave')) {
-                    $formDefinition = $hookObj->beforeFormSave(
-                        $formPersistenceIdentifier,
-                        $formDefinition
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'beforeFormSave')) {
+                $formDefinition = $hookObj->beforeFormSave(
+                    $formPersistenceIdentifier,
+                    $formDefinition
+                );
             }
         }
 

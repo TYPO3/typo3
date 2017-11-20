@@ -121,11 +121,9 @@ class GifBuilder extends GraphicalFunctions
             // Let's you pre-process the gifbuilder configuration. for
             // example you can split a string up into lines and render each
             // line as TEXT obj, see extension julle_gifbconf
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] as $_funcRef) {
-                    $_params = $this->setup;
-                    $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] ?? [] as $_funcRef) {
+                $_params = $this->setup;
+                $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
             // Initializing global Char Range Map
             $this->charRangeMap = [];

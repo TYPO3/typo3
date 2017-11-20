@@ -631,17 +631,12 @@ class InlineRecordContainer extends AbstractContainer
     protected function initHookObjects()
     {
         $this->hookObjects = [];
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'])) {
-            $tceformsInlineHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
-            if (is_array($tceformsInlineHook)) {
-                foreach ($tceformsInlineHook as $className) {
-                    $processObject = GeneralUtility::makeInstance($className);
-                    if (!$processObject instanceof InlineElementHookInterface) {
-                        throw new \UnexpectedValueException($className . ' must implement interface ' . InlineElementHookInterface::class, 1202072000);
-                    }
-                    $this->hookObjects[] = $processObject;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'] ?? [] as $className) {
+            $processObject = GeneralUtility::makeInstance($className);
+            if (!$processObject instanceof InlineElementHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . InlineElementHookInterface::class, 1202072000);
             }
+            $this->hookObjects[] = $processObject;
         }
     }
 

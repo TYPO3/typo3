@@ -282,13 +282,8 @@ class ConnectionMigrator
 
         // If there are no mapped tables return a SchemaDiff without any changes
         // to avoid update suggestions for tables not related to TYPO3.
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-        ) {
-            /** @var SchemaDiff $schemaDiff */
-            $schemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, [], [], [], $fromSchema);
-
-            return $schemaDiff;
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'] ?? null)) {
+            return GeneralUtility::makeInstance(SchemaDiff::class, [], [], [], $fromSchema);
         }
 
         // Collect the table names that have been mapped to this connection.

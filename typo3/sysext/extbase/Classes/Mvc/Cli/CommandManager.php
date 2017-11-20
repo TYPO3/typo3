@@ -54,8 +54,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface
     {
         if ($this->availableCommands === null) {
             $this->availableCommands = [];
-            $commandControllerClassNames = is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) ? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] : [];
-            foreach ($commandControllerClassNames as $className) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] ?? [] as $className) {
                 if (!class_exists($className)) {
                     continue;
                 }

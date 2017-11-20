@@ -553,11 +553,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // ****************
             // getPagePermsClause-HOOK
             // ****************
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
-                    $_params = ['currentClause' => $constraint, 'perms' => $perms];
-                    $constraint = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] ?? [] as $_funcRef) {
+                $_params = ['currentClause' => $constraint, 'perms' => $perms];
+                $constraint = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
             return $constraint;
         }
@@ -600,14 +598,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // ****************
         // CALCPERMS hook
         // ****************
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] as $_funcRef) {
-                $_params = [
-                    'row' => $row,
-                    'outputPermissions' => $out
-                ];
-                $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] ?? [] as $_funcRef) {
+            $_params = [
+                'row' => $row,
+                'outputPermissions' => $out
+            ];
+            $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $out;
     }
@@ -857,16 +853,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Checking record permissions
         // THIS is where we can include a check for "perms_" fields for other records than pages...
         // Process any hooks
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] as $funcRef) {
-                $params = [
-                    'table' => $table,
-                    'idOrRow' => $idOrRow,
-                    'newRecord' => $newRecord
-                ];
-                if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
-                    return false;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] ?? [] as $funcRef) {
+            $params = [
+                'table' => $table,
+                'idOrRow' => $idOrRow,
+                'newRecord' => $newRecord
+            ];
+            if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
+                return false;
             }
         }
         // Finally, return TRUE if all is well.
@@ -1477,12 +1471,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             )
         );
         // Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'fetchGroupQuery_processQuery')) {
-                    $constraints = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, (string)$constraints);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'fetchGroupQuery_processQuery')) {
+                $constraints = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, (string)$constraints);
             }
         }
         $res = $queryBuilder->select('*')
@@ -1537,11 +1529,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
         // HOOK: fetchGroups_postProcessing
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] as $_funcRef) {
-                $_params = [];
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] ?? [] as $_funcRef) {
+            $_params = [];
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -1974,16 +1964,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
 
         // HOOK: getDefaultUploadFolder
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] as $_funcRef) {
-                $_params = [
-                    'uploadFolder' => $uploadFolder,
-                    'pid' => $pid,
-                    'table' => $table,
-                    'field' => $field,
-                ];
-                $uploadFolder = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] ?? [] as $_funcRef) {
+            $_params = [
+                'uploadFolder' => $uploadFolder,
+                'pid' => $pid,
+                'table' => $table,
+                'field' => $field,
+            ];
+            $uploadFolder = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
 
         if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {

@@ -1877,13 +1877,11 @@ class BackendUtility
         /*****************
          *HOOK: pre-processing the human readable output from a record
          ****************/
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'])) {
-            // Create NULL-reference
-            $null = null;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $theColConf, $null);
-            }
+        $null = null;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $theColConf, $null);
         }
+
         $l = '';
         $lang = static::getLanguageService();
         switch ((string)$theColConf['type']) {
@@ -2230,16 +2228,13 @@ class BackendUtility
         /*****************
          *HOOK: post-processing the human readable output from a record
          ****************/
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
-            // Create NULL-reference
-            $null = null;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
-                $params = [
-                    'value' => $l,
-                    'colConf' => $theColConf
-                ];
-                $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
-            }
+        $null = null;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] ?? [] as $_funcRef) {
+            $params = [
+                'value' => $l,
+                'colConf' => $theColConf
+            ];
+            $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
         }
         if ($fixed_lgd_chars) {
             return GeneralUtility::fixed_lgd_cs($l, $fixed_lgd_chars);
@@ -2536,23 +2531,18 @@ class BackendUtility
             $viewScript = $alternativeUrl;
         }
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'preProcess')) {
-                    $hookObj->preProcess(
-                        $pageUid,
-                        $backPath,
-                        $rootLine,
-                        $anchorSection,
-                        $viewScript,
-                        $additionalGetVars,
-                        $switchFocus
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'preProcess')) {
+                $hookObj->preProcess(
+                    $pageUid,
+                    $backPath,
+                    $rootLine,
+                    $anchorSection,
+                    $viewScript,
+                    $additionalGetVars,
+                    $switchFocus
+                );
             }
         }
 
@@ -2565,23 +2555,18 @@ class BackendUtility
             $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
         }
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'postProcess')) {
-                    $previewUrl = $hookObj->postProcess(
-                        $previewUrl,
-                        $pageUid,
-                        $rootLine,
-                        $anchorSection,
-                        $viewScript,
-                        $additionalGetVars,
-                        $switchFocus
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'postProcess')) {
+                $previewUrl = $hookObj->postProcess(
+                    $previewUrl,
+                    $pageUid,
+                    $rootLine,
+                    $anchorSection,
+                    $viewScript,
+                    $additionalGetVars,
+                    $switchFocus
+                );
             }
         }
 
@@ -3031,11 +3016,7 @@ class BackendUtility
             return '';
         }
         // Hook: Allows to let TYPO3 execute your JS code
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'])) {
-            $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'];
-        } else {
-            $updateSignals = [];
-        }
+        $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'] ?? [];
         // Loop through all setUpdateSignals and get the JS code
         foreach ($modData as $set => $val) {
             if (isset($updateSignals[$set])) {

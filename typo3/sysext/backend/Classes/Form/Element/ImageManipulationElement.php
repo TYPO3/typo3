@@ -224,15 +224,13 @@ class ImageManipulationElement extends AbstractFormElement
     {
         $previewUrl = '';
         // Hook to generate a preview URL
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'])) {
-            $hookParameters = [
-                'databaseRow' => $databaseRow,
-                'file' => $file,
-                'previewUrl' => $previewUrl,
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'] as $listener) {
-                $previewUrl = GeneralUtility::callUserFunction($listener, $hookParameters, $this);
-            }
+        $hookParameters = [
+            'databaseRow' => $databaseRow,
+            'file' => $file,
+            'previewUrl' => $previewUrl,
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'] ?? [] as $listener) {
+            $previewUrl = GeneralUtility::callUserFunction($listener, $hookParameters, $this);
         }
         return $previewUrl;
     }

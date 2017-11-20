@@ -910,14 +910,12 @@ class DataHandler implements LoggerAwareInterface
     {
         if (!isset($this->checkModifyAccessListHookObjects)) {
             $this->checkModifyAccessListHookObjects = [];
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $className) {
-                    $hookObject = GeneralUtility::makeInstance($className);
-                    if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
-                        throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
-                    }
-                    $this->checkModifyAccessListHookObjects[] = $hookObject;
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
                 }
+                $this->checkModifyAccessListHookObjects[] = $hookObject;
             }
         }
         return $this->checkModifyAccessListHookObjects;
@@ -949,14 +947,12 @@ class DataHandler implements LoggerAwareInterface
         }
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'processDatamap_beforeStart')) {
-                    $hookObject->processDatamap_beforeStart($this);
-                }
-                $hookObjectsArr[] = $hookObject;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'processDatamap_beforeStart')) {
+                $hookObject->processDatamap_beforeStart($this);
             }
+            $hookObjectsArr[] = $hookObject;
         }
         // Pre-process data-map and synchronize localization states
         $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER)->process();
@@ -2263,14 +2259,12 @@ class DataHandler implements LoggerAwareInterface
                                     if ($theDestFile) {
                                         GeneralUtility::upload_copy_move($theFile, $theDestFile);
                                         // Hook for post-processing the upload action
-                                        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'])) {
-                                            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $className) {
-                                                $hookObject = GeneralUtility::makeInstance($className);
-                                                if (!$hookObject instanceof DataHandlerProcessUploadHookInterface) {
-                                                    throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
-                                                }
-                                                $hookObject->processUpload_postProcessAction($theDestFile, $this);
+                                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] ?? [] as $className) {
+                                            $hookObject = GeneralUtility::makeInstance($className);
+                                            if (!$hookObject instanceof DataHandlerProcessUploadHookInterface) {
+                                                throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerProcessUploadHookInterface::class, 1279962349);
                                             }
+                                            $hookObject->processUpload_postProcessAction($theDestFile, $this);
                                         }
                                         $this->copiedFileMap[$theFile] = $theDestFile;
                                         clearstatcache();
@@ -2454,12 +2448,10 @@ class DataHandler implements LoggerAwareInterface
             // (provided that the current value was already stored IN the charset that the new value is converted to).
             $arrValue = GeneralUtility::xml2array($xmlValue);
 
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] as $className) {
-                    $hookObject = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
-                        $hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObject, 'checkFlexFormValue_beforeMerge')) {
+                    $hookObject->checkFlexFormValue_beforeMerge($this, $currentValueArray, $arrValue);
                 }
             }
 
@@ -3237,14 +3229,12 @@ class DataHandler implements LoggerAwareInterface
         }
         // Hook initialization:
         $hookObjectsArr = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'processCmdmap_beforeStart')) {
-                    $hookObj->processCmdmap_beforeStart($this);
-                }
-                $hookObjectsArr[] = $hookObj;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'processCmdmap_beforeStart')) {
+                $hookObj->processCmdmap_beforeStart($this);
             }
+            $hookObjectsArr[] = $hookObj;
         }
         $pasteDatamap = [];
         // Traverse command map:
@@ -4381,12 +4371,10 @@ class DataHandler implements LoggerAwareInterface
 
         $recordWasMoved = false;
         // Move the record via a hook, used e.g. for versioning
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'moveRecord')) {
-                    $hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'moveRecord')) {
+                $hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
             }
         }
         // Move the record if a hook hasn't moved it yet
@@ -4420,10 +4408,8 @@ class DataHandler implements LoggerAwareInterface
         $moveRec = $this->getRecordProperties($table, $uid, true);
         // Prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $className) {
-                $hookObjectsArr[] = GeneralUtility::makeInstance($className);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
+            $hookObjectsArr[] = GeneralUtility::makeInstance($className);
         }
         // Timestamp field:
         $updateFields = [];
@@ -4786,12 +4772,11 @@ class DataHandler implements LoggerAwareInterface
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'])) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $className) {
-                            $hookObj = GeneralUtility::makeInstance($className);
-                            if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
-                                $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this);
-                            }
+
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] ?? [] as $className) {
+                        $hookObj = GeneralUtility::makeInstance($className);
+                        if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
+                            $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this);
                         }
                     }
                     if (!empty($translateToMsg)) {
@@ -5010,12 +4995,10 @@ class DataHandler implements LoggerAwareInterface
         // Record asked to be deleted was found:
         if (is_array($recordToDelete)) {
             $recordWasDeleted = false;
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $className) {
-                    $hookObj = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
-                        $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
+                    $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
                 }
             }
             // Delete the record if a hook hasn't deleted it yet
@@ -8499,12 +8482,10 @@ class DataHandler implements LoggerAwareInterface
                 $pageIdsThatNeedCacheFlush[] = $pageUid = (int)$this->getPID($table, $uid);
             }
             // Call pre-processing function for clearing of cache for page ids:
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
-                    $_params = ['pageIdArray' => &$pageIdsThatNeedCacheFlush, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()'];
-                    // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-                    GeneralUtility::callUserFunction($funcName, $_params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] ?? [] as $funcName) {
+                $_params = ['pageIdArray' => &$pageIdsThatNeedCacheFlush, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()'];
+                // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
+                GeneralUtility::callUserFunction($funcName, $_params, $this);
             }
             // Delete cache for selected pages:
             foreach ($pageIdsThatNeedCacheFlush as $pageId) {
@@ -8525,11 +8506,9 @@ class DataHandler implements LoggerAwareInterface
             $clearCacheCommands = array_unique($commands);
         }
         // Call post processing function for clear-cache:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
-            $_params = ['table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return [
             $tagsToClear,
@@ -8618,12 +8597,10 @@ class DataHandler implements LoggerAwareInterface
         if (MathUtility::canBeInterpretedAsInteger($cacheCmd)) {
             $list_cache = [$cacheCmd];
             // Call pre-processing function for clearing of cache for page ids:
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] as $funcName) {
-                    $_params = ['pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()'];
-                    // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-                    GeneralUtility::callUserFunction($funcName, $_params, $this);
-                }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] ?? [] as $funcName) {
+                $_params = ['pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()'];
+                // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
+                GeneralUtility::callUserFunction($funcName, $_params, $this);
             }
             // Delete cache for selected pages:
             if (is_array($list_cache)) {
@@ -8643,11 +8620,9 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Call post processing function for clear-cache:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
-            $_params = ['cacheCmd' => strtolower($cacheCmd)];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
-                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['cacheCmd' => strtolower($cacheCmd)];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 

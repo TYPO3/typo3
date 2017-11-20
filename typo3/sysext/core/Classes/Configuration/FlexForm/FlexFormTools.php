@@ -596,26 +596,21 @@ class FlexFormTools
         // Result of the FIRST hook that gives an non-empty string is used, namespace your identifiers in
         // a way that there is little chance they overlap (eg. prefix with extension name).
         // If implemented, this hook should be paired with a hook in getDataStructureIdentifier() above.
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-        ) {
-            $hookClasses = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'];
-            foreach ($hookClasses as $hookClass) {
-                $hookInstance = GeneralUtility::makeInstance($hookClass);
-                if (method_exists($hookClass, 'parseDataStructureByIdentifierPreProcess')) {
-                    $dataStructure = $hookInstance->parseDataStructureByIdentifierPreProcess($identifier);
-                    if (!is_string($dataStructure) && !is_array($dataStructure)) {
-                        // Programming error -> not catchable
-                        throw new \RuntimeException(
-                            'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must either'
-                            . ' return an empty string or a data structure string or a parsed data structure array.',
-                            1478168512
-                        );
-                    }
-                    if (!empty($dataStructure)) {
-                        // Early break if a hook resolved to something!
-                        break;
-                    }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'] ?? [] as $hookClass) {
+            $hookInstance = GeneralUtility::makeInstance($hookClass);
+            if (method_exists($hookClass, 'parseDataStructureByIdentifierPreProcess')) {
+                $dataStructure = $hookInstance->parseDataStructureByIdentifierPreProcess($identifier);
+                if (!is_string($dataStructure) && !is_array($dataStructure)) {
+                    // Programming error -> not catchable
+                    throw new \RuntimeException(
+                        'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must either'
+                        . ' return an empty string or a data structure string or a parsed data structure array.',
+                        1478168512
+                    );
+                }
+                if (!empty($dataStructure)) {
+                    // Early break if a hook resolved to something!
+                    break;
                 }
             }
         }
@@ -733,21 +728,16 @@ class FlexFormTools
         // Hook to manipulate data structure further. This can be used to add or remove fields
         // from given structure. Multiple hooks can be registered, all are called. They
         // receive the parsed structure and the identifier array.
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'])
-        ) {
-            $hookClasses = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'];
-            foreach ($hookClasses as $hookClass) {
-                $hookInstance = GeneralUtility::makeInstance($hookClass);
-                if (method_exists($hookClass, 'parseDataStructureByIdentifierPostProcess')) {
-                    $dataStructure = $hookInstance->parseDataStructureByIdentifierPostProcess($dataStructure, $identifier);
-                    if (!is_array($dataStructure)) {
-                        // Programming error -> not catchable
-                        throw new \RuntimeException(
-                            'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must return and array.',
-                            1478350806
-                        );
-                    }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'] ?? [] as $hookClass) {
+            $hookInstance = GeneralUtility::makeInstance($hookClass);
+            if (method_exists($hookClass, 'parseDataStructureByIdentifierPostProcess')) {
+                $dataStructure = $hookInstance->parseDataStructureByIdentifierPostProcess($dataStructure, $identifier);
+                if (!is_array($dataStructure)) {
+                    // Programming error -> not catchable
+                    throw new \RuntimeException(
+                        'Hook class ' . $hookClass . ' method parseDataStructureByIdentifierPreProcess must return and array.',
+                        1478350806
+                    );
                 }
             }
         }

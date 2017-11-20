@@ -206,11 +206,9 @@ class FrontendEditingController
         }
         if ($cmd === 'save' || $cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
             // Hook for defining custom editing actions. Naming is incorrect, but preserves compatibility.
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
-                $_params = [];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'] as $_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+            $_params = [];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'] ?? [] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
             // Perform the requested editing command.
             $cmdAction = 'do' . ucwords($cmd);

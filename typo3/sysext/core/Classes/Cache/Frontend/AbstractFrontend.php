@@ -150,12 +150,12 @@ abstract class AbstractFrontend implements FrontendInterface
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057359);
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] as $_funcRef) {
-                $params = ['tag' => $tag];
-                GeneralUtility::callUserFunction($_funcRef, $params, $this);
-            }
+
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] ?? [] as $_funcRef) {
+            $params = ['tag' => $tag];
+            GeneralUtility::callUserFunction($_funcRef, $params, $this);
         }
+
         if ($this->backend instanceof TaggableBackendInterface) {
             $this->backend->flushByTag($tag);
         }

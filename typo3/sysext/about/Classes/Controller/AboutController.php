@@ -65,12 +65,10 @@ class AboutController extends ActionController
     {
         $warnings = [];
         // Hook for additional warnings
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
-                    $hookObj->displayWarningMessages_postProcess($warnings);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
+                $hookObj->displayWarningMessages_postProcess($warnings);
             }
         }
 

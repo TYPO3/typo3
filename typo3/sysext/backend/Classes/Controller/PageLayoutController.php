@@ -764,15 +764,12 @@ class PageLayoutController
             $this->makeButtons();
             // @internal: This is an internal hook for compatibility7 only, this hook will be removed without further notice
             if ($this->MOD_SETTINGS['function'] != 1 && $this->MOD_SETTINGS['function'] != 2) {
-                $renderActionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['renderActionHook'];
-                if (is_array($renderActionHook)) {
-                    foreach ($renderActionHook as $hook) {
-                        $params = [
-                            'deleteButton' => $this->deleteButton,
-                            ''
-                        ];
-                        $content .= GeneralUtility::callUserFunction($hook, $params, $this);
-                    }
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['renderActionHook'] ?? [] as $hook) {
+                    $params = [
+                        'deleteButton' => $this->deleteButton,
+                        ''
+                    ];
+                    $content .= GeneralUtility::callUserFunction($hook, $params, $this);
                 }
             }
             // Create LanguageMenu
@@ -905,12 +902,9 @@ class PageLayoutController
         // Init the content
         $content = '';
         // Additional header content
-        $headerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'];
-        if (is_array($headerContentHook)) {
-            foreach ($headerContentHook as $hook) {
-                $params = [];
-                $content .= GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'] ?? [] as $hook) {
+            $params = [];
+            $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         // Add the content for each table we have rendered (traversing $tableOutput variable)
         foreach ($tableOutput as $table => $output) {
@@ -928,12 +922,9 @@ class PageLayoutController
             $this->searchContent = $dbList->getSearchBox();
         }
         // Additional footer content
-        $footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
-        if (is_array($footerContentHook)) {
-            foreach ($footerContentHook as $hook) {
-                $params = [];
-                $content .= GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
+            $params = [];
+            $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         return $content;
     }

@@ -290,20 +290,18 @@ class AdminPanelView
         $moduleContent .= $this->getModule('tsdebug', $this->getTSDebugModule());
         $moduleContent .= $this->getModule('info', $this->getInfoModule());
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof AdminPanelViewHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
-                }
-                $content = $hookObject->extendAdminPanel($moduleContent, $this);
-                if ($content) {
-                    $moduleContent .= '<div class="typo3-adminPanel-section typo3-adminPanel-section-open">';
-                    $moduleContent .= '  <div class="typo3-adminPanel-section-body">';
-                    $moduleContent .= '    ' . $content;
-                    $moduleContent .= '  </div>';
-                    $moduleContent .= '</div>';
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof AdminPanelViewHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . AdminPanelViewHookInterface::class, 1311942539);
+            }
+            $content = $hookObject->extendAdminPanel($moduleContent, $this);
+            if ($content) {
+                $moduleContent .= '<div class="typo3-adminPanel-section typo3-adminPanel-section-open">';
+                $moduleContent .= '  <div class="typo3-adminPanel-section-body">';
+                $moduleContent .= '    ' . $content;
+                $moduleContent .= '  </div>';
+                $moduleContent .= '</div>';
             }
         }
 

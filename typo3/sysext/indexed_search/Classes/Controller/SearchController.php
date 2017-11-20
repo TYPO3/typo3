@@ -1479,13 +1479,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected function initializeExternalParsers()
     {
         // Initialize external document parsers for icon display and other soft operations
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $className) {
-                $this->externalParsers[$extension] = GeneralUtility::makeInstance($className);
-                // Init parser and if it returns FALSE, unset its entry again
-                if (!$this->externalParsers[$extension]->softInit($extension)) {
-                    unset($this->externalParsers[$extension]);
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] ?? [] as $extension => $className) {
+            $this->externalParsers[$extension] = GeneralUtility::makeInstance($className);
+            // Init parser and if it returns FALSE, unset its entry again
+            if (!$this->externalParsers[$extension]->softInit($extension)) {
+                unset($this->externalParsers[$extension]);
             }
         }
     }

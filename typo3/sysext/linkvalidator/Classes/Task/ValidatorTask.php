@@ -411,15 +411,9 @@ class ValidatorTask extends AbstractTask
     {
         $linkTypes = [];
         $typesTmp = GeneralUtility::trimExplode(',', $modTS['linktypes'], true);
-        if (is_array($typesTmp)) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-            ) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
-                    if (in_array($type, $typesTmp)) {
-                        $linkTypes[$type] = 1;
-                    }
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $type => $value) {
+            if (in_array($type, $typesTmp)) {
+                $linkTypes[$type] = 1;
             }
         }
         return $linkTypes;
@@ -446,19 +440,16 @@ class ValidatorTask extends AbstractTask
         $markerArray['totalBrokenLink'] = $this->totalBrokenLink;
         $markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 
-        // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'] as $userFunc) {
-                $params = [
-                    'pObj' => &$this,
-                    'markerArray' => $markerArray
-                ];
-                $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
-                if (is_array($newMarkers)) {
-                    $markerArray = $newMarkers + $markerArray;
-                }
-                unset($params);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'] ?? [] as $userFunc) {
+            $params = [
+                'pObj' => &$this,
+                'markerArray' => $markerArray
+            ];
+            $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
+            if (is_array($newMarkers)) {
+                $markerArray = $newMarkers + $markerArray;
             }
+            unset($params);
         }
         $content = $this->templateService->substituteMarkerArray($content, $markerArray, '###|###', true, true);
         /** @var $mail MailMessage */
@@ -532,33 +523,28 @@ class ValidatorTask extends AbstractTask
     protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink)
     {
         $pageSectionHtml = $this->templateService->getSubpart($this->templateMail, '###PAGE_SECTION###');
-        // Hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
-                $params = [
-                    'curPage' => $curPage,
-                    'pageList' => $pageList,
-                    'markerArray' => $markerArray,
-                    'oldBrokenLink' => $oldBrokenLink,
-                    'pObj' => &$this
-                ];
-                $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
-                if (is_array($newMarkers)) {
-                    $markerArray = $newMarkers + $markerArray;
-                }
-                unset($params);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] ?? [] as $userFunc) {
+            $params = [
+                'curPage' => $curPage,
+                'pageList' => $pageList,
+                'markerArray' => $markerArray,
+                'oldBrokenLink' => $oldBrokenLink,
+                'pObj' => &$this
+            ];
+            $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
+            if (is_array($newMarkers)) {
+                $markerArray = $newMarkers + $markerArray;
             }
+            unset($params);
         }
-        if (is_array($markerArray)) {
-            foreach ($markerArray as $markerKey => $markerValue) {
-                if (empty($oldBrokenLink[$markerKey])) {
-                    $oldBrokenLink[$markerKey] = 0;
-                }
-                if ($markerValue != $oldBrokenLink[$markerKey]) {
-                    $this->isDifferentToLastRun = true;
-                }
-                $markerArray[$markerKey . '_old'] = $oldBrokenLink[$markerKey];
+        foreach ($markerArray as $markerKey => $markerValue) {
+            if (empty($oldBrokenLink[$markerKey])) {
+                $oldBrokenLink[$markerKey] = 0;
             }
+            if ($markerValue != $oldBrokenLink[$markerKey]) {
+                $this->isDifferentToLastRun = true;
+            }
+            $markerArray[$markerKey . '_old'] = $oldBrokenLink[$markerKey];
         }
         $markerArray['title'] = BackendUtility::getRecordTitle(
             'pages',

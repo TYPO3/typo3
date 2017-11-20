@@ -183,8 +183,7 @@ class BackendController
     protected function initializeToolbarItems()
     {
         $toolbarItemInstances = [];
-        $classNameRegistry = $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'];
-        foreach ($classNameRegistry as $className) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] ?? [] as $className) {
             $toolbarItemInstance = GeneralUtility::makeInstance($className);
             if (!$toolbarItemInstance instanceof ToolbarItemInterface) {
                 throw new \RuntimeException(
@@ -796,10 +795,8 @@ class BackendController
     protected function executeHook($identifier, array $hookConfiguration = [])
     {
         $options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
-        if (isset($options[$identifier]) && is_array($options[$identifier])) {
-            foreach ($options[$identifier] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);
-            }
+        foreach ($options[$identifier] ?? [] as $hookFunction) {
+            GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);
         }
     }
 

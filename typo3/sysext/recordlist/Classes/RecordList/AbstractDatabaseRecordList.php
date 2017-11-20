@@ -1008,16 +1008,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             $fieldListWasSet = true;
         }
         // Call hook to add or change the list
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
-            $hookParameters = [
-                'tableHasSearchConfiguration' => $fieldListWasSet,
-                'tableName' => $tableName,
-                'searchFields' => &$fieldArray,
-                'searchString' => $this->searchString
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-            }
+        $hookParameters = [
+            'tableHasSearchConfiguration' => $fieldListWasSet,
+            'tableName' => $tableName,
+            'searchFields' => &$fieldArray,
+            'searchString' => $this->searchString
+        ];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] ?? [] as $hookFunction) {
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
         return $fieldArray;
     }

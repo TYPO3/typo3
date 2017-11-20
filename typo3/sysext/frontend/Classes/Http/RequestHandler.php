@@ -85,13 +85,9 @@ class RequestHandler implements RequestHandlerInterface
         $this->initializeTimeTracker();
 
         // Hook to preprocess the current request:
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
-                $hookParameters = [];
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-            }
-            unset($hookFunction);
-            unset($hookParameters);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] ?? [] as $hookFunction) {
+            $hookParameters = [];
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
         }
 
         $this->initializeController();

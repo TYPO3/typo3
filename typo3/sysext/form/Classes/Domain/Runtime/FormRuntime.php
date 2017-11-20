@@ -204,20 +204,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         if (!$this->formState->isFormSubmitted()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
-            if (
-                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
-            ) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] as $className) {
-                    $hookObj = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
-                        $this->currentPage = $hookObj->afterInitializeCurrentPage(
-                            $this,
-                            $this->currentPage,
-                            null,
-                            $this->request->getArguments()
-                        );
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
+                    $this->currentPage = $hookObj->afterInitializeCurrentPage(
+                        $this,
+                        $this->currentPage,
+                        null,
+                        $this->request->getArguments()
+                    );
                 }
             }
             return;
@@ -239,20 +234,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
         }
 
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
-                    $this->currentPage = $hookObj->afterInitializeCurrentPage(
-                        $this,
-                        $this->currentPage,
-                        $this->lastDisplayedPage,
-                        $this->request->getArguments()
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
+                $this->currentPage = $hookObj->afterInitializeCurrentPage(
+                    $this,
+                    $this->currentPage,
+                    $this->lastDisplayedPage,
+                    $this->request->getArguments()
+                );
             }
         }
     }
@@ -435,20 +425,16 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         };
 
         $value = null;
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'afterSubmit')) {
-                    $value = $hookObj->afterSubmit(
-                        $this,
-                        $page,
-                        $value,
-                        $requestArguments
-                    );
-                }
+
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'afterSubmit')) {
+                $value = $hookObj->afterSubmit(
+                    $this,
+                    $page,
+                    $value,
+                    $requestArguments
+                );
             }
         }
 
@@ -459,20 +445,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 $value = null;
             }
 
-            if (
-                isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'])
-            ) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] as $className) {
-                    $hookObj = GeneralUtility::makeInstance($className);
-                    if (method_exists($hookObj, 'afterSubmit')) {
-                        $value = $hookObj->afterSubmit(
-                            $this,
-                            $element,
-                            $value,
-                            $requestArguments
-                        );
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'afterSubmit')) {
+                    $value = $hookObj->afterSubmit(
+                        $this,
+                        $element,
+                        $value,
+                        $requestArguments
+                    );
                 }
             }
 

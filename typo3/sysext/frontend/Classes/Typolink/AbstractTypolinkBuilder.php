@@ -155,14 +155,11 @@ abstract class AbstractTypolinkBuilder
      */
     protected function processUrl(string $context, string $url, array $typolinkConfiguration = [])
     {
-        if (
-            empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'])
-        ) {
+        $urlProcessors = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'] ?? false;
+        if (!$urlProcessors) {
             return $url;
         }
 
-        $urlProcessors = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'];
         foreach ($urlProcessors as $identifier => $configuration) {
             if (empty($configuration) || !is_array($configuration)) {
                 throw new \RuntimeException('Missing configuration for URI processor "' . $identifier . '".', 1491130459);

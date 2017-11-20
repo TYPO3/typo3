@@ -336,13 +336,13 @@ class Commands
         }
         // Call stats information hook
         $stat = '';
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = ['pages', $record['uid']];
-            $fakeThis = null;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
-            }
+
+        $_params = ['pages', $record['uid']];
+        $fakeThis = null;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [] as $_funcRef) {
+            $stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
         }
+
         $prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
         $subNode->setEditableText($text);
         $subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);

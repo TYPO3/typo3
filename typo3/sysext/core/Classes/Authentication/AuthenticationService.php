@@ -145,17 +145,15 @@ class AuthenticationService extends AbstractAuthenticationService
         $groupDataArr = [];
         if ($this->mode === 'getGroupsFE') {
             $groups = [];
-            if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
+            if ($user[$this->db_user['usergroup_column']] ?? false) {
                 $groupList = $user[$this->db_user['usergroup_column']];
                 $groups = [];
                 $this->getSubGroups($groupList, '', $groups);
             }
             // ADD group-numbers if the IPmask matches.
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] as $IPel) {
-                    if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
-                        $groups[] = (int)$IPel[1];
-                    }
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] ?? [] as $IPel) {
+                if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
+                    $groups[] = (int)$IPel[1];
                 }
             }
             $groups = array_unique($groups);

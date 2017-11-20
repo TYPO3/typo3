@@ -30,21 +30,18 @@ class ClientUtility
     {
         trigger_error('Method getBrowserInfo() is deprecated since v9 and will be removed with v10', E_USER_DEPRECATED);
         // Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo']:
-        $getBrowserInfoHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo'];
-        if (is_array($getBrowserInfoHooks)) {
-            foreach ($getBrowserInfoHooks as $hookFunction) {
-                $returnResult = true;
-                $hookParameters = [
-                    'userAgent' => &$userAgent,
-                    'returnResult' => &$returnResult
-                ];
-                // need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
-                // so create a reference to NULL
-                $null = null;
-                $hookResult = GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
-                if ($returnResult && is_array($hookResult) && !empty($hookResult)) {
-                    return $hookResult;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo'] ?? [] as $hookFunction) {
+            $returnResult = true;
+            $hookParameters = [
+                'userAgent' => &$userAgent,
+                'returnResult' => &$returnResult
+            ];
+            // need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
+            // so create a reference to NULL
+            $null = null;
+            $hookResult = GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
+            if ($returnResult && is_array($hookResult) && !empty($hookResult)) {
+                return $hookResult;
             }
         }
         $userAgent = trim($userAgent);

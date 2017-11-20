@@ -1854,15 +1854,12 @@ class PageLayoutView implements LoggerAwareInterface
         }
 
         // Call drawFooter hooks
-        $drawFooterHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'];
-        if (is_array($drawFooterHooks)) {
-            foreach ($drawFooterHooks as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1404378171);
-                }
-                $hookObject->preProcess($this, $info, $row);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawFooterHookInterface::class, 1404378171);
             }
+            $hookObject->preProcess($this, $info, $row);
         }
 
         // Display info from records fields:
@@ -1999,12 +1996,11 @@ class PageLayoutView implements LoggerAwareInterface
                 . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
         }
         // Call stats information hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-            $_params = ['tt_content', $row['uid'], &$row];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-                $additionalIcons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
+        $_params = ['tt_content', $row['uid'], &$row];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] ?? [] as $_funcRef) {
+            $additionalIcons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
+
         // Wrap the whole header
         // NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
         return '<div class="t3-page-ce-header ' . ($allowDragAndDrop ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
@@ -2063,15 +2059,12 @@ class PageLayoutView implements LoggerAwareInterface
         $infoArr = [];
         $drawItem = true;
         // Hook: Render an own preview of a record
-        $drawItemHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
-        if (is_array($drawItemHooks)) {
-            foreach ($drawItemHooks as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1218547409);
-                }
-                $hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1218547409);
             }
+            $hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
         }
 
         // If the previous hook did not render something,
@@ -2169,18 +2162,14 @@ class PageLayoutView implements LoggerAwareInterface
                     }
                     break;
                 case 'list':
-                    $hookArr = [];
                     $hookOut = '';
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']])) {
-                        $hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']];
-                    } elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
-                        $hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
-                    }
-                    if (!empty($hookArr)) {
-                        $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr];
-                        foreach ($hookArr as $_funcRef) {
-                            $hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                        }
+                    $_params = ['pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr];
+                    foreach (
+                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']] ??
+                        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'] ??
+                        [] as $_funcRef
+                    ) {
+                        $hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
                     }
                     if ((string)$hookOut !== '') {
                         $out .= $hookOut;
@@ -3372,20 +3361,18 @@ class PageLayoutView implements LoggerAwareInterface
         }
 
         $hookName = DatabaseRecordList::class;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
-                    $hookObject->buildQueryParametersPostProcess(
-                        $parameters,
-                        $table,
-                        $pageId,
-                        $additionalConstraints,
-                        $fieldList,
-                        $this,
-                        $queryBuilder
-                    );
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['buildQueryParameters'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObject, 'buildQueryParametersPostProcess')) {
+                $hookObject->buildQueryParametersPostProcess(
+                    $parameters,
+                    $table,
+                    $pageId,
+                    $additionalConstraints,
+                    $fieldList,
+                    $this,
+                    $queryBuilder
+                );
             }
         }
 
@@ -3575,16 +3562,14 @@ class PageLayoutView implements LoggerAwareInterface
             $fieldListWasSet = true;
         }
         // Call hook to add or change the list
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'])) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] ?? [] as $hookFunction) {
             $hookParameters = [
                 'tableHasSearchConfiguration' => $fieldListWasSet,
                 'tableName' => $tableName,
                 'searchFields' => &$fieldArray,
                 'searchString' => $this->searchString
             ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-            }
+            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
         return $fieldArray;
     }

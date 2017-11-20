@@ -117,10 +117,7 @@ class ExtDirectRouter
     protected function processRpc($singleRequest, $namespace)
     {
         $endpointName = $namespace . '.' . $singleRequest->action;
-        if (
-            !isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])
-            || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])
-        ) {
+        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName] ?? null)) {
             throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
         }
         if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {

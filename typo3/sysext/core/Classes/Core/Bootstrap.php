@@ -464,10 +464,11 @@ class Bootstrap
      */
     protected function initializeRuntimeActivatedPackagesFromConfiguration()
     {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
+        $packages = $GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] ?? [];
+        if (!empty($packages)) {
             /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
             $packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] as $runtimeAddedPackageKey) {
+            foreach ($packages as $runtimeAddedPackageKey) {
                 $packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
             }
         }
@@ -809,18 +810,16 @@ class Bootstrap
      */
     protected function runExtTablesPostProcessingHooks()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] as $className) {
-                /** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
-                    throw new \UnexpectedValueException(
-                        '$hookObject "' . $className . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
-                        1320585902
-                    );
-                }
-                $hookObject->processData();
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
+            /** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
+                throw new \UnexpectedValueException(
+                    '$hookObject "' . $className . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
+                    1320585902
+                );
             }
+            $hookObject->processData();
         }
     }
 
@@ -964,11 +963,7 @@ class Bootstrap
      */
     public function sendHttpHeaders()
     {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']) && is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] as $header) {
-                header($header);
-            }
-        }
+        array_map('header', $GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] ?? []);
         return $this;
     }
 

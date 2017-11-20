@@ -134,15 +134,11 @@ abstract class AbstractLinkBrowserController
      */
     protected function initHookObjects()
     {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'])
-        ) {
-            $hooks = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']
-            );
-            foreach ($hooks as $key => $hook) {
-                $this->hookObjects[] = GeneralUtility::makeInstance($hook['handler']);
-            }
+        $hooks = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'] ?? []
+        );
+        foreach ($hooks as $key => $hook) {
+            $this->hookObjects[] = GeneralUtility::makeInstance($hook['handler']);
         }
     }
 

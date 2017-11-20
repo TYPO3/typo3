@@ -430,13 +430,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $this->setSessionCookie();
         }
         // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName) {
-                $_params = [
-                    'pObj' => $this,
-                ];
-                GeneralUtility::callUserFunction($funcName, $_params, $this);
-            }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] ?? [] as $funcName) {
+            $_params = [
+                'pObj' => $this,
+            ];
+            GeneralUtility::callUserFunction($funcName, $_params, $this);
         }
         // Set $this->gc_time if not explicitly specified
         if ($this->gc_time === 0) {
@@ -796,16 +794,15 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             );
 
             // Hook to implement login failure tracking methods
-            if (
-                !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
-            ) {
-                $_params = [];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] as $_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
-            } else {
-                // If no hook is implemented, wait for 5 seconds
+            $_params = [];
+            $sleep = true;
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                $sleep = false;
+            }
+
+            if ($sleep) {
+                // No hooks were triggered - default login failure behavior is to sleep 5 seconds
                 sleep(5);
             }
 
@@ -998,21 +995,18 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $this->logger->debug('logoff: ses_id = ' . $this->id);
         // Release the locked records
         BackendUtility::lockRecords();
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'])) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] as $_funcRef) {
-                if ($_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+
+        $_params = [];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
+            if ($_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
         $this->performLogoff();
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
-            $_params = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $_funcRef) {
-                if ($_funcRef) {
-                    GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                }
+
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] ?? [] as $_funcRef) {
+            if ($_funcRef) {
+                GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
     }

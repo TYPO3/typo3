@@ -1621,7 +1621,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // check if additional AMD modules need to be loaded if a single AMD module is initialized
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'] ?? false)) {
             $this->addInlineSettingArray(
                 'RequireJS.PostInitializationModules',
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']
@@ -2802,23 +2802,25 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function executePreRenderHook()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
-            $params = [
-                'jsLibs' => &$this->jsLibs,
-                'jsFooterLibs' => &$this->jsFooterLibs,
-                'jsFiles' => &$this->jsFiles,
-                'jsFooterFiles' => &$this->jsFooterFiles,
-                'cssLibs' => &$this->cssLibs,
-                'cssFiles' => &$this->cssFiles,
-                'headerData' => &$this->headerData,
-                'footerData' => &$this->footerData,
-                'jsInline' => &$this->jsInline,
-                'jsFooterInline' => &$this->jsFooterInline,
-                'cssInline' => &$this->cssInline
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] as $hook) {
-                GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] ?? false;
+        if (!$hooks) {
+            return;
+        }
+        $params = [
+            'jsLibs' => &$this->jsLibs,
+            'jsFooterLibs' => &$this->jsFooterLibs,
+            'jsFiles' => &$this->jsFiles,
+            'jsFooterFiles' => &$this->jsFooterFiles,
+            'cssLibs' => &$this->cssLibs,
+            'cssFiles' => &$this->cssFiles,
+            'headerData' => &$this->headerData,
+            'footerData' => &$this->footerData,
+            'jsInline' => &$this->jsInline,
+            'jsFooterInline' => &$this->jsFooterInline,
+            'cssInline' => &$this->cssInline
+        ];
+        foreach ($hooks as $hook) {
+            GeneralUtility::callUserFunction($hook, $params, $this);
         }
     }
 
@@ -2827,23 +2829,25 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function executeRenderPostTransformHook()
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
-            $params = [
-                'jsLibs' => &$this->jsLibs,
-                'jsFooterLibs' => &$this->jsFooterLibs,
-                'jsFiles' => &$this->jsFiles,
-                'jsFooterFiles' => &$this->jsFooterFiles,
-                'cssLibs' => &$this->cssLibs,
-                'cssFiles' => &$this->cssFiles,
-                'headerData' => &$this->headerData,
-                'footerData' => &$this->footerData,
-                'jsInline' => &$this->jsInline,
-                'jsFooterInline' => &$this->jsFooterInline,
-                'cssInline' => &$this->cssInline
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'] as $hook) {
-                GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'] ?? false;
+        if (!$hooks) {
+            return;
+        }
+        $params = [
+            'jsLibs' => &$this->jsLibs,
+            'jsFooterLibs' => &$this->jsFooterLibs,
+            'jsFiles' => &$this->jsFiles,
+            'jsFooterFiles' => &$this->jsFooterFiles,
+            'cssLibs' => &$this->cssLibs,
+            'cssFiles' => &$this->cssFiles,
+            'headerData' => &$this->headerData,
+            'footerData' => &$this->footerData,
+            'jsInline' => &$this->jsInline,
+            'jsFooterInline' => &$this->jsFooterInline,
+            'cssInline' => &$this->cssInline
+        ];
+        foreach ($hooks as $hook) {
+            GeneralUtility::callUserFunction($hook, $params, $this);
         }
     }
 
@@ -2862,38 +2866,40 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function executePostRenderHook(&$jsLibs, &$jsFiles, &$jsFooterFiles, &$cssLibs, &$cssFiles, &$jsInline, &$cssInline, &$jsFooterInline, &$jsFooterLibs)
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'])) {
-            $params = [
-                'jsLibs' => &$jsLibs,
-                'jsFiles' => &$jsFiles,
-                'jsFooterFiles' => &$jsFooterFiles,
-                'cssLibs' => &$cssLibs,
-                'cssFiles' => &$cssFiles,
-                'headerData' => &$this->headerData,
-                'footerData' => &$this->footerData,
-                'jsInline' => &$jsInline,
-                'cssInline' => &$cssInline,
-                'xmlPrologAndDocType' => &$this->xmlPrologAndDocType,
-                'htmlTag' => &$this->htmlTag,
-                'headTag' => &$this->headTag,
-                'charSet' => &$this->charSet,
-                'metaCharsetTag' => &$this->metaCharsetTag,
-                'shortcutTag' => &$this->shortcutTag,
-                'inlineComments' => &$this->inlineComments,
-                'baseUrl' => &$this->baseUrl,
-                'baseUrlTag' => &$this->baseUrlTag,
-                'favIcon' => &$this->favIcon,
-                'iconMimeType' => &$this->iconMimeType,
-                'titleTag' => &$this->titleTag,
-                'title' => &$this->title,
-                'metaTags' => &$this->metaTags,
-                'jsFooterInline' => &$jsFooterInline,
-                'jsFooterLibs' => &$jsFooterLibs,
-                'bodyContent' => &$this->bodyContent
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'] as $hook) {
-                GeneralUtility::callUserFunction($hook, $params, $this);
-            }
+        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'] ?? false;
+        if (!$hooks) {
+            return;
+        }
+        $params = [
+            'jsLibs' => &$jsLibs,
+            'jsFiles' => &$jsFiles,
+            'jsFooterFiles' => &$jsFooterFiles,
+            'cssLibs' => &$cssLibs,
+            'cssFiles' => &$cssFiles,
+            'headerData' => &$this->headerData,
+            'footerData' => &$this->footerData,
+            'jsInline' => &$jsInline,
+            'cssInline' => &$cssInline,
+            'xmlPrologAndDocType' => &$this->xmlPrologAndDocType,
+            'htmlTag' => &$this->htmlTag,
+            'headTag' => &$this->headTag,
+            'charSet' => &$this->charSet,
+            'metaCharsetTag' => &$this->metaCharsetTag,
+            'shortcutTag' => &$this->shortcutTag,
+            'inlineComments' => &$this->inlineComments,
+            'baseUrl' => &$this->baseUrl,
+            'baseUrlTag' => &$this->baseUrlTag,
+            'favIcon' => &$this->favIcon,
+            'iconMimeType' => &$this->iconMimeType,
+            'titleTag' => &$this->titleTag,
+            'title' => &$this->title,
+            'metaTags' => &$this->metaTags,
+            'jsFooterInline' => &$jsFooterInline,
+            'jsFooterLibs' => &$jsFooterLibs,
+            'bodyContent' => &$this->bodyContent
+        ];
+        foreach ($hooks as $hook) {
+            GeneralUtility::callUserFunction($hook, $params, $this);
         }
     }
 

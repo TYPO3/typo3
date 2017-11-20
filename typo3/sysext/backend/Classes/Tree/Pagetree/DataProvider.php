@@ -69,22 +69,17 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
      */
     public function __construct($nodeLimit = null)
     {
-        if ($nodeLimit === null) {
-            $nodeLimit = $GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'];
-        }
+        $nodeLimit = $nodeLimit ?? $GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'];
         $this->nodeLimit = abs((int)$nodeLimit);
 
         $this->showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
 
         $this->hiddenRecords = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages'));
-        $hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'];
-        if (is_array($hookElements)) {
-            foreach ($hookElements as $className) {
-                /** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
-                $hookObject = GeneralUtility::makeInstance($className);
-                if ($hookObject instanceof \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface) {
-                    $this->processCollectionHookObjects[] = $hookObject;
-                }
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] ?? [] as $className) {
+            /** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
+            $hookObject = GeneralUtility::makeInstance($className);
+            if ($hookObject instanceof \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface) {
+                $this->processCollectionHookObjects[] = $hookObject;
             }
         }
     }
