@@ -47,8 +47,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     ContextMenuActions.mountAsTreeRoot = function (table, uid) {
         // see actions.js -> mountAsTreeRoot
         if (table === 'pages' && typeof top.Ext.getCmp('typo3-pagetree') !== 'undefined') {
-            var node = top.Ext.getCmp('typo3-pagetree-tree').app.getSelected();
-            // var node = top.TYPO3.Backend.NavigationContainer.PageTree.getSelected();
+            var app = top.Ext.getCmp('typo3-pagetree-tree').app;
+            var node = app.getTree().getRootNode().findChild('realId', uid, true);
             if (node === null) {
                 return false;
             }
