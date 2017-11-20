@@ -22,11 +22,69 @@ define(["require", "exports", "./Storage/Client", "./Storage/Persistent"], funct
      */
     var Storage = (function () {
         function Storage() {
-            if (console) {
-                console.warn('TYPO3/CMS/Backend/Storage and TYPO3.Storage are deprecated since TYPO3 v9 and will be removed in TYPO3 v10.');
-            }
-            this.Client = Client;
-            this.Persistent = Persistent;
+            var _this = this;
+            this.logDeprecated = function (className, methodName) {
+                if (console) {
+                    console.warn('top.TYPO3.Storage.' + className + '.' + methodName + '() is marked as deprecated since TYPO3 v9 and will be '
+                        + 'removed in TYPO3 v10.');
+                }
+            };
+            this.Client = {
+                clear: function () {
+                    _this.logDeprecated('Client', 'clear');
+                    Client.clear();
+                },
+                get: function (key) {
+                    _this.logDeprecated('Client', 'get');
+                    return Client.get(key);
+                },
+                isset: function (key) {
+                    _this.logDeprecated('Client', 'isset');
+                    return Client.isset(key);
+                },
+                set: function (key, value) {
+                    _this.logDeprecated('Client', 'set');
+                    return Client.set(key, value);
+                },
+                unset: function (key) {
+                    _this.logDeprecated('Client', 'unset');
+                    return Client.unset(key);
+                },
+            };
+            this.Persistent = {
+                addToList: function (key, value) {
+                    _this.logDeprecated('Persistent', 'addToList');
+                    return Persistent.addToList(key, value);
+                },
+                clear: function () {
+                    _this.logDeprecated('Persistent', 'clear');
+                    Persistent.clear();
+                },
+                get: function (key) {
+                    _this.logDeprecated('Persistent', 'get');
+                    return Persistent.get(key);
+                },
+                isset: function (key) {
+                    _this.logDeprecated('Persistent', 'isset');
+                    return Persistent.isset(key);
+                },
+                load: function (data) {
+                    _this.logDeprecated('Persistent', 'load');
+                    return Persistent.load(data);
+                },
+                removeFromList: function (key, value) {
+                    _this.logDeprecated('Persistent', 'removeFromList');
+                    return Persistent.removeFromList(key, value);
+                },
+                set: function (key, value) {
+                    _this.logDeprecated('Persistent', 'set');
+                    return Persistent.set(key, value);
+                },
+                unset: function (key) {
+                    _this.logDeprecated('Persistent', 'unset');
+                    return Persistent.unset(key);
+                },
+            };
         }
         return Storage;
     }());

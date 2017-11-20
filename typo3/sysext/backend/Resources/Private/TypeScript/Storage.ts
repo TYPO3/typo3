@@ -27,13 +27,71 @@ class Storage {
   public Persistent: any;
 
   constructor() {
+    this.Client = {
+      clear: (): any => {
+        this.logDeprecated('Client', 'clear');
+        Client.clear();
+      },
+      get: (key: string): any => {
+        this.logDeprecated('Client', 'get');
+        return Client.get(key);
+      },
+      isset: (key: string): any => {
+        this.logDeprecated('Client', 'isset');
+        return Client.isset(key);
+      },
+      set: (key: string, value: string): any => {
+        this.logDeprecated('Client', 'set');
+        return Client.set(key, value);
+      },
+      unset: (key: string): any => {
+        this.logDeprecated('Client', 'unset');
+        return Client.unset(key);
+      },
+    };
+    this.Persistent = {
+      addToList: (key: string, value: string): any => {
+        this.logDeprecated('Persistent', 'addToList');
+        return Persistent.addToList(key, value);
+      },
+      clear: (): any => {
+        this.logDeprecated('Persistent', 'clear');
+        Persistent.clear();
+      },
+      get: (key: string): any => {
+        this.logDeprecated('Persistent', 'get');
+        return Persistent.get(key);
+      },
+      isset: (key: string): any => {
+        this.logDeprecated('Persistent', 'isset');
+        return Persistent.isset(key);
+      },
+      load: (data: any): any => {
+        this.logDeprecated('Persistent', 'load');
+        return Persistent.load(data);
+      },
+      removeFromList: (key: string, value: string): any => {
+        this.logDeprecated('Persistent', 'removeFromList');
+        return Persistent.removeFromList(key, value);
+      },
+      set: (key: string, value: string): any => {
+        this.logDeprecated('Persistent', 'set');
+        return Persistent.set(key, value);
+      },
+      unset: (key: string): any => {
+        this.logDeprecated('Persistent', 'unset');
+        return Persistent.unset(key);
+      },
+    };
+  }
+
+  private logDeprecated = (className: string, methodName: string): any => {
     if (console) {
       console.warn(
-        'TYPO3/CMS/Backend/Storage and TYPO3.Storage are deprecated since TYPO3 v9 and will be removed in TYPO3 v10.',
+        'top.TYPO3.Storage.' + className + '.' + methodName + '() is marked as deprecated since TYPO3 v9 and will be '
+        + 'removed in TYPO3 v10.',
       );
     }
-    this.Client = Client;
-    this.Persistent = Persistent;
   }
 }
 
