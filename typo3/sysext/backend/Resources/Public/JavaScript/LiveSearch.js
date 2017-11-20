@@ -127,11 +127,13 @@ define([
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 			$(searchFieldSelector).val('').trigger('change');
 		});
-		$('.' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function(evt) {
-			evt.preventDefault();
-			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
-			$(searchFieldSelector).val('').trigger('change');
-		});
+		if ($(searchFieldSelector).length) {
+			$('.' + $(searchFieldSelector).autocomplete().options.containerClass).on('click.autocomplete', '.dropdown-list-link', function (evt) {
+				evt.preventDefault();
+				jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
+				$(searchFieldSelector).val('').trigger('change');
+			});
+		}
 
 		// Unset height, width and z-index
 		$(toolbarItem).removeAttr('style');
