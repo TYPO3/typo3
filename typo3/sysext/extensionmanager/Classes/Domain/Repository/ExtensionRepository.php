@@ -148,13 +148,12 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(self::TABLE_NAME);
 
-        $searchPlaceholder = $queryBuilder->createNamedParameter($searchString);
         $searchPlaceholderForLike = '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%';
 
         $searchConstraints = [
             'extension_key' => $queryBuilder->expr()->eq(
                 'extension_key',
-                $queryBuilder->createNamedParameter($searchPlaceholder, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($searchString, \PDO::PARAM_STR)
             ),
             'extension_key_like' => $queryBuilder->expr()->like(
                 'extension_key',
