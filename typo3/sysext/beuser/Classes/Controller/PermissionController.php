@@ -163,14 +163,16 @@ class PermissionController extends ActionController
 
         if ($currentRequest->getControllerActionName() === 'edit') {
             // CLOSE button:
-            $closeButton = $buttonBar->makeLinkButton()
-                ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
-                    'actions-close',
-                    Icon::SIZE_SMALL
-                ));
-            $buttonBar->addButton($closeButton);
+            if (!empty($this->returnUrl)) {
+                $closeButton = $buttonBar->makeLinkButton()
+                    ->setHref($this->returnUrl)
+                    ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
+                    ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
+                        'actions-close',
+                        Icon::SIZE_SMALL
+                    ));
+                $buttonBar->addButton($closeButton);
+            }
 
             // SAVE button:
             $saveButton = $buttonBar->makeInputButton()
