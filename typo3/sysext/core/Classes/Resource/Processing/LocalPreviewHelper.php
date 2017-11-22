@@ -103,6 +103,7 @@ class LocalPreviewHelper
         ) {
             // Create a default image
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctions->init();
             $graphicalFunctions->getTemporaryImageWithText(
                 $targetFilePath,
                 'Not imagefile!',
@@ -139,6 +140,7 @@ class LocalPreviewHelper
                 if (!file_exists($targetFilePath)) {
                     // Create an error gif
                     $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+                    $graphicalFunctions->init();
                     $graphicalFunctions->getTemporaryImageWithText(
                         $targetFilePath,
                         'No thumb',

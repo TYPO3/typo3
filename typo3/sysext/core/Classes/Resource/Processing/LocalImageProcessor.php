@@ -162,6 +162,7 @@ class LocalImageProcessor implements ProcessorInterface
 
         if ($graphicalFunctionsObject === null) {
             $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctionsObject->init();
         }
 
         return $graphicalFunctionsObject;

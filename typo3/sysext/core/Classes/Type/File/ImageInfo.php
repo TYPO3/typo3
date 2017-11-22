@@ -125,6 +125,7 @@ class ImageInfo extends FileInfo
 
         if ($graphicalFunctions === null) {
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctions->init();
         }
 
         return $graphicalFunctions;
