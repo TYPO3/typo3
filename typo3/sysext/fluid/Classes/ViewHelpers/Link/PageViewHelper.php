@@ -80,7 +80,7 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $pageUid = (int)$this->arguments['pageUid'] ?: null;
         $pageType = (int)$this->arguments['pageType'];
         $noCache = (bool)$this->arguments['noCache'];
-        $noCacheHash = (bool)$this->arguments['useCacheHash'];
+        $noCacheHash = (bool)$this->arguments['noCacheHash'];
         $section = (string)$this->arguments['section'];
         $linkAccessRestrictedPages = (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = (array)$this->arguments['additionalParams'];
