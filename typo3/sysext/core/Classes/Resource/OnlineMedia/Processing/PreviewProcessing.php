@@ -247,6 +247,7 @@ class PreviewProcessing
         static $graphicalFunctionsObject = null;
         if ($graphicalFunctionsObject === null) {
             $graphicalFunctionsObject = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctionsObject->init();
         }
         return $graphicalFunctionsObject;
     }

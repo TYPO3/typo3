@@ -117,6 +117,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
 
         if ($graphicalFunctions === null) {
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            $graphicalFunctions->init();
         }
 
         return $graphicalFunctions;
