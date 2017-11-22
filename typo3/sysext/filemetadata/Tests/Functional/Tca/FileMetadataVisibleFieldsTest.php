@@ -31,7 +31,6 @@ class FileMetadataVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functio
      */
     protected static $fileMetadataFields = [
         File::FILETYPE_UNKNOWN => [
-            'sys_language_uid',
             'title',
             'description',
             'ranking',
@@ -52,7 +51,6 @@ class FileMetadataVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functio
             'categories',
         ],
         File::FILETYPE_TEXT => [
-            'sys_language_uid',
             'title',
             'description',
             'ranking',
@@ -74,7 +72,6 @@ class FileMetadataVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functio
             'categories',
         ],
         File::FILETYPE_IMAGE => [
-            'sys_language_uid',
             'title',
             'description',
             'ranking',
@@ -101,7 +98,6 @@ class FileMetadataVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functio
             'categories',
         ],
         File::FILETYPE_AUDIO => [
-            'sys_language_uid',
             'title',
             'description',
             'ranking',
@@ -123,7 +119,6 @@ class FileMetadataVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functio
             'categories',
         ],
         File::FILETYPE_VIDEO => [
-            'sys_language_uid',
             'title',
             'description',
             'ranking',
