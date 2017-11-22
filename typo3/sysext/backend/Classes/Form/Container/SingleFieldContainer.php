@@ -216,7 +216,7 @@ class SingleFieldContainer extends AbstractContainer
         ];
 
         // NULL value and placeholder handling
-        $nullControlNameAttribute = ' name="' . htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']') . '"';
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
         if (!empty($parameterArray['fieldConf']['config']['eval']) && GeneralUtility::inList($parameterArray['fieldConf']['config']['eval'], 'null')
             && (empty($parameterArray['fieldConf']['config']['mode']) || $parameterArray['fieldConf']['config']['mode'] !== 'useOrOverridePlaceholder')
         ) {
@@ -245,9 +245,9 @@ class SingleFieldContainer extends AbstractContainer
             $nullValueWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $nullValueWrap[] =    '<div class="t3-form-field-disable"></div>';
             $nullValueWrap[] =    '<div class="checkbox t3-form-field-eval-null-checkbox">';
-            $nullValueWrap[] =        '<label>';
-            $nullValueWrap[] =            '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
-            $nullValueWrap[] =            '<input type="checkbox"' . $nullControlNameAttribute . ' value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
+            $nullValueWrap[] =        '<label for="' . $nullControlNameEscaped . '">';
+            $nullValueWrap[] =            '<input type="hidden"name="' . $nullControlNameEscaped . '" value="0" />';
+            $nullValueWrap[] =            '<input type="checkbox"name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
             $nullValueWrap[] =        '</label>';
             $nullValueWrap[] =    '</div>';
             $nullValueWrap[] =    $html;
@@ -289,9 +289,9 @@ class SingleFieldContainer extends AbstractContainer
             $placeholderWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
             $placeholderWrap[] =    '<div class="t3-form-field-disable"></div>';
             $placeholderWrap[] =    '<div class="checkbox">';
-            $placeholderWrap[] =        '<label>';
-            $placeholderWrap[] =            '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
-            $placeholderWrap[] =            '<input type="checkbox"' . $nullControlNameAttribute . ' value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
+            $placeholderWrap[] =        '<label for="' . $nullControlNameEscaped . '">';
+            $placeholderWrap[] =            '<input type="hidden"name="' . $nullControlNameEscaped . '" value="0" />';
+            $placeholderWrap[] =            '<input type="checkbox"name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
             $placeholderWrap[] =            sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
             $placeholderWrap[] =        '</label>';
             $placeholderWrap[] =    '</div>';
