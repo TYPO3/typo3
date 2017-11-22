@@ -3787,13 +3787,13 @@ class BackendUtility
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @return array
+     * @return array|bool
      * @internal
      */
     public static function isRecordLocked($table, $uid)
     {
         $runtimeCache = self::getRuntimeCache();
-        $cacheId = 'backend-recordLocked-' . md5($table . '_' . $uid);
+        $cacheId = 'backend-recordLocked';
         $recordLockedCache = $runtimeCache->get($cacheId);
         if ($recordLockedCache !== false) {
             $lockedRecords = $recordLockedCache;
@@ -3864,7 +3864,7 @@ class BackendUtility
             $runtimeCache->set($cacheId, $lockedRecords);
         }
 
-        return $lockedRecords[$table . ':' . $uid];
+        return $lockedRecords[$table . ':' . $uid] ?? false;
     }
 
     /**
