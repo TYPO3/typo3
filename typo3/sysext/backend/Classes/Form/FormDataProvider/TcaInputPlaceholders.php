@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -119,7 +121,18 @@ class TcaInputPlaceholders implements FormDataProviderInterface
         }
 
         if (!empty($possibleUids) && !empty($fieldNameArray)) {
+            if (count($possibleUids) > 1
+                && !empty($GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'])
+                && isset($result['currentSysLanguage'])
+            ) {
+                $possibleUids = $this->getPossibleUidsByCurrentSysLanguage($possibleUids, $foreignTableName, $result['currentSysLanguage']);
+            }
             $relatedFormData = $this->getRelatedFormData($foreignTableName, $possibleUids[0], $fieldNameArray[0]);
+            if (!empty($GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField'])
+                && (isset($result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']]))
+            ) {
+                $relatedFormData['currentSysLanguage'] = $result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']][0];
+            }
             $value = $this->getPlaceholderValue($fieldNameArray, $relatedFormData, $recursionLevel + 1);
         }
 
@@ -200,6 +213,53 @@ class TcaInputPlaceholders implements FormDataProviderInterface
         }
 
         return $allowedTable;
+    }
+
+    /**
+     * E.g. sys_file is not translatable, thus the uid of the translation of it's metadata has to be retrieved here.
+     *
+     * Get the uid of e.g. a file metadata entry for a given sys_language_uid and the possible translated data.
+     * If there is no translation available, return the uid of default language.
+     * If there is no value at all, return the "possible uids".
+     *
+     * @param array $possibleUids
+     * @param string $foreignTableName
+     * @param int $currentLanguage
+     * @return array
+     */
+    protected function getPossibleUidsByCurrentSysLanguage(array $possibleUids, $foreignTableName, $currentLanguage)
+    {
+        $languageField = $GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($foreignTableName);
+        $possibleRecords = $queryBuilder->select('uid', $languageField)
+            ->from($foreignTableName)
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($possibleUids, Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->in(
+                    $languageField,
+                    $queryBuilder->createNamedParameter([$currentLanguage, 0], Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->groupBy($languageField)
+            ->execute()
+            ->fetchAll();
+
+        if (!empty($possibleRecords)) {
+            // Either only one record or first record matches language
+            if (count($possibleRecords) === 1
+                || (int)$possibleRecords[0][$languageField] === (int)$currentLanguage
+            ) {
+                return [$possibleRecords[0]['uid']];
+            }
+
+            // Language of second record matches language
+            return [$possibleRecords[1]['uid']];
+        }
+
+        return $possibleUids;
     }
 
     /**
