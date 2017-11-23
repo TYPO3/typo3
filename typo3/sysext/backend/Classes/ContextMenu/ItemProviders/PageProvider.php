@@ -211,7 +211,7 @@ class PageProvider extends RecordProvider
                 $canRender = $this->isRecordInClipboard('copy');
                 break;
             case 'cut':
-                $canRender = $this->canBeCut();
+                $canRender = $this->canBeCut() && !$this->isRecordInClipboard('cut');
                 break;
             case 'cutRelease':
                 $canRender = $this->isRecordInClipboard('cut');
