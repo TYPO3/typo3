@@ -246,8 +246,8 @@ class SingleFieldContainer extends AbstractContainer
             $nullValueWrap[] =    '<div class="t3-form-field-disable"></div>';
             $nullValueWrap[] =    '<div class="checkbox t3-form-field-eval-null-checkbox">';
             $nullValueWrap[] =        '<label for="' . $nullControlNameEscaped . '">';
-            $nullValueWrap[] =            '<input type="hidden"name="' . $nullControlNameEscaped . '" value="0" />';
-            $nullValueWrap[] =            '<input type="checkbox"name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
+            $nullValueWrap[] =            '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
+            $nullValueWrap[] =            '<input type="checkbox" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
             $nullValueWrap[] =        '</label>';
             $nullValueWrap[] =    '</div>';
             $nullValueWrap[] =    $html;
@@ -290,8 +290,8 @@ class SingleFieldContainer extends AbstractContainer
             $placeholderWrap[] =    '<div class="t3-form-field-disable"></div>';
             $placeholderWrap[] =    '<div class="checkbox">';
             $placeholderWrap[] =        '<label for="' . $nullControlNameEscaped . '">';
-            $placeholderWrap[] =            '<input type="hidden"name="' . $nullControlNameEscaped . '" value="0" />';
-            $placeholderWrap[] =            '<input type="checkbox"name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
+            $placeholderWrap[] =            '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
+            $placeholderWrap[] =            '<input type="checkbox" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
             $placeholderWrap[] =            sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
             $placeholderWrap[] =        '</label>';
             $placeholderWrap[] =    '</div>';
