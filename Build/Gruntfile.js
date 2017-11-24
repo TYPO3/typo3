@@ -57,10 +57,10 @@ module.exports = function(grunt) {
 			backend   : '<%= paths.sysext %>backend/Resources/',
 			t3editor  : '<%= paths.sysext %>t3editor/Resources/',
 			workspaces: '<%= paths.sysext %>workspaces/Resources/',
-			ckeditor: '<%= paths.sysext %>rte_ckeditor/Resources/',
-			core: '<%= paths.sysext %>core/Resources/',
-			npm: 'node_modules/',
-			t3icons: '<%= paths.npm %>@typo3/icons/dist/'
+			ckeditor  : '<%= paths.sysext %>rte_ckeditor/Resources/',
+			core      : '<%= paths.sysext %>core/Resources/',
+			node_modules: 'node_modules/',
+			t3icons   : '<%= paths.node_modules %>@typo3/icons/dist/'
 		},
 		stylelint: {
 			options: {
@@ -192,13 +192,9 @@ module.exports = function(grunt) {
 				src: '<%= paths.workspaces %>Public/Css/*.css'
 			}
 		},
-		ts: {
-			default : {
-				tsconfig: true,
-				options: {
-					verbose: false
-				}
-			}
+		exec: {
+			ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
+			'yarn-install': 'yarn install'
 		},
 		tslint: {
 			options: {
@@ -288,23 +284,23 @@ module.exports = function(grunt) {
 				files: [
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot',
-						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.eot'
+						src: '<%= paths.node_modules %>font-awesome/fonts/fontawesome-webfont.eot'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg',
-						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.svg'
+						src: '<%= paths.node_modules %>font-awesome/fonts/fontawesome-webfont.svg'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf',
-						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.ttf'
+						src: '<%= paths.node_modules %>font-awesome/fonts/fontawesome-webfont.ttf'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff',
-						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.woff'
+						src: '<%= paths.node_modules %>font-awesome/fonts/fontawesome-webfont.woff'
 					},
 					{
 						dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2',
-						src: '<%= paths.npm %>font-awesome/fonts/fontawesome-webfont.woff2'
+						src: '<%= paths.node_modules %>font-awesome/fonts/fontawesome-webfont.woff2'
 					}
 				]
 			}
@@ -387,7 +383,7 @@ module.exports = function(grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
-					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.npm %>chosen-js/chosen.jquery.js"],
+					"<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js": ["<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js"]
 				}
 			}
@@ -398,11 +394,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-npmcopy');
-	grunt.loadNpmTasks('grunt-npm-install');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks("grunt-ts");
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-tslint');
 	grunt.loadNpmTasks('grunt-stylelint');
 
@@ -446,7 +441,7 @@ module.exports = function(grunt) {
 	 * - sass
 	 * - postcss
 	 */
-	grunt.registerTask('css', ['sass', 'postcss']);
+	grunt.registerTask('css', ['formatsass', 'sass', 'postcss']);
 
 	/**
 	 * grunt update task
@@ -454,10 +449,10 @@ module.exports = function(grunt) {
 	 * call "$ grunt update"
 	 *
 	 * this task does the following things:
-	 * - npm install
+	 * - yarn install
 	 * - copy some components to a specific destinations because they need to be included via PHP
 	 */
-	grunt.registerTask('update', ['npm-install', 'npmcopy']);
+	grunt.registerTask('update', ['exec:yarn-install', 'npmcopy']);
 
 	/**
 	 * grunt scripts task
@@ -469,7 +464,7 @@ module.exports = function(grunt) {
 	 * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
 	 * - 3) Copy all generated JavaScript and Map files to public folders
 	 */
-	grunt.registerTask('scripts', ['tslint', 'tsclean', 'ts', 'copy:ts_files']);
+	grunt.registerTask('scripts', ['tslint', 'tsclean', 'exec:ts', 'copy:ts_files']);
 
 	grunt.task.registerTask('tsclean', function() {
 		grunt.option('force');
