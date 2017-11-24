@@ -302,20 +302,19 @@ class EditFileController
         $saveButton = $buttonBar->makeInputButton()
             ->setName('_save')
             ->setValue('1')
-            ->setOnClick('document.editform.submit();')
             ->setForm('EditFileController')
             ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.submit'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         // Save and Close button
         $saveAndCloseButton = $buttonBar->makeInputButton()
-            ->setName('_saveandclose')
+            ->setName('_saveandclosedok')
             ->setValue('1')
             ->setForm('EditFileController')
             ->setOnClick(
-                'document.editform.redirect.value='
+                'document.editform.elements.namedItem("data[editfile][0][redirect]").value='
                 . GeneralUtility::quoteJSvalue($this->returnUrl)
-                . '; document.editform.submit();'
+                . ';'
             )
             ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_edit.php.saveAndClose'))
             ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
