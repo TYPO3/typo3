@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -1370,14 +1371,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             } else {
                 // Parsing the user TSconfig (or getting from cache)
                 $hash = md5('userTS:' . $this->userTS_text);
-                $cachedContent = BackendUtility::getHash($hash);
+                $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+                $cachedContent = $cache->get($hash);
                 if (is_array($cachedContent) && !$this->userTS_dontGetCached) {
                     $this->userTS = $cachedContent;
                 } else {
                     $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
                     $parseObj->parse($this->userTS_text);
                     $this->userTS = $parseObj->setup;
-                    BackendUtility::storeHash($hash, $this->userTS, 'BE_USER_TSconfig');
+                    $cache->set($hash, $this->userTS, ['ident_BE_USER_TSconfig'], 0);
                     // Update UC:
                     $this->userTSUpdated = true;
                 }

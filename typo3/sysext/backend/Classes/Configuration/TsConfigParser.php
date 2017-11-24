@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Backend\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A TS-Config parsing class which performs condition evaluation
@@ -53,7 +54,9 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
         $this->id = $id;
         $this->rootLine = $rootLine;
         $hash = md5($type . ':' . $TStext);
-        $cachedContent = BackendUtility::getHash($hash);
+
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+        $cachedContent = $cache->get($hash);
         if (is_array($cachedContent)) {
             $storedData = $cachedContent[0];
             $storedMD5 = $cachedContent[1];
@@ -68,7 +71,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
                 ];
             } else {
                 $shash = md5($checkMD5 . $hash);
-                $cachedSpec = BackendUtility::getHash($shash);
+                $cachedSpec = $cache->get($shash);
                 if (is_array($cachedSpec)) {
                     $storedData = $cachedSpec;
                     $res = [
@@ -78,18 +81,18 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
                     ];
                 } else {
                     $storeData = $this->parseWithConditions($TStext);
-                    BackendUtility::storeHash($shash, $storeData, $type . '_TSconfig');
                     $res = [
                         'TSconfig' => $storeData['TSconfig'],
                         'cached' => 0,
                         'hash' => $shash
                     ];
+                    $cache->set($shash, $storeData, ['ident_' . $type . '_TSconfig'], 0);
                 }
             }
         } else {
             $storeData = $this->parseWithConditions($TStext);
             $md5 = md5(serialize($storeData));
-            BackendUtility::storeHash($hash, [$storeData, $md5], $type . '_TSconfig');
+            $cache->set($hash, [$storeData, $md5], ['ident_' . $type . '_TSconfig'], 0);
             $res = [
                 'TSconfig' => $storeData['TSconfig'],
                 'cached' => 0,

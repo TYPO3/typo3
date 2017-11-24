@@ -512,4 +512,18 @@ return [
             'Deprecation-83083-GeneralUtilityllXmlAutoFileName.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getHash' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-83116-CachingFrameworkWrapperMethodsInBackendUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::storeHash' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-83116-CachingFrameworkWrapperMethodsInBackendUtility.rst',
+        ],
+    ],
 ];

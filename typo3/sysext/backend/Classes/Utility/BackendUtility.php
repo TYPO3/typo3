@@ -781,10 +781,11 @@ class BackendUtility
      * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
      * @param mixed $data The data to store
      * @param string $ident $ident is just a textual identification in order to inform about the content!
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use the Caching Framework directly
      */
     public static function storeHash($hash, $data, $ident)
     {
-        /** @var CacheManager $cacheManager */
+        trigger_error('This method will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheManager->getCache('cache_hash')->set($hash, $data, ['ident_' . $ident], 0);
     }
@@ -795,10 +796,11 @@ class BackendUtility
      *
      * @param string $hash The hash-string which was used to store the data value
      * @return mixed The "data" from the cache
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use the Caching Framework directly
      */
     public static function getHash($hash)
     {
-        /** @var CacheManager $cacheManager */
+        trigger_error('This method will be removed in TYPO3 v10.0, use the Caching Framework directly.', E_USER_DEPRECATED);
         $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheEntry = $cacheManager->getCache('cache_hash')->get($hash);
         $hashContent = null;
