@@ -330,8 +330,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $ATag_e = '';
                 $bulkCheckBox = '';
             }
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             // Create link to showing details about the file in a window:
-            $Ahref = BackendUtility::getModuleUrl('show_item', [
+            $Ahref = (string)$uriBuilder->buildUriFromRoute('show_item', [
                 'type' => 'file',
                 'table' => '_FILE',
                 'uid' => $fileObject->getCombinedIdentifier(),

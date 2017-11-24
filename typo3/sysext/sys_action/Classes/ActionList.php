@@ -14,6 +14,8 @@ namespace TYPO3\CMS\SysAction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class for the list rendering of Web>Task Center module
  */
@@ -72,6 +74,8 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show')) {
             $urlParameters['show'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show');
         }
-        return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_task', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('user_task', $urlParameters);
     }
 }

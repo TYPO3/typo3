@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Backend module user group administration controller
@@ -56,8 +56,10 @@ class BackendUserGroupController extends BackendUserActionController
      */
     public function indexAction()
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->view->assign('backendUserGroups', $this->backendUserGroupRepository->findAll());
-        $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl(
+        $this->view->assign('returnUrl', rawurlencode((string)$uriBuilder->buildUriFromRoute(
             'system_BeuserTxBeuser',
             [
                 'tx_beuser_system_beusertxbeuser' => [

@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,13 +48,14 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
         $backendUser = $this->getBackendUser();
 
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Clear all page-related caches
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
             $this->cacheActions[] = [
                 'id' => 'pages',
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
                 'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
-                'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'pages']),
+                'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low'
             ];
             $this->optionValues[] = 'pages';
@@ -68,7 +69,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
                 'id' => 'all',
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
                 'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
-                'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'all']),
+                'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'all']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-high'
             ];
             $this->optionValues[] = 'all';

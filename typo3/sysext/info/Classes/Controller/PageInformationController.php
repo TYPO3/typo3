@@ -59,7 +59,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
         $dblist->descrTable = '_MOD_web_info';
         $dblist->thumbs = 0;
-        $dblist->script = BackendUtility::getModuleUrl('web_info');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_info');
         $dblist->showIcon = 0;
         $dblist->setLMargin = 0;
         $dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');

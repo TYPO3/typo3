@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -57,6 +56,8 @@ class IssueCommandViewHelper extends AbstractViewHelper
             $parametersArray = GeneralUtility::explodeUrl2Array($arguments['parameters']);
             $urlParameters += $parametersArray;
         }
-        return BackendUtility::getModuleUrl('tce_db', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('tce_db', $urlParameters);
     }
 }

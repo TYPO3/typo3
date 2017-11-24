@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -116,7 +117,12 @@ class LoginController
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_login.xlf');
 
         // Setting the redirect URL to "index.php?M=main" if no alternative input is given
-        $this->redirectToURL = $this->redirectUrl ?: BackendUtility::getModuleUrl('main');
+        if ($this->redirectUrl) {
+            $this->redirectToURL = $this->redirectUrl;
+        } else {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
+        }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
         if (GeneralUtility::_GP('L') === 'OUT' && is_object($this->getBackendUserAuthentication())) {
@@ -291,7 +297,8 @@ class LoginController
                     break;
                 case 'backend':
                     $interface = 'backend';
-                    $this->redirectToURL = BackendUtility::getModuleUrl('main');
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
                     break;
                 default:
                     $interface = '';
@@ -333,10 +340,11 @@ class LoginController
             $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
             if (count($parts) > 1) {
                 // Only if more than one interface is defined we will show the selector
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $interfaces = [
                     'backend' => [
                         'label' => $this->getLanguageService()->getLL('interface.backend'),
-                        'jumpScript' => BackendUtility::getModuleUrl('main'),
+                        'jumpScript' => (string)$uriBuilder->buildUriFromRoute('main'),
                         'interface' => 'backend'
                     ],
                     'frontend' => [

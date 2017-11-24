@@ -187,7 +187,9 @@ class FileController
             if ($this->redirect) {
                 $urlParameters['returnUrl'] = $this->redirect;
             }
-            $this->redirect = BackendUtility::getModuleUrl('file_edit', $urlParameters);
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $this->redirect = (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
         }
         if ($this->redirect) {
             return $response

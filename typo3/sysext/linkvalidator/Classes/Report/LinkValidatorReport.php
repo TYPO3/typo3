@@ -545,7 +545,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
             '&id=' . $this->pObj->id .
             '&search_levels=' . $this->searchLevel;
-        $url = BackendUtility::getModuleUrl('record_edit', [
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [
                 $table => [
                     $row['record_uid'] => 'edit'

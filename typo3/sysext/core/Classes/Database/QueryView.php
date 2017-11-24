@@ -681,9 +681,12 @@ class QueryView
             }
         }
         $out .= '<td>';
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         if (!$row['deleted']) {
             $out .= '<div class="btn-group" role="group">';
-            $url = BackendUtility::getModuleUrl('record_edit', [
+            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     $table => [
                         $row['uid'] => 'edit'
@@ -701,7 +704,7 @@ class QueryView
             $out .= '</div>';
         } else {
             $out .= '<div class="btn-group" role="group">';
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
                         'cmd' => [
                             $table => [
                                 $row['uid'] => [
@@ -720,8 +723,8 @@ class QueryView
                 ],
                 'returnUrl' => GeneralUtility::linkThisScript()
             ];
-            $redirectUrl = BackendUtility::getModuleUrl('record_edit', $formEngineParameters);
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', [
+            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $formEngineParameters);
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
                     'cmd' => [
                         $table => [
                             $row['uid'] => [

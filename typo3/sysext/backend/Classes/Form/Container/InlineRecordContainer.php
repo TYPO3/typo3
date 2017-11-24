@@ -519,7 +519,8 @@ class InlineRecordContainer extends AbstractContainer
                     ->execute()
                     ->fetch();
                 if (!empty($recordInDatabase)) {
-                    $url = BackendUtility::getModuleUrl('record_edit', [
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
                         'returnUrl' => $this->data['returnUrl']
                     ]);

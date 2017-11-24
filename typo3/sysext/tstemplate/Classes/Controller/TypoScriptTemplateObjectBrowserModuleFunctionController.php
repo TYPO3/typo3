@@ -275,8 +275,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $urlParameters = [
                 'id' => $this->pObj->id
             ];
-            $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            $assigns['moduleUrl'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $assigns['moduleUrl'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $assigns['isNotInTopLevelKeyList'] = !isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$this->pObj->sObj]);
             $assigns['hasProperties'] = !empty($theSetup);
             if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$this->pObj->sObj]) {
@@ -326,7 +328,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
             $urlParameters = [
                 'id' => $this->pObj->id
             ];
-            $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             // Parser Errors:
             $pEkey = $bType === 'setup' ? 'config' : 'constants';
             $assigns['hasParseErrors'] = !empty($this->templateService->parserErrors[$pEkey]);

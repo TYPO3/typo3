@@ -15,7 +15,6 @@ namespace TYPO3\CMS\SysAction\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -114,11 +113,13 @@ class ActionToolbarItem implements ToolbarItemInterface
                 ->groupBy('sys_action.uid');
         }
 
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $result = $queryBuilder->execute();
         while ($actionRow = $result->fetch()) {
             $actionRow['link'] = sprintf(
                 '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
-                BackendUtility::getModuleUrl('user_task'),
+                (string)$uriBuilder->buildUriFromRoute('user_task'),
                 ActionTask::class, // @todo: class name string is hand over as url parameter?!
                 $actionRow['uid']
             );

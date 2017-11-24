@@ -61,12 +61,14 @@ class PreviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->stageService = GeneralUtility::makeInstance(StagesService::class);
         $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
         $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
         // @todo this part should be done with inlineLocallanglabels
         $this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
     }

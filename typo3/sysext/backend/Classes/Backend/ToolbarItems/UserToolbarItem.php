@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -65,6 +65,7 @@ class UserToolbarItem implements ToolbarItemInterface
 
         /** @var BackendModuleRepository $backendModuleRepository */
         $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $mostRecentUsers = [];
         if (ExtensionManagementUtility::isLoaded('beuser')
@@ -85,7 +86,7 @@ class UserToolbarItem implements ToolbarItemInterface
             $mostRecentUsers = array_flip($backendUser->uc['recentSwitchedToUsers']);
 
             while ($row = $result->fetch()) {
-                $row['switchUserLink'] = BackendUtility::getModuleUrl(
+                $row['switchUserLink'] = (string)$uriBuilder->buildUriFromRoute(
                     'system_BeuserTxBeuser',
                     [
                         'SwitchUser' => $row['uid']
@@ -110,7 +111,7 @@ class UserToolbarItem implements ToolbarItemInterface
         $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
         $view->assignMultiple([
             'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
-            'logoutUrl' => BackendUtility::getModuleUrl('logout'),
+            'logoutUrl' => (string)$uriBuilder->buildUriFromRoute('logout'),
             'switchUserMode' => $this->getBackendUser()->user['ses_backuserid'],
             'recentUsers' => $mostRecentUsers,
         ]);

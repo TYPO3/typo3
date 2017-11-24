@@ -142,7 +142,9 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
             'id' => $this->pObj->id,
             'template' => 'all'
         ];
-        $assigns['moduleLink'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $assigns['moduleLink'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
 
         $assigns['template'] = $template = GeneralUtility::_GET('template');
         $addParams = $template ? '&template=' . $template : '';

@@ -106,12 +106,14 @@ class ListController extends AbstractWizardController
         if ((string)$this->id !== '') {
             $redirectUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
         } else {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             // Otherwise, show the list:
             $urlParameters = [];
             $urlParameters['id'] = $this->pid;
             $urlParameters['table'] = $this->P['params']['table'];
             $urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
-            $redirectUrl = BackendUtility::getModuleUrl('web_list', $urlParameters);
+            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('web_list', $urlParameters);
         }
         HttpUtility::redirect($redirectUrl);
     }

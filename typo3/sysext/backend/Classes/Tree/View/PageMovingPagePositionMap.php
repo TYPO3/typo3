@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Position map class for moving pages,
  * previously resided in typo3/move_el.php
@@ -41,7 +44,11 @@ class PageMovingPagePositionMap extends PagePositionMap
      */
     public function onClickEvent($pid, $newPagePID)
     {
-        return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') . '&cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&redirect=' . rawurlencode($this->R_URI)) . ';return false;';
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db', [
+            'cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']' => $pid,
+            'redirect' => rawurlencode($this->R_URI)
+        ])) . ';return false;';
     }
 
     /**
@@ -53,7 +60,7 @@ class PageMovingPagePositionMap extends PagePositionMap
      */
     public function linkPageTitle($str, $rec)
     {
-        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid]);
+        $url = GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid]);
         return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
     }
 

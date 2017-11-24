@@ -130,6 +130,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $output = '';
         $newOL_js = [];
         $langRecUids = [];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
@@ -159,7 +161,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $status = GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : 'success';
             // Create links:
-            $editUrl = BackendUtility::getModuleUrl('record_edit', [
+            $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
                         $data['row']['uid'] => 'edit'
@@ -216,7 +218,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                             ) . '">' . $info . '</a></td>';
                         // Edit whole record:
                         // Create links:
-                        $editUrl = BackendUtility::getModuleUrl('record_edit', [
+                        $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [
                                 'pages' => [
                                     $row['uid'] => 'edit'
@@ -267,7 +269,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
         $tCells = [];
         $tCells[] = '<td>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . ':</td>';
         if (is_array($langRecUids[0])) {
-            $editUrl = BackendUtility::getModuleUrl('record_edit', [
+            $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
                         implode(',', $langRecUids[0]) => 'edit'
@@ -292,7 +294,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
                 $tCells[] = '<td class="col-border-left">' . htmlspecialchars($langRow['title']) . '</td>';
                 // Edit language overlay records:
                 if (is_array($langRecUids[$langRow['uid']])) {
-                    $editUrl = BackendUtility::getModuleUrl('record_edit', [
+                    $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                         'edit' => [
                             'pages' => [
                                 implode(',', $langRecUids[$langRow['uid']]) => 'edit'

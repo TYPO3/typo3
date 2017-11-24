@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -79,12 +78,14 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $backendUser = $this->getBackendUser();
         $view = $this->getFluidTemplateObject('DropDown.html');
         $activeWorkspace = (int)$backendUser->workspace;
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
             $item = [
                 'isActive'    => $workspaceId === $activeWorkspace,
                 'label'       => $label,
-                'link'        => BackendUtility::getModuleUrl('main', ['changeWorkspace' => $workspaceId]),
+                'link'        => (string)$uriBuilder->buildUriFromRoute('main', ['changeWorkspace' => $workspaceId]),
                 'workspaceId' => $workspaceId
             ];
             if ($topItem === null) {

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -317,14 +318,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $parsedUrl = parse_url($url);
         parse_str($parsedUrl['query'], $parameters);
 
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // parse the returnUrl and replace the module token of it
         if (isset($parameters['returnUrl'])) {
             $parsedReturnUrl = parse_url($parameters['returnUrl']);
             parse_str($parsedReturnUrl['query'], $returnUrlParameters);
             if (strpos($parsedReturnUrl['path'], 'index.php') !== false && !empty($returnUrlParameters['route'])) {
                 $module = $returnUrlParameters['route'];
-                $returnUrl = BackendUtility::getModuleUrl($module, $returnUrlParameters);
-                $parameters['returnUrl'] = $returnUrl;
+                $parameters['returnUrl'] = (string)$uriBuilder->buildUriFromRoutePath($module, $returnUrlParameters);
                 $url = $parsedUrl['path'] . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
             }
         }
@@ -334,9 +335,6 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         }
 
         if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
-            $module = $parameters['route'];
-            $url = BackendUtility::getModuleUrl($module, $parameters);
-        } elseif (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
             $routePath = $parameters['route'];
             /** @var \TYPO3\CMS\Backend\Routing\Router $router */
             $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
@@ -344,8 +342,6 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $route = $router->match($routePath);
                 if ($route) {
                     $routeIdentifier = $route->getOption('_identifier');
-                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                     unset($parameters['route']);
                     $url = (string)$uriBuilder->buildUriFromRoute($routeIdentifier, $parameters);
                 }

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -98,6 +97,8 @@ class ArrayBrowser
         if ($positionKey) {
             $positionKey = $positionKey . '.';
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($array as $key => $value) {
             $depth = $positionKey . $key;
             if (is_object($value) && !$value instanceof \Traversable) {
@@ -109,7 +110,7 @@ class ArrayBrowser
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
             if ($isArray && !$this->expAll) {
                 $goto = 'a' . substr(md5($depth), 0, 6);
-                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('route')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto)) . '"><i class="fa"></i></a> ';
+                $output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars(((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto)) . '"><i class="fa"></i></a> ';
             }
             $output .= '<span class="list-tree-group">';
             $output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
@@ -141,7 +142,8 @@ class ArrayBrowser
     {
         // Protect label:
         $label = htmlspecialchars($label);
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // If varname is set:
         if ($this->varName && !$this->dontLinkVar) {
             $variableName = $this->varName
@@ -149,7 +151,7 @@ class ArrayBrowser
                 . (!MathUtility::canBeInterpretedAsInteger($theValue) ? '\''
                 . addslashes($theValue) . '\'' : $theValue) . '; ';
             $label = '<a class="list-tree-label" href="'
-                . htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('route'))
+                . htmlspecialchars(((string)$uriBuilder->buildUriFromRoutePath(GeneralUtility::_GP('route'))
                 . '&varname=' . urlencode($variableName)))
                 . '#varname">' . $label . '</a>';
         }

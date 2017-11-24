@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Reports\Status;
@@ -59,7 +58,9 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (!$validPassword) {
             $value = $GLOBALS['LANG']->getLL('status_insecure');
             $severity = Status::ERROR;
-            $changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('tools_toolssettings');
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $changeInstallToolPasswordUrl = (string)$uriBuilder->buildUriFromRoute('tools_toolssettings');
             $message = sprintf(
                 $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
                 '<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">',

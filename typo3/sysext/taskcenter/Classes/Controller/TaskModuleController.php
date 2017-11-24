@@ -90,11 +90,13 @@ class TaskModuleController extends BaseScriptClass
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($this->MOD_MENU['mode'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    BackendUtility::getModuleUrl(
+                    (string)$uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => $this->id,
@@ -349,6 +351,8 @@ class TaskModuleController extends BaseScriptClass
         $content = '';
         $tasks = [];
         $defaultIcon = 'EXT:taskcenter/Resources/Public/Icons/module-taskcenter.svg';
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Render the tasks only if there are any available
         if (count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] ?? [])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
@@ -356,7 +360,7 @@ class TaskModuleController extends BaseScriptClass
                     if (!$this->checkAccess($extKey, $taskClass)) {
                         continue;
                     }
-                    $link = BackendUtility::getModuleUrl('user_task') . '&SET[function]=' . $extKey . '.' . $taskClass;
+                    $link = (string)$uriBuilder->buildUriFromRoute('user_task') . '&SET[function]=' . $extKey . '.' . $taskClass;
                     $taskTitle = $this->getLanguageService()->sL($task['title']);
                     $taskDescriptionHtml = '';
 

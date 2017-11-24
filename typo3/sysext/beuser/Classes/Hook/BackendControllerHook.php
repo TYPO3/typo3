@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Beuser\Hook;
  */
 
 use TYPO3\CMS\Backend\Controller\BackendController;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,7 +31,9 @@ class BackendControllerHook
      */
     public function addJavaScript(array $configuration, BackendController $backendController)
     {
-        $this->getPageRenderer()->addInlineSetting('AccessPermissions', 'moduleUrl', BackendUtility::getModuleUrl('system_BeuserTxPermission'));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->getPageRenderer()->addInlineSetting('AccessPermissions', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('system_BeuserTxPermission'));
     }
 
     /**

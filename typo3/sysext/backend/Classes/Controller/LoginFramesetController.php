@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,12 +60,13 @@ class LoginFramesetController
     {
         $title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
         $this->getDocumentTemplate()->startPage($title);
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Create the frameset for the window
         $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
-				<frame name="dummy" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
+				<frame name="dummy" src="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
 			</frameset>
 		</html>';
     }

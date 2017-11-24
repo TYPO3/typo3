@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
  */
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -52,8 +51,9 @@ class EditPopup extends AbstractNode
                 'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc'])),
             ],
         ];
-
-        $url = BackendUtility::getModuleUrl('wizard_edit', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('wizard_edit', $urlParameters);
         $onClick = [];
         $onClick[] = 'this.blur();';
         $onClick[] = 'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . ')) {';

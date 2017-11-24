@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  */
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -242,7 +241,9 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
 
         // Unset modules that are meant to be hidden from the menu.
         $loadedModules = $this->removeHiddenModules($loadedModules);
-        $dummyScript = BackendUtility::getModuleUrl('dummy');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $dummyScript = (string)$uriBuilder->buildUriFromRoute('dummy');
         foreach ($loadedModules as $moduleName => $moduleData) {
             $moduleLink = '';
             if (!is_array($moduleData['sub'])) {
@@ -278,7 +279,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
                     if (isset($submoduleData['script'])) {
                         $submoduleLink = GeneralUtility::resolveBackPath($submoduleData['script']);
                     } else {
-                        $submoduleLink = BackendUtility::getModuleUrl($submoduleData['name']);
+                        $submoduleLink = (string)$uriBuilder->buildUriFromRoute($submoduleData['name']);
                     }
                     $submoduleKey = $moduleName . '_' . $submoduleName;
                     $submoduleLabels = $moduleLoader->getLabelsForModule($submoduleKey);

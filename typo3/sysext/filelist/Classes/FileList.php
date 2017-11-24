@@ -942,7 +942,9 @@ class FileList
      */
     public function linkWrapDir($title, Folder $folderObject)
     {
-        $href = BackendUtility::getModuleUrl('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $href = (string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
         $onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
@@ -971,7 +973,9 @@ class FileList
                     ],
                     'returnUrl' => $this->listURL()
                 ];
-                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
                 $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
             }
@@ -1008,6 +1012,8 @@ class FileList
      */
     public function formatFileList(array $files)
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $out = '';
         // first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
         $allSystemLanguages = GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages();
@@ -1071,7 +1077,7 @@ class FileList
                                         'returnUrl' => $this->listURL()
                                     ];
                                     $flagButtonIcon = $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-edit')->render();
-                                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                     $languageCode .= '<a href="' . htmlspecialchars($url) . '" class="btn btn-default" title="' . $title . '">'
                                         . $flagButtonIcon . '</a>';
                                 } else {
@@ -1079,7 +1085,7 @@ class FileList
                                         'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
                                         'returnUrl' => $this->listURL()
                                     ];
-                                    $returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
+                                    $returnUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                                     $href = BackendUtility::getLinkToDataHandlerAction(
                                         '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
                                         $returnUrl
@@ -1213,7 +1219,9 @@ class FileList
             $params['SET']['reverse'] = 0;
             $sortArrow = '';
         }
-        $href = BackendUtility::getModuleUrl('file_FilelistList', $params);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $href = (string)$uriBuilder->buildUriFromRoute('file_FilelistList', $params);
         return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
     }
 
@@ -1300,10 +1308,12 @@ class FileList
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $md5 = GeneralUtility::shortMD5($fullIdentifier);
         $isSel = $this->clipObj->isSelected('_FILE', $md5);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // Edit file content (if editable)
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
-            $url = BackendUtility::getModuleUrl('file_edit', ['target' => $fullIdentifier]);
+            $url = (string)$uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier]);
             $editOnClick = 'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
             $cells['edit'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editcontent') . '">'
                 . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
@@ -1323,7 +1333,7 @@ class FileList
                 ],
                 'returnUrl' => $this->listURL()
             ];
-            $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
             $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
         }
@@ -1343,14 +1353,14 @@ class FileList
 
         // replace file
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
-            $url = BackendUtility::getModuleUrl('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()]);
+            $url = (string)$uriBuilder->buildUriFromRoute('file_replace', ['target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()]);
             $replaceOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
             $cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
         // rename the file
         if ($fileOrFolderObject->checkActionPermission('rename')) {
-            $url = BackendUtility::getModuleUrl('file_rename', ['target' => $fullIdentifier]);
+            $url = (string)$uriBuilder->buildUriFromRoute('file_rename', ['target' => $fullIdentifier]);
             $renameOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
             $cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.rename') . '">' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
@@ -1360,7 +1370,7 @@ class FileList
         // upload files
         if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
             if ($fileOrFolderObject instanceof Folder) {
-                $url = BackendUtility::getModuleUrl('file_upload', ['target' => $fullIdentifier]);
+                $url = (string)$uriBuilder->buildUriFromRoute('file_upload', ['target' => $fullIdentifier]);
                 $uploadOnClick = 'top.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
                 $cells['upload'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($uploadOnClick) . '"  title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.upload')) . '">' . $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL)->render() . '</a>';
             }
@@ -1419,7 +1429,7 @@ class FileList
                 $confirmationCheck = '0';
             }
 
-            $deleteUrl = BackendUtility::getModuleUrl('tce_file');
+            $deleteUrl = (string)$uriBuilder->buildUriFromRoute('tce_file');
             $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
             $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.delete');
             $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-content="' . htmlspecialchars($confirmationMessage)

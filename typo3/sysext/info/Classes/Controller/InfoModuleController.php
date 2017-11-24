@@ -113,7 +113,9 @@ class InfoModuleController extends BaseScriptClass
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
             $this->view = $this->getFluidTemplateObject();
-            $this->view->assign('moduleName', BackendUtility::getModuleUrl($this->moduleName));
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $this->view->assign('moduleName', (string)$uriBuilder->buildUriFromRoute($this->moduleName));
             $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
@@ -198,11 +200,13 @@ class InfoModuleController extends BaseScriptClass
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebInfoJumpMenu');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    BackendUtility::getModuleUrl(
+                    (string)$uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => $this->id,

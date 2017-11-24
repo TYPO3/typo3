@@ -64,8 +64,10 @@ class ViewModuleController extends ActionController
             $languageMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
             $languageUid = $this->getCurrentLanguage();
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             foreach ($languages as $value => $label) {
-                $href = BackendUtility::getModuleUrl(
+                $href = (string)$uriBuilder->buildUriFromRoute(
                     'web_ViewpageView',
                     [
                         'id' => (int)GeneralUtility::_GP('id'),

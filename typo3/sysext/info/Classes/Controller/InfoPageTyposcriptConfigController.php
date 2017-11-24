@@ -92,6 +92,8 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
     public function main()
     {
         $pageId = (int)(GeneralUtility::_GP('id'));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         if ($pageId === 0) {
             $this->view->assign('pageZero', 1);
@@ -125,7 +127,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                                 'columnsOnly' => 'TSconfig',
                                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                             ];
-                            $line['editIcon'] = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                            $line['editIcon'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                             $line['editTitle'] = 'editTSconfig';
                             $line['title'] = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid'])
                                 . ' ' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $row));
@@ -147,7 +149,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
                         'columnsOnly' => 'TSconfig',
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editIcon = htmlspecialchars($url);
                     $editTitle = 'editTSconfig_all';
                 } else {

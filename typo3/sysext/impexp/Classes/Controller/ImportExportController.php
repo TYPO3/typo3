@@ -215,7 +215,9 @@ class ImportExportController extends BaseScriptClass
             // flag doesn't exist initially; state is on by default
             $inData['excludeDisabled'] = 1;
         }
-        $this->standaloneView->assign('moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->standaloneView->assign('moduleUrl', (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp'));
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
 

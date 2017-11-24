@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -88,11 +87,13 @@ class FileUploadController
      */
     protected function init()
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Initialize GPvars:
         $this->target = GeneralUtility::_GP('target');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
         if (!$this->returnUrl) {
-            $this->returnUrl = BackendUtility::getModuleUrl('file_list', [
+            $this->returnUrl = (string)$uriBuilder->buildUriFromRoute('file_list', [
                 'id' => rawurlencode($this->target)
             ]);
         }
@@ -131,12 +132,14 @@ class FileUploadController
     public function main()
     {
         $lang = $this->getLanguageService();
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // set page title
         $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle'));
 
         $pageContent = '<form action="'
-            . htmlspecialchars(BackendUtility::getModuleUrl('tce_file'))
+            . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_file'))
             . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
         // Make page header:
         $pageContent .= '<h1>' . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_upload.php.pagetitle') . '</h1>';

@@ -138,7 +138,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $result['record'] = $record;
         $label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
         $result['label'] = $label;
-        $link = BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $link = (string)$uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
         $pageId = (int)$document[3]['uid'];
         if ($document[3]['table'] !== 'pages') {
             $pageId = (int)$document[3]['pid'];

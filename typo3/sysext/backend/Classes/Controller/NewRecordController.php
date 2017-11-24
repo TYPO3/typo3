@@ -423,6 +423,8 @@ class NewRecordController
                 $this->returnUrl
             );
         } else {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             // No pages yet, no need to prompt for position, redirect to page creation.
             $urlParameters = [
                 'edit' => [
@@ -431,9 +433,9 @@ class NewRecordController
                     ]
                 ],
                 'returnNewPageId' => 1,
-                'returnUrl' => BackendUtility::getModuleUrl('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
+                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
             ];
-            $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             @ob_end_clean();
             HttpUtility::redirect($url);
         }
@@ -507,6 +509,8 @@ class NewRecordController
         } else {
             $rowContent = '<ul class="list-tree"><li><ul>' . $rowContent . '</li></ul>';
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Compile table row
         $startRows = [$rowContent];
         $iconFile = [];
@@ -541,7 +545,7 @@ class NewRecordController
                             $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
                                 ? $tsConfig['properties']['newContentElementWizard.']['override']
                                 : 'new_content_element_wizard';
-                            $url = BackendUtility::getModuleUrl($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
+                            $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
                                 . '<a href="#" data-url="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
@@ -686,7 +690,7 @@ class NewRecordController
         } elseif ($table === 'pages') {
             $urlParameters['overrideVals']['pages']['doktype'] = (int)$this->pageinfo['doktype'];
         }
-        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';
     }
 

@@ -131,7 +131,9 @@ class SchedulerModuleController
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('scheduler');
         $this->view->setPartialRootPaths([ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Partials/Backend/SchedulerModule/']);
-        $this->moduleUri = BackendUtility::getModuleUrl('system_txschedulerM1');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->moduleUri = (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1');
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
 
@@ -188,12 +190,13 @@ class SchedulerModuleController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('SchedulerJumpMenu');
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    BackendUtility::getModuleUrl(
+                    (string)$uriBuilder->buildUriFromRoute(
                         'system_txschedulerM1',
                         [
                             'id' => 0,
@@ -730,7 +733,9 @@ class SchedulerModuleController
     protected function getBrowseButton($fieldID, array $fieldInfo)
     {
         if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
-            $url = BackendUtility::getModuleUrl(
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $url = (string)$uriBuilder->buildUriFromRoute(
                 'wizard_element_browser',
                 ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']
             );

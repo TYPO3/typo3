@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  */
 
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,7 +71,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
             'createExtension' => 0,
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         return [
             'url' => $url,
@@ -132,6 +133,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
         if ($existTemplate) {
             $saveId = $this->templateRow['_ORIG_uid'] ? : $this->templateRow['uid'];
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Create extension template
         $newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
         if ($newId) {
@@ -140,7 +143,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 'id' => $this->pObj->id,
                 'SET[templatesOnPage]' => $newId
             ];
-            $url = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             HttpUtility::redirect($url);
         }
         $tce = null;
@@ -176,7 +179,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
                 'createExtension' => 0,
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ];
-            $assigns['editAllUrl'] = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $assigns['editAllUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
             // Rendering of the output via fluid
             $view = GeneralUtility::makeInstance(StandaloneView::class);

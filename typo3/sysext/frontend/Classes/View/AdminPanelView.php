@@ -870,7 +870,9 @@ class AdminPanelView
         $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
             ? $tsConfig['properties']['newContentElementWizard.']['override']
             : 'new_content_element';
-        $newContentWizScriptPath = BackendUtility::getModuleUrl($moduleName);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
         $id = $tsfe->id;
@@ -881,7 +883,7 @@ class AdminPanelView
         $output[] = '  <div class="typo3-adminPanel-btn-group" role="group">';
 
         // History
-        $link = BackendUtility::getModuleUrl(
+        $link = (string)$uriBuilder->buildUriFromRoute(
             'record_history',
             [
                 'element' => 'pages:' . $id,
@@ -909,7 +911,7 @@ class AdminPanelView
 
         // Move Page
         if ($perms & Permission::PAGE_EDIT) {
-            $link = BackendUtility::getModuleUrl(
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'move_element',
                 [
                     'table' => 'pages',
@@ -926,7 +928,7 @@ class AdminPanelView
 
         // New Page
         if ($perms & Permission::PAGE_NEW) {
-            $link = BackendUtility::getModuleUrl(
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'db_new',
                 [
                     'id' => $id,
@@ -943,7 +945,7 @@ class AdminPanelView
 
         // Edit Page
         if ($perms & Permission::PAGE_EDIT) {
-            $link = BackendUtility::getModuleUrl(
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit[pages][' . $id . ']' => 'edit',
@@ -981,7 +983,7 @@ class AdminPanelView
                 ->fetch();
             $tsfe->sys_page->versionOL('pages', $row);
             if (is_array($row)) {
-                $link = BackendUtility::getModuleUrl(
+                $link = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         'edit[pages][' . $row['uid'] . ']' => 'edit',
@@ -999,7 +1001,7 @@ class AdminPanelView
 
         // Open list view
         if ($this->getBackendUser()->check('modules', 'web_list')) {
-            $link = BackendUtility::getModuleUrl(
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'web_list',
                 [
                     'id' => $id,

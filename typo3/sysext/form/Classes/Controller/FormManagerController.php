@@ -485,7 +485,9 @@ class FormManagerController extends AbstractBackendController
      */
     protected function getModuleUrl(string $moduleName, array $urlParameters = []): string
     {
-        return BackendUtility::getModuleUrl($moduleName, $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
     }
 
     /**

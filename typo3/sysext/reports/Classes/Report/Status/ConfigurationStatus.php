@@ -71,10 +71,12 @@ class ConfigurationStatus implements StatusProviderInterface
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->getLL('status_empty');
             $severity = ReportStatus::WARNING;
-            $url =  BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
+            $url =  (string)$uriBuilder->buildUriFromRoute('system_dbint') . '&id=0&SET[function]=refindex';
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_referenceIndex'), $value, $message, $severity);

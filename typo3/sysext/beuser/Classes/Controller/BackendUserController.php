@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -157,7 +156,9 @@ class BackendUserController extends BackendUserActionController
         $this->view->assign('onlineBackendUsers', $onlineBackendUsers);
 
         $this->view->assign('demand', $demand);
-        $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser')));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->view->assign('returnUrl', rawurlencode((string)$uriBuilder->buildUriFromRoute('system_BeuserTxBeuser')));
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
         $this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
@@ -195,7 +196,9 @@ class BackendUserController extends BackendUserActionController
         $compareUserList = $this->moduleData->getCompareUserList();
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
-        $returnUrl = BackendUtility::getModuleUrl(
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $returnUrl = (string)$uriBuilder->buildUriFromRoute(
             'system_BeuserTxBeuser',
             [
                 'tx_beuser_system_beusertxbeuser[action]' => 'compare',

@@ -462,8 +462,10 @@ class EditDocumentController
         if (!is_array($this->defVals) && is_array($this->overrideVals)) {
             $this->defVals = $this->overrideVals;
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Setting return URL
-        $this->retUrl = $this->returnUrl ?: BackendUtility::getModuleUrl('dummy');
+        $this->retUrl = $this->returnUrl ?: (string)$uriBuilder->buildUriFromRoute('dummy');
         // Fix $this->editconf if versioning applies to any of the records
         $this->fixWSversioningInEditConf();
         // Make R_URL (request url) based on input GETvars:
@@ -607,10 +609,12 @@ class EditDocumentController
                                 }
                                 $newEditConf[$tableName][$editId] = 'edit';
                             }
+                            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                             // Traverse all new records and forge the content of ->editconf so we can continue to EDIT
                             // these records!
                             if ($tableName === 'pages'
-                                && $this->retUrl != BackendUtility::getModuleUrl('dummy')
+                                && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')
                                 && $this->returnNewPageId
                             ) {
                                 $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
@@ -728,6 +732,8 @@ class EditDocumentController
         $this->doc = $GLOBALS['TBE_TEMPLATE'];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // override the default jumpToUrl
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
@@ -743,7 +749,7 @@ class EditDocumentController
 				// Info view:
 			function launchView(table,uid) {
 				var thePreviewWindow = window.open(
-					' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
+					' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('show_item') . '&table=') . ' + encodeURIComponent(table) + "&uid=" + encodeURIComponent(uid),
 					"ShowItem" + Math.random().toString(16).slice(2),
 					"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0"
 				);
@@ -752,7 +758,7 @@ class EditDocumentController
 				}
 			}
 			function deleteRecord(table,id,url) {
-				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
+				window.location.href = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
 			}
 		' . (isset($_POST['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
         );
@@ -1154,6 +1160,8 @@ class EditDocumentController
     protected function getButtons()
     {
         $lang = $this->getLanguageService();
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Render SAVE type buttons:
         // The action of each button is decided by its name attribute. (See doProcessData())
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -1282,7 +1290,7 @@ class EditDocumentController
                         ) {
                             // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
                             // tree from the outside to be able to mark the pid as active
-                            $returnUrl = BackendUtility::getModuleUrl($queryParams['route'], ['id' => 0]);
+                            $returnUrl = (string)$uriBuilder->buildUriFromRoute($queryParams['route'], ['id' => 0]);
                         }
                     }
                     $deleteButton = $buttonBar->makeLinkButton()
@@ -1324,7 +1332,7 @@ class EditDocumentController
                 if ($undoButtonR !== false) {
                     $aOnClick = 'window.location.href=' .
                         GeneralUtility::quoteJSvalue(
-                            BackendUtility::getModuleUrl(
+                            (string)$uriBuilder->buildUriFromRoute(
                                 'record_history',
                                 [
                                     'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
@@ -1355,7 +1363,7 @@ class EditDocumentController
                 if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
                     $aOnClick = 'window.location.href=' .
                         GeneralUtility::quoteJSvalue(
-                            BackendUtility::getModuleUrl(
+                            (string)$uriBuilder->buildUriFromRoute(
                                 'record_history',
                                 [
                                     'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
@@ -1505,6 +1513,9 @@ class EditDocumentController
     {
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         // Table editable and activated for languages?
         if ($this->getBackendUser()->check('tables_modify', $table)
             && $languageField
@@ -1593,7 +1604,7 @@ class EditDocumentController
                             // Create url for creating a localized record
                             $addOption = true;
                             if ($newTranslation) {
-                                $redirectUrl = BackendUtility::getModuleUrl('record_edit', [
+                                $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                                     'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
                                     'returnUrl' => $this->retUrl
                                 ]);
@@ -1607,7 +1618,7 @@ class EditDocumentController
                                     $addOption = false;
                                 }
                             } else {
-                                $href = BackendUtility::getModuleUrl('record_edit', [
+                                $href = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                                     'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
                                     'returnUrl' => $this->retUrl
                                 ]);
@@ -1636,6 +1647,9 @@ class EditDocumentController
      */
     public function localizationRedirect($justLocalized)
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         list($table, $origUid, $language) = explode(':', $justLocalized);
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
@@ -1665,7 +1679,7 @@ class EditDocumentController
 
             if (is_array($localizedRecord)) {
                 // Create parameters and finally run the classic page module for creating a new page translation
-                $location = BackendUtility::getModuleUrl('record_edit', [
+                $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                     'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
                     'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))
                 ]);
@@ -1900,9 +1914,11 @@ class EditDocumentController
             BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
         }
         if ($mode !== self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by
             // other scripts, like wizard_add, to know which records was created or so...)
-            if ($this->returnEditConf && $this->retUrl != BackendUtility::getModuleUrl('dummy')) {
+            if ($this->returnEditConf && $this->retUrl != (string)$uriBuilder->buildUriFromRoute('dummy')) {
                 $this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
             }
 

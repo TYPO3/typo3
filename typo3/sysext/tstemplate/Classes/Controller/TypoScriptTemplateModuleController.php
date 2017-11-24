@@ -157,13 +157,14 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $this->access = is_array($this->pageinfo);
         $view = $this->getFluidTemplateObject('tstemplate');
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         if ($this->id && $this->access) {
             $urlParameters = [
                 'id' => $this->id,
                 'template' => 'all'
             ];
-            $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+            $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
 
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
@@ -243,11 +244,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    BackendUtility::getModuleUrl(
+                    (string)$uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => $this->id,
@@ -318,9 +321,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     'template' => 'all',
                     'createExtension' => 'new'
                 ];
-
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                 $newButton = $buttonBar->makeLinkButton()
-                    ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
+                    ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                     ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
                     ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                         'actions-add',
@@ -347,8 +351,10 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     $urlParameters = [
                         'id' => $this->id
                     ];
+                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                     $backButton = $buttonBar->makeLinkButton()
-                        ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
+                        ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                         ->setClasses('typo3-goBack')
                         ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                         ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
@@ -379,7 +385,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $urlParameters = [
             'id' => $this->id
         ];
-        $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         if ($onlyKey) {
             $title = '<a href="' . htmlspecialchars(($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
         } else {
@@ -430,7 +438,9 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
             $urlParameters = [
                 'id' => $previousPage['uid']
             ];
-            $previousPage['aHref'] = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $previousPage['aHref'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $moduleContent['previousPage'] = $previousPage;
         }
         $view = $this->getFluidTemplateObject('tstemplate', 'NoTemplate');

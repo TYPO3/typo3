@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Filelist\ViewHelpers\Uri;
  */
 
 use Closure;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -65,7 +64,8 @@ class DeleteFileViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             ],
             'redirect' => $arguments['returnUrl']
         ];
-
-        return BackendUtility::getModuleUrl('tce_file', $params);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('tce_file', $params);
     }
 }

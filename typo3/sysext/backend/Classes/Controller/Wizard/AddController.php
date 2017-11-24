@@ -269,7 +269,9 @@ class AddController extends AbstractWizardController
         } else {
             // Redirecting to FormEngine with instructions to create a new record
             // AND when closing to return back with information about that records ID etc.
-            $redirectUrl = BackendUtility::getModuleUrl('record_edit', [
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'returnEditConf' => 1,
                 'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')

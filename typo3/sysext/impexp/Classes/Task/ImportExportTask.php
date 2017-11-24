@@ -49,7 +49,9 @@ class ImportExportTask implements TaskInterface
      */
     public function __construct(TaskModuleController $taskObject)
     {
-        $this->moduleUrl = BackendUtility::getModuleUrl('user_task');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->moduleUrl = (string)$uriBuilder->buildUriFromRoute('user_task');
         $this->taskObject = $taskObject;
         $this->getLanguageService()->includeLLFile('EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
     }
@@ -84,9 +86,11 @@ class ImportExportTask implements TaskInterface
     {
         $content = '';
         $id = (int)GeneralUtility::_GP('display');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // If a preset is found, it is rendered using an iframe
         if ($id > 0) {
-            $url = BackendUtility::getModuleUrl(
+            $url = (string)$uriBuilder->buildUriFromRoute(
                 'xMOD_tximpexp',
                 [
                     'tx_impexp[action]' => 'export',
@@ -154,7 +158,7 @@ class ImportExportTask implements TaskInterface
                         'icon' => $icon,
                         'title' => $title,
                         'descriptionHtml' => implode('<br />', $description),
-                        'link' => BackendUtility::getModuleUrl('user_task') . '&SET[function]=impexp.TYPO3\\CMS\\Impexp\\Task\\ImportExportTask&display=' . $presetCfg['uid']
+                        'link' => (string)$uriBuilder->buildUriFromRoute('user_task') . '&SET[function]=impexp.TYPO3\\CMS\\Impexp\\Task\\ImportExportTask&display=' . $presetCfg['uid']
                     ];
                 }
                 // Render preset list

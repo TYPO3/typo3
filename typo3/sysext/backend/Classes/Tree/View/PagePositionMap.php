@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -273,15 +274,17 @@ class PagePositionMap
         $TSconfig = BackendUtility::getModTSconfig($newPagePID, 'mod.newPageWizard');
         $TSconfig = $TSconfig['properties'];
         if (isset($TSconfig['override']) && !empty($TSconfig['override'])) {
-            $url = BackendUtility::getModuleUrl(
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = $uriBuilder->buildUriFromRoute(
                 $TSconfig['override'],
                 [
-                'positionPid' => $pid,
-                'newPageId'   => $newPagePID,
-                'cmd'         => 'crPage',
-                'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                    'positionPid' => $pid,
+                    'newPageId'   => $newPagePID,
+                    'cmd'         => 'crPage',
+                    'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ]
             );
-            return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . ';';
+            return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
         }
         $params = '&edit[pages][' . $pid . ']=new&returnNewPageId=1';
         return BackendUtility::editOnClick($params, '', $this->R_URI);
@@ -560,15 +563,21 @@ class PagePositionMap
      */
     public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0)
     {
-        $table = 'tt_content';
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (is_array($row)) {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'];
+            $location = $uriBuilder->buildUriFromRoute('tce_db', [
+                'cmd[tt_content][' . $moveUid . '][' . $this->moveOrCopy . ']' => '-' . $row['uid'],
+                'redirect' => rawurlencode($this->R_URI)
+            ]);
         } else {
-            $location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv;
+            $location = $uriBuilder->buildUriFromRoute('tce_db', [
+                'cmd[tt_content][' . $moveUid . '][' . $this->moveOrCopy . ']' => $pid,
+                'data[tt_content][' . $moveUid . '][colPos]' => $vv,
+                'redirect' => rawurlencode($this->R_URI)
+            ]);
         }
-        $location .= '&redirect=' . rawurlencode($this->R_URI);
         // returns to prev. page
-        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . ';return false;';
+        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$location) . ';return false;';
     }
 
     /**

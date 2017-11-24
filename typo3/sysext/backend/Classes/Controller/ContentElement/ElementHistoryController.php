@@ -417,7 +417,10 @@ class ElementHistoryController
         // Merging overriding values:
         $params = array_merge($params, $overrideParameters);
         // Make the link:
-        return BackendUtility::getModuleUrl('record_history', $params);
+
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('record_history', $params);
     }
 
     /**

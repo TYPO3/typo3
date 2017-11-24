@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -302,7 +303,8 @@ class RecordProvider extends AbstractProvider
                 'colPos' => $this->record['colPos'],
                 'uid_pid' => -$this->record['uid']
             ];
-            $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
             $attributes += [
                 'data-new-wizard-url' => htmlspecialchars($url)
             ];

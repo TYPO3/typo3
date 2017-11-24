@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -195,6 +194,8 @@ class FormResultCompiler
     protected function JSbottom()
     {
         $pageRenderer = $this->getPageRenderer();
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
@@ -202,7 +203,7 @@ class FormResultCompiler
         // load the main module for FormEngine with all important JS functions
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 			FormEngine.initialize(
-				' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ',
+				' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ',
 				' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . '
 			);
 		}';

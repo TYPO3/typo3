@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
@@ -154,7 +153,9 @@ class ReplaceFileController
     {
         // Assign variables used by the fluid template
         $assigns = [];
-        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $assigns['uid'] = $this->uid;
         $assigns['returnUrl'] = $this->returnUrl;
 

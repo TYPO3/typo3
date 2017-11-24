@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -75,7 +74,9 @@ class RemoveUserViewHelper extends AbstractViewHelper
             'cmd[be_users][' . $backendUser->getUid() . '][delete]' => 1,
             'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('tce_db', $urlParameters);
 
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
             . ' title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:delete')) . '"'

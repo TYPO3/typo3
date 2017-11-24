@@ -528,7 +528,9 @@ class FileListController extends ActionController
 
         $this->view->assign('searchWord', $searchWord);
         $this->view->assign('files', $fileFacades);
-        $this->view->assign('deleteUrl', BackendUtility::getModuleUrl('tce_file'));
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->view->assign('deleteUrl', (string)$uriBuilder->buildUriFromRoute('tce_file'));
         $this->view->assign('settings', [
             'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)
         ]);
@@ -594,6 +596,9 @@ class FileListController extends ActionController
 
         $lang = $this->getLanguageService();
 
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         // Refresh page
         $refreshLink = GeneralUtility::linkThisScript(
             [
@@ -617,7 +622,7 @@ class FileListController extends ActionController
                 $levelUpClick = 'top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder'
                     . GeneralUtility::md5int($parentFolder->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)';
                 $levelUpButton = $buttonBar->makeLinkButton()
-                    ->setHref(BackendUtility::getModuleUrl('file_FilelistList', ['id' => $parentFolder->getCombinedIdentifier()]))
+                    ->setHref((string)$uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $parentFolder->getCombinedIdentifier()]))
                     ->setOnClick($levelUpClick)
                     ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'))
                     ->setIcon($iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
@@ -639,7 +644,7 @@ class FileListController extends ActionController
         ) && $this->folderObject->checkActionPermission('write')
         ) {
             $uploadButton = $buttonBar->makeLinkButton()
-                ->setHref(BackendUtility::getModuleUrl(
+                ->setHref((string)$uriBuilder->buildUriFromRoute(
                     'file_upload',
                     [
                         'target' => $this->folderObject->getCombinedIdentifier(),
@@ -660,7 +665,7 @@ class FileListController extends ActionController
             ) || $this->folderObject->checkActionPermission('add'))
         ) {
             $newButton = $buttonBar->makeLinkButton()
-                ->setHref(BackendUtility::getModuleUrl(
+                ->setHref((string)$uriBuilder->buildUriFromRoute(
                     'file_newfolder',
                     [
                         'target' => $this->folderObject->getCombinedIdentifier(),

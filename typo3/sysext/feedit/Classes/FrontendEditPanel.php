@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Feedit;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -217,7 +216,8 @@ class FrontendEditPanel
             . '</span>';
         $noView = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 
-        $url = BackendUtility::getModuleUrl(
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute(
             'record_edit',
             [
                 'edit[' . $table . '][' . $editUid . ']' => 'edit',
@@ -258,18 +258,20 @@ class FrontendEditPanel
     protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '')
     {
         $noView = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         if ($cmd === 'edit') {
             $rParts = explode(':', $currentRecord);
-            $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $noView, 'feEdit' => 1]), $currentRecord);
+            $out = $this->editPanelLinkWrap_doWrap($string, (string)$uriBuilder->buildUriFromRoute('record_edit', ['edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView' => $noView, 'feEdit' => 1]), $currentRecord);
         } elseif ($cmd === 'new') {
             $rParts = explode(':', $currentRecord);
             if ($rParts[0] === 'pages') {
-                $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
+                $out = $this->editPanelLinkWrap_doWrap($string, (string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
             } else {
                 if (!(int)$nPid) {
                     $nPid = MathUtility::canBeInterpretedAsInteger($rParts[1]) ? -$rParts[1] : $this->frontendController->id;
                 }
-                $out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', ['edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $noView]), $currentRecord);
+                $out = $this->editPanelLinkWrap_doWrap($string, (string)$uriBuilder->buildUriFromRoute('record_edit', ['edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $noView]), $currentRecord);
             }
         } else {
             if ($confirm && $this->backendUser->jsConfirmation(JsConfirmation::FE_EDIT)) {

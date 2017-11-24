@@ -2514,7 +2514,8 @@ class BackendUtility
         } else {
             $returnUrl = GeneralUtility::quoteJSvalue(rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI')));
         }
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue(self::getModuleUrl('record_edit') . $params . '&returnUrl=') . '+' . $returnUrl . '; return false;';
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=') . '+' . $returnUrl . '; return false;';
     }
 
     /**
@@ -2642,7 +2643,8 @@ class BackendUtility
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
-        $url = self::getModuleUrl('tce_db') . $parameters . '&redirect=';
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('tce_db') . $parameters . '&redirect=';
         if ((int)$redirectUrl === -1) {
             $url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
         } else {
@@ -4324,7 +4326,7 @@ class BackendUtility
                 break;
             case 'backend':
             default:
-                $script = self::getModuleUrl('main');
+                $script = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('main');
         }
         return $script;
     }

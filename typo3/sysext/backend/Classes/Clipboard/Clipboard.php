@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Clipboard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -270,10 +271,11 @@ class Clipboard
             $optionArray = [];
             // Import / Export link:
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = BackendUtility::getModuleUrl('xMOD_tximpexp', $this->exportClipElementParameters());
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $url = $uriBuilder->buildUriFromRoute('xMOD_tximpexp', $this->exportClipElementParameters());
                 $optionArray[] = [
                     'label' => $this->clLabel('export', 'rm'),
-                    'uri' => $url
+                    'uri' => (string)$url
                 ];
             }
             // Edit:
@@ -541,19 +543,18 @@ class Clipboard
      */
     public function linkItemText($str, $rec, $table = '')
     {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (is_array($rec) && $table) {
             if ($this->fileMode) {
                 $str = '<span class="text-muted">' . $str . '</span>';
             } else {
-                $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', ['id' => $rec['pid']])) . '">' . $str . '</a>';
+                $str = '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $rec['pid']])) . '">' . $str . '</a>';
             }
         } elseif (file_exists($rec)) {
             if (!$this->fileMode) {
                 $str = '<span class="text-muted">' . $str . '</span>';
-            } else {
-                if (ExtensionManagementUtility::isLoaded('filelist')) {
-                    $str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('file_list', ['id' => dirname($rec)])) . '">' . $str . '</a>';
-                }
+            } elseif (ExtensionManagementUtility::isLoaded('filelist')) {
+                $str = '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_list', ['id' => dirname($rec)])) . '">' . $str . '</a>';
             }
         }
         return $str;
@@ -621,7 +622,8 @@ class Clipboard
         if (is_array($update)) {
             $urlParameters['CB[update]'] = $update;
         }
-        return BackendUtility::getModuleUrl($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters);
     }
 
     /**
@@ -640,7 +642,8 @@ class Clipboard
         if ($setRedirect) {
             $urlParameters['redirect'] = GeneralUtility::linkThisScript(['CB' => '']);
         }
-        return BackendUtility::getModuleUrl($file ? 'tce_file' : 'tce_db', $urlParameters);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute($file ? 'tce_file' : 'tce_db', $urlParameters);
     }
 
     /**
@@ -659,7 +662,8 @@ class Clipboard
             list($table, $uid) = explode('|', $tP);
             $parameters['edit[' . $table . '][' . $uid . ']'] = 'edit';
         }
-        return BackendUtility::getModuleUrl('record_edit', $parameters);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
     }
 
     /**

@@ -637,6 +637,8 @@ class DatabaseRecordList
             'csv' => '',
             'export' => ''
         ];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Get users permissions for this page record:
         $localCalcPerms = $backendUser->calcPerms($this->pageRow);
         // CSH
@@ -667,7 +669,7 @@ class DatabaseRecordList
             }
             // New record on pages that are not locked by editlock
             if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
-                $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
+                $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');');
                 $buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
                     . htmlspecialchars($lang->getLL('newRecordGeneral')) . '">'
                     . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
@@ -713,7 +715,7 @@ class DatabaseRecordList
                     . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL)->render() . '</a>';
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
-                    $url = BackendUtility::getModuleUrl('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
+                    $url = (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
                     $buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]='
                             . rawurlencode($this->table . ':' . $this->id)) . '" title="'
                         . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.export')) . '">'
@@ -757,6 +759,8 @@ class DatabaseRecordList
         $lang = $this->getLanguageService();
         // Get users permissions for this page record:
         $localCalcPerms = $backendUser->calcPerms($this->pageRow);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // CSH
         if ((string)$this->id === '') {
             $fieldName = 'list_module_noId';
@@ -783,7 +787,7 @@ class DatabaseRecordList
             }
             // New record on pages that are not locked by editlock
             if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
-                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');';
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');';
                 $newRecordButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
                     ->setOnClick($onClick)
@@ -849,7 +853,7 @@ class DatabaseRecordList
                 $buttonBar->addButton($csvButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
-                    $url = BackendUtility::getModuleUrl('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
+                    $url = (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
                     $exportButton = $buttonBar->makeLinkButton()
                         ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id))
                         ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.export'))
@@ -1533,6 +1537,8 @@ class DatabaseRecordList
         // Init:
         $theData = [];
         $icon = '';
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Traverse the fields:
         foreach ($this->fieldArray as $fCol) {
             // Calculate users permissions to edit records in the table:
@@ -1581,7 +1587,7 @@ class DatabaseRecordList
                         $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
                         $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
                         // The "edit marked" link:
-                        $editUri = BackendUtility::getModuleUrl('record_edit')
+                        $editUri = (string)$uriBuilder->buildUriFromRoute('record_edit')
                             . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit'
                             . '&returnUrl={T3_THIS_LOCATION}';
                         $cells['edit'] = '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
@@ -1640,14 +1646,14 @@ class DatabaseRecordList
                                 $newContentElementWizard = isset($tmpTSc['properties']['newContentElementWizard.']['override'])
                                     ? $tmpTSc['properties']['newContentElementWizard.']['override']
                                     : 'new_content_element';
-                                $newContentWizScriptPath = BackendUtility::getModuleUrl($newContentElementWizard, ['id' => $this->id]);
+                                $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($newContentElementWizard, ['id' => $this->id]);
 
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                                     . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
                             } elseif ($table === 'pages' && $this->newWizards) {
                                 $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
-                                $href = BackendUtility::getModuleUrl('db_new', $parameters);
+                                $href = (string)$uriBuilder->buildUriFromRoute('db_new', $parameters);
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">'
                                     . $spriteIcon->render() . '</a>';
                             } else {
@@ -1665,7 +1671,7 @@ class DatabaseRecordList
                             if ($this->clipNumPane()) {
                                 $entityIdentifiers .= ':editList';
                             }
-                            $editUri = BackendUtility::getModuleUrl('record_edit')
+                            $editUri = (string)$uriBuilder->buildUriFromRoute('record_edit')
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
                                 . '&columnsOnly=' . implode(',', $this->fieldArray)
                                 . '&returnUrl={T3_THIS_LOCATION}';
@@ -1709,7 +1715,7 @@ class DatabaseRecordList
                             if ($this->clipNumPane()) {
                                 $entityIdentifiers .= ':editList';
                             }
-                            $editUri = BackendUtility::getModuleUrl('record_edit')
+                            $editUri = (string)$uriBuilder->buildUriFromRoute('record_edit')
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
                                 . '&columnsOnly=' . $fCol
                                 . '&returnUrl={T3_THIS_LOCATION}';
@@ -1897,6 +1903,9 @@ class DatabaseRecordList
                         && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
         // "Show" link (only pages and tt_content elements)
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         if ($table === 'pages' || $table === 'tt_content') {
             $onClick = $this->getOnClickForRow($table, $row);
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
@@ -1935,7 +1944,7 @@ class DatabaseRecordList
             if ($isL10nOverlay) {
                 $moveAction = $this->spaceIcon;
             } else {
-                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
                 $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
                 $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
                 $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
@@ -1945,7 +1954,7 @@ class DatabaseRecordList
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
-            $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table . ':' . $row['uid']]);
+            $moduleUrl = (string)$uriBuilder->buildUriFromRoute('record_history', ['element' => $table . ':' . $row['uid']]);
             $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
             $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                 . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
@@ -1956,7 +1965,7 @@ class DatabaseRecordList
                 if ($isL10nOverlay) {
                     $permsAction = $this->spaceIcon;
                 } else {
-                    $href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
+                    $href = (string)$uriBuilder->buildUriFromRoute('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&tx_beuser_system_beusertxpermission[action]=edit' . $this->makeReturnUrl();
                     $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
                         . htmlspecialchars($this->getLanguageService()->getLL('permissions')) . '">'
                         . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a>';
@@ -3743,7 +3752,10 @@ class DatabaseRecordList
             if ($localizedRecordUid !== false) {
                 // Create parameters and finally run the classic page module for creating a new page translation
                 $url = $this->listURL();
-                $editUserAccountUrl = BackendUtility::getModuleUrl(
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         'edit[' . $table . '][' . $localizedRecordUid . ']' => 'edit',

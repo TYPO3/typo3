@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Form\Controller;
  */
 
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -109,10 +108,11 @@ class FormEditorController extends AbstractBackendController
         if (!empty($popupWindowSize)) {
             list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
         }
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $addInlineSettings = [
             'FormEditor' => [
-                'typo3WinBrowserUrl' => BackendUtility::getModuleUrl('wizard_element_browser'),
+                'typo3WinBrowserUrl' => (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
             ],
             'Popup' => [
                 'PopupWindow' => [
@@ -293,10 +293,12 @@ class FormEditorController extends AbstractBackendController
                 ->setValue('new-page')
                 ->setClasses('t3-form-element-new-page-button hidden')
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
             $closeButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'closeButton'])
-                ->setHref(BackendUtility::getModuleUrl('web_FormFormbuilder'))
+                ->setHref((string)$uriBuilder->buildUriFromRoute('web_FormFormbuilder'))
                 ->setClasses('t3-form-element-close-form-button hidden')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));

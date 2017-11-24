@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Belog\Controller;
  */
 
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -65,8 +65,9 @@ class SystemInformationController extends AbstractController
             ->fetchColumn(0);
 
         if ($count > 0) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $systemInformationToolbarItem->addSystemMessage(
-                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog', ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])),
+                sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, (string)$uriBuilder->buildUriFromRoute('system_BelogLog', ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])),
                 InformationStatus::STATUS_ERROR,
                 $count,
                 'system_BelogLog',

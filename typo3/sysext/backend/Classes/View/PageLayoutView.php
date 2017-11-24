@@ -21,7 +21,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -773,7 +772,8 @@ class PageLayoutView implements LoggerAwareInterface
                         'columnsOnly' => $field,
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                         . '" title="' . htmlspecialchars($iTitle) . '">'
                         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -934,10 +934,10 @@ class PageLayoutView implements LoggerAwareInterface
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
                         $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
-                        $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-                            ? $tsConfig['properties']['newContentElementWizard.']['override']
-                            : 'new_content_element_wizard';
-                        $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+                        $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+                            ?? 'new_content_element_wizard';
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
                     } else {
                         $urlParameters = [
                             'edit' => [
@@ -953,7 +953,8 @@ class PageLayoutView implements LoggerAwareInterface
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     }
                     $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                     $link = '<a href="#" data-url="' . htmlspecialchars($url) . '" '
@@ -1056,10 +1057,10 @@ class PageLayoutView implements LoggerAwareInterface
                                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                                     ];
                                     $tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod');
-                                    $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-                                        ? $tsConfig['properties']['newContentElementWizard.']['override']
-                                        : 'new_content_element_wizard';
-                                    $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+                                    $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+                                        ?? 'new_content_element_wizard';
+                                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                                    $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
                                 } else {
                                     $urlParameters = [
                                         'edit' => [
@@ -1069,7 +1070,8 @@ class PageLayoutView implements LoggerAwareInterface
                                         ],
                                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                                     ];
-                                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                 }
                                 $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                                 $singleElementHTML .= '<a href="#" data-url="' . htmlspecialchars($url) . '" '
@@ -1296,7 +1298,8 @@ class PageLayoutView implements LoggerAwareInterface
                         ],
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editLink = (
                         $this->getBackendUser()->check('tables_modify', 'pages')
                         ? '<a href="' . htmlspecialchars($url) . '" class="btn btn-default btn-sm"'
@@ -1328,7 +1331,8 @@ class PageLayoutView implements LoggerAwareInterface
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $editLink = (
                             $this->getBackendUser()->check('tables_modify', 'pages')
                             ? '<a href="' . htmlspecialchars($url) . '" class="btn btn-default btn-sm"'
@@ -1445,7 +1449,8 @@ class PageLayoutView implements LoggerAwareInterface
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             ];
-            $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
             $theData['__cmds__'] = '<a href="#" data-url="' . htmlspecialchars($url) . '" class="t3js-toggle-new-content-element-wizard" '
                 . 'title="' . $title . '"'
@@ -1478,7 +1483,8 @@ class PageLayoutView implements LoggerAwareInterface
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $Nrow['__editIconLink__'] = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                             . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">'
                             . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1729,7 +1735,8 @@ class PageLayoutView implements LoggerAwareInterface
                             ],
                             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                         ];
-                        $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                             . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('editThisPage')) . '">'
                             . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1901,7 +1908,8 @@ class PageLayoutView implements LoggerAwareInterface
                     ],
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid'],
                 ];
-                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters) . '#element-tt_content-' . $row['uid'];
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-tt_content-' . $row['uid'];
 
                 $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url)
                     . '" title="' . htmlspecialchars($this->nextThree > 1
@@ -2374,12 +2382,17 @@ class PageLayoutView implements LoggerAwareInterface
     {
         if ($this->option_newWizard) {
             $tsConfig = BackendUtility::getModTSconfig($id, 'mod');
-            $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-                ? $tsConfig['properties']['newContentElementWizard.']['override']
-                : 'new_content_element_wizard';
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl($moduleName) . '&id=' . $id . '&colPos=' . $colPos
-                . '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id
-                . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
+            $routeName = $tsConfig['properties']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = $uriBuilder->buildUriFromRoute($routeName, [
+                'id' => $id,
+                'colPos' => $colPos,
+                'sys_language_uid' => $sys_language,
+                'uid_pid' => $id,
+                'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+            ]);
+            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
         } else {
             $onClick = BackendUtility::editOnClick('&edit[tt_content][' . $id . ']=new&defVals[tt_content][colPos]='
                 . $colPos . '&defVals[tt_content][sys_language_uid]=' . $sys_language);
@@ -2407,7 +2420,8 @@ class PageLayoutView implements LoggerAwareInterface
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
             ];
-            $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             // Return link
             return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $str . '</a>';
         }
@@ -2536,7 +2550,8 @@ class PageLayoutView implements LoggerAwareInterface
                         'justLocalized' => 'pages:' . $id . ':' . $languageUid,
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $redirectUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
+                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                    $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                     $targetUrl = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $id . '][localize]=' . $languageUid,
                         $redirectUrl
@@ -3748,12 +3763,8 @@ class PageLayoutView implements LoggerAwareInterface
         $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
         if ($routePath = GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(Router::class);
-            $route = $router->match($routePath);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $urlParameters);
-        } elseif ($moduleName = GeneralUtility::_GP('M')) {
-            $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+            $url = (string)$uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
         } else {
             $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?' . ltrim(
                     GeneralUtility::implodeArrayForUrl('', $urlParameters),
@@ -3871,7 +3882,8 @@ class PageLayoutView implements LoggerAwareInterface
             if ($localizedRecordUid !== false) {
                 // Create parameters and finally run the classic page module for creating a new page translation
                 $url = $this->listURL();
-                $editUserAccountUrl = BackendUtility::getModuleUrl(
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         'edit[' . $table . '][' . $localizedRecordUid . ']' => 'edit',
@@ -4057,12 +4069,8 @@ class PageLayoutView implements LoggerAwareInterface
     protected function determineScriptUrl()
     {
         if ($routePath = GeneralUtility::_GP('route')) {
-            $router = GeneralUtility::makeInstance(Router::class);
-            $route = $router->match($routePath);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
-        } elseif ($moduleName = GeneralUtility::_GP('M')) {
-            $this->thisScript = BackendUtility::getModuleUrl($moduleName);
+            $this->thisScript = (string)$uriBuilder->buildUriFromRoutePath($routePath);
         } else {
             $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
         }

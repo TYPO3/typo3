@@ -64,7 +64,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
     public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->moduleUrl = BackendUtility::getModuleUrl('user_task');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->moduleUrl = (string)$uriBuilder->buildUriFromRoute('user_task');
         $this->taskObject = $taskObject;
         $this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'] ?? [] as $className) {
@@ -216,7 +218,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                 )
                 ->groupBy('sys_action.uid');
         }
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $queryResult = $queryBuilder->execute();
         while ($actionRow = $queryResult->fetch()) {
             $editActionLink = '';
@@ -225,7 +228,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             if ($this->getBackendUser()->isAdmin()) {
                 $uidEditArgument = 'edit[sys_action][' . (int)$actionRow['uid'] . ']';
 
-                $link = BackendUtility::getModuleUrl(
+                $link = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         $uidEditArgument => 'edit',
@@ -281,7 +284,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
         }
         // Admin users can create a new action
         if ($this->getBackendUser()->isAdmin()) {
-            $link = BackendUtility::getModuleUrl(
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit[sys_action][0]' => 'new',
@@ -724,7 +729,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
      */
     protected function viewNewRecord($record)
     {
-        $link = BackendUtility::getModuleUrl(
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $link = (string)$uriBuilder->buildUriFromRoute(
             'record_edit',
             [
                 'edit[' . $record['t3_tables'] . '][' . (int)$record['t3_listPid'] . ']' => 'new',
@@ -758,7 +765,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             if (isset($record['crdate'])) {
                 $description .= ' - ' . BackendUtility::dateTimeAge($record['crdate']);
             }
-            $link = BackendUtility::getModuleUrl(
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $link = (string)$uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit[' . $el['table'] . '][' . $el['id'] . ']' => 'edit',
@@ -834,8 +843,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                     if (!$queryIsEmpty) {
                         $actionContent .= '<div class="panel panel-default"><div class="panel-body"><pre>' . $sql_query['qSelect'] . '</pre></div></div>';
                     }
+                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                     $actionContent .= '<a title="' . $this->getLanguageService()->getLL('action_editQuery') . '" class="btn btn-default" href="'
-                        . htmlspecialchars(BackendUtility::getModuleUrl('system_dbint')
+                        . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('system_dbint')
                             . '&id=' . '&SET[function]=search' . '&SET[search]=query'
                             . '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
                         . '">'
@@ -910,6 +921,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
             $dblist->setDispFields();
             // Render the list of tables:
             $dblist->generateList();
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             // Add JavaScript functions to the page:
             $this->taskObject->getModuleTemplate()->addJavaScriptCode(
                 'ActionTaskInlineJavascript',
@@ -936,7 +949,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
 
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="' . BackendUtility::getModuleUrl('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . (string)$uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {
 					var list="";

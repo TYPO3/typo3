@@ -386,6 +386,8 @@ class ExtendedTemplateService extends TemplateService
         }
         $keyArr_num = [];
         $keyArr_alpha = [];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
             if (substr($key, -2) !== '..') {
@@ -420,7 +422,7 @@ class ExtendedTemplateService extends TemplateService
                     if (GeneralUtility::_GP('breakPointLN')) {
                         $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
                     }
-                    $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
+                    $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters) . '#' . $goto;
                     $HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
                 }
                 $label = $key;
@@ -436,7 +438,7 @@ class ExtendedTemplateService extends TemplateService
                         if (GeneralUtility::_GP('breakPointLN')) {
                             $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
                         }
-                        $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+                        $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                         if ($this->bType !== 'const') {
                             $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
                         } else {
@@ -637,6 +639,8 @@ class ExtendedTemplateService extends TemplateService
         }
         $a = 0;
         $c = count($keyArr);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         foreach ($keyArr as $key => $value) {
@@ -657,7 +661,7 @@ class ExtendedTemplateService extends TemplateService
                     'id' => $GLOBALS['SOBE']->id,
                     'template' => $row['templateID']
                 ];
-                $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+                $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
                 $A_E = '</a>';
                 if (GeneralUtility::_GP('template') == $row['templateID']) {

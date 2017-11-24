@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
  */
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -64,7 +63,9 @@ class LinkPopup extends AbstractNode
                 'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc'])),
             ],
         ];
-        $url = BackendUtility::getModuleUrl('wizard_link', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('wizard_link', $urlParameters);
         $onClick = [];
         $onClick[] = 'this.blur();';
         $onClick[] = 'vHWin=window.open(';

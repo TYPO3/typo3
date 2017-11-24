@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -112,7 +113,7 @@ class BackendController
 
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Set debug flag for BE development only
         $this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
         // Initializes the backend modules structure for use later.
@@ -131,8 +132,8 @@ class BackendController
         ];
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
-			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
-			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
+			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('login_frameset')) . ');
+			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('logout')) . ');
 			LoginRefresh.initialize();
 		}');
 
@@ -166,12 +167,12 @@ class BackendController
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
 
-        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
-        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', BackendUtility::getModuleUrl('db_new'));
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', BackendUtility::getModuleUrl('tce_db'));
-        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', BackendUtility::getModuleUrl('web_layout'));
+        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
+        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('db_new'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_db'));
+        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('web_layout'));
 
         $this->css = '';
 

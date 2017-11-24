@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Recordlist\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -63,7 +62,9 @@ class FolderUtilityRenderer
         }
         $lang = $this->getLanguageService();
 
-        $formAction = BackendUtility::getModuleUrl('tce_file');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $formAction = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
@@ -130,7 +131,9 @@ class FolderUtilityRenderer
                     . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
         }
-        $formAction = BackendUtility::getModuleUrl('tce_file');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $formAction = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
@@ -191,7 +194,7 @@ class FolderUtilityRenderer
             }
         }
         if (!empty($fileExtList)) {
-            $formAction = BackendUtility::getModuleUrl('online_media');
+            $formAction = (string)$uriBuilder->buildUriFromRoute('online_media');
 
             $markup = [];
             $markup[] = '<form action="' . htmlspecialchars($formAction)

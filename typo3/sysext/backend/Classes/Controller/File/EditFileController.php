@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -177,7 +176,9 @@ class EditFileController
         }
 
         $assigns = [];
-        $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $assigns['fileName'] = $this->fileObject->getName();
 
         $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
@@ -187,7 +188,7 @@ class EditFileController
             }
 
             // Making the formfields
-            $hValue = BackendUtility::getModuleUrl('file_edit', [
+            $hValue = (string)$uriBuilder->buildUriFromRoute('file_edit', [
                 'target' => $this->origTarget,
                 'returnUrl' => $this->returnUrl
             ]);

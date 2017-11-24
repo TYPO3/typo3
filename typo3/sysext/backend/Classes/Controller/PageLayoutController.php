@@ -438,13 +438,16 @@ class PageLayoutController
         $actionMenu->setIdentifier('actionMenu');
         $actionMenu->setLabel('');
 
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         $defaultKey = null;
         $foundDefaultKey = false;
         foreach ($actions as $key => $action) {
             $menuItem = $actionMenu
                 ->makeMenuItem()
                 ->setTitle($action)
-                ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&SET[function]=' . $key);
+                ->setHref((string)$uriBuilder->buildUriFromRoute($this->moduleName) . '&id=' . $this->id . '&SET[function]=' . $key);
 
             if (!$foundDefaultKey) {
                 $defaultKey = $key;
@@ -712,6 +715,10 @@ class PageLayoutController
                     }
                 }
             ');
+
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
             $this->moduleTemplate->addJavaScriptCode('mainJsFunctions', '
                 if (top.fsMod) {
                     top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
@@ -719,7 +726,7 @@ class PageLayoutController
                 }
                 ' . ($this->popView ? BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)) : '') . '
                 function deleteRecord(table,id,url) {   //
-                    window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[')
+                    window.location.href = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db') . '&cmd[')
                                              . ' + table + "][" + id + "][delete]=1&redirect=" + encodeURIComponent(url);
                     return false;
                 }
@@ -752,7 +759,7 @@ class PageLayoutController
 
             // Render the primary module content:
             if ($this->MOD_SETTINGS['function'] == 1 || $this->MOD_SETTINGS['function'] == 2) {
-                $content .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->id, 'imagemode' =>  $this->imagemode])) . '" id="PageLayoutController" method="post">';
+                $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' =>  $this->imagemode])) . '" id="PageLayoutController" method="post">';
                 // Page title
                 $content .= '<h1 class="t3js-title-inlineedit">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
                 // All other listings
@@ -800,6 +807,9 @@ class PageLayoutController
      */
     public function renderContent()
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         $this->moduleTemplate->getPageRenderer()->loadJquery();
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         /** @var $dbList \TYPO3\CMS\Backend\View\PageLayoutView */
@@ -808,7 +818,7 @@ class PageLayoutController
         $dbList->no_noWrap = 1;
         $dbList->descrTable = $this->descrTable;
         $this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-        $dbList->script = BackendUtility::getModuleUrl($this->moduleName);
+        $dbList->script = (string)$uriBuilder->buildUriFromRoute($this->moduleName);
         $dbList->showIcon = 0;
         $dbList->setLMargin = 0;
         $dbList->doEdit = $this->EDIT_CONTENT;
@@ -981,10 +991,12 @@ class PageLayoutController
             ->setSetVariables(array_keys($this->MOD_MENU));
         $this->buttonBar->addButton($shortcutButton);
 
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Cache
         if (empty($this->modTSconfig['properties']['disableAdvanced'])) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
-                ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
+                ->setHref((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
                 ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
@@ -1027,7 +1039,8 @@ class PageLayoutController
                         ],
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+
+                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editLanguageButton = $this->buttonBar->makeLinkButton()
                         ->setHref($url)
                         ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
@@ -1042,7 +1055,7 @@ class PageLayoutController
                     ],
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
-                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $editPageButton = $this->buttonBar->makeLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->getLL('editPageProperties'))
@@ -1202,6 +1215,8 @@ class PageLayoutController
     protected function makeLanguageMenu()
     {
         if (count($this->MOD_MENU['language']) > 1) {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $lang = $this->getLanguageService();
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('languageMenu');
@@ -1209,7 +1224,7 @@ class PageLayoutController
                 $menuItem = $languageMenu
                     ->makeMenuItem()
                     ->setTitle($language)
-                    ->setHref(BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&SET[language]=' . $key);
+                    ->setHref((string)$uriBuilder->buildUriFromRoute($this->moduleName) . '&id=' . $this->id . '&SET[language]=' . $key);
                 if ((int)$this->current_sys_language === $key) {
                     $menuItem->setActive(true);
                 }

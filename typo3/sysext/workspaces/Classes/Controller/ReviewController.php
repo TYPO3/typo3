@@ -98,10 +98,12 @@ class ReviewController extends AbstractController
                 }
             }
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->pageRenderer->addInlineSetting('Workspaces', 'isLiveWorkspace', (int)$backendUser->workspace === 0);
         $this->pageRenderer->addInlineSetting('Workspaces', 'workspaceTabs', $this->prepareWorkspaceTabs($wsList, $activeWorkspace));
         $this->pageRenderer->addInlineSetting('Workspaces', 'activeWorkspaceId', $activeWorkspace);
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
         $workspaceIsAccessible = !($backendUser->workspace === 0 && !$backendUser->isAdmin());
         $this->view->assignMultiple([
             'showGrid' => $workspaceIsAccessible,
@@ -198,9 +200,12 @@ class ReviewController extends AbstractController
         foreach ($this->getAdditionalResourceService()->getLocalizationResources() as $localizationResource) {
             $this->pageRenderer->addInlineLanguageLabelFile($localizationResource);
         }
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', (int)GeneralUtility::_GP('id'));
     }
 
@@ -267,7 +272,9 @@ class ReviewController extends AbstractController
             $this->uriBuilder->reset()->uriFor('fullIndex');
             $parameters = array_merge($parameters, $this->uriBuilder->getArguments());
         }
-        return BackendUtility::getModuleUrl('web_WorkspacesWorkspaces', $parameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }
 
     /**

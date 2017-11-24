@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -121,8 +121,9 @@ class FileSystemNavigationFrameController
                 $this->foldertree->setLinkParameterProvider($linkParamProvider);
             }
         } else {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);
-            $this->foldertree->thisScript = BackendUtility::getModuleUrl('file_navframe');
+            $this->foldertree->thisScript = (string)$uriBuilder->buildUriFromRoute('file_navframe');
         }
     }
 

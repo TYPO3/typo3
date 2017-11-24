@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Recordlist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,7 +71,9 @@ class ElementBrowserFramesetController
         // Setting GPvars:
         $mode = GeneralUtility::_GP('mode');
         $bparams = GeneralUtility::_GP('bparams');
-        $moduleUrl = BackendUtility::getModuleUrl('wizard_element_browser') . '&mode=';
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $moduleUrl = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser') . '&mode=';
         $documentTemplate = $this->getDocumentTemplate();
         $documentTemplate->JScode = GeneralUtility::wrapJS('
 				function closing() {	//
@@ -98,7 +99,7 @@ class ElementBrowserFramesetController
         $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) .
             '<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
-				<frame name="menu" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
+				<frame name="menu" src="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('dummy')) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		</html>
 		';

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Recordlist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,7 +83,9 @@ class ElementBrowserController
     {
         // Fallback for old calls, which use mode "wizard" or "rte" for link selection
         if ($this->mode === 'wizard' || $this->mode === 'rte') {
-            return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link', $_GET));
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            return $response->withStatus(303)->withHeader('Location', (string)$uriBuilder->buildUriFromRoute('wizard_link', $_GET));
         }
 
         $response->getBody()->write($this->main());

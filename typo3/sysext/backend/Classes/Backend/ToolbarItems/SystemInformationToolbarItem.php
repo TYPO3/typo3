@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -346,9 +346,10 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             return '';
         }
 
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
         $view->assignMultiple([
-            'environmentToolUrl' => BackendUtility::getModuleUrl('tools_toolsenvironment'),
+            'environmentToolUrl' => (string)$uriBuilder->buildUriFromRoute('tools_toolsenvironment'),
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,

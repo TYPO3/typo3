@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Scheduler\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -56,6 +56,8 @@ class ModuleLinkViewHelper extends AbstractViewHelper
             $moduleArguments['tx_scheduler'] = $arguments['arguments'];
         }
 
-        return BackendUtility::getModuleUrl('system_txschedulerM1', $moduleArguments);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        return (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1', $moduleArguments);
     }
 }

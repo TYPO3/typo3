@@ -158,11 +158,14 @@ class HelpController extends ActionController
                 ->setGetVariables($getVars);
             $buttonBar->addButton($shortcutButton);
         }
+
         if (isset($getVars['action']) && $getVars['action'] !== 'index') {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $backButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:back'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref(BackendUtility::getModuleUrl($moduleName));
+                ->setHref((string)$uriBuilder->buildUriFromRoute($moduleName));
             $buttonBar->addButton($backButton);
         }
     }

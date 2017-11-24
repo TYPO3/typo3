@@ -131,6 +131,9 @@ class CreateFolderController
         $pathInfo = [
             'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ];
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->addJavaScriptCode(
@@ -148,7 +151,7 @@ class CreateFolderController
             . ';
             function reload(a) {
                 var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
-                var url = \'' . BackendUtility::getModuleUrl('file_newfolder') . '\';
+                var url = \'' . (string)$uriBuilder->buildUriFromRoute('file_newfolder') . '\';
                 if (!changed) {
                     window.location.href = url + params;
                 } else {
@@ -178,7 +181,9 @@ class CreateFolderController
         $assigns = [];
         $assigns['target'] = $this->target;
         if ($this->folderObject->checkActionPermission('add')) {
-            $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
             $assigns['cshFileNewFolder'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder');
             // Making the selector box for the number of concurrent folder-creations
             $this->number = MathUtility::forceIntegerInRange($this->number, 1, 10);
@@ -200,7 +205,9 @@ class CreateFolderController
         }
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
-            $assigns['moduleUrlOnlineMedia'] = BackendUtility::getModuleUrl('online_media');
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $assigns['moduleUrlOnlineMedia'] = (string)$uriBuilder->buildUriFromRoute('online_media');
             $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
@@ -212,7 +219,7 @@ class CreateFolderController
             }
             $assigns['fileExtList'] = $fileExtList;
 
-            $assigns['moduleUrlTceFile'] = BackendUtility::getModuleUrl('tce_file');
+            $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
             $assigns['cshFileNewFile'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile');
             // Create a list of allowed file extensions with a text format "*.txt, *.css" etc.
             $fileExtList = [];

@@ -497,18 +497,20 @@ class ElementInformationController
             ],
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $actions['recordEditUrl'] = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $actions['recordEditUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $actions['recordHistoryUrl'] = BackendUtility::getModuleUrl('record_history', $urlParameters);
+        $actions['recordHistoryUrl'] = (string)$uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = BackendUtility::getModuleUrl('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
+            $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
 
             // View page button
             $actions['viewOnClick'] = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
@@ -582,7 +584,9 @@ class ElementInformationController
                     ],
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
-                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
@@ -646,7 +650,9 @@ class ElementInformationController
                     ],
                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ];
-                $url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;

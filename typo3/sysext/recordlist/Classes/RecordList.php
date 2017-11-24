@@ -312,7 +312,9 @@ class RecordList
         // Initialize the dblist object:
         /** @var $dblist RecordList\DatabaseRecordList */
         $dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
-        $dblist->script = BackendUtility::getModuleUrl('web_list');
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_list');
         $dblist->calcPerms = $calcPerms;
         $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
         $dblist->returnUrl = $this->returnUrl;
@@ -421,7 +423,7 @@ class RecordList
 				' . $this->moduleTemplate->redirectUrls($listUrl) . '
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {	//
-					window.location.href="' . BackendUtility::getModuleUrl('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . (string)$uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {	//
 					var list="";
@@ -715,7 +717,9 @@ class RecordList
                         'justLocalized' => 'pages:' . $id . ':' . $languageUid,
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
                     ];
-                    $redirectUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
+                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);
                     $targetUrl = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[pages][' . $id . '][localize]=' . $languageUid,
                         $redirectUrl

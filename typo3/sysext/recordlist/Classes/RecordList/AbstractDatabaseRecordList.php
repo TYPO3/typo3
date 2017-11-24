@@ -1330,7 +1330,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
             if ($localizedRecordUid !== false) {
                 // Create parameters and finally run the classic page module for creating a new page translation
                 $url = $this->listURL();
-                $editUserAccountUrl = BackendUtility::getModuleUrl(
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         'edit[' . $table . '][' . $localizedRecordUid . ']' => 'edit',

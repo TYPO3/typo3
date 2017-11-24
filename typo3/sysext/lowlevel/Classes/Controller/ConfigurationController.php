@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -251,7 +250,9 @@ class ConfigurationController
         $menu->setIdentifier('tree');
         foreach ($this->treeSetup as $treeKey => $treeDetails) {
             $menuItem = $menu->makeMenuItem();
-            $menuItem->setHref(BackendUtility::getModuleUrl('system_config', ['tree' => $treeKey]))
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $menuItem->setHref((string)$uriBuilder->buildUriFromRoute('system_config', ['tree' => $treeKey]))
                 ->setTitle($languageService->sL(
                     'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:' . $treeDetails['label']
                 ));

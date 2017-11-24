@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Documentation\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,9 +35,11 @@ class JavaScriptService
         }
         $beUser = $this->getBeUser();
         if ($beUser && !empty($beUser->user)) {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_DocumentationCshmanual', [
+            $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('help_DocumentationCshmanual', [
                 'tx_documentation_help_documentationcshmanual' => [
                     'controller' => 'Help',
                     'action' => 'detail'

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -108,13 +107,15 @@ class SecurityStatus implements StatusProviderInterface
                 $secure = false;
             }
             if (!$secure) {
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
                 $value = $this->getLanguageService()->getLL('status_insecure');
                 $severity = ReportStatus::ERROR;
-                $editUserAccountUrl = BackendUtility::getModuleUrl(
+                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
                     'record_edit',
                     [
                         'edit[be_users][' . $row['uid'] . ']' => 'edit',
-                        'returnUrl' => BackendUtility::getModuleUrl('system_ReportsTxreportsm1')
+                        'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_ReportsTxreportsm1')
                     ]
                 );
                 $message = sprintf(

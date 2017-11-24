@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
  */
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -86,13 +85,14 @@ class ListModule extends AbstractNode
         $onClick = [];
         $onClick[] = 'this.blur();';
         $onClick[] = 'return !TBE_EDITOR.isFormChanged();';
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         return [
             'iconIdentifier' => 'actions-system-list-open',
             'title' => $title,
             'linkAttributes' => [
                 'onClick' => implode('', $onClick),
-                'href' => BackendUtility::getModuleUrl('wizard_list', $urlParameters),
+                'href' => (string)$uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
             ],
         ];
     }

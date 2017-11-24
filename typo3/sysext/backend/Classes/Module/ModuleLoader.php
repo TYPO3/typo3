@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -169,15 +168,16 @@ class ModuleLoader
         $finalModuleConfiguration['name'] = $name;
         // Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
         $this->addLabelsForModule($name, ($finalModuleConfiguration['labels'] ?? $setupInformation['labels']));
-
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         if (isset($setupInformation['configuration']['routeTarget'])) {
-            $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
+            $finalModuleConfiguration['script'] = (string)$uriBuilder->buildUriFromRoute($name);
         } else {
-            $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('dummy');
+            $finalModuleConfiguration['script'] = (string)$uriBuilder->buildUriFromRoute('dummy');
         }
 
         if (!empty($setupInformation['configuration']['navigationFrameModule'])) {
-            $finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl(
+            $finalModuleConfiguration['navFrameScript'] = (string)$uriBuilder->buildUriFromRoute(
                 $setupInformation['configuration']['navigationFrameModule'],
                 !empty($setupInformation['configuration']['navigationFrameModuleParameters'])
                     ? $setupInformation['configuration']['navigationFrameModuleParameters']

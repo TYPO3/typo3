@@ -374,7 +374,9 @@ class SetupModuleController
      */
     public function main()
     {
-        $this->content .= '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $this->content .= '<form action="' . (string)$uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         if ($this->languageUpdate) {
             $this->moduleTemplate->addJavaScriptCode('languageUpdate', '
                 if (top && top.TYPO3.ModuleMenu.App) {
@@ -788,7 +790,9 @@ class SetupModuleController
                 $opt[] = '<option value="' . (int)$rr['uid'] . '"' . ($this->simUser === (int)$rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
             }
             if (!empty($opt)) {
-                $this->simulateSelector = '<select id="field_simulate" class="form-control" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $this->simulateSelector = '<select id="field_simulate" class="form-control" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
             }
         }
         // This can only be set if the previous code was executed.
@@ -1049,11 +1053,13 @@ class SetupModuleController
      */
     protected function addAvatarButtonJs($fieldName)
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $this->moduleTemplate->addJavaScriptCode('avatar-button', '
             var browserWin="";
 
             function openFileBrowser() {
-                var url = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy|setFileUid'])) . ';
+                var url = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy|setFileUid'])) . ';
                 browserWin = window.open(url,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
                 browserWin.focus();
             }
