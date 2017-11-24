@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular;
 
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -253,6 +254,56 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['l10n_state' => ['header' => 'source']]);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #1']);
+    }
+
+    /**
+     * Test for issue https://forge.typo3.org/issues/83079 - sorting of 'localization of localization' should
+     * use the sort value of the source record for the first localized record, and sort value of 'previous'
+     * record of target language for subsequent records.
+     */
+    public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
+    {
+        // Change defaults from import data set: We want to create all the lang 1 and lang 2 content elements
+        // with one DH call in one go per language, but the import data set has some localized content elements
+        // already. Drop those.
+        $this->setWorkspaceId(0);
+        $this->actionService->deleteRecords([
+            'tt_content' => [300, 301, 302],
+        ]);
+        if (defined('static::VALUE_WorkspaceId') > 0) {
+            $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        }
+
+        // Create translated pages first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
+
+        // @todo: This should be extracted as localizeRecords() in addition to localizeRecord() to ActionService
+        // Create localization of the 3 default language content elements
+        $commandMap = [
+            'tt_content' => [
+                self::VALUE_ContentIdFirst => [ 'localize' => self::VALUE_LanguageId],
+                self::VALUE_ContentIdSecond => [ 'localize' => self::VALUE_LanguageId],
+                self::VALUE_ContentIdThird => [ 'localize' => self::VALUE_LanguageId],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
+        // uid's of lang 1 localized elements
+        $mappingArray = $dataHandler->copyMappingArray_merged;
+
+        // Localize again, with uid's of second language as source ("translation of translation")
+        $commandMap = [
+            'tt_content' => [
+                $mappingArray['tt_content'][self::VALUE_ContentIdFirst] => ['localize' => self::VALUE_LanguageIdSecond],
+                $mappingArray['tt_content'][self::VALUE_ContentIdSecond] => ['localize' => self::VALUE_LanguageIdSecond],
+                $mappingArray['tt_content'][self::VALUE_ContentIdThird] => ['localize' => self::VALUE_LanguageIdSecond],
+            ],
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $commandMap);
+        $dataHandler->process_cmdmap();
     }
 
     /**

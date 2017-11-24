@@ -4438,10 +4438,8 @@ class DataHandler implements LoggerAwareInterface
             return false;
         }
 
-        $GLOBALS['TCA'][$table]['ctrl'] += ['languageField' => '', 'transOrigPointerField' => ''];
-
         $this->registerNestedElementCall($table, $uid, 'localize-' . (string)$language);
-        if (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+        if (empty($GLOBALS['TCA'][$table]['ctrl']['languageField']) || empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table);
             return false;
         }
@@ -7685,76 +7683,103 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Returning uid of previous localized record, if any, for tables with a "sortby" column
-     * Used when new localized records are created so that localized records are sorted in the same order as the default language records
+     * Returning uid of "previous" localized record, if any, for tables with a "sortby" column.
+     * Used when records are localized, so that localized records are sorted in the
+     * same order as the source language records.
      *
-     * For a given record (A) uid (record we're translating) it finds first default language record (from the same colpos)
-     * with sorting smaller than given record (B).
-     * Then it fetches a translated version of record B and returns it's uid.
+     * The uid of the returned record is later used to create the localized record "after"
+     * (higher sorting value) than the one the uid is returned of.
      *
-     * If there is no record B, or it has no translation in given language, the record A uid is returned.
-     * The localized record will be placed the after record which uid is returned.
+     * There are basically two scenarios:
+     * * The localized record is to be placed as the first record of the target pid/language
+     *   combination. In this case, there is no "before" record in this language. The method
+     *   returns input $uid, saying "insert the localized record with a higher sorting value
+     *   than the record the localization is created from".
+     * * There is a localized record "before" (lower sorting value) in the target pid/language
+     *   combination. For instance because source language element 2 is being translated and
+     *   source language element 1 has already been translated. In this case, the uid of the
+     *   'element 1' is returned, saying "insert the localized record with a higher sorting
+     *   value than the "before" record in this language.
+     *
+     * The algorithm first fetches the record of given input uid. It then looks if there is a
+     * record with a lower sorting value for this pid/language combination. If no, input uid
+     * is returned ("place with higher sorting than source language record"). If yes, it looks
+     * if there is a localization of that source record in the target language and return the
+     * uid of that target language record ("place with higher sorting that this traget language
+     * record"). When dealing with table tt_content, colpos is also taken into account.
      *
      * @param string $table Table name
-     * @param int $uid Uid of default language record
-     * @param int $pid Pid of default language record
-     * @param int $language Language of localization
+     * @param int $uid Uid of source language record
+     * @param int $pid Pid of source language record
+     * @param int $targetLanguage Target language id
      * @return int uid of record after which the localized record should be inserted
      */
-    protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language)
+    protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $targetLanguage)
     {
         $previousLocalizedRecordUid = $uid;
         $sortColumn = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
-        if ($sortColumn) {
-            $select = [$sortColumn, 'pid', 'uid'];
-            // For content elements, we also need the colPos
-            if ($table === 'tt_content') {
-                $select[] = 'colPos';
-            }
-            // Get the sort value of the default language record
-            $row = BackendUtility::getRecord($table, $uid, implode(',', $select));
-            if (is_array($row)) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        if (!$sortColumn) {
+            return $previousLocalizedRecordUid;
+        }
 
-                $queryBuilder
-                    ->select(...$select)
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->lt(
-                            $sortColumn,
-                            $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
-                        )
-                    )
-                    ->orderBy($sortColumn, 'DESC')
-                    ->addOrderBy('uid', 'DESC')
-                    ->setMaxResults(1);
-                if ($table === 'tt_content') {
-                    $queryBuilder
-                        ->andWhere(
-                            $queryBuilder->expr()->eq(
-                                'colPos',
-                                $queryBuilder->createNamedParameter($row['colPos'], \PDO::PARAM_INT)
-                            )
-                        );
-                }
-                // If there is an element, find its localized record in specified localization language on this page
-                if ($previousRow = $queryBuilder->execute()->fetchAssociative()) {
-                    $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language, 'pid=' . (int)$pid);
-                    if (isset($previousLocalizedRecord[0]) && is_array($previousLocalizedRecord[0])) {
-                        $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
-                    }
-                }
+        // Typically l10n_parent
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        // Typically sys_language_uid
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+
+        $select = [$sortColumn, $languageField, $transOrigPointerField, 'pid', 'uid'];
+        // For content elements, we also need the colPos
+        if ($table === 'tt_content') {
+            $select[] = 'colPos';
+        }
+
+        // Get the sort value and some other details of the source language record
+        $row = BackendUtility::getRecord($table, $uid, implode(',', $select));
+        if (!is_array($row)) {
+            // This if may be obsolete ... didn't the callee already check if the source record exists?
+            return $previousLocalizedRecordUid;
+        }
+
+        // Try to find a "before" record in source language
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder
+            ->select(...$select)
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $languageField,
+                    $queryBuilder->createNamedParameter($row[$languageField], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lt(
+                    $sortColumn,
+                    $queryBuilder->createNamedParameter($row[$sortColumn], \PDO::PARAM_INT)
+                )
+            )
+            ->orderBy($sortColumn, 'DESC')
+            ->addOrderBy('uid', 'DESC')
+            ->setMaxResults(1);
+        if ($table === 'tt_content') {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'colPos',
+                    $queryBuilder->createNamedParameter($row['colPos'], \PDO::PARAM_INT)
+                )
+            );
+        }
+        // If there is a "before" record in source language, see if it is localized to target language.
+        // If so, return uid of target language record.
+        if ($previousRow = $queryBuilder->execute()->fetchAssociative()) {
+            $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $targetLanguage, 'pid=' . (int)$pid);
+            if (isset($previousLocalizedRecord[0]) && is_array($previousLocalizedRecord[0])) {
+                $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
             }
         }
+
         return $previousLocalizedRecordUid;
     }
 

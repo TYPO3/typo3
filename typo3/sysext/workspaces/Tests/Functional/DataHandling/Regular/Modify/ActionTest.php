@@ -353,6 +353,16 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * Test does not make sense for Publish, PublishAll and Discard
+     */
+    public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
+    {
+        parent::localizeContentFromNonDefaultLanguageWithAllContentElements();
+        $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguageWithAllContentElements');
+    }
+
+    /**
+     * @test
      */
     public function changeContentSorting(): void
     {

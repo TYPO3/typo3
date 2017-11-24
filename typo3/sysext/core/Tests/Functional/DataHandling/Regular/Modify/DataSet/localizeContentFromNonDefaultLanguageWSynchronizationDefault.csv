@@ -22,7 +22,7 @@
 ,300,89,1024,0,1,299,299,299,0,0,0,0,"Testing #1","{""header"":""parent""}"
 ,301,89,384,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",
 ,302,89,448,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",
-,303,89,1280,0,2,299,300,300,0,0,0,0,"Testing #1","{""header"":""parent""}"
+,303,89,480,0,2,299,300,300,0,0,0,0,"Testing #1","{""header"":""parent""}"
 "sys_refindex",,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
 ,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,,,
