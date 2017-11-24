@@ -29,7 +29,7 @@
 ,311,90,512,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10",,,,
 ,312,90,768,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,,
 ,320,89,512,0,0,0,0,298,2,2,0,298,"Regular Element #2",,,,
-,321,89,1280,0,2,0,300,300,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3",,,,
+,321,89,480,0,2,0,300,300,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3",,,,
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,
