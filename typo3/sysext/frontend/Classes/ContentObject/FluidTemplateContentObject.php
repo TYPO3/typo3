@@ -173,10 +173,9 @@ class FluidTemplateContentObject extends AbstractContentObject
         } else {
             // Fetch the Fluid template by file stdWrap
             $file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
-            /** @var $templateService \TYPO3\CMS\Core\TypoScript\TemplateService */
-            $templateService = $GLOBALS['TSFE']->tmpl;
-            $templatePathAndFilename = $templateService->getFileName($file);
-            $this->view->setTemplatePathAndFilename(PATH_site . $templatePathAndFilename);
+            // Get the absolute file name
+            $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
+            $this->view->setTemplatePathAndFilename($templatePathAndFilename);
         }
     }
 

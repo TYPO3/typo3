@@ -181,18 +181,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Unit\U
     public function renderSetsTemplateFileInView()
     {
         $this->addMockViewToSubject();
-        /** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
-        $templateService = $GLOBALS['TSFE']->tmpl;
-        $templateService
-            ->expects($this->any())
-            ->method('getFileName')
-            ->with('foo')
-            ->will($this->returnValue('bar'));
         $this->standaloneView
             ->expects($this->any())
             ->method('setTemplatePathAndFilename')
-            ->with(PATH_site . 'bar');
-        $this->subject->render(['file' => 'foo']);
+            ->with(PATH_site . 'typo3/sysext/core/bar.html');
+        $this->subject->render(['file' => 'EXT:core/bar.html']);
     }
 
     /**

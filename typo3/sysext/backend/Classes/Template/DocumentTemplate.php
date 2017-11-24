@@ -741,18 +741,8 @@ function jumpToUrl(URL) {
         if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
             $filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
         }
-        if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
-            $filename = GeneralUtility::getFileAbsFileName($filename);
-        } elseif (!GeneralUtility::isAbsPath($filename)) {
-            $filename = GeneralUtility::resolveBackPath($filename);
-        } elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
-            $filename = '';
-        }
-        $htmlTemplate = '';
-        if ($filename !== '') {
-            $htmlTemplate = file_get_contents($filename);
-        }
-        return $htmlTemplate;
+        $filename = GeneralUtility::getFileAbsFileName($filename);
+        return $filename !== '' ? file_get_contents($filename) : '';
     }
 
     /**
