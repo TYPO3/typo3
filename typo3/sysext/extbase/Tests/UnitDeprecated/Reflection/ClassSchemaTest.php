@@ -32,4 +32,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $injectProperties = $classSchema->getInjectProperties();
         static::assertArrayHasKey('propertyWithInjectAnnotation', $injectProperties);
     }
+
+    public function testClassSchemaDetectsLazyProperties()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithLazyProperty::class);
+        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
+    }
 }

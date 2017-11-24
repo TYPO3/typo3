@@ -18,6 +18,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Annotation\Inject;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -170,11 +171,23 @@ class ClassSchema
             }
 
             $this->properties[$propertyName]['annotations']['inject'] = false;
-            $this->properties[$propertyName]['annotations']['lazy'] = $docCommentParser->isTaggedWith('lazy');
+            $this->properties[$propertyName]['annotations']['lazy'] = false;
             $this->properties[$propertyName]['annotations']['transient'] = $docCommentParser->isTaggedWith('transient');
             $this->properties[$propertyName]['annotations']['type'] = null;
             $this->properties[$propertyName]['annotations']['cascade'] = null;
             $this->properties[$propertyName]['annotations']['dependency'] = null;
+
+            if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Lazy::class)) instanceof Lazy) {
+                $this->properties[$propertyName]['annotations']['lazy'] = true;
+            }
+
+            if ($docCommentParser->isTaggedWith('lazy')) {
+                $this->properties[$propertyName]['annotations']['lazy'] = true;
+                trigger_error(
+                    'Tagging properties with @lazy is deprecated and will be removed in TYPO3 v10.0.',
+                    E_USER_DEPRECATED
+                );
+            }
 
             if ($propertyName !== 'settings'
                 && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class)) instanceof Inject

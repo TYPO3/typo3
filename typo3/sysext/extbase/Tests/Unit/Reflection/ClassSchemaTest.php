@@ -178,6 +178,12 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertArrayHasKey('injectFoo', $injectMethods);
     }
 
+    public function testClassSchemaDetectsPropertiesWithLazyAnnotation()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithLazyDoctrineAnnotation::class);
+        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
+    }
+
     public function testClassSchemaDetectsStaticMethods()
     {
         $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfMethods::class);
