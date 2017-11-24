@@ -45,7 +45,7 @@ class LocallangXmlParser extends AbstractXmlParser
         // Parse source
         $parsedSource = $this->parseXmlFile();
         // Parse target
-        $localizedTargetPath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
+        $localizedTargetPath = $this->getLocalizedFileName($this->sourcePath, $this->languageKey);
         $targetPath = $this->languageKey !== 'default' && @is_file($localizedTargetPath) ? $localizedTargetPath : $this->sourcePath;
         try {
             $parsedTarget = $this->getParsedTargetData($targetPath);

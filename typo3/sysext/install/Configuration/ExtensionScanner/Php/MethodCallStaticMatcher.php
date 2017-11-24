@@ -505,4 +505,11 @@ return [
             'Deprecation-82445-PageTranslationRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-83083-GeneralUtilityllXmlAutoFileName.rst',
+        ],
+    ],
 ];

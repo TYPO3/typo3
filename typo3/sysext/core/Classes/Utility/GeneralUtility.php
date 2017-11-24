@@ -3336,9 +3336,11 @@ class GeneralUtility
      * @param string $language Language key
      * @param bool $sameLocation If TRUE, then locallang localization file name will be returned with same directory as $fileRef
      * @return string Returns the filename reference for the language unless error occurred in which case it will be NULL
+     * @deprecated in TYPO3 v9.0, will be removed in TYPO3 v10.0, as the functionality has been moved into AbstractXmlParser.
      */
     public static function llXmlAutoFileName($fileRef, $language, $sameLocation = false)
     {
+        trigger_error('This method will be removed in TYPO3 v10.0, the functionality has been moved into AbstractXmlParser', E_USER_DEPRECATED);
         // If $fileRef is already prefixed with "[language key]" then we should return it as is
         $fileName = basename($fileRef);
         if (self::isFirstPartOfStr($fileName, $language . '.')) {

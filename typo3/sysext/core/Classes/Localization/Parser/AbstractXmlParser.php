@@ -46,10 +46,10 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
         if ($this->languageKey !== 'default') {
-            $this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
+            $this->sourcePath = $this->getLocalizedFileName($this->sourcePath, $this->languageKey);
             if (!@is_file($this->sourcePath)) {
                 // Global localization is not available, try split localization file
-                $this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($sourcePath, $languageKey, true));
+                $this->sourcePath = $this->getLocalizedFileName($sourcePath, $languageKey, true);
             }
             if (!@is_file($this->sourcePath)) {
                 throw new FileNotFoundException('Localization file does not exist', 1306332397);
@@ -81,6 +81,55 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
             );
         }
         return $this->doParsingFromRoot($rootXmlNode);
+    }
+
+    /**
+     * Checks if a localized file is found in typo3conf/l10n/ (e.g. a language pack was downloaded in the backend)
+     * or if $sameLocation is set, then checks for a file located in "{language}.locallang.xlf" at the same directory
+     *
+     * @param string $fileRef Absolute file reference to locallang file
+     * @param string $language Language key
+     * @param bool $sameLocation If TRUE, then locallang localization file name will be returned with same directory as $fileRef
+     * @return string|null Absolute path to the language file, or null if error occurred
+     */
+    protected function getLocalizedFileName($fileRef, $language, $sameLocation = false)
+    {
+        // If $fileRef is already prefixed with "[language key]" then we should return it as is
+        $fileName = basename($fileRef);
+        if (GeneralUtility::isFirstPartOfStr($fileName, $language . '.')) {
+            return GeneralUtility::getFileAbsFileName($fileRef);
+        }
+
+        if ($sameLocation) {
+            return GeneralUtility::getFileAbsFileName(str_replace($fileName, $language . '.' . $fileName, $fileRef));
+        }
+
+        // Analyse file reference:
+        // Is system:
+        if (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) {
+            $validatedPrefix = PATH_typo3 . 'sysext/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3 . 'ext/')) {
+            // Is global:
+            $validatedPrefix = PATH_typo3 . 'ext/';
+        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) {
+            // Is local:
+            $validatedPrefix = PATH_typo3conf . 'ext/';
+        } else {
+            $validatedPrefix = '';
+        }
+        if ($validatedPrefix) {
+            // Divide file reference into extension key, directory (if any) and base name:
+            list($extensionKey, $file_extPath) = explode('/', substr($fileRef, strlen($validatedPrefix)), 2);
+            $temp = GeneralUtility::revExplode('/', $file_extPath, 2);
+            if (count($temp) === 1) {
+                array_unshift($temp, '');
+            }
+            // Add empty first-entry if not there.
+            list($file_extPath, $file_fileName) = $temp;
+            // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
+            return PATH_site . 'typo3conf/l10n/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
+        }
+        return null;
     }
 
     /**
