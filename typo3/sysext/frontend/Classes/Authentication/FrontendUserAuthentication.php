@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -599,5 +600,25 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $this->user = null;
         $this->loginHidden = true;
+    }
+
+    /**
+     * Update the field "is_online" every 60 seconds of a logged-in user
+     *
+     * @internal
+     */
+    public function updateOnlineTimestamp()
+    {
+        if (!is_array($this->user) || !$this->user['uid']
+            || $this->user['is_online'] >= $GLOBALS['EXEC_TIME'] - 60) {
+            return;
+        }
+        $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_users');
+        $dbConnection->update(
+            'fe_users',
+            ['is_online' => $GLOBALS['EXEC_TIME']],
+            ['uid' => (int)$this->user['uid']]
+        );
+        $this->user['is_online'] = $GLOBALS['EXEC_TIME'];
     }
 }

@@ -911,20 +911,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
-        // For every 60 seconds the is_online timestamp is updated.
-        if (is_array($this->fe_user->user) && $this->fe_user->user['uid'] && $this->fe_user->user['is_online'] < $GLOBALS['EXEC_TIME'] - 60) {
-            $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('fe_users');
-            $dbConnection->update(
-                'fe_users',
-                [
-                    'is_online' => $GLOBALS['EXEC_TIME']
-                ],
-                [
-                    'uid' => (int)$this->fe_user->user['uid']
-                ]
-            );
-        }
     }
 
     /**
@@ -963,6 +949,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (!empty($gr_array) && !$this->loginAllowedInBranch_mode) {
             $this->gr_list .= ',' . implode(',', $gr_array);
         }
+
+        // For every 60 seconds the is_online timestamp for a logged-in user is updated
+        if ($this->loginUser) {
+            $this->fe_user->updateOnlineTimestamp();
+        }
+
         $this->logger->debug('Valid usergroups for TSFE: ' . $this->gr_list);
     }
 
