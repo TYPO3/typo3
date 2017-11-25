@@ -12,4 +12,10 @@ return [
             'Deprecation-83078-ReplaceLazyWithTYPO3CMSExtbaseAnnotationORMLazy.rst',
         ],
     ],
+    '@transient' => [
+        'restFiles' => [
+            'Feature-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
+            'Deprecation-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
+        ],
+    ],
 ];

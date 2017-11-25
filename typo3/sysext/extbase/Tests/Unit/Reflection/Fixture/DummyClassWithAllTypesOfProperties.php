@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 
 use TYPO3\CMS\Extbase\Annotation\Inject;
+use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 
 /**
  * Fixture class with getters and setters
@@ -50,7 +51,7 @@ class DummyClassWithAllTypesOfProperties
     public $propertyWithInjectAnnotation;
 
     /**
-     * @transient
+     * @Transient
      */
     public $propertyWithTransientAnnotation;
 
