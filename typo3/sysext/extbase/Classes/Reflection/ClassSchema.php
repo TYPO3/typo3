@@ -18,6 +18,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Annotation\Inject;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -244,6 +245,18 @@ class ClassSchema
                     $cascadeAnnotationValues = $docCommentParser->getTagValues('cascade');
                     $this->properties[$propertyName]['annotations']['cascade'] = $cascadeAnnotationValues[0];
                 } catch (\Exception $e) {
+                }
+
+                if ($this->properties[$propertyName]['annotations']['cascade'] !== null) {
+                    trigger_error(
+                        'Tagging properties with @cascade is deprecated and will be removed in TYPO3 v10.0.',
+                        E_USER_DEPRECATED
+                    );
+                }
+
+                if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
+                    /** @var Cascade $annotation */
+                    $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;
                 }
 
                 try {

@@ -38,4 +38,20 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $classSchema = new ClassSchema(Fixture\DummyClassWithLazyProperty::class);
         static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')['annotations']['lazy']);
     }
+
+    public function testClassSchemaDetectsCascadeProperty()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+
+        $propertyDefinition = $classSchema->getProperty('propertyWithCascadeAnnotation');
+        static::assertSame('remove', $propertyDefinition['annotations']['cascade']);
+    }
+
+    public function testClassSchemaDetectsCascadePropertyOnlyWithVarAnnotation()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+
+        $propertyDefinition = $classSchema->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
+        static::assertNull($propertyDefinition['annotations']['cascade']);
+    }
 }

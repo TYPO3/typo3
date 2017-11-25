@@ -27,4 +27,15 @@ class DummyClassWithAllTypesOfProperties
      * @transient
      */
     public $propertyWithTransientAnnotation;
+
+    /**
+     * @var DummyClassWithAllTypesOfProperties
+     * @cascade remove
+     */
+    public $propertyWithCascadeAnnotation;
+
+    /**
+     * @cascade remove
+     */
+    public $propertyWithCascadeAnnotationWithoutVarAnnotation;
 }
