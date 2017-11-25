@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -287,6 +288,8 @@ class ClassSchema
      */
     protected function reflectMethods(\ReflectionClass $reflectionClass)
     {
+        $annotationReader = new AnnotationReader();
+
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             $methodName = $reflectionMethod->getName();
 
@@ -302,7 +305,21 @@ class ClassSchema
             $docCommentParser = new DocCommentParser(true);
             $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
-                $this->methods[$methodName]['tags'][$tag] = $values;
+                if ($tag === 'ignorevalidation') {
+                    trigger_error(
+                        'Tagging methods with @ignorevalidation is deprecated and will be removed in TYPO3 v10.0.',
+                        E_USER_DEPRECATED
+                    );
+                }
+                $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) {
+                    return ltrim($value, '$');
+                }, $values);
+            }
+
+            foreach ($annotationReader->getMethodAnnotations($reflectionMethod) as $annotation) {
+                if ($annotation instanceof IgnoreValidation) {
+                    $this->methods[$methodName]['tags']['ignorevalidation'][] = $annotation->argumentName;
+                }
             }
 
             $this->methods[$methodName]['description'] = $docCommentParser->getDescription();

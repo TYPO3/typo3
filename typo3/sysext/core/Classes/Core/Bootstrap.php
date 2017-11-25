@@ -237,9 +237,12 @@ class Bootstrap
         AnnotationReader::addGlobalIgnoredName('cascade');
         AnnotationReader::addGlobalIgnoredName('ignorevalidation');
         AnnotationReader::addGlobalIgnoredName('cli');
-        AnnotationReader::addGlobalIgnoredName('flushesCashes');
+        AnnotationReader::addGlobalIgnoredName('flushesCaches');
         AnnotationReader::addGlobalIgnoredName('uuid');
         AnnotationReader::addGlobalIgnoredName('identity');
+
+        // Annotations used in unit tests
+        AnnotationReader::addGlobalIgnoredName('test');
 
         // Annotations that control the extension scanner
         AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreFile');

@@ -54,4 +54,10 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $propertyDefinition = $classSchema->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
         static::assertNull($propertyDefinition['annotations']['cascade']);
     }
+
+    public function testClassSchemaDetectsIgnoreValidationAnnotation()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyControllerWithIgnorevalidationAnnotation::class);
+        static::assertTrue(isset($classSchema->getMethod('someAction')['tags']['ignorevalidation']));
+    }
 }

@@ -316,18 +316,16 @@ class ActionController extends AbstractController
             $actionResult = call_user_func_array([$this, $this->actionMethodName], $preparedArguments);
         } else {
             $methodTagsValues = $this->reflectionService->getMethodTagsValues(static::class, $this->actionMethodName);
-            $ignoreValidationAnnotations = [];
-            if (isset($methodTagsValues['ignorevalidation'])) {
-                $ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
-            }
-            // if there exist errors which are not ignored with @ignorevalidation => call error method
+            $ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'] ?? [];
+
+            // if there exist errors which are not ignored with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation => call error method
             // else => call action method
             $shouldCallActionMethod = true;
             foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
                 if (!$subValidationResult->hasErrors()) {
                     continue;
                 }
-                if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== false) {
+                if (in_array($argumentName, $ignoreValidationAnnotations, true)) {
                     continue;
                 }
                 $shouldCallActionMethod = false;
