@@ -322,7 +322,7 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function testClassSchemaGetTags()
     {
         $tags = (new ClassSchema(Fixture\DummyClassWithTags::class))->getTags();
-        static::assertArrayHasKey('foo', $tags);
+        static::assertArrayHasKey('see', $tags);
 
         // test ignored tags
         static::assertArrayNotHasKey('package', $tags);
@@ -331,6 +331,5 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertArrayNotHasKey('copyright', $tags);
         static::assertArrayNotHasKey('author', $tags);
         static::assertArrayNotHasKey('version', $tags);
-        static::assertArrayNotHasKey('const', $tags);
     }
 }

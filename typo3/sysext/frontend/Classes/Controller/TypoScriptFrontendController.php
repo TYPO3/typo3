@@ -3545,9 +3545,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Send cache headers good for client/reverse proxy caching
-     * This function should not be called if the page content is temporary (like for "Page is being generated..." message, but in that case it is ok because the config-variables are not yet available and so will not allow to send cache headers)
-     *
-     * @co-author Ole Tange, Forbrugernes Hus, Denmark
+     * This function should not be called if the page content is
+     * temporary (like for "Page is being generated..." message,
+     * but in that case it is ok because the config-variables
+     * are not yet available and so will not allow to send
+     * cache headers)
      */
     public function sendCacheHeaders()
     {

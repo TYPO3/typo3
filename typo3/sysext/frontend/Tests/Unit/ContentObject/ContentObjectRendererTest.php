@@ -6522,7 +6522,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     /**
      * Data provider for stdWrap_prefixComment.
      *
-     * @retunr array [$expect, $content, $conf, $disable, $times, $will]
+     * @return array [$expect, $content, $conf, $disable, $times, $will]
      */
     public function stdWrap_prefixCommentDataProvider()
     {

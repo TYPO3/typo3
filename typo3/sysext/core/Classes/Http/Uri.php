@@ -28,14 +28,14 @@ class Uri implements UriInterface
     /**
      * Sub-delimiters used in query strings and fragments.
      *
-     * @const string
+     * @var string
      */
     const SUBDELIMITER_CHARLIST = '!\$&\'\(\)\*\+,;=';
 
     /**
      * Unreserved characters used in paths, query strings, and fragments.
      *
-     * @const string
+     * @var string
      */
     const UNRESERVED_CHARLIST = 'a-zA-Z0-9_\-\.~';
 

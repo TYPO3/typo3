@@ -121,7 +121,7 @@ class InheritancesResolverService
     /**
      * Resolve all inheritances within a configuration.
      *
-     * @toDo: More description
+     * @todo: More description
      * @param array $configuration
      * @param array $pathStack
      * @param bool $setInheritancePathToCkeck
@@ -181,7 +181,7 @@ class InheritancesResolverService
     /**
      * Additional helper for the resolve method.
      *
-     * @toDo: More description
+     * @todo: More description
      * @param array $inheritances
      * @return array
      * @throws CycleInheritancesException
@@ -249,7 +249,7 @@ class InheritancesResolverService
     /**
      * Throw an exception if a cycle is detected.
      *
-     * @toDo: More description
+     * @todo: More description
      * @param string $path
      * @param string $pathToCheck
      * @throws CycleInheritancesException

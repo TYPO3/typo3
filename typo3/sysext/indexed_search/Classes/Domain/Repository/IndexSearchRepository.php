@@ -1211,8 +1211,7 @@ class IndexSearchRepository
      * highest/lowest result order (piVars['desc'])
      *
      * @param bool $inverse If TRUE, inverse the order which is defined by piVars['desc']
-     * @return string " DESC" or
-     * @formallyknownas tx_indexedsearch_pi->isDescending
+     * @return string " DESC" or formerly known as tx_indexedsearch_pi->isDescending
      */
     protected function getDescendingSortOrderFlag($inverse = false)
     {

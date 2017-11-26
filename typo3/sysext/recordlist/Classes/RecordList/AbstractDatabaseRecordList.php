@@ -742,7 +742,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
      * @param QueryBuilder $queryBuilder
-     * @paran bool $addSorting
+     * @param bool $addSorting
      * @return QueryBuilder
      * @deprecated since TYPO3 v9, will be removed in TYPO3 v10
      */

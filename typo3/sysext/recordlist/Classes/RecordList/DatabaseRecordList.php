@@ -1606,13 +1606,13 @@ class DatabaseRecordList
                     } else {
                         $cells['empty'] = '';
                     }
-                    /**
-                     * @hook renderListHeaderActions: Allows to change the clipboard icons of the Web>List table headers
-                     * @usage Above each listed table in Web>List a header row is shown.
+                    /*
+                     * hook:  renderListHeaderActions: Allows to change the clipboard icons of the Web>List table headers
+                     * usage: Above each listed table in Web>List a header row is shown.
                      *        This hook allows to modify the icons responsible for the clipboard functions
                      *        (shown above the clipboard checkboxes when a clipboard other than "Normal" is selected),
                      *        or other "Action" functions which perform operations on the listed records.
-                    */
+                     */
                     if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
                             $hookObject = GeneralUtility::makeInstance($className);
@@ -1730,9 +1730,9 @@ class DatabaseRecordList
                     $theData[$fCol] .= $this->addSortLink($sortLabel, $fCol, $table);
             }
         }
-        /**
-         * @hook renderListHeader: Allows to change the contents of columns/cells of the Web>List table headers
-         * @usage Above each listed table in Web>List a header row is shown.
+        /*
+         * hook:  renderListHeader: Allows to change the contents of columns/cells of the Web>List table headers
+         * usage: Above each listed table in Web>List a header row is shown.
          *        Containing the labels of all shown fields and additional icons to create new records for this
          *        table or perform special clipboard tasks like mark and copy all listed records to clipboard, etc.
          */
@@ -2116,8 +2116,8 @@ class DatabaseRecordList
                 $this->addActionToCellGroup($cells, $moveRightAction, 'moveRight');
             }
         }
-        /**
-         * @hook recStatInfoHooks: Allows to insert HTML before record icons on various places
+        /*
+         * hook: recStatInfoHooks: Allows to insert HTML before record icons on various places
          */
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
             $stat = '';
@@ -2127,9 +2127,9 @@ class DatabaseRecordList
             }
             $this->addActionToCellGroup($cells, $stat, 'stat');
         }
-        /**
-         * @hook makeControl: Allows to change control icons of records in list-module
-         * @usage This hook method gets passed the current $cells array as third parameter.
+        /*
+         * hook:  makeControl: Allows to change control icons of records in list-module
+         * usage: This hook method gets passed the current $cells array as third parameter.
          *        This array contains values for the icons/actions generated for each record in Web>List.
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
@@ -2297,9 +2297,9 @@ class DatabaseRecordList
                 . ' data-severity="warning">'
                 . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';
         }
-        /**
-         * @hook makeClip: Allows to change clip-icons of records in list-module
-         * @usage This hook method gets passed the current $cells array as third parameter.
+        /*
+         * hook:  makeClip: Allows to change clip-icons of records in list-module
+         * usage: This hook method gets passed the current $cells array as third parameter.
          *        This array contains values for the clipboard icons generated for each record in Web>List.
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
@@ -3173,7 +3173,7 @@ class DatabaseRecordList
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
      * @param QueryBuilder $queryBuilder
-     * @paran bool $addSorting
+     * @param bool $addSorting
      * @return QueryBuilder
      */
     protected function prepareQueryBuilder(

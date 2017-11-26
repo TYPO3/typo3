@@ -3311,7 +3311,7 @@ class PageLayoutView implements LoggerAwareInterface
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
      * @param QueryBuilder $queryBuilder
-     * @paran bool $addSorting
+     * @param bool $addSorting
      * @return QueryBuilder
      */
     protected function prepareQueryBuilder(

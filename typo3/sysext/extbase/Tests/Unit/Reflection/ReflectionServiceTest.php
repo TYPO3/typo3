@@ -19,9 +19,9 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Test case
- * @firsttest test for reflection
- * @anothertest second test for reflection
- * @anothertest second test for reflection with second value
+ * @see test for reflection
+ * @link second test for reflection
+ * @link second test for reflection with second value
  */
 class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
@@ -49,8 +49,8 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $service = GeneralUtility::makeInstance(ReflectionService::class);
         $classValues = $service->getClassTagsValues(static::class);
         $this->assertEquals([
-            'firsttest' => ['test for reflection'],
-            'anothertest' => ['second test for reflection', 'second test for reflection with second value']
+            'see' => ['test for reflection'],
+            'link' => ['second test for reflection', 'second test for reflection with second value']
         ], $classValues);
 
         $this->assertEquals(
@@ -65,7 +65,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     public function getClassTagValues()
     {
         $service = GeneralUtility::makeInstance(ReflectionService::class);
-        $classValues = $service->getClassTagValues(static::class, 'firsttest');
+        $classValues = $service->getClassTagValues(static::class, 'see');
         $this->assertEquals([
             'test for reflection',
         ], $classValues);
@@ -194,7 +194,7 @@ class ReflectionServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
         $service = GeneralUtility::makeInstance(ReflectionService::class);
         $this->assertTrue($service->isClassTaggedWith(
             Fixture\DummyClassWithTags::class,
-            'foo'
+            'see'
         ));
 
         $this->assertFalse($service->isClassTaggedWith(

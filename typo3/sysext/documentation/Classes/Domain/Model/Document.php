@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Documentation\Domain\Model;
 
 /**
  * An extension helper model to be used in ext:documentation context
- *
- * @entity
  */
 class Document extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

@@ -29,12 +29,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class LocalizationController
 {
     /**
-     * @const string
+     * @var string
      */
     const ACTION_COPY = 'copyFromLanguage';
 
     /**
-     * @const string
+     * @var string
      */
     const ACTION_LOCALIZE = 'localize';
 

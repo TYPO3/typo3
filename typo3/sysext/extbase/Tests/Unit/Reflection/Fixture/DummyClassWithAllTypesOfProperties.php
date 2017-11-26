@@ -40,7 +40,6 @@ class DummyClassWithAllTypesOfProperties
      * @copyright
      * @author
      * @version
-     * @const
      */
     public $propertyWithIgnoredTags;
 

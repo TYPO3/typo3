@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * An extension helper model to be used in ext:about context
- *
- * @entity
  */
 class Extension extends AbstractEntity
 {

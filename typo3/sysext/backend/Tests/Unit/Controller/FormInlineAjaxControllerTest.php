@@ -218,7 +218,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
 
     /**
      * Fallback for IRRE items without inline view attribute
-     * @issue https://forge.typo3.org/issues/76561
+     * @see https://forge.typo3.org/issues/76561
      *
      * @test
      */
@@ -243,7 +243,7 @@ class FormInlineAjaxControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
 
     /**
      * Unserialize uc inline view string for IRRE item
-     * @issue https://forge.typo3.org/issues/76561
+     * @see https://forge.typo3.org/issues/76561
      *
      * @test
      */

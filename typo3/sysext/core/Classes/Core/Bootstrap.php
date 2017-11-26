@@ -227,7 +227,7 @@ class Bootstrap
 
         /*
          * All annotations defined by and for Extbase need to be
-         * ignored during their deprecation. Later their usage may and
+         * ignored during their deprecation. Later, their usage may and
          * should throw an Exception
          */
         AnnotationReader::addGlobalIgnoredName('inject');
@@ -236,11 +236,14 @@ class Bootstrap
         AnnotationReader::addGlobalIgnoredName('validate');
         AnnotationReader::addGlobalIgnoredName('cascade');
         AnnotationReader::addGlobalIgnoredName('ignorevalidation');
-        AnnotationReader::addGlobalIgnoredName('firsttest');
-        AnnotationReader::addGlobalIgnoredName('anothertest');
-        AnnotationReader::addGlobalIgnoredName('test');
-        AnnotationReader::addGlobalIgnoredName('const');
-        // ...
+        AnnotationReader::addGlobalIgnoredName('cli');
+        AnnotationReader::addGlobalIgnoredName('flushesCashes');
+        AnnotationReader::addGlobalIgnoredName('uuid');
+        AnnotationReader::addGlobalIgnoredName('identity');
+
+        // Annotations that control the extension scanner
+        AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreFile');
+        AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreLine');
 
         return $this;
     }

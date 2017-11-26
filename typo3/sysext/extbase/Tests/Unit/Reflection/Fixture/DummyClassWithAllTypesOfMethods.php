@@ -38,7 +38,6 @@ class DummyClassWithAllTypesOfMethods
      * @copyright
      * @author
      * @version
-     * @const
      */
     public function methodWithIgnoredTags()
     {

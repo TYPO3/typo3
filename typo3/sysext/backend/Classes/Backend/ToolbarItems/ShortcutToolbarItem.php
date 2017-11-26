@@ -37,7 +37,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class ShortcutToolbarItem implements ToolbarItemInterface
 {
     /**
-     * @const integer Number of super global group
+     * @var int Number of super global group
      */
     const SUPERGLOBAL_GROUP = -100;
 

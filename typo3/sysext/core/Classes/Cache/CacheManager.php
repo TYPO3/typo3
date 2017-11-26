@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\SingletonInterface;
  * The Cache Manager
  *
  * This file is a backport from FLOW3
- * @scope singleton
  * @api
  */
 class CacheManager implements SingletonInterface

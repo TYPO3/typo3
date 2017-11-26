@@ -241,7 +241,6 @@ class MetaDataRepository implements SingletonInterface
      * for example translation and workspace overlay
      *
      * @param \ArrayObject $data
-     * @signal
      */
     protected function emitRecordPostRetrievalSignal(\ArrayObject $data)
     {
@@ -252,7 +251,6 @@ class MetaDataRepository implements SingletonInterface
      * Signal that is called after an IndexRecord is updated
      *
      * @param array $data
-     * @signal
      */
     protected function emitRecordUpdatedSignal(array $data)
     {
@@ -263,7 +261,6 @@ class MetaDataRepository implements SingletonInterface
      * Signal that is called after an IndexRecord is created
      *
      * @param array $data
-     * @signal
      */
     protected function emitRecordCreatedSignal(array $data)
     {
@@ -274,7 +271,6 @@ class MetaDataRepository implements SingletonInterface
      * Signal that is called after an IndexRecord is deleted
      *
      * @param int $fileUid
-     * @signal
      */
     protected function emitRecordDeletedSignal($fileUid)
     {

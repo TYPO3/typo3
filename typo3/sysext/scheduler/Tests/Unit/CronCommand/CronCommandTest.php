@@ -22,7 +22,7 @@ use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
 class CronCommandTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @const integer timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
+     * @var int timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
      */
     const TIMESTAMP = 1262304000;
 
