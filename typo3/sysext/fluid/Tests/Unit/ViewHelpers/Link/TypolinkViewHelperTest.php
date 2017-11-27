@@ -62,6 +62,50 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
+     * @test
+     */
+    public function renderCallsStdWrapWithrightParameters()
+    {
+        $addQueryString = true;
+        $addQueryStringMethod = 'GET,POST';
+        $addQueryStringExclude = 'cHash';
+
+        $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+        $this->subject->setArguments([
+            'parameter' => '42',
+            'target' => '',
+            'class' => '',
+            'title' => '',
+            'additionalParams' => '',
+            'additionalAttributes' => [],
+            'addQueryString' => $addQueryString,
+            'addQueryStringMethod' => $addQueryStringMethod,
+            'addQueryStringExclude' => $addQueryStringExclude,
+        ]);
+        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRendererMock->expects($this->once())
+            ->method('stdWrap')
+            ->with(
+                'innerContent',
+                [
+                    'typolink.' => [
+                        'parameter' => '42',
+                        'ATagParams' => '',
+                        'useCacheHash' => false,
+                        'addQueryString' => $addQueryString,
+                        'addQueryString.' => [
+                            'method' => $addQueryStringMethod,
+                            'exclude' => $addQueryStringExclude,
+                        ],
+                    ],
+                ]
+            )
+            ->will($this->returnValue('foo'));
+        GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
+        $this->assertEquals('foo', $this->subject->render());
+    }
+
+    /**
      * @return array
      */
     public function typoScriptConfigurationData()
@@ -160,9 +204,22 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      * @param string $additionalParametersFromFluid
      * @param string $expected
      */
-    public function createTypolinkParameterArrayFromArgumentsReturnsExpectedArray($input, $targetFromFluid, $classFromFluid, $titleFromFluid, $additionalParametersFromFluid, $expected)
-    {
-        $result = $this->subject->_call('createTypolinkParameterArrayFromArguments', $input, $targetFromFluid, $classFromFluid, $titleFromFluid, $additionalParametersFromFluid);
+    public function createTypolinkParameterArrayFromArgumentsReturnsExpectedArray(
+        $input,
+        $targetFromFluid,
+        $classFromFluid,
+        $titleFromFluid,
+        $additionalParametersFromFluid,
+        $expected
+    ) {
+        $result = $this->subject->_call(
+            'createTypolinkParameterArrayFromArguments',
+            $input,
+            $targetFromFluid,
+            $classFromFluid,
+            $titleFromFluid,
+            $additionalParametersFromFluid
+        );
         $this->assertSame($expected, $result);
     }
 }

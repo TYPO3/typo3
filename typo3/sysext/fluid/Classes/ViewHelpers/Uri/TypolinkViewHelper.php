@@ -57,6 +57,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
         $this->registerArgument('useCacheHash', 'bool', '', false, false);
+        $this->registerArgument('addQueryString', 'bool', '', false, false);
+        $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
+        $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
     }
 
     /**
@@ -71,6 +74,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         $parameter = $arguments['parameter'];
         $additionalParams = $arguments['additionalParams'];
         $useCacheHash = $arguments['useCacheHash'];
+        $addQueryString = $arguments['addQueryString'];
+        $addQueryStringMethod = $arguments['addQueryStringMethod'];
+        $addQueryStringExclude = $arguments['addQueryStringExclude'];
 
         $content = '';
         if ($parameter) {
@@ -79,6 +85,11 @@ class TypolinkViewHelper extends AbstractViewHelper
                 [
                     'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
                     'useCacheHash' => $useCacheHash,
+                    'addQueryString' => $addQueryString,
+                    'addQueryString.' => [
+                        'method' => $addQueryStringMethod,
+                        'exclude' => $addQueryStringExclude
+                    ]
                 ]
             );
         }

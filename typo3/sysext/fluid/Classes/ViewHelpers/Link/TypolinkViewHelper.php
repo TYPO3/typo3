@@ -74,6 +74,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('additionalParams', 'string', '', false, '');
         $this->registerArgument('additionalAttributes', 'array', '', false, []);
         $this->registerArgument('useCacheHash', 'bool', '', false, false);
+        $this->registerArgument('addQueryString', 'bool', '', false, false);
+        $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
+        $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
     }
 
     /**
@@ -95,6 +98,9 @@ class TypolinkViewHelper extends AbstractViewHelper
         $additionalParams = $arguments['additionalParams'];
         $additionalAttributes = $arguments['additionalAttributes'];
         $useCacheHash = $arguments['useCacheHash'];
+        $addQueryString = $arguments['addQueryString'];
+        $addQueryStringMethod = $arguments['addQueryStringMethod'];
+        $addQueryStringExclude = $arguments['addQueryStringExclude'];
 
         // Merge the $parameter with other arguments
         $typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
@@ -120,6 +126,11 @@ class TypolinkViewHelper extends AbstractViewHelper
                         'parameter' => $typolinkParameter,
                         'ATagParams' => $aTagParams,
                         'useCacheHash' => $useCacheHash,
+                        'addQueryString' => $addQueryString,
+                        'addQueryString.' => [
+                            'method' => $addQueryStringMethod,
+                            'exclude' => $addQueryStringExclude
+                        ]
                     ]
                 ]
             );
