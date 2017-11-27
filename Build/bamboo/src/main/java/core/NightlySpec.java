@@ -85,6 +85,8 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobCglCheckFullCore());
 
+        jobsMainStage.add(this.getJobIntegrationAnnotations());
+
         jobsMainStage.add(this.getJobIntegrationVarious());
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion72(), "PHP72"));

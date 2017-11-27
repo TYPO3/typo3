@@ -422,6 +422,31 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Job with integration test checking for valid @xy annotations
+     */
+    protected Job getJobIntegrationAnnotations() {
+        return new Job("Integration annotations", new BambooKey("IANNO"))
+            .description("Check docblock-annotations by executing Build/Scripts/annotationChecker.php script")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(),
+                this.getTaskComposerInstall(),
+                new ScriptTask()
+                    .description("Execute annotations check script")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "./Build/Scripts/annotationChecker.php\n"
+                    )
+            )
+            .requirements(
+                this.getRequirementPhpVersion72()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
      * Job with various smaller script tests
      */
     protected Job getJobIntegrationVarious() {
