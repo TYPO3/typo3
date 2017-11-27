@@ -3669,9 +3669,10 @@ class TypoScriptFrontendController
             ];
             $this->isClientCachable = true;
         } else {
-            // Build headers:
+            // Build headers
+            // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
             $headers = [
-                'Cache-Control: private'
+                'Cache-Control: private, no-store'
             ];
             $this->isClientCachable = false;
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
