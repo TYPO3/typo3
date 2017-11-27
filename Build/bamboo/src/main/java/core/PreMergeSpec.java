@@ -162,7 +162,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     .put("custom", new MapBuilder()
                         .put("auto", new MapBuilder()
                             .put("regex", "https:\\/\\/review\\.typo3\\.org\\/(#\\/c\\/)?(\\d+)")
-                            .put("label", "change-\\2, patchset-${bamboo.patchset}")
+                            .put("label", "change-\\2\\, patchset-${bamboo.patchset}")
                             .build()
                         )
                         .put("buildHangingConfig.enabled", "false")
