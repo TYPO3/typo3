@@ -53,6 +53,7 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
+        '@DoctrineAnnotation' => true,
         'no_leading_import_slash' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'no_singleline_whitespace_before_semicolons' => true,
