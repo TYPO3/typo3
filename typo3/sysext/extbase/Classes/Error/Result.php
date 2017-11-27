@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Error;
 class Result
 {
     /**
-     * @var array<\TYPO3\CMS\Extbase\Error\Error>
+     * @var Error[]
      */
     protected $errors = [];
 
@@ -40,7 +40,7 @@ class Result
     protected $errorsExist = false;
 
     /**
-     * @var array<\TYPO3\CMS\Extbase\Error\Warning>
+     * @var Warning[]
      */
     protected $warnings = [];
 
@@ -51,7 +51,7 @@ class Result
     protected $warningsExist = false;
 
     /**
-     * @var array<\TYPO3\CMS\Extbase\Error\Notice>
+     * @var Notice[]
      */
     protected $notices = [];
 
@@ -64,12 +64,12 @@ class Result
     /**
      * The result objects for the sub properties
      *
-     * @var array<\TYPO3\CMS\Extbase\Error\Result>
+     * @var Result[]
      */
     protected $propertyResults = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Error\Result
+     * @var Result
      */
     protected $parent = null;
 
@@ -98,10 +98,10 @@ class Result
     /**
      * Add an error to the current Result object
      *
-     * @param \TYPO3\CMS\Extbase\Error\Error $error
+     * @param Error $error
      * @api
      */
-    public function addError(\TYPO3\CMS\Extbase\Error\Error $error)
+    public function addError(Error $error)
     {
         $this->errors[] = $error;
         $this->setErrorsExist();
@@ -110,10 +110,10 @@ class Result
     /**
      * Add a warning to the current Result object
      *
-     * @param \TYPO3\CMS\Extbase\Error\Warning $warning
+     * @param Warning $warning
      * @api
      */
-    public function addWarning(\TYPO3\CMS\Extbase\Error\Warning $warning)
+    public function addWarning(Warning $warning)
     {
         $this->warnings[] = $warning;
         $this->setWarningsExist();
@@ -122,10 +122,10 @@ class Result
     /**
      * Add a notice to the current Result object
      *
-     * @param \TYPO3\CMS\Extbase\Error\Notice $notice
+     * @param Notice $notice
      * @api
      */
-    public function addNotice(\TYPO3\CMS\Extbase\Error\Notice $notice)
+    public function addNotice(Notice $notice)
     {
         $this->notices[] = $notice;
         $this->setNoticesExist();
@@ -134,7 +134,7 @@ class Result
     /**
      * Get all errors in the current Result object (non-recursive)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Error>
+     * @return Error[]
      * @api
      */
     public function getErrors()
@@ -145,7 +145,7 @@ class Result
     /**
      * Get all warnings in the current Result object (non-recursive)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Warning>
+     * @return Warning[]
      * @api
      */
     public function getWarnings()
@@ -156,7 +156,7 @@ class Result
     /**
      * Get all notices in the current Result object (non-recursive)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Notice>
+     * @return Notice[]
      * @api
      */
     public function getNotices()
@@ -167,7 +167,7 @@ class Result
     /**
      * Get the first error object of the current Result object (non-recursive)
      *
-     * @return \TYPO3\CMS\Extbase\Error\Error
+     * @return Error
      * @api
      */
     public function getFirstError()
@@ -179,7 +179,7 @@ class Result
     /**
      * Get the first warning object of the current Result object (non-recursive)
      *
-     * @return \TYPO3\CMS\Extbase\Error\Warning
+     * @return Warning
      * @api
      */
     public function getFirstWarning()
@@ -191,7 +191,7 @@ class Result
     /**
      * Get the first notice object of the curren Result object (non-recursive)
      *
-     * @return \TYPO3\CMS\Extbase\Error\Notice
+     * @return Notice
      * @api
      */
     public function getFirstNotice()
@@ -207,7 +207,7 @@ class Result
      * for property "foo.bar"
      *
      * @param string $propertyPath
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      * @api
      */
     public function forProperty($propertyPath)
@@ -229,7 +229,7 @@ class Result
      * Internal use only!
      *
      * @param array $pathSegments
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      */
     public function recurseThroughResult(array $pathSegments)
     {
@@ -367,7 +367,7 @@ class Result
      * where the key is the property path where the error occurred, and the
      * value is a list of all errors (stored as array)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Error>
+     * @return Error[]
      * @api
      */
     public function getFlattenedErrors()
@@ -382,7 +382,7 @@ class Result
      * where the key is the property path where the warning occurred, and the
      * value is a list of all warnings (stored as array)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Warning>
+     * @return Warning[]
      * @api
      */
     public function getFlattenedWarnings()
@@ -397,7 +397,7 @@ class Result
      * where the key is the property path where the notice occurred, and the
      * value is a list of all notices (stored as array)
      *
-     * @return array<\TYPO3\CMS\Extbase\Error\Notice>
+     * @return Notice[]
      * @api
      */
     public function getFlattenedNotices()
@@ -431,7 +431,7 @@ class Result
     /**
      * Merge the given Result object into this one.
      *
-     * @param \TYPO3\CMS\Extbase\Error\Result $otherResult
+     * @param Result $otherResult
      * @api
      */
     public function merge(Result $otherResult)
@@ -460,7 +460,7 @@ class Result
     /**
      * Merge a single property from the other result object.
      *
-     * @param \TYPO3\CMS\Extbase\Error\Result $otherResult
+     * @param Result $otherResult
      * @param string $getterName
      * @param string $adderName
      */
@@ -474,7 +474,7 @@ class Result
     /**
      * Get a list of all sub Result objects available.
      *
-     * @return \TYPO3\CMS\Extbase\Error\Result[]
+     * @return Result[]
      */
     public function getSubResults()
     {
