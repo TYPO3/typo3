@@ -124,7 +124,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
     /**
      * Sets the parent node
      *
-     * @param null|\TYPO3\CMS\Backend\Tree\TreeNode $parentNode
+     * @param \TYPO3\CMS\Backend\Tree\TreeNode|null $parentNode
      */
     public function setParentNode(\TYPO3\CMS\Backend\Tree\TreeNode $parentNode = null)
     {

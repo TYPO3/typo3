@@ -241,7 +241,7 @@ abstract class AbstractMenuContentObject
     /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
      *
-     * @var null|int
+     * @var int|null
      */
     protected $parentMenuArrItemKey;
 
@@ -2372,7 +2372,7 @@ abstract class AbstractMenuContentObject
     /**
      * Get the parentMenuItem from the parentMenuArr, if this is a subMenu
      *
-     * @return null|array
+     * @return array|null
      */
     public function getParentMenuItem()
     {

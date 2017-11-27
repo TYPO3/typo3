@@ -196,7 +196,7 @@ class ImageManipulationElement extends AbstractFormElement
      *
      * @param array $row
      * @param string $fieldName
-     * @return null|File
+     * @return File|null
      */
     protected function getFile(array $row, $fieldName)
     {

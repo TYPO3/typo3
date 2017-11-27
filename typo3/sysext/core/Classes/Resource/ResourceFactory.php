@@ -107,7 +107,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * getDefaultStorage->getDefaultFolder() will get you fileadmin/user_upload/ in a standard
      * TYPO3 installation.
      *
-     * @return null|ResourceStorage
+     * @return ResourceStorage|null
      */
     public function getDefaultStorage()
     {
@@ -422,7 +422,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      *
      * @param int $storageUid
      * @param string $fileIdentifier
-     * @return null|File|ProcessedFile
+     * @return File|ProcessedFile|null
      */
     public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier)
     {
@@ -643,7 +643,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      *
      * @param int $uid The uid of the file usage (sys_file_reference) to be fetched
      * @param bool $raw Whether to get raw results without performing overlays
-     * @return null|array
+     * @return array|null
      */
     protected function getFileReferenceData($uid, $raw = false)
     {

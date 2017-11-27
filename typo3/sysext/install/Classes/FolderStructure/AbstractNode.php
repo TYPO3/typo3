@@ -27,12 +27,12 @@ abstract class AbstractNode
     protected $name = '';
 
     /**
-     * @var null|string Target permissions for unix, eg. '2775' or '0664' (4 characters string)
+     * @var string|null Target permissions for unix, eg. '2775' or '0664' (4 characters string)
      */
     protected $targetPermission = null;
 
     /**
-     * @var null|NodeInterface Parent object of this structure node
+     * @var NodeInterface|null Parent object of this structure node
      */
     protected $parent = null;
 
@@ -89,7 +89,7 @@ abstract class AbstractNode
     /**
      * Get parent
      *
-     * @return null|NodeInterface
+     * @return NodeInterface|null
      */
     protected function getParent()
     {

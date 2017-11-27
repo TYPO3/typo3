@@ -142,7 +142,7 @@ class WorkspaceRecord extends AbstractRecord
 
     /**
      * @param int $stageId
-     * @return null|StageRecord
+     * @return StageRecord|null
      */
     public function getStage($stageId)
     {
@@ -156,7 +156,7 @@ class WorkspaceRecord extends AbstractRecord
 
     /**
      * @param int $stageId
-     * @return null|StageRecord
+     * @return StageRecord|null
      */
     public function getPreviousStage($stageId)
     {
@@ -175,7 +175,7 @@ class WorkspaceRecord extends AbstractRecord
 
     /**
      * @param int $stageId
-     * @return null|StageRecord
+     * @return StageRecord|null
      */
     public function getNextStage($stageId)
     {

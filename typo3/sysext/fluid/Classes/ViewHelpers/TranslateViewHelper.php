@@ -156,7 +156,7 @@ class TranslateViewHelper extends AbstractViewHelper
      * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
      * @param array $arguments Arguments to be replaced in the resulting string
      *
-     * @return null|string
+     * @return string|null
      */
     protected static function translate($id, $extensionName, $arguments)
     {

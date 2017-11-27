@@ -82,7 +82,7 @@ class Import extends ImportExport
     protected $storageObjects = [];
 
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $filesPathForImport = null;
 

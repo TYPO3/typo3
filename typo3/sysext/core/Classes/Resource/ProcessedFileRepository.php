@@ -99,7 +99,7 @@ class ProcessedFileRepository extends AbstractRepository
      * @param ResourceStorage $storage
      * @param string $identifier
      *
-     * @return null|ProcessedFile
+     * @return ProcessedFile|null
      */
     public function findByStorageAndIdentifier(ResourceStorage $storage, $identifier)
     {

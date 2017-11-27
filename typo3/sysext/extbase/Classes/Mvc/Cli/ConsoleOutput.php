@@ -150,7 +150,7 @@ class ConsoleOutput
      * @param array $choices List of choices to pick from
      * @param bool $default The default answer if the user enters nothing
      * @param bool $multiSelect If TRUE the result will be an array with the selected options. Multiple options can be given separated by commas
-     * @param null|bool|int $attempts Max number of times to ask before giving up (null by default, which means infinite)
+     * @param bool|int|null $attempts Max number of times to ask before giving up (null by default, which means infinite)
      * @return int|string|array The selected value or values (the key of the choices array)
      * @throws \InvalidArgumentException
      */
@@ -228,7 +228,7 @@ class ConsoleOutput
      *
      * @param string|array $question The question to ask. If an array each array item is turned into one line of a multi-line question
      * @param callable $validator A PHP callback that gets a value and is expected to return the (transformed) value or throw an exception if it wasn't valid
-     * @param int|null|bool $attempts Max number of times to ask before giving up (null by default, which means infinite)
+     * @param int|bool|null $attempts Max number of times to ask before giving up (null by default, which means infinite)
      * @param string $default The default answer if none is given by the user
      * @param array $autocomplete List of values to autocomplete. This only works if "stty" is installed
      * @return mixed

@@ -355,7 +355,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      * Returns a form element object for a given identifier.
      *
      * @param string $elementIdentifier
-     * @return null|FormElementInterface
+     * @return FormElementInterface|null
      */
     protected function getElementByIdentifier(string $elementIdentifier)
     {

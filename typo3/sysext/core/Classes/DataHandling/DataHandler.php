@@ -6900,7 +6900,7 @@ class DataHandler
      * @param string $table Table name
      * @param int $id UID of the record from $table
      * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
-     * @return null|array Returns the selected record on success, otherwise NULL.
+     * @return array|null Returns the selected record on success, otherwise NULL.
      */
     public function recordInfo($table, $id, $fieldList)
     {

@@ -26,7 +26,7 @@ class CrawlerFilesHook
      *
      * @param array $params Params from log element.
      * @param object $pObj Parent object (tx_crawler lib)
-     * @return null|array Result array
+     * @return array|null Result array
      */
     public function crawler_execute($params, &$pObj)
     {

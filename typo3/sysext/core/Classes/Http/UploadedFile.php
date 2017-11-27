@@ -29,12 +29,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UploadedFile implements UploadedFileInterface
 {
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $file;
 
     /**
-     * @var null|StreamInterface
+     * @var StreamInterface|null
      */
     protected $stream;
 

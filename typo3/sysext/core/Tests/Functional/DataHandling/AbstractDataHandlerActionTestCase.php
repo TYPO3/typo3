@@ -45,7 +45,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      * If this value is NULL, log entries are not considered.
      * If it's an integer value, the number of log entries is asserted.
      *
-     * @var null|int
+     * @var int|null
      */
     protected $expectedErrorLogEntries = 0;
 

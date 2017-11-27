@@ -22,7 +22,7 @@ use TYPO3\CMS\Install\Status;
 class FileNode extends AbstractNode implements NodeInterface
 {
     /**
-     * @var null|int Default for files is octal 0664 == decimal 436
+     * @var int|null Default for files is octal 0664 == decimal 436
      */
     protected $targetPermission = '0664';
 

@@ -122,7 +122,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
     }
 
     /**
-     * @return null|\DateTime
+     * @return \DateTime|null
      */
     protected function getSelectedDate()
     {

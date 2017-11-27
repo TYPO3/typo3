@@ -88,7 +88,7 @@ class ElementEntityProcessor
      * @param array $targetArgument
      * @param ElementEntity $caller
      * @param string $eventName
-     * @return null|string Skip response (if required)
+     * @return string|null Skip response (if required)
      */
     public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
@@ -107,7 +107,7 @@ class ElementEntityProcessor
      * @param array $targetArgument
      * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
      * @param string $eventName
-     * @return null|string Skip response (if required)
+     * @return string|null Skip response (if required)
      */
     public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
@@ -127,7 +127,7 @@ class ElementEntityProcessor
      * @param array $targetArgument
      * @param ElementEntity $caller
      * @param string $eventName
-     * @return null|string Skip response (if required)
+     * @return string|null Skip response (if required)
      */
     public function createClearDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
@@ -149,7 +149,7 @@ class ElementEntityProcessor
      * @param array $targetArgument
      * @param ElementEntity $caller
      * @param string $eventName
-     * @return null|string Skip response (if required)
+     * @return string|null Skip response (if required)
      */
     public function createClearDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {

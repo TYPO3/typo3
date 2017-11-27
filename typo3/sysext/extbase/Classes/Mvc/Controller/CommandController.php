@@ -265,7 +265,7 @@ class CommandController implements CommandControllerInterface
      * Set admin permissions for currently authenticated user if requested
      * and returns the original state or NULL
      *
-     * @return null|int
+     * @return int|null
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, because admin role is always used in CLI mode
      */
     protected function ensureAdminRoleIfRequested()
@@ -285,7 +285,7 @@ class CommandController implements CommandControllerInterface
     /**
      * Restores the original user role
      *
-     * @param null|int $originalRole
+     * @param int|null $originalRole
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, because admin role is always used in CLI mode
      */
     protected function restoreUserRole($originalRole)

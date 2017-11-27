@@ -259,7 +259,7 @@ class Uri implements UriInterface
      * If no port is present, but a scheme is present, this method MAY return
      * the standard port for that scheme, but SHOULD return null.
      *
-     * @return null|int The URI port.
+     * @return int|null The URI port.
      */
     public function getPort()
     {
@@ -378,7 +378,7 @@ class Uri implements UriInterface
      * information.
      *
      * @param string $user The user name to use for authority.
-     * @param null|string $password The password associated with $user.
+     * @param string|null $password The password associated with $user.
      *
      * @return self A new instance with the specified user information.
      */
@@ -426,7 +426,7 @@ class Uri implements UriInterface
      * A null value provided for the port is equivalent to removing the port
      * information.
      *
-     * @param null|int $port The port to use with the new instance; a null value
+     * @param int|null $port The port to use with the new instance; a null value
      *     removes the port information.
      *
      * @return self A new instance with the specified port.
@@ -704,7 +704,7 @@ class Uri implements UriInterface
     /**
      * Filter a fragment value to ensure it is properly encoded.
      *
-     * @param null|string $fragment
+     * @param string|null $fragment
      * @return string
      */
     protected function sanitizeFragment($fragment)

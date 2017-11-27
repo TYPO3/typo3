@@ -194,7 +194,7 @@ abstract class AbstractConditionMatcher
      *
      * @param string $key The condition to match against its criteria.
      * @param string $value
-     * @return null|bool Result of the evaluation; NULL if condition could not be evaluated
+     * @return bool|null Result of the evaluation; NULL if condition could not be evaluated
      */
     protected function evaluateConditionCommon($key, $value)
     {
@@ -356,7 +356,7 @@ abstract class AbstractConditionMatcher
      * e.g. "[MyCompany\MyPackage\ConditionMatcher\MyOwnConditionMatcher = myvalue]"
      *
      * @param string $condition The condition to match
-     * @return null|bool Result of the evaluation; NULL if condition could not be evaluated
+     * @return bool|null Result of the evaluation; NULL if condition could not be evaluated
      * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
      */
     protected function evaluateCustomDefinedCondition($condition)

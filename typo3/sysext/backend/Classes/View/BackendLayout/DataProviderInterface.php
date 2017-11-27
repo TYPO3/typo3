@@ -33,7 +33,7 @@ interface DataProviderInterface
      *
      * @param string $identifier
      * @param int $pageId
-     * @return null|BackendLayout
+     * @return BackendLayout|null
      */
     public function getBackendLayout($identifier, $pageId);
 }

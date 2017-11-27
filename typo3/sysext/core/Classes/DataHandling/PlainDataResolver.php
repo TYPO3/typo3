@@ -73,7 +73,7 @@ class PlainDataResolver
     /**
      * @param string $tableName
      * @param int[] $liveIds
-     * @param null|array $sortingStatement
+     * @param array|null $sortingStatement
      */
     public function __construct($tableName, array $liveIds, array $sortingStatement = null)
     {

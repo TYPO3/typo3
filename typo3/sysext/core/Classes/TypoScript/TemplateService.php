@@ -1438,7 +1438,7 @@ class TemplateService
      * Similar to GeneralUtility::getUrl() but with an additional check if the path is allowed
      *
      * @param string $fileName Absolute filepath to record
-     * @return null|string The content returned
+     * @return string|null The content returned
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use $this->getFileName() and file_get_contents directly
      */
     public function fileContent($fileName)

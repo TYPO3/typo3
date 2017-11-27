@@ -27,7 +27,7 @@ interface RequestHandlerInterface
      * Handles a CLI request
      *
      * @param InputInterface $input
-     * @return null|OutputInterface
+     * @return OutputInterface|null
      * @api
      */
     public function handleRequest(InputInterface $input);

@@ -284,7 +284,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
     /**
      * Sends additional headers and returns the content
      *
-     * @return null|string
+     * @return string|null
      */
     public function shutdown()
     {

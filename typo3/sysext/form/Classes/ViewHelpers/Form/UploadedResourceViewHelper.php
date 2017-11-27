@@ -113,7 +113,7 @@ class UploadedResourceViewHelper extends UploadViewHelper
      * Return a previously uploaded resource.
      * Return NULL if errors occurred during property mapping for this property.
      *
-     * @return null|FileReference
+     * @return FileReference|null
      */
     protected function getUploadedResource()
     {

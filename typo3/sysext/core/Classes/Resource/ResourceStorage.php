@@ -1447,7 +1447,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $fileName
      * @param Folder $folder
-     * @return null|File|ProcessedFile
+     * @return File|ProcessedFile|null
      */
     public function getFileInFolder($fileName, Folder $folder)
     {

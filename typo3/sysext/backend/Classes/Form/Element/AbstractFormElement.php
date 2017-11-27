@@ -326,7 +326,7 @@ abstract class AbstractFormElement extends AbstractNode
      * This method is deprecated and will vanish in v9. Migrate old wizards to the "fieldWizard",
      * "fieldInformation" and "fieldControl" API instead.
      *
-     * @param null|array $itemKinds Array with the real item in the first value. Array in legacy mode, else null
+     * @param array|null $itemKinds Array with the real item in the first value. Array in legacy mode, else null
      * @param array $wizConf The "wizards" key from the config array for the field (from TCA)
      * @param string $table Table name
      * @param array $row The record array

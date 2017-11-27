@@ -222,7 +222,7 @@ class BackendUtility
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @param null|QueryBuilder $queryBuilder The queryBuilder must be provided, if the parameter $whereClause is given and the concept of prepared statement was used. Example within self::firstDomainRecord()
+     * @param QueryBuilder|null $queryBuilder The queryBuilder must be provided, if the parameter $whereClause is given and the concept of prepared statement was used. Example within self::firstDomainRecord()
      * @return mixed Multidimensional array with selected records (if any is selected)
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
@@ -1603,8 +1603,8 @@ class BackendUtility
      * @param string $tableName Name of the table of the record
      * @param string $fieldName Name of the field of the record
      * @param array $element Record data
-     * @param null|int $workspaceId Workspace to fetch data for
-     * @return null|\TYPO3\CMS\Core\Resource\FileReference[]
+     * @param int|null $workspaceId Workspace to fetch data for
+     * @return \TYPO3\CMS\Core\Resource\FileReference[]|null
      */
     public static function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = null)
     {

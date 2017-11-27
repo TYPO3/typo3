@@ -30,7 +30,7 @@ interface RenderableInterface extends RootRenderableInterface
     /**
      * Return the parent renderable
      *
-     * @return null|CompositeRenderableInterface the parent renderable
+     * @return CompositeRenderableInterface|null the parent renderable
      * @internal
      */
     public function getParentRenderable();

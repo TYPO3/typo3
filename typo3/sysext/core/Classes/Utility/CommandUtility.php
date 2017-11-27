@@ -74,7 +74,7 @@ class CommandUtility
      * Needs to be central to have better control and possible fix for issues
      *
      * @param string $command
-     * @param null|array $output
+     * @param array|null $output
      * @param int $returnValue
      * @return string
      */

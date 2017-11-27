@@ -533,7 +533,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Render this form.
      *
-     * @return null|string rendered form
+     * @return string|null rendered form
      * @throws RenderingException
      * @api
      */
@@ -631,7 +631,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the previous page of the currently selected one or NULL if there is no previous page
      *
-     * @return null|Page
+     * @return Page|null
      * @api
      */
     public function getPreviousPage()
@@ -646,7 +646,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Returns the next page of the currently selected one or NULL if there is no next page
      *
-     * @return null|Page
+     * @return Page|null
      * @api
      */
     public function getNextPage()

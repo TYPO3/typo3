@@ -965,7 +965,7 @@ class Clipboard
      *
      * @param string $ref [tablename]:[paste-uid], see description
      * @param array $CMD Command-array
-     * @param null|array If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
+     * @param array|null If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
      * @return array Modified Command-array
      */
     public function makePasteCmdArray($ref, $CMD, array $update = null)

@@ -240,7 +240,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Builds a complete node including childs
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $basicNode
-     * @param null|\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $parent
+     * @param \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode|null $parent
      * @param int $level
      * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode Node object
      */
@@ -316,7 +316,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
      * @param int $level
-     * @return null|\TYPO3\CMS\Backend\Tree\TreeNodeCollection
+     * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection|null
      */
     protected function getChildrenOf(\TYPO3\CMS\Backend\Tree\TreeNode $node, $level)
     {

@@ -92,7 +92,7 @@ class BackendLayoutCollection
      * Gets a backend layout by (regular) identifier.
      *
      * @param string $identifier
-     * @return null|BackendLayout
+     * @return BackendLayout|null
      */
     public function get($identifier)
     {
