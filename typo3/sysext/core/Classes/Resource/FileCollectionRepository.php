@@ -36,7 +36,7 @@ class FileCollectionRepository extends RecordCollectionRepository
      * Finds a record collection by uid.
      *
      * @param int $uid The uid to be looked up
-     * @return NULL|Collection\AbstractFileCollection
+     * @return null|Collection\AbstractFileCollection
      * @throws Exception\ResourceDoesNotExistException
      */
     public function findByUid($uid)

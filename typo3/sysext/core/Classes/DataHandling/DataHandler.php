@@ -730,7 +730,7 @@ class DataHandler
      *
      * @param array $data Data to be modified or inserted in the database
      * @param array $cmd Commands to copy, move, delete, localize, versionize records.
-     * @param BackendUserAuthentication|NULL $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
+     * @param BackendUserAuthentication|null $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
      */
     public function start($data, $cmd, $altUserObject = null)
     {
@@ -949,7 +949,7 @@ class DataHandler
      * Processing the data-array
      * Call this function to process the data-array set by start()
      *
-     * @return void|FALSE
+     * @return void|false
      */
     public function process_datamap()
     {
@@ -3582,7 +3582,7 @@ class DataHandler
      * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
      * @param array $copyTablesArray Table on pages to copy along with the page.
      * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-     * @return int|NULL The id of the new page, if applicable.
+     * @return int|null The id of the new page, if applicable.
      */
     public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = false)
     {
@@ -5688,7 +5688,7 @@ class DataHandler
      * @param int $id Record uid to versionize
      * @param string $label Version label
      * @param bool $delete If TRUE, the version is created to delete the record.
-     * @return int|NULL Returns the id of the new version (if any)
+     * @return int|null Returns the id of the new version (if any)
      * @see copyRecord()
      */
     public function versionizeRecord($table, $id, $label, $delete = false)
@@ -6043,7 +6043,7 @@ class DataHandler
      * @param string $value Field value
      * @param int $MM_localUid UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
      * @param string $table Table name
-     * @return array|NULL Returns array of items ready to implode for field content.
+     * @return array|null Returns array of items ready to implode for field content.
      * @see remapListedDBRecords()
      */
     public function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table)
@@ -6900,7 +6900,7 @@ class DataHandler
      * @param string $table Table name
      * @param int $id UID of the record from $table
      * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
-     * @return NULL|array Returns the selected record on success, otherwise NULL.
+     * @return null|array Returns the selected record on success, otherwise NULL.
      */
     public function recordInfo($table, $id, $fieldList)
     {
@@ -7029,7 +7029,7 @@ class DataHandler
      *
      * @param string $table Table name
      * @param array $row Input row
-     * @return array|NULL Output array
+     * @return array|null Output array
      */
     public function getRecordPropertiesFromRow($table, $row)
     {
@@ -7138,7 +7138,7 @@ class DataHandler
      * @param bool $newVersion Set to TRUE if new version is created.
      * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
      * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
-     * @return int|NULL Returns ID on success.
+     * @return int|null Returns ID on success.
      */
     public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
     {
@@ -7234,7 +7234,7 @@ class DataHandler
      * @param int $id Record uid
      * @param array $fieldArray Array of field=>value pairs to insert/update
      * @param string $action Action, for logging only.
-     * @return array|NULL Selected row
+     * @return array|null Selected row
      * @see insertDB(), updateDB()
      */
     public function checkStoredRecord($table, $id, $fieldArray, $action)
@@ -7345,7 +7345,7 @@ class DataHandler
      * @param string $table Table name
      * @param int $uid Uid of record to find sorting number for. May be zero in case of new.
      * @param int $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
-     * @return int|array|bool|NULL Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
+     * @return int|array|bool|null Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
      */
     public function getSortNumber($table, $uid, $pid)
     {
@@ -7469,7 +7469,7 @@ class DataHandler
      * @param int $pid Pid in which to resort records.
      * @param string $sortRow Sorting row
      * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-     * @return int|NULL If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
+     * @return int|null If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
      * @access private
      * @see getSortNumber()
      */
@@ -7929,7 +7929,7 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @return int|FALSE PID value (unless the record did not exist in which case FALSE is returned)
+     * @return int|false PID value (unless the record did not exist in which case FALSE is returned)
      */
     public function getPID($table, $uid)
     {

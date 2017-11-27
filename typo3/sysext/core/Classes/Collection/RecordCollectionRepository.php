@@ -51,7 +51,7 @@ class RecordCollectionRepository
      * Finds a record collection by uid.
      *
      * @param int $uid The uid to be looked up
-     * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection
+     * @return null|\TYPO3\CMS\Core\Collection\AbstractRecordCollection
      */
     public function findByUid($uid)
     {
@@ -83,7 +83,7 @@ class RecordCollectionRepository
     /**
      * Finds all record collections.
      *
-     * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
+     * @return null|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
     public function findAll()
     {
@@ -111,7 +111,7 @@ class RecordCollectionRepository
      * Finds record collection by type.
      *
      * @param string $type Type to be looked up
-     * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
+     * @return null|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
     public function findByType($type)
     {
@@ -129,7 +129,7 @@ class RecordCollectionRepository
      *
      * @param string $type Type to be looked up
      * @param string $tableName Name of the table to be looked up
-     * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
+     * @return null|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
     public function findByTypeAndTableName($type, $tableName)
     {
@@ -163,7 +163,7 @@ class RecordCollectionRepository
      * Queries for multiple records for the given conditions.
      *
      * @param array $conditions Conditions concatenated with AND for query
-     * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
+     * @return null|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
      */
     protected function queryMultipleRecords(array $conditions = [])
     {

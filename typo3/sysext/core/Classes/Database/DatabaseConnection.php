@@ -103,7 +103,7 @@ class DatabaseConnection
     protected $databasePort = 3306;
 
     /**
-     * @var string|NULL Database socket to connect to
+     * @var string|null Database socket to connect to
      */
     protected $databaseSocket = null;
 
@@ -369,7 +369,7 @@ class DatabaseConnection
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
      * @param string $uidIndexField If set, the result array will carry this field names value as index. Requires that field to be selected of course!
-     * @return array|NULL Array of rows, or NULL in case of SQL error
+     * @return array|null Array of rows, or NULL in case of SQL error
      * @see exec_SELECTquery()
      * @throws \InvalidArgumentException
      */
@@ -411,7 +411,7 @@ class DatabaseConnection
      * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
      * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
      * @param bool $numIndex If set, the result will be fetched with sql_fetch_row, otherwise sql_fetch_assoc will be used.
-     * @return array|FALSE|NULL Single row, FALSE on empty result, NULL on error
+     * @return array|false|null Single row, FALSE on empty result, NULL on error
      */
     public function exec_SELECTgetSingleRow($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $numIndex = false)
     {
@@ -497,7 +497,7 @@ class DatabaseConnection
      * @param string $table See exec_INSERTquery()
      * @param array $fields_values See exec_INSERTquery()
      * @param bool|array|string $no_quote_fields See fullQuoteArray()
-     * @return string|NULL Full SQL query for INSERT, NULL if $fields_values is empty
+     * @return string|null Full SQL query for INSERT, NULL if $fields_values is empty
      */
     public function INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
@@ -528,7 +528,7 @@ class DatabaseConnection
      * @param array $fields Field names
      * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
      * @param bool|array|string $no_quote_fields See fullQuoteArray()
-     * @return string|NULL Full SQL query for INSERT, NULL if $rows is empty
+     * @return string|null Full SQL query for INSERT, NULL if $rows is empty
      */
     public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = false)
     {
@@ -1531,7 +1531,7 @@ class DatabaseConnection
     /**
      * Set database socket
      *
-     * @param string|NULL $socket
+     * @param string|null $socket
      */
     public function setDatabaseSocket($socket = null)
     {
@@ -1786,7 +1786,7 @@ class DatabaseConnection
     /**
      * Returns current database handle
      *
-     * @return \mysqli|NULL
+     * @return \mysqli|null
      */
     public function getDatabaseHandle()
     {

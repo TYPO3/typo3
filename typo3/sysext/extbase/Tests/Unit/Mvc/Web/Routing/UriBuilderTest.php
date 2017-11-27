@@ -802,7 +802,7 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         $mockValueObject = new ValueObjectFixture();
         $mockValueObject->name = 'foo';
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|Object $mockUriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|object $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['convertTransientObjectToArray']);
         $mockUriBuilder->expects($this->once())->method('convertTransientObjectToArray')->will($this->returnValue(['foo' => 'bar']));
         $actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockValueObject]);
@@ -819,7 +819,7 @@ class UriBuilderTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $this->expectExceptionCode(1260881688);
         $mockEntity = new EntityFixture();
         $mockEntity->name = 'foo';
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|Object $mockUriBuilder */
+        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|object $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['dummy']);
         $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockEntity]);
     }

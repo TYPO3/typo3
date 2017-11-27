@@ -926,7 +926,7 @@ class ImportExportController extends BaseScriptClass
      * to the server and is also used for uploading import files.
      *
      * @throws \InvalidArgumentException
-     * @return NULL|\TYPO3\CMS\Core\Resource\Folder
+     * @return null|\TYPO3\CMS\Core\Resource\Folder
      */
     protected function getDefaultImportExportFolder()
     {
@@ -1072,7 +1072,7 @@ class ImportExportController extends BaseScriptClass
      * Gets a file by combined identifier.
      *
      * @param string $combinedIdentifier
-     * @return NULL|\TYPO3\CMS\Core\Resource\File
+     * @return null|\TYPO3\CMS\Core\Resource\File
      */
     protected function getFile($combinedIdentifier)
     {

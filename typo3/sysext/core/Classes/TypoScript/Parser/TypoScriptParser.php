@@ -294,7 +294,7 @@ class TypoScriptParser
      * Parsing the $this->raw TypoScript lines from pointer, $this->rawP
      *
      * @param array $setup Reference to the setup array in which to accumulate the values.
-     * @return string|NULL Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
+     * @return string|null Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
      */
     public function parseSub(array &$setup)
     {

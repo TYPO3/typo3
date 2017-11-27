@@ -247,7 +247,7 @@ class ProcessedFileRepository extends AbstractRepository
     /**
      * Removes all processed files and also deletes the associated physical files
      *
-     * @param int|NULL $storageUid If not NULL, only the processed files of the given storage are removed
+     * @param int|null $storageUid If not NULL, only the processed files of the given storage are removed
      * @return int Number of failed deletions
      */
     public function removeAll($storageUid = null)

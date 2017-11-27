@@ -77,7 +77,7 @@ class AbstractWidgetControllerTest extends \TYPO3\TestingFramework\Core\Unit\Uni
      * @test
      * @dataProvider getSetViewConfigurationTestValues
      * @param array $parent
-     * @param array|NULL $widget
+     * @param array|null $widget
      * @param array $expected
      */
     public function setViewConfigurationPerformsExpectedInitialization(array $parent, $widget, array $expected)

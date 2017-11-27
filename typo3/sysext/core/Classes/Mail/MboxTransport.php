@@ -102,7 +102,7 @@ class MboxTransport implements \Swift_Transport
      * Determine the best-use reverse path for this message
      *
      * @param \Swift_Mime_Message $message
-     * @return mixed|NULL
+     * @return mixed|null
      */
     private function getReversePath(\Swift_Mime_Message $message)
     {

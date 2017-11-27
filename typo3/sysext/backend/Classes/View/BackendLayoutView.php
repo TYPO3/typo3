@@ -327,7 +327,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      * Gets the selected backend layout
      *
      * @param int $pageId
-     * @return array|NULL $backendLayout
+     * @return array|null $backendLayout
      */
     public function getSelectedBackendLayout($pageId)
     {
@@ -429,7 +429,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      * Gets a page record.
      *
      * @param int $pageId
-     * @return NULL|array
+     * @return null|array
      */
     protected function getPage($pageId)
     {

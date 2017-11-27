@@ -29,12 +29,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class UploadedFile implements UploadedFileInterface
 {
     /**
-     * @var NULL|string
+     * @var null|string
      */
     protected $file;
 
     /**
-     * @var NULL|StreamInterface
+     * @var null|StreamInterface
      */
     protected $stream;
 
@@ -211,7 +211,7 @@ class UploadedFile implements UploadedFileInterface
      * the file in the $_FILES array if available, as PHP calculates this based
      * on the actual size transmitted.
      *
-     * @return int|NULL The file size in bytes or null if unknown.
+     * @return int|null The file size in bytes or null if unknown.
      */
     public function getSize()
     {
@@ -245,7 +245,7 @@ class UploadedFile implements UploadedFileInterface
      * a malicious filename with the intention to corrupt or hack your
      * application.
      *
-     * @return string|NULL The filename sent by the client or null if none was provided.
+     * @return string|null The filename sent by the client or null if none was provided.
      */
     public function getClientFilename()
     {
@@ -261,7 +261,7 @@ class UploadedFile implements UploadedFileInterface
      * a malicious media type with the intention to corrupt or hack your
      * application.
      *
-     * @return string|NULL The media type sent by the client or null if none was provided.
+     * @return string|null The media type sent by the client or null if none was provided.
      */
     public function getClientMediaType()
     {

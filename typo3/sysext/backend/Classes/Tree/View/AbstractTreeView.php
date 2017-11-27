@@ -105,7 +105,7 @@ abstract class AbstractTreeView
      * values are the ID of the root element (COULD be zero or anything else.
      * For pages that would be the uid of the page, zero for the pagetree root.)
      *
-     * @var array|NULL
+     * @var array|null
      */
     public $MOUNTS = null;
 

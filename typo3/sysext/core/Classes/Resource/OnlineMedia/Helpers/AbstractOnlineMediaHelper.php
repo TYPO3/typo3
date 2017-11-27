@@ -71,7 +71,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      * @param string $onlineMediaId
      * @param Folder $targetFolder
      * @param string $fileExtension
-     * @return File|NULL
+     * @return File|null
      */
     protected function findExistingFileByOnlineMediaId($onlineMediaId, Folder $targetFolder, $fileExtension)
     {

@@ -76,7 +76,7 @@ class SaltFactory
      *
      * Use parameter NULL to reset the factory!
      *
-     * @param string|NULL $saltedHash Salted hashed password to determine the type of used method from or NULL to reset to the default type
+     * @param string|null $saltedHash Salted hashed password to determine the type of used method from or NULL to reset to the default type
      * @param string $mode The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return SaltInterface An instance of salting hash method class
      */

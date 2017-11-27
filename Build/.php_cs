@@ -80,5 +80,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_trim' => true,
         'no_superfluous_elseif' => true,
         'no_useless_else' => true,
+	'phpdoc_types' => true,
     ])
     ->setFinder($finder);

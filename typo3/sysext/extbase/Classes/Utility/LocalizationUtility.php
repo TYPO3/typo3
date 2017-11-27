@@ -74,7 +74,7 @@ class LocalizationUtility
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string|null $extensionName The name of the extension
      * @param array $arguments the arguments of the extension, being passed over to vsprintf
-     * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
+     * @return string|null The value from LOCAL_LANG or NULL if no translation was found.
      * @api
      * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
      */

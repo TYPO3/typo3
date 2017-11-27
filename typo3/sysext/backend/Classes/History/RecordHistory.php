@@ -547,7 +547,7 @@ class RecordHistory
      * @param array $entry sys_history entry record.
      * @param string $table The table name
      * @param int $rollbackUid If set to UID of record, display rollback links
-     * @return string|NULL HTML table
+     * @return string|null HTML table
      * @access private
      */
     public function renderDiff($entry, $table, $rollbackUid = 0)
@@ -1001,7 +1001,7 @@ class RecordHistory
      *
      * @param string $table
      * @param int $uid
-     * @return array|NULL
+     * @return array|null
      */
     protected function getRecord($table, $uid)
     {

@@ -2216,7 +2216,7 @@ class GraphicalFunctions
      * Gets the input image dimensions.
      *
      * @param string $imageFile The image filepath
-     * @return array|NULL Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
      * @see imageMagickConvert(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
      */
     public function getImageDimensions($imageFile)
@@ -2614,7 +2614,7 @@ class GraphicalFunctions
      *
      * @param string $theFile Filepath of image file
      * @param bool $output_png If TRUE, then input file is converted to PNG, otherwise to GIF
-     * @return string|NULL If the new image file exists, its filepath is returned
+     * @return string|null If the new image file exists, its filepath is returned
      */
     public static function readPngGif($theFile, $output_png = false)
     {

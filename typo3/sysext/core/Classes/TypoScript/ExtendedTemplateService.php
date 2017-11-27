@@ -195,7 +195,7 @@ class ExtendedTemplateService extends TemplateService
     public $templateTitles = [];
 
     /**
-     * @var array|NULL
+     * @var array|null
      */
     protected $lnToScript = null;
 

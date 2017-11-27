@@ -535,7 +535,7 @@ class GridDataService
      *
      * @param string $table Name of the table
      * @param string $type Type to be fetches (e.g. 'disabled', 'starttime', 'endtime', 'fe_group)
-     * @return string|NULL The accordant field name or NULL if not defined
+     * @return string|null The accordant field name or NULL if not defined
      */
     protected function getTcaEnableColumnsFieldName($table, $type)
     {
@@ -573,7 +573,7 @@ class GridDataService
      *
      * @param int $id sys_language uid
      * @param string $key Name of the value to be fetched (e.g. title)
-     * @return string|NULL
+     * @return string|null
      * @see getSystemLanguages
      */
     protected function getSystemLanguageValue($id, $key)

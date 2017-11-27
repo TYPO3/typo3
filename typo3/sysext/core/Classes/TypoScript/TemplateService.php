@@ -1353,7 +1353,7 @@ class TemplateService
      * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
      *
      * @param string $fileFromSetup TypoScript "resource" data type value.
-     * @return string|NULL Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
+     * @return string|null Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
      */
     public function getFileName($fileFromSetup)
     {
@@ -1438,7 +1438,7 @@ class TemplateService
      * Similar to GeneralUtility::getUrl() but with an additional check if the path is allowed
      *
      * @param string $fileName Absolute filepath to record
-     * @return NULL|string The content returned
+     * @return null|string The content returned
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9, use $this->getFileName() and file_get_contents directly
      */
     public function fileContent($fileName)

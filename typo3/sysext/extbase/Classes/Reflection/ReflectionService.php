@@ -516,7 +516,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param ParameterReflection $parameter The parameter to reflect
      * @param int $parameterPosition
-     * @param MethodReflection|NULL $method
+     * @param MethodReflection|null $method
      * @return array Parameter information array
      */
     protected function convertParameterReflectionToArray(ParameterReflection $parameter, $parameterPosition, MethodReflection $method = null)

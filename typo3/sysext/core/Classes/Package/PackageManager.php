@@ -713,7 +713,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * Returns an array of suggested package keys for the given package.
      *
      * @param string $packageKey The package key to fetch the suggestions for
-     * @return array|NULL An array of directly suggested packages
+     * @return array|null An array of directly suggested packages
      */
     protected function getSuggestionArrayForPackage($packageKey)
     {
@@ -974,7 +974,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $packageKey The package key to fetch the dependencies for
      * @param array $dependentPackageKeys
      * @param array $trace An array of already visited package keys, to detect circular dependencies
-     * @return array|NULL An array of direct or indirect dependent packages
+     * @return array|null An array of direct or indirect dependent packages
      * @throws Exception\InvalidPackageKeyException
      */
     protected function getDependencyArrayForPackage($packageKey, array &$dependentPackageKeys = [], array $trace = [])

@@ -73,7 +73,7 @@ class CommandLineBackend extends AbstractBackend
      * There should only be one key pair per request because the second private key would overwrites the first private
      * key. So the submitting the form with the first public key would not work anymore.
      *
-     * @return \TYPO3\CMS\Rsaauth\Keypair|NULL a key pair or NULL in case of error
+     * @return \TYPO3\CMS\Rsaauth\Keypair|null a key pair or NULL in case of error
      */
     public function createNewKeyPair()
     {

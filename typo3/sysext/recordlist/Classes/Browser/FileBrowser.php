@@ -40,7 +40,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      * If the value is NOT set, then it will be restored from the module session data.
      * Example value: "/www/htdocs/typo3/32/3dsplm/fileadmin/css/"
      *
-     * @var string|NULL
+     * @var string|null
      */
     protected $expandFolder;
 

@@ -399,7 +399,7 @@ class DataMapFactoryTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @param string $type
-     * @param NULL|string $expectedValue
+     * @param null|string $expectedValue
      * @test
      * @dataProvider columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider
      */

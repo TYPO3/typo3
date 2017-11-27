@@ -38,7 +38,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $icon = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Model\Category|NULL
+     * @var \TYPO3\CMS\Extbase\Domain\Model\Category|null
      * @lazy
      */
     protected $parent = null;
@@ -114,7 +114,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Gets the parent category.
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\Category|NULL the parent category
+     * @return \TYPO3\CMS\Extbase\Domain\Model\Category|null the parent category
      * @api
      */
     public function getParent()

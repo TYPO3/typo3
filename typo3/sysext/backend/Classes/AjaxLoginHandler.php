@@ -144,7 +144,7 @@ class AjaxLoginHandler
     }
 
     /**
-     * @return BackendUserAuthentication|NULL
+     * @return BackendUserAuthentication|null
      */
     protected function getBackendUser()
     {

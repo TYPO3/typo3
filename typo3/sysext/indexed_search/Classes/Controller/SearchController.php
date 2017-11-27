@@ -1480,7 +1480,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Returns an object reference to the hook object if any
      *
      * @param string $functionName Name of the function you want to call / hook key
-     * @return object|NULL Hook object, if any. Otherwise NULL.
+     * @return object|null Hook object, if any. Otherwise NULL.
      */
     protected function hookRequest($functionName)
     {

@@ -80,7 +80,7 @@ class ImageInfo extends FileInfo
      * Try to read SVG as XML file and
      * find width and height
      *
-     * @return FALSE|array
+     * @return false|array
      */
     protected function extractSvgImageSizes()
     {

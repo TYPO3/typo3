@@ -26,8 +26,6 @@ class TranslateViewHelperFixtureForEmptyString extends TranslateViewHelper
      * @param string $id Translation Key compatible to TYPO3 Flow
      * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
      * @param array $arguments Arguments to be replaced in the resulting string
-     *
-     * @return NULL
      */
     protected static function translate($id, $extensionName, $arguments)
     {

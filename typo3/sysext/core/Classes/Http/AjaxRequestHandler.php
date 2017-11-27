@@ -25,12 +25,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AjaxRequestHandler
 {
     /**
-     * @var string|NULL
+     * @var string|null
      */
     protected $ajaxId = null;
 
     /**
-     * @var string|NULL
+     * @var string|null
      */
     protected $errorMessage = null;
 
@@ -177,7 +177,7 @@ class AjaxRequestHandler
     /**
      * Renders the AJAX call based on the $contentFormat variable and exits the request
      *
-     * @return ResponseInterface|NULL
+     * @return ResponseInterface|null
      */
     public function render()
     {

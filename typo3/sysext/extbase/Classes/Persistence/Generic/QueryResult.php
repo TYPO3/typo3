@@ -34,7 +34,7 @@ class QueryResult implements QueryResultInterface
     protected $persistenceManager;
 
     /**
-     * @var int|NULL
+     * @var int|null
      */
     protected $numberOfResults;
 

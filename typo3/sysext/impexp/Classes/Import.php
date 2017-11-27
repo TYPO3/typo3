@@ -82,7 +82,7 @@ class Import extends ImportExport
     protected $storageObjects = [];
 
     /**
-     * @var NULL|string
+     * @var null|string
      */
     protected $filesPathForImport = null;
 
@@ -1092,7 +1092,7 @@ class Import extends ImportExport
      * Writes the file from import array to temp dir and returns the filename of it.
      *
      * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile
-     * @return string|NULL Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
+     * @return string|null Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
      */
     public function import_addFileNameToBeCopied($fI)
     {
@@ -1495,7 +1495,7 @@ class Import extends ImportExport
      * @param string $fileID File ID from import memory
      * @param string $table Table for which the processing occurs
      * @param string $uid UID of record from table
-     * @return string|NULL New relative filename, if any
+     * @return string|null New relative filename, if any
      */
     public function processSoftReferences_saveFile_createRelFile($origDirPrefix, $fileName, $fileID, $table, $uid)
     {
@@ -1721,7 +1721,7 @@ class Import extends ImportExport
      * @param resource $fd File pointer
      * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
      * @param string $name For error messages this indicates the section of the problem.
-     * @return string|NULL Data string or NULL in case of an error
+     * @return string|null Data string or NULL in case of an error
      * @access private
      * @see loadFile()
      */
@@ -1783,7 +1783,7 @@ class Import extends ImportExport
      * @param int $pointer File pointer (where to read from)
      * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
      * @param string $name For error messages this indicates the section of the problem.
-     * @return string|NULL Data string
+     * @return string|null Data string
      */
     public function getNextContentPart($filecontent, &$pointer, $unserialize = false, $name = '')
     {

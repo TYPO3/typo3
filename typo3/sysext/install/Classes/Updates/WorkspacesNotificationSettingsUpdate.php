@@ -129,7 +129,7 @@ class WorkspacesNotificationSettingsUpdate extends AbstractUpdate
      * Prepares SQL updates for workspace records.
      *
      * @param array $workspaceRecord
-     * @return array|NULL
+     * @return array|null
      */
     protected function prepareWorkspaceUpdate(array $workspaceRecord)
     {

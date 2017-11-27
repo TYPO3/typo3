@@ -194,7 +194,7 @@ class RecyclerUtility
      * Gets the TCA of the table used in the current context.
      *
      * @param string $tableName Name of the table to get TCA for
-     * @return array|FALSE TCA of the table used in the current context
+     * @return array|false TCA of the table used in the current context
      */
     public static function getTableTCA($tableName)
     {

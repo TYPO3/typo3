@@ -71,7 +71,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $groupName
-     * @return \SplObjectStorage|FALSE
+     * @return \SplObjectStorage|false
      **/
     public function findByGroupName($groupName = '')
     {

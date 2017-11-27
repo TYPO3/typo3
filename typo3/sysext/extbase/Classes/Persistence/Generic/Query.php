@@ -385,7 +385,7 @@ class Query implements QueryInterface
     /**
      * Gets the constraint for this query.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|NULL the constraint, or null if none
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null the constraint, or null if none
      * @api
      */
     public function getConstraint()

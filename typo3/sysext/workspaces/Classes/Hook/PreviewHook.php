@@ -351,7 +351,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $getVarsStr Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
      * @param string $backendUserUid 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
      * @param int $ttl Time-To-Live for keyword
-     * @param int|NULL $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
+     * @param int|null $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
      * @return string Returns keyword to use in URL for ADMCMD_prev=
      */
     public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = null)

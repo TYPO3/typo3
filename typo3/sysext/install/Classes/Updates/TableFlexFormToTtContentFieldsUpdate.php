@@ -176,8 +176,8 @@ class TableFlexFormToTtContentFieldsUpdate extends AbstractUpdate
     /**
      * Convert the XML of the FlexForm to an array
      *
-     * @param string|NULL $flexFormXml The XML of the FlexForm
-     * @return array|NULL Converted XML to array
+     * @param string|null $flexFormXml The XML of the FlexForm
+     * @return array|null Converted XML to array
      */
     protected function initializeFlexForm($flexFormXml)
     {

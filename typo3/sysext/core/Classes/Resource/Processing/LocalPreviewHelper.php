@@ -55,7 +55,7 @@ class LocalPreviewHelper
      * with the returned width and height. This is for example useful for SVG images.
      *
      * @param TaskInterface $task
-     * @return array|NULL
+     * @return array|null
      */
     public function process(TaskInterface $task)
     {

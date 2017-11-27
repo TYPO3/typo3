@@ -620,7 +620,7 @@ class InlineControlContainer extends AbstractContainer
      * Helper method used in inline
      *
      * @param string $formElementName The form element name
-     * @return array|NULL
+     * @return array|null
      */
     protected function extractFlexFormParts($formElementName)
     {

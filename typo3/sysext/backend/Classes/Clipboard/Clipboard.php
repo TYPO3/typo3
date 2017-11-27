@@ -606,7 +606,7 @@ class Clipboard
      * @param string $table Tablename (_FILE for files)
      * @param mixed $uid "destination": can be positive or negative indicating how the paste is done (paste into / paste after)
      * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
-     * @param array|NULL $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
+     * @param array|null $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
      * @return string
      */
     public function pasteUrl($table, $uid, $setRedirect = true, array $update = null)
@@ -965,7 +965,7 @@ class Clipboard
      *
      * @param string $ref [tablename]:[paste-uid], see description
      * @param array $CMD Command-array
-     * @param NULL|array If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
+     * @param null|array If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
      * @return array Modified Command-array
      */
     public function makePasteCmdArray($ref, $CMD, array $update = null)

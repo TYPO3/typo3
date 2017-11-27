@@ -117,7 +117,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $image = null;
 
     /**
-     * @var \DateTime|NULL
+     * @var \DateTime|null
      */
     protected $lastlogin = null;
 

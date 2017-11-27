@@ -69,7 +69,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
      * Handles the request, evaluating the configuration and executes the module accordingly
      *
      * @param ServerRequestInterface $request
-     * @return NULL|\Psr\Http\Message\ResponseInterface
+     * @return null|\Psr\Http\Message\ResponseInterface
      * @throws Exception
      */
     public function handleRequest(ServerRequestInterface $request)

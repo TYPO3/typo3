@@ -1398,7 +1398,7 @@ class RelationHandler
     }
 
     /**
-     * @param NULL|int $workspaceId
+     * @param null|int $workspaceId
      * @return bool Whether items have been purged
      */
     public function purgeItemArray($workspaceId = null)

@@ -292,7 +292,7 @@ class GalleryProcessor implements DataProcessorInterface
      * with when $dataArrayKey fallback to value from cObj->data array
      *
      * @param string $key
-     * @param string|NULL $dataArrayKey
+     * @param string|null $dataArrayKey
      * @return string
      */
     protected function getConfigurationValue($key, $dataArrayKey = null)

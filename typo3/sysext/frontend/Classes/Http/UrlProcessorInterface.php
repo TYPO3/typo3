@@ -36,7 +36,7 @@ interface UrlProcessorInterface
      * @param array $configuration The link configuration.
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer The calling content object renderer.
      * @param bool $keepProcessing If this is set to FALSE no further hooks will be processed after the current one.
-     * @return string|NULL
+     * @return string|null
      */
     public function process($context, $url, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer, &$keepProcessing);
 }

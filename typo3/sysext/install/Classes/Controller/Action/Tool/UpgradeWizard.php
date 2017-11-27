@@ -363,7 +363,7 @@ class UpgradeWizard extends Action\AbstractAction
      * Used to show the link/button to the next Update
      *
      * @param AbstractUpdate $currentUpdate Current Update object
-     * @return AbstractUpdate|NULL
+     * @return AbstractUpdate|null
      */
     protected function getNextUpdateInstance(AbstractUpdate $currentUpdate)
     {

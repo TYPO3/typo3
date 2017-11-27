@@ -213,7 +213,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      *
      * @param string $identifier
      * @param int $pageId
-     * @return NULL|BackendLayout
+     * @return null|BackendLayout
      */
     public function getBackendLayout($identifier, $pageId)
     {

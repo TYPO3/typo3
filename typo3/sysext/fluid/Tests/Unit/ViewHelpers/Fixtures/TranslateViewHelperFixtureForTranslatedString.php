@@ -27,7 +27,7 @@ class TranslateViewHelperFixtureForTranslatedString extends TranslateViewHelper
      * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
      * @param array $arguments Arguments to be replaced in the resulting string
      *
-     * @return NULL|string
+     * @return null|string
      */
     protected static function translate($id, $extensionName, $arguments)
     {

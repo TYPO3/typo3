@@ -422,7 +422,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      *
      * @param int $storageUid
      * @param string $fileIdentifier
-     * @return NULL|File|ProcessedFile
+     * @return null|File|ProcessedFile
      */
     public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier)
     {
@@ -643,7 +643,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      *
      * @param int $uid The uid of the file usage (sys_file_reference) to be fetched
      * @param bool $raw Whether to get raw results without performing overlays
-     * @return NULL|array
+     * @return null|array
      */
     protected function getFileReferenceData($uid, $raw = false)
     {

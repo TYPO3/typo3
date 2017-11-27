@@ -657,7 +657,7 @@ class GifBuilder extends GraphicalFunctions
      *
      * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource
      * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
-     * @return array|NULL Returns an array with file information from ContentObjectRenderer::getImgResource()
+     * @return array|null Returns an array with file information from ContentObjectRenderer::getImgResource()
      * @access private
      * @see ContentObjectRenderer::getImgResource()
      */

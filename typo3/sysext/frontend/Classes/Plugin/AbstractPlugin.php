@@ -1286,7 +1286,7 @@ class AbstractPlugin
      *
      * @param string $fList List of fields (keys from piVars) to evaluate on
      * @param int $lowerThan Limit for the values.
-     * @return bool|NULL Returns TRUE (1) if conditions are met.
+     * @return bool|null Returns TRUE (1) if conditions are met.
      */
     public function pi_isOnlyFields($fList, $lowerThan = -1)
     {
@@ -1311,7 +1311,7 @@ class AbstractPlugin
      * This is an advanced form of evaluation of whether a URL should be cached or not.
      *
      * @param array $inArray An array with piVars values to evaluate
-     * @return bool|NULL Returns TRUE (1) if conditions are met.
+     * @return bool|null Returns TRUE (1) if conditions are met.
      * @see pi_linkTP_keepPIvars()
      */
     public function pi_autoCache($inArray)
@@ -1384,7 +1384,7 @@ class AbstractPlugin
      * @param string $sheet Sheet pointer, eg. "sDEF
      * @param string $lang Language pointer, eg. "lDEF
      * @param string $value Value pointer, eg. "vDEF
-     * @return string|NULL The content.
+     * @return string|null The content.
      */
     public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
     {

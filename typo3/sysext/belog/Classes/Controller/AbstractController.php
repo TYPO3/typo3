@@ -169,7 +169,7 @@ abstract class AbstractController extends ActionController
     /**
      * Get module states (the constraint object) from user data
      *
-     * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|NULL
+     * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|null
      */
     protected function getConstraintFromBeUserData()
     {

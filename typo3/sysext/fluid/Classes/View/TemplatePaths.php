@@ -47,7 +47,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 
     /**
      * @param string $extensionKey
-     * @return string|NULL
+     * @return string|null
      */
     protected function getExtensionPrivateResourcesPath($extensionKey)
     {

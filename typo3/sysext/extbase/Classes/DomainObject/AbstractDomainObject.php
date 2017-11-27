@@ -74,7 +74,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
     /**
      * Setter for the pid.
      *
-     * @param int|NULL $pid
+     * @param int|null $pid
      */
     public function setPid($pid)
     {

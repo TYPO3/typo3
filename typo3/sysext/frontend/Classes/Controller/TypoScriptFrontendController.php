@@ -118,7 +118,7 @@ class TypoScriptFrontendController
      * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
      * should be redirected to.
      *
-     * @var array|NULL
+     * @var array|null
      */
     protected $originalMountPointPage = null;
 
@@ -127,7 +127,7 @@ class TypoScriptFrontendController
      * of the request when we do not know about languages yet, used later in the request
      * to determine the correct shortcut in case a translation changes the shortcut
      * target
-     * @var array|NULL
+     * @var array|null
      * @see checkTranslatedShortcut()
      */
     protected $originalShortcutPage = null;
@@ -3343,7 +3343,7 @@ class TypoScriptFrontendController
      * Determines to include custom or pagegen.php script
      * returns script-filename if a TypoScript (config) script is defined and should be included instead of pagegen.php
      *
-     * @return string|NULL The relative filepath of "config.pageGenScript" if found and allowed
+     * @return string|null The relative filepath of "config.pageGenScript" if found and allowed
      * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
      */
     public function generatePage_whichScript()
@@ -4045,7 +4045,7 @@ class TypoScriptFrontendController
      * Returns the name of the workspace
      *
      * @param bool $returnTitle If set, returns title of current workspace being previewed, please be aware that this parameter is deprecated as of TYPO3 v8, and will be removed in TYPO3 v9
-     * @return string|int|NULL If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. NULL if none.
+     * @return string|int|null If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. NULL if none.
      */
     public function whichWorkspace($returnTitle = false)
     {

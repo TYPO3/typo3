@@ -150,7 +150,7 @@ abstract class AbstractTypolinkBuilder
      * @param string $context The context in which the method is called (e.g. typoLink).
      * @param string $url The URL that should be processed.
      * @param array $typolinkConfiguration The current link configuration array.
-     * @return string|NULL Returns NULL if URL was not processed or the processed URL as a string.
+     * @return string|null Returns NULL if URL was not processed or the processed URL as a string.
      * @throws \RuntimeException if a hook was registered but did not fulfill the correct parameters.
      */
     protected function processUrl(string $context, string $url, array $typolinkConfiguration = [])

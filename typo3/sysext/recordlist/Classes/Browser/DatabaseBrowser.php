@@ -32,7 +32,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      * value will contain the ID of the expanded page.
      * If the value is NOT set by GET parameter, then it will be restored from the module session data.
      *
-     * @var NULL|int
+     * @var null|int
      */
     protected $expandPage;
 

@@ -206,7 +206,7 @@ class Request implements RequestInterface
     /**
      * Sets the plugin name.
      *
-     * @param string|NULL $pluginName
+     * @param string|null $pluginName
      */
     public function setPluginName($pluginName = null)
     {

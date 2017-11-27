@@ -313,7 +313,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
     /**
      * @param mixed $object
-     * @return int|NULL
+     * @return int|null
      */
     public function getPosition($object)
     {

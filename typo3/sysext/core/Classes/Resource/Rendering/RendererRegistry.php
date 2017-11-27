@@ -120,7 +120,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface
      * Get matching renderer with highest priority
      *
      * @param FileInterface $file
-     * @return NULL|FileRendererInterface
+     * @return null|FileRendererInterface
      */
     public function getRenderer(FileInterface $file)
     {
