@@ -1402,4 +1402,11 @@ return [
             'Deprecation-82445-PageTranslationRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->newlog2' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-83121-LoggingMethodDataHandler-newlog2.rst',
+        ],
+    ],
 ];

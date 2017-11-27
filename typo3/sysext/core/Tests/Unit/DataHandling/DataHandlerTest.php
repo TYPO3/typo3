@@ -746,15 +746,15 @@ class DataHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     {
         /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $dataHandlerMock */
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(['canDeletePage', 'newlog2'])
+            ->setMethods(['canDeletePage', 'log'])
             ->getMock();
         $dataHandlerMock
             ->expects($this->never())
             ->method('canDeletePage');
         $dataHandlerMock
             ->expects($this->once())
-            ->method('newlog2')
-            ->with('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+            ->method('log')
+            ->with('pages', 0, 0, 0, 2, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
 
         $dataHandlerMock->deletePages(0);
     }

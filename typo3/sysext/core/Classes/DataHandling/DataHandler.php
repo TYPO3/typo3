@@ -1375,7 +1375,9 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
                 if (!empty($newRecord)) {
-                    $this->newlog2('Shadowing done on fields <i>' . implode(',', array_keys($newRecord)) . '</i> in placeholder record ' . $table . ':' . $liveRec['uid'] . ' (offline version UID=' . $id . ')', $table, $liveRec['uid'], $liveRec['pid']);
+                    if ($this->enableLogging) {
+                        $this->log($table, $liveRec['uid'], 0, 0, 0, 'Shadowing done on fields <i>' . implode(',', array_keys($newRecord)) . '</i> in placeholder record ' . $table . ':' . $liveRec['uid'] . ' (offline version UID=' . $id . ')', -1, [], $this->eventPid($table, $liveRec['uid'], $liveRec['pid']));
+                    }
                     $this->updateDB($table, $liveRec['uid'], $newRecord);
                 }
             }
@@ -4878,7 +4880,9 @@ class DataHandler implements LoggerAwareInterface
             // Fetch the live record
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND pid<>-1');
             if (empty($parentRecordLocalization)) {
-                $this->newlog2('Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', $table, $id, $parentRecord['pid']);
+                if ($this->enableLogging) {
+                    $this->log($table, $id, 0, 0, 0, 'Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', -1, [], $this->eventPid($table, $id, $parentRecord['pid']));
+                }
                 return;
             }
             $parentRecord = $parentRecordLocalization[0];
@@ -5306,7 +5310,9 @@ class DataHandler implements LoggerAwareInterface
     {
         $uid = (int)$uid;
         if ($uid === 0) {
-            $this->newlog2('Deleting all pages starting from the root-page is disabled.', 'pages', 0, 0, 2);
+            if ($this->enableLogging) {
+                $this->log('pages', $uid, 0, 0, 2, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
+            }
             return;
         }
         // Getting list of pages to delete:
@@ -8708,9 +8714,11 @@ class DataHandler implements LoggerAwareInterface
      * @param int $error Error code, see log()
      * @return int Log entry UID
      * @see log()
+     * @deprecated since TYPO3 v9 will be removed in TYPO3 v10.0, use DataHandler->log() directly instead.
      */
     public function newlog2($message, $table, $uid, $pid = null, $error = 0)
     {
+        trigger_error('DataHandler->newlog2() will be removed in TYPO3 v10.0, use the generic log() function instead.', E_USER_DEPRECATED);
         if (!$this->enableLogging) {
             return 0;
         }

@@ -666,7 +666,11 @@ class DataHandlerHook
                 $mail->send();
             }
             $emailRecipients = implode(',', $emailRecipients);
-            $dataHandler->newlog2('Notification email for stage change was sent to "' . $emailRecipients . '"', $table, $id);
+            if ($dataHandler->enableLogging) {
+                $propertyArray = $dataHandler->getRecordProperties($table, $id);
+                $pid = $propertyArray['pid'];
+                $dataHandler->log($table, $id, 0, 0, 0, 'Notification email for stage change was sent to "' . $emailRecipients . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+            }
         }
     }
 
@@ -732,7 +736,12 @@ class DataHandlerHook
                         ],
                         ['uid' => (int)$id]
                     );
-                $dataHandler->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
+
+                if ($dataHandler->enableLogging) {
+                    $propertyArray = $dataHandler->getRecordProperties($table, $id);
+                    $pid = $propertyArray['pid'];
+                    $dataHandler->log($table, $id, 0, 0, 0, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                }
                 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
                 $dataHandler->log($table, $id, 6, 0, 0, 'Stage raised...', 30, ['comment' => $comment, 'stage' => $stageId]);
                 if ((int)$stat['stagechg_notification'] > 0) {
@@ -999,7 +1008,10 @@ class DataHandlerHook
                 // Force delete
                 $dataHandler->deleteEl($table, $id, true);
             }
-            $dataHandler->newlog2(($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, $table, $id, $swapVersion['pid']);
+            if ($dataHandler->enableLogging) {
+                $dataHandler->log($table, $id, 0, 0, 0, ($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
+            }
+
             // Update reference index of the live record:
             $dataHandler->addRemapStackRefIndex($table, $id);
             // Set log entry for live record:
@@ -1033,7 +1045,11 @@ class DataHandlerHook
                 $this->notifyStageChange($wsAccess, $stageId, $table, $id, $comment, $dataHandler, $notificationAlternativeRecipients);
             }
             // Write to log with stageId -20
-            $dataHandler->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
+            if ($dataHandler->enableLogging) {
+                $propArr = $dataHandler->getRecordProperties($table, $id);
+                $pid = $propArr['pid'];
+                $dataHandler->log($table, $id, 0, 0, 0, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+            }
             $dataHandler->log($table, $id, 6, 0, 0, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
 
             // Clear cache:
