@@ -1287,7 +1287,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-81217-TSFE-relatedLanguageMethods.rst',
-        ]
+        ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer->addMetaTag' => [
         'numberOfMandatoryArguments' => 1,
@@ -1505,6 +1505,20 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Breaking-81460-DeprecateGetByTagOnCacheFrontends.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_TCAselectItem' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83122-RemovedStdWrapOptionTCAselectItem.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->TCAlookup' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83122-RemovedStdWrapOptionTCAselectItem.rst',
         ],
     ],
 ];

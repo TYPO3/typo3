@@ -6204,17 +6204,6 @@ Value must be set and properties are those of ->HTMLparser.
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="TCAselectItem" type="array">
-			<description><![CDATA[Resolves a comma separated list of values into the TCA item representation.
-
-.table (string): The Table to look up
-.field (string): The field to resolve
-.delimiter (string): Delimiter for concatenating multiple elements.
-
-Notice: Currently this works only with TCA fields of type "select" which are not database relations.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="addParams" type="addParams">
 			<description><![CDATA[Lets you add tag-parameters to the content if the content is a tag!]]></description>
 			<default><![CDATA[

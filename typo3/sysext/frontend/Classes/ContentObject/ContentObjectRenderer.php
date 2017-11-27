@@ -206,7 +206,6 @@ class ContentObjectRenderer
         'wrapAlign' => 'align',
         'wrapAlign.' => 'array',
         'typolink.' => 'array',
-        'TCAselectItem.' => 'array',
         'wrap' => 'wrap',
         'wrap.' => 'array',
         'noTrimWrap' => 'wrap',
@@ -2604,22 +2603,6 @@ class ContentObjectRenderer
     public function stdWrap_typolink($content = '', $conf = [])
     {
         return $this->typoLink($content, $conf['typolink.']);
-    }
-
-    /**
-     * TCAselectItem
-     * Returns a list of options available for a given field in the DB which has to be of the type select
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for TCAselectItem.
-     * @return string The processed input value
-     */
-    public function stdWrap_TCAselectItem($content = '', $conf = [])
-    {
-        if (is_array($conf['TCAselectItem.'])) {
-            $content = $this->TCAlookup($content, $conf['TCAselectItem.']);
-        }
-        return $content;
     }
 
     /**
@@ -5098,40 +5081,6 @@ class ContentObjectRenderer
         return $key;
     }
 
-    /**
-     * Looks up the incoming value in the defined TCA configuration
-     * Works only with TCA-type 'select' and options defined in 'items'
-     *
-     * @param mixed $inputValue Comma-separated list of values to look up
-     * @param array $conf TS-configuration array, see TSref for details
-     * @return string String of translated values, separated by $delimiter. If no matches were found, the input value is simply returned.
-     * @todo It would be nice it this function basically looked up any type of value, db-relations etc.
-     */
-    public function TCAlookup($inputValue, $conf)
-    {
-        $table = $conf['table'];
-        $field = $conf['field'];
-        $delimiter = $conf['delimiter'] ? $conf['delimiter'] : ' ,';
-        if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
-            $tsfe = $this->getTypoScriptFrontendController();
-            $values = GeneralUtility::trimExplode(',', $inputValue);
-            $output = [];
-            foreach ($values as $value) {
-                // Traverse the items-array...
-                foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] as $item) {
-                    // ... and return the first found label where the value was equal to $key
-                    if ((string)$item[1] === trim($value)) {
-                        $output[] = $tsfe->sL($item[0]);
-                    }
-                }
-            }
-            $returnValue = implode($delimiter, $output);
-        } else {
-            $returnValue = $inputValue;
-        }
-        return $returnValue;
-    }
-
     /***********************************************
      *
      * Link functions (typolink)
@@ -6423,8 +6372,8 @@ class ContentObjectRenderer
         foreach ($properties as $property) {
             $conf[$property] = trim(
                 isset($conf[$property . '.'])
-                ? $this->stdWrap($conf[$property], $conf[$property . '.'])
-                : $conf[$property]
+                    ? $this->stdWrap($conf[$property], $conf[$property . '.'])
+                    : $conf[$property]
             );
             if ($conf[$property] === '') {
                 unset($conf[$property]);
