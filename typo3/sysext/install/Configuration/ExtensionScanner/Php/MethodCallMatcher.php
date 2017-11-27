@@ -1416,4 +1416,25 @@ return [
             'Deprecation-83118-DeleteClauseMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_spaceBefore' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83124-RemoveStdWrapOptionsSpaceSpaceBeforeSpaceAfter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_spaceAfter' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83124-RemoveStdWrapOptionsSpaceSpaceBeforeSpaceAfter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_space' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83124-RemoveStdWrapOptionsSpaceSpaceBeforeSpaceAfter.rst',
+        ],
+    ],
 ];

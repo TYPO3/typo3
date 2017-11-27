@@ -207,12 +207,6 @@ class ContentObjectRenderer
         'wrapAlign.' => 'array',
         'typolink.' => 'array',
         'TCAselectItem.' => 'array',
-        'space' => 'space',
-        'space.' => 'array',
-        'spaceBefore' => 'int',
-        'spaceBefore.' => 'array',
-        'spaceAfter' => 'int',
-        'spaceAfter.' => 'array',
         'wrap' => 'wrap',
         'wrap.' => 'array',
         'noTrimWrap' => 'wrap',
@@ -1577,10 +1571,6 @@ class ContentObjectRenderer
                         $functionName => $conf[$functionName],
                         $functionProperties => $conf[$functionProperties]
                     ];
-                    // In this special case 'spaceBefore' and 'spaceAfter' need additional stuff from 'space.''
-                    if ($functionName === 'spaceBefore' || $functionName === 'spaceAfter') {
-                        $singleConf['space.'] = $conf['space.'];
-                    }
                     // Hand over the whole $conf array to the stdWrapHookObjects
                     if ($functionType === 'hook') {
                         $singleConf = $conf;
@@ -2624,49 +2614,6 @@ class ContentObjectRenderer
             $content = $this->TCAlookup($content, $conf['TCAselectItem.']);
         }
         return $content;
-    }
-
-    /**
-     * spaceBefore
-     * Will add space before the current content
-     * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for spaceBefore and space.
-     * @return string The processed input value
-     */
-    public function stdWrap_spaceBefore($content = '', $conf = [])
-    {
-        return $this->wrapSpace($content, trim($conf['spaceBefore']) . '|', $conf['space.']);
-    }
-
-    /**
-     * spaceAfter
-     * Will add space after the current content
-     * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for spaceAfter and space.
-     * @return string The processed input value
-     */
-    public function stdWrap_spaceAfter($content = '', $conf = [])
-    {
-        return $this->wrapSpace($content, '|' . trim($conf['spaceAfter']), $conf['space.']);
-    }
-
-    /**
-     * space
-     * Will add space before or after the current content
-     * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to TRUE
-     * See wrap
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for space.
-     * @return string The processed input value
-     */
-    public function stdWrap_space($content = '', $conf = [])
-    {
-        return $this->wrapSpace($content, trim($conf['space']), $conf['space.']);
     }
 
     /**
@@ -5811,39 +5758,6 @@ class ContentObjectRenderer
             // anything else is not taken into account
             $wrapArr = explode($char, $wrap, 4);
             $content = $wrapArr[1] . $content . $wrapArr[2];
-        }
-        return $content;
-    }
-
-    /**
-     * Adds space above/below the input HTML string. It is done by adding a clear-gif and <br /> tag before and/or after the content.
-     *
-     * @param string $content The content to add space above/below to.
-     * @param string $wrap A value like "10 | 20" where the first part denotes the space BEFORE and the second part denotes the space AFTER (in pixels)
-     * @param array $conf Configuration from TypoScript
-     * @return string Wrapped string
-     */
-    public function wrapSpace($content, $wrap, array $conf = null)
-    {
-        if (trim($wrap)) {
-            $wrapArray = explode('|', $wrap);
-            $wrapBefore = (int)$wrapArray[0];
-            $wrapAfter = (int)$wrapArray[1];
-            $useDivTag = isset($conf['useDiv']) && $conf['useDiv'];
-            if ($wrapBefore) {
-                if ($useDivTag) {
-                    $content = '<div class="content-spacer spacer-before" style="height:' . $wrapBefore . 'px;"></div>' . $content;
-                } else {
-                    $content = '<span style="width: 1px; height: ' . $wrapBefore . 'px; display: inline-block;"></span><br />' . $content;
-                }
-            }
-            if ($wrapAfter) {
-                if ($useDivTag) {
-                    $content .= '<div class="content-spacer spacer-after" style="height:' . $wrapAfter . 'px;"></div>';
-                } else {
-                    $content .= '<span style="width: 1px; height: ' . $wrapAfter . 'px; display: inline-block;"></span><br />';
-                }
-            }
         }
         return $content;
     }

@@ -6766,26 +6766,6 @@ temp.number {
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="space" type="stdWrap">
-			<description><![CDATA[[space /stdWrap
-			spaceBefore]   |   [spaceAfter]
-
-Additional property:
-.useDiv = 1
-If set, a clear gif is not used by rather a <div> tag with a style-attribute setting the height. (Affects spaceBefore and spaceAfter as well).]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="spaceAfter" type="stdWrap">
-			<description><![CDATA[Pixels space after. Done with a clear-gif; <img ...><BR>]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="spaceBefore" type="stdWrap">
-			<description><![CDATA[Pixels space before. Done with a clear-gif; <img ...><BR>]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="split" type="split">
 			<description><![CDATA[
 ]]></description>
