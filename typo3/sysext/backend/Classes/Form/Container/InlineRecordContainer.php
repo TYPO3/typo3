@@ -464,7 +464,7 @@ class InlineRecordContainer extends AbstractContainer
 					</a>';
             }
             // "Edit" link:
-            if (($rec['table_local'] === 'sys_file') && !$isNewItem) {
+            if (($rec['table_local'] === 'sys_file') && !$isNewItem && $backendUser->check('tables_modify', 'sys_file_metadata')) {
                 $sys_language_uid = 0;
                 if (!empty($rec['sys_language_uid'])) {
                     $sys_language_uid = $rec['sys_language_uid'][0];
@@ -474,7 +474,7 @@ class InlineRecordContainer extends AbstractContainer
                     'sys_file_metadata',
                     'file = ' . (int)substr($rec['uid_local'], 9) . ' AND sys_language_uid = ' . $sys_language_uid
                 );
-                if ($backendUser->check('tables_modify', 'sys_file_metadata')) {
+                if (!empty($recordInDatabase)) {
                     $url = BackendUtility::getModuleUrl('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
