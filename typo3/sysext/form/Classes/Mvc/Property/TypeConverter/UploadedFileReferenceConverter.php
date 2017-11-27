@@ -130,11 +130,11 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, taking into account the fully
      * built $convertedChildProperties and $configuration.
      *
-     * @param string|int $source
+     * @param array $source
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param PropertyMappingConfigurationInterface $configuration
-     * @return AbstractFileFolder
+     * @return AbstractFileFolder|Error|null
      * @internal
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
@@ -142,12 +142,17 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         if (!isset($source['error']) || $source['error'] === \UPLOAD_ERR_NO_FILE) {
             if (isset($source['submittedFile']['resourcePointer'])) {
                 try {
+                    // File references use numeric resource pointers, direct
+                    // file relations are using "file:" prefix (e.g. "file:5")
                     $resourcePointer = $this->hashService->validateAndStripHmac($source['submittedFile']['resourcePointer']);
                     if (strpos($resourcePointer, 'file:') === 0) {
-                        $fileUid = substr($resourcePointer, 5);
+                        $fileUid = (int)substr($resourcePointer, 5);
                         return $this->createFileReferenceFromFalFileObject($this->resourceFactory->getFileObject($fileUid));
                     }
-                    return $this->createFileReferenceFromFalFileReferenceObject($this->resourceFactory->getFileReferenceObject($resourcePointer), $resourcePointer);
+                    return $this->createFileReferenceFromFalFileReferenceObject(
+                        $this->resourceFactory->getFileReferenceObject($resourcePointer),
+                        (int)$resourcePointer
+                    );
                 } catch (\InvalidArgumentException $e) {
                     // Nothing to do. No file is uploaded and resource pointer is invalid. Discard!
                 }
@@ -238,6 +243,10 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
+     * In case no $resourcePointer is given a new file reference domain object
+     * will be returned. Otherwise the file reference is reconstituted from
+     * storage and will be updated(!) with the provided $falFileReference.
+     *
      * @param CoreFileReference $falFileReference
      * @param int $resourcePointer
      * @return ExtbaseFileReference
