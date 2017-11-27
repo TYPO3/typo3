@@ -268,7 +268,7 @@ abstract class AbstractRenderable implements RenderableInterface
     /**
      * Get the parent renderable
      *
-     * @return null|CompositeRenderableInterface
+     * @return CompositeRenderableInterface|null
      * @api
      */
     public function getParentRenderable()

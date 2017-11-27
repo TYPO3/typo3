@@ -417,7 +417,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
      * Gets a page record.
      *
      * @param int $pageId
-     * @return null|array
+     * @return array|null
      */
     protected function getPage($pageId)
     {

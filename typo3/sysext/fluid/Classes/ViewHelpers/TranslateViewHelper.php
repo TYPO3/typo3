@@ -149,7 +149,7 @@ class TranslateViewHelper extends AbstractViewHelper
      * @param string $languageKey Language key to use for this translation
      * @param string[] $alternativeLanguageKeys Alternative language keys if no translation does exist
      *
-     * @return null|string
+     * @return string|null
      */
     protected static function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
     {

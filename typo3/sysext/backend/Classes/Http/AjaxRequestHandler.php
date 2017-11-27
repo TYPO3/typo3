@@ -66,7 +66,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      * Handles any AJAX request in the TYPO3 Backend
      *
      * @param ServerRequestInterface $request
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function handleRequest(ServerRequestInterface $request)
     {

@@ -1518,8 +1518,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Call this function if you need to include the jQuery library
      *
-     * @param null|string $version The jQuery version that should be included, either "latest" or any available version
-     * @param null|string $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
+     * @param string|null $version The jQuery version that should be included, either "latest" or any available version
+     * @param string|null $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
      * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
      * @throws \UnexpectedValueException
      */

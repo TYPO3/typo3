@@ -1195,7 +1195,7 @@ class DataMapProcessor
      *
      * @param string $tableName
      * @param string|int $id
-     * @return null|DataMapItem
+     * @return DataMapItem|null
      */
     protected function findItem(string $tableName, $id)
     {
@@ -1441,7 +1441,7 @@ class DataMapProcessor
     }
 
     /**
-     * @return null|LanguageService
+     * @return LanguageService|null
      */
     protected function getLanguageService()
     {

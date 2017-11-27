@@ -1200,8 +1200,8 @@ class BackendUtility
      * @param string $tableName Name of the table of the record
      * @param string $fieldName Name of the field of the record
      * @param array $element Record data
-     * @param null|int $workspaceId Workspace to fetch data for
-     * @return null|\TYPO3\CMS\Core\Resource\FileReference[]
+     * @param int|null $workspaceId Workspace to fetch data for
+     * @return \TYPO3\CMS\Core\Resource\FileReference[]|null
      */
     public static function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = null)
     {

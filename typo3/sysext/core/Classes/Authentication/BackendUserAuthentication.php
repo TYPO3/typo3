@@ -1995,7 +1995,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     * temporary files in user context. The folder _temp_ below the default upload folder
     * of the user is used.
     *
-    * @return null|\TYPO3\CMS\Core\Resource\Folder
+    * @return \TYPO3\CMS\Core\Resource\Folder|null
     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder();
     */
     public function getDefaultUploadTemporaryFolder()

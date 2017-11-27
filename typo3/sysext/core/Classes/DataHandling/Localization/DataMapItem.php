@@ -219,7 +219,7 @@ class DataMapItem
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getSourceFieldName()
     {
@@ -418,7 +418,7 @@ class DataMapItem
     }
 
     /**
-     * @return null|State
+     * @return State|null
      */
     protected function buildState()
     {

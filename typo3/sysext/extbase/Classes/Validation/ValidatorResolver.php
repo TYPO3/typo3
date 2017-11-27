@@ -344,7 +344,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $targetClassName
      * @param ConjunctionValidator $conjunctionValidator
-     * @return null|Validator\ObjectValidatorInterface
+     * @return Validator\ObjectValidatorInterface|null
      */
     protected function addCustomValidators($targetClassName, ConjunctionValidator &$conjunctionValidator)
     {

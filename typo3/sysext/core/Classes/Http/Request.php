@@ -32,7 +32,7 @@ class Request extends Message implements RequestInterface
 {
     /**
      * The request-target, if it has been provided or calculated.
-     * @var null|string
+     * @var string|null
      */
     protected $requestTarget;
 
@@ -77,8 +77,8 @@ class Request extends Message implements RequestInterface
     /**
      * Constructor, the only place to set all parameters of this Request
      *
-     * @param null|string $uri URI for the request, if any.
-     * @param null|string $method HTTP method for the request, if any.
+     * @param string|null $uri URI for the request, if any.
+     * @param string|null $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface $body Message body, if any.
      * @param array $headers Headers for the message, if any.
      * @throws \InvalidArgumentException for any invalid value.
@@ -349,7 +349,7 @@ class Request extends Message implements RequestInterface
     /**
      * Validate the HTTP method, helper function.
      *
-     * @param null|string $method
+     * @param string|null $method
      * @throws \InvalidArgumentException on invalid HTTP method.
      */
     protected function validateMethod($method)

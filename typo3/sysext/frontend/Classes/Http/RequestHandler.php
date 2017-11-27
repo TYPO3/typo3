@@ -76,7 +76,7 @@ class RequestHandler implements RequestHandlerInterface
      * Handles a frontend request
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request)
     {

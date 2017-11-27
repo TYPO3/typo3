@@ -106,7 +106,7 @@ class CategoryPermissionsAspect
      *
      * @param int $categoryMountPoint
      * @param TreeNodeCollection $treeNodeCollection
-     * @return null|TreeNode
+     * @return TreeNode|null
      */
     protected function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection)
     {

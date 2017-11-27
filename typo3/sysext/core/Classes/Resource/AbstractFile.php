@@ -530,7 +530,7 @@ abstract class AbstractFile implements FileInterface
      * web-based authentication. You have to take care of this yourself.
      *
      * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
-     * @return null|string NULL if file is deleted, the generated URL otherwise
+     * @return string|null NULL if file is deleted, the generated URL otherwise
      */
     public function getPublicUrl($relativeToCurrentScript = false)
     {

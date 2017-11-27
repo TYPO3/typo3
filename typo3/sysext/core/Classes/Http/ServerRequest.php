@@ -66,8 +66,8 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * Constructor, the only place to set all parameters of this Message/Request
      *
-     * @param null|string $uri URI for the request, if any.
-     * @param null|string $method HTTP method for the request, if any.
+     * @param string|null $uri URI for the request, if any.
+     * @param string|null $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface $body Message body, if any.
      * @param array $headers Headers for the message, if any.
      * @param array $serverParams Server parameters, typically from $_SERVER
@@ -233,7 +233,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * potential types MUST be arrays or objects only. A null value indicates
      * the absence of body content.
      *
-     * @return null|array|object The deserialized body parameters, if any.
+     * @return array|object|null The deserialized body parameters, if any.
      *     These will typically be an array or object.
      */
     public function getParsedBody()
@@ -263,7 +263,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param null|array|object $data The deserialized body data. This will
+     * @param array|object|null $data The deserialized body data. This will
      *     typically be in an array or object.
      * @return ServerRequest
      * @throws \InvalidArgumentException if an unsupported argument type is

@@ -39,7 +39,7 @@ class Mailer extends \Swift_Mailer
     /**
      * When constructing, also initializes the \Swift_Transport like configured
      *
-     * @param null|\Swift_Transport $transport optionally pass a transport to the constructor.
+     * @param \Swift_Transport|null $transport optionally pass a transport to the constructor.
      * @throws \TYPO3\CMS\Core\Exception
      */
     public function __construct(\Swift_Transport $transport = null)

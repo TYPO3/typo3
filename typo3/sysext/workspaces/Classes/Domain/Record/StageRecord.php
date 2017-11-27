@@ -96,7 +96,7 @@ class StageRecord extends AbstractRecord
     }
 
     /**
-     * @return null|StageRecord
+     * @return StageRecord|null
      */
     public function getPrevious()
     {
@@ -104,7 +104,7 @@ class StageRecord extends AbstractRecord
     }
 
     /**
-     * @return null|StageRecord
+     * @return StageRecord|null
      */
     public function getNext()
     {

@@ -143,7 +143,7 @@ class MetaInformation
     /**
      * Setting page uid
      *
-     * @return null|int Record uid
+     * @return int|null Record uid
      */
     public function getRecordInformationUid()
     {

@@ -185,7 +185,7 @@ class ImageCropUpdater implements RowUpdaterInterface
      *
      * @param array $row
      * @param string $fieldName
-     * @return null|\TYPO3\CMS\Core\Resource\File
+     * @return \TYPO3\CMS\Core\Resource\File|null
      */
     private function getFile(array $row, $fieldName)
     {

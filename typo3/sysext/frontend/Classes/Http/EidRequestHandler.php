@@ -49,7 +49,7 @@ class EidRequestHandler implements RequestHandlerInterface
      * Handles a frontend request based on the _GP "eID" variable.
      *
      * @param ServerRequestInterface $request
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface|null
      */
     public function handleRequest(ServerRequestInterface $request)
     {
@@ -101,7 +101,7 @@ class EidRequestHandler implements RequestHandlerInterface
      * Dispatches the request to the corresponding eID class or eID script
      *
      * @param ServerRequestInterface $request
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface|null
      * @throws Exception
      */
     protected function dispatch($request)

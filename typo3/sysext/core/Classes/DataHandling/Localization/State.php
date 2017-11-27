@@ -27,7 +27,7 @@ class State
 
     /**
      * @param string $tableName
-     * @return null|State
+     * @return State|null
      */
     public static function create(string $tableName)
     {
@@ -44,7 +44,7 @@ class State
     /**
      * @param string $tableName
      * @param string|null $json
-     * @return null|State
+     * @return State|null
      */
     public static function fromJSON(string $tableName, string $json = null)
     {
@@ -268,7 +268,7 @@ class State
 
     /**
      * @param string $fieldName
-     * @return null|string
+     * @return string|null
      */
     public function getState(string $fieldName)
     {

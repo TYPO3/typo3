@@ -212,7 +212,7 @@ class ImportExportTask implements TaskInterface
      * to the server and is also used for uploading import files.
      *
      * @throws \InvalidArgumentException
-     * @return null|\TYPO3\CMS\Core\Resource\Folder
+     * @return \TYPO3\CMS\Core\Resource\Folder|null
      */
     protected function getDefaultImportExportFolder()
     {

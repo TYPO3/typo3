@@ -260,9 +260,9 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @param null|string|int $value
-     * @param null|string $storageFormat
-     * @param null|string $expectedValue
+     * @param string|int|null $value
+     * @param string|null $storageFormat
+     * @param string|null $expectedValue
      * @test
      * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsDataProvider
      */

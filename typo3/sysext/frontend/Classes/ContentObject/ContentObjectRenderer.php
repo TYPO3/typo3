@@ -763,7 +763,7 @@ class ContentObjectRenderer
      * in $this->contentObjectClassMap
      *
      * @param string $name
-     * @return null|AbstractContentObject
+     * @return AbstractContentObject|null
      * @throws ContentRenderingException
      */
     public function getContentObject($name)
@@ -845,7 +845,7 @@ class ContentObjectRenderer
      * or, from global configuration if not explicitly disabled in local configuration
      *
      * @param array $configuration
-     * @return null|ExceptionHandlerInterface
+     * @return ExceptionHandlerInterface|null
      * @throws ContentRenderingException
      */
     protected function createExceptionHandler($configuration = [])
@@ -4758,7 +4758,7 @@ class ContentObjectRenderer
     /**
      * @param FileReference $fileReference
      * @param string $cropVariant
-     * @return null|\TYPO3\CMS\Core\Imaging\ImageManipulation\Area
+     * @return \TYPO3\CMS\Core\Imaging\ImageManipulation\Area|null
      */
     protected function getCropArea(FileReference $fileReference, string $cropVariant)
     {
@@ -4799,7 +4799,7 @@ class ContentObjectRenderer
      * Implements the TypoScript data type "getText". This takes a string with parameters and based on those a value from somewhere in the system is returned.
      *
      * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title" (in the latter case and example of how the value is FIRST splitted by "//" is shown)
-     * @param null|array $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
+     * @param array|null $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
      * @return string The value fetched
      * @see getFieldVal()
      */
