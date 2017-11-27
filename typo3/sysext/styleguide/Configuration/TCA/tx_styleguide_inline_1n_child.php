@@ -24,7 +24,8 @@ return [
 
         'l10n_diffsource' => [
             'config' => [
-                'type' => 'passthrough'
+                'type' => 'passthrough',
+                'default' => '',
             ]
         ],
         'disable' => [
@@ -84,12 +85,6 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_1n_child',
                 'foreign_table_where' => 'AND tx_styleguide_inline_1n_child.pid=###CURRENT_PID### AND tx_styleguide_inline_1n_child.uid!=###THIS_UID###',
                 'default' => 0
-            ]
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => ''
             ]
         ],
 
