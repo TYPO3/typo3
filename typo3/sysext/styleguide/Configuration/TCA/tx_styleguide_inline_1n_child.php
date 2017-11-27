@@ -106,6 +106,22 @@ return [
                 'size' => '30',
             ],
         ],
+        'input_2' => [
+            'exclude' => 1,
+            'label' => 'input_2 renderType=colorpicker, valuePicker',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'colorpicker',
+                'size' => 10,
+                'valuePicker' => [
+                    'items' => [
+                        [ 'blue', '#0000FF', ],
+                        [ 'red', '#FF0000', ],
+                        [ 'typo3 orange', '#FF8700', ],
+                    ],
+                ],
+            ],
+        ],
         'group_db_1' => [
             'exclude' => 1,
             'label' => 'group_db_1 allowed=tx_styleguide_staticdata',
@@ -133,7 +149,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, input_1, group_db_1, select_tree_1,
+                --div--;General, input_1, input_2, group_db_1, select_tree_1,
                 --div--;meta, disable, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],

@@ -920,6 +920,7 @@ CREATE TABLE tx_styleguide_inline_1n_child (
 	parenttable text,
 
 	input_1 text,
+	input_2 text,
 	group_db_1 text,
 	select_tree_1 text,
 
