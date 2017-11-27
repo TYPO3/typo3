@@ -155,6 +155,8 @@ CREATE TABLE tx_blogexample_domain_model_tag (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+	l18n_diffsource mediumblob,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

@@ -39,6 +39,7 @@
 			<label index="tx_blogexample_domain_model_tag">Tag</label>
 			<label index="tx_blogexample_domain_model_tag.name">Name</label>
 			<label index="tx_blogexample_domain_model_tag.posts">Related posts</label>
+			<label index="tx_blogexample_domain_model_dateexample">Date example</label>
 			<label index="fe_users.tx_extbase_type.Tx_BlogExample_Domain_Model_Administrator">Blog Admin (BlogExample)</label>
 		</languageKey>
 	</data>
