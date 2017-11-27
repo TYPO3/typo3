@@ -24,6 +24,7 @@ for FILE in $(git diff-tree --no-commit-id --name-only -r HEAD | grep '.php$'); 
     then
         ./bin/php-cs-fixer fix $FILE \
             -v $DRYRUN \
+            --allow-risky=yes \
             --config=Build/.php_cs
 
         if [ "$?" -gt "0" ]
