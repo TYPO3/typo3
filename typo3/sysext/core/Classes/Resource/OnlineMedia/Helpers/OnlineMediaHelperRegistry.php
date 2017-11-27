@@ -54,7 +54,7 @@ class OnlineMediaHelperRegistry implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $url
      * @param Folder $targetFolder
      * @param string[] $allowedExtensions
-     * @return File|NULL
+     * @return File|null
      */
     public function transformUrlToFile($url, Folder $targetFolder, $allowedExtensions = [])
     {

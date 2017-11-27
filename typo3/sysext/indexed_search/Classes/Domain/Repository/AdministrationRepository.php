@@ -385,7 +385,7 @@ class AdministrationRepository
      * @param string $additionalWhere
      * @param int $pageUid
      * @param int $max
-     * @return array|NULL
+     * @return array|null
      */
     public function getGeneralSearchStatistic($additionalWhere, $pageUid, $max = 50)
     {

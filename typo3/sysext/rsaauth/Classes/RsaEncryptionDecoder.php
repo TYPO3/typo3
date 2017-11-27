@@ -104,7 +104,7 @@ class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @return Backend\AbstractBackend|NULL
+     * @return Backend\AbstractBackend|null
      */
     protected function getBackend()
     {

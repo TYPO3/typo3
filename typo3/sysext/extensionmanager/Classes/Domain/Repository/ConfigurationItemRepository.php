@@ -217,7 +217,7 @@ class ConfigurationItemRepository
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string $extensionName The name of the extension
-     * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
+     * @return string|null The value from LOCAL_LANG or NULL if no translation was found.
      */
     protected function translate($key, $extensionName)
     {

@@ -66,8 +66,8 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * Constructor, the only place to set all parameters of this Message/Request
      *
-     * @param NULL|string $uri URI for the request, if any.
-     * @param NULL|string $method HTTP method for the request, if any.
+     * @param null|string $uri URI for the request, if any.
+     * @param null|string $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface $body Message body, if any.
      * @param array $headers Headers for the message, if any.
      * @param array $serverParams Server parameters, typically from $_SERVER

@@ -442,7 +442,7 @@ class ElementHistoryController
      *
      * @param string $table
      * @param int $uid
-     * @return array|NULL
+     * @return array|null
      */
     protected function getRecord($table, $uid)
     {

@@ -209,7 +209,7 @@ class EditDocumentController
     /**
      * Workspace used for the editing action.
      *
-     * @var NULL|int
+     * @var null|int
      */
     protected $workspace;
 

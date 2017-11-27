@@ -316,8 +316,8 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      * If the input is empty, NULL is returned.
      *
      * @param int|string $value Unix timestamp or date/datetime value
-     * @param NULL|string $storageFormat Storage format for native date/datetime fields
-     * @param NULL|string $targetType The object class name to be created
+     * @param null|string $storageFormat Storage format for native date/datetime fields
+     * @param null|string $targetType The object class name to be created
      * @return \DateTime
      */
     protected function mapDateTime($value, $storageFormat = null, $targetType = 'DateTime')
@@ -381,7 +381,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param DomainObjectInterface $parentObject
      * @param string $propertyName
-     * @return array|NULL
+     * @return array|null
      */
     protected function getEmptyRelationValue(DomainObjectInterface $parentObject, $propertyName)
     {

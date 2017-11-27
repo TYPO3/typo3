@@ -110,7 +110,7 @@ class BackendUtility
      * @param string $fields List of fields to select
      * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @return array|NULL Returns the row if found, otherwise NULL
+     * @return array|null Returns the row if found, otherwise NULL
      */
     public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true)
     {
@@ -626,7 +626,7 @@ class BackendUtility
      * @param string $table Table name (present in TCA)
      * @param array $rec Record from $table
      * @param bool $useFieldNameAsKey If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
-     * @return array|NULL
+     * @return array|null
      */
     public static function getTCAtypes($table, $rec, $useFieldNameAsKey = false)
     {
@@ -1200,8 +1200,8 @@ class BackendUtility
      * @param string $tableName Name of the table of the record
      * @param string $fieldName Name of the field of the record
      * @param array $element Record data
-     * @param NULL|int $workspaceId Workspace to fetch data for
-     * @return NULL|\TYPO3\CMS\Core\Resource\FileReference[]
+     * @param null|int $workspaceId Workspace to fetch data for
+     * @return null|\TYPO3\CMS\Core\Resource\FileReference[]
      */
     public static function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = null)
     {
@@ -1847,7 +1847,7 @@ class BackendUtility
      * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
      * @param int $pid Optional page uid is used to evaluate page TSConfig for the given field
      * @throws \InvalidArgumentException
-     * @return string|NULL
+     * @return string|null
      */
     public static function getProcessedValue(
         $table,
@@ -2511,7 +2511,7 @@ class BackendUtility
      *
      * @param int $pageUid Page UID
      * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
-     * @param array|NULL $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
+     * @param array|null $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
      * @param string $anchorSection Optional anchor to the URL
      * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
      * @param string $additionalGetVars Additional GET variables.
@@ -2710,7 +2710,7 @@ class BackendUtility
      * line.
      *
      * @param int $pageId The page ID to use, must be > 0
-     * @param array|NULL $rootLine The root line structure to use
+     * @param array|null $rootLine The root line structure to use
      * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
      */
     public static function getViewDomain($pageId, $rootLine = null)
@@ -3456,7 +3456,7 @@ class BackendUtility
      * Returns first found domain record "domainName" (without trailing slash) if found in the input $rootLine
      *
      * @param array $rootLine Root line array
-     * @return string|NULL Domain name or NULL
+     * @return string|null Domain name or NULL
      */
     public static function firstDomainRecord($rootLine)
     {
@@ -3644,7 +3644,7 @@ class BackendUtility
      * @param string $table Table name (or "_FILE" if its a file)
      * @param string $ref Reference: If table, then int-uid, if _FILE, then file reference (relative to PATH_site)
      * @param string $msg Message with %s, eg. "There were %s records pointing to this file!
-     * @param string|NULL $count Reference count
+     * @param string|null $count Reference count
      * @return string Output string (or int count value if no msg string specified)
      */
     public static function referenceCount($table, $ref, $msg = '', $count = null)
@@ -3746,10 +3746,10 @@ class BackendUtility
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find versions.
      * @param string $fields Field list to select
-     * @param int|NULL $workspace Search in workspace ID and Live WS, if 0 search only in LiveWS, if NULL search in all WS.
+     * @param int|null $workspace Search in workspace ID and Live WS, if 0 search only in LiveWS, if NULL search in all WS.
      * @param bool $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
      * @param array $row The current record
-     * @return array|NULL Array of versions of table/uid
+     * @return array|null Array of versions of table/uid
      */
     public static function selectVersionsOfRecord(
         $table,
@@ -4071,7 +4071,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record UID of draft, offline version
      * @param string $fields Field list, default is *
-     * @return array|NULL If found, the record, otherwise NULL
+     * @return array|null If found, the record, otherwise NULL
      */
     public static function getLiveVersionOfRecord($table, $uid, $fields = '*')
     {
@@ -4165,7 +4165,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record UID of online version
      * @param string $fields Field list, default is *
-     * @param int|NULL $workspace The workspace to be used
+     * @param int|null $workspace The workspace to be used
      * @return array|bool If found, the record, otherwise false
      */
     public static function getMovePlaceholder($table, $uid, $fields = '*', $workspace = null)

@@ -28,7 +28,7 @@ class YouTubeHelper extends AbstractOEmbedHelper
      *
      * @param File $file
      * @param bool $relativeToCurrentScript
-     * @return string|NULL
+     * @return string|null
      */
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
     {
@@ -69,7 +69,7 @@ class YouTubeHelper extends AbstractOEmbedHelper
      *
      * @param string $url
      * @param Folder $targetFolder
-     * @return File|NULL
+     * @return File|null
      */
     public function transformUrlToFile($url, Folder $targetFolder)
     {

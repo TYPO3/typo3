@@ -556,7 +556,7 @@ class ProcessedFile extends AbstractFile
      * Returns a publicly accessible URL for this file
      *
      * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all
-     * @return NULL|string NULL if file is deleted, the generated URL otherwise
+     * @return null|string NULL if file is deleted, the generated URL otherwise
      */
     public function getPublicUrl($relativeToCurrentScript = false)
     {

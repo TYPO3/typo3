@@ -353,7 +353,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
     /**
      * @param mixed $object
-     * @return int|NULL
+     * @return int|null
      */
     public function getPosition($object)
     {

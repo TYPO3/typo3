@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class FileNode extends AbstractNode implements NodeInterface
 {
     /**
-     * @var NULL|int Default for files is octal 0664 == decimal 436
+     * @var null|int Default for files is octal 0664 == decimal 436
      */
     protected $targetPermission = '0664';
 
     /**
-     * @var string|NULL Target content of file. If NULL, target content is ignored
+     * @var string|null Target content of file. If NULL, target content is ignored
      */
     protected $targetContent = null;
 

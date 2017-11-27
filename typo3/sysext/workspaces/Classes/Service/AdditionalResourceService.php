@@ -107,7 +107,7 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface
      * Resolve path
      *
      * @param string $resourcePath
-     * @return NULL|string
+     * @return null|string
      */
     protected function resolvePath($resourcePath)
     {

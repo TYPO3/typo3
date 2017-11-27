@@ -167,7 +167,7 @@ class File extends AbstractFile
     /**
      * Returns TRUE if this file is indexed
      *
-     * @return bool|NULL
+     * @return bool|null
      */
     public function isIndexed()
     {

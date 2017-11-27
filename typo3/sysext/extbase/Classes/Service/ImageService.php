@@ -78,7 +78,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      * Get public url of image depending on the environment
      *
      * @param FileInterface $image
-     * @param bool|FALSE $absolute Force absolute URL
+     * @param bool|false $absolute Force absolute URL
      * @return string
      * @api
      */

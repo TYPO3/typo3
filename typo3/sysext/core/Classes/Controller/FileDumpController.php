@@ -32,7 +32,7 @@ class FileDumpController
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return NULL|ResponseInterface
+     * @return null|ResponseInterface
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -96,7 +96,7 @@ class FileDumpController
     /**
      * @param ServerRequestInterface $request
      * @param string $parameter
-     * @return NULL|mixed
+     * @return null|mixed
      */
     protected function getGetOrPost(ServerRequestInterface $request, $parameter)
     {

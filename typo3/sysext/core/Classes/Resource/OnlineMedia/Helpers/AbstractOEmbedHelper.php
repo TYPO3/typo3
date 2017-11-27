@@ -60,7 +60,7 @@ abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper
      * Get OEmbed data
      *
      * @param string $mediaId
-     * @return array|NULL
+     * @return array|null
      */
     protected function getOEmbedData($mediaId)
     {

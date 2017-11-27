@@ -67,7 +67,7 @@ class StorageRepository extends AbstractRepository
     /**
      * @param int $uid
      *
-     * @return NULL|ResourceStorage
+     * @return null|ResourceStorage
      */
     public function findByUid($uid)
     {

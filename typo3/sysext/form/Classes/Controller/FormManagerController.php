@@ -471,7 +471,7 @@ class FormManagerController extends AbstractBackendController
      *
      * @param string $table
      * @param int $uid
-     * @return array|NULL
+     * @return array|null
      */
     protected function getRecord(string $table, int $uid)
     {

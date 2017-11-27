@@ -30,7 +30,7 @@ class FrontendSimulatorUtility
      * Sets the $TSFE->cObjectDepthCounter in Backend mode
      * This somewhat hacky work around is currently needed because the cObjGetSingle() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
      *
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|NULL $cObj
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null $cObj
      */
     public static function simulateFrontendEnvironment(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = null)
     {

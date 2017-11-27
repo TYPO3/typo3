@@ -31,7 +31,7 @@ class DefaultAvatarProvider implements AvatarProviderInterface
      *
      * @param array $backendUser be_users record
      * @param int $size
-     * @return Image|NULL
+     * @return Image|null
      */
     public function getImage(array $backendUser, $size)
     {

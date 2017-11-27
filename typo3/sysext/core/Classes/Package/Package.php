@@ -231,7 +231,7 @@ class Package implements PackageInterface
      * Returns contents of Composer manifest - or part there of if a key is given.
      *
      * @param string $key Optional. Only return the part of the manifest indexed by 'key'
-     * @return mixed|NULL
+     * @return mixed|null
      * @see json_decode for return values
      */
     public function getValueFromComposerManifest($key = null)

@@ -87,7 +87,7 @@ class RsaEncryptionEncoder implements SingletonInterface
     /**
      * Gets RSA Public Key.
      *
-     * @return Keypair|NULL
+     * @return Keypair|null
      */
     public function getRsaPublicKey()
     {

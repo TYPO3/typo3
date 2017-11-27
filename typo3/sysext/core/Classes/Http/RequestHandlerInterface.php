@@ -26,7 +26,7 @@ interface RequestHandlerInterface
      * Handles a raw request
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return NULL|\Psr\Http\Message\ResponseInterface
+     * @return null|\Psr\Http\Message\ResponseInterface
      * @api
      */
     public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);

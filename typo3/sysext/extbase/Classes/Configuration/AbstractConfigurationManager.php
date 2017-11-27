@@ -105,7 +105,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|NULL
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null
      */
     public function getContentObject()
     {

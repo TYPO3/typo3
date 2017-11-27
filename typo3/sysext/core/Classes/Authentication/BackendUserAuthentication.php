@@ -161,7 +161,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Cache for checkWorkspaceCurrent()
-     * @var array|NULL
+     * @var array|null
      */
     public $checkWorkspaceCurrent_cache = null;
 
@@ -368,7 +368,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
      * @param bool|int $exitOnError If set, then the function will exit with an error message.
      * @throws \RuntimeException
-     * @return int|NULL The page UID of a page in the rootline that matched a mount point
+     * @return int|null The page UID of a page in the rootline that matched a mount point
      */
     public function isInWebMount($id, $readPerms = '', $exitOnError = 0)
     {
@@ -1995,7 +1995,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     * temporary files in user context. The folder _temp_ below the default upload folder
     * of the user is used.
     *
-    * @return NULL|\TYPO3\CMS\Core\Resource\Folder
+    * @return null|\TYPO3\CMS\Core\Resource\Folder
     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder();
     */
     public function getDefaultUploadTemporaryFolder()

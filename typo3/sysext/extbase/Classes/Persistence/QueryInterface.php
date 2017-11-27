@@ -379,7 +379,7 @@ interface QueryInterface
     /**
      * Gets the constraint for this query.
      *
-     * @return ConstraintInterface|NULL the constraint, or null if none
+     * @return ConstraintInterface|null the constraint, or null if none
      * @api
      */
     public function getConstraint();

@@ -202,7 +202,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionName name of the extension to retrieve the target PID for
      * @param string $pluginName name of the plugin to retrieve the target PID for
-     * @return string|NULL
+     * @return string|null
      */
     public function getDefaultControllerNameByPlugin($extensionName, $pluginName)
     {
@@ -219,7 +219,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $extensionName name of the extension to retrieve the target PID for
      * @param string $pluginName name of the plugin to retrieve the target PID for
      * @param string $controllerName name of the controller to retrieve default action for
-     * @return string|NULL
+     * @return string|null
      */
     public function getDefaultActionNameByPluginAndController($extensionName, $pluginName, $controllerName)
     {

@@ -123,7 +123,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
      * should be redirected to.
      *
-     * @var array|NULL
+     * @var array|null
      */
     protected $originalMountPointPage = null;
 
@@ -132,7 +132,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * of the request when we do not know about languages yet, used later in the request
      * to determine the correct shortcut in case a translation changes the shortcut
      * target
-     * @var array|NULL
+     * @var array|null
      * @see checkTranslatedShortcut()
      */
     protected $originalShortcutPage = null;
@@ -3817,7 +3817,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Returns the uid of the current workspace
      *
-     * @return int|NULL returns workspace integer for which workspace is being preview. NULL if none.
+     * @return int|null returns workspace integer for which workspace is being preview. NULL if none.
      */
     public function whichWorkspace()
     {

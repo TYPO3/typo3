@@ -121,7 +121,7 @@ class Export extends ImportExport
     protected $saveFilesOutsideExportFile = false;
 
     /**
-     * @var NULL|string
+     * @var null|string
      */
     protected $temporaryFilesPathForExport = null;
 

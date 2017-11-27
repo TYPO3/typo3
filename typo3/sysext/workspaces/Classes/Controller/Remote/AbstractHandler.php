@@ -65,7 +65,7 @@ abstract class AbstractHandler
      * interpreted as integer value.
      *
      * @param stdClass $parameters
-     * @return int|NULL
+     * @return int|null
      */
     protected function validateLanguageParameter(\stdClass $parameters)
     {

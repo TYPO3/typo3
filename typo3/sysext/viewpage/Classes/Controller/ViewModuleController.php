@@ -241,7 +241,7 @@ class ViewModuleController extends ActionController
      * Get domain name for requested page id
      *
      * @param int $pageId
-     * @return string|NULL Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
+     * @return string|null Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
      */
     protected function getDomainName($pageId)
     {

@@ -24,7 +24,7 @@ class PathUtility
      * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
      *
      * @param string $targetPath Absolute target path
-     * @return NULL|string
+     * @return null|string
      */
     public static function getRelativePathTo($targetPath)
     {
@@ -65,7 +65,7 @@ class PathUtility
      *
      * @param string $sourcePath Absolute source path
      * @param string $targetPath Absolute target path
-     * @return NULL|string
+     * @return null|string
      */
     public static function getRelativePath($sourcePath, $targetPath)
     {
@@ -102,7 +102,7 @@ class PathUtility
      * = /var/www/domain.com/typo3/sysext/
      *
      * @param array $paths Paths to be processed
-     * @return NULL|string
+     * @return null|string
      */
     public static function getCommonPrefix(array $paths)
     {

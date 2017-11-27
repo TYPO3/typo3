@@ -239,7 +239,7 @@ class DataMap
      * Returns the column map corresponding to the given property name.
      *
      * @param string $propertyName
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|NULL The column map or NULL if no corresponding column map was found.
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|null The column map or NULL if no corresponding column map was found.
      */
     public function getColumnMap($propertyName)
     {

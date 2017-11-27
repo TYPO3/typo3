@@ -110,7 +110,7 @@ class OnlineMediaController
      * @param string $url
      * @param string $targetFolderIdentifier
      * @param string[] $allowedExtensions
-     * @return File|NULL
+     * @return File|null
      */
     protected function addMediaFromUrl($url, $targetFolderIdentifier, array $allowedExtensions = [])
     {

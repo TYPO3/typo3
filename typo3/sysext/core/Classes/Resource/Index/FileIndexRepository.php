@@ -196,7 +196,7 @@ class FileIndexRepository implements SingletonInterface
      * Find all records for files in a Folder
      *
      * @param Folder $folder
-     * @return array|NULL
+     * @return array|null
      */
     public function findByFolder(Folder $folder)
     {
@@ -232,7 +232,7 @@ class FileIndexRepository implements SingletonInterface
      * @param Folder[] $folders
      * @param bool $includeMissing
      * @param string $fileName
-     * @return array|NULL
+     * @return array|null
      */
     public function findByFolders(array $folders, $includeMissing = true, $fileName = null)
     {

@@ -706,7 +706,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Get inlineFirstPid from a given objectId string
      *
      * @param string $domObjectId The id attribute of an element
-     * @return int|NULL Pid or null
+     * @return int|null Pid or null
      */
     protected function getInlineFirstPidFromDomObjectId($domObjectId)
     {

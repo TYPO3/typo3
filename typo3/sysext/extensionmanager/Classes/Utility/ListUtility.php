@@ -235,7 +235,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey Key of the extension
      * @param string $version String representation of version number
-     * @return Extension|NULL Extension TER object or NULL if nothing found
+     * @return Extension|null Extension TER object or NULL if nothing found
      */
     protected function getExtensionTerData($extensionKey, $version)
     {

@@ -1178,7 +1178,7 @@ abstract class ImportExport
      * Creates the original file name for a copy-RTE image (magic type)
      *
      * @param string $string RTE copy filename, eg. "RTEmagicC_user_pm_icon_01.gif.gif
-     * @return string|NULL RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". If the input filename was NOT prefixed RTEmagicC_ as RTE images would be, NULL is returned!
+     * @return string|null RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". If the input filename was NOT prefixed RTEmagicC_ as RTE images would be, NULL is returned!
      */
     public function getRTEoriginalFilename($string)
     {

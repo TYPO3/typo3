@@ -763,7 +763,7 @@ class ContentObjectRenderer
      * in $this->contentObjectClassMap
      *
      * @param string $name
-     * @return NULL|AbstractContentObject
+     * @return null|AbstractContentObject
      * @throws ContentRenderingException
      */
     public function getContentObject($name)
@@ -845,7 +845,7 @@ class ContentObjectRenderer
      * or, from global configuration if not explicitly disabled in local configuration
      *
      * @param array $configuration
-     * @return NULL|ExceptionHandlerInterface
+     * @return null|ExceptionHandlerInterface
      * @throws ContentRenderingException
      */
     protected function createExceptionHandler($configuration = [])
@@ -866,7 +866,7 @@ class ContentObjectRenderer
      * Determine exception handler class name from global and content object configuration
      *
      * @param array $configuration
-     * @return string|NULL
+     * @return string|null
      */
     protected function determineExceptionHandlerClassName($configuration)
     {
@@ -1884,7 +1884,7 @@ class ContentObjectRenderer
      * ifNull
      * Will set content to a replacement value in case the value of content is NULL
      *
-     * @param string|NULL $content Input value undergoing processing in this function.
+     * @param string|null $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for ifNull.
      * @return string The processed input value
      */
@@ -4605,7 +4605,7 @@ class ContentObjectRenderer
      *
      * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
      * @param array $fileArray TypoScript properties for the imgResource type
-     * @return array|NULL Returns info-array
+     * @return array|null Returns info-array
      * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
     public function getImgResource($file, $fileArray)
@@ -4799,7 +4799,7 @@ class ContentObjectRenderer
      * Implements the TypoScript data type "getText". This takes a string with parameters and based on those a value from somewhere in the system is returned.
      *
      * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title" (in the latter case and example of how the value is FIRST splitted by "//" is shown)
-     * @param NULL|array $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
+     * @param null|array $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
      * @return string The value fetched
      * @see getFieldVal()
      */
@@ -5566,7 +5566,7 @@ class ContentObjectRenderer
      * @param string $context The context in which the method is called (e.g. typoLink).
      * @param string $url The URL that should be processed.
      * @param array $typolinkConfiguration The current link configuration array.
-     * @return string|NULL Returns NULL if URL was not processed or the processed URL as a string.
+     * @return string|null Returns NULL if URL was not processed or the processed URL as a string.
      * @throws \RuntimeException if a hook was registered but did not fulfill the correct parameters.
      */
     protected function processUrl($context, $url, $typolinkConfiguration = [])

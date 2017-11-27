@@ -61,7 +61,7 @@ class FrontendRequestHandler extends AbstractRequestHandler
     /**
      * Handles the web request. The response will automatically be sent to the client.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface|NULL
+     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface|null
      */
     public function handleRequest()
     {

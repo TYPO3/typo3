@@ -1329,7 +1329,7 @@ class TemplateService
      * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
      *
      * @param string $fileFromSetup TypoScript "resource" data type value.
-     * @return string|NULL Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
+     * @return string|null Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
      */
     public function getFileName($fileFromSetup)
     {

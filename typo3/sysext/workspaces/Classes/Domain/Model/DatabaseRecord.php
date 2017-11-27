@@ -61,7 +61,7 @@ class DatabaseRecord
     /**
      * @param string $table Name of the database table
      * @param int $uid Id of the datbase record row
-     * @param array|NULL $row The relevant database record row
+     * @param array|null $row The relevant database record row
      */
     public function __construct($table, $uid, array $row = null)
     {

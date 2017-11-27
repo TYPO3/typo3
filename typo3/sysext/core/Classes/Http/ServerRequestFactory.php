@@ -137,7 +137,7 @@ class ServerRequestFactory
      * recursively resolve uploaded files.
      *
      * @param array $value $_FILES structure
-     * @return UploadedFileInterface[]|UploadedFileInterface|NULL
+     * @return UploadedFileInterface[]|UploadedFileInterface|null
      */
     protected static function createUploadedFile(array $value)
     {

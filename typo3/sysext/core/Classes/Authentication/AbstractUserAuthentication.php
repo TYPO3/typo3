@@ -279,7 +279,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $loginSessionStarted = false;
 
     /**
-     * @var array|NULL contains user- AND session-data from database (joined tables)
+     * @var array|null contains user- AND session-data from database (joined tables)
      * @internal
      */
     public $user = null;
