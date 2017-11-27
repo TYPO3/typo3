@@ -456,7 +456,7 @@ class FileIndexRepository implements SingletonInterface
      * Helper function for the Indexer to detect missing files
      *
      * @param ResourceStorage $storage
-     * @param array $uidList
+     * @param int[] $uidList
      * @return array
      */
     public function findInStorageAndNotInUidList(ResourceStorage $storage, array $uidList)
@@ -477,7 +477,7 @@ class FileIndexRepository implements SingletonInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->notIn(
                     'uid',
-                    $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
+                    array_map('intval', $uidList)
                 )
             );
         }
