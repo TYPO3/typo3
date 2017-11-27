@@ -1409,4 +1409,11 @@ return [
             'Deprecation-83121-LoggingMethodDataHandler-newlog2.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository->deleteClause' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-83118-DeleteClauseMethods.rst',
+        ],
+    ],
 ];

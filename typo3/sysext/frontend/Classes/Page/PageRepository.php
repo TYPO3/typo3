@@ -1277,9 +1277,11 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table Tablename
      * @return string
      * @see enableFields()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use QueryBuilders' Restrictions directly instead.
      */
     public function deleteClause($table)
     {
+        trigger_error('The delete clause can be applied via the DeletedRestrictions via QueryBuilder, this method will be removed in TYPO3 v10.0', E_USER_DEPRECATED);
         return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' : '';
     }
 
@@ -1298,7 +1300,7 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $noVersionPreview If set, enableFields will be applied regardless of any versioning preview settings which might otherwise disable enableFields
      * @throws \InvalidArgumentException
      * @return string The clause starting like " AND ...=... AND ...=...
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields(), deleteClause()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields()
      */
     public function enableFields($table, $show_hidden = -1, $ignore_array = [], $noVersionPreview = false)
     {

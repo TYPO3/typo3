@@ -703,8 +703,8 @@ class Typo3DbQueryParser
             if (!empty($enableFieldsToBeIgnored)) {
                 // array_combine() is necessary because of the way \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() is implemented
                 $statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
-            } else {
-                $statement .= $this->getPageRepository()->deleteClause($tableName);
+            } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+                $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
             $statement .= $this->getPageRepository()->enableFields($tableName);
@@ -728,8 +728,8 @@ class Typo3DbQueryParser
         if (!$ignoreEnableFields) {
             $statement .= BackendUtility::BEenableFields($tableName);
         }
-        if (!$includeDeleted) {
-            $statement .= BackendUtility::deleteClause($tableName);
+        if (!$includeDeleted && !empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+            $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
         }
         return $statement;
     }

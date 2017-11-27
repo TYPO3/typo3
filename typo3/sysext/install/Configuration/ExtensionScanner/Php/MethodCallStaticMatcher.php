@@ -526,4 +526,11 @@ return [
             'Deprecation-83116-CachingFrameworkWrapperMethodsInBackendUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-83118-DeleteClauseMethods.rst',
+        ],
+    ],
 ];

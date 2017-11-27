@@ -83,9 +83,11 @@ class BackendUtility
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param string $tableAlias Table alias if any
      * @return string WHERE clause for filtering out deleted records, eg " AND tablename.deleted=0
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, the DeletedRestriction functionality should be used instead.
      */
     public static function deleteClause($table, $tableAlias = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Add the delete statement directly in your SQL statement via the DeletedRestriction', E_USER_DEPRECATED);
         if (empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
             return '';
         }
