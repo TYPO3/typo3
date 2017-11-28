@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -52,15 +53,14 @@ class ImageInfoTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
 
         $graphicalFunctionsProphecy = $this->prophesize(GraphicalFunctions::class);
+        $graphicalFunctionsProphecy->init()->shouldBeCalled();
         $graphicalFunctionsProphecy->imageMagickIdentify($root->url() . '/' . $testFile)->willReturn(null);
-
-        $imageInfoProphecy = $this->prophesize(ImageInfo::class)
-            ->willBeConstructedWith([$root->url() . '/' . $testFile]);
-        $imageInfoProphecy->getGraphicalFunctions()->willReturn($graphicalFunctionsProphecy->reveal());
-
         GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsProphecy->reveal());
 
+        $loggerProphecy = $this->prophesize(Logger::class);
+
         $imageInfo = new ImageInfo($root->url() . '/' . $testFile);
+        $imageInfo->setLogger($loggerProphecy->reveal());
 
         $this->assertEquals(0, $imageInfo->getWidth());
         $this->assertEquals(0, $imageInfo->getHeight());
