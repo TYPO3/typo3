@@ -203,17 +203,21 @@ class ElementInformationController
      */
     public function main()
     {
-        if (!$this->access) {
-            return;
-        }
-
         $content = '';
 
-        // render type by user func
-        $typeRendered = false;
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
-                $typeRenderObj = GeneralUtility::getUserObj($classRef);
+        // Rendering of the output via fluid
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/ContentElement/ElementInformation.html'
+        ));
+
+        if ($this->access) {
+            // render type by user func
+            $typeRendered = false;
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] ?? [] as $className) {
+                $typeRenderObj = GeneralUtility::makeInstance($className);
                 if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
                     if ($typeRenderObj->isValid($this->type, $this)) {
                         $content .= $typeRenderObj->render($this->type, $this);
@@ -222,24 +226,20 @@ class ElementInformationController
                     }
                 }
             }
-        }
-
-        if (!$typeRendered) {
-            // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-            $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:backend/Resources/Private/Templates/ContentElement/ElementInformation.html'
-            ));
-            $view->assignMultiple($this->getPageTitle());
-            $view->assignMultiple($this->getPreview());
-            $view->assignMultiple($this->getPropertiesForTable());
-            $view->assignMultiple($this->getReferences());
-            $view->assignMultiple($this->getBackButton());
-            $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
+            if (!$typeRendered) {
+                $view->assign('accessAllowed', true);
+                $view->assignMultiple($this->getPageTitle());
+                $view->assignMultiple($this->getPreview());
+                $view->assignMultiple($this->getPropertiesForTable());
+                $view->assignMultiple($this->getReferences());
+                $view->assignMultiple($this->getBackButton());
+                $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
+                $content .=  $view->render();
+            }
+        } else {
             $content .=  $view->render();
         }
+
         $this->moduleTemplate->setContent($content);
     }
 
