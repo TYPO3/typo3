@@ -179,6 +179,11 @@ class ClassSchema
             $this->properties[$propertyName]['annotations']['type'] = null;
             $this->properties[$propertyName]['annotations']['cascade'] = null;
             $this->properties[$propertyName]['annotations']['dependency'] = null;
+            $this->properties[$propertyName]['annotations']['validators'] = [];
+
+            if ($docCommentParser->isTaggedWith('validate')) {
+                $this->properties[$propertyName]['annotations']['validators'] = $docCommentParser->getTagValues('validate');
+            }
 
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Lazy::class) instanceof Lazy) {
                 $this->properties[$propertyName]['annotations']['lazy'] = true;
@@ -301,15 +306,22 @@ class ClassSchema
             $this->methods[$methodName]['abstract']     = $reflectionMethod->isAbstract();
             $this->methods[$methodName]['params']       = [];
             $this->methods[$methodName]['tags']         = [];
+            $this->methods[$methodName]['annotations']  = [];
 
             $docCommentParser = new DocCommentParser(true);
             $docCommentParser->parseDocComment($reflectionMethod->getDocComment());
+
+            $this->methods[$methodName]['annotations']['validators'] = [];
+
             foreach ($docCommentParser->getTagsValues() as $tag => $values) {
                 if ($tag === 'ignorevalidation') {
                     trigger_error(
                         'Tagging methods with @ignorevalidation is deprecated and will be removed in TYPO3 v10.0.',
                         E_USER_DEPRECATED
                     );
+                }
+                if ($tag === 'validate') {
+                    $this->methods[$methodName]['annotations']['validators'] = $values;
                 }
                 $this->methods[$methodName]['tags'][$tag] = array_map(function ($value) {
                     return ltrim($value, '$');

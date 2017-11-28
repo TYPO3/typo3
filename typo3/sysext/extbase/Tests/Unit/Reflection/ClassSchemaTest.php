@@ -347,4 +347,37 @@ class ClassSchemaTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         static::assertArrayNotHasKey('author', $tags);
         static::assertArrayNotHasKey('version', $tags);
     }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValidateAnnotation()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithValidateAnnotation::class);
+
+        static::assertSame(
+            [],
+            $classSchema->getProperty('propertyWithoutValidateAnnotations')['annotations']['validators']
+        );
+        static::assertSame(
+            [
+                'NotEmpty',
+                'Empty (Foo=Bar)'
+            ],
+            $classSchema->getProperty('propertyWithValidateAnnotations')['annotations']['validators']
+        );
+
+        static::assertSame(
+            [],
+            $classSchema->getMethod('methodWithoutValidateAnnotations')['annotations']['validators']
+        );
+
+        static::assertSame(
+            [
+                '$fooParam FooValidator (FooValidatorOptionKey=FooValidatorOptionValue)',
+                '$fooParam BarValidator'
+            ],
+            $classSchema->getMethod('methodWithValidateAnnotations')['annotations']['validators']
+        );
+    }
 }
