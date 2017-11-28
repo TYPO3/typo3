@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 
 /**
@@ -28,24 +27,11 @@ use TYPO3\CMS\Extbase\Service\EnvironmentService;
  */
 class Typo3DbBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @var DataMapper
-     */
-    protected static $dataMapper;
-
     public function setUp()
     {
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->gr_list = '';
-    }
-
-    /**
-     * Setup DataMapper
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$dataMapper = new DataMapper();
     }
 
     /**

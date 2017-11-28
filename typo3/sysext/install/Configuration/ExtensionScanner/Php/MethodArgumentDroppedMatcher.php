@@ -129,4 +129,10 @@ return [
             'Deprecation-82702-SecondArgumentOfGeneralUtilitymkdir_deep.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->getPlainValue' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-83241-ExtbaseRemovedCustomFunctionalityForDataMapper-getPlainValue.rst',
+        ],
+    ],
 ];

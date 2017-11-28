@@ -681,13 +681,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param mixed $input The value that will be converted.
      * @param ColumnMap $columnMap Optional column map for retrieving the date storage format.
-     * @param callable $parseStringValueCallback Optional callback method that will be called for string values. Can be used to do database quotation.
-     * @param array $parseStringValueCallbackParameters Additional parameters that will be passed to the callabck as second parameter.
      * @throws \InvalidArgumentException
      * @throws UnexpectedTypeException
      * @return int|string
      */
-    public function getPlainValue($input, $columnMap = null, $parseStringValueCallback = null, array $parseStringValueCallbackParameters = [])
+    public function getPlainValue($input, $columnMap = null)
     {
         if ($input === null) {
             return 'NULL';
@@ -727,35 +725,18 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface
         } elseif (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
             $plainValueArray = [];
             foreach ($input as $inputElement) {
-                $plainValueArray[] = $this->getPlainValue($inputElement, $columnMap, $parseStringValueCallback, $parseStringValueCallbackParameters);
+                $plainValueArray[] = $this->getPlainValue($inputElement, $columnMap);
             }
             $parameter = implode(',', $plainValueArray);
         } elseif (is_object($input)) {
             if (TypeHandlingUtility::isCoreType($input)) {
-                $parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
+                $parameter = (string)$input;
             } else {
                 throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
             }
         } else {
-            $parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
+            $parameter = (string)$input;
         }
         return $parameter;
-    }
-
-    /**
-     * If the given callback is set the value will be passed on the the callback function.
-     * The value will be converted to a string.
-     *
-     * @param string $value The string value that should be processed. Will be passed to the callback as first parameter.
-     * @param callable $callback The data passed to call_user_func().
-     * @param array $additionalParameters Optional additional parameters passed to the callback as second argument.
-     * @return string
-     */
-    protected function getPlainStringValue($value, $callback = null, array $additionalParameters = [])
-    {
-        if (is_callable($callback)) {
-            $value = call_user_func($callback, $value, $additionalParameters);
-        }
-        return (string)$value;
     }
 }
