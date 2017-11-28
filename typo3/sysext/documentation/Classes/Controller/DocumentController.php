@@ -14,9 +14,12 @@ namespace TYPO3\CMS\Documentation\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository;
 use TYPO3\CMS\Documentation\Service\DocumentationService;
@@ -164,7 +167,31 @@ class DocumentController extends ActionController
             $documents = array_intersect_key($documents, array_flip($showDocuments));
         }
 
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addInlineLanguageLabelFile('EXT:documentation/Resources/Private/Language/locallang.xlf');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Documentation/Main');
+
         $this->view->assign('documents', $documents);
+    }
+
+    /**
+     * Delete documentation with given packageKey
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $basePath = 'typo3conf/Documentation/';
+        $packageKey = $request->getParsedBody();
+        $isDirDeleted = GeneralUtility::rmdir(PATH_site . $basePath . $packageKey['documentationKey'], true);
+        if (!$isDirDeleted) {
+            $this->addFlashMessage(LocalizationUtility::translate('deleteFailed', 'Documentation'), '', FlashMessage::ERROR);
+        }
+
+        $response->getBody()->write(json_encode($isDirDeleted));
+        return $response;
     }
 
     /**

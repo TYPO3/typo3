@@ -15,12 +15,12 @@
  * Module: TYPO3/CMS/Documentation/Main
  * JavaScript module for ext:documentation
  */
-define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($) {
+define(['jquery', 'datatables', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/Severity', 'TYPO3/CMS/Backend/jquery.clearable'], function($, DataTable, Modal, Notification, Severity) {
 	'use strict';
 
 	/**
 	 *
-	 * @type {{dataTable: null, searchField: null, identifier: {documentationList: string, searchField: string}}}
+	 * @type {{dataTable: null, searchField: null, identifier: {documentationList: string, searchField: string, deleteButtons: string}}}
 	 * @exports TYPO3/CMS/Documentation/Main
 	 */
 	var Documentation = {
@@ -28,7 +28,8 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 		searchField: null,
 		identifier: {
 			documentationList: '.t3js-documentation-list',
-			searchField: '.t3js-documentation-searchfield'
+			searchField: '.t3js-documentation-searchfield',
+			deleteButtons: '.t3js-documentation-delete'
 		}
 	};
 
@@ -76,6 +77,58 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 		return vars;
 	};
 
+	/**
+	 * Delete documentation
+	 *
+	 * @param {Object} $documentationRecord
+	 */
+	Documentation.deleteDocumentation = function($documentationRecord) {
+
+		Modal.confirm($documentationRecord.data('documentationName'), $documentationRecord.data('documentationDeleteDescription'), Severity.warning, [
+			{
+				text: TYPO3.lang['cancel'],
+				active: true,
+				btnClass: 'btn-default',
+				trigger: function() {
+					Modal.dismiss();
+				}
+			}, {
+				text: TYPO3.lang['delete'],
+				btnClass: 'btn-info',
+				trigger: function() {
+					$.ajax({
+						url: TYPO3.settings.ajaxUrls['documentation_remove'],
+						data: {
+							documentationKey: $documentationRecord.data('documentationKey')
+						},
+						type: 'post',
+						cache: false
+					}).done(function(data) {
+						if(data) {
+							$documentationRecord.closest('tr').fadeOut();
+						} else {
+							Documentation.handleErrors(data);
+						}
+					});
+					Modal.dismiss();
+				}
+			}
+		]);
+
+	};
+
+	/**
+	 * handle the errors from result object
+	 *
+	 * @param {Object} result
+	 * @private
+	 */
+	Documentation.handleErrors = function(result) {
+		$.each(result.messages, function(position, message) {
+			Notification.error(message.title, message.message);
+		});
+	};
+
 	$(function() {
 		// Initialize the view
 		Documentation.initializeView();
@@ -86,6 +139,11 @@ define(['jquery', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function(
 				Documentation.dataTable.search('').draw();
 			}
 		});
+		$(Documentation.identifier.deleteButtons).on('click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			Documentation.deleteDocumentation($(this));
+		})
 	});
 
 	return Documentation;
