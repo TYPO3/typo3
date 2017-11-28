@@ -90,7 +90,9 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
             }
             // Remove files from _recycler_ that where moved to this folder for more than 'number of days'
             if ($file->isFile() && $timestamp > $file->getCTime()) {
-                $fileObject = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($filePath);
+                $fileObject = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier(
+                    substr($fileName, strlen(PATH_site))
+                );
                 $fileObject->delete();
             }
         }
