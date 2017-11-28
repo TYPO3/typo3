@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Cache\DatabaseSchemaService;
@@ -210,9 +211,11 @@ class UpgradeWizardsService
      */
     public function isDatabaseCharsetUtf8(): bool
     {
+        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $isDefaultConnectionMysql = strpos($connection->getServerVersion(), 'MySQL') === 0;
+
+        $isDefaultConnectionMysql = ($connection->getDatabasePlatform() instanceof MySqlPlatform);
 
         if (!$isDefaultConnectionMysql) {
             // Not tested on non mysql
@@ -231,7 +234,7 @@ class UpgradeWizardsService
                 ->execute()
                 ->fetchColumn();
             // check if database charset is utf-8, also allows utf8mb4
-            $charsetOk = strpos($charset, 'utf8') !== 0;
+            $charsetOk = strpos($charset, 'utf8') === 0;
         }
         return $charsetOk;
     }

@@ -835,7 +835,7 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsBlockingDatabaseCharsetTestAction(): ResponseInterface
     {
         $upgradeWizardsService = new UpgradeWizardsService();
-        $result = $upgradeWizardsService->isDatabaseCharsetUtf8();
+        $result = !$upgradeWizardsService->isDatabaseCharsetUtf8();
         return new JsonResponse([
             'success' => true,
             'needsUpdate' => $result,
