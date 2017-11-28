@@ -71,6 +71,13 @@ class Check implements CheckInterface
     ];
 
     /**
+     * @var string[]
+     */
+    protected $suggestedPhpExtensions = [
+        'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
+    ];
+
+    /**
      * Get all status information as array with status objects
      *
      * @return FlashMessageQueue
@@ -96,7 +103,11 @@ class Check implements CheckInterface
         $this->checkWindowsApacheThreadStackSize();
 
         foreach ($this->requiredPhpExtensions as $extension) {
-            $this->checkRequiredPhpExtension($extension);
+            $this->checkPhpExtension($extension);
+        }
+
+        foreach ($this->suggestedPhpExtensions as $extension => $purpose) {
+            $this->checkPhpExtension($extension, false, $purpose);
         }
 
         $this->checkPcreVersion();
@@ -637,23 +648,26 @@ class Check implements CheckInterface
     }
 
     /**
-     * Check if a specific required PHP extension is loaded
+     * Checks if a specific PHP extension is loaded.
      *
      * @param string $extension
+     * @param bool $required
+     * @param string $purpose
      */
-    protected function checkRequiredPhpExtension($extension)
+    protected function checkPhpExtension(string $extension, bool $required = true, string $purpose = '')
     {
         if (!extension_loaded($extension)) {
             $this->messageQueue->enqueue(new FlashMessage(
-                'TYPO3 CMS uses PHP extension ' . $extension . ' but it is not loaded'
-                    . ' in your environment. Change your environment to provide this extension.',
-                'PHP extension ' . $extension . ' not loaded',
-                FlashMessage::ERROR
+                'TYPO3 uses the PHP extension "' . $extension . '" but it is not loaded'
+                    . ' in your environment. Change your environment to provide this extension. '
+                    . $purpose,
+                'PHP extension "' . $extension . '" not loaded',
+                $required ? FlashMessage::ERROR : FlashMessage::WARNING
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                'PHP extension ' . $extension . ' loaded'
+                'PHP extension "' . $extension . '" loaded'
             ));
         }
     }
