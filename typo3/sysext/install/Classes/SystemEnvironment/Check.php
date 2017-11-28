@@ -65,6 +65,13 @@ class Check implements CheckInterface
     ];
 
     /**
+     * @var string[]
+     */
+    protected $suggestedPhpExtensions = [
+        'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
+    ];
+
+    /**
      * Get all status information as array with status objects
      *
      * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
@@ -90,7 +97,11 @@ class Check implements CheckInterface
         $status[] = $this->checkWindowsApacheThreadStackSize();
 
         foreach ($this->requiredPhpExtensions as $extension) {
-            $status[] = $this->checkRequiredPhpExtension($extension);
+            $status[] = $this->checkPhpExtension($extension);
+        }
+
+        foreach ($this->suggestedPhpExtensions as $extension => $purpose) {
+            $status[] = $this->checkPhpExtension($extension, false, $purpose);
         }
 
         $status[] = $this->checkPcreVersion();
@@ -649,23 +660,26 @@ class Check implements CheckInterface
     }
 
     /**
-     * Check if a specific required PHP extension is loaded
+     * Checks if a specific PHP extension is loaded.
      *
      * @param string $extension
+     * @param bool $required
+     * @param string $purpose
      * @return Status\StatusInterface
      */
-    protected function checkRequiredPhpExtension($extension)
+    protected function checkPhpExtension(string $extension, bool $required = true, string $purpose = '')
     {
         if (!extension_loaded($extension)) {
-            $status = new Status\ErrorStatus();
+            $status = $required ? new Status\ErrorStatus() : new Status\WarningStatus();
             $status->setTitle('PHP extension ' . $extension . ' not loaded');
             $status->setMessage(
-                'TYPO3 CMS uses PHP extension ' . $extension . ' but it is not loaded' .
-                ' in your environment. Change your environment to provide this extension.'
+                'TYPO3 uses the PHP extension "' . $extension . '" but it is not loaded'
+                . ' in your environment. Change your environment to provide this extension. '
+                . $purpose
             );
         } else {
             $status = new Status\OkStatus();
-            $status->setTitle('PHP extension ' . $extension . ' loaded');
+            $status->setTitle('PHP extension "' . $extension . '" loaded');
         }
         return $status;
     }
