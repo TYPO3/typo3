@@ -111,7 +111,9 @@ class ListController extends AbstractWizardController
             $urlParameters = [];
             $urlParameters['id'] = $this->pid;
             $urlParameters['table'] = $this->P['params']['table'];
-            $urlParameters['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $urlParameters['returnUrl'] = !empty($this->P['returnUrl'])
+                ? GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])
+                : GeneralUtility::getIndpEnv('REQUEST_URI');
             $redirectUrl = BackendUtility::getModuleUrl('web_list', $urlParameters);
         }
         HttpUtility::redirect($redirectUrl);
