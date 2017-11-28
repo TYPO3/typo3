@@ -316,7 +316,7 @@ CREATE TABLE backend_layout (
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text,
 	config text NOT NULL,
-	icon text NOT NULL,
+	icon text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

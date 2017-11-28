@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -479,6 +480,7 @@ abstract class AbstractItemProvider
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 
         while ($foreignRow = $queryResult->fetch()) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
@@ -486,20 +488,34 @@ abstract class AbstractItemProvider
                 // If the foreign table sets selicon_field, this field can contain an image
                 // that represents this specific row.
                 $iconFieldName = '';
+                $isReferenceField = false;
                 if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'])) {
                     $iconFieldName = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field'];
+                    if ($GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['type'] === 'inline'
+                        && $GLOBALS['TCA'][$foreignTable]['columns'][$iconFieldName]['config']['foreign_table'] === 'sys_file_reference') {
+                        $isReferenceField = true;
+                    }
                 }
-                $iconPath = '';
-                if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'])) {
-                    $iconPath = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'];
-                }
-                if ($iconFieldName && $iconPath && $foreignRow[$iconFieldName]) {
-                    // Prepare the row icon if available
-                    $iParts = GeneralUtility::trimExplode(',', $foreignRow[$iconFieldName], true);
-                    $icon = $iconPath . '/' . trim($iParts[0]);
+                $icon = '';
+                if ($isReferenceField) {
+                    $references = $fileRepository->findByRelation($foreignTable, $iconFieldName, $foreignRow['uid']);
+                    if (is_array($references) && !empty($references)) {
+                        $icon = reset($references);
+                        $icon = $icon->getPublicUrl();
+                    }
                 } else {
-                    // Else, determine icon based on record type, or a generic fallback
-                    $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
+                    $iconPath = '';
+                    if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'])) {
+                        $iconPath = $GLOBALS['TCA'][$foreignTable]['ctrl']['selicon_field_path'];
+                    }
+                    if ($iconFieldName && $iconPath && $foreignRow[$iconFieldName]) {
+                        // Prepare the row icon if available
+                        $iParts = GeneralUtility::trimExplode(',', $foreignRow[$iconFieldName], true);
+                        $icon = $iconPath . '/' . trim($iParts[0]);
+                    } else {
+                        // Else, determine icon based on record type, or a generic fallback
+                        $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
+                    }
                 }
                 // Add the item
                 $items[] = [

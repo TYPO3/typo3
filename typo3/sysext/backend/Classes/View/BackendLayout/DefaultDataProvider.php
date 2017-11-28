@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 use Doctrine\Common\Collections\Expr\Comparison;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -108,27 +109,26 @@ class DefaultDataProvider implements DataProviderInterface
     protected function createBackendLayout(array $data)
     {
         $backendLayout = BackendLayout::create($data['uid'], $data['title'], $data['config']);
-        $backendLayout->setIconPath($this->getIconPath($data['icon']));
+        $backendLayout->setIconPath($this->getIconPath($data));
         $backendLayout->setData($data);
         return $backendLayout;
     }
 
     /**
-     * Gets and sanitizes the icon path.
+     * Resolves the icon from the database record
      *
-     * @param string $icon Name of the icon file
+     * @param array $icon
      * @return string
      */
-    protected function getIconPath($icon)
+    protected function getIconPath(array $icon)
     {
-        $iconPath = '';
-
-        if (!empty($icon)) {
-            $path = rtrim($GLOBALS['TCA']['backend_layout']['ctrl']['selicon_field_path'], '/') . '/';
-            $iconPath = $path . $icon;
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $references = $fileRepository->findByRelation($this->tableName, 'icon', $icon['uid']);
+        if (!empty($references)) {
+            $icon = reset($references);
+            return $icon->getPublicUrl();
         }
-
-        return $iconPath;
+        return '';
     }
 
     /**

@@ -17,8 +17,7 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-backend_layout'
         ],
-        'selicon_field' => 'icon',
-        'selicon_field_path' => 'uploads/media'
+        'selicon_field' => 'icon'
     ],
     'interface' => [
         'showRecordFieldList' => 'title,config,description,hidden,icon'
@@ -59,14 +58,16 @@ return [
         'icon' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.icon',
             'exclude' => true,
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'jpg,gif,png',
-                'uploadfolder' => 'uploads/media',
-                'size' => 1,
-                'maxitems' => 1
-            ]
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'icon',
+                [
+                    'maxitems' => 1,
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+            )
         ]
     ],
     'types' => [
