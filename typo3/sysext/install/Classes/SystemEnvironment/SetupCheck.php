@@ -74,10 +74,11 @@ class SetupCheck implements CheckInterface
                     'Trusted hosts pattern is configured to allow current host value.'
                 ));
             } else {
+                $defaultPort = GeneralUtility::getIndpEnv('TYPO3_SSL') ? '443' : '80';
                 $this->messageQueue->enqueue(new FlashMessage(
-                    'The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME'
-                        . ' is "' . htmlspecialchars($_SERVER['SERVER_NAME']) . '" while your HTTP_HOST is "'
-                        . htmlspecialchars($_SERVER['HTTP_HOST']) . '". Check the pattern defined in Install Tool -> All'
+                    'The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME:[defaultPort]'
+                        . ' is "' . $_SERVER['SERVER_NAME'] . ':' . $defaultPort . '" while your HTTP_HOST:SERVER_PORT is "'
+                        . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . '". Check the pattern defined in Install Tool -> All'
                         . ' configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).',
                     'Trusted hosts pattern mismatch',
                     FlashMessage::ERROR
