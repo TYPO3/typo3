@@ -163,6 +163,9 @@ class BackendController
         // load debug console
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
         $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', BackendUtility::getModuleUrl('db_new'));

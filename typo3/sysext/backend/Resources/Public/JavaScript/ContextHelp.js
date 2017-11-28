@@ -48,8 +48,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Popover', 'bootstrap'], function($, Popover
 			$('.icon-actions-system-shortcut-new').closest('.btn').hide();
 		}
 		var title = '&nbsp;';
-		if (typeof backendWindow.TYPO3.LLL !== 'undefined') {
-			title = backendWindow.TYPO3.LLL.core.csh_tooltip_loading;
+		if (typeof backendWindow.TYPO3.lang !== 'undefined') {
+			title = backendWindow.TYPO3.lang['csh_tooltip_loading'];
 		}
 		var $element = $(this.selector);
 		$element

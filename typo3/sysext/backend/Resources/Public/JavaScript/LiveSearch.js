@@ -48,10 +48,10 @@ define([
 			showNoSuggestionNotice: true,
 			triggerSelectOnValidInput: false,
 			preventBadQueries: false,
-			noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.LLL.liveSearch.listEmptyText + '</h3>'
-					+ '<p>' + TYPO3.LLL.liveSearch.helpTitle + '</p>'
+			noSuggestionNotice: '<h3 class="dropdown-headline">' + TYPO3.lang['liveSearch_listEmptyText'] + '</h3>'
+					+ '<p>' + TYPO3.lang['liveSearch_helpTitle'] + '</p>'
 					+ '<hr>'
-					+ '<p>' + TYPO3.LLL.liveSearch.helpDescription + '<br>' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>',
+					+ '<p>' + TYPO3.lang['liveSearch_helpDescription'] + '<br>' + TYPO3.lang['liveSearch_helpDescriptionPages'] + '</p>',
 			// put the AJAX results in the right format
 			transformResult: function(response) {
 				return {
@@ -106,7 +106,7 @@ define([
 			beforeRender: function(container) {
 				container.append('<hr><div>' +
 					'<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
-						TYPO3.LLL.liveSearch.showAllResults +
+						TYPO3.lang['liveSearch_showAllResults'] +
 					'</a>' +
 				'</div>');
 				if (!$(toolbarItem).hasClass('open')) {

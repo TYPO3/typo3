@@ -113,9 +113,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	LoginRefresh.initializeTimeoutModal = function() {
 		LoginRefresh.$timeoutModal = LoginRefresh.generateModal(LoginRefresh.identifier.loginrefresh);
 		LoginRefresh.$timeoutModal.addClass('modal-severity-notice');
-		LoginRefresh.$timeoutModal.find('.modal-header h4').text(TYPO3.LLL.core.login_about_to_expire_title);
+		LoginRefresh.$timeoutModal.find('.modal-header h4').text(TYPO3.lang['mess.login_about_to_expire_title']);
 		LoginRefresh.$timeoutModal.find('.modal-body').append(
-			$('<p />').text(TYPO3.LLL.core.login_about_to_expire),
+			$('<p />').text(TYPO3.lang['mess.login_about_to_expire']),
 			$('<div />', {class: 'progress'}).append(
 				$('<div />', {
 					class: 'progress-bar progress-bar-warning progress-bar-striped active',
@@ -128,10 +128,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 			)
 		);
 		LoginRefresh.$timeoutModal.find('.modal-footer').append(
-			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_login_logout_button).on('click', function() {
+			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.lang['mess.refresh_login_logout_button']).on('click', function() {
 				top.location.href = LoginRefresh.logoutUrl;
 			}),
-			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
+			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'refreshSession'}).text(TYPO3.lang['mess.refresh_login_refresh_button']).on('click', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['login_timedout'],
 					method: 'GET',
@@ -156,8 +156,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 		LoginRefresh.fillProgressbar(LoginRefresh.$timeoutModal);
 
 		if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && !LoginRefresh.isPageActive()) {
-			LoginRefresh.webNotification = new Notification(TYPO3.LLL.core.login_about_to_expire_title, {
-				body: TYPO3.LLL.core.login_about_to_expire,
+			LoginRefresh.webNotification = new Notification(TYPO3.lang['mess.login_about_to_expire_title'], {
+				body: TYPO3.lang['mess.login_about_to_expire'],
 				icon: '/typo3/sysext/backend/Resources/Public/Images/Logo.png'
 			});
 			LoginRefresh.webNotification.onclick = function() {
@@ -183,9 +183,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 	 */
 	LoginRefresh.initializeBackendLockedModal = function() {
 		LoginRefresh.$backendLockedModal = LoginRefresh.generateModal(LoginRefresh.identifier.lockedModal);
-		LoginRefresh.$backendLockedModal.find('.modal-header h4').text(TYPO3.LLL.core.please_wait);
+		LoginRefresh.$backendLockedModal.find('.modal-header h4').text(TYPO3.lang['mess.please_wait']);
 		LoginRefresh.$backendLockedModal.find('.modal-body').append(
-			$('<p />').text(TYPO3.LLL.core.be_locked)
+			$('<p />').text(TYPO3.lang['mess.be_locked'])
 		);
 		LoginRefresh.$backendLockedModal.find('.modal-footer').remove();
 
@@ -217,22 +217,22 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 
 		LoginRefresh.$loginForm = LoginRefresh.generateModal(LoginRefresh.identifier.loginFormModal);
 		LoginRefresh.$loginForm.addClass('modal-notice');
-		var refresh_login_title = String(TYPO3.LLL.core.refresh_login_title).replace('%s', TYPO3.configuration.username);
+		var refresh_login_title = String(TYPO3.lang['mess.refresh_login_title']).replace('%s', TYPO3.configuration.username);
 		LoginRefresh.$loginForm.find('.modal-header h4').text(refresh_login_title);
 		LoginRefresh.$loginForm.find('.modal-body').append(
-			$('<p />').text(TYPO3.LLL.core.login_expired),
+			$('<p />').text(TYPO3.lang['mess.login_expired']),
 			$('<form />', {id: 'beLoginRefresh', method: 'POST', action: TYPO3.settings.ajaxUrls['login']}).append(
 				$('<div />', {class: 'form-group'}).append(
-					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.LLL.core.refresh_login_password, 'data-rsa-encryption': 't3-loginrefres-userident'})
+					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.lang['mess.refresh_login_password'], 'data-rsa-encryption': 't3-loginrefres-userident'})
 				),
 				$('<input />', {type: 'hidden', name: 'username', value: TYPO3.configuration.username}),
 				$('<input />', {type: 'hidden', name: 'userident', id: 't3-loginrefres-userident'})
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
-			$('<a />', {href: LoginRefresh.logoutUrl, class: 'btn btn-default'}).text(TYPO3.LLL.core.refresh_exit_button),
+			$('<a />', {href: LoginRefresh.logoutUrl, class: 'btn btn-default'}).text(TYPO3.lang['mess.refresh_exit_button']),
 			$('<button />', {type: 'button', class: 'btn btn-primary', 'data-action': 'refreshSession'})
-				.text(TYPO3.LLL.core.refresh_login_button)
+				.text(TYPO3.lang['mess.refresh_login_button'])
 				.on('click', function(e) {
 					LoginRefresh.$loginForm.find('form').submit();
 				})
@@ -343,7 +343,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 			passwordFieldValue = $passwordField.val();
 
 		if (passwordFieldValue === '' && $useridentField.val() === '') {
-			Typo3Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+			Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_emptyPassword']);
 			$passwordField.focus();
 			return;
 		}
@@ -369,7 +369,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Notification', 'bootstrap'], function($, Ty
 					// User is logged in
 					LoginRefresh.hideLoginForm();
 				} else {
-					Typo3Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+					Typo3Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
 					$passwordField.focus();
 				}
 			}
