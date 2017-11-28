@@ -125,8 +125,12 @@ define([
 				}
 			} else {
 				// @todo Recovery tests should be started here
-				message = InfoBox.render(Severity.error, 'Something went wrong', '');
-				$(this.selectorBody).empty().append(message);
+				var url = this.getUrl(undefined, 'upgrade');
+				message = '<div class="t3js-infobox callout callout-sm callout-danger"><div class="callout-body">'
+						+ 'Something went wrong. Please use <b><a href="' + url + '">Check for broken'
+						+ ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
+						+ ' and unload it.</div></div>';
+				$(this.selectorBody).empty().html(message);
 			}
 		},
 
