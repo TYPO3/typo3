@@ -456,32 +456,40 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             throw new BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
-        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
-        $queryBuilder = $queryParser
-            ->convertQueryToDoctrineQueryBuilder($query)
-            ->resetQueryPart('orderBy');
-
-        if ($queryParser->isDistinctQuerySuggested()) {
-            $source = $queryBuilder->getQueryPart('from')[0];
-            // Tablename is already quoted for the DBMS, we need to treat table and field names separately
-            $tableName = $source['alias'] ?: $source['table'];
-            $fieldName = $queryBuilder->quoteIdentifier('uid');
-            $queryBuilder->resetQueryPart('groupBy')
-             ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+        $statement = $query->getStatement();
+        if ($statement instanceof Qom\Statement
+            && !$statement->getStatement() instanceof QueryBuilder
+        ) {
+            $rows = $this->getObjectDataByQuery($query);
+            $count = count($rows);
         } else {
-            $queryBuilder->count('*');
-        }
+            $queryParser  = $this->objectManager->get(Typo3DbQueryParser::class);
+            $queryBuilder = $queryParser
+                ->convertQueryToDoctrineQueryBuilder($query)
+                ->resetQueryPart('orderBy');
 
-        try {
-            $count = $queryBuilder->execute()->fetchColumn(0);
-        } catch (DBALException $e) {
-            throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379);
-        }
-        if ($query->getOffset()) {
-            $count -= $query->getOffset();
-        }
-        if ($query->getLimit()) {
-            $count = min($count, $query->getLimit());
+            if ($queryParser->isDistinctQuerySuggested()) {
+                $source = $queryBuilder->getQueryPart('from')[0];
+                // Tablename is already quoted for the DBMS, we need to treat table and field names separately
+                $tableName = $source['alias'] ?: $source['table'];
+                $fieldName = $queryBuilder->quoteIdentifier('uid');
+                $queryBuilder->resetQueryPart('groupBy')
+                             ->selectLiteral(sprintf('COUNT(DISTINCT %s.%s)', $tableName, $fieldName));
+            } else {
+                $queryBuilder->count('*');
+            }
+
+            try {
+                $count = $queryBuilder->execute()->fetchColumn(0);
+            } catch (DBALException $e) {
+                throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379);
+            }
+            if ($query->getOffset()) {
+                $count -= $query->getOffset();
+            }
+            if ($query->getLimit()) {
+                $count = min($count, $query->getLimit());
+            }
         }
         return (int)max(0, $count);
     }
