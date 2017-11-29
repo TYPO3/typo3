@@ -84,6 +84,61 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     /**
      * @test
      */
+    public function migrateAddsMissingColumnsConfig()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'exclude' => true,
+                    ],
+                    'bField' => [
+                    ],
+                    'cField' => [
+                        'config' => 'i am a string but should be an array',
+                    ],
+                    'dField' => [
+                        // This kept as is, 'config' is not added. This is relevant
+                        // for "flex" data structure arrays with section containers
+                        // that have 'type'=>'array' on this level and an 'el' sub array
+                        // with details.
+                        'type' => 'array',
+                    ],
+                ]
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'exclude' => true,
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                    'bField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                    'cField' => [
+                        'config' => [
+                            'type' => 'none',
+                        ],
+                    ],
+                    'dField' => [
+                        'type' => 'array',
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
     public function migrateChangesT3editorWizardToT3editorRenderTypeIfNotEnabledByTypeConfig()
     {
         $input = [
@@ -212,6 +267,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                 'columns' => [
                     'anotherField' => [
                         'defaultExtras' => 'nowrap',
+                        'config' => [
+                            'type' => 'text',
+                        ],
                     ],
                 ],
                 'types' => [
@@ -227,6 +285,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'anotherField' => [
                         'config' => [
                             'wrap' => 'off',
+                            'type' => 'text',
                         ],
                     ],
                 ],
@@ -411,6 +470,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'aTable' => [
                 'columns' => [
                     'anotherField' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
                     ],
                 ],
                 'types' => [
@@ -2094,6 +2156,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'columns' => [
                             'aColumn' => [
                                 'l10n_mode' => 'noCopy',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                             ],
                         ],
                     ],
@@ -2102,6 +2167,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                     'aTable' => [
                         'columns' => [
                             'aColumn' => [
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                             ],
                         ],
                     ],
@@ -2113,6 +2181,9 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'columns' => [
                             'aColumn' => [
                                 'l10n_mode' => 'mergeIfNotBlank',
+                                'config' => [
+                                    'type' => 'text',
+                                ],
                             ],
                         ],
                     ],
@@ -2122,6 +2193,7 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'columns' => [
                             'aColumn' => [
                                 'config' => [
+                                    'type' => 'text',
                                     'behaviour' => [
                                         'allowLanguageSynchronization' => true,
                                     ]
@@ -2217,66 +2289,6 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'aColumn' => [
                                 'config' => [
                                     'type' => 'input',
-                                    'behaviour' => [
-                                        'allowLanguageSynchronization' => true,
-                                    ]
-                                ],
-                            ],
-                        ],
-                    ],
-                ]
-            ],
-            'superfluous l10n_mode' => [
-                [
-                    'pages' => [
-                        'columns' => [
-                            'aColumn' => [],
-                        ],
-                    ],
-                    'pages_language_overlay' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                ],
-                                'l10n_mode' => 'any-possible-value',
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'pages' => [
-                        'columns' => [
-                            'aColumn' => [],
-                        ],
-                    ],
-                ]
-            ],
-            'superfluous allowLanguageSynchronization' => [
-                [
-                    'pages' => [
-                        'columns' => [
-                            'aColumn' => [],
-                        ],
-                    ],
-                    'pages_language_overlay' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
-                                    'type' => 'input',
-                                    'behaviour' => [
-                                        'allowLanguageSynchronization' => true,
-                                    ]
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'pages' => [
-                        'columns' => [
-                            'aColumn' => [
-                                'config' => [
                                     'behaviour' => [
                                         'allowLanguageSynchronization' => true,
                                     ]
@@ -2458,8 +2470,16 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                             'requestUpdate' => 'aField, bField, cField, ',
                         ],
                         'columns' => [
-                            'aField' => [],
-                            'cField' => [],
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
+                            'cField' => [
+                                'config' => [
+                                    'type' => 'none',
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -2468,9 +2488,15 @@ class TcaMigrationTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
                         'ctrl' => [],
                         'columns' => [
                             'aField' => [
+                                'config' => [
+                                    'type' => 'none',
+                                ],
                                 'onChange' => 'reload',
                             ],
                             'cField' => [
+                                'config' => [
+                                    'type' => 'none',
+                                ],
                                 'onChange' => 'reload',
                             ],
                         ],

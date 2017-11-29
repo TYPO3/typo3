@@ -48,6 +48,7 @@ class TcaMigration
     {
         $this->validateTcaType($tca);
 
+        $tca = $this->migrateColumnsConfig($tca);
         $tca = $this->migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig($tca);
         $tca = $this->migrateSpecialConfigurationAndRemoveShowItemStylePointerConfig($tca);
         $tca = $this->migrateT3editorWizardWithEnabledByTypeConfigToColumnsOverrides($tca);
@@ -122,6 +123,33 @@ class TcaMigration
                 }
             }
         }
+    }
+
+    /**
+     * Find columns fields that don't have a 'config' section at all, add
+     * ['config']['type'] = 'none'; for those to enforce config
+     *
+     * @param array $tca Incoming TCA
+     * @return array
+     */
+    protected function migrateColumnsConfig(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((!isset($fieldConfig['config']) || !is_array($fieldConfig['config'])) && !isset($fieldConfig['type'])) {
+                    $fieldConfig['config'] = [
+                        'type' => 'none',
+                    ];
+                    $this->messages[] = 'TCA table "' . $table . '" columns field "' . $fieldName . '"'
+                        . ' had no mandatory "config" section. This has been added with default type "none":'
+                        . ' TCA "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'type\'] = \'none\'"';
+                }
+            }
+        }
+        return $tca;
     }
 
     /**
