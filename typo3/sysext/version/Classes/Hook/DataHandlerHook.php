@@ -893,7 +893,9 @@ class DataHandlerHook
         // Take care of relations in each field (e.g. IRRE):
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldConf) {
-                $this->version_swap_processFields($table, $field, $fieldConf['config'], $curVersion, $swapVersion, $dataHandler);
+                if (isset($fieldConf['config']) && is_array($fieldConf['config'])) {
+                    $this->version_swap_processFields($table, $field, $fieldConf['config'], $curVersion, $swapVersion, $dataHandler);
+                }
             }
         }
         unset($swapVersion['uid']);
