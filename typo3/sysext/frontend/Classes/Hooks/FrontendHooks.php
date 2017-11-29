@@ -35,7 +35,23 @@ class FrontendHooks
         if ($pObj->config['config']['message_preview']) {
             $message = $pObj->config['config']['message_preview'];
         } else {
-            $message = '<div id="typo3-previewInfo" style="position: absolute; top: 20px; right: 20px; border: 2px solid #000; padding: 5px 5px; background: #f00; font: 1em Verdana; color: #000; font-weight: bold; z-index: 10001">PREVIEW!</div>';
+            $styles = [];
+            $styles[] = 'position: fixed';
+            $styles[] = 'top: 15px';
+            $styles[] = 'right: 15px';
+            $styles[] = 'padding: 8px 18px';
+            $styles[] = 'background: #fff3cd';
+            $styles[] = 'border: 1px solid #ffeeba';
+            $styles[] = 'font-family: sans-serif';
+            $styles[] = 'font-size: 14px';
+            $styles[] = 'font-weight: bold';
+            $styles[] = 'color: #856404';
+            $styles[] = 'z-index: 20000';
+            $styles[] = 'user-select: none';
+            $styles[] = 'pointer-events:none';
+            $styles[] = 'text-align: center';
+            $styles[] = 'border-radius: 2px';
+            $message = '<div id="typo3-preview-info" style="' . implode($styles, ';') . '">PREVIEW</div>';
         }
         return $message;
     }
