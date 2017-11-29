@@ -15,9 +15,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  */
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
+use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ArgumentTestClassForPublicPropertyInjection;
+use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\ProtectedPropertyInjectClass;
+use TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures\PublicPropertyInjectClass;
 
 /**
  * Test case
@@ -952,5 +956,25 @@ class ContainerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             $second,
             $object->argumentTestClassTwo
         );
+    }
+
+    /**
+     * @test
+     */
+    public function getInstanceInjectsPublicProperties()
+    {
+        $container = new Container();
+        $object = $container->getInstance(PublicPropertyInjectClass::class);
+        self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->foo);
+    }
+
+    /**
+     * @test
+     */
+    public function getInstanceInjectsProtectedProperties()
+    {
+        $container = new Container();
+        $object = $container->getInstance(ProtectedPropertyInjectClass::class);
+        self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->getFoo());
     }
 }

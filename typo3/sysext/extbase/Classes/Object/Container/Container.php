@@ -212,10 +212,14 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
             if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
                 $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
             }
-            $propertyReflection = new \ReflectionProperty($instance, $injectPropertyName);
 
-            $propertyReflection->setAccessible(true);
-            $propertyReflection->setValue($instance, $instanceToInject);
+            if ($classSchema->getProperty($injectPropertyName)['public']) {
+                $instance->{$injectPropertyName} = $instanceToInject;
+            } else {
+                $propertyReflection = new \ReflectionProperty($instance, $injectPropertyName);
+                $propertyReflection->setAccessible(true);
+                $propertyReflection->setValue($instance, $instanceToInject);
+            }
         }
     }
 
