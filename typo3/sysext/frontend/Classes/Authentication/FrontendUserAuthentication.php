@@ -34,7 +34,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public $formfield_permanent = 'permalogin';
 
     /**
-     * Lifetime of session data in seconds.
+     * Lifetime of anonymous session data in seconds.
      * @var int
      */
     protected $sessionDataLifetime = 86400;
