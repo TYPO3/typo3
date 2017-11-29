@@ -82,6 +82,7 @@ check if these are available.
 
 * These might have to be installed separately:
   * gd
+  * intl
   * json
   * mysqli
 

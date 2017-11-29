@@ -75,6 +75,7 @@ class Check implements CheckInterface
      */
     protected $suggestedPhpExtensions = [
         'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
+        'intl' => 'This extension is used for correct language and locale handling.'
     ];
 
     /**
