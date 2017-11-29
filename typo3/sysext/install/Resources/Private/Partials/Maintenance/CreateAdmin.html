@@ -8,7 +8,8 @@
 
 
 
-<div class="form-horizontal">
+<form action="" id="t3js-createAdmin-form" method="post">
+	<div class="form-horizontal">
 	<div class="form-group">
 		<label for="t3-install-admin-username" class="col-sm-3 control-label">Username:</label>
 		<div class="col-sm-9">
@@ -17,6 +18,7 @@
 				class="t3-install-form-input-text t3js-createAdmin-user form-control"
 				type="text"
 				autocomplete="off"
+				required
 			/>
 		</div>
 	</div>
@@ -28,6 +30,10 @@
 				class="t3-install-form-input-text t3-install-form-password-strength t3js-createAdmin-password form-control"
 				type="password"
 				autocomplete="off"
+				required
+				minlength=8
+				pattern=".{8,}"
+				title="Password must be at least eight characters long."
 			/>
 		</div>
 	</div>
@@ -39,6 +45,9 @@
 				class="t3-install-form-input-text t3js-createAdmin-password-check form-control"
 				type="password"
 				autocomplete="off"
+				required
+				minlength=8
+				pattern=".{8,}"
 			/>
 		</div>
 	</div>
@@ -48,7 +57,8 @@
 
 <button
 	class="btn btn-default t3js-createAdmin-create"
-	type="button"
+	type="submit"
 >
 	Create administrator user
 </button>
+</form>

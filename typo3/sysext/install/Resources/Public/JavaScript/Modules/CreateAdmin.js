@@ -26,13 +26,14 @@ define([
 	'use strict';
 
 	return {
+		selectorCreateForm: '#t3js-createAdmin-form',
 		selectorCreateToken: '#t3js-createAdmin-token',
 		selectorCreateTrigger: '.t3js-createAdmin-create',
 		selectorOutputContainer: '.t3js-createAdmin-output',
 
 		initialize: function() {
 			var self = this;
-			$(document).on('click', this.selectorCreateTrigger, function(e) {
+			$(document).on('submit', this.selectorCreateForm, function(e) {
 				e.preventDefault();
 				self.create();
 			});
