@@ -1302,9 +1302,9 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * @param $table
-     * @param $row
-     * @param $key
+     * @param string $table
+     * @param string $row
+     * @param string $key
      *
      * @return string
      */
@@ -1442,7 +1442,7 @@ class DataHandler implements LoggerAwareInterface
         $originalLanguage_diffStorage = null;
         $diffStorageFlag = false;
         // Setting 'currentRecord' and 'checkValueRecord':
-        if (strstr($id, 'NEW')) {
+        if (strpos($id, 'NEW') !== false) {
             // Must have the 'current' array - not the values after processing below...
             $checkValueRecord = $fieldArray;
             // IF $incomingFieldArray is an array, overlay it.
@@ -1508,7 +1508,7 @@ class DataHandler implements LoggerAwareInterface
                                 $fieldArray[$field] = $value;
                                 break;
                             default:
-                                if ($value >= 0 && $value < pow(2, 5)) {
+                                if ($value >= 0 && $value < (2 ** 5)) {
                                     $fieldArray[$field] = $value;
                                 }
                         }
@@ -1936,7 +1936,7 @@ class DataHandler implements LoggerAwareInterface
         if (!$itemC) {
             $itemC = 1;
         }
-        $maxV = pow(2, $itemC) - 1;
+        $maxV = (2 ** $itemC) - 1;
         if ($value < 0) {
             // @todo: throw LogicException here? Negative values for checkbox items do not make sense and indicate a coding error.
             $value = 0;
@@ -2023,7 +2023,7 @@ class DataHandler implements LoggerAwareInterface
      * Evaluates 'group' or 'select' type values.
      *
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string $value The value to set.
+     * @param string|array $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $id UID of record
@@ -2226,7 +2226,7 @@ class DataHandler implements LoggerAwareInterface
                     if (!empty($theFileValues)) {
                         // Traverse the input values and for all input values which match an EXISTING value, remove the existing from $theFileValues array (this will result in an array of all the existing files which should be deleted!)
                         foreach ($valueArray as $key => $theFile) {
-                            if ($theFile && !strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
+                            if ($theFile && strpos(GeneralUtility::fixWindowsFilePath($theFile), '/') === false) {
                                 $theFileValues = ArrayUtility::removeArrayEntryByValue($theFileValues, $theFile);
                             }
                         }
@@ -2255,7 +2255,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     // NEW FILES? If the value contains '/' it indicates, that the file
                     // is new and should be added to the uploadsdir (whether its absolute or relative does not matter here)
-                    if (strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
+                    if (strpos(GeneralUtility::fixWindowsFilePath($theFile), '/') !== false) {
                         // Check various things before copying file:
                         // File and destination must exist
                         if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) {
@@ -2554,7 +2554,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     unset($valueArray[$idx]);
                 }
-                $valueArray = $valueArray + $newValueArray;
+                $valueArray += $newValueArray;
             } elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key])) {
                 $this->_ACTION_FLEX_FORMdata($valueArray[$key], $actionCMDs[$key]);
             }
@@ -2591,7 +2591,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $status 'update' or 'new' flag
      * @param string $field Field name
      * @param array $additionalData Additional data to be forwarded to sub-processors
-     * @return array Modified $res array
+     * @return array|bool Modified $res array
      */
     public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, array $additionalData = null)
     {
@@ -2687,7 +2687,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name for which $value must be unique
      * @param int $uid UID to filter out in the lookup (the record itself...)
      * @param int $pid If set, the value will be unique for this PID
-     * @return \Doctrine\DBAL\Statement Return the prepared statement to check uniqueness
+     * @return \Doctrine\DBAL\Driver\Statement|int Return the prepared statement to check uniqueness
      */
     protected function getUniqueCountStatement(
         string $value,
@@ -2876,7 +2876,7 @@ class DataHandler implements LoggerAwareInterface
                     $value = number_format($value, 2, '.', '');
                     break;
                 case 'md5':
-                    if (strlen($value) != 32) {
+                    if (strlen($value) !== 32) {
                         $set = false;
                     }
                     break;
@@ -3047,7 +3047,7 @@ class DataHandler implements LoggerAwareInterface
         $valueArray = GeneralUtility::trimExplode(',', $value, true);
         foreach ($valueArray as &$newVal) {
             $temp = explode('|', $newVal, 2);
-            $newVal = str_replace(',', '', str_replace('|', '', rawurldecode($temp[0])));
+            $newVal = str_replace(['|', ','], '', rawurldecode($temp[0]));
         }
         unset($newVal);
         return $valueArray;
@@ -3509,7 +3509,7 @@ class DataHandler implements LoggerAwareInterface
         // Do the copy by simply submitting the array through DataHandler:
         /** @var $copyTCE DataHandler */
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($data, '', $this->BE_USER);
+        $copyTCE->start($data, [], $this->BE_USER);
         $copyTCE->process_datamap();
         // Getting the new UID:
         $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
@@ -3960,8 +3960,7 @@ class DataHandler implements LoggerAwareInterface
      * @param int $realDestPid
      * @param string $language
      * @param array $workspaceOptions
-     * @param string $inlineSubType
-     * @return mixed
+     * @return string
      */
     protected function copyRecord_processInline(
         $table,
@@ -3972,8 +3971,7 @@ class DataHandler implements LoggerAwareInterface
         $conf,
         $realDestPid,
         $language,
-        array $workspaceOptions,
-        $inlineSubType
+        array $workspaceOptions
     ) {
         // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
         /** @var $dbAnalysis RelationHandler */
@@ -4172,9 +4170,9 @@ class DataHandler implements LoggerAwareInterface
                 continue;
             }
             $fileInfo = [];
-            $fileInfo['exists'] = @is_file((PATH_site . $rteFileRecord['ref_string']));
+            $fileInfo['exists'] = @is_file(PATH_site . $rteFileRecord['ref_string']);
             $fileInfo['original'] = mb_substr($rteFileRecord['ref_string'], 0, -mb_strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', mb_substr($filename, 10));
-            $fileInfo['original_exists'] = @is_file((PATH_site . $fileInfo['original']));
+            $fileInfo['original_exists'] = @is_file(PATH_site . $fileInfo['original']);
             // CODE from tx_impexp and class.rte_images.php adapted for use here:
             if (!$fileInfo['exists'] || !$fileInfo['original_exists']) {
                 $this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
@@ -4433,7 +4431,7 @@ class DataHandler implements LoggerAwareInterface
         $resolvedPid = $this->resolvePid($table, $destPid);
         // Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
         // $destPid>=0 because we must correct pid in case of versioning "page" types.
-        if ($destPid < 0 && !$sortRow || $destPid >= 0) {
+        if (($destPid < 0 && !$sortRow) || $destPid >= 0) {
             $destPid = $resolvedPid;
         }
         // Get this before we change the pid (for logging)
@@ -4834,7 +4832,7 @@ class DataHandler implements LoggerAwareInterface
             // Execute the copy:
             $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, implode(',', $excludeFields), $language);
             $autoVersionNewId = $this->getAutoVersionId($table, $newId);
-            if (is_null($autoVersionNewId) === false) {
+            if ($autoVersionNewId !== null) {
                 $this->triggerRemapAction($table, $newId, [$this, 'placeholderShadowing'], [$table, $autoVersionNewId], true);
             }
         } else {
@@ -5239,7 +5237,7 @@ class DataHandler implements LoggerAwareInterface
                 if ($forceHardDelete) {
                     $message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
                 } else {
-                    $message = $state == 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
+                    $message = $state === 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
                 }
                 $propArr = $this->getRecordProperties($table, $uid);
                 $pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -5732,7 +5730,7 @@ class DataHandler implements LoggerAwareInterface
             ->orderBy('t3ver_id', 'DESC')
             ->setMaxResults(1)
             ->execute()
-            ->fetchColumn(0);
+            ->fetchColumn();
         // Look for version number of the current:
         $subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
         // Set up the values to override when making a raw-copy:
@@ -5907,7 +5905,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function getLocalTCE()
     {
-        $copyTCE = GeneralUtility::makeInstance(__CLASS__);
+        $copyTCE = GeneralUtility::makeInstance(DataHandler::class);
         $copyTCE->copyTree = $this->copyTree;
         $copyTCE->enableLogging = $this->enableLogging;
         // Copy forth the cached TSconfig
@@ -6129,7 +6127,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     $updateValues = ['pid' => $thePidToUpdate];
                     foreach ($originalItemArray as $v) {
-                        if ($v['id'] && $v['table'] && is_null(BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']))) {
+                        if ($v['id'] && $v['table'] && BackendUtility::getLiveVersionIdOfRecord($v['table'], $v['id']) === null) {
                             GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getConnectionForTable($v['table'])
                                 ->update($v['table'], $updateValues, ['uid' => (int)$v['id']]);
@@ -6272,7 +6270,7 @@ class DataHandler implements LoggerAwareInterface
         // Processes the remap stack actions:
         if ($this->remapStackActions) {
             foreach ($this->remapStackActions as $action) {
-                if (isset($action['callback']) && isset($action['arguments'])) {
+                if (isset($action['callback'], $action['arguments'])) {
                     call_user_func_array($action['callback'], $action['arguments']);
                 }
             }
@@ -6909,7 +6907,6 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function recordInfoWithPermissionCheck(string $table, int $id, $perms, string $fieldList = '*')
     {
-        $id = (int)$id;
         if ($this->bypassAccessCheckForRecords) {
             $columns = GeneralUtility::trimExplode(',', $fieldList, true);
 
@@ -7496,13 +7493,13 @@ class DataHandler implements LoggerAwareInterface
                     $connection->update($table, [$sortRow => $i], ['uid' => (int)$uid]);
                     // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
                     if ($uid == $return_SortNumber_After_This_Uid) {
-                        $i = $i + $intervals;
+                        $i += $intervals;
                         $returnVal = $i;
                     }
                 } else {
                     die('Fatal ERROR!! No Uid at resorting.');
                 }
-                $i = $i + $intervals;
+                $i += $intervals;
             }
             return $returnVal;
         }
@@ -7807,7 +7804,7 @@ class DataHandler implements LoggerAwareInterface
                 $v = (int)$v;
                 // Just to make sure that control bytes are not converted.
                 if ($v > 32) {
-                    $parts[$k] = chr((int)$v);
+                    $parts[$k] = chr($v);
                 }
             }
         }
@@ -8179,10 +8176,9 @@ class DataHandler implements LoggerAwareInterface
     public function getCopyHeader($table, $pid, $field, $value, $count, $prevTitle = '')
     {
         // Set title value to check for:
-        if ($count) {
+        $checkTitle = $value;
+        if ($count > 0) {
             $checkTitle = $value . rtrim(' ' . sprintf($this->prependLabel($table), $count));
-        } else {
-            $checkTitle = $value;
         }
         // Do check:
         if ($prevTitle != $checkTitle || $count < 100) {
@@ -8719,7 +8715,7 @@ class DataHandler implements LoggerAwareInterface
         if (!$this->enableLogging) {
             return 0;
         }
-        if (is_null($pid)) {
+        if ($pid === null) {
             $propArr = $this->getRecordProperties($table, $uid);
             $pid = $propArr['pid'];
         }
@@ -8850,7 +8846,7 @@ class DataHandler implements LoggerAwareInterface
     protected function overlayAutoVersionId($table, $id)
     {
         $autoVersionId = $this->getAutoVersionId($table, $id);
-        if (is_null($autoVersionId) === false) {
+        if ($autoVersionId !== null) {
             $id = $autoVersionId;
         }
         return $id;
