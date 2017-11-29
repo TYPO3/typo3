@@ -109,6 +109,7 @@ class BackendController
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
@@ -124,7 +125,6 @@ class BackendController
         $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
         $this->jsFiles = [
-            'locallang' => $this->getLocalLangFileName(),
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
             'evalfield' => 'EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
             'backend' => 'EXT:backend/Resources/Public/JavaScript/backend.js',
@@ -497,119 +497,6 @@ class BackendController
             }
         }
         return implode(LF, $toolbar);
-    }
-
-    /**
-     * Returns the file name to the LLL JavaScript, containing the localized labels,
-     * which can be used in JavaScript code.
-     *
-     * @return string File name of the JS file, relative to TYPO3_mainDir
-     * @throws \RuntimeException
-     */
-    protected function getLocalLangFileName()
-    {
-        $code = $this->generateLocalLang();
-        $filePath = 'typo3temp/assets/js/backend-' . sha1($code) . '.js';
-        if (!file_exists(PATH_site . $filePath)) {
-            // writeFileToTypo3tempDir() returns NULL on success (please double-read!)
-            $error = GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code);
-            if ($error !== null) {
-                throw new \RuntimeException('Locallang JS file could not be written to ' . $filePath . '. Reason: ' . $error, 1295193026);
-            }
-        }
-        return '../' . $filePath;
-    }
-
-    /**
-     * Reads labels required in JavaScript code from the localization system and returns them as JSON
-     * array in TYPO3.LLL.
-     *
-     * @return string JavaScript code containing the LLL labels in TYPO3.LLL
-     */
-    protected function generateLocalLang()
-    {
-        $lang = $this->getLanguageService();
-        $coreLabels = [
-            'waitTitle' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logging_in'),
-            'refresh_login_failed' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed'),
-            'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed_message'),
-            'refresh_login_title' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_title'),
-            'login_expired' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_expired'),
-            'refresh_login_username' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_username'),
-            'refresh_login_password' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_password'),
-            'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_emptyPassword'),
-            'refresh_login_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_button'),
-            'refresh_exit_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_exit_button'),
-            'please_wait' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.please_wait'),
-            'be_locked' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.be_locked'),
-            'login_about_to_expire' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire'),
-            'login_about_to_expire_title' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire_title'),
-            'refresh_login_logout_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logout_button'),
-            'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_refresh_button'),
-            'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:csh_tooltip_loading')
-        ];
-        $labels = [
-            'fileUpload' => [
-                'windowTitle',
-                'buttonSelectFiles',
-                'buttonCancelAll',
-                'infoComponentMaxFileSize',
-                'infoComponentFileUploadLimit',
-                'infoComponentFileTypeLimit',
-                'infoComponentOverrideFiles',
-                'processRunning',
-                'uploadWait',
-                'uploadStarting',
-                'uploadProgress',
-                'uploadSuccess',
-                'errorQueueLimitExceeded',
-                'errorQueueFileSizeLimit',
-                'errorQueueZeroByteFile',
-                'errorQueueInvalidFiletype',
-                'errorUploadHttp',
-                'errorUploadMissingUrl',
-                'errorUploadIO',
-                'errorUploadSecurityError',
-                'errorUploadLimit',
-                'errorUploadFailed',
-                'errorUploadFileIDNotFound',
-                'errorUploadFileValidation',
-                'errorUploadFileCancelled',
-                'errorUploadStopped',
-                'allErrorMessageTitle',
-                'allErrorMessageText',
-                'allError401',
-                'allError2038'
-            ],
-            'liveSearch' => [
-                'title',
-                'helpTitle',
-                'emptyText',
-                'loadingText',
-                'listEmptyText',
-                'showAllResults',
-                'helpDescription',
-                'helpDescriptionPages',
-                'helpDescriptionContent'
-            ],
-            'viewPort' => [
-                'tooltipModuleMenuSplit',
-                'tooltipNavigationContainerSplitDrag',
-                'tooltipNavigationContainerSplitClick',
-                'tooltipDebugPanelSplitDrag'
-            ]
-        ];
-        $generatedLabels = [];
-        $generatedLabels['core'] = $coreLabels;
-        // First loop over all categories (fileUpload, liveSearch, ..)
-        foreach ($labels as $categoryName => $categoryLabels) {
-            // Then loop over every single label
-            foreach ($categoryLabels as $label) {
-                // LLL identifier must be called $categoryName_$label, e.g. liveSearch_loadingText
-                $generatedLabels[$categoryName][$label] = $this->getLanguageService()->getLL($categoryName . '_' . $label);
-            }
-        }
-        return 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
     }
 
     /**
