@@ -122,11 +122,33 @@ return [
             ]
         ],
         'width' => [
-            'l10n_mode' => 'exclude'
+            'exclude' => true,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file.width',
+            'config' => [
+                'type' => 'input',
+                'size' => 10,
+                'max' => 20,
+                'eval' => 'int',
+                'default' => 0,
+                'readOnly' => true,
+            ],
         ],
         'height' => [
-            'l10n_mode' => 'exclude'
-        ]
+            'exclude' => true,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:file.height',
+            'config' => [
+                'type' => 'input',
+                'size' => 10,
+                'max' => 20,
+                'eval' => 'int',
+                'default' => 0,
+                'readOnly' => true,
+            ],
+        ],
     ],
     'types' => [
         '1' => ['showitem' => '

@@ -32,6 +32,8 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
     /**
      * @var array
+     * @todo Substitute with $pathsToProvideInTestInstance once it's available
+     * @todo https://github.com/TYPO3/testing-framework/pull/43
      */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
