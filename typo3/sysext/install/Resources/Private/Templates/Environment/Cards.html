@@ -7,43 +7,43 @@
 		require: '',
 		baseClass: 't3js-system',
 		title: 'Main System Information',
-		category: 'environment',
-		description: 'Gives a short overview of your system environment.'
+		category: 'Environment',
+		description: 'Gives a short overview of your system environment, webserver, PHP and database information.'
 	},
 	1: {partial: 'Environment/EnvironmentCheck',
 		require: 'TYPO3/CMS/Install/EnvironmentCheck',
 		baseClass: 't3js-environmentCheck',
-		title: 'Environment check',
-		category: 'php environment',
-		description: 'Perform a huge number of environment checks.'
+		title: 'Check Environment',
+		category: 'PHP',
+		description: 'Performs various checks if there are problems within the server to have TYPO3 running properly.'
 	},
 	2: {partial: 'Environment/FolderStructure',
 		require: 'TYPO3/CMS/Install/FolderStructure',
 		baseClass: 't3js-folderStructure',
 		title: 'Check Folder Structure',
-		category: 'document structure',
+		category: 'Permissions',
 		description: 'Analyzes your folder structure by checking the permissions and whether files or folders are missing.'
 	},
 	3: {partial: 'Environment/PhpInfo',
 		require: '',
 		baseClass: 't3js-phpinfo',
 		title: 'PHP Info',
-		category: 'environment',
+		category: 'PHP',
 		description: 'Outputs a large amount of information about the current state of PHP.'
 	},
 	4: {partial: 'Environment/MailTest',
 		require: 'TYPO3/CMS/Install/MailTest',
 		baseClass: 't3js-mailTest',
 		title: 'Test Mail Setup',
-		category: 'environment',
-		description: 'Checks the basic mail functionality by sending a test email.'
+		category: 'Mail',
+		description: 'Checks if TYPO3 can send out emails properly by sending a test email.'
 	},
 	5: {partial: 'Environment/ImageProcessing',
 		require: 'TYPO3/CMS/Install/ImageProcessing',
 		baseClass: 't3js-imageProcessing',
 		title: 'Image Processing',
-		category: 'environment',
-		description: 'Creates test images and compare with a reference.'
+		category: 'Image Processing',
+		description: 'Creates test images and compares with a reference to ensure that Image Processing works correctly in the current environment.'
 	}
 }}">
 	<div class="gridder">

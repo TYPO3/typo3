@@ -6,51 +6,51 @@
 	0: {partial: 'Maintenance/ClearAllCache',
 		require: 'TYPO3/CMS/Install/Cache',
 		baseClass: 't3js-clearAllCache',
-		title: 'Clear all cache',
+		title: 'Flush TYPO3 and PHP Caches',
 		category: 'Caching',
-		description: 'Clears all cache. Including Frontend, backend and language caches.'
+		description: 'Clears all TYPO3 Caches including PHP Op-Caches, similiar to the \'Clear Cache\' Button in the TYPO3 Backend.'
 	},
-	1: {partial: 'Maintenance/ClearTypo3tempFiles',
-		require: 'TYPO3/CMS/Install/ClearTypo3tempFiles',
-		baseClass: 't3js-clearTypo3temp',
-		title: 'Clean typo3temp/assets/',
-		category: 'Caching',
-		description: 'Clears temporary files in typo3temp/assets/ folder, including processed and cached images.'
-	},
-	2: {partial: 'Maintenance/DumpAutoload',
-		require: 'TYPO3/CMS/Install/DumpAutoload',
-		baseClass: 't3js-dumpAutoload',
-		title: 'Dump Autoload Information',
-		category: 'Caching',
-		description: 'This (re-)dumps autoload information for all active third party extensions.'
-	},
-	3: {partial: 'Maintenance/DatabaseAnalyzer',
+	1: {partial: 'Maintenance/DatabaseAnalyzer',
 		require: 'TYPO3/CMS/Install/DatabaseAnalyzer',
 		baseClass: 't3js-databaseAnalyzer',
-		title: 'Database analyzer',
+		title: 'Analyze Database Structure',
 		category: 'Database',
-		description: 'Verify and update database status.'
+		description: 'Compare and update the database table and field definitions of the current database with specifications from extensions.'
+	},
+	2: {partial: 'Maintenance/ClearTypo3tempFiles',
+		require: 'TYPO3/CMS/Install/ClearTypo3tempFiles',
+		baseClass: 't3js-clearTypo3temp',
+		title: 'Remove Temporary Assets',
+		category: 'Caching',
+		description: 'Clears temporary files in typo3temp/assets/ folder, including concatenated JS/CSS files, and processed images.'
+	},
+	3: {partial: 'Maintenance/DumpAutoload',
+		require: 'TYPO3/CMS/Install/DumpAutoload',
+		baseClass: 't3js-dumpAutoload',
+		title: 'Rebuild PHP Autoload Information',
+		category: 'Caching',
+		description: 'This (re-)dumps autoload information for all active third party extensions.'
 	},
 	4: {partial: 'Maintenance/ClearTables',
 		require: 'TYPO3/CMS/Install/ClearTables',
 		baseClass: 't3js-clearTables',
-		title: 'Clear Tables',
+		title: 'Clear Semi-Temporary Database Tables',
 		category: 'Database',
-		description: 'Clears semi-temporary data from database tables.'
+		description: 'Truncates semi-temporary database tables, which are not related to caches, but can also be re-populated by TYPO3.'
 	},
 	5: {partial: 'Maintenance/CreateAdmin',
 		require: 'TYPO3/CMS/Install/CreateAdmin',
 		baseClass: 't3js-createAdmin',
-		title: 'Create Admin',
+		title: 'Add Administrator User',
 		category: 'Backend Users',
-		description: 'Creates a backend administrator user.'
+		description: 'Use this function if there are no admin users in the database, for instance if this is a blank installation.'
 	},
 	6: {partial: 'Maintenance/ResetBackendUserUc',
 		require: 'TYPO3/CMS/Install/ResetBackendUserUc',
 		baseClass: 't3js-resetBackendUserUc',
-		title: 'Reset User Preferences',
+		title: 'Reset All Backend User Preferences',
 		category: 'Backend Users',
-		description: 'Reset backend user preferences to defaults.'
+		description: 'Clears user preferences of all backend users from be_users table. The field \'uc\' will be set to an empty string.'
 	}
 }}">
 	<div class="gridder">

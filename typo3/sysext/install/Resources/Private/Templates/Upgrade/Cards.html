@@ -6,51 +6,51 @@
 	0: {partial: 'Upgrade/CoreUpdate',
 		require: 'TYPO3/CMS/Install/CoreUpdate',
 		baseClass: 't3js-coreUpdate',
-		title: 'Update Core',
-		category: 'upgrade',
-		description: 'One click core updater.'
+		title: 'Update TYPO3 Core',
+		category: 'Core Upgrade',
+		description: 'Update your TYPO3 installation with one click, if your instance is set up correctly.'
 	},
 	1: {partial: 'Upgrade/UpgradeWizards',
 		require: 'TYPO3/CMS/Install/UpgradeWizards',
 		baseClass: 't3js-upgradeWizards',
-		title: 'Upgrade Wizard',
-		category: 'upgrade',
-		description: 'Execute upgrade wizards after core upgrades.'
+		title: 'Execute Upgrade Wizards',
+		category: 'Core Upgrade',
+		description: 'If you upgrade your TYPO3 installation from e.g. v8 to v9, then Upgrade Wizards guide you through the necessary steps.'
 	},
 	2: {partial: 'Upgrade/UpgradeDocs',
 		require: 'TYPO3/CMS/Install/UpgradeDocs',
 		baseClass: 't3js-upgradeDocs',
-		title: 'Upgrade Documentation',
-		category: 'upgrade',
-		description: 'Show documentation files describing important changes.'
+		title: 'View Upgrade Documentation',
+		category: 'Core Upgrade',
+		description: 'Show and search documentation files describing important changes between TYPO3 versions.'
 	},
 	3: {partial: 'Upgrade/TcaExtTablesCheck',
 		require: 'TYPO3/CMS/Install/TcaExtTablesCheck',
 		baseClass: 't3js-tcaExtTablesCheck',
 		title: 'Check TCA in ext_tables.php',
-		category: 'tca',
-		description: 'Test if extensions still change TCA in ext_tables.php files'
+		category: 'TCA',
+		description: 'Test if extensions still change TCA in ext_tables.php files, resulting in performance drawbacks.'
 	},
 	4: {partial: 'Upgrade/ExtensionCompatTester',
 		require: 'TYPO3/CMS/Install/ExtensionCompatTester',
 		baseClass: 't3js-extensionCompatTester',
 		title: 'Check for broken extensions',
-		category: 'extension',
-		description: 'Check if loaded extensions main files can be included without errors.'
+		category: 'Extensions',
+		description: 'Check if all base configuration files of currently loaded extensions have errors with the current TYPO3 version.'
 	},
 	5: {partial: 'Upgrade/TcaMigrationsCheck',
 		require: 'TYPO3/CMS/Install/TcaMigrationsCheck',
 		baseClass: 't3js-tcaMigrationsCheck',
-		title: 'Check TCA migrations',
-		category: 'tca',
-		description: 'Check for needed TCA migrations.'
+		title: 'Check TCA Migrations',
+		category: 'TCA',
+		description: 'Check if third-party extensions have outdated TCA configuration which should be adapted for the current TYPO3 version.'
 	},
 	6: {partial: 'Upgrade/ExtensionScanner',
 		require: 'TYPO3/CMS/Install/ExtensionScanner',
 		baseClass: 't3js-extensionScanner',
-		title: 'Extension scanner',
-		category: 'extension',
-		description: 'Scan extensions for usage of deprecated and breaking core API.'
+		title: 'Scan Extension Files',
+		category: 'Extensions',
+		description: 'Scan extensions for usage of deprecated or outdated TYPO3 API calls.'
 	}
 }}">
 	<div class="gridder">

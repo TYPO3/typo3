@@ -6,30 +6,30 @@
 	0: {partial: 'Settings/ChangeInstallToolPassword',
 		require: 'TYPO3/CMS/Install/ChangeInstallToolPassword',
 		baseClass: 't3js-changeInstallToolPassword',
-		title: 'Change install tool password',
+		title: 'Change Install Tool Password',
 		category: 'Access',
-		description: 'Set a new install tool password.'
+		description: 'Set a new password for accessing the Install Tool in Standalone Mode.'
 	},
 	1: {partial: 'Settings/SystemMaintainer',
 		require: 'TYPO3/CMS/Install/SystemMaintainer',
 		baseClass: 't3js-systemMaintainer',
-		title: 'Configure system maintainer',
+		title: 'Configure System Maintainers',
 		category: 'Access',
-		description: 'Backend admin users with access to install tool.'
+		description: 'Add or remove backend administrators which should have access to the Install Tool.'
 	},
-	2: {partial: 'Settings/LocalConfiguration',
-		require: 'TYPO3/CMS/Install/LocalConfiguration',
-		baseClass: 't3js-localConfiguration',
-		title: 'Configure Global Settings',
-		category: 'LocalConfiguration',
-		description: 'Modify LocalConfiguration.php settings.'
-	},
-	3: {partial: 'Settings/Presets',
+	2: {partial: 'Settings/Presets',
 		require: 'TYPO3/CMS/Install/Presets',
 		baseClass: 't3js-presets',
-		title: 'Configure Presets',
-		category: 'LocalConfiguration',
-		description: 'Detect and select default LocalConfiguration.php settings.'
+		title: 'Configure and Presets',
+		category: 'Global Configuration',
+		description: 'Detect and select settings for Image Processing, Debug/Live mode and Mail settings.'
+	},
+	3: {partial: 'Settings/LocalConfiguration',
+		require: 'TYPO3/CMS/Install/LocalConfiguration',
+		baseClass: 't3js-localConfiguration',
+		title: 'Configure installation-wide options',
+		category: 'Global Configuration',
+		description: 'Modify settings to be written into TYPO3\'s LocalConfiguration.php.'
 	}
 }}">
 	<div class="gridder">
