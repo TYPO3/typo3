@@ -377,12 +377,4 @@ class PlainDataResolver
         }
         return false;
     }
-
-    /**
-     * @return bool
-     */
-    protected function isLocalizationEnabled()
-    {
-        return BackendUtility::isTableLocalizable($this->tableName);
-    }
 }
