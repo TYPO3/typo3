@@ -18,8 +18,8 @@
 		<pid>0</pid>
 		<file>1</file>
 		<title>Beispiel Bild</title>
-		<width>0</width>
-		<height>0</height>
+		<width>400</width>
+		<height>300</height>
 		<description>Nur ein Beispielbild.</description>
 		<alternative>Foto von Programmcode</alternative>
 		<sys_language_uid>1</sys_language_uid>

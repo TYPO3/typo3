@@ -126,7 +126,7 @@
 					<uid>2</uid>
 					<pid>0</pid>
 					<title>typo3_image2.jpg</title>
-					<size>263</size>
+					<size>267</size>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
 						<element index="sys_language:1" type="array">
@@ -416,8 +416,8 @@
 				<field index="l10n_parent" type="integer">1</field>
 				<field index="file" type="integer">1</field>
 				<field index="title">Beispiel Bild</field>
-				<field index="width" type="integer">0</field>
-				<field index="height" type="integer">0</field>
+				<field index="width" type="integer">400</field>
+				<field index="height" type="integer">300</field>
 				<field index="description">Nur ein Beispielbild.</field>
 				<field index="alternative">Foto von Programmcode</field>
 			</fieldlist>

@@ -504,6 +504,12 @@
 			<trans-unit id="sys_file.metadata">
 				<source>Metadata records</source>
 			</trans-unit>
+			<trans-unit id="file.width">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="file.height">
+				<source>Height</source>
+			</trans-unit>
 			<trans-unit id="sys_file_metadata">
 				<source>File Metadata</source>
 			</trans-unit>
