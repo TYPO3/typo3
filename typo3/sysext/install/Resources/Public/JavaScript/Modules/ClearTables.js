@@ -58,7 +58,6 @@ define([
 				var table = $(e.target).closest(self.selectorClearTrigger).data('table');
 				e.preventDefault();
 				self.clear(table);
-				self.getStats();
 			});
 		},
 
@@ -107,6 +106,7 @@ define([
 			$.ajax({
 				url: Router.getUrl(),
 				method: 'POST',
+				context: this,
 				data: {
 					'install': {
 						'action': 'clearTablesClear',
@@ -126,6 +126,7 @@ define([
 						var message = FlashMessage.render(Severity.error, 'Something went wrong', '');
 						$outputContainer.append(message);
 					}
+					this.getStats();
 				},
 				error: function(xhr) {
 					Router.handleAjaxError(xhr);
