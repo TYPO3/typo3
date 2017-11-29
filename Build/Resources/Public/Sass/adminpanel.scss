@@ -610,6 +610,7 @@
         vertical-align: middle;
     }
 
+    .typo3-adminPanel-btn,
     .typo3-editPanel-btn {
         display: inline-block !important;
         margin-bottom: 0;
@@ -632,6 +633,7 @@
         }
     }
 
+    .typo3-adminPanel-btn-default,
     .typo3-editPanel-btn-default {
         color: #333;
         background-color: #eee;
@@ -643,17 +645,26 @@
         }
     }
 
+    .typo3-adminPanel-form-group,
+    .typo3-editPanel-form-group {
+        margin-right: 0.5em;
+        display: inline-block;
+    }
+
+    .typo3-adminPanel-btn-group,
     .typo3-editPanel-btn-group {
         position: relative;
         display: inline-block;
         vertical-align: middle;
 
+        .typo3-adminPanel-btn + .typo3-adminPanel-btn,
         .typo3-editPanel-btn + .typo3-editPanel-btn {
             margin-left: -1px;
         }
     }
 }
 
+.typo3-adminPanel-btn,
 .typo3-editPanel-btn {
     display: inline-block !important;
 }
