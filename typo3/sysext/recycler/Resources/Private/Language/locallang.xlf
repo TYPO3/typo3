@@ -18,6 +18,18 @@
 			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>
+			<trans-unit id="button.selectall">
+				<source>Select all records from all pages</source>
+			</trans-unit>
+			<trans-unit id="button.deselectall">
+				<source>Deselect all</source>
+			</trans-unit>
+			<trans-unit id="button.selectallamount">
+				<source>Select all records ({0}) from all pages</source>
+			</trans-unit>
+			<trans-unit id="button.selectallamountrest">
+				<source>Select the rest of the records ({0}) from all pages</source>
+			</trans-unit>
 			<trans-unit id="button.deleteselected">
 				<source>Delete {0} records</source>
 			</trans-unit>

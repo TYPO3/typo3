@@ -50,12 +50,10 @@ class DeletedRecordsController
      * Transforms the rows for the deleted records
      *
      * @param array $deletedRowsArray Array with table as key and array with all deleted rows
-     * @param int $totalDeleted Number of deleted records in total
      * @return array JSON array
      */
-    public function transform($deletedRowsArray, $totalDeleted)
+    public function transform($deletedRowsArray)
     {
-        $total = 0;
         $jsonArray = [
             'rows' => []
         ];
@@ -65,7 +63,6 @@ class DeletedRecordsController
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
             foreach ($deletedRowsArray as $table => $rows) {
-                $total += count($deletedRowsArray[$table]);
                 foreach ($rows as $row) {
                     $pageTitle = $this->getPageTitle((int)$row['pid']);
                     $backendUserName = $this->getBackendUser((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
@@ -92,7 +89,29 @@ class DeletedRecordsController
                 }
             }
         }
-        $jsonArray['total'] = $totalDeleted;
+        return $jsonArray;
+    }
+
+    /**
+     * Transforms the rows for the deleted records
+     *
+     * @param array $deletedRowsArray Array with table as key and array with all deleted rows
+     * @return array JSON array
+     */
+    public function transformSmallAddTotal(array $deletedRowsArray): array
+    {
+        $jsonArray = [];
+        $total = 0;
+        if (is_array($deletedRowsArray)) {
+            foreach ($deletedRowsArray as $table => $rows) {
+                foreach ($rows as $row) {
+                    $key = $table . ':' . $row['uid'];
+                    $jsonArray['rows'][$key] = 1;
+                    $total++;
+                }
+            }
+        }
+        $jsonArray['total'] = $total;
         return $jsonArray;
     }
 

@@ -55,7 +55,7 @@ class RecyclerModuleController extends ActionController
     /**
      * @var int
      */
-    protected $recordsPageLimit = 50;
+    protected $recordsPageLimit = 25;
 
     /**
      * @var int

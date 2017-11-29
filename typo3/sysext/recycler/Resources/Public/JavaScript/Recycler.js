@@ -41,7 +41,10 @@ define(['jquery',
       reloadAction: 'a[data-action=reload]',
       massUndo: 'button[data-action=massundo]',
       massDelete: 'button[data-action=massdelete]',
-      toggleAll: '.t3js-toggle-all'
+      selectAll: 'button[data-action=selectall]',
+      deselectAll: 'button[data-action=deselectall]',
+      toggleAll: '.t3js-toggle-all',
+      progressBar: '#recycler-index .progress.progress-bar-notice.alert-loading'
     },
     elements: {}, // filled in getElements()
     paging: {
@@ -70,7 +73,10 @@ define(['jquery',
       $reloadAction: $(Recycler.identifiers.reloadAction),
       $massUndo: $(Recycler.identifiers.massUndo),
       $massDelete: $(Recycler.identifiers.massDelete),
-      $toggleAll: $(Recycler.identifiers.toggleAll)
+      $selectAll: $(Recycler.identifiers.selectAll),
+      $deselectAll: $(Recycler.identifiers.deselectAll),
+      $toggleAll: $(Recycler.identifiers.toggleAll),
+      $progressBar: $(Recycler.identifiers.progressBar)
     };
   };
 
@@ -108,6 +114,7 @@ define(['jquery',
     // changing "depth"
     Recycler.elements.$depthSelector.on('change', function() {
       $.when(Recycler.loadAvailableTables()).done(function() {
+        Recycler.clearMarked();
         Recycler.loadDeletedElements();
       });
     });
@@ -115,6 +122,7 @@ define(['jquery',
     // changing "table"
     Recycler.elements.$tableSelector.on('change', function() {
       Recycler.paging.currentPage = 1;
+      Recycler.clearMarked();
       Recycler.loadDeletedElements();
     });
 
@@ -159,6 +167,7 @@ define(['jquery',
 
       if (reload) {
         Recycler.loadDeletedElements();
+        Recycler.loadMarked();
       }
     });
 
@@ -189,14 +198,31 @@ define(['jquery',
     });
 
     // checkboxes in the table
-    Recycler.elements.$toggleAll.on('click', function() {
-      Recycler.allToggled = !Recycler.allToggled;
-      $('input[type="checkbox"]').prop('checked', Recycler.allToggled).trigger('change');
-    });
     Recycler.elements.$recyclerTable.on('change', 'tr input[type=checkbox]', Recycler.handleCheckboxSelects);
 
-    Recycler.elements.$massUndo.on('click', Recycler.undoRecord);
-    Recycler.elements.$massDelete.on('click', Recycler.deleteRecord);
+    Recycler.elements.$toggleAll.on('click', Recycler.toggleAll);
+
+    Recycler.elements.$massUndo.on('click', function() {
+        if (!$(this).hasClass('disabled')) {
+          Recycler.undoRecord();
+        }
+    });
+    Recycler.elements.$massDelete.on('click', function() {
+        if (!$(this).hasClass('disabled')) {
+          Recycler.deleteRecord();
+        }
+    });
+    Recycler.elements.$selectAll.on('click', function() {
+        if (!$(this).hasClass('disabled')) {
+          Recycler.selectAll();
+        }
+    });
+    Recycler.elements.$deselectAll.on('click', function() {
+        if (!$(this).hasClass('disabled')) {
+          Recycler.deselectAll();
+        }
+
+    });
   };
 
   /**
@@ -226,46 +252,40 @@ define(['jquery',
       table = $tr.data('table'),
       uid = $tr.data('uid'),
       record = table + ':' + uid;
-
     if ($checkbox.prop('checked')) {
-      Recycler.markedRecordsForMassAction.push(record);
-      $tr.addClass('warning');
+      if (!Recycler.markedRecordsForMassAction[record]) {
+        Recycler.addRecord(record);
+        $tr.addClass('warning');
+      }
     } else {
-      var index = Recycler.markedRecordsForMassAction.indexOf(record);
-      if (index > -1) {
-        Recycler.markedRecordsForMassAction.splice(index, 1);
+      if (!!Recycler.markedRecordsForMassAction[record]) {
+        Recycler.subtractRecord(record);
+        $tr.removeClass('warning');
       }
-      $tr.removeClass('warning');
     }
-
-    if (Recycler.markedRecordsForMassAction.length > 0) {
-      if (Recycler.elements.$massUndo.hasClass('disabled')) {
-        Recycler.elements.$massUndo.removeClass('disabled');
-      }
-      if (Recycler.elements.$massDelete.hasClass('disabled')) {
-        Recycler.elements.$massDelete.removeClass('disabled');
-      }
-
-      var btnTextUndo = Recycler.createMessage(TYPO3.lang['button.undoselected'], [Recycler.markedRecordsForMassAction.length]),
-        btnTextDelete = Recycler.createMessage(TYPO3.lang['button.deleteselected'], [Recycler.markedRecordsForMassAction.length]);
-
-      Recycler.elements.$massUndo.find('span.text').text(btnTextUndo);
-      Recycler.elements.$massDelete.find('span.text').text(btnTextDelete);
-
-    } else {
-      Recycler.resetMassActionButtons();
-    }
+    Recycler.selectAllRefresh();
   };
+
 
   /**
    * Resets the mass action state
    */
   Recycler.resetMassActionButtons = function() {
-    Recycler.markedRecordsForMassAction = [];
+    if (!!Recycler.markedRecordsForMassAction) {
+      Recycler.persistMarked(Recycler.markedRecordsForMassAction);
+    } else {
+      Recycler.markedRecordsForMassAction = {};
+    }
+
     Recycler.elements.$massUndo.addClass('disabled');
     Recycler.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
     Recycler.elements.$massDelete.addClass('disabled');
     Recycler.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
+
+    Recycler.elements.$selectAll.addClass('disabled');
+    Recycler.elements.$selectAll.find('span.text').text(TYPO3.lang['button.selectall']);
+    Recycler.elements.$deselectAll.addClass('disabled');
+    Recycler.elements.$deselectAll.find('span.text').text(TYPO3.lang['button.deselectall']);
   };
 
   /**
@@ -286,6 +306,7 @@ define(['jquery',
         NProgress.start();
         Recycler.elements.$tableSelector.val('');
         Recycler.paging.currentPage = 1;
+        Recycler.markedRecordsCounter = 0;
       },
       success: function(data) {
         var tables = [];
@@ -336,13 +357,24 @@ define(['jquery',
       beforeSend: function() {
         NProgress.start();
         Recycler.resetMassActionButtons();
+        Recycler.selectAllDataShort = [];
+        Recycler.currentDataCount = 0;
+
+        /** if there are any checkboxes and corresponding buttons, hide them while new content arrives */
+        Recycler.showLoading();
       },
       success: function(data) {
+        var totalItems = data.totalItems;
+
         Recycler.elements.$tableBody.html(data.rows);
-        Recycler.buildPaginator(data.totalItems);
+        Recycler.buildPaginator(totalItems);
+        Recycler.currentDataCount = totalItems;
+
+        Recycler.selectAllDataShort = data.allTheRows;
       },
       complete: function() {
         NProgress.done();
+        Recycler.selectAllRefresh();
       }
     });
   };
@@ -354,13 +386,12 @@ define(['jquery',
     if (TYPO3.settings.Recycler.deleteDisable) {
       return;
     }
-
     var $tr = $(this).parents('tr'),
       isMassDelete = $tr.parent().prop('tagName') !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
 
     var records, message;
     if (isMassDelete) {
-      records = Recycler.markedRecordsForMassAction;
+      records = Recycler.returnProperMarkedArray();
       message = TYPO3.lang['modal.massdelete.text'];
     } else {
       var uid = $tr.data('uid'),
@@ -382,7 +413,11 @@ define(['jquery',
         text: TYPO3.lang['button.delete'],
         btnClass: 'btn-danger',
         trigger: function() {
-          Recycler.callAjaxAction('delete', typeof records === 'object' ? records : [records], isMassDelete);
+          Recycler.callAjaxAction(
+            'delete',
+            typeof records === 'object' ? records : [records],
+            isMassDelete
+          )
         }
       }
     ]);
@@ -397,7 +432,7 @@ define(['jquery',
 
     var records, messageText, recoverPages;
     if (isMassUndo) {
-      records = Recycler.markedRecordsForMassAction;
+      records = Recycler.returnProperMarkedArray();
       messageText = TYPO3.lang['modal.massundo.text'];
       recoverPages = true;
     } else {
@@ -427,7 +462,7 @@ define(['jquery',
         )
       );
     } else {
-      $message = messageText;
+      $message = $('<div />').text(messageText);
     }
 
     Modal.confirm(TYPO3.lang['modal.undo.header'], $message, Severity.ok, [
@@ -441,7 +476,13 @@ define(['jquery',
         text: TYPO3.lang['button.undo'],
         btnClass: 'btn-success',
         trigger: function() {
-          Recycler.callAjaxAction('undo', typeof records === 'object' ? records : [records], isMassUndo, $message.find('#undo-recursive').prop('checked') ? 1 : 0);
+           Recycler.callAjaxAction(
+            'undo',
+            // typeof records === 'object' ? records : [records],
+            records,
+            isMassUndo,
+            $message.find('#undo-recursive').prop('checked') ? 1 : 0
+          );
         }
       }
     ]);
@@ -456,10 +497,12 @@ define(['jquery',
    */
   Recycler.callAjaxAction = function(action, records, isMassAction, recursive) {
     var data = {
-        records: records,
+        records: JSON.stringify(records),
         action: ''
       },
-      reloadPageTree = false;
+      reloadPageTree = false,
+      oldCount = Recycler.markedRecordsCounter,
+      error = 0;
     if (action === 'undo') {
       data.action = 'undoRecords';
       data.recursive = recursive ? 1 : 0;
@@ -470,18 +513,23 @@ define(['jquery',
       return;
     }
 
+
     $.ajax({
       url: TYPO3.settings.ajaxUrls['recycler'],
       dataType: 'json',
       data: data,
+      method: 'POST',
       beforeSend: function() {
         NProgress.start();
+        /** if there are any checkboxes and corresponding buttons, hide them while new content arrives */
+        Recycler.showLoading();
       },
       success: function(data) {
         if (data.success) {
           Notification.success('', data.message);
         } else {
           Notification.error('', data.message);
+          error = 1;
         }
 
         // reload recycler data
@@ -489,16 +537,22 @@ define(['jquery',
 
         $.when(Recycler.loadAvailableTables()).done(function() {
           Recycler.loadDeletedElements();
-          if (isMassAction) {
-            Recycler.resetMassActionButtons();
+          if (isMassAction && !error) {
+              Recycler.clearMarked();
+          } else {
+            if (!error) {
+              if (!!Recycler.markedRecordsForMassAction[records]) {
+                Recycler.subtractRecord(records);
+                oldCount--;
+              }
+              Recycler.markedRecordsCounter = oldCount;
+            }
           }
 
           if (reloadPageTree) {
             Recycler.refreshPageTree();
           }
 
-          // Reset toggle state
-          Recycler.allToggled = false;
         });
       },
       complete: function() {
@@ -593,6 +647,235 @@ define(['jquery',
   };
 
   /**
+   * Select all records
+   */
+  Recycler.selectAll = function() {
+    if (Recycler.currentDataCount > 0) {
+      Recycler.elements.$selectAll.addClass('disabled');
+
+      Recycler.markedRecordsForMassAction = {};
+
+      Recycler.markedRecordsCounter = Recycler.currentDataCount;
+      Recycler.markedRecordsForMassAction = $.extend(true, {}, Recycler.selectAllDataShort);
+
+      Recycler.elements.$selectAll.removeClass('disabled');
+
+      Recycler.selectAllRefresh();
+    }
+  };
+
+  /**
+   * Deselect all records and return everything to clean state
+   */
+  Recycler.deselectAll = function() {
+    Recycler.elements.$deselectAll.addClass('disabled');
+
+    Recycler.clearMarked();
+    Recycler.resetMassActionButtons();
+    Recycler.selectAllRefresh();
+
+    Recycler.elements.$selectAll.removeClass('disabled');
+  };
+
+  /**
+   * Adjusts mass action buttons to user's action
+   */
+  Recycler.selectAllRefresh = function() {
+    var totalItems, btnTextSelectAll = '',
+      btnDisabledArr = ['$deselectAll', '$massUndo', '$massDelete'];
+
+    Recycler.hideLoading();
+    Recycler.persistMarked(Recycler.markedRecordsForMassAction);
+    Recycler.refreshCheckboxes();
+
+    /** if any checkboxes are checked change mass action buttons state */
+    if (Recycler.markedRecordsCounter > 0) {
+      var recordsLength = Recycler.markedRecordsCounter,
+        btnTextDelete = Recycler.createMessage(TYPO3.lang['button.deleteselected'], [recordsLength]),
+        btnTextUndo = Recycler.createMessage(TYPO3.lang['button.undoselected'], [recordsLength]);
+
+      /** if there are any records unselected show the amount */
+      if (!!Recycler.currentDataCount && ( (Recycler.currentDataCount-Recycler.markedRecordsCounter) > 0 )) {
+        if (Recycler.markedRecordsCounter === 0) {
+          btnTextSelectAll = Recycler.createMessage(TYPO3.lang['button.selectallamount'], [Recycler.currentDataCount]);
+
+        } else {
+          var rest = Recycler.currentDataCount - Recycler.markedRecordsCounter;
+
+          btnTextSelectAll = Recycler.createMessage(TYPO3.lang['button.selectallamountrest'], [rest]);
+        }
+      } else {
+        btnTextSelectAll = Recycler.createMessage(TYPO3.lang['button.selectall'])
+      }
+
+      /** if total amount of records from ajax is bigger than amount of currently selected records enable selectall */
+      if (!!Recycler.currentDataCount && (Recycler.currentDataCount > Recycler.markedRecordsCounter)) {
+        if (Recycler.elements.$selectAll.hasClass('disabled')) {
+          Recycler.elements.$selectAll.removeClass('disabled');
+        }
+      } else {
+        Recycler.elements.$selectAll.addClass('disabled');
+      }
+
+      /** enable mass action buttons (without selectall)*/
+      $.each(btnDisabledArr, (function(index, value) {
+        if (Recycler.elements[value].hasClass('disabled')) {
+          Recycler.elements[value].removeClass('disabled');
+        }
+      }));
+
+      Recycler.elements.$selectAll.find('span.text').text(btnTextSelectAll);
+      Recycler.elements.$massDelete.find('span.text').text(btnTextDelete);
+      Recycler.elements.$massUndo.find('span.text').text(btnTextUndo);
+
+    } else {
+
+      /** default states of mass action buttons if none checkboxes are checked */
+      if (!!Recycler.currentDataCount) {
+        totalItems = Recycler.currentDataCount;
+        btnTextSelectAll = Recycler.createMessage(TYPO3.lang['button.selectallamount'], [totalItems])
+      } else {
+        btnTextSelectAll = Recycler.createMessage(TYPO3.lang['button.selectall'])
+      }
+
+      /** disable all action buttons (without selectall) */
+      $.each(btnDisabledArr, (function(index, value) {
+          if (!Recycler.elements[value].hasClass('disabled')) {
+              Recycler.elements[value].addClass('disabled');
+          }
+      }));
+
+      Recycler.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
+      Recycler.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
+      Recycler.elements.$selectAll.find('span.text').text(btnTextSelectAll);
+      Recycler.elements.$selectAll.removeClass('disabled');
+    }
+  };
+
+  /**
+   * Show feedback while loading new content
+   */
+  Recycler.showLoading = function() {
+    Recycler.elements.$recyclerTable.parent().hide();
+    Recycler.elements.$progressBar.show();
+    Recycler.resetMassActionButtons();
+  };
+
+  Recycler.hideLoading = function() {
+    Recycler.elements.$recyclerTable.parent().show();
+    Recycler.elements.$progressBar.hide();
+  };
+
+  /**
+   * Check and uncheck checkboxes based on Recycler.markedRecordsForMassAction obj
+   */
+  Recycler.refreshCheckboxes = function() {
+    var $checkboxes = Recycler.elements.$tableBody.find('input[type="checkbox"]');
+    $.each($checkboxes, function(index, value) {
+      var $checkbox = $(value),
+        tableUid = Recycler.createTableUid($checkbox);
+
+      if (!!Recycler.markedRecordsForMassAction[tableUid]) {
+        $checkbox.prop('checked', true).parents('tr').addClass('warning');
+      } else {
+        $checkbox.prop('checked', false).parents('tr').removeClass('warning');
+      }
+    });
+  };
+
+  /**
+   * Toggles checkboxes of all records from current page
+   */
+  Recycler.toggleAll = function() {
+    var $checkboxes = Recycler.elements.$tableBody.find('input[type="checkbox"]'),
+        markedRecordsOnThisPage = Recycler.countMarkedRecordsOnThisPage(),
+        allToggled = (markedRecordsOnThisPage === $checkboxes.length);
+
+    $.each($checkboxes, function(index, value) {
+        var tableUid = Recycler.createTableUid($(value));
+      if (!Recycler.markedRecordsForMassAction[tableUid]) {
+        if (!allToggled) {
+          Recycler.addRecord(tableUid);
+        }
+      } else {
+        if (allToggled) {
+          Recycler.subtractRecord(tableUid);
+        }
+      }
+    });
+    Recycler.selectAllRefresh();
+  };
+
+  Recycler.subtractRecord = function(tableUid) {
+    delete Recycler.markedRecordsForMassAction[tableUid];
+    Recycler.markedRecordsCounter--;
+  };
+
+  Recycler.addRecord = function(tableUid) {
+    /** it should have truthy value */
+    Recycler.markedRecordsForMassAction[tableUid] = 1;
+    Recycler.markedRecordsCounter++;
+  };
+
+  /**
+   * Function to store Recycler.markedRecordsForMassAction
+   * @param data
+   */
+  Recycler.persistMarked = function(data) {
+    Recycler.persist = {};
+    Recycler.persist = data;
+  };
+  /**
+   * Function to load Recycler.markedRecordsForMassAction from Recycler.persist
+   */
+  Recycler.loadMarked = function() {
+    Recycler.markedRecordsForMassAction = Recycler.persist;
+    Recycler.persist = {};
+  };
+
+  /**
+   *  clear everything about selecting records
+   */
+  Recycler.clearMarked = function() {
+    Recycler.markedRecordsForMassAction = {};
+    Recycler.persist = {};
+    Recycler.markedRecordsCounter = 0;
+  };
+
+  /**
+   * Changing obj into proper array for ajax
+   * @returns {string[]}
+   */
+  Recycler.returnProperMarkedArray = function() {
+    return Object.keys(Recycler.markedRecordsForMassAction);
+  };
+
+  /**
+   * Counts checkboxes which have corresponding entry in Recycler.markedRecordsForMassAction
+   * @returns {number}
+   */
+  Recycler.countMarkedRecordsOnThisPage = function() {
+    var $checkboxes = Recycler.elements.$tableBody.find('input[type="checkbox"]'),
+      countOnPage = 0;
+    $.each($checkboxes, function(index,value) {
+      var tableUid = Recycler.createTableUid($(value));
+
+      if (!!Recycler.markedRecordsForMassAction[tableUid]) {
+      countOnPage++;
+      }
+    });
+    return countOnPage;
+  };
+
+  Recycler.createTableUid = function($row) {
+    var $checkbox = $($row),
+      $tr = $checkbox.parents('tr'),
+      table = $tr.data('table'),
+      uid = $tr.data('uid');
+    return table + ':' + uid;
+  };
+
+  /**
    * Changes the markup of a pagination action being disabled
    */
   $.fn.disablePagingAction = function() {
@@ -600,6 +883,5 @@ define(['jquery',
   };
 
   $(Recycler.initialize);
-
   return Recycler;
 });
