@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -56,15 +57,15 @@ class OnlineMediaController
     }
 
     /**
-     * Process add media request
+     * Process add media request, and redirects to the previous page
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request)
     {
-        $files = $request->getParsedBody()['file'];
+        $files = $request->getParsedBody()['data'];
+        $redirect = $request->getParsedBody()['redirect'];
         $newMedia = [];
         if (isset($files['newMedia'])) {
             $newMedia = (array)$files['newMedia'];
@@ -92,18 +93,18 @@ class OnlineMediaController
                     );
                 }
                 $this->addFlashMessage($flashMessage);
+                if (empty($redirect) && $media['redirect']) {
+                    $redirect = $media['redirect'];
+                }
             }
         }
 
-        $redirect = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
         $redirect = GeneralUtility::sanitizeLocalUrl($redirect);
         if ($redirect) {
-            $response = $response
-                ->withHeader('Location', GeneralUtility::locationHeaderUrl($redirect))
-                ->withStatus(303);
+            return new RedirectResponse($redirect, 303);
         }
 
-        return $response;
+        throw new \RuntimeException('No redirect after uploading a media found, probably a mis-use of the template not sending the proper Return URL.', 1511945040);
     }
 
     /**

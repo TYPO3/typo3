@@ -219,7 +219,7 @@ class FolderUtilityRenderer
             $markup[] = implode(' ', $fileExtList);
             $markup[] = '</div>';
             $markup[] = '</div>';
-            $markup[] = '<input type="hidden" name="data[newMedia][0][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
+            $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
             $markup[] = '</form>';
 
             $code .= implode(LF, $markup);
