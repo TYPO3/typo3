@@ -137,6 +137,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
         } elseif (isset($this->linkParts['pid'])) {
             $this->expandPage = (int)$this->linkParts['pid'];
         }
+        $this->setTemporaryDbMounts();
 
         $databaseBrowser = GeneralUtility::makeInstance(RecordBrowser::class);
 
