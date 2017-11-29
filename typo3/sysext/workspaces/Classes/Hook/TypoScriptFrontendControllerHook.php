@@ -80,7 +80,23 @@ class TypoScriptFrontendControllerHook
                     $urlForStoppingPreview = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=LOGOUT&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
                     $text .= '<br><a style="color: #000;" href="' . $urlForStoppingPreview . '">Stop preview</a>';
                 }
-                $content .= '<div id="typo3-previewInfo" style="position: absolute; top: 0; border-bottom: 2px solid #ff8800; padding: 5px; background: #ffaa00; font: 1em Verdana; color: #fff; letter-spacing: 2px; z-index: 20000; width: 100%; text-align: center;"><span style="overflow: hidden; display: block; height: 16px;">... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... PREVIEW ... </span></div>';
+                $styles = [];
+                $styles[] = 'position: fixed';
+                $styles[] = 'top: 15px';
+                $styles[] = 'right: 15px';
+                $styles[] = 'padding: 8px 18px';
+                $styles[] = 'background: #fff3cd';
+                $styles[] = 'border: 1px solid #ffeeba';
+                $styles[] = 'font-family: sans-serif';
+                $styles[] = 'font-size: 14px';
+                $styles[] = 'font-weight: bold';
+                $styles[] = 'color: #856404';
+                $styles[] = 'z-index: 20000';
+                $styles[] = 'user-select: none';
+                $styles[] = 'pointer-events:none';
+                $styles[] = 'text-align: center';
+                $styles[] = 'border-radius: 2px';
+                $content .= '<div id="typo3-preview-info" style="' . implode($styles, ';') . '">PREVIEW</div>';
             }
         }
         return $content;
