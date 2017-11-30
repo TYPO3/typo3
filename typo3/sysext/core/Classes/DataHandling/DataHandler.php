@@ -1785,9 +1785,8 @@ class DataHandler implements LoggerAwareInterface
     {
         if (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
             $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
-            if ($this->runtimeCache->has($cacheId)) {
-                $evalCodesArray = $this->runtimeCache->get($cacheId);
-            } else {
+            $evalCodesArray = $this->runtimeCache->get($cacheId);
+            if (!is_array($evalCodesArray)) {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
@@ -1870,9 +1869,8 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Process evaluation settings:
             $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
-            if ($this->runtimeCache->has($cacheId)) {
-                $evalCodesArray = $this->runtimeCache->get($cacheId);
-            } else {
+            $evalCodesArray = $this->runtimeCache->get($cacheId);
+            if (!is_array($evalCodesArray)) {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
