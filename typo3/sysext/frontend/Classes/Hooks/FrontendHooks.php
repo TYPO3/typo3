@@ -51,7 +51,7 @@ class FrontendHooks
             $styles[] = 'pointer-events:none';
             $styles[] = 'text-align: center';
             $styles[] = 'border-radius: 2px';
-            $message = '<div id="typo3-preview-info" style="' . implode($styles, ';') . '">PREVIEW</div>';
+            $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">PREVIEW</div>';
         }
         return $message;
     }
