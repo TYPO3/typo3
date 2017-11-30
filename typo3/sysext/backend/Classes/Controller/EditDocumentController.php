@@ -1290,7 +1290,7 @@ class EditDocumentController
                         ) {
                             // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
                             // tree from the outside to be able to mark the pid as active
-                            $returnUrl = (string)$uriBuilder->buildUriFromRoute($queryParams['route'], ['id' => 0]);
+                            $returnUrl = (string)$uriBuilder->buildUriFromRoutePath($queryParams['route'], ['id' => 0]);
                         }
                     }
                     $deleteButton = $buttonBar->makeLinkButton()

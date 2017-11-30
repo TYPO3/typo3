@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
@@ -690,6 +691,7 @@ class NewRecordController
         } elseif ($table === 'pages') {
             $urlParameters['overrideVals']['pages']['doktype'] = (int)$this->pageinfo['doktype'];
         }
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';
     }
