@@ -1,18 +1,376 @@
+$svgColors: (
+    border: #d7d7d7,
+    lines: #ddd,
+    nodeSelectedBg: #fff,
+    nodeOverBg: #f2f2f2,
+    dragOverBg: #d7e4f1,
+    dragOverBorder: transparent,
+    dragAlertBg: #f6d3cf,
+    dragAlertBorder: #d66c68,
+    dragAboveBg: transparent,
+    dragAboveBorder: transparent,
+    dragBetweenBg: transparent,
+    dragBetweenBorder: transparent,
+    dragBelowBg: transparent,
+    dragBelowBorder: transparent,
+    dragTooltipBg: #d7e4f1,
+    dragTooltipAlertBg: #f6d3cf,
+    dragTooltipAlertBorder: #d66c68
+);
+
+.svg-tree {
+    position: relative;
+}
+
+.svg-tree-loader {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding-top: 200px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 3000;
+
+    & > * {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+}
+
+.node-loader {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 3000;
+
+    & > * {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 10px;
+        margin: auto;
+    }
+}
+
 .svg-tree-wrapper {
+    position: relative;
     overflow-y: scroll;
+
+    & > svg {
+        margin-top: 15px;
+    }
 
     path.link {
         fill: none;
         shape-rendering: crispEdges;
-        stroke: #ddd;
+        stroke: map_get($svgColors, lines);
         stroke-width: 1;
+        pointer-events: none;
     }
 
     .node {
-        .chevron,
-        text,
-        .tree-check {
+        &-bg {
+            fill: transparent;
+
+            &__border {
+                display: none;
+                pointer-events: none;
+                fill: #9eb2c5;
+            }
+
+            &.ver-element,
+            &.ver-versions,
+            &.ver-page {
+                fill: #f7c898 !important;
+            }
+        }
+
+        &-over:not(.node-selected) {
+            fill: map_get($svgColors, nodeOverBg);
+            stroke-width: 1px;
+            stroke: map_get($svgColors, border);
+        }
+
+        &-selected {
+            fill: map_get($svgColors, nodeSelectedBg);
+            stroke-width: 1px;
+            stroke: map_get($svgColors, border);
+        }
+    }
+
+    .nodes {
+        &-wrapper {
+            $b: '.nodes-wrapper';
+
             cursor: pointer;
+
+            &--dragging {
+                cursor: -webkit-grabbing;
+
+                .node-over {
+                    //it must be important because there is inline style in code that we must overwrite
+                    fill: map_get($svgColors, dragOverBg) !important;
+                    stroke-width: 1px;
+                    stroke: map_get($svgColors, dragOverBorder);
+                }
+
+                .node-alert {
+                    //it must be important because there is inline style in code that we must overwrite
+                    fill: map_get($svgColors, dragAlertBg) !important;
+                    stroke: map_get($svgColors, dragAlertBorder);
+                }
+
+                &#{$b}--nodrop {
+                    .node-over {
+                        //it must be important because there is inline style in code that we must overwrite
+                        fill: map_get($svgColors, dragAlertBg) !important;
+                    }
+                }
+
+                &#{$b}--ok-above {
+                    .node-over {
+                        //it must be important because there is inline style in code that we must overwrite
+                        fill: map_get($svgColors, dragAboveBg) !important;
+                        stroke: map_get($svgColors, dragAboveBorder);
+                    }
+                }
+
+                &#{$b}--ok-between {
+                    .node-over {
+                        //it must be important because there is inline style in code that we must overwrite
+                        fill: map_get($svgColors, dragBetweenBg) !important;
+                        stroke: map_get($svgColors, dragBetweenBorder);
+                    }
+                }
+
+                &#{$b}--ok-below {
+                    .node-over {
+                        //it must be important because there is inline style in code that we must overwrite
+                        fill: map_get($svgColors, dragBelowBg) !important;
+                        stroke: map_get($svgColors, dragBelowBorder);
+                    }
+                }
+            }
+
+            &--nodrop {
+                cursor: no-drop;
+            }
+        }
+    }
+}
+
+//node drag & drop tooltip
+.node-dd {
+    position: fixed;
+    display: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: map_get($svgColors, dragTooltipBg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+
+    &--nodrop {
+        background-color: map_get($svgColors, dragTooltipAlertBg);
+        border: 1px solid map_get($svgColors, dragTooltipAlertBorder);
+
+        & .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-place-denied.png);
+        }
+    }
+
+    &__text {
+        display: table;
+        vertical-align: middle;
+        opacity: 0.85;
+        padding: 5px 5px 5px 20px;
+    }
+
+    &--ok-below {
+        &.node-dd--copy .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-below.png);
+        }
+
+        .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-below.png);
+        }
+    }
+
+    &--ok-between {
+        &.node-dd--copy .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-between.png);
+        }
+
+        .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-between.png);
+        }
+    }
+
+    &--ok-append {
+        &.node-dd--copy .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-inside.png);
+        }
+
+        .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-into.png);
+        }
+    }
+
+    &--ok-above {
+        &.node-dd--copy .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-above.png);
+        }
+
+        .node-dd__ctrl-icon {
+            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-above.png);
+        }
+    }
+
+    &__icon {
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    &__name {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    &__ctrl-icon {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        display: block;
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
+    }
+}
+
+.nodes-drop-zone {
+    rect {
+        fill: map_get($svgColors, dragAlertBorder);
+        cursor: -webkit-grabbing;
+    }
+
+    text {
+        pointer-events: none;
+    }
+}
+
+.node-edit {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.svg-toolbar {
+    min-height: 66px;
+    padding: 4px 10px 0;
+    border-bottom: 1px solid #c3c3c3;
+    background-color: #eee;
+
+    &__btn {
+        padding: 0;
+        border: none;
+        background: transparent;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__menu {
+        margin-bottom: 4px;
+
+        .x-btn {
+            &:not(:last-child) {
+                margin-right: 4px;
+            }
+
+            &:last-child {
+                float: right;
+            }
+        }
+    }
+
+    &__submenu {
+        margin: 0 -5px;
+
+        .search-input {
+            max-height: 26px;
+        }
+    }
+
+    &__submenu-item {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    &__drag-node {
+        display: inline-block;
+        cursor: move;
+        padding: 5px;
+        border: none;
+        background: 0 0;
+        font-size: 11px;
+        line-height: 16px;
+    }
+}
+
+.node-stop {
+    fill: map_get($svgColors, dragAlertBorder);
+}
+
+.node-mount-point {
+    display: table;
+    width: 100%;
+    max-width: 265px;
+    margin: 10px 10px 0;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    border: 0;
+    background-color: #6daae0;
+    color: #fff;
+    padding: 11px;
+    border-radius: 2px;
+
+    &__icon {
+        display: table-cell;
+        width: 1%;
+
+        &[data-tree-icon=actions-close] {
+            cursor: pointer;
+        }
+    }
+
+    &__text {
+        display: table-cell;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        & > div {
+            max-width: 185px;
+            overflow: hidden;
         }
     }
 }

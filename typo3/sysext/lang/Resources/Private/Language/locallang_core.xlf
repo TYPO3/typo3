@@ -1114,20 +1114,8 @@ Do you want to refresh it now?</source>
 			<trans-unit id="tree.defaultPageTitle">
 				<source>[Default Title]</source>
 			</trans-unit>
-			<trans-unit id="tree.copyHint">
-				<source>Press Ctrl to copy.</source>
-			</trans-unit>
 			<trans-unit id="tree.activeFilterMode">
 				<source>Active Filtering Mode</source>
-			</trans-unit>
-			<trans-unit id="tree.dropToRemove">
-				<source>Drop here to delete</source>
-			</trans-unit>
-			<trans-unit id="tree.dropZoneElementRemoved">
-				<source>Click here to undelete</source>
-			</trans-unit>
-			<trans-unit id="tree.dropZoneElementRestored">
-				<source>Page restored</source>
 			</trans-unit>
 			<trans-unit id="tree.buttonNewNode">
 				<source>Create new pages</source>

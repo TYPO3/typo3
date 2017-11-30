@@ -861,7 +861,7 @@ return [
         'checkStoredRecords' => true,
         'checkStoredRecordsLoose' => true,
         'pageTree' => [
-            'preloadLimit' => 50
+            'preloadLimit' => 99999999
         ],
         'defaultUserTSconfig' => 'options.enableBookmarks=1
 			options.file_list.enableDisplayBigControlPanel=selectable

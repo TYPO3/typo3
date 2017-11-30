@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tree;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+
 /**
  * Node for the usage with ExtDirect and ExtJS
  */
@@ -111,6 +113,13 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     protected $spriteIconCode = '';
 
     /**
+     * Icon
+     *
+     * @var Icon
+     */
+    protected $icon;
+
+    /**
      * Text source field (title, nav_title, ...)
      *
      * @var string
@@ -158,6 +167,13 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
      * @var bool
      */
     protected $allowChildren = true;
+
+    /**
+     * Page URL Alias
+     *
+     * @var string
+     */
+    protected $alias = '';
 
     /**
      * Set's the node type
@@ -459,6 +475,26 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     }
 
     /**
+     * Sets the node icon
+     *
+     * @param Icon $icon
+     */
+    public function setIcon(Icon $icon)
+    {
+        $this->icon = $icon;
+    }
+
+    /**
+     * Returns the icon
+     *
+     * @return Icon
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
      * Sets the indicator if the label is editable
      *
      * @param bool $labelIsEditable
@@ -552,6 +588,26 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
     }
 
     /**
+     * Returns alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * Sets alias
+     *
+     * @param string $alias
+     */
+    public function setAlias(string $alias)
+    {
+        $this->alias = $alias;
+    }
+
+    /**
      * Returns the node in an array representation that can be used for serialization
      *
      * @param bool $addChildNodes
@@ -565,6 +621,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
             'type' => $this->getType(),
             'editableText' => $this->getEditableText(),
             'text' => $this->getPrefix() . $this->getText() . $this->getSuffix(),
+            'alias' => $this->getAlias(),
             'cls' => $this->getCls(),
             'prefix' => $this->getPrefix(),
             'suffix' => $this->getSuffix(),
@@ -574,6 +631,8 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode
             'draggable' => $this->isDraggable(),
             'isTarget' => $this->isDropTarget(),
             'spriteIconCode' => $this->getSpriteIconCode(),
+            'icon' => $this->getIcon()->getIdentifier(),
+            'overlayIcon' => $this->getIcon()->getOverlayIcon() ? $this->getIcon()->getOverlayIcon()->getIdentifier() : '',
             't3TextSourceField' => $this->getTextSourceField(),
             't3InCopyMode' => $this->isInCopyMode(),
             't3InCutMode' => $this->isInCutMode(),

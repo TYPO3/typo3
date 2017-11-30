@@ -13,9 +13,12 @@
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngine/Element/SelectTree
- * Logic for SelectTree
+ * Handles rendering of the record tree based on SVG for TCA fields with renderType "SelectTree"
+ * (e.g. category tree).
+ *
+ * Extends TYPO3/CMS/Backend/SvgTree component.
  */
-define(['d3', 'TYPO3/CMS/Backend/FormEngine/Element/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
+define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
   function (d3, SvgTree) {
     'use strict';
 

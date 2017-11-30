@@ -1,9 +1,0 @@
-All adapter related files below are located in /adapters/ of this folder.
-
-Your include order should be:
-
-Ext Stand-alone
----------------
-ext-base.js
-ext-all.js (or your choice of files)
-

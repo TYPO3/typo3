@@ -265,11 +265,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected $templateFile;
 
-    /**
-     * @var array
-     */
-    protected $jsLibraryNames = ['extjs'];
-
     // Paths to contributed libraries
 
     /**
@@ -277,11 +272,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @var string
      */
     protected $requireJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/';
-
-    /**
-     * @var string
-     */
-    protected $extJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/extjs/';
 
     /**
      * The local directory where one can find jQuery versions and plugins
@@ -346,32 +336,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var bool
      */
-    protected $addExtJS = false;
-
-    /**
-     * @var bool
-     */
-    protected $extDirectCodeAdded = false;
-
-    /**
-     * @var bool
-     */
-    protected $enableExtJsDebug = false;
-
-    /**
-     * @var bool
-     */
     protected $enableJqueryDebug = false;
-
-    /**
-     * @var bool
-     */
-    protected $extJStheme = true;
-
-    /**
-     * @var bool
-     */
-    protected $extJScss = true;
 
     /**
      * @var array
@@ -612,16 +577,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->requireJsPath = $path;
     }
 
-    /**
-     * Sets Path for ExtJs library (relative to typo3 directory)
-     *
-     * @param string $path
-     */
-    public function setExtJsPath($path)
-    {
-        $this->extJsPath = $path;
-    }
-
     /*****************************************************/
     /*                                                   */
     /*  Public Enablers / Disablers                      */
@@ -750,7 +705,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         $this->compressCss = false;
         $this->concatenateFiles = false;
         $this->removeLineBreaksFromTemplate = false;
-        $this->enableExtJsDebug = true;
         $this->enableJqueryDebug = true;
     }
 
@@ -948,16 +902,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function getBodyContent()
     {
         return $this->bodyContent;
-    }
-
-    /**
-     * Gets Path for ExtJs library (relative to typo3 directory)
-     *
-     * @return string
-     */
-    public function getExtJsPath()
-    {
-        return $this->extJsPath;
     }
 
     /**
@@ -1295,144 +1239,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Adds Ext.onready code, which will be wrapped in Ext.onReady(function() {...});
-     *
-     * @param string $block Javascript code
-     * @param bool $forceOnTop Position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
-     */
-    public function addExtOnReadyCode($block, $forceOnTop = false)
-    {
-        if (!in_array($block, $this->extOnReadyCode)) {
-            if ($forceOnTop) {
-                array_unshift($this->extOnReadyCode, $block);
-            } else {
-                $this->extOnReadyCode[] = $block;
-            }
-        }
-    }
-
-    /**
-     * Adds the ExtDirect code
-     *
-     * @param array $filterNamespaces Limit the output to defined namespaces. If empty, all namespaces are generated
-     */
-    public function addExtDirectCode(array $filterNamespaces = [])
-    {
-        if ($this->extDirectCodeAdded) {
-            return;
-        }
-        $this->extDirectCodeAdded = true;
-        if (empty($filterNamespaces)) {
-            $filterNamespaces = ['TYPO3'];
-        }
-
-        // Add language labels for ExtDirect
-        $this->addInlineLanguageLabelArray([
-            'extDirect_timeoutHeader'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutHeader',
-            'extDirect_timeoutMessage' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutMessage'
-        ], true);
-
-        $token = ($api = '');
-        if (TYPO3_MODE === 'BE') {
-            $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-            $token = $formprotection->generateToken('extDirect');
-
-            // Debugger Console strings
-            $this->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
-
-            $this->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
-        }
-        /** @var $extDirect \TYPO3\CMS\Core\ExtDirect\ExtDirectApi */
-        $extDirect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class);
-        $api = $extDirect->getApiPhp($filterNamespaces);
-        if ($api) {
-            $this->addJsInlineCode('TYPO3ExtDirectAPI', $api, false);
-        }
-        // Note: we need to iterate through the object, because the addProvider method
-        // does this only with multiple arguments
-        $this->addExtOnReadyCode('
-			(function() {
-				TYPO3.ExtDirectToken = "' . $token . '";
-				for (var api in Ext.app.ExtDirectAPI) {
-					var provider = Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
-					provider.on("beforecall", function(provider, transaction, meta) {
-						if (transaction.data) {
-							transaction.data[transaction.data.length] = TYPO3.ExtDirectToken;
-						} else {
-							transaction.data = [TYPO3.ExtDirectToken];
-						}
-					});
-
-					provider.on("call", function(provider, transaction, meta) {
-						if (transaction.isForm) {
-							transaction.params.securityToken = TYPO3.ExtDirectToken;
-						}
-					});
-				}
-			})();
-
-			var extDirectDebug = function(message, header, group) {
-				var DebugConsole = null;
-
-				if (top && top.TYPO3 && typeof top.TYPO3.DebugConsole === "object") {
-					DebugConsole = top.TYPO3.DebugConsole;
-				} else if (typeof TYPO3 === "object" && typeof TYPO3.DebugConsole === "object") {
-					DebugConsole = TYPO3.DebugConsole;
-				}
-
-				if (DebugConsole !== null) {
-					DebugConsole.add(message, header, group);
-				} else if (typeof console === "object") {
-					console.log(message);
-				} else {
-					document.write(message);
-				}
-			};
-
-			Ext.Direct.on("exception", function(event) {
-				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
-					top.TYPO3.Notification.error(
-						TYPO3.l10n.localize("extDirect_timeoutHeader"),
-						TYPO3.l10n.localize("extDirect_timeoutMessage")
-					);
-				} else {
-					var backtrace = "";
-					if (event.code === "parse") {
-						extDirectDebug(
-							"<p>" + event.xhr.responseText + "<\\/p>",
-							event.type,
-							"ExtDirect - Exception"
-						);
-					} else if (event.code === "router") {
-						top.TYPO3.Notification.error(
-							event.code,
-							event.message
-						);
-					} else if (event.where) {
-						backtrace = "<p style=\\"margin-top: 20px;\\">" +
-							"<strong>Backtrace:<\\/strong><br \\/>" +
-							event.where.replace(/#/g, "<br \\/>#") +
-							"<\\/p>";
-						extDirectDebug(
-							"<p>" + event.message + "<\\/p>" + backtrace,
-							event.method,
-							"ExtDirect - Exception"
-						);
-					}
-
-
-				}
-			});
-
-			Ext.Direct.on("event", function(event, provider) {
-				if (typeof event.debug !== "undefined" && event.debug !== "") {
-					extDirectDebug(event.debug, event.method, "ExtDirect - Debug");
-				}
-			});
-			', true);
-    }
-
-    /**
      * Adds CSS file
      *
      * @param string $file
@@ -1685,30 +1491,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * call this function if you need the extJS library
-     *
-     * @param bool $css Flag, if set the ext-css will be loaded
-     * @param bool $theme Flag, if set the ext-theme "grey" will be loaded
-     */
-    public function loadExtJS($css = true, $theme = true)
-    {
-        $this->addExtJS = true;
-        $this->extJStheme = $theme;
-        $this->extJScss = $css;
-    }
-
-    /**
-     * Call this function to load debug version of ExtJS. Use this for development only
-     */
-    public function enableExtJsDebug()
-    {
-        $this->enableExtJsDebug = true;
-    }
-
-    /**
      * Adds Javascript Inline Label. This will occur in TYPO3.lang - object
      * The label can be used in scripts with TYPO3.lang.<key>
-     * Need extJs loaded
      *
      * @param string $key
      * @param string $value
@@ -1722,7 +1506,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds Javascript Inline Label Array. This will occur in TYPO3.lang - object
      * The label can be used in scripts with TYPO3.lang.<key>
      * Array will be merged with existing array.
-     * Need extJs loaded
      *
      * @param array $array
      * @param bool $parseWithLanguageService
@@ -1764,7 +1547,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Adds Javascript Inline Setting. This will occur in TYPO3.settings - object
      * The label can be used in scripts with TYPO3.setting.<key>
-     * Need extJs loaded
      *
      * @param string $namespace
      * @param string $key
@@ -1792,7 +1574,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * Adds Javascript Inline Setting. This will occur in TYPO3.settings - object
      * The label can be used in scripts with TYPO3.setting.<key>
      * Array will be merged with existing array.
-     * Need extJs loaded
      *
      * @param string $namespace
      * @param array $array
@@ -2079,7 +1860,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * Helper function for render the main JavaScript libraries,
-     * currently: RequireJS, jQuery, ExtJS
+     * currently: RequireJS, jQuery
      *
      * @return string Content with JavaScript libraries
      */
@@ -2102,86 +1883,23 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
-        // Include extJS
-        if ($this->addExtJS) {
-            // Use the base adapter all the time
-            $out .= '<script src="' . $this->processJsFile($this->extJsPath . 'adapter/ext-base' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') . '" type="text/javascript"></script>' . LF;
-            $out .= '<script src="' . $this->processJsFile($this->extJsPath . 'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') . '" type="text/javascript"></script>' . LF;
-            // Add extJS localization
-            // Load standard ISO mapping and modify for use with ExtJS
-            $localeMap = $this->locales->getIsoMapping();
-            $localeMap[''] = 'en';
-            $localeMap['default'] = 'en';
-            // Greek
-            $localeMap['gr'] = 'el_GR';
-            // Norwegian Bokmaal
-            $localeMap['no'] = 'no_BO';
-            // Swedish
-            $localeMap['se'] = 'se_SV';
-            $extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
-            $extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
-            if (file_exists(PATH_site . $extJsLocaleFile)) {
-                $out .= '<script src="' . $this->processJsFile($extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
-            }
-            // Remove extjs from JScodeLibArray
-            unset($this->jsFiles[$this->extJsPath . 'ext-all.js'], $this->jsFiles[$this->extJsPath . 'ext-all-debug.js']);
-        }
         $this->loadJavaScriptLanguageStrings();
         if (TYPO3_MODE === 'BE') {
             $this->addAjaxUrlsToInlineSettings();
         }
         $inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
         $inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
-        if ($this->addExtJS) {
-            // Set clear.gif, move it on top, add handler code
-            $code = '';
-            if (!empty($this->extOnReadyCode)) {
-                foreach ($this->extOnReadyCode as $block) {
-                    $code .= $block;
-                }
-            }
-            $clearGifPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/clear.gif');
-            $clearGifPath = htmlspecialchars(PathUtility::getAbsoluteWebPath($clearGifPath));
-            $out .= $this->inlineJavascriptWrap[0] . '
-				Ext.ns("TYPO3");
-				Ext.BLANK_IMAGE_URL = "' . $clearGifPath . '";
-				Ext.SSL_SECURE_URL = "' . $clearGifPath . '";' . LF
-                . $inlineSettings
-                . 'Ext.onReady(function() {'
-                    . $code
-                . ' });'
-                . $this->inlineJavascriptWrap[1];
-            $this->extOnReadyCode = [];
-            // Include TYPO3.l10n object
-            if (TYPO3_MODE === 'BE') {
-                $out .= '<script src="' . $this->processJsFile('EXT:lang/Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
-            }
-            if ($this->extJScss) {
-                if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
-                    $this->addCssLibrary($GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'all', '', true);
-                } else {
-                    $this->addCssLibrary($this->extJsPath . 'resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', true);
-                }
-            }
-            if ($this->extJStheme) {
-                if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
-                    $this->addCssLibrary($GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'all', '', true);
-                } else {
-                    $this->addCssLibrary($this->extJsPath . 'resources/css/xtheme-blue.css', 'stylesheet', 'all', '', true);
-                }
-            }
-        } else {
-            // no extJS loaded, but still inline settings
-            if ($inlineSettings !== '') {
-                // make sure the global TYPO3 is available
-                $inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
-                $out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
-                // Add language module only if also jquery is guaranteed to be there
-                if (TYPO3_MODE === 'BE' && !empty($this->jQueryVersions)) {
-                    $this->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
-                }
+
+        if ($inlineSettings !== '') {
+            // make sure the global TYPO3 is available
+            $inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
+            $out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
+            // Add language module only if also jquery is guaranteed to be there
+            if (TYPO3_MODE === 'BE' && !empty($this->jQueryVersions)) {
+                $this->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
             }
         }
+
         return $out;
     }
 

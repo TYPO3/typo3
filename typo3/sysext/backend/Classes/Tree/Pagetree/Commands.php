@@ -310,6 +310,7 @@ class Commands
         $subNode->setMountPoint($mountPoint);
         $subNode->setWorkspaceId($record['_ORIG_uid'] ?: $record['uid']);
         $subNode->setBackgroundColor(self::$backgroundColors[$record['uid']]);
+        $subNode->setAlias($record['alias'] ?? '');
         $field = 'title';
         $text = $record['title'];
         if (self::$useNavTitle && trim($record['nav_title']) !== '') {
@@ -327,11 +328,11 @@ class Commands
             $domain = self::getDomainName($record['uid']);
             $suffix = $domain !== '' ? ' [' . $domain . ']' : '';
         }
-        $qtip = str_replace(' - ', '<br />', htmlspecialchars(BackendUtility::titleAttribForPages($record, '', false)));
+        $qtip = str_replace(' - ', PHP_EOL, htmlspecialchars(BackendUtility::titleAttribForPages($record, '', false)));
         $prefix = '';
         $lockInfo = BackendUtility::isRecordLocked('pages', $record['uid']);
         if (is_array($lockInfo)) {
-            $qtip .= '<br />' . htmlspecialchars($lockInfo['msg']);
+            $qtip .= PHP_EOL . htmlspecialchars($lockInfo['msg']);
             $prefix .= '<span class="typo3-pagetree-status">' . $iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
         }
         // Call stats information hook
@@ -348,11 +349,12 @@ class Commands
         $subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
         $subNode->setQTip($qtip);
         if ((int)$record['uid'] !== 0) {
-            $spriteIconCode = $iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render();
+            $icon = $iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL);
         } else {
-            $spriteIconCode = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
+            $icon = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL);
         }
-        $subNode->setSpriteIconCode($spriteIconCode);
+        $subNode->setIcon($icon);
+        $subNode->setSpriteIconCode($icon->render());
         if (
             !$subNode->canCreateNewPages()
             || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)

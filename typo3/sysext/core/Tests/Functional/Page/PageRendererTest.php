@@ -75,11 +75,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . $this->getUniqueId('jsInline-') . '"';
         $subject->addJsInlineCode($this->getUniqueId(), $jsInlineCode);
 
-        $extOnReadyCode = $expectedExtOnReadyCodePartOne = $this->getUniqueId('extOnReady-');
-        $expectedExtOnReadyCodePartTwo = 'Ext.onReady(function() {';
-        $subject->loadExtJS();
-        $subject->addExtOnReadyCode($extOnReadyCode);
-
         $cssFile = $this->getUniqueId('cssFile-');
         $expectedCssFileString = 'wrapBefore<link rel="stylesheet" type="text/css" href="' . $cssFile . '" media="print" />wrapAfter';
         $subject->addCssFile($cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
@@ -106,8 +101,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertRegExp($expectedJsLibraryRegExp, $renderedString);
         $this->assertRegExp($expectedJsFileRegExp, $renderedString);
         $this->assertContains($expectedJsInlineCodeString, $renderedString);
-        $this->assertContains($expectedExtOnReadyCodePartOne, $renderedString);
-        $this->assertContains($expectedExtOnReadyCodePartTwo, $renderedString);
         $this->assertContains($expectedCssFileString, $renderedString);
         $this->assertContains($expectedCssInlineBlockOnTopString, $renderedString);
         $this->assertRegExp($expectedJqueryRegExp, $renderedString);
@@ -145,7 +138,6 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addJsFooterInlineCode($this->getUniqueId(), $jsFooterInlineCode);
 
         // Bunch of label tests
-        $subject->loadExtJS();
         $subject->addInlineLanguageLabel('myKey', 'myValue');
         $subject->addInlineLanguageLabelArray([
             'myKeyArray1' => 'myValueArray1',
@@ -328,19 +320,5 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->loadJquery('1.6.3', 'google');
         $out = $subject->render();
         $this->assertRegExp($expectedRegex, $out);
-    }
-
-    /**
-     * @test
-     */
-    public function loadExtJsInDebugLoadsDebugExtJs()
-    {
-        $subject = new PageRenderer();
-
-        $expectedRegExp = '#<script src="typo3/sysext/core/Resources/Public/JavaScript/Contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-        $subject->loadExtJS(true, true);
-        $subject->enableExtJsDebug();
-        $out = $subject->render();
-        $this->assertRegExp($expectedRegExp, $out);
     }
 }

@@ -45,23 +45,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     };
 
     ContextMenuActions.mountAsTreeRoot = function (table, uid) {
-        // see actions.js -> mountAsTreeRoot
-        if (table === 'pages' && typeof top.Ext.getCmp('typo3-pagetree') !== 'undefined') {
-            var app = top.Ext.getCmp('typo3-pagetree-tree').app;
-            var node = app.getTree().getRootNode().findChild('realId', uid, true);
-            if (node === null) {
-                return false;
-            }
-
-            var useNode = {
-                attributes: {
-                    nodeData: {
-                        id: uid
-                    }
-                }
-            };
-            top.TYPO3.Components.PageTree.Actions.mountAsTreeRoot(useNode, node.ownerTree);
-        }
+      if (table === 'pages') {
+        top.TYPO3.Backend.NavigationContainer.PageTree.setTemporaryMountPoint(uid);
+      }
     };
 
     ContextMenuActions.newPageWizard = function (table, uid) {
@@ -112,15 +98,17 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
     ContextMenuActions.disableRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
             top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=1&redirect=' + ContextMenuActions.getReturnUrl()
-        );
-        top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
+        ).done(function () {
+          top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+        });
     };
 
     ContextMenuActions.enableRecord = function (table, uid) {
         top.TYPO3.Backend.ContentContainer.setUrl(
             top.TYPO3.settings.RecordCommit.moduleUrl + '&data[' + table + '][' + uid + '][hidden]=0&redirect=' + ContextMenuActions.getReturnUrl()
-        );
-        top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
+        ).done(function () {
+          top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+        });
     };
 
     ContextMenuActions.deleteRecord = function (table, uid) {
@@ -146,10 +134,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
             if (e.target.name === 'delete') {
                 top.TYPO3.Backend.ContentContainer.setUrl(
                     top.TYPO3.settings.RecordCommit.moduleUrl + '&redirect=' + ContextMenuActions.getReturnUrl() + '&cmd[' + table + '][' + uid + '][delete]=1'
-                );
-                if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
-                    top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
-                }
+                ).done(function () {
+                  if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
+                    top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+                  }
+                });
+
             }
             Modal.dismiss();
         });
@@ -217,10 +207,11 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Severity'], func
 
             top.TYPO3.Backend.ContentContainer.setUrl(
                 top.TYPO3.settings.RecordCommit.moduleUrl + url
-            );
-            if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
-                top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree.defer(500);
-            }
+            ).done(function () {
+                if (table === 'pages' && top.TYPO3.Backend.NavigationContainer.PageTree) {
+                  top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+                }
+            });
         };
         if (!$anchorElement.data('title')) {
             performPaste();

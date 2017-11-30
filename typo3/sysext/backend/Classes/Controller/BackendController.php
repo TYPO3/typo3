@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -120,10 +119,8 @@ class BackendController
         $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->loadExtJS();
         // included for the module menu JavaScript, please note that this is subject to change
         $this->pageRenderer->loadJquery();
-        $this->pageRenderer->addExtDirectCode();
         // Add default BE javascript
         $this->jsFiles = [
             'md5' => 'EXT:backend/Resources/Public/JavaScript/md5.js',
@@ -166,6 +163,7 @@ class BackendController
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_core.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
@@ -260,91 +258,7 @@ class BackendController
         }
         $this->generateJavascript();
         $this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, false);
-        $this->loadResourcesForRegisteredNavigationComponents();
-        // @todo: remove this when ExtJS is removed
-        $states = $this->getBackendUser()->uc['BackendComponents']['States'];
-        $this->pageRenderer->addExtOnReadyCode('
-            require([\'TYPO3/CMS/Backend/Storage/Persistent\'], function(PersistentStorage) {
-                var TYPO3ExtJSStateProviderBridge = function() {};
-                Ext.extend(TYPO3ExtJSStateProviderBridge, Ext.state.Provider, {
-                    state: {},
-                    queue: [],
-                    dirty: false,
-                    prefix: "BackendComponents.States.",
-                    initState: function(state) {
-                        if (Ext.isArray(state)) {
-                            Ext.each(state, function(item) {
-                                this.state[item.name] = item.value;
-                            }, this);
-                        } else if (Ext.isObject(state)) {
-                            Ext.iterate(state, function(key, value) {
-                                this.state[key] = value;
-                            }, this);
-                        } else {
-                            this.state = {};
-                        }
-                        var me = this;
-                        window.setInterval(function() {
-                            me.submitState(me)
-                        }, 750);
-                    },
-                    get: function(name, defaultValue) {
-                        return PersistentStorage.isset(this.prefix + name) ? PersistentStorage.get(this.prefix + name) : defaultValue;
-                    },
-                    clear: function(name) {
-                        PersistentStorage.unset(this.prefix + name);
-                    },
-                    set: function(name, value) {
-                        if (!name) {
-                            return;
-                        }
-                        this.queueChange(name, value);
-                    },
-                    queueChange: function(name, value) {
-                        var o = {};
-                        var i;
-                        var found = false;
 
-                        var lastValue = this.state[name];
-                        for (i = 0; i < this.queue.length; i++) {
-                            if (this.queue[i].name === name) {
-                                lastValue = this.queue[i].value;
-                            }
-                        }
-                        var changed = undefined === lastValue || lastValue !== value;
-
-                        if (changed) {
-                            o.name = name;
-                            o.value = value;
-                            for (i = 0; i < this.queue.length; i++) {
-                                if (this.queue[i].name === o.name) {
-                                    this.queue[i] = o;
-                                    found = true;
-                                }
-                            }
-                            if (false === found) {
-                                this.queue.push(o);
-                            }
-                            this.dirty = true;
-                        }
-                    },
-                    submitState: function(context) {
-                        if (!context.dirty) {
-                            return;
-                        }
-                        for (var i = 0; i < context.queue.length; ++i) {
-                            PersistentStorage.set(context.prefix + context.queue[i].name, context.queue[i].value).done(function() {
-                                if (!context.dirty) {
-                                    context.queue = [];
-                                }
-                            });
-                        }
-                        context.dirty = false;
-                    }
-                });
-                Ext.state.Manager.setProvider(new TYPO3ExtJSStateProviderBridge());
-                Ext.state.Manager.getProvider().initState(' . (!empty($states) ? json_encode($states) : []) . ');
-            });');
         // Set document title:
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
         // Renders the module page
@@ -397,51 +311,6 @@ class BackendController
         $view->assign('toolbar', $this->renderToolbar());
 
         return $view->render();
-    }
-
-    /**
-     * Loads the css and javascript files of all registered navigation widgets
-     */
-    protected function loadResourcesForRegisteredNavigationComponents()
-    {
-        if (!is_array($GLOBALS['TBE_MODULES']['_navigationComponents'])) {
-            return;
-        }
-        $loadedComponents = [];
-        foreach ($GLOBALS['TBE_MODULES']['_navigationComponents'] as $module => $info) {
-            if (in_array($info['componentId'], $loadedComponents)) {
-                continue;
-            }
-            $loadedComponents[] = $info['componentId'];
-            $component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
-            $componentDirectory = 'components/' . $component . '/';
-            if ($info['isCoreComponent']) {
-                $componentDirectory = 'Resources/Public/JavaScript/extjs/' . $componentDirectory;
-                $info['extKey'] = 'backend';
-            }
-            $absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
-            $relativeComponentPath = PathUtility::getRelativePath(PATH_site . TYPO3_mainDir, $absoluteComponentPath);
-            $cssFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
-            if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
-                // Don't allow inclusion outside directory
-                $loadOrder = str_replace('../', '', file_get_contents($absoluteComponentPath . 'css/loadorder.txt'));
-                $cssFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, true);
-                $cssFiles = array_merge($cssFilesOrdered, $cssFiles);
-            }
-            foreach ($cssFiles as $cssFile) {
-                $this->pageRenderer->addCssFile($relativeComponentPath . 'css/' . $cssFile);
-            }
-            $jsFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
-            if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
-                // Don't allow inclusion outside directory
-                $loadOrder = str_replace('../', '', file_get_contents($absoluteComponentPath . 'javascript/loadorder.txt'));
-                $jsFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, true);
-                $jsFiles = array_merge($jsFilesOrdered, $jsFiles);
-            }
-            foreach ($jsFiles as $jsFile) {
-                $this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
-            }
-        }
     }
 
     /**

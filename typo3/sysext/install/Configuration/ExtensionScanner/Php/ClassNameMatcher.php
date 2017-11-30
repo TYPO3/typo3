@@ -447,6 +447,21 @@ return [
             'Deprecation-82903-DeprecateClientUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\ExtDirect\ExtDirectApi' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\ExtDirect\ExtDirectRouter' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [

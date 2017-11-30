@@ -33,6 +33,7 @@ class Inline1nCest
         $I->switchToIFrame();
 
         $I->click('List');
+        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToIFrame('list_frame');
 

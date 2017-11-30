@@ -179,7 +179,7 @@ tt_content.' . $pluginSignature . ' {
         }
         // add mandatory parameter to use new pagetree
         if ($mainModuleName === 'web') {
-            $defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
+            $defaultModuleConfiguration['navigationComponentId'] = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
         }
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
         $moduleConfiguration = $defaultModuleConfiguration;

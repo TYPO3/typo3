@@ -840,6 +840,15 @@ class ExtensionManagementUtility
      */
     public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
     {
+        if (($moduleConfiguration['navigationComponentId'] ?? '') === 'typo3-pagetree') {
+            trigger_error(
+                'Navigation component ID "typo3-pagetree" has been deprecated and will be removed in TYPO3 v10.'
+                . 'Use "TYPO3/CMS/Backend/PageTree/PageTreeElement" instead. Module key: ' . $main . '-' . $sub,
+                E_USER_DEPRECATED
+            );
+            $moduleConfiguration['navigationComponentId'] = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
+        }
+
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
         if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
@@ -992,10 +1001,10 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Registers a navigation component
+     * Registers a navigation component e.g. page tree
      *
      * @param string $module
-     * @param string $componentId
+     * @param string $componentId componentId is also an RequireJS module name e.g. 'TYPO3/CMS/MyExt/MyNavComponent'
      * @param string $extensionKey
      * @throws \RuntimeException
      */

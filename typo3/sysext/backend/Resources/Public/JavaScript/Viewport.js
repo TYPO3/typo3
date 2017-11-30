@@ -53,9 +53,6 @@ define(
 				TYPO3.Backend.NavigationContainer.cleanup();
 				TYPO3.Backend.NavigationContainer.calculateScrollbar();
 				$('.t3js-topbar-header').css('padding-right', $('.t3js-scaffold-toolbar').outerWidth());
-				if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
-					Ext.getCmp('typo3-pagetree').doLayout();
-				}
 			},
 			Loader: {
 				start: function() {
@@ -71,10 +68,22 @@ define(
 				}
 			},
 			NavigationContainer: {
+				instance: null,
+
 				PageTree: {
 					refreshTree: function() {
-						if (typeof Ext.getCmp('typo3-pagetree') !== 'undefined') {
-							Ext.getCmp('typo3-pagetree').refreshTree();
+						if (TYPO3.Backend.NavigationContainer.instance !== null) {
+							TYPO3.Backend.NavigationContainer.instance.refreshTree();
+						}
+					},
+					setTemporaryMountPoint: function (pid) {
+						if (TYPO3.Backend.NavigationContainer.instance !== null) {
+							TYPO3.Backend.NavigationContainer.instance.setTemporaryMountPoint(pid);
+						}
+					},
+					unsetTemporaryMountPoint: function () {
+						if (TYPO3.Backend.NavigationContainer.instance !== null) {
+							TYPO3.Backend.NavigationContainer.instance.unsetTemporaryMountPoint();
 						}
 					}
 				},
@@ -102,7 +111,7 @@ define(
 						$('.t3js-scaffold').addClass('scaffold-content-navigation-expanded');
 					}
 					$('.t3js-scaffold-content-navigation [data-component]').hide();
-					$('.t3js-scaffold-content-navigation [data-component=' + component + ']').show();
+					$('.t3js-scaffold-content-navigation [data-component="' + component + '"]').show();
 				},
 				/**
 				 * @param {string} urlToLoad
@@ -146,7 +155,17 @@ define(
 						$contentContainer.removeAttr('style');
 					}
 					$moduleMenuContainer.css('overflow', 'auto');
-				}
+				},
+
+				/**
+				 * Public method used by Naviagtion components to register themselves.
+				 * See TYPO3/CMS/Backend/PageTree/PageTreeElement->initialize
+				 *
+				 * @param {Object} component
+				 */
+				setComponentInstance: function (component) {
+					TYPO3.Backend.NavigationContainer.instance = component;
+        }
 			},
 			/**
 			 * Content container manages the right site of the viewport (showing module specific content)

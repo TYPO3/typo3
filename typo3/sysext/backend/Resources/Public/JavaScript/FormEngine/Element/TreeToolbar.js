@@ -17,7 +17,7 @@
 define(['jquery',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/Tooltip',
-    'TYPO3/CMS/Backend/FormEngine/Element/SvgTree',
+    'TYPO3/CMS/Backend/SvgTree',
   ],
   function ($, Icons) {
     'use strict';

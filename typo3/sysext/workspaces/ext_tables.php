@@ -16,7 +16,7 @@ defined('TYPO3_MODE') or die();
         'access' => 'user,group',
         'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
         'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
-        'navigationComponentId' => 'typo3-pagetree'
+        'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
     ]
 );
 

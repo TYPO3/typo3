@@ -33,7 +33,6 @@ require(
 		TYPO3.ModuleMenu.App = {
 			loadedModule: null,
 			loadedNavigationComponentId: '',
-			availableNavigationComponents: {},
 
 			initialize: function () {
 				var me = this;
@@ -203,10 +202,10 @@ require(
 			},
 
 			ensurePageInTreeSelected: function () {
-				if (this.loadedNavigationComponentId === 'typo3-pagetree'
-					&& this.availableNavigationComponents['typo3-pagetree'].isInitialized()
+				if (this.loadedNavigationComponentId === 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
+					&& this.availableNavigationComponents['TYPO3/CMS/Backend/PageTree/PageTreeElement'].isInitialized()
 				) {
-					this.availableNavigationComponents['typo3-pagetree'].selectRequestedPageId();
+					this.availableNavigationComponents['TYPO3/CMS/Backend/PageTree/PageTreeElement'].selectRequestedPageId();
 				}
 			},
 
@@ -279,7 +278,7 @@ require(
 				}
 				//get id
 				var section = '';
-				if (moduleData.navigationComponentId === 'typo3-pagetree') {
+				if (moduleData.navigationComponentId === 'TYPO3/CMS/Backend/PageTree/PageTreeElement') {
 					section = 'web';
 				} else {
 					section = moduleData.name.split('_')[0];
@@ -301,57 +300,20 @@ require(
 				if (navigationComponentId === this.loadedNavigationComponentId) {
 					return;
 				}
+				var componentCssName = navigationComponentId.replace(/[/]/g, '_');
 				if (this.loadedNavigationComponentId !== '') {
-					$('#navigationComponent-' + this.loadedNavigationComponentId).hide();
+					$('#navigationComponent-' + this.loadedNavigationComponentId.replace(/[/]/g, '_')).hide();
 				}
 				if ($('.t3js-scaffold-content-navigation [data-component="' + navigationComponentId + '"]').length < 1) {
 					$('.t3js-scaffold-content-navigation')
-						.append('<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="navigationComponent-' + navigationComponentId + '"></div>');
-				}
-				// allow to render the page tree hard-coded in order to have acceptance tests apply correctly
-				// and to ensure that something is loaded
-				var component = Ext.getCmp(navigationComponentId);
-				if (typeof this.availableNavigationComponents['typo3-pagetree'] === 'undefined') {
-					component = new TYPO3.Components.PageTree.App();
-					component.render('navigationComponent-' + navigationComponentId);
-					this.availableNavigationComponents['typo3-pagetree'] = component;
-					// re-evaluate the component
-					component = Ext.getCmp(navigationComponentId);
+						.append('<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="navigationComponent-' + componentCssName + '"></div>');
 				}
 
-				if (typeof component === 'undefined') {
-					var self = this,
-						deferredComponentExists = $.Deferred();
-
-					function checkIfComponentIdIsAvailable(componentId) {
-						if (typeof self.availableNavigationComponents[componentId] === 'undefined') {
-							setTimeout(function (id) {
-								checkIfComponentIdIsAvailable(id);
-							}, 100, componentId);
-						} else {
-							deferredComponentExists.resolve();
-						}
-					}
-					checkIfComponentIdIsAvailable(navigationComponentId);
-
-					deferredComponentExists.promise().done(function() {
-						component = self.availableNavigationComponents[navigationComponentId]();
-						component.render('navigationComponent-' + navigationComponentId);
-
-						TYPO3.Backend.NavigationContainer.show(navigationComponentId);
-						self.loadedNavigationComponentId = navigationComponentId;
-					});
-				} else {
-					// Tree was previously rendered, and was hidden because a different component was displayed
+				require([navigationComponentId], function (NavigationComponent) {
+					NavigationComponent.initialize('#navigationComponent-' + componentCssName);
 					TYPO3.Backend.NavigationContainer.show(navigationComponentId);
-					this.loadedNavigationComponentId = navigationComponentId;
-				}
-			},
-
-			registerNavigationComponent: function (componentId, initCallback) {
-				if (typeof this.availableNavigationComponents[componentId] === 'undefined') {
-					this.availableNavigationComponents[componentId] = initCallback;
-				}
+					self.loadedNavigationComponentId = navigationComponentId;
+				});
 			},
 
 			/**

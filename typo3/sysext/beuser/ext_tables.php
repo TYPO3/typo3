@@ -31,6 +31,6 @@ defined('TYPO3_MODE') or die();
         'access' => 'admin',
         'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.svg',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
-        'navigationComponentId' => 'typo3-pagetree'
+        'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
     ]
 );

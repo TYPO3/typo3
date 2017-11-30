@@ -1,9 +1,0 @@
-treeeditor.js
-tree.js
-filteringtree.js
-nodeui.js
-deletiondropzone.js
-toppanel.js
-actions.js
-Ext.ux.state.TreePanel.js
-app.js

@@ -70,6 +70,24 @@ return [
         'target' => Controller\FormSelectTreeAjaxController::class . '::fetchDataAction'
     ],
 
+    // Get data for page tree
+    'page_tree_data' => [
+        'path' => '/page/tree/fetchData',
+        'target' => Controller\Page\TreeController::class . '::fetchDataAction'
+    ],
+
+    // Get page tree configuration
+    'page_tree_configuration' => [
+        'path' => '/page/tree/fetchConfiguration',
+        'target' => Controller\Page\TreeController::class . '::fetchConfigurationAction'
+    ],
+
+    // Set temporary mount point
+    'page_tree_set_temporary_mount_point' => [
+        'path' => '/page/tree/setTemporaryMountPoint',
+        'target' => Controller\Page\TreeController::class . '::setTemporaryMountPointAction'
+    ],
+
     // Get shortcut edit form
     'shortcut_editform' => [
         'path' => '/shortcut/editform',
