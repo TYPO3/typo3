@@ -491,6 +491,10 @@ class Clipboard
                     $queryBuilder->expr()->neq(
                         $tcaCtrl['languageField'],
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gt(
+                        'pid',
+                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
                     )
                 );
 
