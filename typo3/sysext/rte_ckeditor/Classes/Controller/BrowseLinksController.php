@@ -256,11 +256,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         // Default target
         $this->defaultLinkTarget = $this->classesAnchorDefault[$this->displayedLinkHandlerId] && $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
             ? $this->classesAnchorDefaultTarget[$this->displayedLinkHandlerId]
-            : (isset($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default'])
-                ? $this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default']
-                : (isset($this->buttonConfig['properties']['target']['default'])
-                    ? $this->buttonConfig['properties']['target']['default']
-                    : ''));
+            : ($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['target']['default'] ?? $this->buttonConfig['properties']['target']['default'] ?? '');
 
         // todo: find new name for this option
         // Initializing additional attributes
@@ -551,7 +547,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     public function getUrlParameters(array $overrides = null)
     {
         return [
-            'act' => isset($overrides['act']) ? $overrides['act'] : $this->displayedLinkHandlerId,
+            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
             'editorId' => $this->editorId,
             'contentsLanguage' => $this->contentsLanguage,
             'P' => $this->parameters

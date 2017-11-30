@@ -43,7 +43,7 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView
             $template = str_replace('###BASEURI###', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $template);
         }
         foreach ($this->variablesMarker as $variableName => $marker) {
-            $variableValue = isset($this->variables[$variableName]) ? $this->variables[$variableName] : '';
+            $variableValue = $this->variables[$variableName] ?? '';
             $template = str_replace('###' . $marker . '###', $variableValue, $template);
         }
         return $template;

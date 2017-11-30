@@ -303,14 +303,14 @@ class Indexer
                             // Alternative title for indexing
                             $this->conf['metaCharset'] = $pObj->metaCharset;
                             // Character set of content (will be converted to utf-8 during indexing)
-                            $this->conf['mtime'] = isset($pObj->register['SYS_LASTCHANGED']) ? $pObj->register['SYS_LASTCHANGED'] : $pObj->page['SYS_LASTCHANGED'];
+                            $this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'] ?? $pObj->page['SYS_LASTCHANGED'];
                             // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
                             // Configuration of behavior:
                             $this->conf['index_externals'] = $pObj->config['config']['index_externals'];
                             // Whether to index external documents like PDF, DOC etc. (if possible)
                             $this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];
                             // Length of description text (max 250, default 200)
-                            $this->conf['index_metatags'] = isset($pObj->config['config']['index_metatags']) ? $pObj->config['config']['index_metatags'] : true;
+                            $this->conf['index_metatags'] = $pObj->config['config']['index_metatags'] ?? true;
                             // Set to zero:
                             $this->conf['recordUid'] = 0;
                             $this->conf['freeIndexUid'] = 0;
@@ -611,7 +611,7 @@ class Indexer
         // get title
         $this->embracingTags($headPart, 'TITLE', $contentArr['title'], $dummy2, $dummy);
         $titleParts = explode(':', $contentArr['title'], 2);
-        $contentArr['title'] = trim(isset($titleParts[1]) ? $titleParts[1] : $titleParts[0]);
+        $contentArr['title'] = trim($titleParts[1] ?? $titleParts[0]);
         // get keywords and description metatags
         if ($this->conf['index_metatags']) {
             $meta = [];

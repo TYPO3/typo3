@@ -47,7 +47,7 @@ class LocalConfigurationValueService
             if (isset($commentArray[$sectionName])) {
                 $data[$sectionName] = $this->recursiveConfigurationFetching(
                     $section,
-                    isset($GLOBALS['TYPO3_CONF_VARS'][$sectionName]) ? $GLOBALS['TYPO3_CONF_VARS'][$sectionName] : null,
+                    $GLOBALS['TYPO3_CONF_VARS'][$sectionName] ?? null,
                     $commentArray[$sectionName]
                 );
             }

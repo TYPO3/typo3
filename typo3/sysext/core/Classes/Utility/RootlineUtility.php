@@ -292,15 +292,13 @@ class RootlineUtility
                     $loadDBGroup->start(
                         $pageRecord[$column],
                         // @todo That depends on the type (group, select, inline)
-                        isset($configuration['allowed']) ? $configuration['allowed'] : $configuration['foreign_table'],
+                        $configuration['allowed'] ?? $configuration['foreign_table'],
                         $configuration['MM'],
                         $uid,
                         'pages',
                         $configuration
                     );
-                    $relatedUids = isset($loadDBGroup->tableArray[$configuration['foreign_table']])
-                        ? $loadDBGroup->tableArray[$configuration['foreign_table']]
-                        : [];
+                    $relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']] ?? [];
                 } else {
                     // @todo The assumption is wrong, since group can be used without "MM", but having "allowed"
                     $table = $configuration['foreign_table'];

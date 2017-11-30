@@ -125,14 +125,14 @@ class TranslateViewHelper extends AbstractViewHelper
         }
 
         $request = $renderingContext->getControllerContext()->getRequest();
-        $extensionName = $extensionName === null ? $request->getControllerExtensionName() : $extensionName;
+        $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
             $value = static::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
         } catch (\InvalidArgumentException $e) {
             $value = null;
         }
         if ($value === null) {
-            $value = $default !== null ? $default : $renderChildrenClosure();
+            $value = $default ?? $renderChildrenClosure();
             if (!empty($translateArguments)) {
                 $value = vsprintf($value, $translateArguments);
             }

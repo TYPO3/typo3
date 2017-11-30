@@ -106,8 +106,8 @@ EOF;
      */
     public function initialize()
     {
-        $fileUid = isset($this->request->getQueryParams()['file']) ? $this->request->getQueryParams()['file'] : null;
-        $parametersArray = isset($this->request->getQueryParams()['parameters']) ? $this->request->getQueryParams()['parameters'] : null;
+        $fileUid = $this->request->getQueryParams()['file'] ?? null;
+        $parametersArray = $this->request->getQueryParams()['parameters'] ?? null;
 
         // If no file-param or parameters are given, we must exit
         if (!$fileUid || !isset($parametersArray) || !is_array($parametersArray)) {
@@ -118,7 +118,7 @@ EOF;
         $parametersEncoded = implode('', $parametersArray);
 
         /* For backwards compatibility the HMAC is transported within the md5 param */
-        $hmacParameter = isset($this->request->getQueryParams()['md5']) ? $this->request->getQueryParams()['md5'] : null;
+        $hmacParameter = $this->request->getQueryParams()['md5'] ?? null;
         $hmac = GeneralUtility::hmac(implode('|', [$fileUid, $parametersEncoded]));
         if (!hash_equals($hmac, $hmacParameter)) {
             throw new \InvalidArgumentException('hash does not match', 1476048456);
@@ -135,7 +135,7 @@ EOF;
         } else {
             $this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
         }
-        $this->frame = isset($this->request->getQueryParams()['frame']) ? $this->request->getQueryParams()['frame'] : null;
+        $this->frame = $this->request->getQueryParams()['frame'] ?? null;
     }
 
     /**

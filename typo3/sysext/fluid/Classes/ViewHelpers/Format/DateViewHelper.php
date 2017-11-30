@@ -113,7 +113,7 @@ class DateViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $format = $arguments['format'];
-        $base = $arguments['base'] === null ? time() : $arguments['base'];
+        $base = $arguments['base'] ?? time();
         if (is_string($base)) {
             $base = trim($base);
         }

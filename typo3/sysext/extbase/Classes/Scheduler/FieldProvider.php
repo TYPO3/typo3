@@ -50,9 +50,9 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
      */
     public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = null, \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager = null, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService = null)
     {
-        $this->objectManager = $objectManager !== null ? $objectManager : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->commandManager = $commandManager !== null ? $commandManager : $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
-        $this->reflectionService = $reflectionService !== null ? $reflectionService : $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+        $this->objectManager = $objectManager ?? \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->commandManager = $commandManager ?? $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
+        $this->reflectionService = $reflectionService ?? $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
     }
 
     /**
@@ -179,7 +179,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
             $name = $argument->getName();
             $defaultValue = $this->getDefaultArgumentValue($argument);
             $this->task->addDefaultValue($name, $defaultValue);
-            $value = isset($argumentValues[$name]) ? $argumentValues[$name] : $defaultValue;
+            $value = $argumentValues[$name] ?? $defaultValue;
             $fields[$name] = [
                 'code' => $this->renderField($argument, $value),
                 'label' => $this->getArgumentLabel($argument)

@@ -197,9 +197,9 @@ class Request implements RequestInterface
     public function setControllerObjectName($controllerObjectName)
     {
         $nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
-        $this->controllerVendorName = isset($nameParts['vendorName']) ? $nameParts['vendorName'] : null;
+        $this->controllerVendorName = $nameParts['vendorName'] ?? null;
         $this->controllerExtensionName = $nameParts['extensionName'];
-        $this->controllerSubpackageKey = isset($nameParts['subpackageKey']) ? $nameParts['subpackageKey'] : null;
+        $this->controllerSubpackageKey = $nameParts['subpackageKey'] ?? null;
         $this->controllerName = $nameParts['controllerName'];
     }
 

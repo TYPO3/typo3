@@ -47,7 +47,7 @@ class ContextMenuController
         $contextMenu = GeneralUtility::makeInstance(ContextMenu::class);
 
         $params = $request->getQueryParams();
-        $context = isset($params['context']) ? $params['context'] : '';
+        $context = $params['context'] ?? '';
         $items = $contextMenu->getItems($params['table'], $params['uid'], $context);
         if (!is_array($items)) {
             $items = [];

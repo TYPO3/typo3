@@ -47,7 +47,7 @@ class CodeCompletion
      */
     public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $pageId = (int)(isset($request->getParsedBody()['pageId']) ? $request->getParsedBody()['pageId'] : $request->getQueryParams()['pageId']);
+        $pageId = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId']);
         return $this->loadTemplates($pageId);
     }
 

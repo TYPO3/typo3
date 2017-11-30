@@ -231,7 +231,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
      */
     public function _getCleanProperty($propertyName)
     {
-        return isset($this->_cleanProperties[$propertyName]) ? $this->_cleanProperties[$propertyName] : null;
+        return $this->_cleanProperties[$propertyName] ?? null;
     }
 
     /**

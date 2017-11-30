@@ -1822,7 +1822,7 @@ class GeneralUtility
             if ($includeHeader) {
                 $parsedURL = parse_url($url);
                 $method = $includeHeader === 2 ? 'HEAD' : 'GET';
-                $content = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/')
+                $content = $method . ' ' . ($parsedURL['path'] ?? '/')
                     . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF
                     . 'Host: ' . $parsedURL['host'] . CRLF
                     . 'Connection: close' . CRLF;
@@ -1915,13 +1915,9 @@ class GeneralUtility
         }
         if (static::isAllowedAbsPath($path)) {
             if (@is_file($path)) {
-                $targetPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])
-                    ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']
-                    : '0644';
+                $targetPermissions = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] ?? '0644';
             } elseif (@is_dir($path)) {
-                $targetPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])
-                    ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']
-                    : '0755';
+                $targetPermissions = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? '0755';
             }
             if (!empty($targetPermissions)) {
                 // make sure it's always 4 digits
@@ -2665,7 +2661,7 @@ class GeneralUtility
                 break;
             case 'HTTP_HOST':
                 // if it is not set we're most likely on the cli
-                $retVal = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+                $retVal = $_SERVER['HTTP_HOST'] ?? null;
                 if (isset($_SERVER['REMOTE_ADDR']) && static::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
                     $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
                     // Choose which host in list to use

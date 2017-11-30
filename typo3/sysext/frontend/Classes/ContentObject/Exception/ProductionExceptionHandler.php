@@ -58,7 +58,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
                 throw $exception;
             }
         }
-        $errorMessage = isset($this->configuration['errorMessage']) ? $this->configuration['errorMessage'] : 'Oops, an error occurred! Code: %s';
+        $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Code: %s';
         $code = date('YmdHis', $_SERVER['REQUEST_TIME']) . GeneralUtility::makeInstance(Random::class)->generateRandomHexString(8);
 
         $this->logException($exception, $errorMessage, $code);

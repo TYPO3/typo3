@@ -75,7 +75,7 @@ class FormEditorController extends AbstractBackendController
         $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
         if (empty($prototypeName)) {
-            $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
+            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
         }
         $formDefinition['prototypeName'] = $prototypeName;
 
@@ -197,7 +197,7 @@ class FormEditorController extends AbstractBackendController
     public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
     {
         if (empty($prototypeName)) {
-            $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
+            $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
         }
 
         $formFactory = $this->objectManager->get(ArrayFormFactory::class);
@@ -217,7 +217,7 @@ class FormEditorController extends AbstractBackendController
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
-        $formElementGroups = isset($this->prototypeConfiguration['formEditor']['formElementGroups']) ? $this->prototypeConfiguration['formEditor']['formElementGroups'] : [];
+        $formElementGroups = $this->prototypeConfiguration['formEditor']['formElementGroups'] ?? [];
         $formElementsByGroup = [];
 
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {

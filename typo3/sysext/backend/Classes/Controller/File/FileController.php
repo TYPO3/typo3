@@ -246,8 +246,8 @@ class FileController
      */
     public function fileExistsInFolderAction(ServerRequestInterface $request)
     {
-        $fileName = isset($request->getParsedBody()['fileName']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['fileName'];
-        $fileTarget = isset($request->getParsedBody()['fileTarget']) ? $request->getParsedBody()['fileTarget'] : $request->getQueryParams()['fileTarget'];
+        $fileName = $request->getParsedBody()['fileName'] ?? $request->getQueryParams()['fileName'];
+        $fileTarget = $request->getParsedBody()['fileTarget'] ?? $request->getQueryParams()['fileTarget'];
 
         /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
         $fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);

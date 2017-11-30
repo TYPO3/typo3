@@ -243,7 +243,7 @@ abstract class AbstractFormElement extends AbstractNode
             case 'int':
                 $baseArr = ['dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b'];
                 $base = isset($formatOptions['base']) ? trim($formatOptions['base']) : '';
-                $format = isset($baseArr[$base]) ? $baseArr[$base] : 'd';
+                $format = $baseArr[$base] ?? 'd';
                 $itemValue = sprintf('%' . $format, $itemValue);
                 break;
             case 'float':

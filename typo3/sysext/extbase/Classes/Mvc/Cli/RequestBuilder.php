@@ -232,7 +232,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
             $currentArgument .= array_shift($rawCommandLineArguments);
             $splitArgument = explode('=', $currentArgument);
         }
-        $value = isset($splitArgument[1]) ? $splitArgument[1] : '';
+        $value = $splitArgument[1] ?? '';
         return $value;
     }
 }

@@ -489,7 +489,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
+        $shortcutId = (int)($parsedBody['shortcutId'] ?? $queryParams['shortcutId']);
         $fullShortcut = $this->getShortcutById($shortcutId);
         $success = false;
         if ($fullShortcut['raw']['userid'] == $this->getBackendUser()->user['uid']) {
@@ -526,7 +526,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         // Default name
         $shortcutName = 'Shortcut';
         $shortcutNamePrepend = '';
-        $url = isset($parsedBody['url']) ? $parsedBody['url'] : $queryParams['url'];
+        $url = $parsedBody['url'] ?? $queryParams['url'];
 
         // Use given display name
         if (!empty($parsedBody['displayName'])) {
@@ -699,9 +699,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $queryParams = $request->getQueryParams();
 
         $backendUser = $this->getBackendUser();
-        $shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
-        $shortcutName = strip_tags(isset($parsedBody['shortcutTitle']) ? $parsedBody['shortcutTitle'] : $queryParams['shortcutTitle']);
-        $shortcutGroupId = (int)(isset($parsedBody['shortcutGroup']) ? $parsedBody['shortcutGroup'] : $queryParams['shortcutGroup']);
+        $shortcutId = (int)($parsedBody['shortcutId'] ?? $queryParams['shortcutId']);
+        $shortcutName = strip_tags($parsedBody['shortcutTitle'] ?? $queryParams['shortcutTitle']);
+        $shortcutGroupId = (int)($parsedBody['shortcutGroup'] ?? $queryParams['shortcutGroup']);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_be_shortcuts');
@@ -745,7 +745,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     protected function getShortcutGroupLabel($groupId)
     {
-        return isset($this->shortcutGroups[$groupId]) ? $this->shortcutGroups[$groupId] : '';
+        return $this->shortcutGroups[$groupId] ?? '';
     }
 
     /**

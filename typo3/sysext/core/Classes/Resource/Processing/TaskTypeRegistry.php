@@ -43,7 +43,7 @@ class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getClassForTaskType($taskType)
     {
-        return isset($this->registeredTaskTypes[$taskType]) ? $this->registeredTaskTypes[$taskType] : null;
+        return $this->registeredTaskTypes[$taskType] ?? null;
     }
 
     /**

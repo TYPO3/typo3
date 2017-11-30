@@ -152,7 +152,7 @@ class SimpleDataHandlerController
                 $this->cmd = $clipObj->makePasteCmdArray(
                     $this->CB['paste'],
                     $this->cmd,
-                    isset($this->CB['update']) ? $this->CB['update'] : null
+                    $this->CB['update'] ?? null
                 );
             }
             if ($this->CB['delete']) {

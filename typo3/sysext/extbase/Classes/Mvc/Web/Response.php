@@ -143,7 +143,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
             throw new \InvalidArgumentException('No message found for HTTP status code "' . $code . '".', 1220526014);
         }
         $this->statusCode = $code;
-        $this->statusMessage = $message === null ? $this->statusMessages[$code] : $message;
+        $this->statusMessage = $message ?? $this->statusMessages[$code];
     }
 
     /**
@@ -199,7 +199,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
     {
         $preparedHeaders = [];
         if ($this->statusCode !== null) {
-            $protocolVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
+            $protocolVersion = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.0';
             $statusHeader = $protocolVersion . ' ' . $this->statusCode . ' ' . $this->statusMessage;
             $preparedHeaders[] = $statusHeader;
         }

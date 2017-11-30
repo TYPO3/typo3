@@ -469,7 +469,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         return [
             'mode' => 'file',
-            'expandFolder' => isset($values['identifier']) ? $values['identifier'] : $this->expandFolder,
+            'expandFolder' => $values['identifier'] ?? $this->expandFolder,
             'bparams' => $this->bparams
         ];
     }

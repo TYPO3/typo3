@@ -55,7 +55,7 @@ class QueueController extends AbstractController
         }
         // Clear these states and fetch fresh entities!
         $this->getPersistenceManager()->clearState();
-        $this->forward($call[1], $call[0], null, isset($call[2]) ? $call[2] : null);
+        $this->forward($call[1], $call[0], null, $call[2] ?? null);
     }
 
     public function finishAction()

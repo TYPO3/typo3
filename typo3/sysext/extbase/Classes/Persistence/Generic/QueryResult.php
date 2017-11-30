@@ -170,7 +170,7 @@ class QueryResult implements QueryResultInterface
     public function offsetGet($offset)
     {
         $this->initialize();
-        return isset($this->queryResult[$offset]) ? $this->queryResult[$offset] : null;
+        return $this->queryResult[$offset] ?? null;
     }
 
     /**

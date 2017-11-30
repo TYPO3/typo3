@@ -743,7 +743,7 @@ class ExtensionManagementUtility
                 ];
                 $details = [0 => 'field', 1 => 'label', 2 => 'palette'];
                 foreach ($details as $id => $property) {
-                    $items[$key]['details'][$property] = isset($itemDetails[$id]) ? $itemDetails[$id] : '';
+                    $items[$key]['details'][$property] = $itemDetails[$id] ?? '';
                 }
             }
         }

@@ -80,7 +80,7 @@ class RenderViewHelper extends AbstractViewHelper
         // not set, NULL is returned and cast to a new, empty string
         // outside of this ViewHelper.
         if ($content === '') {
-            $content = isset($this->arguments['default']) ? $this->arguments['default'] : $tagContent;
+            $content = $this->arguments['default'] ?? $tagContent;
         }
 
         $cssRules = [];

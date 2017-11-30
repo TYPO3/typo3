@@ -113,9 +113,9 @@ class HttpUtility
         return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '') .
             (isset($urlParts['user']) ? $urlParts['user'] .
             (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '') .
-            (isset($urlParts['host']) ? $urlParts['host'] : '') .
+            ($urlParts['host'] ?? '') .
             (isset($urlParts['port']) ? ':' . $urlParts['port'] : '') .
-            (isset($urlParts['path']) ? $urlParts['path'] : '') .
+            ($urlParts['path'] ?? '') .
             (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') .
             (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
     }

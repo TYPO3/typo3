@@ -398,7 +398,7 @@ class ValidatorTask extends AbstractTask
                 $searchFields[$table][] = $field;
             }
         }
-        return isset($searchFields) ? $searchFields : [];
+        return $searchFields ?? [];
     }
 
     /**

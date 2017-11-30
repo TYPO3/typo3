@@ -356,7 +356,7 @@ class ActionHandler extends AbstractHandler
                 $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : [];
                 $recipients[$beUserRecord['email']] = [
                     'email' => $beUserRecord['email'],
-                    'lang' => isset($uc['lang']) ? $uc['lang'] : $beUserRecord['lang']
+                    'lang' => $uc['lang'] ?? $beUserRecord['lang']
                 ];
             }
         }
@@ -374,7 +374,7 @@ class ActionHandler extends AbstractHandler
                     $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : []);
                     $recipients[$preselectedBackendUser['email']] = [
                         'email' => $preselectedBackendUser['email'],
-                        'lang' => (isset($uc['lang']) ? $uc['lang'] : $preselectedBackendUser['lang'])
+                        'lang' => ($uc['lang'] ?? $preselectedBackendUser['lang'])
                     ];
                 }
             }

@@ -219,8 +219,8 @@ class DebugUtility
      */
     protected static function renderDump($variable, $title = '', $plainText = null, $ansiColors = null)
     {
-        $plainText = $plainText === null ? self::isCommandLine() && self::$plainTextOutput : $plainText;
-        $ansiColors = $ansiColors === null ? self::isCommandLine() && self::$ansiColorUsage : $ansiColors;
+        $plainText = $plainText ?? self::isCommandLine() && self::$plainTextOutput;
+        $ansiColors = $ansiColors ?? self::isCommandLine() && self::$ansiColorUsage;
         return trim(DebuggerUtility::var_dump($variable, $title, 8, $plainText, $ansiColors, true));
     }
 

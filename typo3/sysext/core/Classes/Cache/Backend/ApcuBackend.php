@@ -140,7 +140,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
             throw new Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1232986125);
         }
         $tags[] = '%APCBE%' . $this->cacheIdentifier;
-        $expiration = $lifetime !== null ? $lifetime : $this->defaultLifetime;
+        $expiration = $lifetime ?? $this->defaultLifetime;
         $success = apcu_store($this->getIdentifierPrefix() . $entryIdentifier, $data, $expiration);
         if ($success === true) {
             $this->removeIdentifierFromAllTags($entryIdentifier);

@@ -116,7 +116,7 @@ class BulkInsertQuery
         if (empty($this->columns)) {
             foreach ($values as $index => $value) {
                 $this->parameters[] = $value;
-                $this->types[] = isset($types[$index]) ? $types[$index] : null;
+                $this->types[] = $types[$index] ?? null;
                 $valueSet[] = '?';
             }
 

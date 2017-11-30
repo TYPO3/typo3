@@ -91,7 +91,7 @@ class RenderViewHelper extends AbstractViewHelper
         }
 
         if (empty($prototypeName)) {
-            $prototypeName = isset($overrideConfiguration['prototypeName']) ? $overrideConfiguration['prototypeName'] : 'standard';
+            $prototypeName = $overrideConfiguration['prototypeName'] ?? 'standard';
         }
 
         $factory = $objectManager->get($factoryClass);

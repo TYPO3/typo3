@@ -53,6 +53,6 @@ class JavaScriptService
      */
     protected function getBeUser()
     {
-        return isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

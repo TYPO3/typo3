@@ -1419,7 +1419,7 @@ class DataHandler implements LoggerAwareInterface
         }
         $evalCodesArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$labelField]['config']['eval'], true);
         $transformedLabel = $this->checkValue_input_Eval($labelPlaceholder, $evalCodesArray, '');
-        return isset($transformedLabel['value']) ? $transformedLabel['value'] : $labelPlaceholder;
+        return $transformedLabel['value'] ?? $labelPlaceholder;
     }
 
     /**
@@ -1612,7 +1612,7 @@ class DataHandler implements LoggerAwareInterface
             }
             if ($status === 'update') {
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
-                $onlyAllowedTables = isset($GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables']) ? $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] : $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
+                $onlyAllowedTables = $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
                 if ($onlyAllowedTables) {
                     $theWrongTables = $this->doesPageHaveUnallowedTables($id, $value);
                     if ($theWrongTables) {
@@ -2268,7 +2268,7 @@ class DataHandler implements LoggerAwareInterface
                             // Check file size:
                             if (!$maxSize || $fileSize <= $maxSize * 1024) {
                                 // Prepare filename:
-                                $theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
+                                $theEndFileName = $this->alternativeFileName[$theFile] ?? $theFile;
                                 $fI = GeneralUtility::split_fileref($theEndFileName);
                                 // Check for allowed extension:
                                 if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
@@ -2369,7 +2369,7 @@ class DataHandler implements LoggerAwareInterface
                                 // Check file size:
                                 if (!$maxSize || $fileSize <= $maxSize * 1024) {
                                     // Prepare filename:
-                                    $theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
+                                    $theEndFileName = $this->alternativeFileName[$theFile] ?? $theFile;
                                     $fI = GeneralUtility::split_fileref($theEndFileName);
                                     // Check for allowed extension:
                                     if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
@@ -4000,8 +4000,8 @@ class DataHandler implements LoggerAwareInterface
                         $this->versionizeRecord(
                             $v['table'],
                             $v['id'],
-                            (isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
-                            (isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : false)
+                            ($workspaceOptions['label'] ?? 'Auto-created for WS #' . $this->BE_USER->workspace),
+                            ($workspaceOptions['delete'] ?? false)
                         );
                         // Otherwise just use plain copyRecord() to create placeholders etc.
                     } else {
@@ -6591,9 +6591,7 @@ class DataHandler implements LoggerAwareInterface
         } else {
             // Check non-root-level
             $doktype = $this->pageInfo($page_uid, 'doktype');
-            $allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])
-                ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']
-                : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+            $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
             $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
             // If all tables or the table is listed as an allowed type, return TRUE
             if (strpos($allowedTableList, '*') !== false || in_array($checkTable, $allowedArray, true)) {

@@ -835,7 +835,7 @@ abstract class ImportExport
      */
     public function checkDokType($checkTable, $doktype)
     {
-        $allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
         // If all tables or the table is listed as an allowed type, return TRUE
         if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
@@ -865,7 +865,7 @@ abstract class ImportExport
             $cfg = $this->softrefCfg[$tokenID];
             if ($cfg['mode'] === 'editable') {
                 return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
-						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars((isset($this->softrefInputValues[$tokenID]) ? $this->softrefInputValues[$tokenID] : $cfg['defValue'])) . '" />';
+						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars(($this->softrefInputValues[$tokenID] ?? $cfg['defValue'])) . '" />';
             }
         }
 

@@ -82,7 +82,7 @@ class File extends AbstractFile
             return parent::getProperty($key);
         }
         $metaData = $this->_getMetaData();
-        return isset($metaData[$key]) ? $metaData[$key] : null;
+        return $metaData[$key] ?? null;
     }
 
     /**

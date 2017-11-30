@@ -190,7 +190,7 @@ class SuggestWizardDefaultReceiver
                     'path' => $path,
                     'uid' => $uid,
                     'style' => '',
-                    'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
+                    'class' => $this->config['cssClass'] ?? '',
                     'sprite' => $spriteIcon
                 ];
                 $rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);

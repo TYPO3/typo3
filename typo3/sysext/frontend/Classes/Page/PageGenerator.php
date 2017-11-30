@@ -355,8 +355,8 @@ class PageGenerator
             if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
                 $jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];
                 // Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
-                $version = isset($jQueryTS['version']) ? $jQueryTS['version'] : null;
-                $source = isset($jQueryTS['source']) ? $jQueryTS['source'] : null;
+                $version = $jQueryTS['version'] ?? null;
+                $source = $jQueryTS['source'] ?? null;
                 // When "noConflict" is not set or "1" enable the default jQuery noConflict mode, otherwise disable the namespace
                 if (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) {
                     $namespace = 'noConflict';
@@ -521,7 +521,7 @@ class PageGenerator
         $tsfe->generatePageTitle();
 
         static::generateMetaTagHtml(
-            isset($tsfe->pSetup['meta.']) ? $tsfe->pSetup['meta.'] : [],
+            $tsfe->pSetup['meta.'] ?? [],
             $tsfe->cObj
         );
 
@@ -866,7 +866,7 @@ class PageGenerator
         $conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
         foreach ($conf as $key => $properties) {
             if (is_array($properties)) {
-                $nodeValue = isset($properties['_typoScriptNodeValue']) ? $properties['_typoScriptNodeValue'] : '';
+                $nodeValue = $properties['_typoScriptNodeValue'] ?? '';
                 $value = trim($cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']));
                 if ($value === '' && !empty($properties['value'])) {
                     $value = $properties['value'];

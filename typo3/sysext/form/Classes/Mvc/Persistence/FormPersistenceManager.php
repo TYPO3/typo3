@@ -261,7 +261,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 $form = $this->load($persistenceIdentifier);
                 $forms[] = [
                     'identifier' => $form['identifier'],
-                    'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
+                    'name' => $form['label'] ?? $form['identifier'],
                     'persistenceIdentifier' => $persistenceIdentifier,
                     'readOnly' => $formReadOnly,
                     'removable' => true,
@@ -284,7 +284,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 $form = $this->load($relativePath . $fileInfo->getFilename());
                 $forms[] = [
                     'identifier' => $form['identifier'],
-                    'name' => isset($form['label']) ? $form['label'] : $form['identifier'],
+                    'name' => $form['label'] ?? $form['identifier'],
                     'persistenceIdentifier' => $relativePath . $fileInfo->getFilename(),
                     'readOnly' => $this->formSettings['persistenceManager']['allowSaveToExtensionPaths'] ? false: true,
                     'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,

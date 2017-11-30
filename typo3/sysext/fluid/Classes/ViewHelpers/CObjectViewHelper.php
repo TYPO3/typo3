@@ -155,7 +155,7 @@ class CObjectViewHelper extends AbstractViewHelper
      */
     protected static function simulateFrontendEnvironment()
     {
-        static::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        static::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $GLOBALS['TSFE']->cObjectDepthCounter = 100;

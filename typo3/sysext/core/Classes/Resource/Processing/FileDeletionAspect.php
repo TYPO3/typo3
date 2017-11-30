@@ -126,7 +126,7 @@ class FileDeletionAspect
     {
         // Retrieve the file metadata uid which is different from the file uid.
         $metadataProperties = $fileObject->_getMetaData();
-        $metaDataUid = isset($metadataProperties['_ORIG_uid']) ? $metadataProperties['_ORIG_uid'] : $metadataProperties['uid'];
+        $metaDataUid = $metadataProperties['_ORIG_uid'] ?? $metadataProperties['uid'];
 
         GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')
             ->delete(

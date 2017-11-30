@@ -1005,7 +1005,7 @@ class PageLayoutView implements LoggerAwareInterface
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                             $singleElementHTML = '';
                             if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
-                                $defaultLanguageElementsByColumn[$columnId][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
+                                $defaultLanguageElementsByColumn[$columnId][] = ($row['_ORIG_uid'] ?? $row['uid']);
                             }
                             $editUidList .= $row['uid'] . ',';
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
@@ -1937,7 +1937,7 @@ class PageLayoutView implements LoggerAwareInterface
                 }
                 // Delete
                 $disableDeleteTS = $this->getBackendUser()->getTSConfig('options.disableDelete');
-                $disableDelete = (bool) trim(isset($disableDeleteTS['properties']['tt_content']) ? $disableDeleteTS['properties']['tt_content'] : $disableDeleteTS['value']);
+                $disableDelete = (bool) trim($disableDeleteTS['properties']['tt_content'] ?? $disableDeleteTS['value']);
                 if (!$disableDelete) {
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')

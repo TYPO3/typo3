@@ -171,7 +171,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function getPage()
     {
-        $pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
+        $pageId = $this->pageId ?? $this->determinePageId();
         return BackendUtility::getRecord('pages', $pageId);
     }
 
@@ -244,7 +244,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected function determineRootline()
     {
-        $pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
+        $pageId = $this->pageId ?? $this->determinePageId();
         return BackendUtility::BEgetRootLine($pageId, '', true);
     }
 

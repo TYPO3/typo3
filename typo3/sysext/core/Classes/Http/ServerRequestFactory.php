@@ -38,7 +38,7 @@ class ServerRequestFactory
         $serverParameters = $_SERVER;
         $headers = static::prepareHeaders($serverParameters);
 
-        $method = isset($serverParameters['REQUEST_METHOD']) ? $serverParameters['REQUEST_METHOD'] : 'GET';
+        $method = $serverParameters['REQUEST_METHOD'] ?? 'GET';
         $uri = new Uri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 
         $request = new ServerRequest(

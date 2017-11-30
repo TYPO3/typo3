@@ -127,7 +127,7 @@ class BlowfishSalt extends Md5Salt
      */
     public function getHashCount(): int
     {
-        return isset(self::$hashCount) ? self::$hashCount : self::HASH_COUNT;
+        return self::$hashCount ?? self::HASH_COUNT;
     }
 
     /**
@@ -140,7 +140,7 @@ class BlowfishSalt extends Md5Salt
      */
     public function getMaxHashCount(): int
     {
-        return isset(self::$maxHashCount) ? self::$maxHashCount : self::MAX_HASH_COUNT;
+        return self::$maxHashCount ?? self::MAX_HASH_COUNT;
     }
 
     /**
@@ -163,7 +163,7 @@ class BlowfishSalt extends Md5Salt
      */
     public function getMinHashCount(): int
     {
-        return isset(self::$minHashCount) ? self::$minHashCount : self::MIN_HASH_COUNT;
+        return self::$minHashCount ?? self::MIN_HASH_COUNT;
     }
 
     /**

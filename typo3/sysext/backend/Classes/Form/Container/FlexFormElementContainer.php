@@ -64,7 +64,7 @@ class FlexFormElementContainer extends AbstractContainer
 
                 $options = $this->data;
                 $options['flexFormDataStructureArray'] = $flexFormFieldArray;
-                $options['flexFormRowData'] = isset($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : [];
+                $options['flexFormRowData'] = $flexFormRowData[$flexFormFieldName]['el'] ?? [];
                 $options['flexFormFieldName'] = $flexFormFieldName;
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();

@@ -71,7 +71,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
     public function handleRequest(ServerRequestInterface $request)
     {
         // First get the name of the route
-        $routePath = isset($request->getParsedBody()['route']) ? $request->getParsedBody()['route'] : $request->getQueryParams()['route'];
+        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'];
         $request = $request->withAttribute('routePath', $routePath);
 
         $proceedIfNoUserIsLoggedIn = $this->isLoggedInBackendUserRequired($routePath);
@@ -90,7 +90,7 @@ class AjaxRequestHandler implements RequestHandlerInterface
      */
     public function canHandleRequest(ServerRequestInterface $request)
     {
-        $routePath = isset($request->getParsedBody()['route']) ? $request->getParsedBody()['route'] : $request->getQueryParams()['route'];
+        $routePath = $request->getParsedBody()['route'] ?? $request->getQueryParams()['route'];
         return strpos($routePath, '/ajax/') === 0;
     }
 

@@ -88,7 +88,7 @@ class FormFrontendController extends ActionController
             foreach ($formDefinition['finishers'] as &$finisherValue) {
                 $finisherIdentifier = $finisherValue['identifier'];
                 if ($this->settings['overrideFinishers'] && isset($this->settings['finishers'][$finisherIdentifier])) {
-                    $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
+                    $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
                     $configurationService = $this->objectManager->get(ConfigurationService::class);
                     $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 

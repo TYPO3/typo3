@@ -191,7 +191,7 @@ class IndexSearchRepository
         $this->sections = $searchData['sections'];
         $this->searchType = $searchData['searchType'];
         $this->languageUid = $searchData['languageUid'];
-        $this->mediaType = isset($searchData['mediaType']) ? $searchData['mediaType'] : false;
+        $this->mediaType = $searchData['mediaType'] ?? false;
         $this->sortOrder = $searchData['sortOrder'];
         $this->descendingSortOrderFlag = $searchData['desc'];
         $this->resultpagePointer = $searchData['pointer'];

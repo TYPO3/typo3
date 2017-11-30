@@ -234,7 +234,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
             throw new Exception('No cache frontend has been set yet via setCache().', 1207149215);
         }
         $tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
-        $expiration = $lifetime !== null ? $lifetime : $this->defaultLifetime;
+        $expiration = $lifetime ?? $this->defaultLifetime;
 
         // Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
         // thus $expiration should be converted from lifetime to UNIX timestamp

@@ -40,7 +40,7 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
      */
     public function __construct(int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
     {
-        $this->workspaceId = $workspaceId === null ? $GLOBALS['BE_USER']->workspace : $workspaceId;
+        $this->workspaceId = $workspaceId ?? $GLOBALS['BE_USER']->workspace;
         $this->includeRowsForWorkspaceOverlay = $includeRowsForWorkspaceOverlay;
     }
 

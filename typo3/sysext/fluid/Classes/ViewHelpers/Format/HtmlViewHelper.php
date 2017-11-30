@@ -115,7 +115,7 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     protected static function simulateFrontendEnvironment()
     {
-        self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);

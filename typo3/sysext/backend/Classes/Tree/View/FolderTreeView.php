@@ -694,10 +694,10 @@ class FolderTreeView extends AbstractTreeView
     protected function generateExpandCollapseParameter($mountKey = null, $doExpand = false, Folder $folderObject = null, $treeName = null)
     {
         $parts = [
-            $mountKey !== null ? $mountKey : $this->bank,
+            $mountKey ?? $this->bank,
             $doExpand == 1 ? 1 : 0,
             $folderObject !== null ? GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
-            $treeName !== null ? $treeName : $this->treeName
+            $treeName ?? $this->treeName
         ];
         return implode('_', $parts);
     }

@@ -201,7 +201,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function closeDocument(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $md5sum = isset($request->getParsedBody()['md5sum']) ? $request->getParsedBody()['md5sum'] : $request->getQueryParams()['md5sum'];
+        $md5sum = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'];
         if ($md5sum && isset($this->openDocs[$md5sum])) {
             $backendUser = $this->getBackendUser();
             // Add the document to be closed to the recent documents

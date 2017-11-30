@@ -38,7 +38,7 @@ class LogoutController
     {
         $this->logout();
 
-        $redirectUrl = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
+        $redirectUrl = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'];
         $redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
         if (empty($redirectUrl)) {
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */

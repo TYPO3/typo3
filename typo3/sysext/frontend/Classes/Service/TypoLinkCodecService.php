@@ -49,7 +49,7 @@ class TypoLinkCodecService
         $reverseSortedParameters = array_reverse($this->decode(''), true);
         $aValueWasSet = false;
         foreach ($reverseSortedParameters as $key => &$value) {
-            $value = isset($typoLinkParts[$key]) ? $typoLinkParts[$key] : '';
+            $value = $typoLinkParts[$key] ?? '';
             // escape special character \ and "
             $value = str_replace([ '\\', '"' ], [ '\\\\', '\\"' ], $value);
             // enclose with quotes if a string contains the delimiter

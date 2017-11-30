@@ -80,7 +80,7 @@ class IconFactory
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $requestedIcon = json_decode(
-            isset($parsedBody['icon']) ? $parsedBody['icon'] : $queryParams['icon'],
+            $parsedBody['icon'] ?? $queryParams['icon'],
             true
         );
 

@@ -74,6 +74,6 @@ class ArrayAccessClass implements \ArrayAccess
      */
     public function getVirtual()
     {
-        return isset($this->array['virtual']) ? $this->array['virtual'] : 'default-value';
+        return $this->array['virtual'] ?? 'default-value';
     }
 }

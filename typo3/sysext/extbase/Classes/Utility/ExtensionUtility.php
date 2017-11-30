@@ -128,9 +128,7 @@ tt_content.' . $pluginSignature . ' {
         $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 
         // pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
-        $pluginType = isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']
-            : 'list_type';
+        $pluginType = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] ?? 'list_type';
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
             [$pluginTitle, $pluginSignature, $pluginIcon],

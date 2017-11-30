@@ -36,9 +36,9 @@ class UserSettingsController
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // do the regular / main logic, depending on the action parameter
-        $action = isset($request->getParsedBody()['action']) ? $request->getParsedBody()['action'] : $request->getQueryParams()['action'];
-        $key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['key'] : $request->getQueryParams()['key'];
-        $value = isset($request->getParsedBody()['value']) ? $request->getParsedBody()['value'] : $request->getQueryParams()['value'];
+        $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'];
+        $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'];
+        $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'];
 
         $content = $this->process($action, $key, $value);
         return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($content);

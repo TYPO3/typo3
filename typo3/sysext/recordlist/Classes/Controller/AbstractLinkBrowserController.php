@@ -214,9 +214,9 @@ abstract class AbstractLinkBrowserController
     protected function initVariables(ServerRequestInterface $request)
     {
         $queryParams = $request->getQueryParams();
-        $this->displayedLinkHandlerId = isset($queryParams['act']) ? $queryParams['act'] : '';
-        $this->parameters = isset($queryParams['P']) ? $queryParams['P'] : [];
-        $this->linkAttributeValues = isset($queryParams['linkAttributes']) ? $queryParams['linkAttributes'] : [];
+        $this->displayedLinkHandlerId = $queryParams['act'] ?? '';
+        $this->parameters = $queryParams['P'] ?? [];
+        $this->linkAttributeValues = $queryParams['linkAttributes'] ?? [];
     }
 
     /**
@@ -242,7 +242,7 @@ abstract class AbstractLinkBrowserController
             $handler->initialize(
                 $this,
                 $identifier,
-                isset($configuration['configuration.']) ? $configuration['configuration.'] : []
+                $configuration['configuration.'] ?? []
             );
 
             $label = !empty($configuration['label']) ? $lang->sL($configuration['label']) : '';
@@ -254,7 +254,7 @@ abstract class AbstractLinkBrowserController
                 'displayAfter' => isset($configuration['displayAfter']) ? GeneralUtility::trimExplode(',', $configuration['displayAfter']) : [],
                 'scanBefore' => isset($configuration['scanBefore']) ? GeneralUtility::trimExplode(',', $configuration['scanBefore']) : [],
                 'scanAfter' => isset($configuration['scanAfter']) ? GeneralUtility::trimExplode(',', $configuration['scanAfter']) : [],
-                'addParams' => isset($configuration['addParams']) ? $configuration['addParams'] : '',
+                'addParams' => $configuration['addParams'] ?? '',
             ];
         }
     }
@@ -559,7 +559,7 @@ abstract class AbstractLinkBrowserController
     public function getUrlParameters(array $overrides = null)
     {
         return [
-            'act' => isset($overrides['act']) ? $overrides['act'] : $this->displayedLinkHandlerId
+            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId
         ];
     }
 
@@ -575,9 +575,9 @@ abstract class AbstractLinkBrowserController
         $parameters['pid'] = $this->parameters['pid'];
         $parameters['itemName'] = $this->parameters['itemName'];
         $parameters['formName'] = $this->parameters['formName'];
-        $parameters['params']['allowedExtensions'] = isset($this->parameters['params']['allowedExtensions']) ? $this->parameters['params']['allowedExtensions'] : '';
-        $parameters['params']['blindLinkOptions'] = isset($this->parameters['params']['blindLinkOptions']) ? $this->parameters['params']['blindLinkOptions'] : '';
-        $parameters['params']['blindLinkFields'] = isset($this->parameters['params']['blindLinkFields']) ? $this->parameters['params']['blindLinkFields']: '';
+        $parameters['params']['allowedExtensions'] = $this->parameters['params']['allowedExtensions'] ?? '';
+        $parameters['params']['blindLinkOptions'] = $this->parameters['params']['blindLinkOptions'] ?? '';
+        $parameters['params']['blindLinkFields'] = $this->parameters['params']['blindLinkFields'] ?? '';
         $addPassOnParams = GeneralUtility::implodeArrayForUrl('P', $parameters);
 
         $attributes = $this->displayedLinkHandler->getBodyTagAttributes();

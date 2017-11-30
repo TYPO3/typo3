@@ -3474,8 +3474,8 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $overrideRelationHandlerSettings, array $relationHandlerUids)
     {
         $field = $input['databaseRow']['aField'];
-        $foreignTable = isset($overrideRelationHandlerSettings['foreign_table']) ? $overrideRelationHandlerSettings['foreign_table'] : $input['processedTca']['columns']['aField']['config']['foreign_table'];
-        $mmTable = isset($overrideRelationHandlerSettings['MM']) ? $overrideRelationHandlerSettings['MM'] : $input['processedTca']['columns']['aField']['config']['MM'];
+        $foreignTable = $overrideRelationHandlerSettings['foreign_table'] ?? $input['processedTca']['columns']['aField']['config']['foreign_table'];
+        $mmTable = $overrideRelationHandlerSettings['MM'] ?? $input['processedTca']['columns']['aField']['config']['MM'];
         $uid = $input['databaseRow']['uid'];
         $tableName = $input['tableName'];
         $fieldConfig = $input['processedTca']['columns']['aField']['config'];

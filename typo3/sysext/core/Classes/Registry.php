@@ -55,7 +55,7 @@ class Registry implements SingletonInterface
         if (!$this->isNamespaceLoaded($namespace)) {
             $this->loadEntriesByNamespace($namespace);
         }
-        return isset($this->entries[$namespace][$key]) ? $this->entries[$namespace][$key] : $defaultValue;
+        return $this->entries[$namespace][$key] ?? $defaultValue;
     }
 
     /**

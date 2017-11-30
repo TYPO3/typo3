@@ -173,7 +173,7 @@ class DataStructureIdentifierHook
             return [];
         }
 
-        $prototypeName = isset($formDefinition['prototypeName']) ? $formDefinition['prototypeName'] : 'standard';
+        $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
         $prototypeConfiguration = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationService::class)
             ->getPrototypeConfiguration($prototypeName);

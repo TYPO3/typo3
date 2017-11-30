@@ -44,7 +44,7 @@ class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
         $request = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-        $request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null);
+        $request->setMethod($_SERVER['REQUEST_METHOD'] ?? null);
         if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
             $request->setArguments(GeneralUtility::_POST());
         } else {

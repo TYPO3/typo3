@@ -125,8 +125,8 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     {
         // reset 1st level cache
         $this->configurationCache = [];
-        $this->extensionName = isset($configuration['extensionName']) ? $configuration['extensionName'] : null;
-        $this->pluginName = isset($configuration['pluginName']) ? $configuration['pluginName'] : null;
+        $this->extensionName = $configuration['extensionName'] ?? null;
+        $this->pluginName = $configuration['pluginName'] ?? null;
         $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
     }
 

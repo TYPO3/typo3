@@ -45,9 +45,9 @@ class ArrayFormFactory extends AbstractFormFactory
     public function build(array $configuration, string $prototypeName = null): FormDefinition
     {
         if (empty($prototypeName)) {
-            $prototypeName = isset($configuration['prototypeName']) ? $configuration['prototypeName'] : 'standard';
+            $prototypeName = $configuration['prototypeName'] ?? 'standard';
         }
-        $persistenceIdentifier = (isset($configuration['persistenceIdentifier'])) ? $configuration['persistenceIdentifier'] : null;
+        $persistenceIdentifier = $configuration['persistenceIdentifier'] ?? null;
 
         $prototypeConfiguration = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(ConfigurationService::class)

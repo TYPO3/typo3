@@ -306,9 +306,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function setType(ColumnMap $columnMap, $columnConfiguration)
     {
-        $tableColumnType = (isset($columnConfiguration['type'])) ? $columnConfiguration['type'] : null;
+        $tableColumnType = $columnConfiguration['type'] ?? null;
         $columnMap->setType(\TYPO3\CMS\Core\DataHandling\TableColumnType::cast($tableColumnType));
-        $tableColumnSubType = (isset($columnConfiguration['internal_type'])) ? $columnConfiguration['internal_type'] : null;
+        $tableColumnSubType = $columnConfiguration['internal_type'] ?? null;
         $columnMap->setInternalType(\TYPO3\CMS\Core\DataHandling\TableColumnSubType::cast($tableColumnSubType));
 
         return $columnMap;

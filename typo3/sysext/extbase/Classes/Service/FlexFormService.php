@@ -35,7 +35,7 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface
     {
         $settings = [];
         $flexFormArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexFormContent);
-        $flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : [];
+        $flexFormArray = $flexFormArray['data'] ?? [];
         foreach (array_values($flexFormArray) as $languages) {
             if (!is_array($languages[$languagePointer])) {
                 continue;

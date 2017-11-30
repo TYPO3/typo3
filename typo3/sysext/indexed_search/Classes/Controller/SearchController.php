@@ -1412,7 +1412,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $this->settings['results']['pathExcludeDoktypes'] ?? '',
                     true
                 );
-                $breadcrumbWrap = isset($this->settings['breadcrumbWrap']) ? $this->settings['breadcrumbWrap'] : '/';
+                $breadcrumbWrap = $this->settings['breadcrumbWrap'] ?? '/';
                 $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
                     ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
                 foreach ($rl as $k => $v) {

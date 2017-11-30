@@ -147,7 +147,7 @@ abstract class AbstractRenderable implements RenderableInterface
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
                 if (is_array($value)) {
-                    $currentValue = isset($this->getRenderingOptions()[$key]) ? $this->getRenderingOptions()[$key] : [];
+                    $currentValue = $this->getRenderingOptions()[$key] ?? [];
                     ArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
                     $this->setRenderingOption($key, $currentValue);
                 } else {
@@ -158,7 +158,7 @@ abstract class AbstractRenderable implements RenderableInterface
 
         if (isset($options['validators'])) {
             foreach ($options['validators'] as $validatorConfiguration) {
-                $this->createValidator($validatorConfiguration['identifier'], isset($validatorConfiguration['options']) ? $validatorConfiguration['options'] : []);
+                $this->createValidator($validatorConfiguration['identifier'], $validatorConfiguration['options'] ?? []);
             }
         }
 
@@ -182,7 +182,7 @@ abstract class AbstractRenderable implements RenderableInterface
         $validatorsDefinition = $this->getRootForm()->getValidatorsDefinition();
         if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
             $implementationClassName = $validatorsDefinition[$validatorIdentifier]['implementationClassName'];
-            $defaultOptions = isset($validatorsDefinition[$validatorIdentifier]['options']) ? $validatorsDefinition[$validatorIdentifier]['options'] : [];
+            $defaultOptions = $validatorsDefinition[$validatorIdentifier]['options'] ?? [];
 
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 

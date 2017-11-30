@@ -160,7 +160,7 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         $fN = 'data[' . $params['name'] . ']';
         $idName = str_replace('.', '-', $params['name']);
-        $fV = ($params['value'] = isset($this->ext_realValues[$params['name']]) ? $this->ext_realValues[$params['name']] : $params['default_value']);
+        $fV = ($params['value'] = $this->ext_realValues[$params['name']] ?? $params['default_value']);
         $reg = [];
         // Values entered from the constantsedit cannot be constants!
         if (preg_match('/^\\{[\\$][a-zA-Z0-9\\.]*\\}$/', trim($fV), $reg)) {

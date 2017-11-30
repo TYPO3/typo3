@@ -1263,7 +1263,7 @@ class SchedulerModuleController
                 'extension' => $registrationInformation['extension'],
                 'title' => $title,
                 'description' => $description,
-                'provider' => isset($registrationInformation['additionalFields']) ? $registrationInformation['additionalFields'] : ''
+                'provider' => $registrationInformation['additionalFields'] ?? ''
             ];
         }
         return $list;

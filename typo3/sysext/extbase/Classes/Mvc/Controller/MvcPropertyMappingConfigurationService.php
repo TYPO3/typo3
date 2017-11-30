@@ -91,7 +91,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
             }
         }
         if ($fieldNamePrefix !== '') {
-            $formFieldArray = (isset($formFieldArray[$fieldNamePrefix]) ? $formFieldArray[$fieldNamePrefix] : []);
+            $formFieldArray = ($formFieldArray[$fieldNamePrefix] ?? []);
         }
         return $this->serializeAndHashFormFieldArray($formFieldArray);
     }

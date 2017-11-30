@@ -115,7 +115,7 @@ class FlashMessagesViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $as = $arguments['as'];
-        $queueIdentifier = isset($arguments['queueIdentifier']) ? $arguments['queueIdentifier'] : null;
+        $queueIdentifier = $arguments['queueIdentifier'] ?? null;
         $flashMessages = $renderingContext->getControllerContext()
             ->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {

@@ -115,9 +115,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                     if ($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
                         // Grab the Page TSConfig property that determines which controller to use.
                         $pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
-                        $controllerKey = isset($pageTSConfig['TSFE.']['frontendEditingController'])
-                            ? $pageTSConfig['TSFE.']['frontendEditingController']
-                            : 'default';
+                        $controllerKey = $pageTSConfig['TSFE.']['frontendEditingController'] ?? 'default';
                     } else {
                         $controllerKey = 'default';
                     }

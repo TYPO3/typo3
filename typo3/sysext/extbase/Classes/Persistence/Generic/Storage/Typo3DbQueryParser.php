@@ -956,7 +956,7 @@ class Typo3DbQueryParser
         $propertyName = $explodedPropertyPath[0];
         $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
         $realTableName = $this->dataMapper->convertClassNameToTableName($className);
-        $tableName = isset($this->tablePropertyMap[$fullPropertyPath]) ? $this->tablePropertyMap[$fullPropertyPath] : $realTableName;
+        $tableName = $this->tablePropertyMap[$fullPropertyPath] ?? $realTableName;
         $columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 
         if ($columnMap === null) {

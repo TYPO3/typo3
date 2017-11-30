@@ -36,7 +36,7 @@ class ContextHelpAjaxController
      */
     public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $params = isset($request->getParsedBody()['params']) ? $request->getParsedBody()['params'] : $request->getQueryParams()['params'];
+        $params = $request->getParsedBody()['params'] ?? $request->getQueryParams()['params'];
         if ($params['action'] === 'getContextHelp') {
             $result = $this->getContextHelp($params['table'], $params['field']);
             return GeneralUtility::makeInstance(JsonResponse::class, [

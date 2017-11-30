@@ -418,7 +418,7 @@ class PageRepository implements LoggerAwareInterface
     {
         $rows = $this->getPagesOverlay([$pageInput], $lUid);
         // Always an array in return
-        return isset($rows[0]) ? $rows[0] : [];
+        return $rows[0] ?? [];
     }
 
     /**

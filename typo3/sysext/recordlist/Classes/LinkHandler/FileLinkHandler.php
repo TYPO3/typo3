@@ -103,7 +103,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $folderTree->setLinkParameterProvider($this);
         $this->view->assign('tree', $folderTree->getBrowsableTree());
 
-        $this->expandFolder = isset($request->getQueryParams()['expandFolder']) ? $request->getQueryParams()['expandFolder'] : null;
+        $this->expandFolder = $request->getQueryParams()['expandFolder'] ?? null;
         if (!empty($this->linkParts) && !isset($this->expandFolder)) {
             $this->expandFolder = $this->linkParts['url'][$this->mode];
             if ($this->expandFolder instanceof File) {

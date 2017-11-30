@@ -157,7 +157,7 @@ class SuggestWizardController
         }
 
         // Limit the number of items in the result list
-        $maxItems = isset($config['maxItemsInResultList']) ? $config['maxItemsInResultList'] : 10;
+        $maxItems = $config['maxItemsInResultList'] ?? 10;
         $maxItems = min(count($resultRows), $maxItems);
 
         array_splice($resultRows, $maxItems);

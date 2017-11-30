@@ -144,7 +144,7 @@ class NodeFactory
         }
         $type = $data['renderType'];
 
-        $className = isset($this->nodeTypes[$type]) ? $this->nodeTypes[$type] : $this->nodeTypes['unknown'];
+        $className = $this->nodeTypes[$type] ?? $this->nodeTypes['unknown'];
 
         if (!empty($this->nodeResolver[$type])) {
             // Resolver with highest priority is called first. If it returns with a new class name,

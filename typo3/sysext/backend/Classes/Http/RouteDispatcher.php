@@ -87,7 +87,7 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface
         if ($route->getOption('access') === 'public') {
             return true;
         }
-        $token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
+        $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token']);
         return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
     }
 

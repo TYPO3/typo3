@@ -42,7 +42,7 @@ class SessionStorage extends AbstractStorage
      */
     public function get()
     {
-        return isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : null;
+        return $_SESSION['tx_rsaauth_key'] ?? null;
     }
 
     /**

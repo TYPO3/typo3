@@ -297,7 +297,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      */
     public function getUrlParameters(array $values)
     {
-        $pid = isset($values['pid']) ? $values['pid'] : $this->expandPage;
+        $pid = $values['pid'] ?? $this->expandPage;
         return [
             'mode' => 'db',
             'expandPage' => $pid,

@@ -139,6 +139,6 @@ class AjaxLoginController
      */
     protected function getBackendUser()
     {
-        return isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

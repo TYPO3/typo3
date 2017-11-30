@@ -439,11 +439,11 @@ abstract class AbstractMenuContentObject
         $minItems = (int)($this->mconf['minItems'] ?: $this->conf['minItems']);
         $maxItems = (int)($this->mconf['maxItems'] ?: $this->conf['maxItems']);
         $begin = $this->parent_cObj->calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
-        $minItemsConf = isset($this->mconf['minItems.']) ? $this->mconf['minItems.'] : (isset($this->conf['minItems.']) ? $this->conf['minItems.'] : null);
+        $minItemsConf = $this->mconf['minItems.'] ?? $this->conf['minItems.'] ?? null;
         $minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
-        $maxItemsConf = isset($this->mconf['maxItems.']) ? $this->mconf['maxItems.'] : (isset($this->conf['maxItems.']) ? $this->conf['maxItems.'] : null);
+        $maxItemsConf = $this->mconf['maxItems.'] ?? $this->conf['maxItems.'] ?? null;
         $maxItems = is_array($maxItemsConf) ? $this->parent_cObj->stdWrap($maxItems, $maxItemsConf) : $maxItems;
-        $beginConf = isset($this->mconf['begin.']) ? $this->mconf['begin.'] : (isset($this->conf['begin.']) ? $this->conf['begin.'] : null);
+        $beginConf = $this->mconf['begin.'] ?? $this->conf['begin.'] ?? null;
         $begin = is_array($beginConf) ? $this->parent_cObj->stdWrap($begin, $beginConf) : $begin;
         $banUidArray = $this->getBannedUids();
         // Fill in the menuArr with elements that should go into the menu:
@@ -553,7 +553,7 @@ abstract class AbstractMenuContentObject
         $alternativeSortingField = trim($this->mconf['alternativeSortingField']) ?: 'sorting';
 
         // Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
-        $additionalWhere = isset($this->mconf['additionalWhere']) ? $this->mconf['additionalWhere'] : '';
+        $additionalWhere = $this->mconf['additionalWhere'] ?? '';
         if (isset($this->mconf['additionalWhere.'])) {
             $additionalWhere = $this->parent_cObj->stdWrap($additionalWhere, $this->mconf['additionalWhere.']);
         }
@@ -1772,7 +1772,7 @@ abstract class AbstractMenuContentObject
                 ],
                 [
                     rawurlencode($LD['totalURL']),
-                    isset($page['_SHORTCUT_PAGE_UID']) ? $page['_SHORTCUT_PAGE_UID'] : $page['uid']
+                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid']
                 ],
                 $this->mconf['showAccessRestrictedPages.']['addParams']
             );

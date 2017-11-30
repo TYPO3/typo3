@@ -243,7 +243,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
                 return $result->getFirst();
             }
             if (is_array($result)) {
-                return isset($result[0]) ? $result[0] : null;
+                return $result[0] ?? null;
             }
         } elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
             $propertyName = lcfirst(substr($methodName, 7));

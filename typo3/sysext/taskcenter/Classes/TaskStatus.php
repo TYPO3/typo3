@@ -32,9 +32,9 @@ class TaskStatus
     public function saveCollapseState(ServerRequestInterface $request, ResponseInterface $response)
     {
         // Remove 'el_' in the beginning which is needed for the saveSortingState()
-        $item = isset($request->getParsedBody()['item']) ? $request->getParsedBody()['item'] : $request->getQueryParams()['item'];
+        $item = $request->getParsedBody()['item'] ?? $request->getQueryParams()['item'];
         $item = htmlspecialchars($item);
-        $state = (bool)(isset($request->getParsedBody()['state']) ? $request->getParsedBody()['state'] : $request->getQueryParams()['state']);
+        $state = (bool)($request->getParsedBody()['state'] ?? $request->getQueryParams()['state']);
 
         $this->getBackendUserAuthentication()->uc['taskcenter']['states'][$item] = $state;
         $this->getBackendUserAuthentication()->writeUC();
@@ -52,7 +52,7 @@ class TaskStatus
     public function saveSortingState(ServerRequestInterface $request, ResponseInterface $response)
     {
         $sort = [];
-        $data = isset($request->getParsedBody()['data']) ? $request->getParsedBody()['data'] : $request->getQueryParams()['data'];
+        $data = $request->getParsedBody()['data'] ?? $request->getQueryParams()['data'];
 
         $items = explode('&', $data);
         foreach ($items as $item) {

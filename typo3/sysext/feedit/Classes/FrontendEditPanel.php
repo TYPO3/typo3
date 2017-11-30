@@ -183,9 +183,7 @@ class FrontendEditPanel
         }
 
         $hidden = $this->isDisabled($table, $dataArr) ? ' typo3-feedit-element-hidden' : '';
-        $outerWrapConfig = isset($conf['stdWrap.'])
-            ? $conf['stdWrap.']
-            : ['wrap' => '<div class="typo3-feedit-element' . $hidden . '">|</div>'];
+        $outerWrapConfig = $conf['stdWrap.'] ?? ['wrap' => '<div class="typo3-feedit-element' . $hidden . '">|</div>'];
         $finalOut = $this->cObj->stdWrap($finalOut, $outerWrapConfig);
 
         return $finalOut;

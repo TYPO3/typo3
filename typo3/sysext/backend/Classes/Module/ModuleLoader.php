@@ -392,9 +392,9 @@ class ModuleLoader
                 $this->addLabelsForModule($moduleName, $labels['default']['ll_ref']);
             } else {
                 $this->moduleLabels[$moduleName] = [
-                    'shortdescription' => isset($labels[$language]['labels']['tablabel']) ? $labels[$language]['labels']['tablabel'] : $labels['default']['labels']['tablabel'],
-                    'description' => isset($labels[$language]['labels']['tabdescr']) ? $labels[$language]['labels']['tabdescr'] : $labels['default']['labels']['tabdescr'],
-                    'title' => isset($labels[$language]['tabs']['tab']) ? $labels[$language]['tabs']['tab'] : $labels['default']['tabs']['tab'],
+                    'shortdescription' => $labels[$language]['labels']['tablabel'] ?? $labels['default']['labels']['tablabel'],
+                    'description' => $labels[$language]['labels']['tabdescr'] ?? $labels['default']['labels']['tabdescr'],
+                    'title' => $labels[$language]['tabs']['tab'] ?? $labels['default']['tabs']['tab'],
                 ];
             }
         }
@@ -408,7 +408,7 @@ class ModuleLoader
      */
     public function getLabelsForModule($moduleName)
     {
-        return isset($this->moduleLabels[$moduleName]) ? $this->moduleLabels[$moduleName] : [];
+        return $this->moduleLabels[$moduleName] ?? [];
     }
 
     /**

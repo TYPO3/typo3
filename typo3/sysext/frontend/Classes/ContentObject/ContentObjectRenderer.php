@@ -788,7 +788,7 @@ class ContentObjectRenderer
         $content = '';
 
         // Evaluate possible cache and return
-        $cacheConfiguration = isset($configuration['cache.']) ? $configuration['cache.'] : null;
+        $cacheConfiguration = $configuration['cache.'] ?? null;
         if ($cacheConfiguration !== null) {
             unset($configuration['cache.']);
             $cache = $this->getFromCache($cacheConfiguration);
@@ -1158,7 +1158,7 @@ class ContentObjectRenderer
                 ];
 
                 if (isset($sourceConfiguration['quality']) || isset($sourceConfiguration['quality.'])) {
-                    $imageQuality = isset($sourceConfiguration['quality']) ? $sourceConfiguration['quality'] : '';
+                    $imageQuality = $sourceConfiguration['quality'] ?? '';
                     if (isset($sourceConfiguration['quality.'])) {
                         $imageQuality = $this->stdWrap($sourceConfiguration['quality'], $sourceConfiguration['quality.']);
                     }
@@ -1875,7 +1875,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_ifNull($content = '', $conf = [])
     {
-        return $content !== null ? $content : $conf['ifNull'];
+        return $content ?? $conf['ifNull'];
     }
 
     /**
@@ -3422,13 +3422,13 @@ class ContentObjectRenderer
                     continue;
                 }
                 preg_match($chars < 0 ? $closingTagRegEx : $openingTagRegEx, $splittedContent[$offset], $matches);
-                $tagName = isset($matches[1]) ? $matches[1] : null;
+                $tagName = $matches[1] ?? null;
                 if ($tagName !== null) {
                     // Seek for the closing (or opening) tag.
                     $countSplittedContent = count($splittedContent);
                     for ($seekingOffset = $offset + 2; $seekingOffset < $countSplittedContent; $seekingOffset = $seekingOffset + 2) {
                         preg_match($chars < 0 ? $openingTagRegEx : $closingTagRegEx, $splittedContent[$seekingOffset], $matches);
-                        $seekingTagName = isset($matches[1]) ? $matches[1] : null;
+                        $seekingTagName = $matches[1] ?? null;
                         if ($tagName === $seekingTagName) {
                             // We found a matching tag.
                             // Add closing tag only if it occurs after the cropped content item.
@@ -3736,7 +3736,7 @@ class ContentObjectRenderer
         // return value directly by returnKey. No further processing
         if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
             $key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
-            return isset($valArr[$key]) ? $valArr[$key] : '';
+            return $valArr[$key] ?? '';
         }
 
         // return the amount of elements. No further processing
@@ -7178,9 +7178,7 @@ class ContentObjectRenderer
      */
     protected function calculateCacheLifetime(array $configuration)
     {
-        $lifetimeConfiguration = isset($configuration['lifetime'])
-            ? $configuration['lifetime']
-            : '';
+        $lifetimeConfiguration = $configuration['lifetime'] ?? '';
         $lifetimeConfiguration = isset($configuration['lifetime.'])
             ? $this->stdWrap($lifetimeConfiguration, $configuration['lifetime.'])
             : $lifetimeConfiguration;
@@ -7202,7 +7200,7 @@ class ContentObjectRenderer
      */
     protected function calculateCacheTags(array $configuration)
     {
-        $tags = isset($configuration['tags']) ? $configuration['tags'] : '';
+        $tags = $configuration['tags'] ?? '';
         $tags = isset($configuration['tags.'])
             ? $this->stdWrap($tags, $configuration['tags.'])
             : $tags;
@@ -7217,7 +7215,7 @@ class ContentObjectRenderer
      */
     protected function calculateCacheKey(array $configuration)
     {
-        $key = isset($configuration['key']) ? $configuration['key'] : '';
+        $key = $configuration['key'] ?? '';
         return isset($configuration['key.'])
             ? $this->stdWrap($key, $configuration['key.'])
             : $key;

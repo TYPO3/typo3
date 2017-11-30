@@ -783,9 +783,7 @@ class EditDocumentController
         }
 
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
-        $previewConfiguration = isset($pageTsConfig['TCEMAIN.']['preview.'][$table . '.'])
-            ? $pageTsConfig['TCEMAIN.']['preview.'][$table . '.']
-            : [];
+        $previewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
 
         $recordArray = BackendUtility::getRecord($table, $recordId);
 
@@ -823,13 +821,9 @@ class EditDocumentController
         ];
 
         // language handling
-        $languageField = isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
-            ? $GLOBALS['TCA'][$table]['ctrl']['languageField']
-            : '';
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
         if ($languageField && !empty($recordArray[$languageField])) {
-            $l18nPointer = isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-                ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-                : '';
+            $l18nPointer = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
             if ($l18nPointer && !empty($recordArray[$l18nPointer])
                 && isset($previewConfiguration['useDefaultLanguageRecord'])
                 && !$previewConfiguration['useDefaultLanguageRecord']
@@ -1873,7 +1867,7 @@ class EditDocumentController
     public function getNewIconMode($table, $key = 'saveDocNew')
     {
         $TSconfig = $this->getBackendUser()->getTSConfig('options.' . $key);
-        $output = trim(isset($TSconfig['properties'][$table]) ? $TSconfig['properties'][$table] : $TSconfig['value']);
+        $output = trim($TSconfig['properties'][$table] ?? $TSconfig['value']);
         return $output;
     }
 

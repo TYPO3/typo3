@@ -157,7 +157,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
             $this->view->setTemplateRootPaths($templateRootPaths);
             $templateName = isset($conf['templateName.'])
-                ? $this->cObj->stdWrap(isset($conf['templateName']) ? $conf['templateName'] : '', $conf['templateName.'])
+                ? $this->cObj->stdWrap($conf['templateName'] ?? '', $conf['templateName.'])
                 : $conf['templateName'];
             $this->view->setTemplate($templateName);
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {

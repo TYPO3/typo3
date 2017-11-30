@@ -147,7 +147,7 @@ class FilesContentObject extends AbstractContentObject
             $sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
         }
         if ($sortingProperty !== '') {
-            $sortingDirection = isset($conf['sorting.']['direction']) ? $conf['sorting.']['direction'] : '';
+            $sortingDirection = $conf['sorting.']['direction'] ?? '';
             if (isset($conf['sorting.']['direction.'])) {
                 $sortingDirection = $this->cObj->stdWrap($sortingDirection, $conf['sorting.']['direction.']);
             }

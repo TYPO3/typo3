@@ -231,10 +231,10 @@ class TcaMigration
                     // Keep empty parameters in trimExplode here (third parameter FALSE), so position is not changed
                     $fieldArray = GeneralUtility::trimExplode(';', $fieldString);
                     $fieldArray = [
-                        'fieldName' => isset($fieldArray[0]) ? $fieldArray[0] : '',
-                        'fieldLabel' => isset($fieldArray[1]) ? $fieldArray[1] : null,
-                        'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : null,
-                        'fieldExtra' => isset($fieldArray[3]) ? $fieldArray[3] : null,
+                        'fieldName' => $fieldArray[0] ?? '',
+                        'fieldLabel' => $fieldArray[1] ?? null,
+                        'paletteName' => $fieldArray[2] ?? null,
+                        'fieldExtra' => $fieldArray[3] ?? null,
                     ];
                     if (!empty($fieldArray['fieldExtra'])) {
                         // Move fieldExtra "specConf" to columnsOverrides "defaultExtras"
@@ -408,9 +408,9 @@ class TcaMigration
                 foreach ($itemList as $fieldString) {
                     $fieldArray = GeneralUtility::trimExplode(';', $fieldString);
                     $fieldArray = [
-                        'fieldName' => isset($fieldArray[0]) ? $fieldArray[0] : '',
-                        'fieldLabel' => isset($fieldArray[1]) ? $fieldArray[1] : null,
-                        'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : null,
+                        'fieldName' => $fieldArray[0] ?? '',
+                        'fieldLabel' => $fieldArray[1] ?? null,
+                        'paletteName' => $fieldArray[2] ?? null,
                     ];
                     if ($fieldArray['fieldName'] !== '--palette--' && $fieldArray['paletteName'] !== null) {
                         if ($fieldArray['fieldLabel']) {

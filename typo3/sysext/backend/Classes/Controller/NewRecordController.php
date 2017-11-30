@@ -544,9 +544,7 @@ class NewRecordController
                                 . '<ul>';
                             // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
                             $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
-                            $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-                                ? $tsConfig['properties']['newContentElementWizard.']['override']
-                                : 'new_content_element_wizard';
+                            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
                             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'

@@ -172,7 +172,7 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
      */
     public static function mapValueToOption($value, array $options)
     {
-        return isset($options[$value]) ? $options[$value] : $value;
+        return $options[$value] ?? $value;
     }
 
     /**

@@ -1643,9 +1643,7 @@ class DatabaseRecordList
                             if ($table === 'tt_content' && $this->newWizards) {
                                 // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
                                 $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
-                                $newContentElementWizard = isset($tmpTSc['properties']['newContentElementWizard.']['override'])
-                                    ? $tmpTSc['properties']['newContentElementWizard.']['override']
-                                    : 'new_content_element';
+                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
                                 $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($newContentElementWizard, ['id' => $this->id]);
 
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
@@ -2051,7 +2049,7 @@ class DatabaseRecordList
             }
             // "Delete" link:
             $disableDeleteTS = $this->getBackendUserAuthentication()->getTSConfig('options.disableDelete');
-            $disableDelete = (bool) trim(isset($disableDeleteTS['properties'][$table]) ? $disableDeleteTS['properties'][$table] : $disableDeleteTS['value']);
+            $disableDelete = (bool) trim($disableDeleteTS['properties'][$table] ?? $disableDeleteTS['value']);
             if ($permsEdit && !$disableDelete && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
                 // Check if the record version is in "deleted" state, because that will switch the action to "restore"
                 if ($this->getBackendUserAuthentication()->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {

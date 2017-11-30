@@ -243,12 +243,12 @@ class JsonView extends AbstractView
     {
         if (count($this->variablesToRender) === 1) {
             $variableName = current($this->variablesToRender);
-            $valueToRender = isset($this->variables[$variableName]) ? $this->variables[$variableName] : null;
-            $configuration = isset($this->configuration[$variableName]) ? $this->configuration[$variableName] : [];
+            $valueToRender = $this->variables[$variableName] ?? null;
+            $configuration = $this->configuration[$variableName] ?? [];
         } else {
             $valueToRender = [];
             foreach ($this->variablesToRender as $variableName) {
-                $valueToRender[$variableName] = isset($this->variables[$variableName]) ? $this->variables[$variableName] : null;
+                $valueToRender[$variableName] = $this->variables[$variableName] ?? null;
             }
             $configuration = $this->configuration;
         }
@@ -277,7 +277,7 @@ class JsonView extends AbstractView
                     if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($key, $configuration['_exclude'])) {
                         continue;
                     }
-                    $array[$key] = $this->transformValue($element, isset($configuration[$key]) ? $configuration[$key] : []);
+                    $array[$key] = $this->transformValue($element, $configuration[$key] ?? []);
                 }
             }
             return $array;

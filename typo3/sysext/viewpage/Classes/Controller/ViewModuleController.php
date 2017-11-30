@@ -144,7 +144,7 @@ class ViewModuleController extends ActionController
         $icons['unidentified'] = $iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
 
         $current = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['current'] ?: []);
-        $current['label'] = (isset($current['label']) ? $current['label'] : $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
+        $current['label'] = ($current['label'] ?? $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
         $current['width'] = (isset($current['width']) && (int) $current['width'] >= 300 ? (int) $current['width'] : 320);
         $current['height'] = (isset($current['height']) && (int) $current['height'] >= 300 ? (int) $current['height'] : 480);
 
@@ -276,8 +276,8 @@ class ViewModuleController extends ActionController
             foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf) {
                 $data = [
                     'key' => substr($item, 0, -1),
-                    'label' => (isset($conf['label']) ? $conf['label'] : null),
-                    'type' => (isset($conf['type']) ? $conf['type'] : 'unknown'),
+                    'label' => ($conf['label'] ?? null),
+                    'type' => ($conf['type'] ?? 'unknown'),
                     'width' => ((isset($conf['width']) && (int) $conf['width'] > 0 && strpos($conf['width'], '%') === false) ? (int) $conf['width'] : null),
                     'height' => ((isset($conf['height']) && (int) $conf['height'] > 0 && strpos($conf['height'], '%') === false) ? (int) $conf['height'] : null),
                 ];

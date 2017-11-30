@@ -43,7 +43,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     public function createAction(ServerRequestInterface $request): ResponseInterface
     {
-        $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         $domObjectId = $ajaxArguments[0];
@@ -173,7 +173,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     public function detailsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
 
         $domObjectId = $ajaxArguments[0];
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
@@ -255,7 +255,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     public function synchronizeLocalizeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         $domObjectId = $ajaxArguments[0];
         $type = $ajaxArguments[1];
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
@@ -412,7 +412,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     public function expandOrCollapseAction(ServerRequestInterface $request): ResponseInterface
     {
-        $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+        $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         $domObjectId = $ajaxArguments[0];
 
         /** @var InlineStackProcessor $inlineStackProcessor */

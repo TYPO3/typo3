@@ -294,9 +294,7 @@ class RecordProvider extends AbstractProvider
         }
         if ($itemName === 'newWizard' && $this->table === 'tt_content') {
             $tsConfig = BackendUtility::getModTSconfig($this->record['pid'], 'mod');
-            $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-                ? $tsConfig['properties']['newContentElementWizard.']['override']
-                : 'new_content_element_wizard';
+            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
             $urlParameters = [
                 'id' => $this->record['pid'],
                 'sys_language_uid' => $this->record['sys_language_uid'],
@@ -495,7 +493,7 @@ class RecordProvider extends AbstractProvider
     protected function canBeDeleted(): bool
     {
         $disableDeleteTS = $this->backendUser->getTSConfig('options.disableDelete');
-        $disableDelete = (bool) trim(isset($disableDeleteTS['properties'][$this->table]) ? $disableDeleteTS['properties'][$this->table] : (string)$disableDeleteTS['value']);
+        $disableDelete = (bool) trim($disableDeleteTS['properties'][$this->table] ?? (string)$disableDeleteTS['value']);
         return !$disableDelete && $this->canBeEdited();
     }
 

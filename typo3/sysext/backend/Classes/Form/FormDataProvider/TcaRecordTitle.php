@@ -50,9 +50,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 'row' => $result['databaseRow'],
                 'title' => '',
                 'isOnSymmetricSide' => $result['isOnSymmetricSide'],
-                'options' => isset($result['processedTca']['ctrl']['formattedLabel_userFunc_options'])
-                    ? $result['processedTca']['ctrl']['formattedLabel_userFunc_options']
-                    : [],
+                'options' => $result['processedTca']['ctrl']['formattedLabel_userFunc_options'] ?? [],
                 'parent' => [
                     'uid' => $result['databaseRow']['uid'],
                     'config' => $result['inlineParentConfig']
@@ -76,9 +74,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 'table' => $result['tableName'],
                 'row' => $result['databaseRow'],
                 'title' => '',
-                'options' => isset($result['processedTca']['ctrl']['label_userFunc_options'])
-                    ? $result['processedTca']['ctrl']['label_userFunc_options']
-                    : [],
+                'options' => $result['processedTca']['ctrl']['label_userFunc_options'] ?? [],
             ];
             $null = null;
             GeneralUtility::callUserFunction($result['processedTca']['ctrl']['label_userFunc'], $parameters, $null);

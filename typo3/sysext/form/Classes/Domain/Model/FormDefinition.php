@@ -304,9 +304,9 @@ class FormDefinition extends AbstractCompositeRenderable
         string $type = 'Form',
         string $persistenceIdentifier = null
     ) {
-        $this->typeDefinitions = isset($prototypeConfiguration['formElementsDefinition']) ? $prototypeConfiguration['formElementsDefinition'] : [];
-        $this->validatorsDefinition = isset($prototypeConfiguration['validatorsDefinition']) ? $prototypeConfiguration['validatorsDefinition'] : [];
-        $this->finishersDefinition = isset($prototypeConfiguration['finishersDefinition']) ? $prototypeConfiguration['finishersDefinition'] : [];
+        $this->typeDefinitions = $prototypeConfiguration['formElementsDefinition'] ?? [];
+        $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
+        $this->finishersDefinition = $prototypeConfiguration['finishersDefinition'] ?? [];
 
         if (!is_string($identifier) || strlen($identifier) === 0) {
             throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082503);
@@ -355,7 +355,7 @@ class FormDefinition extends AbstractCompositeRenderable
         if (isset($options['renderingOptions'])) {
             foreach ($options['renderingOptions'] as $key => $value) {
                 if (is_array($value)) {
-                    $currentValue = isset($this->getRenderingOptions()[$key]) ? $this->getRenderingOptions()[$key] : [];
+                    $currentValue = $this->getRenderingOptions()[$key] ?? [];
                     ArrayUtility::mergeRecursiveWithOverrule($currentValue, $value);
                     $this->setRenderingOption($key, $currentValue);
                 } else {
@@ -365,7 +365,7 @@ class FormDefinition extends AbstractCompositeRenderable
         }
         if (isset($options['finishers'])) {
             foreach ($options['finishers'] as $finisherConfiguration) {
-                $this->createFinisher($finisherConfiguration['identifier'], isset($finisherConfiguration['options']) ? $finisherConfiguration['options'] : []);
+                $this->createFinisher($finisherConfiguration['identifier'], $finisherConfiguration['options'] ?? []);
             }
         }
 
@@ -500,7 +500,7 @@ class FormDefinition extends AbstractCompositeRenderable
     {
         if (isset($this->finishersDefinition[$finisherIdentifier]) && is_array($this->finishersDefinition[$finisherIdentifier]) && isset($this->finishersDefinition[$finisherIdentifier]['implementationClassName'])) {
             $implementationClassName = $this->finishersDefinition[$finisherIdentifier]['implementationClassName'];
-            $defaultOptions = isset($this->finishersDefinition[$finisherIdentifier]['options']) ? $this->finishersDefinition[$finisherIdentifier]['options'] : [];
+            $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
             $finisher = $this->objectManager->get($implementationClassName, $finisherIdentifier);
@@ -563,7 +563,7 @@ class FormDefinition extends AbstractCompositeRenderable
      */
     public function getElementByIdentifier(string $elementIdentifier)
     {
-        return isset($this->elementsByIdentifier[$elementIdentifier]) ? $this->elementsByIdentifier[$elementIdentifier] : null;
+        return $this->elementsByIdentifier[$elementIdentifier] ?? null;
     }
 
     /**

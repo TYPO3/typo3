@@ -827,9 +827,7 @@ class AdminPanelView
         $tsfe = $this->getTypoScriptFrontendController();
         //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
         $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod');
-        $moduleName = isset($tsConfig['properties']['newContentElementWizard.']['override'])
-            ? $tsConfig['properties']['newContentElementWizard.']['override']
-            : 'new_content_element';
+        $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $newContentWizScriptPath = (string)$uriBuilder->buildUriFromRoute($moduleName);

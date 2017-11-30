@@ -698,7 +698,7 @@ class HtmlParser
                 // The 'name' of the first tag
                 $firstTagName = $this->getFirstTagName($v);
                 $somethingDone = 0;
-                $prefix = isset($alternatives[strtoupper($firstTagName)]) ? $alternatives[strtoupper($firstTagName)] : $main_prefix;
+                $prefix = $alternatives[strtoupper($firstTagName)] ?? $main_prefix;
                 switch (strtolower($firstTagName)) {
                     case 'td':
 
@@ -759,7 +759,7 @@ class HtmlParser
         }
         $content = implode('', $parts);
         // Fix <style> section:
-        $prefix = isset($alternatives['style']) ? $alternatives['style'] : $main_prefix;
+        $prefix = $alternatives['style'] ?? $main_prefix;
         if ((string)$prefix !== '') {
             $parts = $this->splitIntoBlock('style', $content);
             foreach ($parts as $k => &$part) {

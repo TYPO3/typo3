@@ -1189,7 +1189,7 @@ class ExtendedTemplateService extends TemplateService
                                 foreach ($typeDat['params'] as $val) {
                                     $vParts = explode('=', $val, 2);
                                     $label = $vParts[0];
-                                    $val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
+                                    $val = $vParts[1] ?? $vParts[0];
                                     // option tag:
                                     $sel = '';
                                     if ($val === $params['value']) {
