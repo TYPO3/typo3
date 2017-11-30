@@ -568,7 +568,7 @@ abstract class AbstractConditionMatcher
         $vars = explode('|', $var);
         $c = count($vars);
         $k = trim($vars[0]);
-        $theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
+        $theVar = isset($source) ? ($source[$k] ?? null) : ($GLOBALS[$k] ?? null);
         for ($a = 1; $a < $c; $a++) {
             if (!isset($theVar)) {
                 break;

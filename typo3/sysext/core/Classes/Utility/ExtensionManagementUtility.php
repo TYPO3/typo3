@@ -1062,7 +1062,7 @@ class ExtensionManagementUtility
         // Change the priority (and other values) from $GLOBALS['TYPO3_CONF_VARS']
         // $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]['priority']
         // even the activation is possible (a unix service might be possible on windows for some reasons)
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey] ?? false)) {
             // No check is done here - there might be configuration values only the service type knows about, so
             // we pass everything
             $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = array_merge($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey], $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]);
@@ -1463,9 +1463,15 @@ tt_content.' . $key . $suffix . ' {
                 }
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
             } else {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid])) {
+                    $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] = '';
+                }
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
             }
         } else {
+            if (!isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type])) {
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] = '';
+            }
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
         }
     }

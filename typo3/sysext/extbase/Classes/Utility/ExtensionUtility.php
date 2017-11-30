@@ -211,7 +211,9 @@ tt_content.' . $pluginSignature . ' {
      */
     public static function registerTypeConverter($typeConverterClassName)
     {
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']) ||
+            !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])
+        ) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
         }
         if (!in_array($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {

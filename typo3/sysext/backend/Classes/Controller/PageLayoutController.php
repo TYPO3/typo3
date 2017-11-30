@@ -378,7 +378,7 @@ class PageLayoutController
             }
         }
         // Setting alternative default label:
-        if (($this->modSharedTSconfig['properties']['defaultLanguageLabel'] || $this->modTSconfig['properties']['defaultLanguageLabel']) && isset($this->MOD_MENU['language'][0])) {
+        if ((!empty($this->modSharedTSconfig['properties']['defaultLanguageLabel']) || !empty($this->modTSconfig['properties']['defaultLanguageLabel'])) && isset($this->MOD_MENU['language'][0])) {
             $this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'] ? $this->modTSconfig['properties']['defaultLanguageLabel'] : $this->modSharedTSconfig['properties']['defaultLanguageLabel'];
         }
         // Initialize the avaiable actions
@@ -386,7 +386,9 @@ class PageLayoutController
         // Clean up settings
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
         // For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
-        if ($this->getBackendUser()->workspace != 0 || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
+        if ($this->getBackendUser()->workspace != 0 ||
+            isset($this->MOD_SETTINGS['tt_content_showHidden']) && $this->MOD_SETTINGS['tt_content_showHidden'] !== '0'
+        ) {
             $this->MOD_SETTINGS['tt_content_showHidden'] = 1;
         }
         // Make action menu from available actions

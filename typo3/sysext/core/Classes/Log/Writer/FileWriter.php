@@ -152,7 +152,7 @@ class FileWriter extends AbstractWriter
      */
     protected function openLogFile()
     {
-        if (isset(self::$logFileHandles[$this->logFile]) && is_resource(self::$logFileHandles[$this->logFile])) {
+        if (isset(self::$logFileHandles[$this->logFile]) && is_resource(self::$logFileHandles[$this->logFile] ?? false)) {
             return;
         }
 

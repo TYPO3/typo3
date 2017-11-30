@@ -109,16 +109,20 @@ class AboutController
      */
     protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName): array
     {
+        if (empty($loadedModules->modules[$moduleName]['sub'])) {
+            return [];
+        }
+
         $subModulesData = [];
         foreach ($loadedModules->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
             $moduleLabels = $loadedModules->getLabelsForModule($moduleName . '_' . $subModuleName);
             $subModuleData = [];
             $subModuleData['name'] = $subModuleName;
-            $subModuleData['icon'] = $subModuleInfo['icon'];
-            $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'];
-            $subModuleData['label'] = $moduleLabels['title'];
-            $subModuleData['shortDescription'] = $moduleLabels['shortdescription'];
-            $subModuleData['longDescription'] = $moduleLabels['description'];
+            $subModuleData['icon'] = $subModuleInfo['icon'] ?? null;
+            $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'] ?? null;
+            $subModuleData['label'] = $moduleLabels['title'] ?? null;
+            $subModuleData['shortDescription'] = $moduleLabels['shortdescription'] ?? null;
+            $subModuleData['longDescription'] = $moduleLabels['description'] ?? null;
             $subModulesData[] = $subModuleData;
         }
         return $subModulesData;

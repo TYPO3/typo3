@@ -111,7 +111,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     public function configureObjectManager()
     {
         $frameworkSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (!is_array($frameworkSetup['objects'])) {
+        if (!isset($frameworkSetup['objects']) || !is_array($frameworkSetup['objects'])) {
             return;
         }
         $objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);

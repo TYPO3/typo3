@@ -322,7 +322,7 @@ class TypoScriptParser
                 // If multiline is enabled. Escape by ')'
                 if ($this->multiLineEnabled) {
                     // Multiline ends...
-                    if ($line[0] === ')') {
+                    if (!empty($line[0]) && $line[0] === ')') {
                         if ($this->syntaxHighLight) {
                             $this->regHighLight('operator', $lineP, strlen($line) - 1);
                         }
