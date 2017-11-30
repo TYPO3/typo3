@@ -265,7 +265,7 @@ and gives you some suggestions on what to change in case there are any
 discrepancies.
 
 The Install Tool will create the required directory structure for you
-(typo3conf, uploads, fileadmin, typo3temp).
+(typo3conf, fileadmin, typo3temp).
 
 TYPO3 Security
 --------------

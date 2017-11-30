@@ -72,8 +72,6 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             'typo3conf/' => 2,
             'typo3conf/ext/' => 0,
             'typo3conf/l10n/' => 0,
-            'uploads/' => 2,
-            'uploads/media/' => 0,
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
         ];

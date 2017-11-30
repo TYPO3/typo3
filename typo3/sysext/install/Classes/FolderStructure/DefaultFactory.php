@@ -154,32 +154,6 @@ class DefaultFactory
                 ],
             ],
             [
-                'name' => 'uploads',
-                'type' => DirectoryNode::class,
-                'targetPermission' => $directoryPermission,
-                'children' => [
-                    [
-                        'name' => 'index.html',
-                        'type' => FileNode::class,
-                        'targetPermission' => $filePermission,
-                        'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/uploads-index.html',
-                    ],
-                    [
-                        'name' => 'media',
-                        'type' => DirectoryNode::class,
-                        'targetPermission' => $directoryPermission,
-                        'children' => [
-                            [
-                                'name' => 'index.html',
-                                'type' => FileNode::class,
-                                'targetPermission' => $filePermission,
-                                'targetContent' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            [
                 'name' => !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin',
                 'type' => DirectoryNode::class,
                 'targetPermission' => $directoryPermission,
