@@ -15,8 +15,25 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Service\CacheService;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * A Storage backend
@@ -26,19 +43,19 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     /**
      * The TYPO3 database object
      *
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @var DatabaseConnection
      */
     protected $databaseHandle;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var DataMapper
      */
     protected $dataMapper;
 
     /**
      * The TYPO3 page repository. Used for language and workspace overlay
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var PageRepository
      */
     protected $pageRepository;
 
@@ -50,32 +67,32 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     protected $pageTSConfigCache = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\CacheService
+     * @var CacheService
      */
     protected $cacheService;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
+     * @var CacheManager
      */
     protected $cacheManager;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+     * @var VariableFrontend
      */
     protected $queryCache;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+     * @var EnvironmentService
      */
     protected $environmentService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser
+     * @var Typo3DbQueryParser
      */
     protected $queryParser;
 
@@ -87,49 +104,49 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     protected $queryRuntimeCache = [];
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @param DataMapper $dataMapper
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    public function injectDataMapper(DataMapper $dataMapper)
     {
         $this->dataMapper = $dataMapper;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
+     * @param CacheService $cacheService
      */
-    public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService)
+    public function injectCacheService(CacheService $cacheService)
     {
         $this->cacheService = $cacheService;
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+     * @param CacheManager $cacheManager
      */
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    public function injectCacheManager(CacheManager $cacheManager)
     {
         $this->cacheManager = $cacheManager;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @param EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser $queryParser
+     * @param Typo3DbQueryParser $queryParser
      */
-    public function injectQueryParser(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser $queryParser)
+    public function injectQueryParser(Typo3DbQueryParser $queryParser)
     {
         $this->queryParser = $queryParser;
     }
@@ -182,8 +199,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param string $tableName The database table name
      * @param array $fieldValues The row to be updated
      * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-     * @throws \InvalidArgumentException
      * @return bool
+     * @throws \InvalidArgumentException
      */
     public function updateRow($tableName, array $fieldValues, $isRelation = false)
     {
@@ -209,8 +226,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @param string $tableName The database relation table name
      * @param array $fieldValues The row to be updated
-     * @throws \InvalidArgumentException
      * @return bool
+     * @throws \InvalidArgumentException
      */
     public function updateRelationTableRow($tableName, array $fieldValues)
     {
@@ -486,7 +503,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     public function getObjectCountByQuery(QueryInterface $query)
     {
         if ($query->getConstraint() instanceof Qom\Statement) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
+            throw new Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
         }
 
         list($statementParts) = $this->getStatementParts($query);
@@ -597,11 +614,11 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     /**
      * Checks if a Value Object equal to the given Object exists in the data base
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object The Value Object
+     * @param AbstractValueObject $object The Value Object
      * @return mixed The matching uid if an object was found, else FALSE
      * @todo this is the last monster in this persistence series. refactor!
      */
-    public function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object)
+    public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object)
     {
         $fields = [];
         $parameters = [];
@@ -621,7 +638,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         $sql = [];
         $sql['additionalWhereClause'] = [];
         $tableName = $dataMap->getTableName();
-        $this->addVisibilityConstraintStatement(new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings(), $tableName, $sql);
+        $this->addVisibilityConstraintStatement(new Typo3QuerySettings(), $tableName, $sql);
         $statement = 'SELECT * FROM ' . $tableName;
         $statement .= ' WHERE ' . implode(' AND ', $fields);
         if (!empty($sql['additionalWhereClause'])) {
@@ -647,7 +664,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $parameters The parameters
      * @param string $tableName
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+     * @throws Exception
      * @deprecated since 6.2, will be removed two versions later
      * @todo add deprecation notice after getUidOfAlreadyPersistedValueObject is adjusted
      */
@@ -655,7 +672,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     {
         // @todo profile this method again
         if (substr_count($sqlString, '?') !== count($parameters)) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
+            throw new Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
         }
         $offset = 0;
         foreach ($parameters as $parameter) {
@@ -681,13 +698,13 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     /**
      * Adds enableFields and deletedClause to the query if necessary
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings
+     * @param QuerySettingsInterface $querySettings
      * @param string $tableName The database table name
      * @param array &$sql The query parts
      * @return void
      * @todo remove after getUidOfAlreadyPersistedValueObject is adjusted, this was moved to queryParser
      */
-    protected function addVisibilityConstraintStatement(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $tableName, array &$sql)
+    protected function addVisibilityConstraintStatement(QuerySettingsInterface $querySettings, $tableName, array &$sql)
     {
         $statement = '';
         if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
@@ -715,7 +732,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      * @param array $enableFieldsToBeIgnored If $ignoreEnableFields is true, this array specifies enable fields to be ignored. If it is NULL or an empty array (default) all enable fields are ignored.
      * @param bool $includeDeleted A flag indicating whether deleted records should be included
      * @return string
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
+     * @throws Exception\InconsistentQuerySettingsException
      * @todo remove after getUidOfAlreadyPersistedValueObject is adjusted, this was moved to queryParser
      */
     protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = [], $includeDeleted)
@@ -731,7 +748,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
             $statement .= $this->getPageRepository()->enableFields($tableName);
         } elseif (!$ignoreEnableFields && $includeDeleted) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1327678173);
+            throw new Exception\InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1327678173);
         }
         return $statement;
     }
@@ -763,11 +780,11 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @param Qom\SourceInterface $source The source (selector od join)
      * @param array $rows
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
+     * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
      * @param null|int $workspaceUid
      * @return array
      */
-    protected function doLanguageAndWorkspaceOverlay(Qom\SourceInterface $source, array $rows, \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $workspaceUid = null)
+    protected function doLanguageAndWorkspaceOverlay(Qom\SourceInterface $source, array $rows, QuerySettingsInterface $querySettings, $workspaceUid = null)
     {
         if ($source instanceof Qom\SelectorInterface) {
             $tableName = $source->getSelectorName();
@@ -780,13 +797,13 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         }
 
         $pageRepository = $this->getPageRepository();
-        if (is_object($GLOBALS['TSFE'])) {
+        if (is_object($this->getTSFE())) {
             if ($workspaceUid !== null) {
                 $pageRepository->versioningWorkspaceId = $workspaceUid;
             }
         } else {
             if ($workspaceUid === null) {
-                $workspaceUid = $GLOBALS['BE_USER']->workspace;
+                $workspaceUid = $this->getBeUser()->workspace;
             }
             $pageRepository->versioningWorkspaceId = $workspaceUid;
         }
@@ -849,15 +866,15 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     * @return PageRepository
      */
     protected function getPageRepository()
     {
-        if (!$this->pageRepository instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
-            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
-                $this->pageRepository = $GLOBALS['TSFE']->sys_page;
+        if (!$this->pageRepository instanceof PageRepository) {
+            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($this->getTSFE())) {
+                $this->pageRepository = $this->getTSFE()->sys_page;
             } else {
-                $this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             }
         }
 
@@ -869,14 +886,14 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      *
      * @return void
      * @param string $sql The SQL statement
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException
+     * @throws SqlErrorException
      */
     protected function checkSqlErrors($sql = '')
     {
         $error = $this->databaseHandle->sql_error();
         if ($error !== '') {
             $error .= $sql ? ': ' . $sql : '';
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException($error, 1247602160);
+            throw new SqlErrorException($error, 1247602160);
         }
     }
 
@@ -893,7 +910,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
      */
     protected function clearPageCache($tableName, $uid)
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (isset($frameworkConfiguration['persistence']['enableAutomaticCacheClearing']) && $frameworkConfiguration['persistence']['enableAutomaticCacheClearing'] === '1') {
         } else {
             // if disabled, return
@@ -902,15 +919,16 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
         $pageIdsToClear = [];
         $storagePage = null;
         $columns = $this->databaseHandle->admin_get_fields($tableName);
+        $tsfe = $this->getTSFE();
         if (array_key_exists('pid', $columns)) {
             $result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid=' . (int)$uid);
             if ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
                 $storagePage = $row['pid'];
                 $pageIdsToClear[] = $storagePage;
             }
-        } elseif (isset($GLOBALS['TSFE'])) {
+        } elseif (isset($tsfe)) {
             // No PID column - we can do a best-effort to clear the cache of the current page if in FE
-            $storagePage = $GLOBALS['TSFE']->id;
+            $storagePage = $tsfe->id;
             $pageIdsToClear[] = $storagePage;
         }
         if ($storagePage === null) {
@@ -920,10 +938,10 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
             $this->pageTSConfigCache[$storagePage] = BackendUtility::getPagesTSconfig($storagePage);
         }
         if (isset($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd'])) {
-            $clearCacheCommands = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), true);
+            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']), true);
             $clearCacheCommands = array_unique($clearCacheCommands);
             foreach ($clearCacheCommands as $clearCacheCommand) {
-                if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
+                if (MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
                     $pageIdsToClear[] = $clearCacheCommand;
                 }
             }
@@ -959,5 +977,21 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
     {
         $this->queryRuntimeCache[$entryIdentifier] = $variable;
         $this->queryCache->set($entryIdentifier, $variable, [], 0);
+    }
+
+    /**
+     * @return TypoScriptFrontendController|null
+     */
+    protected function getTSFE()
+    {
+        return isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+    }
+
+    /**
+     * @return BackendUserAuthentication|null
+     */
+    protected function getBeUser()
+    {
+        return isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : null;
     }
 }

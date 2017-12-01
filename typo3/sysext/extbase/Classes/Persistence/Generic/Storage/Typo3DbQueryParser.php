@@ -15,16 +15,25 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * QueryParser, converting the qom to string representation
  */
-class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
+class Typo3DbQueryParser implements SingletonInterface
 {
     /**
      * The TYPO3 database object
@@ -34,34 +43,34 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
     protected $databaseHandle;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var DataMapper
      */
     protected $dataMapper;
 
     /**
      * The TYPO3 page repository. Used for language and workspace overlay
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var PageRepository
      */
     protected $pageRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+     * @var EnvironmentService
      */
     protected $environmentService;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @param DataMapper $dataMapper
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    public function injectDataMapper(DataMapper $dataMapper)
     {
         $this->dataMapper = $dataMapper;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @param EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
     }
@@ -323,8 +332,8 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $orderings An array of orderings (Qom\Ordering)
      * @param Qom\SourceInterface $source The source
      * @param array &$sql The query parts
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException
      * @return void
+     * @throws UnsupportedOrderException
      */
     protected function parseOrderings(array $orderings, Qom\SourceInterface $source, array &$sql)
     {
@@ -337,7 +346,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                     $order = 'DESC';
                     break;
                 default:
-                    throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException('Unsupported order encountered.', 1242816074);
+                    throw new UnsupportedOrderException('Unsupported order encountered.', 1242816074);
             }
             $className = '';
             $tableName = '';
@@ -366,9 +375,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * @param Qom\ComparisonInterface $comparison The comparison to parse
      * @param Qom\SourceInterface $source The source
      * @param array &$sql SQL query parts to add to
-     * @throws \RuntimeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException
      * @return void
+     * @throws \RuntimeException
+     * @throws RepositoryException
      */
     protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql)
     {
@@ -422,7 +431,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                         $sql['where'][] = 'FIND_IN_SET(' . $parameterIdentifier . ', ' . $tableName . '.' . $columnName . ')';
                     }
                 } else {
-                    throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
+                    throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
                 }
             }
         } else {
@@ -830,12 +839,12 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string &$className The name of the parent class, will be set to the child class after processing.
      * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
-     * @param array &$propertyPath The remaining property path, will be cut of by one part during the process.
+     * @param string &$propertyPath The remaining property path, will be cut of by one part during the process.
      * @param array &$sql The SQL statement parts, will be filled with the union statements.
      * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
+     * @throws Exception
+     * @throws Exception\InvalidRelationConfigurationException
+     * @throws Exception\MissingColumnMapException
      */
     protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql, &$fullPropertyPath)
     {
@@ -847,14 +856,14 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
         $columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 
         if ($columnMap === null) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
+            throw new Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
         }
 
         $parentKeyFieldName = $columnMap->getParentKeyFieldName();
         $childTableName = $columnMap->getChildTableName();
 
         if ($childTableName === null) {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
+            throw new Exception\InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
         }
 
         $fullPropertyPath .= ($fullPropertyPath === '') ? $propertyName : '.' . $propertyName;
@@ -890,7 +899,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
             $sql['unions'][$relationTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableAlias, $realTableName);
             $sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $relationTableAlias . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableAlias . '.uid';
         } else {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
+            throw new Exception('Could not determine type of relation.', 1252502725);
         }
         // @todo check if there is another solution for this
         $sql['keywords']['distinct'] = 'DISTINCT';
@@ -921,7 +930,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
      * Returns the SQL operator for the given JCR operator type.
      *
      * @param string $operator One of the JCR_OPERATOR_* constants
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+     * @throws Exception
      * @return string an SQL operator
      */
     protected function resolveOperator($operator)
@@ -958,24 +967,32 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface
                 $operator = 'LIKE';
                 break;
             default:
-                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
+                throw new Exception('Unsupported operator encountered.', 1242816073);
         }
         return $operator;
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     * @return PageRepository
      */
     protected function getPageRepository()
     {
-        if (!$this->pageRepository instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
-            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
-                $this->pageRepository = $GLOBALS['TSFE']->sys_page;
+        if (!$this->pageRepository instanceof PageRepository) {
+            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($this->getTSFE())) {
+                $this->pageRepository = $this->getTSFE()->sys_page;
             } else {
-                $this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+                $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             }
         }
 
         return $this->pageRepository;
+    }
+
+    /**
+     * @return TypoScriptFrontendController|null
+     */
+    protected function getTSFE()
+    {
+        return isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
     }
 }
