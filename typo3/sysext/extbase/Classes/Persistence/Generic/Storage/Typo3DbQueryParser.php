@@ -22,15 +22,20 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -39,7 +44,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class Typo3DbQueryParser
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     * @var DataMapper
      */
     protected $dataMapper;
 
@@ -51,7 +56,7 @@ class Typo3DbQueryParser
     protected $pageRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+     * @var EnvironmentService
      */
     protected $environmentService;
 
@@ -98,17 +103,17 @@ class Typo3DbQueryParser
     protected $suggestDistinctQuery = false;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+     * @param DataMapper $dataMapper
      */
-    public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper)
+    public function injectDataMapper(DataMapper $dataMapper)
     {
         $this->dataMapper = $dataMapper;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @param EnvironmentService $environmentService
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(EnvironmentService $environmentService)
     {
         $this->environmentService = $environmentService;
     }
@@ -316,13 +321,13 @@ class Typo3DbQueryParser
      * @return string
      * @throws \RuntimeException
      * @throws RepositoryException
-     * @throws Exception\BadConstraintException
+     * @throws BadConstraintException
      */
     protected function parseComparison(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
         if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
             if ($comparison->getOperand2() === null) {
-                throw new Exception\BadConstraintException('The value for the CONTAINS operator must not be null.', 1484828468);
+                throw new BadConstraintException('The value for the CONTAINS operator must not be null.', 1484828468);
             }
             $value = $this->dataMapper->getPlainValue($comparison->getOperand2());
             if (!$source instanceof Qom\SelectorInterface) {
@@ -402,8 +407,8 @@ class Typo3DbQueryParser
      * @param Qom\ComparisonInterface $comparison
      * @param Qom\SourceInterface $source The source
      * @return string
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-     * @throws Exception\BadConstraintException
+     * @throws Exception
+     * @throws BadConstraintException
      */
     protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source)
     {
@@ -423,7 +428,7 @@ class Typo3DbQueryParser
                     }
                 }
                 if (!$hasValue) {
-                    throw new Exception\BadConstraintException(
+                    throw new BadConstraintException(
                         'The IN operator needs a non-empty value list to compare against. ' .
                         'The given value list is empty.',
                         1484828466
@@ -474,7 +479,7 @@ class Typo3DbQueryParser
                 $expr = $exprBuilder->comparison($fieldName, 'LIKE', $placeHolder);
                 break;
             default:
-                throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception(
+                throw new Exception(
                     'Unsupported operator encountered.',
                     1242816073
                 );
@@ -822,8 +827,8 @@ class Typo3DbQueryParser
      * @param string $tableName The database table name
      * @param string $tableAlias The table alias used in the query.
      * @param array $storagePageIds list of storage page ids
-     * @throws InconsistentQuerySettingsException
      * @return string
+     * @throws InconsistentQuerySettingsException
      */
     protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds)
     {
@@ -941,7 +946,7 @@ class Typo3DbQueryParser
      * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
      * @param string &$propertyPath The remaining property path, will be cut of by one part during the process.
      * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+     * @throws Exception
      * @throws InvalidRelationConfigurationException
      * @throws MissingColumnMapException
      */
@@ -1036,7 +1041,7 @@ class Typo3DbQueryParser
             $this->unionTableAliasCache[] = $childTableAlias;
             $this->suggestDistinctQuery = true;
         } else {
-            throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
+            throw new Exception('Could not determine type of relation.', 1252502725);
         }
         $propertyPath = $explodedPropertyPath[1];
         $tableName = $childTableAlias;
@@ -1075,13 +1080,21 @@ class Typo3DbQueryParser
     protected function getPageRepository()
     {
         if (!$this->pageRepository instanceof PageRepository) {
-            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
-                $this->pageRepository = $GLOBALS['TSFE']->sys_page;
+            if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($this->getTSFE())) {
+                $this->pageRepository = $this->getTSFE()->sys_page;
             } else {
                 $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             }
         }
 
         return $this->pageRepository;
+    }
+
+    /**
+     * @return TypoScriptFrontendController|null
+     */
+    protected function getTSFE()
+    {
+        return $GLOBALS['TSFE'] ?? null;
     }
 }

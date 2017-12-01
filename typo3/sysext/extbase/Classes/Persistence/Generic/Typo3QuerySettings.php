@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Query settings. This class is NOT part of the TYPO3.Flow API.
@@ -96,10 +98,10 @@ class Typo3QuerySettings implements QuerySettingsInterface
      */
     public function initializeObject()
     {
-        /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        /** @var $configurationManager \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface */
-        $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        /** @var $objectManager ObjectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var $configurationManager ConfigurationManagerInterface */
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);
         }
