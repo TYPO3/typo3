@@ -35,8 +35,7 @@ Use `TYPO3/CMS/Backend/PageTree/PageTreeElement` instead of `typo3-pagetree`.
 Old configuration:
 ------------------
 
-
-.. code-block::php
+.. code-block:: php
 
       \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
           'TYPO3.CMS.Workspaces',
@@ -60,7 +59,7 @@ Old configuration:
 Should be changed to new configuration:
 ---------------------------------------
 
-.. code-block::php
+.. code-block:: php
 
       \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
           'TYPO3.CMS.Workspaces',

@@ -9,38 +9,37 @@ See :issue:`82426`
 Description
 ===========
 
-When registering an extensions's BE module with `ExtensionUtility::registerModule()` it is possible to define 'navigationComponentId'.
+When registering an extensions's BE module with `ExtensionUtility::registerModule()` it is possible
+to define 'navigationComponentId'.
 
-Before the 'navigationComponentId' was used to pass a name of the ExtJS module registered with ExtensionManagementUtility::addNavigationComponent().
+Before, the 'navigationComponentId' has been used to pass a name of the ExtJS module registered with
+ExtensionManagementUtility::addNavigationComponent().
 
-Now it should contain a RequireJS module name (no additional registration is necessary.
-The TYPO3 page tree navigation component name 'typo3-pagetree' will still work (thanks to the BC layer) but will throw a deprecation notice.
+Now it should contain a RequireJS module name. No additional registration is necessary.
+The TYPO3 page tree navigation component name 'typo3-pagetree' will still work (thanks to the BC layer)
+but will throw a deprecation notice.
 
 Should be changed to new configuration:
-```
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'TYPO3.CMS.Workspaces',
-    'web',
-    'workspaces',
-    'before:info',
-    [
-        // An array holding the controller-action-combinations that are accessible
-        'Review' => 'index,fullIndex,singleIndex',
-        'Preview' => 'index,newPage'
-    ],
-    [
-        'access' => 'user,group',
-        'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
-        'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
-        'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
-    ]
-);
-```
 
+.. code-block:: php
 
-Impact
-======
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TYPO3.CMS.Workspaces',
+        'web',
+        'workspaces',
+        'before:info',
+        [
+            // An array holding the controller-action-combinations that are accessible
+            'Review' => 'index,fullIndex,singleIndex',
+            'Preview' => 'index,newPage'
+        ],
+        [
+            'access' => 'user,group',
+            'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
+            'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
+            'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement'
+        ]
+    );
 
-impact
 
 .. index:: Backend, JavaScript, PHP-API, NotScanned
