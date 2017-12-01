@@ -1029,7 +1029,7 @@ class FileList extends AbstractRecordList
 
         // copy the file
         if ($fileOrFolderObject->checkActionPermission('copy') && $this->clipObj->current === 'normal') {
-            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.copy'));
+            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy'));
             $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
 
             if ($isSel === 'copy') {
@@ -1041,7 +1041,7 @@ class FileList extends AbstractRecordList
 
         // cut the file
         if ($fileOrFolderObject->checkActionPermission('move') && $this->clipObj->current === 'normal') {
-            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut'));
+            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut'));
             $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL)->render();
 
             if ($isSel === 'cut') {
