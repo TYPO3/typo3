@@ -56,7 +56,8 @@ define([
 						'token': $(self.selectorCreateToken).text(),
 						'userName': $('.t3js-createAdmin-user').val(),
 						'userPassword': $('.t3js-createAdmin-password').val(),
-						'userPasswordCheck': $('.t3js-createAdmin-password-check').val()
+						'userPasswordCheck': $('.t3js-createAdmin-password-check').val(),
+						'userSystemMaintainer': ($('.t3js-createAdmin-system-maintainer').is(':checked'))? 1 : 0
 					}
 				},
 				cache: false,

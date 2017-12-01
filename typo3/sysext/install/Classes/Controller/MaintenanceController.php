@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -407,7 +408,10 @@ class MaintenanceController extends AbstractController
         $username = preg_replace('/\\s/i', '', $request->getParsedBody()['install']['userName']);
         $password = $request->getParsedBody()['install']['userPassword'];
         $passwordCheck = $request->getParsedBody()['install']['userPasswordCheck'];
+        $isSystemMaintainer = ((bool)$request->getParsedBody()['install']['userSystemMaintainer'] == '1') ? true : false;
+
         $messages = new FlashMessageQueue('install');
+
         if (strlen($username) < 1) {
             $messages->enqueue(new FlashMessage(
                 'No valid username given.',
@@ -451,6 +455,26 @@ class MaintenanceController extends AbstractController
                     'crdate' => $GLOBALS['EXEC_TIME']
                 ];
                 $connectionPool->getConnectionForTable('be_users')->insert('be_users', $adminUserFields);
+
+                if ($isSystemMaintainer) {
+
+                    // Get the new admin user uid juste created
+                    $newAdminUserUid = (int)$connectionPool->getConnectionForTable('be_users')->lastInsertId('be_users');
+
+                    // Get the list of the existing systemMaintainer
+                    $existingSystemMaintainersList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
+
+                    // Add the new admin user to the existing systemMaintainer list
+                    $newSystemMaintainersList = $existingSystemMaintainersList;
+                    $newSystemMaintainersList[] = $newAdminUserUid;
+
+                    // Update the LocalConfiguration.php file with the new list
+                    $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+                    $configurationManager->setLocalConfigurationValuesByPathValuePairs(
+                        [ 'SYS/systemMaintainers' => $newSystemMaintainersList ]
+                    );
+                }
+
                 $messages->enqueue(new FlashMessage(
                     '',
                     'Administrator created with username "' . $username . '".'
