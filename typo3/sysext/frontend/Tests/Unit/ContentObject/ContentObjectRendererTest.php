@@ -3397,29 +3397,28 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
                 ['', 'TEXT']
             ],
             'multiple nested tags with classes' => [
-                NL . '<div class="typo3">' .
-                NL . '<p>A <b>BOLD<\b> WORD.</p>' .
-                NL . '<p>AN <i>ITALIC<\i> WORD.</p>' .
-                NL . '</div>',
-                NL . '<div class="typo3">' .
-                NL . '<p>A <b>bold<\b> word.</p>' .
-                NL . '<p>An <i>italic<\i> word.</p>' .
-                NL . '</div>',
+                '<div class="typo3">'
+                . '<p>A <b>BOLD<\b> WORD.</p>'
+                . '<p>AN <i>ITALIC<\i> WORD.</p>'
+                . '</div>',
+                '<div class="typo3">'
+                . '<p>A <b>bold<\b> word.</p>'
+                . '<p>An <i>italic<\i> word.</p>'
+                . '</div>',
                 $case,
                 [
-                    [NL, $case],
-                    [NL, $case],
+                    ['', $case],
+                    ['', $case],
                     ['A ', $case],
                     ['bold', $case],
                     [' word.', $case],
-                    [NL, $case],
+                    ['', $case],
                     ['An ', $case],
                     ['italic', $case],
                     [' word.', $case],
-                    [NL, $case],
+                    ['', $case],
                 ],
-                [NL, NL, 'A ', 'BOLD', ' WORD.',
-                NL, 'AN ', 'ITALIC', ' WORD.', NL]
+                [ '', '', 'A ', 'BOLD', ' WORD.', '', 'AN ', 'ITALIC', ' WORD.', '']
             ],
         ];
     }
