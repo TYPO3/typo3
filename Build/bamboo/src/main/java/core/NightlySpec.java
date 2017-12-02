@@ -42,7 +42,7 @@ public class NightlySpec extends AbstractCoreSpec {
     protected int numberOfFunctionalMysqlJobs = 6;
     protected int numberOfFunctionalMssqlJobs = 6;
     protected int numberOfFunctionalPgsqlJobs = 6;
-    protected int numberOfUnitRandomOrderJobs = 4;
+    protected int numberOfUnitRandomOrderJobs = 2;
 
     /**
      * Run main to publish plan on Bamboo
@@ -79,12 +79,15 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobCglCheckFullCore());
 
@@ -92,28 +95,35 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitJavaScript());
 
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobLintScssTs());
 
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -168,7 +178,7 @@ public class NightlySpec extends AbstractCoreSpec {
                     )
             )
             .requirements(
-                this.getRequirementPhpVersion70Or71()
+                this.getRequirementPhpVersion70Or71Or72()
             )
             .cleanWorkingDirectory(true);
     }

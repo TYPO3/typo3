@@ -487,9 +487,7 @@ abstract public class AbstractCoreSpec {
                     )
             )
             .requirements(
-                new Requirement("system.phpVersion")
-                    .matchValue("7\\.0|7\\.1")
-                    .matchType(Requirement.MatchType.MATCHES)
+                this.getRequirementPhpVersion70Or71Or72()
             )
             .cleanWorkingDirectory(true);
     }
@@ -523,9 +521,7 @@ abstract public class AbstractCoreSpec {
                     .resultDirectories("typo3temp/var/tests/*")
             )
             .requirements(
-                new Requirement("system.phpVersion")
-                    .matchValue("7\\.0|7\\.1")
-                    .matchType(Requirement.MatchType.MATCHES)
+                this.getRequirementPhpVersion70Or71Or72()
             )
             .artifacts(
                 new Artifact()
@@ -867,11 +863,29 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Requirement for php 7.2
+     */
+    protected Requirement getRequirementPhpVersion72() {
+        return new Requirement("system.phpVersion")
+            .matchValue("7.2")
+            .matchType(Requirement.MatchType.EQUALS);
+    }
+
+    /**
      * Requirement for php 7.0 or 7.1
      */
     protected Requirement getRequirementPhpVersion70Or71() {
         return new Requirement("system.phpVersion")
             .matchValue("7\\.0|7\\.1")
+            .matchType(Requirement.MatchType.MATCHES);
+    }
+
+    /**
+     * Requirement for php 7.0 or 7.1 or 7.2
+     */
+    protected Requirement getRequirementPhpVersion70Or71Or72() {
+        return new Requirement("system.phpVersion")
+            .matchValue("7\\.0|7\\.1|7\\.2")
             .matchType(Requirement.MatchType.MATCHES);
     }
 

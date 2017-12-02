@@ -50,7 +50,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
     protected int numberOfFunctionalMysqlJobs = 10;
     protected int numberOfFunctionalMssqlJobs = 10;
     protected int numberOfFunctionalPgsqlJobs = 10;
-    protected int numberOfUnitRandomOrderJobs = 2;
+    protected int numberOfUnitRandomOrderJobs = 1;
 
     /**
      * Run main to publish plan on Bamboo
@@ -88,34 +88,38 @@ public class PreMergeSpec extends AbstractCoreSpec {
         // MAIN stage
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
 
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsMysql(this.numberOfAcceptanceTestJobs, this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
 
         jobsMainStage.add(this.getJobIntegrationVarious());
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion70Or71(), "PHP7071"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(this.numberOfFunctionalPgsqlJobs, this.getRequirementPhpVersion70Or71Or72(), "PHP707172"));
 
         jobsMainStage.add(this.getJobUnitJavaScript());
 
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobLintScssTs());
 
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobUnitDeprecatedPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobUnitPhpRandom(this.numberOfUnitRandomOrderJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
@@ -209,9 +213,7 @@ public class PreMergeSpec extends AbstractCoreSpec {
                     )
             )
             .requirements(
-                new Requirement("system.phpVersion")
-                    .matchValue("7\\.0|7\\.1")
-                    .matchType(Requirement.MatchType.MATCHES)
+                this.getRequirementPhpVersion70Or71Or72()
             )
             .cleanWorkingDirectory(true);
     }
