@@ -518,9 +518,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $uniqueContentString = $this->getUniqueId('string_');
         $validFactoryConfigurationFileContent =
             '<?php' . LF .
-                'return array(' . LF .
-                    $uniqueContentString . ' => foo,' . LF .
-                ');' . LF;
+                'return [' . LF .
+                    '\'' . $uniqueContentString . '\' => \'foo\',' . LF .
+                '];' . LF;
         file_put_contents(
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
@@ -563,7 +563,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $validAdditionalFactoryConfigurationFileContent =
             '<?php' . LF .
                 'return [' . LF .
-                    $uniqueContentString . ' => foo,' . LF .
+                    '\'' . $uniqueContentString . '\' => \'foo\',' . LF .
                 '];' . LF;
         file_put_contents(
             $additionalFactoryConfigurationAbsoluteFile,
