@@ -12,11 +12,9 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'lolli@schwarzbu.ch',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-0.0.0',
+            'typo3' => '9.0.0-9.0.99',
         ],
-        'conflicts' => [
-        ],
-        'suggests' => [
-        ],
+        'conflicts' => [],
+        'suggests' => [],
     ],
 ];

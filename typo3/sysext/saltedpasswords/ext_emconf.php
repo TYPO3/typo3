@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [
-            'rsaauth' => ''
+            'rsaauth' => '9.0.0-9.0.99'
         ],
     ],
 ];
