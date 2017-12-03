@@ -78,6 +78,9 @@ class CountViewHelper extends AbstractViewHelper implements CompilableInterface
         if (is_object($subject) && !$subject instanceof \Countable) {
             throw new Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
         }
-        return count($subject);
+        if (is_array($subject) || $subject instanceof \Countable) {
+            return count($subject);
+        }
+        return 0;
     }
 }
