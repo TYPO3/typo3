@@ -31,6 +31,9 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase
      */
     protected function setUp()
     {
+        if (!defined('ADODB_ASSOC_CASE')) {
+            define('ADODB_ASSOC_CASE', ADODB_ASSOC_CASE_NATIVE);
+        }
         $configuration = [
             'handlerCfg' => [
                 '_DEFAULT' => [
