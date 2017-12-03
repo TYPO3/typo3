@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fd27279d39d664501e070d58d112aed",
+    "content-hash": "e6ba673b8a688e06f525ab17ec86b1eb",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -4045,16 +4045,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "1.2.0",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "42c16d829373a1d2cbaa9a46bb77a0290d3dec32"
+                "reference": "6d0e0c11f2e8f1aae85d0b528d5086fd69a7ff3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/42c16d829373a1d2cbaa9a46bb77a0290d3dec32",
-                "reference": "42c16d829373a1d2cbaa9a46bb77a0290d3dec32",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6d0e0c11f2e8f1aae85d0b528d5086fd69a7ff3f",
+                "reference": "6d0e0c11f2e8f1aae85d0b528d5086fd69a7ff3f",
                 "shasum": ""
             },
             "require": {
@@ -4104,7 +4104,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2017-11-29T12:40:03+00:00"
+            "time": "2017-12-03T14:50:39+00:00"
         },
         {
             "name": "webmozart/assert",
