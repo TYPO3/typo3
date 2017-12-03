@@ -85,9 +85,10 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function childNodeAccessFacetWorksAsExpected()
     {
-        $childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, [], ['foo']);
+        $childNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, [], ['prepareArguments']);
 
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Fixtures\ChildNodeAccessFacetViewHelper::class, ['setChildNodes', 'initializeArguments', 'render', 'prepareArguments']);
+        $mockViewHelper->expects($this->any())->method('prepareArguments')->willReturn([]);
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
         $viewHelperNode->addChildNode($childNode);
@@ -104,6 +105,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['initializeArgumentsAndRender', 'prepareArguments']);
         $mockViewHelper->expects($this->once())->method('initializeArgumentsAndRender');
+        $mockViewHelper->expects($this->any())->method('prepareArguments')->willReturn([]);
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 
@@ -140,6 +142,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render', 'validateArguments', 'prepareArguments', 'setRenderingContext']);
         $mockViewHelper->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
+        $mockViewHelper->expects($this->any())->method('prepareArguments')->willReturn([]);
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 
@@ -153,6 +156,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer']);
         $mockViewHelper->expects($this->any())->method('render')->will($this->returnValue('String'));
+        $mockViewHelper->expects($this->any())->method('prepareArguments')->willReturn([]);
 
         $viewHelperNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode($mockViewHelper, []);
 

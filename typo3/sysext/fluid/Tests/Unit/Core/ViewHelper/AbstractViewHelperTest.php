@@ -69,6 +69,8 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function argumentsCanBeRegistered()
     {
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render'], [], '', false);
+
+        $this->mockReflectionService->method('getMethodParameters')->willReturn([]);
         $viewHelper->injectReflectionService($this->mockReflectionService);
 
         $name = 'This is a name';
@@ -104,6 +106,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function overrideArgumentOverwritesExistingArgumentDefinition()
     {
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render'], [], '', false);
+        $this->mockReflectionService->method('getMethodParameters')->willReturn([]);
         $viewHelper->injectReflectionService($this->mockReflectionService);
 
         $name = 'argumentName';
@@ -137,6 +140,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function prepareArgumentsCallsInitializeArguments()
     {
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class, ['render', 'initializeArguments'], [], '', false);
+        $this->mockReflectionService->method('getMethodParameters')->willReturn([]);
         $viewHelper->injectReflectionService($this->mockReflectionService);
 
         $viewHelper->expects($this->once())->method('initializeArguments');
