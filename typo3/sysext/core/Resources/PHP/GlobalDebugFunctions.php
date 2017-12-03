@@ -11,7 +11,7 @@
     }
 
     // Debug function which calls $GLOBALS['error'] error handler if available
-    function debug($variable = '', $name = '*variable*', $line = '*line*', $file = '*file*', $recursiveDepth = 3, $debugLevel = E_DEBUG)
+    function debug($variable = '', $name = '*variable*', $line = '*line*', $file = '*file*', $recursiveDepth = 3, $debugLevel = 'E_DEBUG')
     {
         // If you wish to use the debug()-function, and it does not output something,
         // please edit the IP mask in TYPO3_CONF_VARS
