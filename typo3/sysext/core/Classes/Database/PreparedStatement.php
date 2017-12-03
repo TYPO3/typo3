@@ -597,7 +597,7 @@ class PreparedStatement
      */
     protected function convertNamedPlaceholdersToQuestionMarks(&$query, array &$parameterValues, array &$precompiledQueryParts)
     {
-        $queryPartsCount = count($precompiledQueryParts['queryParts']);
+        $queryPartsCount = is_array($precompiledQueryParts['queryParts']) ? count($precompiledQueryParts['queryParts']) : 0;
         $newParameterValues = [];
         $hasNamedPlaceholders = false;
 
