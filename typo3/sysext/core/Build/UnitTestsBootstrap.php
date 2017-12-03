@@ -134,6 +134,10 @@ class UnitTestsBootstrap
         define('TYPO3_cliMode', true);
         putenv('TYPO3_CONTEXT=Testing');
 
+        // Set TYPO3_AJAX and define TYPO3_REQUESSTTYPE's to prevent PHP 7.2 warnings
+        $GLOBALS['TYPO3_AJAX'] = '';
+        Bootstrap::getInstance()->defineTypo3RequestTypes();
+
         return $this;
     }
 

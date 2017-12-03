@@ -738,7 +738,7 @@ class Bootstrap
      *
      * @return Bootstrap
      */
-    protected function defineTypo3RequestTypes()
+    public function defineTypo3RequestTypes()
     {
         define('TYPO3_REQUESTTYPE_FE', 1);
         define('TYPO3_REQUESTTYPE_BE', 2);
