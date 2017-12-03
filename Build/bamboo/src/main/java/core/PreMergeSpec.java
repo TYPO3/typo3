@@ -87,16 +87,19 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion56(), "PHP56"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(this.numberOfFunctionalMysqlJobs, this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion55(), "PHP55"));
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion56(), "PHP56"));
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobLintPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion55(), "PHP55"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion56(), "PHP56"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion70(), "PHP70"));
         jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion71(), "PHP71"));
+        jobsMainStage.add(this.getJobUnitPhp(this.getRequirementPhpVersion72(), "PHP72"));
 
         Stage stageMainStage = new Stage("Main stage")
             .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));

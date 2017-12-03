@@ -388,6 +388,15 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Requirement for php 7.2
+     */
+    protected Requirement getRequirementPhpVersion72() {
+        return new Requirement("system.phpVersion")
+            .matchValue("7.2")
+            .matchType(Requirement.MatchType.EQUALS);
+    }
+
+    /**
      * A bash header for script tasks forking a bash if needed
      */
     protected String getScriptTaskBashInlineBody() {
