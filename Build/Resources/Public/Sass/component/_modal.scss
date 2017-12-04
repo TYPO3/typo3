@@ -96,9 +96,13 @@ $modal-danger-border: $btn-danger-border;
     transition: margin-top 0.1s ease-in;
     border: none;
 
-    .loadmessage {
-        text-align: center;
-        color: $gray-darker;
+    .modal-loading {
+        position: absolute;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
     }
 }
 
