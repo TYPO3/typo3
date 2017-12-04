@@ -300,7 +300,9 @@ define(['jquery',
 				}
 				Modal.currentModal.trigger('modal-loaded');
 			}, 'html');
-			currentModal.find(Modal.identifiers.body).html('<p class="loadmessage"><i class="fa fa-spinner fa-spin fa-5x "></i></p>');
+			Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done(function(icon) {
+				currentModal.find(Modal.identifiers.body).html('<div class="modal-loading">' + icon + '</div>');
+			});
 		} else if (type === 'iframe') {
 			currentModal.find(Modal.identifiers.body).append(
 				$('<iframe />', { src: content, 'class': 'modal-iframe t3js-modal-iframe' })
