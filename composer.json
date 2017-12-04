@@ -25,7 +25,10 @@
 	},
 	"config": {
 		"optimize-autoloader": true,
-		"bin-dir": "bin"
+		"bin-dir": "bin",
+		"platform": {
+			"php": "5.5"
+		}
 	},
 	"require": {
 		"php": ">=5.5.0",
@@ -43,13 +46,20 @@
 		"typo3/cms-composer-installers": "^1.2.8",
 		"psr/http-message": "~1.0",
 		"cogpowered/finediff": "~0.3.1",
-		"mso/idna-convert": "^0.9.1"
+		"mso/idna-convert": "^0.9.1",
+		"symfony/debug": "^2.7"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.0",
 		"mikey179/vfsStream": "1.6.0",
 		"symfony/polyfill-mbstring": "~1.0",
-		"friendsofphp/php-cs-fixer": "^2.2"
+		"friendsofphp/php-cs-fixer": "^2.2",
+		"symfony/stopwatch": "^2.8",
+		"symfony/process": "^2.8",
+		"symfony/options-resolver": "^2.8",
+		"symfony/filesystem": "^2.8",
+		"symfony/event-dispatcher": "^2.8",
+		"symfony/yaml": "^2.8"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
