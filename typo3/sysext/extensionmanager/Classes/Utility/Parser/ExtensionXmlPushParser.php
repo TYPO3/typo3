@@ -27,11 +27,11 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 class ExtensionXmlPushParser extends AbstractExtensionXmlParser
 {
     /**
-     * Keeps current element to process.
+     * Keeps current data of element to process.
      *
      * @var string
      */
-    protected $element = null;
+    protected $elementData = '';
 
     /**
      * Class constructor.
@@ -99,7 +99,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
                 $this->version = $attrs['version'];
                 break;
             default:
-                $this->element = $elementName;
+                $this->elementData = '';
         }
     }
 
@@ -119,8 +119,54 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
                 $this->notify();
                 $this->resetProperties();
                 break;
-            default:
-                $this->element = null;
+            case 'downloadcounter':
+                // downloadcounter could be a child node of
+                // extension or version
+                if ($this->version == null) {
+                    $this->extensionDownloadCounter = $this->elementData;
+                } else {
+                    $this->versionDownloadCounter = $this->elementData;
+                }
+                break;
+            case 'title':
+                $this->title = $this->elementData;
+                break;
+            case 'description':
+                $this->description = $this->elementData;
+                break;
+            case 'state':
+                $this->state = $this->elementData;
+                break;
+            case 'reviewstate':
+                $this->reviewstate = $this->elementData;
+                break;
+            case 'category':
+                $this->category = $this->elementData;
+                break;
+            case 'lastuploaddate':
+                $this->lastuploaddate = $this->elementData;
+                break;
+            case 'uploadcomment':
+                $this->uploadcomment = $this->elementData;
+                break;
+            case 'dependencies':
+                $this->dependencies = $this->convertDependencies($this->elementData);
+                break;
+            case 'authorname':
+                $this->authorname = $this->elementData;
+                break;
+            case 'authoremail':
+                $this->authoremail = $this->elementData;
+                break;
+            case 'authorcompany':
+                $this->authorcompany = $this->elementData;
+                break;
+            case 'ownerusername':
+                $this->ownerusername = $this->elementData;
+                break;
+            case 't3xfilemd5':
+                $this->t3xfilemd5 = $this->elementData;
+                break;
         }
     }
 
@@ -132,57 +178,6 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      */
     protected function characterData($parser, $data)
     {
-        if (isset($this->element)) {
-            switch ($this->element) {
-                case 'downloadcounter':
-                    // downloadcounter could be a child node of
-                    // extension or version
-                    if ($this->version == null) {
-                        $this->extensionDownloadCounter = $data;
-                    } else {
-                        $this->versionDownloadCounter = $data;
-                    }
-                    break;
-                case 'title':
-                    $this->title = $data;
-                    break;
-                case 'description':
-                    $this->description .= $data;
-                    break;
-                case 'state':
-                    $this->state = $data;
-                    break;
-                case 'reviewstate':
-                    $this->reviewstate = $data;
-                    break;
-                case 'category':
-                    $this->category = $data;
-                    break;
-                case 'lastuploaddate':
-                    $this->lastuploaddate = $data;
-                    break;
-                case 'uploadcomment':
-                    $this->uploadcomment .= $data;
-                    break;
-                case 'dependencies':
-                    $this->dependencies = $this->convertDependencies($data);
-                    break;
-                case 'authorname':
-                    $this->authorname = $data;
-                    break;
-                case 'authoremail':
-                    $this->authoremail = $data;
-                    break;
-                case 'authorcompany':
-                    $this->authorcompany = $data;
-                    break;
-                case 'ownerusername':
-                    $this->ownerusername = $data;
-                    break;
-                case 't3xfilemd5':
-                    $this->t3xfilemd5 = $data;
-                    break;
-            }
-        }
+        $this->elementData .= $data;
     }
 }
