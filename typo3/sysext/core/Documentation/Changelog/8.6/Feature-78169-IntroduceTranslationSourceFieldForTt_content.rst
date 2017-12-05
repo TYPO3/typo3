@@ -10,7 +10,7 @@ Description
 ===========
 
 The new database field `l10n_source` for tt_content table has been introduced together with a new TCA ctrl configuration `translationSource`.
-The `translationSource` field contains an uid of the record used as a translation source, no matter whether the record was translated in the free or connected mode.
+The `translationSource` field contains a uid of the record used as a translation source, no matter whether the record was translated in the free or connected mode.
 The new TCA configuration `translationSource` contains column name, similar to the `transOrigPointerField`.
 e.g.
 
@@ -26,7 +26,7 @@ The new field solves few issues:
    If both are 0, it means the record was not translated but created manually.
 
 2. TYPO3 allows to use a record in non-default language as a translation source. In this case the information about the translation source was lost.
-   Now, the `translationSource` field always contains an uid of the record used as a translation source.
+   Now, the `translationSource` field always contains a uid of the record used as a translation source.
 
 3. In some places `origUid` (e.g. `t3_origuid`) fields were misused as a translation source. Now these places can be refactored to use the `translationSource` field.
 
