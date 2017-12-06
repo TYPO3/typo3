@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -45,7 +47,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * (depending on your TS configuration)
  * </output>
  */
-class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class PageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -54,7 +56,6 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('pageUid', 'int', 'target PID');
         $this->registerArgument('additionalParams', 'array', 'query parameters to be attached to the resulting URI', false, []);
         $this->registerArgument('pageType', 'int', 'type of the target page. See typolink.parameter', false, 0);

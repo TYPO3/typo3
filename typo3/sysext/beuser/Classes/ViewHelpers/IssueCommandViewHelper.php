@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -32,7 +32,6 @@ class IssueCommandViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('parameters', 'string', 'Is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World', true);
         $this->registerArgument('redirectUrl', 'string', 'Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv(\'REQUEST_URI\') is preferred', false, '');
     }

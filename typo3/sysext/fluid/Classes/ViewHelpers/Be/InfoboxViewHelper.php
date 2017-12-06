@@ -13,9 +13,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -70,7 +71,6 @@ class InfoboxViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
         $this->registerArgument('title', 'string', 'The title of the info box');
         $this->registerArgument('state', 'int', 'The state of the box, InfoboxViewHelper::STATE_*', false, self::STATE_NOTICE);

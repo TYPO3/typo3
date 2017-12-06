@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  */
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -30,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * (depending on the current page and your TS configuration)
  * </output>
  */
-class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ActionViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -41,7 +42,6 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('action', 'string', 'Target action');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
         $this->registerArgument('controller', 'string', 'Target controller. If NULL current controllerName is used');

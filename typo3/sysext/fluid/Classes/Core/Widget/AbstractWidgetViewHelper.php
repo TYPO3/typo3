@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
 
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * @api
  */
-abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 {
     /**
      * The Controller associated to this widget.

@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -46,7 +46,6 @@ class PermissionsViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('permission', 'int', 'Current permission', true);
         $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
         $this->registerArgument('pageId', 'int', '', true);

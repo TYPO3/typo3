@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\Uri;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -42,7 +42,6 @@ class ActionViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('action', 'string', 'Target action', '');
         $this->registerArgument('controller', 'string', 'Target controller.', false, 'maintenance');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);

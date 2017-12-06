@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -25,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @api
  */
-class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class RenderChildrenViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -41,7 +43,6 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('arguments', 'array', 'Arguments to assign as template variables', false, []);
     }
 

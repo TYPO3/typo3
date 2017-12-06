@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  */
 
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -32,7 +32,6 @@ class FormatDetailsViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('logEntry', LogEntry::class, '', true);
     }
 

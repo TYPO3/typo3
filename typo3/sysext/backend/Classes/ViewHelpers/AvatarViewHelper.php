@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -40,7 +40,6 @@ class AvatarViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('backendUser', 'int', 'uid of the backend user', false, 0);
         $this->registerArgument('size', 'int', 'width and height of the image', false, 32);
         $this->registerArgument('showIcon', 'bool', 'show the record icon as well', false, false);

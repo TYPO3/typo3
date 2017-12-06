@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Class TestViewHelper
  */
-class TestViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class TestViewHelper extends AbstractViewHelper
 {
     /**
      * My comments. Bla blubb.

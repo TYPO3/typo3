@@ -14,11 +14,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * This is the base class for ViewHelpers that work with encodings.
  * Currently that are format.htmlentities, format.htmlentitiesDecode and format.htmlspecialchars
  */
-abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+abstract class AbstractEncodingViewHelper extends AbstractViewHelper
 {
     /**
      * @var string

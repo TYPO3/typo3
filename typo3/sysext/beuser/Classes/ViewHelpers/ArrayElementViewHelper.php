@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Beuser\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -31,7 +31,6 @@ class ArrayElementViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('array', 'array', 'Array to search in', true);
         $this->registerArgument('key', 'string', 'Key to return its value', true);
         $this->registerArgument('subKey', 'string', 'If result of key access is an array, subkey can be used to fetch an element from this again', false, '');

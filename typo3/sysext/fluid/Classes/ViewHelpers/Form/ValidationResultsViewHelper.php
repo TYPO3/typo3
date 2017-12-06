@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -63,7 +65,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @api
  */
-class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ValidationResultsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -81,7 +83,6 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('for', 'string', 'The name of the error name (e.g. argument name or property name). This can also be a property path (like blog.title), and will then only display the validation errors of that property.', false, '');
         $this->registerArgument('as', 'string', 'The name of the variable to store the current error', false, 'validationResults');
     }

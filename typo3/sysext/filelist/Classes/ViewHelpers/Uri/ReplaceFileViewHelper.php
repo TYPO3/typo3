@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Filelist\ViewHelpers\Uri;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Closure;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -32,7 +32,6 @@ class ReplaceFileViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
     }
@@ -41,12 +40,12 @@ class ReplaceFileViewHelper extends AbstractViewHelper
      * Renders a link to replace a file
      *
      * @param array $arguments
-     * @param Closure $renderChildrenClosure
+     * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         if (empty($arguments['returnUrl'])) {
             $arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
@@ -60,8 +59,7 @@ class ReplaceFileViewHelper extends AbstractViewHelper
             'uid' => $file->getUid(),
             'returnUrl' => $arguments['returnUrl']
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('file_replace', $params);
     }
 }

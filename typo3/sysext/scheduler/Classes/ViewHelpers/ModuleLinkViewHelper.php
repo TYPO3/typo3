@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Scheduler\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -32,7 +33,6 @@ class ModuleLinkViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('controller', 'string', 'The "controller" of scheduler. Possible values are "scheduler", "check", "info"', true);
         $this->registerArgument('action', 'string', 'The action to be called within each controller', true);
         $this->registerArgument('arguments', 'array', '', false, []);
@@ -56,8 +56,7 @@ class ModuleLinkViewHelper extends AbstractViewHelper
             $moduleArguments['tx_scheduler'] = $arguments['arguments'];
         }
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1', $moduleArguments);
     }
 }

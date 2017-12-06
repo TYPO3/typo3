@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -63,7 +63,6 @@ class DebugViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('title', 'string', 'optional custom title for the debug output');
         $this->registerArgument('maxDepth', 'int', 'Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.', false, 8);
         $this->registerArgument('plainText', 'bool', 'If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.', false, false);

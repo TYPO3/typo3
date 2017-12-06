@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -65,7 +65,6 @@ class CurrencyViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('currencySign', 'string', 'The currency sign, eg $ or €.', false, '');
         $this->registerArgument('decimalSeparator', 'string', 'The separator for the decimal point.', false, ',');
         $this->registerArgument('thousandsSeparator', 'string', 'The thousands separator.', false, '.');

@@ -18,8 +18,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -41,7 +41,6 @@ class IconViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('identifier', 'string', 'the table for the record icon', true);
         $this->registerArgument('size', 'string', 'the icon size', false, Icon::SIZE_SMALL);
         $this->registerArgument('overlay', 'string', '', false, null);
@@ -64,7 +63,6 @@ class IconViewHelper extends AbstractViewHelper
         $overlay = $arguments['overlay'];
         $state = IconState::cast($arguments['state']);
         $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render($alternativeMarkupIdentifier);
     }

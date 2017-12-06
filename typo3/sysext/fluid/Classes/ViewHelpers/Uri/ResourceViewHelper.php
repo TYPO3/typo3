@@ -13,8 +13,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -30,7 +33,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * (depending on current package)
  * </output>
  */
-class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ResourceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -41,7 +44,6 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).', true);
         $this->registerArgument('extensionName', 'string', 'Target extension name. If not set, the current extension name will be used');
         $this->registerArgument('absolute', 'bool', 'If set, an absolute URI is rendered', false, false);
@@ -66,7 +68,7 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
         }
         $uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
         $uri = GeneralUtility::getFileAbsFileName($uri);
-        $uri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($uri);
+        $uri = PathUtility::stripPathSitePrefix($uri);
         if (TYPO3_MODE === 'BE' && $absolute === false && $uri !== false) {
             $uri = '../' . $uri;
         }

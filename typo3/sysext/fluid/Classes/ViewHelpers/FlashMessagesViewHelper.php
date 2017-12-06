@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -97,7 +97,6 @@ class FlashMessagesViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use');
         $this->registerArgument('as', 'string', 'The name of the current flashMessage variable for rendering inside');
     }

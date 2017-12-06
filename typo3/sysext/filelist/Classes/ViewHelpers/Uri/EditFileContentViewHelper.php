@@ -15,9 +15,10 @@ namespace TYPO3\CMS\Filelist\ViewHelpers\Uri;
  */
 
 use Closure;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -32,7 +33,6 @@ class EditFileContentViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('file', \TYPO3\CMS\Core\Resource\AbstractFile::class, '', true);
         $this->registerArgument('returnUrl', 'string', '', false, '');
     }
@@ -59,8 +59,7 @@ class EditFileContentViewHelper extends AbstractViewHelper
             'target' => $file->getCombinedIdentifier(),
             'returnUrl' => $arguments['returnUrl']
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('file_edit', $params);
     }
 }

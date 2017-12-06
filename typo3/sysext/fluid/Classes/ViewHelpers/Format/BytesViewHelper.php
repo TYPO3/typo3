@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -68,7 +68,6 @@ class BytesViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        parent::initializeArguments();
         $this->registerArgument('value', 'int', 'The incoming data to convert, or NULL if VH children should be used');
         $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, 0);
         $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
