@@ -390,10 +390,10 @@ class CommandUtility
         }
 
         // Add path from environment
-        // @todo how does this work for WIN
-        if ($GLOBALS['_SERVER']['PATH']) {
+        if (!empty($GLOBALS['_SERVER']['PATH']) || !empty($GLOBALS['_SERVER']['Path'])) {
             $sep = (TYPO3_OS === 'WIN' ? ';' : ':');
-            $envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], true);
+            $serverPath = $GLOBALS['_SERVER']['PATH'] ?? $GLOBALS['_SERVER']['Path'];
+            $envPath = GeneralUtility::trimExplode($sep, $serverPath, true);
             foreach ($envPath as $val) {
                 $val = self::fixPath($val);
                 $sysPathArr[$val] = $val;
