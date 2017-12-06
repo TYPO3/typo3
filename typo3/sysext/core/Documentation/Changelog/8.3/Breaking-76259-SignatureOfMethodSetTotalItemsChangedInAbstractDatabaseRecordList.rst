@@ -11,7 +11,7 @@ Description
 ===========
 
 As part of migrating the core code to use Doctrine DBAL the signature of the method
-:php:`PageLayoutView::getResult()` has changed.
+:php:`AbstractDatabaseRecordList::setTotalItems()` has changed.
 
 The new signature is:
 
