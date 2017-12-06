@@ -3240,7 +3240,10 @@ class DatabaseRecordList
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                    $this->id
+                    $queryBuilder->createNamedParameter(
+                        $this->id,
+                        \PDO::PARAM_INT
+                    )
                 )
             );
         }
