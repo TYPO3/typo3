@@ -188,7 +188,7 @@ class Check implements CheckInterface
         } else {
             $status = new Status\OkStatus();
             $status->setTitle('Maximum post upload size correlates with maximum upload file size in PHP');
-            $status->setMessage('The maximum size for file uploads is actually set to ' . ini_get('post_max_size'));
+            $status->setMessage('The maximum size for file uploads is actually set to ' . ini_get('upload_max_filesize'));
         }
         return $status;
     }
