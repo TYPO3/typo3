@@ -452,21 +452,24 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Checks if the user is in the valid list of allowed system maintainers, if the list is not set.
+     * Checks if the user is in the valid list of allowed system maintainers. if the list is not set,
      * then all admins are system maintainers. If the list is empty, no one is system maintainer (good for production
-     * systems)
+     * systems). If the currently logged in user is in "switch user" mode, this method will return false.
      *
      * @return bool
      */
     public function isSystemMaintainer(): bool
     {
+        if ((int)$GLOBALS['BE_USER']->user['ses_backuserid'] !== 0) {
+            return false;
+        }
         if (GeneralUtility::getApplicationContext()->isDevelopment() && $this->isAdmin()) {
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
         $systemMaintainers = array_map('intval', $systemMaintainers);
         if (!empty($systemMaintainers)) {
-            return in_array($this->getRealUserId(), $systemMaintainers, true);
+            return in_array((int)$this->user['uid'], $systemMaintainers, true);
         }
         // No system maintainers set up yet, so any admin is allowed to access the modules
         // but explicitly no system maintainers allowed (empty string in TYPO3_CONF_VARS).
