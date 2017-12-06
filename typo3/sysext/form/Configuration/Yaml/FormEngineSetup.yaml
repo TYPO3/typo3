@@ -83,6 +83,7 @@ TYPO3:
               label: 'tt_content.finishersDefinition.EmailToSender.subject.label'
               config:
                 type: 'input'
+                eval: 'required'
             recipientAddress:
               label: 'tt_content.finishersDefinition.EmailToSender.recipientAddress.label'
               config:
