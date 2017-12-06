@@ -44,6 +44,7 @@ class UriViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
+        $this->registerArgument('useCacheHash', 'bool', 'True whether the cache hash should be appended to the URL', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', 'Method to be used for query string');
         $this->registerArgument('action', 'string', 'Target action');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
@@ -113,6 +114,7 @@ class UriViewHelper extends AbstractViewHelper
         return $uriBuilder->reset()
             ->setArguments([$argumentPrefix => $parameters])
             ->setSection($arguments['section'])
+            ->setUseCacheHash($arguments['useCacheHash'])
             ->setAddQueryString(true)
             ->setAddQueryStringMethod($arguments['addQueryStringMethod'])
             ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
