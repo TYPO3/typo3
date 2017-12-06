@@ -132,14 +132,6 @@ return [
                     ],
                     'groups' => ['pages']
                 ],
-                'cache_phpcode' => [
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
-                    'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
-                    'options' => [
-                        'defaultLifetime' => 0,
-                    ],
-                    'groups' => ['system']
-                ],
                 'cache_runtime' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
