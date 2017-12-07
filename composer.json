@@ -100,6 +100,39 @@
 			"dev-master": "9.4.x-dev"
 		}
 	},
+	"scripts": {
+		"test:php:unit": [
+			"@php -v",
+			"@php vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml"
+		],
+		"test": [
+			"@test:php:unit"
+		],
+		"gerrit:setup": [
+			"@gerrit:setup:commitMessageHook:enable",
+			"@gerrit:setup:preCommitHook:enable"
+		],
+		"gerrit:setup:commitMessageHook:enable": [
+			"TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::enableCommitMessageHook"
+		],
+		"gerrit:setup:preCommitHook:enable": [
+			"TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::enablePreCommitHook"
+		],
+		"gerrit:setup:preCommitHook:disable": [
+			"TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::disablePreCommitHook"
+		],
+		"post-autoload-dump": [
+			"@gerrit:setup:commitMessageHook:enable"
+		]
+	},
+	"scripts-descriptions": {
+		"test:php:unit": "Run all PHP unit tests",
+		"test": "Run all tests",
+		"gerrit:setup": "Enable all the git hooks needed to make contribution easy",
+		"gerrit:setup:commitMessageHook:enable": "Enable the commit message hook needed for gerrit",
+		"gerrit:setup:preCommitHook:enable": "Enable pre commit hook to run some checks locally",
+		"gerrit:setup:preCommitHook:disable": "Disable pre commit hook to run some checks locally"
+	},
 	"non-feature-branches": [
 		"TYPO3_.+"
 	],
@@ -201,6 +234,7 @@
 			"TYPO3\\CMS\\Belog\\Tests\\": "typo3/sysext/belog/Tests/",
 			"TYPO3\\CMS\\Beuser\\Tests\\": "typo3/sysext/beuser/Tests/",
 			"TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",
+			"TYPO3\\CMS\\Composer\\Scripts\\": "Build/Scripts/composer/",
 			"TYPO3\\CMS\\Extbase\\Tests\\": "typo3/sysext/extbase/Tests/",
 			"TYPO3\\CMS\\Extensionmanager\\Tests\\": "typo3/sysext/extensionmanager/Tests/",
 			"TYPO3\\CMS\\Felogin\\Tests\\": "typo3/sysext/felogin/Tests/",
