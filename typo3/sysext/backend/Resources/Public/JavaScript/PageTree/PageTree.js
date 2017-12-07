@@ -100,6 +100,23 @@ define(['jquery',
       });
     };
 
+    /**
+     * Displays a notification message and refresh nodes
+     *
+     * @param error
+     */
+    PageTree.prototype.errorNotification = function (error) {
+      var title = TYPO3.lang.pagetree_networkErrorTitle;
+      var desc = TYPO3.lang.pagetree_networkErrorDesc;
+
+      if (error && (error.target.status || error.target.statusText)) {
+        title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
+      }
+
+      Notification.error(title, desc);
+      this.loadData();
+    };
+
     PageTree.prototype.sendChangeCommand = function (data) {
       var _this = this;
       var params = '';
@@ -131,29 +148,34 @@ define(['jquery',
       d3.request(top.TYPO3.settings.ajaxUrls.record_process)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
+        .on('error', function (error) {
+          _this.errorNotification(error);
+          throw error;
+        })
         .post(params, function (data) {
-          var response = JSON.parse(data.response);
+          if (data) {
+            var response = JSON.parse(data.response);
 
-          if (response && response.hasErrors) {
-            if (response.messages) {
-              $.each(response.messages, function (id, message) {
-                Notification.error(
-                  message.title,
-                  message.message
-                );
-              });
+            if (response && response.hasErrors) {
+              if (response.messages) {
+                $.each(response.messages, function (id, message) {
+                  Notification.error(
+                    message.title,
+                    message.message
+                  );
+                });
+              } else {
+                _this.errorNotification();
+              }
+
+              _this.nodesContainer.selectAll('.node').remove();
+              _this.update();
+              _this.nodesRemovePlaceholder();
             } else {
-              Notification.error(
-                'An error occurred',
-                'Try again later');
+              _this.loadData();
             }
-
-            _this.nodesContainer.selectAll('.node').remove();
-
-            _this.update();
-            _this.nodesRemovePlaceholder();
           } else {
-            _this.loadData();
+            _this.errorNotification();
           }
         });
     };
@@ -298,27 +320,33 @@ define(['jquery',
       d3.request(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
+        .on('error', function (error) {
+          _this.errorNotification(error);
+          throw error;
+        })
         .post(params, function (data) {
-          var response = JSON.parse(data.response);
+          if (data) {
+            var response = JSON.parse(data.response);
 
-          if (response && response.hasErrors) {
-            if (response.messages) {
-              $.each(response.messages, function (id, message) {
-                Notification.error(
-                  message.title,
-                  message.message
-                );
-              });
+            if (response && response.hasErrors) {
+              if (response.messages) {
+                $.each(response.messages, function (id, message) {
+                  Notification.error(
+                    message.title,
+                    message.message
+                  );
+                });
+              } else {
+                _this.errorNotification();
+              }
+
+              _this.update();
             } else {
-              Notification.error(
-                'An error occurred',
-                'Try again later');
+              _this.addMountPoint(response.mountPointPath);
+              _this.loadData();
             }
-
-            _this.update();
           } else {
-            _this.addMountPoint(response.mountPointPath);
-            _this.loadData();
+            _this.errorNotification();
           }
         });
     };
@@ -341,31 +369,38 @@ define(['jquery',
       d3.request(top.TYPO3.settings.ajaxUrls.record_process)
         .header('X-Requested-With', 'XMLHttpRequest')
         .header('Content-Type', 'application/x-www-form-urlencoded')
+        .on('error', function (error) {
+          _this.errorNotification(error);
+          throw error;
+        })
         .post(params, function (data) {
-          var response = JSON.parse(data.response);
+          if (data) {
+            var response = JSON.parse(data.response);
 
-          if (response && response.hasErrors) {
-            if (response.messages) {
-              $.each(response.messages, function (id, message) {
-                Notification.error(
-                  message.title,
-                  message.message
-                );
-              });
+            if (response && response.hasErrors) {
+              if (response.messages) {
+                $.each(response.messages, function (id, message) {
+                  Notification.error(
+                    message.title,
+                    message.message
+                  );
+                });
+              } else {
+                _this.errorNotification();
+              }
+
+              _this.nodesAddPlaceholder();
+              _this.loadData();
             } else {
-              Notification.error(
-                'An error occurred',
-                'Try again later');
+              node.name = node.newName;
+              _this.svg.select('.node-placeholder[data-uid="' + node.identifier + '"]').remove();
+              _this.update();
+              _this.nodesRemovePlaceholder();
             }
-
-            _this.nodesAddPlaceholder();
-            _this.loadData();
           } else {
-            node.name = node.newName;
-            _this.svg.select('.node-placeholder[data-uid="' + node.identifier + '"]').remove();
-            _this.update();
-            _this.nodesRemovePlaceholder();
+            _this.errorNotification();
           }
+
         });
     };
 

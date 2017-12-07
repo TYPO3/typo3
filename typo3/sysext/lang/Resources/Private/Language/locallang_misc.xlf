@@ -333,6 +333,12 @@
 			<trans-unit id="fileUpload_uploadSuccess">
 				<source>{0} was successfully uploaded!</source>
 			</trans-unit>
+			<trans-unit id="pagetree_networkErrorTitle">
+				<source>Page tree error</source>
+			</trans-unit>
+			<trans-unit id="pagetree_networkErrorDesc">
+				<source>Got unexpected response from the server. Please check logs for details.</source>
+			</trans-unit>
 			<trans-unit id="fileUpload_errorQueueLimitExceeded">
 				<source>Too many files selected</source>
 			</trans-unit>
@@ -413,12 +419,6 @@
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>
-			</trans-unit>
-			<trans-unit id="extDirect_timeoutHeader">
-				<source>Connection Problem</source>
-			</trans-unit>
-			<trans-unit id="extDirect_timeoutMessage">
-				<source>Sorry, but an error occurred while connecting to the server. Please check your network connection.</source>
 			</trans-unit>
 			<trans-unit id="viewPort_tooltipModuleMenuSplit">
 				<source>Drag to resize the Modules Menu</source>

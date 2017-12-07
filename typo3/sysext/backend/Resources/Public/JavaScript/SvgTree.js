@@ -56,6 +56,13 @@ define(
       };
 
       /**
+       * Check if cursor is over svg
+       *
+       * @type {boolean}
+       */
+      this.isOverSvg = false;
+
+      /**
        * Root <svg> element
        *
        * @type {Selection}
@@ -182,7 +189,13 @@ define(
           .select($wrapper[0]);
         this.svg = this.d3wrapper.append('svg')
           .attr('version', '1.1')
-          .attr('width', '100%');
+          .attr('width', '100%')
+          .on('mouseover', function () {
+            _this.isOverSvg = true;
+          })
+          .on('mouseout', function () {
+            _this.isOverSvg = false;
+          });
         this.container = this.svg
           .append('g')
           .attr('class', 'nodes-wrapper')
@@ -252,7 +265,22 @@ define(
         _this.nodesAddPlaceholder();
 
         d3.json(this.settings.dataUrl, function (error, json) {
-          if (error) throw error;
+          if (error) {
+            var title = TYPO3.lang.pagetree_networkErrorTitle;
+            var desc = TYPO3.lang.pagetree_networkErrorDesc;
+
+            if (error.target.status || error.target.statusText) {
+              title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
+            }
+
+            Notification.error(
+              title,
+              desc);
+
+            _this.nodesRemovePlaceholder();
+            throw error;
+          }
+
           var nodes = Array.isArray(json) ? json : [];
           _this.setParametersNode(nodes);
           _this.dispatch.call('loadDataAfter', _this);

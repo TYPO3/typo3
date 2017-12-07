@@ -31,9 +31,12 @@ define(['jquery',
           '<div>' +
             '<div id="svg-toolbar" class="svg-toolbar"></div>' +
               '<div id="typo3-pagetree-treeContainer">' +
-                '<div id="typo3-pagetree-tree" class="svg-tree-wrapper" style="height:1000px;"></div>' +
+                '<div id="typo3-pagetree-tree" class="svg-tree-wrapper" style="height:1000px;">' +
+                  '<div class="node-loader"></div>' +
+                '</div>' +
               '</div>' +
             '</div>' +
+          '<div class="svg-tree-loader"></div>' +
         '</div>',
     };
 
@@ -46,7 +49,23 @@ define(['jquery',
       $(document).ready(function () {
         var $element = $(selector);
         var tree = new PageTree();
-        $element.append(PageTreeElement.template);
+
+        if ($element.html().trim().length === 0) {
+          $element.append(PageTreeElement.template);
+        }
+
+        if ($('.node-loader').html().trim().length === 0) {
+          Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function (spinner) {
+            $('.node-loader').append(spinner);
+          });
+        }
+
+        if ($('.svg-tree-loader').html().trim().length === 0) {
+          Icons.getIcon('spinner-circle-light', Icons.sizes.large).done(function (spinner) {
+            $('.svg-tree-loader').append(spinner);
+          });
+        }
+
         var dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
         var configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
 
@@ -63,14 +82,6 @@ define(['jquery',
           var pageTreeToolbar = new PageTreeToolbar();
           pageTreeToolbar.initialize('#typo3-pagetree-tree');
           $('#svg-toolbar').data('tree-show-toolbar', true);
-
-          Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function (spinner) {
-            $('#typo3-pagetree-tree').append('<div class="node-loader">' + spinner + '</div>');
-          });
-
-          Icons.getIcon('spinner-circle-light', Icons.sizes.large).done(function (spinner) {
-            $('.svg-tree').append('<div class="svg-tree-loader">' + spinner + '</div>');
-          });
         }
       });
     };

@@ -14,7 +14,7 @@
 /**
  * Module: TYPO3/CMS/Backend/PageTree/PageTreeDragDrop
  *
- * Provides drag&drop related funtionality for the SVG page tree
+ * Provides drag&drop related functionality for the SVG page tree
  */
 define([
     'jquery',
@@ -44,19 +44,34 @@ define([
       this.tree = svgTree;
     },
 
-    drag: function (node) {
+    /**
+     * Drag and drop for nodes
+     *
+     * Returns initialized d3.drag() function
+     */
+    drag: function () {
       var self = {};
       var _this = this;
       var tree = _this.tree;
 
-      //Returns deleting drop zone open 'transform' attribute value
+      /**
+       * Returns deleting drop zone open 'transform' attribute value
+       *
+       * @param node
+       * @returns {string}
+       */
       self.getDropZoneOpenTransform = function (node) {
         var svgWidth = parseFloat(tree.svg.style('width')) || 300;
 
         return 'translate(' + (svgWidth - 58 - node.x) + ', -10)';
       };
 
-      //Returns deleting drop zone close 'transform' attribute value
+      /**
+       * Returns deleting drop zone close 'transform' attribute value
+       *
+       * @param node
+       * @returns {string}
+       */
       self.getDropZoneCloseTransform = function (node) {
         var svgWidth = parseFloat(tree.svg.style('width')) || 300;
 
@@ -88,10 +103,10 @@ define([
             .attr('width', '50px')
             .attr('x', 0)
             .attr('y', 0)
-            .on('mouseover', function (node) {
+            .on('mouseover', function () {
               tree.nodeIsOverDelete = true;
             })
-            .on('mouseout', function (node) {
+            .on('mouseout', function () {
               tree.nodeIsOverDelete = false;
             });
 
@@ -101,16 +116,20 @@ define([
             .attr('dy', 15);
 
           _this.dropZoneDelete
-            .attr('transform', self.getDropZoneCloseTransform(node))
-            .transition(300)
-            .delay(300)
-            .attr('transform', self.getDropZoneOpenTransform(node))
-            .attr('data-open', 'true');
+            .attr('transform', self.getDropZoneCloseTransform(node));
         }
+
+        $.extend(self, _this.setDragStart());
       };
 
       self.dragDragged = function (node) {
-        if (tree.settings.isDragAnDrop !== true ||node.depth === 0) {
+        if (_this.isDragNodeDistanceMore(self, 10)) {
+          self.startDrag = true;
+        } else {
+          return false;
+        }
+
+        if (tree.settings.isDragAnDrop !== true || node.depth === 0) {
           return false;
         }
 
@@ -135,23 +154,48 @@ define([
             .addClass('nodes-wrapper--dragging');
         }
 
+        var left = 18;
+        var top = 15;
+
+        if (d3.event.sourceEvent && d3.event.sourceEvent.pageX) {
+          left += d3.event.sourceEvent.pageX;
+        }
+
+        if (d3.event.sourceEvent && d3.event.sourceEvent.pageY) {
+          top += d3.event.sourceEvent.pageY;
+        }
+
         $(document).find('.node-dd').css({
-          left: event.pageX + 18,
-          top: event.pageY + 15,
+          left: left,
+          top: top,
           display: 'block',
         });
 
         tree.settings.nodeDragPosition = false;
 
-        if (node.isOver || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.identifier) !== -1)) {
+        if (node.isOver
+          || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.identifier) !== -1)
+          || !tree.isOverSvg) {
+
           _this.addNodeDdClass({ $nodeDd: $nodeDd, $nodesWrap: $nodesWrap, className: 'nodrop' });
 
-          if (_this.dropZoneDelete && _this.dropZoneDelete.attr('data-open') !== 'true') {
+          if (!tree.isOverSvg) {
+            _this.tree.nodesBgContainer
+              .selectAll('.node-bg__border')
+              .style('display', 'none');
+          }
+
+          if (_this.dropZoneDelete && _this.dropZoneDelete.attr('data-open') !== 'true' && tree.isOverSvg) {
             _this.dropZoneDelete
               .transition(300)
               .attr('transform', self.getDropZoneOpenTransform(node))
               .attr('data-open', 'true');
           }
+        } else if (!tree.settings.nodeOver.node) {
+          _this.addNodeDdClass({ $nodeDd: $nodeDd, $nodesWrap: $nodesWrap, className: 'nodrop' });
+          _this.tree.nodesBgContainer
+            .selectAll('.node-bg__border')
+            .style('display', 'none');
         } else {
           if (_this.dropZoneDelete && _this.dropZoneDelete.attr('data-open') !== 'false') {
             _this.dropZoneDelete
@@ -165,7 +209,9 @@ define([
       };
 
       self.dragEnd = function (node) {
-        if (tree.settings.isDragAnDrop !== true || node.depth === 0) {
+        _this.setDragEnd();
+
+        if (!self.startDrag || tree.settings.isDragAnDrop !== true || node.depth === 0) {
           return false;
         }
 
@@ -206,9 +252,11 @@ define([
           !(node.isOver
             || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.identifier) !== -1)
             || !tree.settings.canNodeDrag
+            || !tree.isOverSvg
           )
         ) {
           var options = _this.changeNodePosition({ droppedNode: droppedNode });
+
           var modalText = options.position === 'in' ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
           modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 
@@ -286,14 +334,13 @@ define([
 
     changeNodeClasses: function () {
       var elementNodeBg = this.tree.svg.select('.node-over');
+      var $svg = $(this.tree.svg.node());
+      var $nodesWrap = $svg.find('.nodes-wrapper');
+      var $nodeDd = $svg.siblings('.node-dd');
+      var nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
 
-      if (elementNodeBg.size()) {
-        var $svg = $(this.tree.svg.node());
-        var $nodesWrap = $svg.find('.nodes-wrapper');
-        var $nodeDd = $svg.siblings('.node-dd');
-
+      if (elementNodeBg.size() && this.tree.isOverSvg) {
         //line between nodes
-        var nodeBgBorder = this.tree.nodesBgContainer.selectAll('.node-bg__border');
         if (nodeBgBorder.empty()) {
           nodeBgBorder = this.tree.nodesBgContainer
             .append('rect')
@@ -375,6 +422,16 @@ define([
           });
           this.tree.settings.nodeDragPosition = 'in';
         }
+      } else {
+        this.tree.nodesBgContainer
+          .selectAll('.node-bg__border')
+          .style('display', 'none');
+
+        this.addNodeDdClass({
+          $nodeDd: $nodeDd,
+          $nodesWrap: $nodesWrap,
+          className: 'nodrop',
+        });
       }
     },
 
@@ -406,6 +463,48 @@ define([
       }
     },
 
+    /**
+     * Check if node is dragged at least @distance
+     *
+     * @param {Object} data
+     * @param {Integer} distance
+     * @returns {boolean}
+     */
+    isDragNodeDistanceMore: function (data, distance) {
+      return (data.startDrag ||
+         (((data.startPageX - distance) > d3.event.sourceEvent.pageX) ||
+          ((data.startPageX + distance) < d3.event.sourceEvent.pageX) ||
+          ((data.startPageY - distance) > d3.event.sourceEvent.pageY) ||
+          ((data.startPageY + distance) < d3.event.sourceEvent.pageY)));
+    },
+
+    /**
+     * Sets the same parameters on start for method drag() and dragToolbar()
+     *
+     * @returns {{startPageX, startPageY, startDrag: boolean}}
+     */
+    setDragStart: function () {
+      $('body iframe').css({ 'pointer-events': 'none' });
+
+      return {
+        startPageX: d3.event.sourceEvent.pageX,
+        startPageY: d3.event.sourceEvent.pageY,
+        startDrag: false,
+      };
+    },
+
+    /**
+     * Sets the same parameters on end for method drag() and dragToolbar()
+     */
+    setDragEnd: function () {
+      $('body iframe').css({ 'pointer-events': '' });
+    },
+
+    /**
+     * Drag and drop for toolbar new elements
+     *
+     * Returns method from d3js
+     */
     dragToolbar: function () {
       var self = {};
       var _this = this;
@@ -417,9 +516,16 @@ define([
         self.tooltip = $(this).attr('tooltip');
         self.icon = $(this).data('tree-icon');
         self.isDragged = false;
+        $.extend(self, _this.setDragStart());
       };
 
       self.dragDragged = function () {
+        if (_this.isDragNodeDistanceMore(self, 10)) {
+          self.startDrag = true;
+        } else {
+          return;
+        }
+
         var $svg = $(_this.tree.svg.node());
 
         if (self.isDragged === false) {
@@ -433,9 +539,20 @@ define([
             .addClass('nodes-wrapper--dragging');
         }
 
+        var left = 18;
+        var top = 15;
+
+        if (d3.event.sourceEvent && d3.event.sourceEvent.pageX) {
+          left += d3.event.sourceEvent.pageX;
+        }
+
+        if (d3.event.sourceEvent && d3.event.sourceEvent.pageY) {
+          top += d3.event.sourceEvent.pageY;
+        }
+
         $(document).find('.node-dd').css({
-          left: event.pageX + 18,
-          top: event.pageY + 15,
+          left: left,
+          top: top,
           display: 'block',
         });
 
@@ -443,6 +560,12 @@ define([
       };
 
       self.dragEnd = function () {
+        _this.setDragEnd();
+
+        if (!self.startDrag) {
+          return;
+        }
+
         var $svg = $(_this.tree.svg.node());
         var $nodesBg = $svg.find('.nodes-bg');
 
@@ -477,11 +600,11 @@ define([
           .selectAll('.node-bg__border')
           .style('display', 'none');
 
-        if ((_this.tree.settings.isDragAnDrop !== true) || !_this.tree.settings.nodeOver.node) {
+        if (_this.tree.settings.isDragAnDrop !== true || !_this.tree.settings.nodeOver.node || !_this.tree.isOverSvg) {
           return false;
         }
 
-        if (_this.tree.settings.canNodeDrag && !((_this.tree.settings.isDragAnDrop !== true) || !_this.tree.settings.nodeOver.node)) {
+        if (_this.tree.settings.canNodeDrag) {
           var data = {
             type: self.id,
             name: self.name,
