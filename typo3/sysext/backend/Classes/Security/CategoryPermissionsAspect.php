@@ -68,6 +68,9 @@ class CategoryPermissionsAspect
 
                 // Check the rootline against categoryMountPoints when tree was filtered
                 if ($dataProvider->getRootUid() !== null) {
+                    if (in_array($dataProvider->getRootUid(), $categoryMountPoints)) {
+                        return;
+                    }
                     $uidsInRootline = $this->findUidsInRootline($dataProvider->getRootUid());
                     if (!empty(array_intersect($categoryMountPoints, $uidsInRootline))) {
                         // One of the parents was found in categoryMountPoints so all children are secure
