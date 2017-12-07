@@ -11,8 +11,8 @@ Description
 
 The following methods and method arguments have been deprecated:
 
-* Method :php:`\TYPO3\CMS\Backend\UtilityBackendUtility::getSpecConfParametersFromArray()`
-* Method :php:`\TYPO3\CMS\Backend\UtilityBackendUtility::RTEsetup()`
+* Method :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParametersFromArray()`
+* Method :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup()`
 * Second argument :php:`$specConf` of :php:`\TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform()`
 
 
