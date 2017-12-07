@@ -9,7 +9,7 @@ See :issue:`77750`
 Description
 ===========
 
-The return type of :php:`ContentObjectRenderer::exec_Query()` has changed.
+The return type of :php:`ContentObjectRenderer::exec_getQuery()` has changed.
 Instead of returning either :php:`bool`, :php:`\mysqli_result`
 or :php:`object` the return value always is a :php:`\Doctrine\DBAL\Driver\Statement`.
 
@@ -33,7 +33,7 @@ Change the way the result is being used to conform to the Doctrine API:
 
 .. code-block:: php
 
-    $result = $this->cObj->exec_Query(...);
+    $result = $this->cObj->exec_getQuery(...);
     while ($row = $result->fetch()) {
         // Do something here
     }
