@@ -1,15 +1,16 @@
 .. include:: ../../Includes.txt
 
-==========================================================
-Deprecation: #78872 - Deprecate method getRecordUidsToCopy
-==========================================================
+==================================================================================
+Deprecation: #78872 - Deprecate method LocalizationController::getRecordUidsToCopy
+==================================================================================
 
 See :issue:`78872`
 
 Description
 ===========
 
-The method :php:`getRecordUidsToCopy()` is not used at any place in the TYPO3 core.
+The method :php:`\TYPO3\CMS\Backend\Controller\Page\LocalizationController::getRecordUidsToCopy()`
+is not used at any place in the TYPO3 core.
 
 
 Impact
