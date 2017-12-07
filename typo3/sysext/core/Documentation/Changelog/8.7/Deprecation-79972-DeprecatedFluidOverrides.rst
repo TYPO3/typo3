@@ -9,16 +9,29 @@ See :issue:`79972`
 Description
 ===========
 
-* ``XmlnsNamespaceTemplatePreProcessor`` is removed without substitute (no longer required)
-* ``LegacyNamespaceExpressionNode`` is removed without substitute (no longer required)
-* ``setLegacyMode`` and `$legacyMode` on RenderingContext is deprecated (no-op, triggers deprecation log message)
-* ``$objectManager`` plus injection method on RenderingContext is deprecated (no usages)
-* ``getObjectManager`` on RenderingContext is removed (no usages)
+following methods have been marked as deprecated:
+
+* :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::injectObjectManager()`
+* :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::getObjectManager()`
+* :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::setLegacyMode()`
+
+following methods have been removed:
+
+* :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::getExpressionNodeTypes()`
+* :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::getViewHelperVariableContainer()`
+
+following classes have been removed:
+
+* :php:`\TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor`
+* :php:`\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionNode`
+
+
 
 Impact
 ======
 
-Calling any of the methods above will trigger a deprecation log entry.
+Calling any of the methods marked as deprecated above will trigger a deprecation log entry.
+Accessing any of the removed classes or methods will cause a PHP Fatal Error.
 
 
 Affected Installations
@@ -30,7 +43,7 @@ Any TYPO3 instances which uses the above described methods or classes.
 Migration
 =========
 
-* Remove usage of classes / properties / methods.
+* Remove usage of classes / methods.
 
 
 .. index:: Fluid
