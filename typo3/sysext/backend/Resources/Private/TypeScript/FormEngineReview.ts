@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ = require('jquery');
+import * as $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 /**
@@ -21,6 +21,22 @@ import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
  * @exports TYPO3/CMS/Backend/FormEngineReview
  */
 class FormEngineReview {
+
+  /**
+   * Class for the toggle button
+   */
+  private toggleButtonClass: string;
+
+  /**
+   * Class for field list items
+   */
+  private fieldListItemClass: string;
+
+  /**
+   * Class of FormEngine labels
+   */
+  private labelSelector: string;
+
   /**
    * Fetches all fields that have a failed validation
    *
@@ -53,21 +69,6 @@ class FormEngineReview {
 
     $leastButtonBar.prepend($button);
   }
-
-  /**
-   * Class for the toggle button
-   */
-  private toggleButtonClass: string;
-
-  /**
-   * Class for field list items
-   */
-  private fieldListItemClass: string;
-
-  /**
-   * Class of FormEngine labels
-   */
-  private labelSelector: string;
 
   /**
    * The constructor, set the class properties default values
@@ -125,7 +126,7 @@ class FormEngineReview {
 
       $toggleButton.removeClass('hidden');
 
-      // Bootstrap has no official API to update the content of a popover w/o destroying it
+      // bootstrap has no official API to update the content of a popover w/o destroying it
       const $popover: any = $toggleButton.data('bs.popover');
       if ($popover) {
         $popover.options.content = $list.wrapAll('<div>').parent().html();
@@ -149,7 +150,7 @@ class FormEngineReview {
     const referenceFieldId: string = $listItem.data('fieldId');
     const $referenceField: any = $('#' + referenceFieldId);
 
-    // Iterate possibly nested tab panels
+    // iterate possibly nested tab panels
     $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {
       $('[aria-controls="' + $(this).attr('id') + '"]').tab('show');
     });
@@ -158,5 +159,5 @@ class FormEngineReview {
   }
 }
 
-// Create an instance and return it
+// create an instance and return it
 export = new FormEngineReview();

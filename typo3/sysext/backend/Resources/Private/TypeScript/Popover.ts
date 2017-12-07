@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ = require('jquery');
+import * as $ from 'jquery';
 
 /**
  * Module: TYPO3/CMS/Backend/Popover
@@ -118,7 +118,7 @@ class Popover {
   }
 }
 
-// Create an instance, initialize and return it
+// create an instance, initialize and return it
 const popover: Popover = new Popover();
 popover.initialize();
 

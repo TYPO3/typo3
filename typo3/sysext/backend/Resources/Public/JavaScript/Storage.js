@@ -104,10 +104,10 @@ define(["require", "exports", "./Storage/Client", "./Storage/Persistent"], funct
         }
     }
     catch (e) {
-        // This only happens if the opener, parent or top is some other url (eg a local file)
+        // this only happens if the opener, parent or top is some other url (eg a local file)
         // which loaded the current window. Then the browser's cross domain policy jumps in
         // and raises an exception.
-        // For this case we are safe and we can create our global object below.
+        // for this case we are safe and we can create our global object below.
     }
     if (!storageObject) {
         storageObject = new Storage();

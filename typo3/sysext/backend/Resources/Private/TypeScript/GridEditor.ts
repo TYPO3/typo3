@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ = require('jquery');
+import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Severity = require('TYPO3/CMS/Backend/Severity');
 
@@ -42,6 +42,31 @@ interface CellInterface {
  */
 export class GridEditor {
 
+  protected colCount: number = 1;
+  protected rowCount: number = 1;
+  protected field: JQuery;
+  protected data: any[];
+  protected nameLabel: string = 'name';
+  protected columnLabel: string = 'columen label';
+  protected targetElement: JQuery;
+  protected defaultCell: object = {spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined};
+  protected selectorEditor: string = '.t3js-grideditor';
+  protected selectorAddColumn: string = '.t3js-grideditor-addcolumn';
+  protected selectorRemoveColumn: string = '.t3js-grideditor-removecolumn';
+  protected selectorAddRowTop: string = '.t3js-grideditor-addrow-top';
+  protected selectorRemoveRowTop: string = '.t3js-grideditor-removerow-top';
+  protected selectorAddRowBottom: string = '.t3js-grideditor-addrow-bottom';
+  protected selectorRemoveRowBottom: string = '.t3js-grideditor-removerow-bottom';
+  protected selectorLinkEditor: string = '.t3js-grideditor-link-editor';
+  protected selectorLinkExpandRight: string = '.t3js-grideditor-link-expand-right';
+  protected selectorLinkShrinkLeft: string = '.t3js-grideditor-link-shrink-left';
+  protected selectorLinkExpandDown: string = '.t3js-grideditor-link-expand-down';
+  protected selectorLinkShrinkUp: string = '.t3js-grideditor-link-shrink-up';
+  protected selectorDocHeaderSave: string = '.t3js-grideditor-savedok';
+  protected selectorDocHeaderSaveClose: string = '.t3js-grideditor-savedokclose';
+  protected selectorConfigPreview: string = '.t3js-grideditor-preview-config';
+  protected selectorConfigPreviewButton: string = '.t3js-grideditor-preview-button';
+
   /**
    * Remove all markup
    *
@@ -52,31 +77,6 @@ export class GridEditor {
     input = input.replace(/<(.*)>/gi, '');
     return $('<p>' + input + '</p>').text();
   }
-
-  protected colCount = 1;
-  protected rowCount = 1;
-  protected field: JQuery;
-  protected data: any[];
-  protected nameLabel = 'name';
-  protected columnLabel = 'columen label';
-  protected targetElement: JQuery;
-  protected defaultCell: object = {spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined};
-  protected selectorEditor = '.t3js-grideditor';
-  protected selectorAddColumn = '.t3js-grideditor-addcolumn';
-  protected selectorRemoveColumn = '.t3js-grideditor-removecolumn';
-  protected selectorAddRowTop = '.t3js-grideditor-addrow-top';
-  protected selectorRemoveRowTop = '.t3js-grideditor-removerow-top';
-  protected selectorAddRowBottom = '.t3js-grideditor-addrow-bottom';
-  protected selectorRemoveRowBottom = '.t3js-grideditor-removerow-bottom';
-  protected selectorLinkEditor = '.t3js-grideditor-link-editor';
-  protected selectorLinkExpandRight = '.t3js-grideditor-link-expand-right';
-  protected selectorLinkShrinkLeft = '.t3js-grideditor-link-shrink-left';
-  protected selectorLinkExpandDown = '.t3js-grideditor-link-expand-down';
-  protected selectorLinkShrinkUp = '.t3js-grideditor-link-shrink-up';
-  protected selectorDocHeaderSave = '.t3js-grideditor-savedok';
-  protected selectorDocHeaderSaveClose = '.t3js-grideditor-savedokclose';
-  protected selectorConfigPreview = '.t3js-grideditor-preview-config';
-  protected selectorConfigPreviewButton = '.t3js-grideditor-preview-button';
 
   /**
    *
@@ -288,7 +288,7 @@ export class GridEditor {
    * Create a new cell from defaultCell
    * @returns {Object}
    */
-  protected getNewCell() {
+  protected getNewCell(): any {
     return $.extend({}, this.defaultCell);
   }
 
@@ -297,7 +297,7 @@ export class GridEditor {
    *
    * @param data
    */
-  protected writeConfig(data: any) {
+  protected writeConfig(data: any): void {
     this.field.val(data);
     const configLines = data.split('\n');
     let config = '';
@@ -322,7 +322,7 @@ export class GridEditor {
   /**
    * Add a new row at the top
    */
-  protected addRowTop() {
+  protected addRowTop(): void {
     const newRow = [];
     for (let i = 0; i < this.colCount; i++) {
       const newCell = this.getNewCell();
@@ -336,7 +336,7 @@ export class GridEditor {
   /**
    * Add a new row at the bottom
    */
-  protected addRowBottom() {
+  protected addRowBottom(): void {
     const newRow = [];
     for (let i = 0; i < this.colCount; i++) {
       const newCell = this.getNewCell();

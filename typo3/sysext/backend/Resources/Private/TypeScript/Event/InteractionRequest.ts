@@ -14,7 +14,7 @@
 class InteractionRequest {
   public readonly type: string;
   public readonly parentRequest: InteractionRequest;
-  protected processed = false;
+  protected processed: boolean = false;
   protected processedData: any = null;
 
   public get outerMostRequest(): InteractionRequest {
@@ -38,7 +38,7 @@ class InteractionRequest {
     return this.processedData;
   }
 
-  public setProcessedData(processedData: any = null) {
+  public setProcessedData(processedData: any = null): void {
     this.processed = true;
     this.processedData = processedData;
   }

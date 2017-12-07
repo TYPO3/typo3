@@ -50,7 +50,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                 var imageData = _this.cropper.cropper('getImageData');
                 var image = _this.currentModal.find(_this.cropImageSelector);
                 _this.imageOriginalSizeFactor = image.data('originalWidth') / imageData.naturalWidth;
-                // Iterate over the crop variants and set up their respective preview
+                // iterate over the crop variants and set up their respective preview
                 _this.cropVariantTriggers.each(function (index, elem) {
                     var cropVariantId = $(elem).attr('data-crop-variant-id');
                     var cropArea = _this.convertRelativeToAbsoluteCropArea(_this.data[cropVariantId].cropArea, imageData);
@@ -58,19 +58,19 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                     _this.updatePreviewThumbnail(variant, $(elem));
                 });
                 _this.currentCropVariant.cropArea = _this.convertRelativeToAbsoluteCropArea(_this.currentCropVariant.cropArea, imageData);
-                // Can't use .t3js-* as selector because it is an extraneous selector
+                // can't use .t3js-* as selector because it is an extraneous selector
                 _this.cropBox = _this.currentModal.find('.cropper-crop-box');
                 _this.setCropArea(_this.currentCropVariant.cropArea);
-                // Check if new cropVariant has coverAreas
+                // check if new cropVariant has coverAreas
                 if (_this.currentCropVariant.coverAreas) {
-                    // Init or reinit focusArea
+                    // init or reinit focusArea
                     _this.initCoverAreas(_this.cropBox, _this.currentCropVariant.coverAreas);
                 }
-                // Check if new cropVariant has focusArea
+                // check if new cropVariant has focusArea
                 if (_this.currentCropVariant.focusArea) {
-                    // Init or reinit focusArea
+                    // init or reinit focusArea
                     if (ImageManipulation.isEmptyArea(_this.currentCropVariant.focusArea)) {
-                        // If an empty focusArea is set initialise it with the default
+                        // if an empty focusArea is set initialise it with the default
                         _this.currentCropVariant.focusArea = $.extend(true, {}, _this.defaultFocusArea);
                     }
                     _this.initFocusArea(_this.cropBox);
@@ -78,7 +78,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                 }
                 if (_this.currentCropVariant.selectedRatio) {
                     _this.setAspectRatio(_this.currentCropVariant.allowedAspectRatios[_this.currentCropVariant.selectedRatio]);
-                    // Set data explicitly or setAspectRatio up-scales the crop
+                    // set data explicitly or setAspectRatio up-scales the crop
                     _this.setCropArea(_this.currentCropVariant.cropArea);
                     _this.currentModal.find("[data-option='" + _this.currentCropVariant.selectedRatio + "']").addClass('active');
                 }
@@ -124,7 +124,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                     _this.focusArea.resizable('option', 'disabled', false);
                 }
             };
-            // Silence is golden
+            // silence is golden
             $(window).resize(function () {
                 if (_this.cropper) {
                     _this.cropper.cropper('destroy');
@@ -271,7 +271,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
             this.currentModal.on('hide.bs.modal', function (e) {
                 _this.destroy();
             });
-            // Do not dismiss the modal when clicking beside it to avoid data loss
+            // do not dismiss the modal when clicking beside it to avoid data loss
             this.currentModal.data('bs.modal').options.backdrop = 'static';
         };
         /**
@@ -288,9 +288,9 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
             if (!data) {
                 throw new TypeError('ImageManipulation: No cropVariants data found for image');
             }
-            // If we have data already set we assume an internal reinit eg. after resizing
+            // if we have data already set we assume an internal reinit eg. after resizing
             this.data = $.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
-            // Initialize our class members
+            // initialize our class members
             this.currentModal.find(this.cropImageContainerSelector).css({ height: imageHeight, width: imageWidth });
             this.cropVariantTriggers = this.currentModal.find('.t3js-crop-variant-trigger');
             this.activeCropVariantTrigger = this.currentModal.find('.t3js-crop-variant-trigger.is-active');
@@ -332,7 +332,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                 var temp = $.extend(true, {}, _this.currentCropVariant);
                 var ratio = temp.allowedAspectRatios[ratioId];
                 _this.setAspectRatio(ratio);
-                // Set data explicitly or setAspectRatio upscales the crop
+                // set data explicitly or setAspectRatio upscales the crop
                 _this.setCropArea(temp.cropArea);
                 _this.currentCropVariant = $.extend(true, {}, temp, { selectedRatio: ratioId });
                 _this.update(_this.currentCropVariant);
@@ -376,7 +376,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                 _this.currentCropVariant = $.extend(true, {}, resetCropVariant, { cropArea: absoluteCropArea });
                 _this.update(_this.currentCropVariant);
             });
-            // If we start without an cropArea, maximize the cropper
+            // if we start without an cropArea, maximize the cropper
             if (ImageManipulation.isEmptyArea(this.currentCropVariant.cropArea)) {
                 this.defaultOpts = $.extend({
                     autoCropArea: 1,
@@ -414,23 +414,23 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
             this.setCropArea(temp.cropArea);
             this.currentCropVariant = $.extend(true, {}, temp, cropVariant);
             this.cropBox.find(this.coverAreaSelector).remove();
-            // If the current container has a focus area element, deregister and cleanup prior to initialization
+            // if the current container has a focus area element, deregister and cleanup prior to initialization
             if (this.cropBox.has(this.focusAreaSelector).length) {
                 this.focusArea.resizable('destroy').draggable('destroy');
                 this.focusArea.remove();
             }
-            // Check if new cropVariant has focusArea
+            // check if new cropVariant has focusArea
             if (cropVariant.focusArea) {
-                // Init or reinit focusArea
+                // init or reinit focusArea
                 if (ImageManipulation.isEmptyArea(cropVariant.focusArea)) {
                     this.currentCropVariant.focusArea = $.extend(true, {}, this.defaultFocusArea);
                 }
                 this.initFocusArea(this.cropBox);
                 this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
             }
-            // Check if new cropVariant has coverAreas
+            // check if new cropVariant has coverAreas
             if (cropVariant.coverAreas) {
-                // Init or reinit focusArea
+                // init or reinit focusArea
                 this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas);
             }
             this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
@@ -563,14 +563,14 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
             var cropperPreviewThumbnailImage = cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-crop-image');
             var cropperPreviewThumbnailFocus = cropVariantTrigger.find('.t3js-cropper-preview-thumbnail-focus-area');
             var imageData = this.cropper.cropper('getImageData');
-            // Update the position/dimension of the crop area in the preview
+            // update the position/dimension of the crop area in the preview
             cropperPreviewThumbnailCrop.css({
                 height: ImageManipulation.toCssPercent(cropVariant.cropArea.height / imageData.naturalHeight),
                 left: ImageManipulation.toCssPercent(cropVariant.cropArea.x / imageData.naturalWidth),
                 top: ImageManipulation.toCssPercent(cropVariant.cropArea.y / imageData.naturalHeight),
                 width: ImageManipulation.toCssPercent(cropVariant.cropArea.width / imageData.naturalWidth),
             });
-            // Show and update focusArea in the preview only if we really have one configured
+            // show and update focusArea in the preview only if we really have one configured
             if (cropVariant.focusArea) {
                 cropperPreviewThumbnailFocus.css({
                     height: ImageManipulation.toCssPercent(cropVariant.focusArea.height),
@@ -579,7 +579,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                     width: ImageManipulation.toCssPercent(cropVariant.focusArea.width),
                 });
             }
-            // Destruct the preview container's CSS properties
+            // destruct the preview container's CSS properties
             styles = cropperPreviewThumbnailCrop.css([
                 'width', 'height', 'left', 'top',
             ]);
@@ -715,7 +715,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
             var _this = this;
             var $image = this.cropper;
             var imageData = $image.cropper('getImageData');
-            // Iterate over the crop variants and set up their respective preview
+            // iterate over the crop variants and set up their respective preview
             Object.keys(data).forEach(function (cropVariantId) {
                 var cropVariant = data[cropVariantId];
                 var cropData = _this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
@@ -730,7 +730,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Co
                 }
                 var previewWidth = $preview.width();
                 var previewHeight = $preview.data('preview-height');
-                // Adjust aspect ratio of preview width/height
+                // adjust aspect ratio of preview width/height
                 var aspectRatio = cropData.width / cropData.height;
                 var tmpHeight = previewWidth / aspectRatio;
                 if (tmpHeight > previewHeight) {

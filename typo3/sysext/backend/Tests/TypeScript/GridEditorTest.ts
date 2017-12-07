@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
 import {GridEditor} from 'TYPO3/CMS/Backend/GridEditor';
 
 describe('TYPO3/CMS/Backend/GridEditorTest:', () => {

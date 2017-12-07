@@ -15,7 +15,7 @@ export class BackendException {
   public readonly message: string;
   public readonly code: number;
 
-  constructor(message = '', code = 0) {
+  constructor(message: string = '', code: number = 0) {
     this.message = message;
     this.code = code;
   }

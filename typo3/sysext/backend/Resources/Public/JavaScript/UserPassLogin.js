@@ -47,7 +47,7 @@ define(["require", "exports", "jquery", "./Login"], function (require, exports, 
             var $passwordField = $(this.options.passwordField);
             $usernameField.on('keypress', this.showCapsLockWarning);
             $passwordField.on('keypress', this.showCapsLockWarning);
-            // If the login screen is shown in the login_frameset window for re-login,
+            // if the login screen is shown in the login_frameset window for re-login,
             // then try to get the username of the current/former login from opening windows main frame:
             try {
                 if (parent.opener

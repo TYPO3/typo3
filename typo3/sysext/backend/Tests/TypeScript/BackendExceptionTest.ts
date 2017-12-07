@@ -15,12 +15,12 @@ import {BackendException} from 'TYPO3/CMS/Backend/BackendException';
 
 describe('TYPO3/CMS/Backend/BackendException', () => {
     it('sets exception message', () => {
-        const backendException = new BackendException('some message');
+        const backendException: BackendException = new BackendException('some message');
         expect(backendException.message).toBe('some message');
     });
 
     it('sets exception code', () => {
-        const backendException = new BackendException('', 12345);
+        const backendException: BackendException = new BackendException('', 12345);
         expect(backendException.code).toBe(12345);
     });
 });

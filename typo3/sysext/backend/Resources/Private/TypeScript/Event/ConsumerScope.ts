@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
+import * as $ from 'jquery';
 import Consumable = require('./Consumable');
 import InteractionRequest = require('./InteractionRequest');
 
@@ -26,13 +26,13 @@ class ConsumerScope {
     return this.consumers.indexOf(consumer) !== -1;
   }
 
-  public attach(consumer: Consumable) {
+  public attach(consumer: Consumable): void {
     if (!this.hasConsumer(consumer)) {
       this.consumers.push(consumer);
     }
   }
 
-  public detach(consumer: Consumable) {
+  public detach(consumer: Consumable): void {
     this.consumers = this.consumers.filter(
       (currentConsumer: Consumable) => currentConsumer !== consumer,
     );

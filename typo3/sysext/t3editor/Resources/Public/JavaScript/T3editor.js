@@ -47,7 +47,7 @@ define(["require", "exports", "cm/lib/codemirror", "jquery"], function (require,
                     var modeParts_1 = config.mode.split('/');
                     var addons = $.merge([modeParts_1.join('/')], JSON.parse(config.addons));
                     var options_1 = JSON.parse(config.options);
-                    // Load mode + registered addons
+                    // load mode + registered addons
                     require(addons, function () {
                         var cm = CodeMirror.fromTextArea($textarea.get(0), {
                             extraKeys: {
@@ -66,7 +66,7 @@ define(["require", "exports", "cm/lib/codemirror", "jquery"], function (require,
                             lineWrapping: true,
                             mode: modeParts_1[modeParts_1.length - 1],
                         });
-                        // Set options
+                        // set options
                         $.each(options_1, function (key, value) {
                             cm.setOption(key, value);
                         });

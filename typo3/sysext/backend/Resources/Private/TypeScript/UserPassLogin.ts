@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
+import * as $ from 'jquery';
 import Login = require('./Login');
 
 /**
@@ -20,6 +20,8 @@ import Login = require('./Login');
  * @exports TYPO3/CMS/Backend/UserPassLogin
  */
 class UserPassLogin {
+
+  protected options: any;
 
   /**
    * Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
@@ -52,8 +54,6 @@ class UserPassLogin {
       || (pressedKeyAsciiCode >= 97 && pressedKeyAsciiCode <= 122 && shiftPressed);
   }
 
-  protected options: any;
-
   constructor() {
     this.options = {
       passwordField: '.t3js-login-password-field',
@@ -69,7 +69,7 @@ class UserPassLogin {
     $usernameField.on('keypress', this.showCapsLockWarning);
     $passwordField.on('keypress', this.showCapsLockWarning);
 
-    // If the login screen is shown in the login_frameset window for re-login,
+    // if the login screen is shown in the login_frameset window for re-login,
     // then try to get the username of the current/former login from opening windows main frame:
     try {
       if (parent.opener

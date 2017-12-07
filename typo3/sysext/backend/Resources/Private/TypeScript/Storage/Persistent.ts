@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
+import * as $ from 'jquery';
 
 /**
  * Module: TYPO3/CMS/Backend/Storage/Persistent

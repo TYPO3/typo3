@@ -46,7 +46,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/FormEngine", "bootstr
                         }).text($field.find(me.labelSelector).text()));
                     });
                     $toggleButton.removeClass('hidden');
-                    // Bootstrap has no official API to update the content of a popover w/o destroying it
+                    // bootstrap has no official API to update the content of a popover w/o destroying it
                     var $popover = $toggleButton.data('bs.popover');
                     if ($popover) {
                         $popover.options.content = $list_1.wrapAll('<div>').parent().html();
@@ -68,7 +68,7 @@ define(["require", "exports", "jquery", "TYPO3/CMS/Backend/FormEngine", "bootstr
                 var $listItem = $(e.currentTarget);
                 var referenceFieldId = $listItem.data('fieldId');
                 var $referenceField = $('#' + referenceFieldId);
-                // Iterate possibly nested tab panels
+                // iterate possibly nested tab panels
                 $referenceField.parents('[id][role="tabpanel"]').each(function () {
                     $('[aria-controls="' + $(this).attr('id') + '"]').tab('show');
                 });

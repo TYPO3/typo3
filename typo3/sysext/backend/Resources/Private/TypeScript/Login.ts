@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ = require('jquery');
+import * as $ from 'jquery';
 import 'TYPO3/CMS/Backend/jquery.clearable';
 
 /**
@@ -152,7 +152,7 @@ class BackendLogin {
     $(document).ajaxStart(this.showLoadingIndicator);
     $(this.options.loginForm).on('submit', this.handleSubmit);
 
-    // The Interface selector is not always present, so this check is needed
+    // the Interface selector is not always present, so this check is needed
     if ($(this.options.interfaceField).length > 0) {
       $(document).on('change blur', this.options.interfaceField, this.interfaceSelectorChanged);
     }

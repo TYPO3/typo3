@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
+import * as $ from 'jquery';
 import 'TYPO3/CMS/Core/Contrib/jquery.minicolors';
 
 /**
@@ -53,5 +53,5 @@ class ColorPicker {
     });
   }
 }
-// Create an instance and return it
+// create an instance and return it
 export = new ColorPicker();

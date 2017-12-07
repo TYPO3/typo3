@@ -11,14 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ = require('jquery');
 import InteractionRequest = require('./InteractionRequest');
 import InteractionRequestAssignment = require('./InteractionRequestAssignment');
 
 class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];
 
-  public attachFor(request: InteractionRequest, deferred: any) {
+  public attachFor(request: InteractionRequest, deferred: any): void {
     let targetAssignment = this.getFor(request);
     if (targetAssignment === null) {
       targetAssignment = {request, deferreds: []} as InteractionRequestAssignment;
@@ -27,7 +26,7 @@ class InteractionRequestMap {
     targetAssignment.deferreds.push(deferred);
   }
 
-  public detachFor(request: InteractionRequest) {
+  public detachFor(request: InteractionRequest): void {
     const targetAssignment = this.getFor(request);
     this.assignments = this.assignments.filter(
       (assignment: InteractionRequestAssignment) => assignment === targetAssignment,
@@ -48,7 +47,7 @@ class InteractionRequestMap {
     return targetAssignment;
   }
 
-  public resolveFor(triggerEvent: InteractionRequest) {
+  public resolveFor(triggerEvent: InteractionRequest): boolean {
     const targetAssignment = this.getFor(triggerEvent);
     if (targetAssignment === null) {
       return false;
@@ -60,7 +59,7 @@ class InteractionRequestMap {
     return true;
   }
 
-  public rejectFor(triggerEvent: InteractionRequest) {
+  public rejectFor(triggerEvent: InteractionRequest): boolean {
     const targetAssignment = this.getFor(triggerEvent);
     if (targetAssignment === null) {
       return false;

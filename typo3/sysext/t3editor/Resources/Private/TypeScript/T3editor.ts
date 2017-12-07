@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import CodeMirror = require('cm/lib/codemirror');
-import $ = require('jquery');
+import * as CodeMirror from 'cm/lib/codemirror';
+import * as $ from 'jquery';
 
 /**
  * Module: TYPO3/CMS/T3editor/T3editor
@@ -48,7 +48,7 @@ class T3editor {
    * Initializes CodeMirror on available texteditors
    */
   public findAndInitializeEditors(): void {
-    $(document).find('textarea.t3editor').each(function(this: Element) {
+    $(document).find('textarea.t3editor').each(function(this: Element): void {
       const $textarea = $(this);
 
       if (!$textarea.prop('is_t3editor')) {
@@ -57,7 +57,7 @@ class T3editor {
         const addons = $.merge([modeParts.join('/')], JSON.parse(config.addons));
         const options = JSON.parse(config.options);
 
-        // Load mode + registered addons
+        // load mode + registered addons
         require(addons, (): void => {
           const cm = CodeMirror.fromTextArea($textarea.get(0), {
             extraKeys: {
@@ -77,7 +77,7 @@ class T3editor {
             mode: modeParts[modeParts.length - 1],
           });
 
-          // Set options
+          // set options
           $.each(options, (key: string, value: any): void => {
             cm.setOption(key, value);
           });
@@ -106,5 +106,5 @@ class T3editor {
   }
 }
 
-// Create an instance and return it
+// create an instance and return it
 export = new T3editor();

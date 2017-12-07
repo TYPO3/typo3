@@ -12,7 +12,7 @@
  */
 
 import 'bootstrap';
-import $ = require('jquery');
+import * as $ from 'jquery';
 import Client = require('./Storage/Client');
 
 /**
@@ -21,16 +21,16 @@ import Client = require('./Storage/Client');
  */
 class Tabs {
 
+  public storage: any;
+  protected cacheTimeInSeconds: number = 1800;
+  protected storeLastActiveTab: boolean = true;
+
   /**
    * Resolve timestamp
    */
   public static getTimestamp(): number {
     return Math.round((new Date()).getTime() / 1000);
   }
-
-  public storage: any;
-  protected cacheTimeInSeconds = 1800;
-  protected storeLastActiveTab = true;
 
   constructor() {
     this.storage = Client;
@@ -74,7 +74,7 @@ class Tabs {
    * @param {string} id
    * @param {string} target
    */
-  public storeActiveTab(id: string, target: string) {
+  public storeActiveTab(id: string, target: string): void {
     this.storage.set(id, target);
     this.storage.set(id + '.expire', Tabs.getTimestamp() + this.cacheTimeInSeconds);
   }

@@ -117,7 +117,7 @@ define(["require", "exports", "jquery", "bootstrap", "TYPO3/CMS/Backend/jquery.c
             this.initializeEvents = function () {
                 $(document).ajaxStart(_this.showLoadingIndicator);
                 $(_this.options.loginForm).on('submit', _this.handleSubmit);
-                // The Interface selector is not always present, so this check is needed
+                // the Interface selector is not always present, so this check is needed
                 if ($(_this.options.interfaceField).length > 0) {
                     $(document).on('change blur', _this.options.interfaceField, _this.interfaceSelectorChanged);
                 }
