@@ -179,6 +179,8 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->generatePageTitle()->willReturn('');
+        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->page = [
@@ -212,8 +214,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->generatePageTitle()->willReturn('');
+        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->config['config'] = [];
         $tsfe->page = [
             'title' => ''
         ];
@@ -246,8 +251,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->generatePageTitle()->willReturn('');
+        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->config['config'] = [];
         $tsfe->page = [
             'title' => ''
         ];
@@ -334,8 +342,11 @@ class PageGeneratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->generatePageTitle()->willReturn('');
+        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
+        $tsfe->config['config'] = [];
         $tsfe->page = [
             'title' => ''
         ];

@@ -1528,4 +1528,11 @@ return [
             'Breaking-83256-RemovedLockFilePathFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->printTitle' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
+        ],
+    ],
 ];

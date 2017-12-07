@@ -34,6 +34,7 @@ class PageGenerator
     /**
      * Do not render title tag
      * Typoscript setting: [config][noPageTitle]
+     * @deprecated will not be used anymore, and will be removed in TYPO3 v10.
      */
     const NO_PAGE_TITLE = 2;
 
@@ -517,7 +518,7 @@ class PageGenerator
         if (is_array($tsfe->pSetup['footerData.'])) {
             $pageRenderer->addFooterData($tsfe->cObj->cObjGet($tsfe->pSetup['footerData.'], 'footerData.'));
         }
-        static::generatePageTitle();
+        $tsfe->generatePageTitle();
 
         static::generateMetaTagHtml(
             isset($tsfe->pSetup['meta.']) ? $tsfe->pSetup['meta.'] : [],
@@ -796,9 +797,12 @@ class PageGenerator
      * @param string $haystack The string in which to find $needle
      * @param string $needle The string to find in $haystack
      * @return bool Returns TRUE if $needle matches or is found in $haystack
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, is now called within TSFE itself, if needed outside the regular calculations, reimplement the method on your own.
      */
     public static function isAllowedLinkVarValue($haystack, $needle)
     {
+        trigger_error('The method will be removed in TYPO3 v10.0, if needed outside of linkVar calculation, re-implement the method in your own extension', E_USER_DEPRECATED);
         $OK = false;
         // Integer
         if ($needle === 'int' || $needle === 'integer') {
@@ -837,45 +841,13 @@ class PageGenerator
      * Takes the settings [config][noPageTitle], [config][pageTitleFirst], [config][titleTagFunction]
      * [config][pageTitleSeparator] and [config][noPageTitle] into account.
      * Furthermore $GLOBALS[TSFE]->altPageTitle is observed.
+     *
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10.0, as TSFE->generatePageTitle() should be used instead.
      */
     public static function generatePageTitle()
     {
-        /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $GLOBALS['TSFE'];
-
-        $pageTitleSeparator = '';
-
-        // check for a custom pageTitleSeparator, and perform stdWrap on it
-        if (isset($tsfe->config['config']['pageTitleSeparator']) && $tsfe->config['config']['pageTitleSeparator'] !== '') {
-            $pageTitleSeparator = $tsfe->config['config']['pageTitleSeparator'];
-
-            if (isset($tsfe->config['config']['pageTitleSeparator.']) && is_array($tsfe->config['config']['pageTitleSeparator.'])) {
-                $pageTitleSeparator = $tsfe->cObj->stdWrap($pageTitleSeparator, $tsfe->config['config']['pageTitleSeparator.']);
-            } else {
-                $pageTitleSeparator .= ' ';
-            }
-        }
-
-        $titleTagContent = $tsfe->tmpl->printTitle(
-            $tsfe->altPageTitle ?: $tsfe->page['title'],
-            $tsfe->config['config']['noPageTitle'],
-            $tsfe->config['config']['pageTitleFirst'],
-            $pageTitleSeparator
-        );
-        if ($tsfe->config['config']['titleTagFunction']) {
-            $titleTagContent = $tsfe->cObj->callUserFunction(
-                $tsfe->config['config']['titleTagFunction'],
-                [],
-                $titleTagContent
-            );
-        }
-        // stdWrap around the title tag
-        if (isset($tsfe->config['config']['pageTitle.']) && is_array($tsfe->config['config']['pageTitle.'])) {
-            $titleTagContent = $tsfe->cObj->stdWrap($titleTagContent, $tsfe->config['config']['pageTitle.']);
-        }
-        if ($titleTagContent !== '' && (int)$tsfe->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
-            static::getPageRenderer()->setTitle($titleTagContent);
-        }
+        trigger_error('This method will be removed in TYPO3 v10.0. Use $TSFE->generatePageTitle() instead.', E_USER_DEPRECATED);
+        $GLOBALS['TSFE']->generatePageTitle();
     }
 
     /**

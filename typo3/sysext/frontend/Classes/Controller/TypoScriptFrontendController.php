@@ -2816,7 +2816,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
                 if (!is_array($value)) {
                     $temp = rawurlencode($value);
-                    if ($test !== '' && !PageGenerator::isAllowedLinkVarValue($temp, $test)) {
+                    if ($test !== '' && !$this->isAllowedLinkVarValue($temp, $test)) {
                         // Error: This value was not allowed for this key
                         continue;
                     }
@@ -2853,6 +2853,49 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // replace all "unique" strings back to ","
         return str_replace($tempCommaReplacementString, ',', $string);
+    }
+
+    /**
+     * Checks if the value defined in "config.linkVars" contains an allowed value.
+     * Otherwise, return FALSE which means the value will not be added to any links.
+     *
+     * @param string $haystack The string in which to find $needle
+     * @param string $needle The string to find in $haystack
+     * @return bool Returns TRUE if $needle matches or is found in $haystack
+     */
+    protected function isAllowedLinkVarValue(string $haystack, string $needle): bool
+    {
+        $isAllowed = false;
+        // Integer
+        if ($needle === 'int' || $needle === 'integer') {
+            if (MathUtility::canBeInterpretedAsInteger($haystack)) {
+                $isAllowed = true;
+            }
+        } elseif (preg_match('/^\\/.+\\/[imsxeADSUXu]*$/', $needle)) {
+            // Regular expression, only "//" is allowed as delimiter
+            if (@preg_match($needle, $haystack)) {
+                $isAllowed = true;
+            }
+        } elseif (strstr($needle, '-')) {
+            // Range
+            if (MathUtility::canBeInterpretedAsInteger($haystack)) {
+                $range = explode('-', $needle);
+                if ($range[0] <= $haystack && $range[1] >= $haystack) {
+                    $isAllowed = true;
+                }
+            }
+        } elseif (strstr($needle, '|')) {
+            // List
+            // Trim the input
+            $haystack = str_replace(' ', '', $haystack);
+            if (strstr('|' . $needle . '|', '|' . $haystack . '|')) {
+                $isAllowed = true;
+            }
+        } elseif ((string)$needle === (string)$haystack) {
+            // String comparison
+            $isAllowed = true;
+        }
+        return $isAllowed;
     }
 
     /**
@@ -2931,7 +2974,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->tempContent = false;
         if (!$this->no_cache) {
             $seconds = 30;
-            $title = htmlspecialchars($this->tmpl->printTitle($this->page['title']));
+            $title = htmlspecialchars($this->printTitle($this->page['title']));
             $request_uri = htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI'));
             $stdMsg = '
 		<strong>Page is being generated.</strong><br />
@@ -3298,11 +3341,82 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Generate the page title again as TSFE->altPageTitle might have been modified by an inc script
+     * Generate the page title, can be called multiple times,
+     * as $this->altPageTitle might have been modified by an uncached plugin etc.
+     *
+     * @return string the generated page title
      */
-    protected function regeneratePageTitle()
+    public function generatePageTitle(): string
     {
-        PageGenerator::generatePageTitle();
+        $pageTitleSeparator = '';
+
+        // Check for a custom pageTitleSeparator, and perform stdWrap on it
+        if (isset($this->config['config']['pageTitleSeparator']) && $this->config['config']['pageTitleSeparator'] !== '') {
+            $pageTitleSeparator = $this->config['config']['pageTitleSeparator'];
+
+            if (isset($this->config['config']['pageTitleSeparator.']) && is_array($this->config['config']['pageTitleSeparator.'])) {
+                $pageTitleSeparator = $this->cObj->stdWrap($pageTitleSeparator, $this->config['config']['pageTitleSeparator.']);
+            } else {
+                $pageTitleSeparator .= ' ';
+            }
+        }
+
+        $pageTitle = $this->altPageTitle ?: $this->page['title'] ?? '';
+        $titleTagContent = $this->printTitle(
+            $pageTitle,
+            (bool)$this->config['config']['noPageTitle'],
+            (bool)$this->config['config']['pageTitleFirst'],
+            $pageTitleSeparator
+        );
+        if ($this->config['config']['titleTagFunction']) {
+            $titleTagContent = $this->cObj->callUserFunction(
+                $this->config['config']['titleTagFunction'],
+                [],
+                $titleTagContent
+            );
+        }
+        // stdWrap around the title tag
+        if (isset($this->config['config']['pageTitle.']) && is_array($this->config['config']['pageTitle.'])) {
+            $titleTagContent = $this->cObj->stdWrap($titleTagContent, $this->config['config']['pageTitle.']);
+        }
+
+        // config.noPageTitle = 2 - means do not render the page title
+        if ($this->config['config']['noPageTitle'] === 2) {
+            $titleTagContent = '';
+        }
+        if ($titleTagContent !== '') {
+            $this->pageRenderer->setTitle($titleTagContent);
+        }
+        return (string)$titleTagContent;
+    }
+
+    /**
+     * Compiles the content for the page <title> tag.
+     *
+     * @param string $pageTitle The input title string, typically the "title" field of a page's record.
+     * @param bool $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
+     * @param bool $showTitleFirst If set, then "sitetitle" and $title is swapped
+     * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
+     * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
+     * @see tempPageCacheContent(), generatePageTitle()
+     */
+    protected function printTitle(string $pageTitle, bool $noTitle = false, bool $showTitleFirst = false, string $pageTitleSeparator = ''): string
+    {
+        $siteTitle = trim($this->tmpl->setup['sitetitle'] ?? '');
+        $pageTitle = $noTitle ? '' : $pageTitle;
+        if ($showTitleFirst) {
+            $temp = $siteTitle;
+            $siteTitle = $pageTitle;
+            $pageTitle = $temp;
+        }
+        // only show a separator if there are both site title and page title
+        if ($pageTitle === '' || $siteTitle === '') {
+            $pageTitleSeparator = '';
+        } elseif (empty($pageTitleSeparator)) {
+            // use the default separator if non given
+            $pageTitleSeparator = ': ';
+        }
+        return $siteTitle . $pageTitleSeparator . $pageTitle;
     }
 
     /**
@@ -3329,7 +3443,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->recursivelyReplaceIntPlaceholdersInContent();
         $this->getTimeTracker()->push('Substitute header section');
         $this->INTincScript_loadJSCode();
-        $this->regeneratePageTitle();
+        $this->generatePageTitle();
 
         $this->content = str_replace(
             [

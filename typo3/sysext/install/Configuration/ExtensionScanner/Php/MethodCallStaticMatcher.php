@@ -533,4 +533,18 @@ return [
             'Deprecation-83118-DeleteClauseMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator::generatePageTitle' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageGenerator::isAllowedLinkVarValue' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-83254-MovedPageGenerationMethodsIntoTSFE.rst',
+        ],
+    ],
 ];

@@ -1407,9 +1407,11 @@ class TemplateService
      * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
      * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContentWithHeader()
+     * @deprecated since TYPO3 v9, will be removed in TYPO3 v10, use $TSFE->generatePageTitle() instead.
      */
     public function printTitle($pageTitle, $noTitle = false, $showTitleFirst = false, $pageTitleSeparator = '')
     {
+        trigger_error('This method will be removed in TYPO3 v10. Title tag generation has been moved into TSFE itself, re-implement this method if you need to, otherwise use TSFE->generatePageTitle() for full usage.', E_USER_DEPRECATED);
         $siteTitle = trim($this->setup['sitetitle']);
         $pageTitle = $noTitle ? '' : $pageTitle;
         if ($showTitleFirst) {
