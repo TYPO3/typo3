@@ -419,6 +419,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
         $arrayRepresentation['realId'] = $this->getId();
         $arrayRepresentation['nodeData']['id'] = $this->getId();
         $arrayRepresentation['readableRootline'] = $this->getReadableRootline();
+        $arrayRepresentation['canBeRemoved'] = $this->canBeRemoved();
         $arrayRepresentation['nodeData']['readableRootline'] = $this->getReadableRootline();
         $arrayRepresentation['nodeData']['mountPoint'] = $this->getMountPoint();
         $arrayRepresentation['nodeData']['workspaceId'] = $this->getWorkspaceId();

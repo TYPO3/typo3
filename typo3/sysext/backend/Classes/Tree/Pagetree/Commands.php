@@ -374,7 +374,6 @@ class Commands
         }
         if (
             !$subNode->canBeEdited()
-            || !$subNode->canBeRemoved()
             || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
             $subNode->setDraggable(false);

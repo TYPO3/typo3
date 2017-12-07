@@ -451,7 +451,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	 */
 	initDd: function(treePanel, node) {
 		var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
-		if (this.deletionDropZoneId &&
+		if (this.deletionDropZoneId && node.attributes.canBeRemoved &&
 			(!nodeHasChildNodes ||
 			(nodeHasChildNodes && TYPO3.Components.PageTree.Configuration.canDeleteRecursivly)
 		)) {
