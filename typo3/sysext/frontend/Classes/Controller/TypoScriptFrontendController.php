@@ -483,12 +483,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $absRefPrefix = '';
 
     /**
-     * Lock file path
-     * @var string
-     */
-    public $lockFilePath = '';
-
-    /**
      * <A>-tag parameters
      * @var string
      */
@@ -3208,8 +3202,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             $this->absRefPrefix = '';
         }
-        $this->lockFilePath = '' . $this->config['config']['lockFilePath'];
-        $this->lockFilePath = $this->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
         $this->ATagParams = trim($this->config['config']['ATagParams']) ? ' ' . trim($this->config['config']['ATagParams']) : '';
         $this->initializeSearchWordDataInTsfe();
         // linkVars

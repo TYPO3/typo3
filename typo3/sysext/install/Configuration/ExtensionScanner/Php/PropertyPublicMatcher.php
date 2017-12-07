@@ -219,6 +219,11 @@ return [
             'Breaking-81460-DeprecateGetByTagOnCacheFrontends.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->lockFilePath' => [
+        'restFiles' => [
+            'Breaking-83256-RemovedLockFilePathFunctionality.rst',
+        ],
+    ],
 
     // Deprecated public properties
     'TYPO3\CMS\Frontend\Page\PageRepository->workspaceCache' => [

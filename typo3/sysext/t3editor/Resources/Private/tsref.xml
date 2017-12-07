@@ -541,11 +541,6 @@ locale_all = da_DK]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="lockFilePath" type="string">
-			<description><![CDATA[This is used to lock paths to be "inside" this path.
-Used by "filelist" in stdWrap]]></description>
-			<default><![CDATA[fileadmin/]]></default>
-		</property>
 		<property name="message_page_is_being_generated" type="string">
 			<description><![CDATA[Alternative HTML message that appears if a page is being generated.
 Normally when a page is being generated a temporary copy is stored in the cache-table with an expire-time of 30 seconds.

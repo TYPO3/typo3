@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -3067,15 +3068,28 @@ class ContentObjectRenderer
         if ($data === '') {
             return '';
         }
-        $data_arr = explode('|', $data);
+        list($possiblePath, $ext_list, $sorting, $reverse, $useFullPath) = GeneralUtility::trimExplode('|', $data);
         // read directory:
         // MUST exist!
         $path = '';
-        if ($this->getTypoScriptFrontendController()->lockFilePath) {
-            // Cleaning name..., only relative paths accepted.
-            $path = $this->clean_directory($data_arr[0]);
-            // See if path starts with lockFilePath, the additional '/' is needed because clean_directory gets rid of it
-            $path = GeneralUtility::isFirstPartOfStr($path . '/', $this->getTypoScriptFrontendController()->lockFilePath) ? $path : '';
+        // proceeds if no '//', '..' or '\' is in the $theFile
+        if (GeneralUtility::validPathStr($possiblePath)) {
+            // Removes all dots, slashes and spaces after a path.
+            $possiblePath = preg_replace('/[\\/\\. ]*$/', '', $possiblePath);
+            if (!GeneralUtility::isAbsPath($possiblePath) && @is_dir($possiblePath)) {
+                // Now check if it matches one of the FAL storages
+                $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+                $storages = $storageRepository->findAll();
+                foreach ($storages as $storage) {
+                    if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
+                        $folder = $storage->getPublicUrl($storage->getRootLevelFolder(), true);
+                        if (GeneralUtility::isFirstPartOfStr($possiblePath . '/', $folder)) {
+                            $path = $possiblePath;
+                            break;
+                        }
+                    }
+                }
+            }
         }
         if (!$path) {
             return '';
@@ -3084,8 +3098,7 @@ class ContentObjectRenderer
             'files' => [],
             'sorting' => []
         ];
-        $ext_list = strtolower(GeneralUtility::uniqueList($data_arr[1]));
-        $sorting = trim($data_arr[2]);
+        $ext_list = strtolower(GeneralUtility::uniqueList($ext_list));
         // Read dir:
         $d = @dir($path);
         if (is_object($d)) {
@@ -3126,7 +3139,7 @@ class ContentObjectRenderer
         }
         // Sort if required
         if (!empty($items['sorting'])) {
-            if (strtolower(trim($data_arr[3])) !== 'r') {
+            if (strtolower($reverse) !== 'r') {
                 asort($items['sorting']);
             } else {
                 arsort($items['sorting']);
@@ -3135,33 +3148,11 @@ class ContentObjectRenderer
         if (!empty($items['files'])) {
             // Make list
             reset($items['sorting']);
-            $fullPath = trim($data_arr[4]);
             $list_arr = [];
             foreach ($items['sorting'] as $key => $v) {
-                $list_arr[] = $fullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
+                $list_arr[] = $useFullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
             }
             return implode(',', $list_arr);
-        }
-        return '';
-    }
-
-    /**
-     * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
-     *
-     * @param string $theDir Absolute path to directory
-     * @return string The directory path if it existed as was valid to access.
-     * @access private
-     * @see filelist()
-     */
-    public function clean_directory($theDir)
-    {
-        // proceeds if no '//', '..' or '\' is in the $theFile
-        if (GeneralUtility::validPathStr($theDir)) {
-            // Removes all dots, slashes and spaces after a path...
-            $theDir = preg_replace('/[\\/\\. ]*$/', '', $theDir);
-            if (!GeneralUtility::isAbsPath($theDir) && @is_dir($theDir)) {
-                return $theDir;
-            }
         }
         return '';
     }

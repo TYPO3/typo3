@@ -542,7 +542,6 @@
 				'locale_all': kw('locale_all'),
 				'localNesting': kw('localNesting'),
 				'locationData': kw('locationData'),
-				'lockFilePath': kw('lockFilePath'),
 				'lockToIP': kw('lockToIP'),
 				'login': B,
 				'loginUser': A,

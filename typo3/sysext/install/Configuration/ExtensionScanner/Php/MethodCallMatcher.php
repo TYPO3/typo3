@@ -1521,4 +1521,11 @@ return [
             'Breaking-83122-RemovedStdWrapOptionTCAselectItem.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->clean_directory' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-83256-RemovedLockFilePathFunctionality.rst',
+        ],
+    ],
 ];
