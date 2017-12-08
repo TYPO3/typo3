@@ -10,7 +10,9 @@ Description
 ===========
 
 Passing arguments to form element property translations is now supported to enrich
-translations with variable values:
+translations with variable values.
+
+This works for simple, static values purely in YAML:
 
 .. code-block:: yaml
 
@@ -27,7 +29,19 @@ translations with variable values:
                 - useful
 
 Alternatively, translation arguments can be set via :typoscript:`formDefinitionOverrides`
-in TypoScript:
+in TypoScript. A common usecase is a checkbox for user confirmation linking to details of
+the topic:
+
+.. code-block:: yaml
+
+    renderables:
+      fieldWithTranslationArguments:
+        identifier: field-with-translation-arguments
+        type: Checkbox
+        label: I agree to the <a href="%s">terms and conditions</a>
+        renderingOptions:
+          translation:
+            translationFile: path/to/locallang.xlf
 
 .. code-block: typoscript
 
@@ -45,6 +59,7 @@ in TypoScript:
                           label {
                             0 = TEXT
                             0.typolink {
+                              # Terms and conditions page, could be set also via TypoScript constants
                               parameter = 42
                               returnLast = url
                             }
