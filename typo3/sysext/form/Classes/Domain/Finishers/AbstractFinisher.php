@@ -205,7 +205,7 @@ abstract class AbstractFinisher implements FinisherInterface
                     );
                 }
             }
-            if (!is_string($value) && !is_int($value)) {
+            if (!is_string($value) && !is_numeric($value)) {
                 $value = '{' . $match[1] . '}';
             }
             return $value;
