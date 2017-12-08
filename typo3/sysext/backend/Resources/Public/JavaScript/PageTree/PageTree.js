@@ -234,14 +234,12 @@ define(['jquery',
 
     PageTree.prototype.hideChildren = function (node) {
       _super_.hideChildren(node);
-      var nodeIdHex = node.identifier.toString(16);
-      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + nodeIdHex, 0);
+      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 0);
     };
 
     PageTree.prototype.showChildren = function (node) {
       _super_.showChildren(node);
-      var nodeIdHex = node.identifier.toString(16);
-      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + nodeIdHex, 1);
+      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 1);
     };
 
     PageTree.prototype.updateNodeBgClass = function (nodeBg) {
