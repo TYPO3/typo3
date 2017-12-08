@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Workspaces\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Implements the AJAX functionality for the various asynchronous calls
@@ -28,10 +30,9 @@ class AjaxController
      * called by the Backend toolbar menu
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function switchWorkspaceAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function switchWorkspaceAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -68,8 +69,7 @@ class AjaxController
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid
         ];
-        $response->getBody()->write(json_encode($ajaxResponse));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $ajaxResponse);
     }
 
     /**

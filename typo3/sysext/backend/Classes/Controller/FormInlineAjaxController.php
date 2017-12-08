@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -38,10 +39,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Create a new inline child via AJAX.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function createAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function createAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
@@ -162,19 +162,16 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // Fade out and fade in the new record in the browser view to catch the user's eye
         $jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
 
-        $response->getBody()->write(json_encode($jsonArray));
-
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $jsonArray);
     }
 
     /**
      * Show the details of a child record.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function detailsAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function detailsAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
 
@@ -246,9 +243,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             $jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',\'' . (int)$child['uid'] . '\');';
         }
 
-        $response->getBody()->write(json_encode($jsonArray));
-
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $jsonArray);
     }
 
     /**
@@ -256,10 +251,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * Handle AJAX calls to localize all records of a parent, localize a single record or to synchronize with the original language parent.
      *
      * @param ServerRequestInterface $request the incoming request
-     * @param ResponseInterface $response the empty response
      * @return ResponseInterface the filled response
      */
-    public function synchronizeLocalizeAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function synchronizeLocalizeAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
         $domObjectId = $ajaxArguments[0];
@@ -273,7 +267,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $inlineStackProcessor->injectAjaxConfiguration($parentConfig);
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
 
-        $jsonArray = false;
+        $jsonArray = [
+            'data' => '',
+            'stylesheetFiles' => [],
+            'scriptCall' => [],
+        ];
         if ($type === 'localize' || $type === 'synchronize' || MathUtility::canBeInterpretedAsInteger($type)) {
             // Parent, this table embeds the child table
             $parent = $inlineStackProcessor->getStructureLevel(-1);
@@ -339,11 +337,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             $newItemList = $tce->registerDBList[$parent['table']][$parent['uid']][$parentFieldName];
 
-            $jsonArray = [
-                'data' => '',
-                'stylesheetFiles' => [],
-                'scriptCall' => [],
-            ];
             $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
             $nameObjectForeignTable = $nameObject . '-' . $child['table'];
 
@@ -408,20 +401,16 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 . ', json.data);';
             }
         }
-
-        $response->getBody()->write(json_encode($jsonArray));
-
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($jsonArray);
     }
 
     /**
      * Store status of inline children expand / collapse state in backend user uC.
      *
      * @param ServerRequestInterface $request the incoming request
-     * @param ResponseInterface $response the empty response
      * @return ResponseInterface the filled response
      */
-    public function expandOrCollapseAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function expandOrCollapseAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
         $domObjectId = $ajaxArguments[0];
@@ -461,9 +450,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $backendUser->writeUC();
             }
         }
-
-        $response->getBody()->write(json_encode([]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([]);
     }
 
     /**

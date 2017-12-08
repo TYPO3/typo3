@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -481,10 +482,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      * Deletes a shortcut through an AJAX call
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function removeShortcutAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function removeShortcutAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -507,8 +507,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 $success = true;
             }
         }
-        $response->getBody()->write(json_encode(['success' => $success]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['success' => $success]);
     }
 
     /**

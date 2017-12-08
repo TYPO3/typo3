@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -232,7 +233,7 @@ class FileController
                     }
                 }
             }
-            $response->getBody()->write(json_encode($flatResult));
+            return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($flatResult);
         }
         return $response;
     }
@@ -241,10 +242,9 @@ class FileController
      * Ajax entry point to check if a file exists in a folder
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function fileExistsInFolderAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function fileExistsInFolderAction(ServerRequestInterface $request)
     {
         $fileName = isset($request->getParsedBody()['fileName']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['fileName'];
         $fileTarget = isset($request->getParsedBody()['fileTarget']) ? $request->getParsedBody()['fileTarget'] : $request->getQueryParams()['fileTarget'];
@@ -259,8 +259,7 @@ class FileController
         if ($fileTargetObject->hasFile($processedFileName)) {
             $result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
         }
-        $response->getBody()->write(json_encode($result));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([$result]);
     }
 
     /**

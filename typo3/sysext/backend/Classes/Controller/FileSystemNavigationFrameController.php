@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -228,17 +229,14 @@ class FileSystemNavigationFrameController
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function ajaxExpandCollapse(ServerRequestInterface $request, ResponseInterface $response)
+    public function ajaxExpandCollapse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->init();
         $tree = $this->foldertree->getBrowsableTree();
         if ($this->foldertree->getAjaxStatus() === false) {
-            $response = $response->withStatus(500);
-        } else {
-            $response->getBody()->write(json_encode($tree));
+            return $response->withStatus(500);
         }
-
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $tree);
     }
 
     /**

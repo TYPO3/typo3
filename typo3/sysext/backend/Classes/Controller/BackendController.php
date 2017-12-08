@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -585,28 +586,22 @@ class BackendController
      * Returns the Module menu for the AJAX request
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getModuleMenu(ServerRequestInterface $request, ResponseInterface $response)
+    public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
-        $content = $this->generateModuleMenu();
-
-        $response->getBody()->write(json_encode(['menu' => $content]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['menu' => $this->generateModuleMenu()]);
     }
 
     /**
      * Returns the toolbar for the AJAX request
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getTopbar(ServerRequestInterface $request, ResponseInterface $response)
+    public function getTopbar(ServerRequestInterface $request): ResponseInterface
     {
-        $response->getBody()->write(json_encode(['topbar' => $this->renderTopbar()]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['topbar' => $this->renderTopbar()]);
     }
 
     /**

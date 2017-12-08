@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\ContextMenu\ContextMenu;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,10 +40,9 @@ class ContextMenuController
      * Renders a context menu
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getContextMenuAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function getContextMenuAction(ServerRequestInterface $request): ResponseInterface
     {
         $contextMenu = GeneralUtility::makeInstance(ContextMenu::class);
 
@@ -52,16 +52,14 @@ class ContextMenuController
         if (!is_array($items)) {
             $items = [];
         }
-        $response->getBody()->write(json_encode($items));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($items);
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function clipboardAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function clipboardAction(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Clipboard $clipboard */
         $clipboard = GeneralUtility::makeInstance(Clipboard::class);
@@ -72,8 +70,7 @@ class ContextMenuController
         $clipboard->cleanCurrent();
 
         $clipboard->endClipboard();
-        $response->getBody()->write(json_encode([]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([]);
     }
 
     /**

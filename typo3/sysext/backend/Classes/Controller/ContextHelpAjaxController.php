@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,16 +34,16 @@ class ContextHelpAjaxController
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $params = isset($request->getParsedBody()['params']) ? $request->getParsedBody()['params'] : $request->getQueryParams()['params'];
         if ($params['action'] === 'getContextHelp') {
             $result = $this->getContextHelp($params['table'], $params['field']);
-            $response->getBody()->write(json_encode([
+            return GeneralUtility::makeInstance(JsonResponse::class, [
                 'title' => $result['title'],
                 'content' => $result['description'],
                 'link' => $result['moreInfo']
-            ]));
+            ]);
         }
         return $response;
     }

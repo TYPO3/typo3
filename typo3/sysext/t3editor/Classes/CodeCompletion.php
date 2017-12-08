@@ -15,6 +15,8 @@ namespace TYPO3\CMS\T3editor;
  */
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,16 +58,15 @@ class CodeCompletion
      * @param int $pageId ID of the page
      * @return ResponseInterface
      */
-    protected function loadTemplates($pageId)
+    protected function loadTemplates($pageId): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Core\Http\Response $response */
-        $response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+        $response = GeneralUtility::makeInstance(Response::class);
 
         // Check whether access is granted (only admin have access to sys_template records):
         if ($GLOBALS['BE_USER']->isAdmin()) {
             // Check whether there is a pageId given:
             if ($pageId) {
-                $response->getBody()->write(json_encode($this->getMergedTemplates($pageId)));
+                $response = GeneralUtility::makeInstance(JsonResponse::class)->setPayload($this->getMergedTemplates($pageId));
             } else {
                 $response->getBody()->write($GLOBALS['LANG']->getLL('pageIDInteger'));
                 $response = $response->withStatus(500);

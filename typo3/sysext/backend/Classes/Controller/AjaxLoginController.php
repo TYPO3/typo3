@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is the ajax handler for backend login after timeout.
@@ -31,10 +33,9 @@ class AjaxLoginController
      * If it was unsuccessful, we display that and show the login box again.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function loginAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function loginAction(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->isAuthorizedBackendSession()) {
             $result = ['success' => true];
@@ -46,58 +47,49 @@ class AjaxLoginController
         } else {
             $result = ['success' => false];
         }
-
-        $response->getBody()->write(json_encode(['login' => $result]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['login' => $result]);
     }
 
     /**
      * Logs out the current BE user
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function logoutAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function logoutAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $backendUser->logoff();
-
-        $response->getBody()->write(json_encode([
+        return GeneralUtility::makeInstance(JsonResponse::class, [
             'logout' => [
                 'success' => !isset($backendUser->user['uid'])
             ]
-        ]));
-        return $response;
+        ]);
     }
 
     /**
      * Refreshes the login without needing login information. We just refresh the session.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function refreshAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->getBackendUser()->checkAuthentication();
-
-        $response->getBody()->write(json_encode([
+        return GeneralUtility::makeInstance(JsonResponse::class, [
             'refresh' => [
                 'success' => true
             ]
-        ]));
-        return $response;
+        ]);
     }
 
     /**
      * Checks if the user session is expired yet
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function isTimedOutAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function isTimedOutAction(ServerRequestInterface $request): ResponseInterface
     {
         $session = [
             'timed_out' => false,
@@ -117,8 +109,7 @@ class AjaxLoginController
             // 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
             $session['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;
         }
-        $response->getBody()->write(json_encode(['login' => $session]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['login' => $session]);
     }
 
     /**

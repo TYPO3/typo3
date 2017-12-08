@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -81,10 +82,9 @@ class LinkBrowserController extends AbstractLinkBrowserController
      * This avoids to implement the encoding functionality again in JS for the browser.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function encodeTypoLink(ServerRequestInterface $request, ResponseInterface $response)
+    public function encodeTypoLink(ServerRequestInterface $request): ResponseInterface
     {
         $typoLinkParts = $request->getQueryParams();
         if (isset($typoLinkParts['params'])) {
@@ -93,9 +93,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         }
 
         $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode($typoLinkParts);
-
-        $response->getBody()->write(json_encode(['typoLink' => $typoLink]));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, ['typoLink' => $typoLink]);
     }
 
     /**

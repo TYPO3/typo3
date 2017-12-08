@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Documentation\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -178,10 +179,9 @@ class DocumentController extends ActionController
      * Delete documentation with given packageKey
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function deleteAction(ServerRequestInterface $request)
     {
         $basePath = 'typo3conf/Documentation/';
         $packageKey = $request->getParsedBody();
@@ -190,8 +190,7 @@ class DocumentController extends ActionController
             $this->addFlashMessage(LocalizationUtility::translate('deleteFailed', 'Documentation'), '', FlashMessage::ERROR);
         }
 
-        $response->getBody()->write(json_encode($isDirDeleted));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload([$isDirDeleted]);
     }
 
     /**

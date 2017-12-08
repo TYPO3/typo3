@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -34,10 +35,9 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
      * Render a single flex form section container to add it to the DOM
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function containerAdd(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function containerAdd(ServerRequestInterface $request): ResponseInterface
     {
         $queryParameters = $request->getParsedBody();
 
@@ -180,8 +180,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
         $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
 
-        $response->getBody()->write(json_encode($jsonResult));
-
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $jsonResult);
     }
 }

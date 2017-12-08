@@ -15,6 +15,7 @@ namespace TYPO3\CMS\T3editor;
  */
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,15 +41,13 @@ class TypoScriptReferenceLoader
      * Called by AjaxRequestHandler
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // Load the TSref XML information:
         $this->loadFile(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/tsref.xml'));
-        $response->getBody()->write(json_encode($this->getTypes()));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($this->getTypes());
     }
 
     /**

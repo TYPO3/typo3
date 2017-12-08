@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\ActionHandler;
 use TYPO3\CMS\Workspaces\Controller\Remote\MassActionHandler;
@@ -37,10 +38,9 @@ class AjaxDispatcher
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         $callStack = \GuzzleHttp\json_decode($request->getBody()->getContents());
         if (!is_array($callStack)) {
@@ -54,8 +54,7 @@ class AjaxDispatcher
             $instance = GeneralUtility::makeInstance($className);
             $results[] = $this->buildResultFromResponse(call_user_func_array([$instance, $method], $parameters), $call);
         }
-        $response->getBody()->write(json_encode($results));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($results);
     }
 
     /**

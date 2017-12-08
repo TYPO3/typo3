@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -34,10 +35,9 @@ class OnlineMediaController
      * AJAX endpoint for storing the URL as a sys_file record
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function createAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function createAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $url = $request->getParsedBody()['url'];
         $targetFolderIdentifier = $request->getParsedBody()['targetFolder'];
@@ -51,7 +51,7 @@ class OnlineMediaController
             } else {
                 $data['error'] = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url');
             }
-            $response->getBody()->write(json_encode($data));
+            return GeneralUtility::makeInstance(JsonResponse::class, $data);
         }
         return $response;
     }

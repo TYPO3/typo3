@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -61,10 +62,9 @@ class RecyclerAjaxController
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request)
     {
         $extPath = ExtensionManagementUtility::extPath('recycler');
         /* @var $view StandaloneView */
@@ -148,8 +148,7 @@ class RecyclerAjaxController
                 ];
                 break;
         }
-        $response->getBody()->write(json_encode($content));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class)->setPayload($content);
     }
 
     /**

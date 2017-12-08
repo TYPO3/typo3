@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -220,10 +221,9 @@ class SimpleDataHandlerController
      * Processes all AJAX calls and returns a JSON formatted string
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // do the regular / main logic
         $this->initClipboard();
@@ -254,9 +254,7 @@ class SimpleDataHandlerController
                 }
             }
         }
-
-        $response->getBody()->write(json_encode($content));
-        return $response;
+        return GeneralUtility::makeInstance(JsonResponse::class, $content);
     }
 
     /**
