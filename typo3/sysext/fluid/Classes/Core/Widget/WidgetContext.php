@@ -61,7 +61,6 @@ class WidgetContext
      * Only available inside non-AJAX requests.
      *
      * @var \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode
-     * @transient
      */
     protected $viewHelperChildNodes;
 
@@ -71,7 +70,6 @@ class WidgetContext
      * @todo rename to something more meaningful.
      *
      * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
-     * @transient
      */
     protected $viewHelperChildNodeRenderingContext;
 

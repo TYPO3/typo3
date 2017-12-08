@@ -45,7 +45,6 @@ class QueryResult implements QueryResultInterface
 
     /**
      * @var array
-     * @transient
      */
     protected $queryResult;
 
