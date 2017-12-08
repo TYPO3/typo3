@@ -1491,7 +1491,7 @@ class EditDocumentController
      */
     protected function getCloseUrl(): string
     {
-        $closeUrl = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/Close.html');
+        $closeUrl = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Html/Close.html');
         return PathUtility::getAbsoluteWebPath($closeUrl);
     }
 
