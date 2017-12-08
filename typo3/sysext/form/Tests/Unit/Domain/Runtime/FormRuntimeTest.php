@@ -39,7 +39,7 @@ class FormRuntimeTest extends UnitTestCase
     public function renderThrowsExceptionIfFormDefinitionReturnsNoRendererClassName()
     {
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [
-            'isAfterLastPage'
+            'isAfterLastPage', 'processVariants'
         ], [], '', false);
 
         $mockPage = $this->getAccessibleMock(Page::class, [
@@ -75,6 +75,11 @@ class FormRuntimeTest extends UnitTestCase
             ->method('isAfterLastPage')
             ->willReturn(false);
 
+        $mockFormRuntime
+            ->expects($this->any())
+            ->method('processVariants')
+            ->willReturn(null);
+
         $mockFormRuntime->_set('formState', $mockFormState);
         $mockFormRuntime->_set('currentPage', $mockPage);
         $mockFormRuntime->_set('formDefinition', $mockFormDefinition);
@@ -94,7 +99,7 @@ class FormRuntimeTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [
-            'isAfterLastPage'
+            'isAfterLastPage', 'processVariants'
         ], [], '', false);
 
         $mockPage = $this->getAccessibleMock(Page::class, [
@@ -129,6 +134,11 @@ class FormRuntimeTest extends UnitTestCase
             ->expects($this->any())
             ->method('isAfterLastPage')
             ->willReturn(false);
+
+        $mockFormRuntime
+            ->expects($this->any())
+            ->method('processVariants')
+            ->willReturn(null);
 
         $objectManagerProphecy
             ->get('fooRenderer')

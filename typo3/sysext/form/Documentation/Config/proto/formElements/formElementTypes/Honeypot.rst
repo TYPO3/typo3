@@ -15,9 +15,6 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.honeypot.implementationclassname:
 .. include:: Honeypot/implementationClassName.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.honeypot.renderingoptions._isHiddenFormElement:
-.. include:: Honeypot/renderingOptions/_isHiddenFormElement.rst
-
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.honeypot.properties.containerclassattribute:
 .. include:: Honeypot/properties/containerClassAttribute.rst
 

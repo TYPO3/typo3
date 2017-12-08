@@ -150,14 +150,22 @@ TYPO3:
               properties:
                 renderAsHiddenField: false
                 styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
-              renderingOptions:
-                _isHiddenFormElement: true
+              variants:
+                -
+                  identifier: hide-1
+                  renderingOptions:
+                    enabled: false
+                  condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
 
             Hidden:
               __inheritances:
                 10: 'TYPO3.CMS.Form.mixins.formElementMixins.FormElementMixin'
-              renderingOptions:
-                _isHiddenFormElement: true
+              variants:
+                -
+                  identifier: hide-1
+                  renderingOptions:
+                    enabled: false
+                  condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
 
             ### FORM ELEMENTS: HTML5 ###
             Email:
@@ -405,8 +413,12 @@ TYPO3:
             __inheritances:
               10: 'TYPO3.CMS.Form.mixins.formElementMixins.BaseFormElementMixin'
             implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-            renderingOptions:
-              _isReadOnlyFormElement: true
+            variants:
+              -
+                identifier: hide-1
+                renderingOptions:
+                  enabled: false
+                condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
 
           FormElementMixin:
             __inheritances:

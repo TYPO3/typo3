@@ -31,6 +31,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
@@ -213,7 +214,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
  */
-class FormDefinition extends AbstractCompositeRenderable
+class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {
 
     /**
@@ -273,6 +274,11 @@ class FormDefinition extends AbstractCompositeRenderable
     protected $finishersDefinition;
 
     /**
+     * @var array
+     */
+    protected $conditionContextDefinition;
+
+    /**
      * The persistence identifier of the form
      *
      * @var string
@@ -307,6 +313,7 @@ class FormDefinition extends AbstractCompositeRenderable
         $this->typeDefinitions = $prototypeConfiguration['formElementsDefinition'] ?? [];
         $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
         $this->finishersDefinition = $prototypeConfiguration['finishersDefinition'] ?? [];
+        $this->conditionContextDefinition = $prototypeConfiguration['conditionContextDefinition'] ?? [];
 
         if (!is_string($identifier) || strlen($identifier) === 0) {
             throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082503);
@@ -342,9 +349,10 @@ class FormDefinition extends AbstractCompositeRenderable
      * the passed $options array.
      *
      * @param array $options
+     * @param bool $resetFinishers
      * @internal
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options, bool $resetFinishers = false)
     {
         if (isset($options['rendererClassName'])) {
             $this->setRendererClassName($options['rendererClassName']);
@@ -358,14 +366,23 @@ class FormDefinition extends AbstractCompositeRenderable
             }
         }
         if (isset($options['finishers'])) {
+            if ($resetFinishers) {
+                $this->finishers = [];
+            }
             foreach ($options['finishers'] as $finisherConfiguration) {
                 $this->createFinisher($finisherConfiguration['identifier'], $finisherConfiguration['options'] ?? []);
             }
         }
 
+        if (isset($options['variants'])) {
+            foreach ($options['variants'] as $variantConfiguration) {
+                $this->createVariant($variantConfiguration);
+            }
+        }
+
         ArrayUtility::assertAllArrayKeysAreValid(
             $options,
-            ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor', 'label']
+            ['rendererClassName', 'renderingOptions', 'finishers', 'formEditor', 'label', 'variants']
         );
     }
 
@@ -679,6 +696,15 @@ class FormDefinition extends AbstractCompositeRenderable
     public function getValidatorsDefinition(): array
     {
         return $this->validatorsDefinition;
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function getConditionContextDefinition(): array
+    {
+        return $this->conditionContextDefinition;
     }
 
     /**

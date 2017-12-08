@@ -34,7 +34,7 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  * **This class is NOT meant to be sub classed by developers.**
  * @internal
  */
-abstract class AbstractRenderable implements RenderableInterface
+abstract class AbstractRenderable implements RenderableInterface, VariableRenderableInterface
 {
 
     /**
@@ -89,6 +89,13 @@ abstract class AbstractRenderable implements RenderableInterface
     protected $templateName = '';
 
     /**
+     * associative array of rendering variants
+     *
+     * @var array
+     */
+    protected $variants = [];
+
+    /**
      * Get the type of the renderable
      *
      * @return string
@@ -127,9 +134,10 @@ abstract class AbstractRenderable implements RenderableInterface
      * the passed $options array.
      *
      * @param array $options
+     * @param bool $resetValidators
      * @api
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options, bool $resetValidators = false)
     {
         if (isset($options['label'])) {
             $this->setLabel($options['label']);
@@ -154,6 +162,15 @@ abstract class AbstractRenderable implements RenderableInterface
         if (isset($options['validators'])) {
             $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
             $configurationHashes = $runtimeCache->get('formAbstractRenderableConfigurationHashes') ?: [];
+
+            if ($resetValidators) {
+                $processingRule = $this->getRootForm()->getProcessingRule($this->getIdentifier());
+                foreach ($this->getValidators() as $validator) {
+                    $processingRule->removeValidator($validator);
+                }
+                $configurationHashes = [];
+            }
+
             foreach ($options['validators'] as $validatorConfiguration) {
                 $configurationHash = md5($this->getIdentifier() . json_encode($validatorConfiguration));
                 if (in_array($configurationHash, $configurationHashes)) {
@@ -165,9 +182,15 @@ abstract class AbstractRenderable implements RenderableInterface
             }
         }
 
+        if (isset($options['variants'])) {
+            foreach ($options['variants'] as $variantConfiguration) {
+                $this->createVariant($variantConfiguration);
+            }
+        }
+
         ArrayUtility::assertAllArrayKeysAreValid(
             $options,
-            ['label', 'defaultValue', 'properties', 'renderingOptions', 'validators', 'formEditor']
+            ['label', 'defaultValue', 'properties', 'renderingOptions', 'validators', 'formEditor', 'variants']
         );
     }
 
@@ -421,5 +444,56 @@ abstract class AbstractRenderable implements RenderableInterface
     public function isEnabled(): bool
     {
         return !isset($this->renderingOptions['enabled']) || (bool)$this->renderingOptions['enabled'] === true;
+    }
+
+    /**
+     * Get all rendering variants
+     *
+     * @return RenderableVariantInterface[]
+     * @api
+     */
+    public function getVariants(): array
+    {
+        return $this->variants;
+    }
+
+    /**
+     * @param array $options
+     * @return RenderableVariantInterface
+     * @api
+     */
+    public function createVariant(array $options): RenderableVariantInterface
+    {
+        $identifier = $options['identifier'] ?? '';
+        unset($options['identifier']);
+
+        $variant = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(RenderableVariant::class, $identifier, $options, $this);
+
+        $this->addVariant($variant);
+        return $variant;
+    }
+
+    /**
+     * Adds the specified variant to this form element
+     *
+     * @param RenderableVariantInterface $variant
+     * @api
+     */
+    public function addVariant(RenderableVariantInterface $variant)
+    {
+        $this->variants[$variant->getIdentifier()] = $variant;
+    }
+
+    /**
+     * Apply the specified variant to this form element
+     * regardless of their conditions
+     *
+     * @param RenderableVariantInterface $variant
+     * @api
+     */
+    public function applyVariant(RenderableVariantInterface $variant)
+    {
+        $variant->apply();
     }
 }

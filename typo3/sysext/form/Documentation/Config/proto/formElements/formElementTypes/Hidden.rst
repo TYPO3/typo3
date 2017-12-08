@@ -16,9 +16,6 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.hidden.implementationclassname:
 .. include:: Hidden/implementationClassName.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.hidden.renderingoptions._isHiddenFormElement:
-.. include:: Hidden/renderingOptions/_isHiddenFormElement.rst
-
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.hidden.properties.containerclassattribute:
 .. include:: Hidden/properties/containerClassAttribute.rst
 

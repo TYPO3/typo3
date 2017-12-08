@@ -84,15 +84,24 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
         $output = '';
         foreach ($elements as $element) {
             $renderingOptions = $element->getRenderingOptions();
+
             if (
                 !$element instanceof FormElementInterface
                 || (isset($renderingOptions['_isCompositeFormElement']) && (bool)$renderingOptions['_isCompositeFormElement'] === true)
                 || !$element->isEnabled()
                 || self::hasDisabledParent($element)
-                // @todo: we can remove the next 2 conditions if variants are implemented
-                || (isset($renderingOptions['_isHiddenFormElement']) && (bool)$renderingOptions['_isHiddenFormElement'] === true)
+            ) {
+                continue;
+            }
+
+            if (
+                (isset($renderingOptions['_isHiddenFormElement']) && (bool)$renderingOptions['_isHiddenFormElement'] === true)
                 || (isset($renderingOptions['_isReadOnlyFormElement']) && (bool)$renderingOptions['_isReadOnlyFormElement'] === true)
             ) {
+                trigger_error(
+                    'Using the properties "renderingOptions._isHiddenFormElement" and "renderingOptions._isReadOnlyFormElement" has been deprecated in v9 and will be removed in v10. Use variants instead.',
+                    E_USER_DEPRECATED
+                );
                 continue;
             }
 

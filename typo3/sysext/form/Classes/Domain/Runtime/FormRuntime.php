@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,17 +31,22 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
+use TYPO3\CMS\Form\Domain\Condition\ConditionContext;
+use TYPO3\CMS\Form\Domain\Condition\ConditionResolver;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
+use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
+use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class implements the *runtime logic* of a form, i.e. deciding which
@@ -134,6 +142,20 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $hashService;
 
     /**
+     * The current site language configuration.
+     *
+     * @var SiteLanguage
+     */
+    protected $currentSiteLanguage = null;
+
+    /**
+     * Reference to the current running finisher
+     *
+     * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface
+     */
+    protected $currentFinisher = null;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
      * @internal
      */
@@ -175,7 +197,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     public function initializeObject()
     {
+        $this->initializeCurrentSiteLanguage();
         $this->initializeFormStateFromRequest();
+        $this->processVariants();
         $this->initializeCurrentPageFromRequest();
         $this->initializeHoneypotFromRequest();
 
@@ -399,6 +423,25 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     */
+    protected function processVariants()
+    {
+        $conditionResolver = $this->getConditionResolver();
+
+        $renderables = array_merge([$this->formDefinition], $this->formDefinition->getRenderablesRecursively());
+        foreach ($renderables as $renderable) {
+            if ($renderable instanceof VariableRenderableInterface) {
+                $variants = $renderable->getVariants();
+                foreach ($variants as $variant) {
+                    if ($variant->conditionMatches($conditionResolver)) {
+                        $variant->apply();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Returns TRUE if the last page of the form has been submitted, otherwise FALSE
      *
      * @return bool
@@ -534,7 +577,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Override the current page taken from the request, rendering the page with index $pageIndex instead.
      *
      * This is typically not needed in production code, but it is very helpful when displaying
-     * some kind of "preview" of the form.
+     * some kind of "preview" of the form (e.g. form editor).
      *
      * @param int $pageIndex
      * @api
@@ -556,6 +599,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if ($this->isAfterLastPage()) {
             return $this->invokeFinishers();
         }
+        $this->processVariants();
 
         $this->formState->setLastDisplayedPageIndex($this->currentPage->getIndex());
 
@@ -592,6 +636,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $originalContent = $this->response->getContent();
         $this->response->setContent(null);
         foreach ($this->formDefinition->getFinishers() as $finisher) {
+            $this->currentFinisher = $finisher;
+            $this->processVariants();
+
             $finisherOutput = $finisher->execute($finisherContext);
             if (is_string($finisherOutput) && !empty($finisherOutput)) {
                 $output .= $finisherOutput;
@@ -869,10 +916,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return FormState
+     * @return FormState|null
      * @internal
      */
-    public function getFormState(): FormState
+    public function getFormState(): ?FormState
     {
         return $this->formState;
     }
@@ -934,10 +981,108 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * Get the current site language configuration.
+     *
+     * @return SiteLanguage
+     * @api
+     */
+    public function getCurrentSiteLanguage(): ?SiteLanguage
+    {
+        return $this->currentSiteLanguage;
+    }
+
+    /**
+     * Override the the current site language configuration.
+     *
+     * This is typically not needed in production code, but it is very
+     * helpful when displaying some kind of "preview" of the form (e.g. form editor).
+     *
+     * @param SiteLanguage $currentSiteLanguage
+     * @api
+     */
+    public function setCurrentSiteLanguage(SiteLanguage $currentSiteLanguage): void
+    {
+        $this->currentSiteLanguage = $currentSiteLanguage;
+    }
+
+    /**
+     * Initialize the SiteLanguage object.
+     * This is mainly used by the condition matcher.
+     */
+    protected function initializeCurrentSiteLanguage(): void
+    {
+        if (
+            $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage
+        ) {
+            $this->currentSiteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+        } else {
+            $pageId = 0;
+            $languageId = 0;
+
+            if (TYPO3_MODE === 'FE') {
+                $pageId = $this->getTypoScriptFrontendController()->id;
+                $languageId = $this->getTypoScriptFrontendController()->sys_language_uid;
+            }
+
+            $fakeSiteConfiguration = [
+                'languages' => [
+                    [
+                        'languageId' => $languageId,
+                        'title' => 'Dummy',
+                        'navigationTitle' => '',
+                        'typo3Language' => '',
+                        'flag' => '',
+                        'locale' => '',
+                        'iso-639-1' => '',
+                        'hreflang' => '',
+                        'direction' => '',
+                    ],
+                ],
+            ];
+
+            $this->currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
+                ->getLanguageById($languageId);
+        }
+    }
+
+    /**
+     * Reference to the current running finisher
+     *
+     * @return FinisherInterface|null
+     * @api
+     */
+    public function getCurrentFinisher(): ?FinisherInterface
+    {
+        return $this->currentFinisher;
+    }
+
+    /**
+     * @return ConditionResolver
+     */
+    protected function getConditionResolver(): ConditionResolver
+    {
+        /** @var \TYPO3\CMS\Form\Domain\Condition\ConditionResolver $conditionResolver */
+        $conditionResolver = $this->objectManager->get(
+            ConditionResolver::class,
+            GeneralUtility::makeInstance(ConditionContext::class, $this)
+        );
+        return $conditionResolver;
+    }
+
+    /**
      * @return FrontendUserAuthentication
      */
     protected function getFrontendUser(): FrontendUserAuthentication
     {
-        return $GLOBALS['TSFE']->fe_user;
+        return $this->getTypoScriptFrontendController()->fe_user;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
     }
 }

@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -204,9 +206,42 @@ class FormEditorController extends AbstractBackendController
         $formDefinition = $formFactory->build($formDefinition->getArrayCopy(), $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request, $this->response);
+        $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
         $form->overrideCurrentPage($pageIndex);
 
         return $form->render();
+    }
+
+    /**
+     * Build a SiteLanguage object to render the form preview with a
+     * specific language.
+     *
+     * @param int $pageId
+     * @param int $languageId
+     * @return SiteLanguage
+     */
+    protected function buildFakeSiteLanguage(int $pageId, int $languageId): SiteLanguage
+    {
+        $fakeSiteConfiguration = [
+            'languages' => [
+                [
+                    'languageId' => $languageId,
+                    'title' => 'Dummy',
+                    'navigationTitle' => '',
+                    'typo3Language' => '',
+                    'flag' => '',
+                    'locale' => '',
+                    'iso-639-1' => '',
+                    'hreflang' => '',
+                    'direction' => '',
+                ],
+            ],
+        ];
+
+        /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $currentSiteLanguage */
+        $currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
+            ->getLanguageById($languageId);
+        return $currentSiteLanguage;
     }
 
     /**
