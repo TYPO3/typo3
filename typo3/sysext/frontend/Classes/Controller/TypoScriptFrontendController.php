@@ -1287,14 +1287,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->initUserGroups();
         // Sets sys_page where-clause
         $this->setSysPageWhereClause();
-        // Splitting $this->id by a period (.).
-        // First part is 'id' and second part (if exists) will overrule the &type param
-        $idParts = explode('.', $this->id, 2);
-        $this->id = $idParts[0];
-        if (isset($idParts[1])) {
-            $this->type = $idParts[1];
-        }
-
         // If $this->id is a string, it's an alias
         $this->checkAndSetAlias();
         // The id and type is set to the integer-value - just to be sure...
