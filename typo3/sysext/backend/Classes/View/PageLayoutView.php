@@ -2541,7 +2541,7 @@ class PageLayoutView implements LoggerAwareInterface
             }
             // If any languages are left, make selector:
             if (!empty($availableTranslations)) {
-                $output = '<option value=""></option>';
+                $output = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('new_language')) . '</option>';
                 foreach ($availableTranslations as $languageUid => $languageTitle) {
                     // Build localize command URL to DataHandler (tce_db)
                     // which redirects to FormEngine (record_edit)
@@ -2562,9 +2562,6 @@ class PageLayoutView implements LoggerAwareInterface
 
                 return '<div class="form-inline form-inline-spaced">'
                     . '<div class="form-group">'
-                    . '<label for="createNewLanguage">'
-                    . htmlspecialchars($this->getLanguageService()->getLL('new_language'))
-                    . '</label>'
                     . '<select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
                     . $output
                     . '</select></div></div>';
