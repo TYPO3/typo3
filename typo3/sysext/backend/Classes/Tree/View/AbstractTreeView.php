@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -397,7 +396,7 @@ abstract class AbstractTreeView
                 if ($this->ext_showPathAboveMounts) {
                     $mountPointPid = $rootRec['pid'];
                     if ($lastMountPointPid !== $mountPointPid) {
-                        $title = Commands::getMountPointPath($mountPointPid);
+                        $title = $this->getMountPointPath((int)$mountPointPid);
                         $this->tree[] = ['isMountPointPath' => true, 'title' => $title];
                     }
                     $lastMountPointPid = $mountPointPid;
@@ -1028,6 +1027,31 @@ abstract class AbstractTreeView
     {
         $this->data = &$treeArr;
         $this->dataLookup = &$treeLookupArr;
+    }
+
+    /**
+     * Returns the mount point path for a temporary mount or the given id
+     *
+     * @param int $uid
+     * @return string
+     */
+    protected function getMountPointPath(int $uid): string
+    {
+        if ($uid <= 0) {
+            return '';
+        }
+        $rootline = array_reverse(BackendUtility::BEgetRootLine($uid));
+        array_shift($rootline);
+        $path = [];
+        foreach ($rootline as $rootlineElement) {
+            $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
+            $text = $record['title'];
+            if ((bool)$this->getBackendUser()->getTSConfigVal('options.pageTree.showNavTitle') && trim($record['nav_title'] ?? '') !== '') {
+                $text = $record['nav_title'];
+            }
+            $path[] = htmlspecialchars($text);
+        }
+        return '/' . implode('/', $path);
     }
 
     /**

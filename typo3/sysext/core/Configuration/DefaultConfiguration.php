@@ -853,9 +853,6 @@ return [
         'installToolPassword' => '',
         'checkStoredRecords' => true,
         'checkStoredRecordsLoose' => true,
-        'pageTree' => [
-            'preloadLimit' => 99999999
-        ],
         'defaultUserTSconfig' => 'options.enableBookmarks=1
 			options.file_list.enableDisplayBigControlPanel=selectable
 			options.file_list.enableDisplayThumbnails=selectable

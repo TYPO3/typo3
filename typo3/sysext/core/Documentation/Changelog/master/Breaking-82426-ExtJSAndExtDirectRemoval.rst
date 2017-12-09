@@ -17,9 +17,17 @@ ExtDirect classes were removed without substitution.
 Removed classes:
 ----------------
 
+* :php:`TYPO3\CMS\Backend\Tree\ExtDirectNode`
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\Commands`
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\DataProvider`
 * :php:`TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands`
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider`
+* :php:`TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonTreeRenderer`
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode`
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection`
 * :php:`TYPO3\CMS\Core\ExtDirect\ExtDirectApi`
 * :php:`TYPO3\CMS\Core\ExtDirect\ExtDirectRouter`
+* :php:`TYPO3\CMS\Workspaces\Hooks\PagetreeCollectionsProcessor`
 
 
 Removed methods:
@@ -34,6 +42,13 @@ Removed methods:
 * :php:`TYPO3\CMS\Core\Page\PageRenderer->loadExtJS()`
 * :php:`TYPO3\CMS\Core\Page\PageRenderer->enableExtJsDebug()`
 
+
+Removed interfaces:
+-------------------
+
+* :php:`TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface`
+* :php:`TYPO3\CMS\Backend\Tree\EditableNodeLabelInterface`
+* :php:`TYPO3\CMS\Backend\Tree\DraggableAndDropableNodeInterface`
 
 Impact
 ======

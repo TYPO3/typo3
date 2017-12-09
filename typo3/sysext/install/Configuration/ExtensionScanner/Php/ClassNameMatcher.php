@@ -462,11 +462,66 @@ return [
             'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Tree\ExtDirectNode' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\Commands' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\DataProvider' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonTreeRenderer' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Hooks\PagetreeCollectionsProcessor' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
 
     // Removed interfaces
     'TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\EditableNodeLabelInterface' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Tree\DraggableAndDropableNodeInterface' => [
+        'restFiles' => [
+            'Breaking-82426-ExtJSAndExtDirectRemoval.rst',
         ],
     ],
 ];

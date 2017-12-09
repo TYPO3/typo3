@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tree\Renderer;
+namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,13 +13,13 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
-use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode;
 
 /**
- * Renderer for unordered lists
+ * Renders a tca tree array for ExtJS
  */
-class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
+class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
 {
     /**
      * recursion level
@@ -92,13 +92,12 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
      *
      * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
      * @param bool $recursive
-     * @return string
+     * @return array
      */
     public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = true)
     {
         $this->recursionLevel = 0;
-        $children = $this->renderNode($tree->getRoot(), $recursive);
-        return json_encode($children);
+        return $this->renderNode($tree->getRoot(), $recursive);
     }
 
     /**
