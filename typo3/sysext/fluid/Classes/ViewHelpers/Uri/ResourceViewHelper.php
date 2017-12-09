@@ -68,11 +68,11 @@ class ResourceViewHelper extends AbstractViewHelper
         }
         $uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
         $uri = GeneralUtility::getFileAbsFileName($uri);
-        $uri = PathUtility::stripPathSitePrefix($uri);
-        if (TYPO3_MODE === 'BE' && $absolute === false && $uri !== false) {
-            $uri = '../' . $uri;
+        if ($absolute === false && $uri !== false) {
+            $uri = PathUtility::getAbsoluteWebPath($uri);
         }
         if ($absolute === true) {
+            $uri = PathUtility::stripPathSitePrefix($uri);
             $uri = $renderingContext->getControllerContext()->getRequest()->getBaseUri() . $uri;
         }
         return $uri;
