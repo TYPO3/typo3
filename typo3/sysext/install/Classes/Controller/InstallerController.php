@@ -358,16 +358,7 @@ class InstallerController
                 }
             }
             if (isset($postValues['password'])) {
-                $value = $postValues['password'];
-                if (strlen($value) <= 50) {
-                    $defaultConnectionSettings['password'] = $value;
-                } else {
-                    $messages[] = new FlashMessage(
-                        'Given password must be shorter than fifty characters.',
-                        'Database password not valid',
-                        FlashMessage::ERROR
-                    );
-                }
+                $defaultConnectionSettings['password'] = $postValues['password'];
             }
             if (isset($postValues['host'])) {
                 $value = $postValues['host'];
