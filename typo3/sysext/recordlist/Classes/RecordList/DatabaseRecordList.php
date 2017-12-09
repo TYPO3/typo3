@@ -3200,6 +3200,10 @@ class DatabaseRecordList
             $queryBuilder->setMaxResults($this->iLimit);
         }
 
+        if ($this->firstElementNumber > 0) {
+            $queryBuilder->setFirstResult($this->firstElementNumber);
+        }
+
         if ($addSorting) {
             if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
@@ -3284,7 +3288,7 @@ class DatabaseRecordList
                 $queryBuilder->addOrderBy($fieldName, $sorting);
             }
         }
-        if (!empty($parameters['firstResult'])) {
+        if (!empty($parameters['firstResult']) && $parameters['firstResult'] !== $this->firstElementNumber) {
             $this->logDeprecation('firstResult');
             $queryBuilder->setFirstResult((int)$parameters['firstResult']);
         }
@@ -3325,6 +3329,9 @@ class DatabaseRecordList
         }
 
         $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder, false);
+        // Reset limit and offset for full count query
+        $queryBuilder->setFirstResult(0);
+        $queryBuilder->setMaxResults(1);
 
         $this->totalItems = (int)$queryBuilder->count('*')
             ->execute()
