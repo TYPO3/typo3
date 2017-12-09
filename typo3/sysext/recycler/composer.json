@@ -11,7 +11,7 @@
 		}],
 
 	"require": {
-		"typo3/cms-core": ">=9.0.0 <=9.0.99"
+		"typo3/cms-core": "9.0.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
