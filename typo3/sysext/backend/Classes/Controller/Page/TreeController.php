@@ -263,7 +263,7 @@ class TreeController
             $visibleText = $page['nav_title'];
         }
         if (trim($visibleText) === '') {
-            $visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
+            $visibleText = htmlspecialchars('[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
         }
         $visibleText = GeneralUtility::fixed_lgd_cs($visibleText, (int)$this->getBackendUser()->uc['titleLen'] ?: 40);
 
@@ -290,7 +290,7 @@ class TreeController
             'tip' => htmlspecialchars($tooltip),
             'hasChildren' => !empty($page['_children']),
             'icon' => $icon->getIdentifier(),
-            'name' => htmlspecialchars($visibleText),
+            'name' => $visibleText,
             'nameSourceField' => $nameSourceField,
             'alias' => htmlspecialchars($page['alias'] ?: ''),
             'prefix' => htmlspecialchars($prefix),
