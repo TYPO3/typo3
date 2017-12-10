@@ -1042,14 +1042,25 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface
     {
         if (count($this->packagesBasePaths) < 3) {
             // Check if the directory even exists and if it is not empty
-            if (is_dir(PATH_typo3conf . 'ext') && count(scandir(PATH_typo3conf . 'ext')) > 2) {
+            if (is_dir(PATH_typo3conf . 'ext') && $this->hasSubDirectories(PATH_typo3conf . 'ext')) {
                 $this->packagesBasePaths['local'] = PATH_typo3conf . 'ext/*/';
             }
-            if (is_dir(PATH_typo3 . 'ext') && count(scandir(PATH_typo3 . 'ext')) > 2) {
+            if (is_dir(PATH_typo3 . 'ext') && $this->hasSubDirectories(PATH_typo3 . 'ext')) {
                 $this->packagesBasePaths['global'] = PATH_typo3 . 'ext/*/';
             }
             $this->packagesBasePaths['system'] = PATH_typo3 . 'sysext/*/';
         }
         return $this->packagesBasePaths;
+    }
+
+    /**
+     * Returns true if the given path has valid subdirectories, false otherwise.
+     *
+     * @param string $path
+     * @return bool
+     */
+    protected function hasSubDirectories(string $path): bool
+    {
+        return !empty(glob(rtrim($path, '/\\') . '/*', GLOB_ONLYDIR));
     }
 }
