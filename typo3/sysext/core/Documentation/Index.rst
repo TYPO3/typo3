@@ -14,6 +14,7 @@ Every change to the TYPO3 Core which might affect your site is documented here.
 
    Sitemap/Index
    Changelog/master/Index
+   Changelog/9.0/Index
    Changelog/8.7/Index
    Changelog/8.6/Index
    Changelog/8.5/Index
