@@ -167,19 +167,6 @@ return [
         ]
     ],
 
-    // ExtDirect routing
-    'ext_direct_route' => [
-        'path' => '/ext-direct/route',
-        'target' => \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter::class . '::routeAction',
-        'access' => 'public'
-    ],
-
-    // ExtDirect API
-    'ext_direct_api' => [
-        'path' => '/ext-direct/api',
-        'target' => \TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class . '::getAPI'
-    ],
-
     // Render flash messages
     'flashmessages_render' => [
         'path' => '/flashmessages/render',
