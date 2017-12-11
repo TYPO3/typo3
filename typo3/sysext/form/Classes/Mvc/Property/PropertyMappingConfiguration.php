@@ -49,18 +49,19 @@ class PropertyMappingConfiguration
      */
     public function afterBuildingFinished(RenderableInterface $renderable)
     {
-        if (get_class($renderable) === FileUpload::class) {
+        if ($renderable instanceof FileUpload) {
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
 
             $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
                 ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $renderable->getProperties()['allowedMimeTypes']]);
+
             $uploadConfiguration = [
                 UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => [$mimeTypeValidator],
                 UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
             ];
 
-            $saveToFileMountIdentifier = (isset($renderable->getProperties()['saveToFileMount'])) ? $renderable->getProperties()['saveToFileMount'] : null;
+            $saveToFileMountIdentifier = (isset($renderable->getProperties()['saveToFileMount'])) ? $renderable->getProperties()['saveToFileMount'] : '';
             if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
                 $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
             } else {
