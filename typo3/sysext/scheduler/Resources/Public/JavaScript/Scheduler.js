@@ -15,8 +15,8 @@
  * Module: TYPO3/CMS/Scheduler/Scheduler
  */
 define(['jquery',
-		'datatables',
-		'TYPO3/CMS/Backend/SplitButtons'
+		'TYPO3/CMS/Backend/SplitButtons',
+		'datatables'
 		], function($, SplitButtons) {
 
 	/**

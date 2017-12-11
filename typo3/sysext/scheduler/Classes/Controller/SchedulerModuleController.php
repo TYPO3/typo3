@@ -855,6 +855,7 @@ class SchedulerModuleController
         $tasks = $temporaryResult;
 
         $registeredClasses = $this->getRegisteredClasses();
+        $missingClasses = [];
         foreach ($temporaryResult as $taskIndex => $taskGroup) {
             foreach ($taskGroup['tasks'] as $recordIndex => $schedulerRecord) {
                 if ((int)$schedulerRecord['disable'] === 1) {
@@ -980,11 +981,15 @@ class SchedulerModuleController
                     if ($showAsDisabled) {
                         $tasks[$taskIndex]['tasks'][$recordIndex]['showAsDisabled'] = 'disabled';
                     }
+                } else {
+                    $missingClasses[] = $tasks[$taskIndex]['tasks'][$recordIndex];
+                    unset($tasks[$taskIndex]['tasks'][$recordIndex]);
                 }
             }
         }
 
         $this->view->assign('tasks', $tasks);
+        $this->view->assign('missingClasses', $missingClasses);
         $this->view->assign('moduleUri', $this->moduleUri);
         $this->view->assign('now', $this->getServerTime());
 
