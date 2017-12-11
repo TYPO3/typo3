@@ -5255,7 +5255,15 @@ class ContentObjectRenderer
 
         // Detecting kind of link and resolve all necessary parameters
         $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $linkDetails = $linkService->resolve($linkParameter);
+        try {
+            $linkDetails = $linkService->resolve($linkParameter);
+        } catch (Exception\InvalidPathException $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->warning('The link could not be generated', ['exception' => $exception]);
+
+            return $linkText;
+        }
+
         $linkDetails['typoLinkParameter'] = $linkParameter;
         if (isset($linkDetails['type']) && isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
             /** @var AbstractTypolinkBuilder $linkBuilder */
