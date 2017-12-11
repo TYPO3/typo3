@@ -25,7 +25,10 @@
 	},
 	"config": {
 		"optimize-autoloader": true,
-		"bin-dir": "bin"
+		"bin-dir": "bin",
+		"platform": {
+			"php": "7.0.0"
+		}
 	},
 	"require": {
 		"php": "^7.0",
