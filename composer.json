@@ -24,10 +24,13 @@
 		"news": "nntp://lists.typo3.org"
 	},
 	"config": {
-		"bin-dir": "bin"
+		"bin-dir": "bin",
+		"platform": {
+			"php": "7.2.0"
+		}
 	},
 	"require": {
-		"php": "^7.0",
+		"php": "^7.2",
 		"ext-json": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",

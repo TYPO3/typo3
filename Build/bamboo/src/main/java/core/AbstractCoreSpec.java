@@ -487,7 +487,7 @@ abstract public class AbstractCoreSpec {
                     )
             )
             .requirements(
-                this.getRequirementPhpVersion70Or71Or72()
+                this.getRequirementPhpVersion72()
             )
             .cleanWorkingDirectory(true);
     }
@@ -521,7 +521,7 @@ abstract public class AbstractCoreSpec {
                     .resultDirectories("typo3temp/var/tests/*")
             )
             .requirements(
-                this.getRequirementPhpVersion70Or71Or72()
+                this.getRequirementPhpVersion72()
             )
             .artifacts(
                 new Artifact()

@@ -3510,12 +3510,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
      */
     public function notAllStdWrapProcessorsAreCallableWithEmptyConfiguration()
     {
-        $expectExceptions = ['numRows', 'split'];
-        if (!version_compare(PHP_VERSION, '7.1', '<')) {
-            // PHP >= 7.1 throws "A non-numeric value encountered" in GeneralUtility::formatSize()
-            // @todo: If that is sanitized in a better way in formatSize(), this call needs adaption
-            $expectExceptions[] = 'bytes';
-        }
+        $expectExceptions = ['numRows', 'split', 'bytes'];
         $count = 0;
         $processors = [];
         $exceptions = [];
