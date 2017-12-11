@@ -2020,7 +2020,7 @@ define(['jquery'], function($) {
 
                 _runningAjaxRequests['renderFormDefinitionPage'] = $.post(_dataBackendEndpoints['formPageRenderer'], {
                     tx_form_web_formformbuilder: {
-                        formDefinition: utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')),
+                        formDefinition: JSON.stringify(utility().convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))),
                         pageIndex: pageIndex,
                         prototypeName: _dataBackendPrototypeName
                     }
