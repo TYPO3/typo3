@@ -27,7 +27,7 @@ define(["require", "exports", "TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Seve
                 },
                 content: url,
                 severity: Severity.notice,
-                size: Modal.sizes.large,
+                size: Modal.sizes.medium,
                 title: title,
                 type: Modal.types.ajax,
             });

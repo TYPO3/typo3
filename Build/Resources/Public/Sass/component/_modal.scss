@@ -184,6 +184,13 @@ $modal-danger-border: $btn-danger-border;
     }
 }
 
+.modal-size-medium {
+    .modal-content {
+        width: 800px;
+        height: 520px;
+    }
+}
+
 .modal-size-large {
     .modal-content {
         width: 1000px;

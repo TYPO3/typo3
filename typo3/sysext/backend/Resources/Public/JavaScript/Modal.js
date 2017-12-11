@@ -84,6 +84,7 @@ define(['jquery',
 		sizes: {
 			small: 'small',
 			default: 'default',
+			medium: 'medium',
 			large: 'large',
 			full: 'full'
 		},
