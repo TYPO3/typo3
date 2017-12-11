@@ -14,11 +14,15 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -3126,6 +3130,36 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+    }
+
+    /**
+     * @test
+     */
+    public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible()
+    {
+        $linkService = $this->prophesize(LinkService::class);
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
+        $linkService->resolve('foo')->willThrow(InvalidPathException::class);
+
+        $this->assertSame('foo', $this->subject->typoLink('foo', ['parameter' => 'foo']));
+    }
+
+    /**
+     * @test
+     */
+    public function typoLinkLogsErrorIfNoLinkResolvingIsPossible()
+    {
+        $linkService = $this->prophesize(LinkService::class);
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
+        $linkService->resolve('foo')->willThrow(InvalidPathException::class);
+
+        $logManager = $this->prophesize(LogManager::class);
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager->reveal());
+        $logger = $this->prophesize(Logger::class);
+        $logger->warning('The link could not be generated', Argument::any())->shouldBeCalled();
+        $logManager->getLogger(Argument::any())->willReturn($logger->reveal());
+
+        $this->subject->typoLink('foo', ['parameter' => 'foo']);
     }
 
     /**

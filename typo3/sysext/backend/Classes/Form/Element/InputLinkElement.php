@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -319,6 +320,8 @@ class InputLinkElement extends AbstractFormElement
         } catch (FolderDoesNotExistException $e) {
             return $data;
         } catch (UnknownLinkHandlerException $e) {
+            return $data;
+        } catch (InvalidPathException $e) {
             return $data;
         }
 
