@@ -91,7 +91,7 @@ define([
           tree.settings.allowRecursiveDelete
         ) {
           _this.dropZoneDelete = tree.nodesContainer
-            .select('.node[data-uid="' + node.stateIdentifier + '"]')
+            .select('.node[data-state-id="' + node.stateIdentifier + '"]')
             .append('g')
             .attr('class', 'nodes-drop-zone')
             .attr('height', tree.settings.nodeHeight);
@@ -139,7 +139,7 @@ define([
         var $svg = $(this).closest('svg');
         var $nodesBg = $svg.find('.nodes-bg');
         var $nodesWrap = $svg.find('.nodes-wrapper');
-        var $nodeBg = $nodesBg.find('.node-bg[data-uid=' + node.stateIdentifier + ']');
+        var $nodeBg = $nodesBg.find('.node-bg[data-state-id=' + node.stateIdentifier + ']');
         var $nodeDd = $svg.siblings('.node-dd');
 
         if ($nodeBg.length && (!node.isDragged)) {

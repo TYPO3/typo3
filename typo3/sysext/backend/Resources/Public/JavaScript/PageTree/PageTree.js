@@ -199,7 +199,7 @@ define(['jquery',
 
     PageTree.prototype.nodeRightClick = function (node) {
       d3.event.preventDefault();
-      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.stateIdentifier + ']');
+      var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
 
       if ($node.length) {
         ContextMenu.show(
@@ -213,7 +213,7 @@ define(['jquery',
     };
 
     PageTree.prototype.contextmenu = function (node) {
-      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.stateIdentifier + ']');
+      var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
 
       if ($node.length) {
         ContextMenu.show(

@@ -511,7 +511,7 @@ define(
           .merge(nodesBg)
           .attr('width', '100%')
           .attr('height', this.settings.nodeHeight)
-          .attr('data-uid', this.getNodeStateIdentifier)
+          .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('transform', this.getNodeBgTransform)
           .on('mouseover', function (node) {
             _this.nodeBgEvents().mouseOver(node, this);
@@ -537,7 +537,7 @@ define(
         var self = {};
 
         self.mouseOver = function (node, element) {
-          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.stateIdentifier + '"]');
+          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
 
           node.isOver = true;
           _this.settings.nodeOver.node = node;
@@ -551,7 +551,7 @@ define(
         };
 
         self.mouseOut = function (node, element) {
-          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.stateIdentifier + '"]');
+          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
 
           node.isOver = false;
           _this.settings.nodeOver.node = false;
@@ -565,7 +565,7 @@ define(
         };
 
         self.click = function (node, element) {
-          var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-uid=' + node.stateIdentifier + ']');
+          var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-state-id=' + node.stateIdentifier + ']');
 
           _this.nodes.forEach(function (node) {
             if (node.selected === true) {
@@ -741,7 +741,7 @@ define(
           .attr('class', this.getNodeClass)
           .attr('transform', this.getNodeTransform)
           .attr('data-table', 'pages')
-          .attr('data-uid', this.getNodeStateIdentifier)
+          .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
           .on('mouseover', function (node) {
             _this.nodeBgEvents().mouseOver(node, this);
