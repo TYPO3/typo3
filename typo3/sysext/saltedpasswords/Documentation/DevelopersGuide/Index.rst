@@ -93,8 +93,10 @@ such additional method available for this extension.
 Steps to be done:
 
 - create a new salting class that implements interface
-  :code:`\TYPO3\CMS\Saltedpasswords\Salt\SaltInterface` and abstract class
-  :code:`\TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt` (see class
+  :code:`\TYPO3\CMS\Saltedpasswords\Salt\SaltInterface`
+
+  Optional: take advantage of abstract class
+  :code:`\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt` (see class
   :code:`\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt` for an example implementation)
 
 - register your salting method class

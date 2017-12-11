@@ -50,7 +50,7 @@ class SaltedPasswordService extends AbstractAuthenticationService
      * An instance of the salted hashing method.
      * This member is set in the getSaltingInstance() function.
      *
-     * @var \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt
+     * @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface
      */
     protected $objInstanceSaltedPW = null;
 

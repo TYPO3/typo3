@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -28,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @see http://drupal.org/node/29706/
  * @see http://www.openwall.com/phpass/
  */
-class PhpassSalt extends AbstractSalt implements SaltInterface
+class PhpassSalt extends AbstractComposedSalt
 {
     /**
      * Keeps a string for mapping an int to the corresponding
@@ -100,7 +101,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $salt A salt to apply setting to
      * @return string Salt with setting
      */
-    protected function applySettingsToSalt($salt)
+    protected function applySettingsToSalt(string $salt): string
     {
         $saltWithSettings = $salt;
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -122,7 +123,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $saltedHashPW Salted hash to compare plain-text password with
      * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
      */
-    public function checkPassword($plainPW, $saltedHashPW)
+    public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
         $hash = $this->cryptPassword($plainPW, $saltedHashPW);
         return $hash && \hash_equals($hash, $saltedHashPW);
@@ -133,7 +134,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @return bool Method available
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
         return true;
     }
@@ -150,7 +151,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $setting An existing hash or the output of getGeneratedSalt()
      * @return mixed A string containing the hashed password (and salt)
      */
-    protected function cryptPassword($password, $setting)
+    protected function cryptPassword(string $password, string $setting)
     {
         $saltedPW = null;
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -183,7 +184,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
      * @return int Used hashcount for given hash string
      */
-    protected function getCountLog2($setting)
+    protected function getCountLog2(string $setting): int
     {
         return strpos($this->getItoa64(), $setting[strlen($this->getSetting())]);
     }
@@ -199,7 +200,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @return string A character string containing settings and a random salt
      */
-    protected function getGeneratedSalt()
+    protected function getGeneratedSalt(): string
     {
         $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
         return $this->base64Encode($randomBytes, $this->getSaltLength());
@@ -213,7 +214,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $hashCount
      * @see setHashCount()
      */
-    public function getHashCount()
+    public function getHashCount(): int
     {
         return isset(self::$hashCount) ? self::$hashCount : self::HASH_COUNT;
     }
@@ -223,9 +224,9 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @param string $password Plaintext password to create a salted hash from
      * @param string $salt Optional custom salt with setting to use
-     * @return string salted hashed password
+     * @return string|null salted hashed password
      */
-    public function getHashedPassword($password, $salt = null)
+    public function getHashedPassword(string $password, string $salt = null)
     {
         $saltedPW = null;
         if (!empty($password)) {
@@ -242,7 +243,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @return string String for mapping an int to the corresponding base 64 character
      */
-    protected function getItoa64()
+    protected function getItoa64(): string
     {
         return self::ITOA64;
     }
@@ -255,7 +256,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $maxHashCount
      * @see setMaxHashCount()
      */
-    public function getMaxHashCount()
+    public function getMaxHashCount(): int
     {
         return isset(self::$maxHashCount) ? self::$maxHashCount : self::MAX_HASH_COUNT;
     }
@@ -268,7 +269,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $minHashCount
      * @see setMinHashCount()
      */
-    public function getMinHashCount()
+    public function getMinHashCount(): int
     {
         return isset(self::$minHashCount) ? self::$minHashCount : self::MIN_HASH_COUNT;
     }
@@ -278,7 +279,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @return int Length of a Blowfish salt in bytes
      */
-    public function getSaltLength()
+    public function getSaltLength(): int
     {
         return self::$saltLengthPhpass;
     }
@@ -288,7 +289,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      *
      * @return string Setting string of PHPass salted hashes
      */
-    public function getSetting()
+    public function getSetting(): string
     {
         return self::$settingPhpass;
     }
@@ -305,7 +306,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $passString Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE
      */
-    public function isHashUpdateNeeded($passString)
+    public function isHashUpdateNeeded(string $passString): bool
     {
         // Check whether this was an updated password.
         if (strncmp($passString, '$P$', 3) || strlen($passString) != 34) {
@@ -321,7 +322,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt($salt)
+    public function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -351,7 +352,7 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
      */
-    public function isValidSaltedPW($saltedPW)
+    public function isValidSaltedPW(string $saltedPW): bool
     {
         $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
         if ($isValid) {
@@ -368,9 +369,9 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $hashCount
      * @see getHashCount()
      */
-    public function setHashCount($hashCount = null)
+    public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = !is_null($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = !is_null($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**
@@ -381,9 +382,9 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $maxHashCount
      * @see getMaxHashCount()
      */
-    public function setMaxHashCount($maxHashCount = null)
+    public function setMaxHashCount(int $maxHashCount = null)
     {
-        self::$maxHashCount = !is_null($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
+        self::$maxHashCount = $maxHashCount ?? self::MAX_HASH_COUNT;
     }
 
     /**
@@ -394,8 +395,8 @@ class PhpassSalt extends AbstractSalt implements SaltInterface
      * @see $minHashCount
      * @see getMinHashCount()
      */
-    public function setMinHashCount($minHashCount = null)
+    public function setMinHashCount(int $minHashCount = null)
     {
-        self::$minHashCount = !is_null($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
+        self::$minHashCount = $minHashCount ?? self::MIN_HASH_COUNT;
     }
 }

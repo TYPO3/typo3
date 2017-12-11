@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * MD5 salted hashing with PHP's crypt() should be available
  * on most of the systems.
  */
-class Md5Salt extends AbstractSalt implements SaltInterface
+class Md5Salt extends AbstractComposedSalt
 {
     /**
      * Keeps a string for mapping an int to the corresponding
@@ -59,7 +60,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $salt A salt to apply setting to
      * @return string Salt with setting
      */
-    protected function applySettingsToSalt($salt)
+    protected function applySettingsToSalt(string $salt): string
     {
         $saltWithSettings = $salt;
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -78,7 +79,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $saltedHashPW salted hash to compare plain-text password with
      * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
      */
-    public function checkPassword($plainPW, $saltedHashPW)
+    public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
         $isCorrect = false;
         if ($this->isValidSalt($saltedHashPW)) {
@@ -98,7 +99,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return string A character string containing settings and a random salt
      */
-    protected function getGeneratedSalt()
+    protected function getGeneratedSalt(): string
     {
         $randomBytes = GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
         return $this->base64Encode($randomBytes, $this->getSaltLength());
@@ -111,7 +112,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $salt Optional custom salt with setting to use
      * @return string Salted hashed password
      */
-    public function getHashedPassword($password, $salt = null)
+    public function getHashedPassword(string $password, string $salt = null)
     {
         $saltedPW = null;
         if (!empty($password)) {
@@ -128,7 +129,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return string String for mapping an int to the corresponding base 64 character
      */
-    protected function getItoa64()
+    protected function getItoa64(): string
     {
         return self::ITOA64;
     }
@@ -138,9 +139,9 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return bool Method available
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return CRYPT_MD5;
+        return (bool)CRYPT_MD5;
     }
 
     /**
@@ -148,7 +149,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return int Length of a MD5 salt in bytes
      */
-    public function getSaltLength()
+    public function getSaltLength(): int
     {
         return self::$saltLengthMD5;
     }
@@ -158,7 +159,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return string Suffix of a salt
      */
-    protected function getSaltSuffix()
+    protected function getSaltSuffix(): string
     {
         return self::$saltSuffixMD5;
     }
@@ -168,7 +169,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      *
      * @return string Setting string of MD5 salted hashes
      */
-    public function getSetting()
+    public function getSetting(): string
     {
         return self::$settingMD5;
     }
@@ -185,7 +186,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $passString Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE
      */
-    public function isHashUpdateNeeded($passString)
+    public function isHashUpdateNeeded(string $passString): bool
     {
         return false;
     }
@@ -196,7 +197,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt($salt)
+    public function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -226,7 +227,7 @@ class Md5Salt extends AbstractSalt implements SaltInterface
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
      */
-    public function isValidSaltedPW($saltedPW)
+    public function isValidSaltedPW(string $saltedPW): bool
     {
         $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
         if ($isValid) {

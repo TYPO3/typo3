@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -21,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class that implements PBKDF2 salted hashing based on PHP's
  * hash_pbkdf2() function.
  */
-class Pbkdf2Salt extends AbstractSalt implements SaltInterface
+class Pbkdf2Salt extends AbstractComposedSalt
 {
     /**
      * Keeps a string for mapping an int to the corresponding
@@ -88,7 +89,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $salt A salt to apply setting to
      * @return string Salt with setting
      */
-    protected function applySettingsToSalt($salt)
+    protected function applySettingsToSalt(string $salt): string
     {
         $saltWithSettings = $salt;
         // salt without setting
@@ -106,7 +107,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $saltedHashPW salted hash to compare plain-text password with
      * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
      */
-    public function checkPassword($plainPW, $saltedHashPW)
+    public function checkPassword(string $plainPW, string $saltedHashPW): bool
     {
         return $this->isValidSalt($saltedHashPW) && \hash_equals($this->getHashedPassword($plainPW, $saltedHashPW), $saltedHashPW);
     }
@@ -117,7 +118,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
      * @return int|null Used hashcount for given hash string
      */
-    protected function getIterationCount($setting)
+    protected function getIterationCount(string $setting)
     {
         $iterationCount = null;
         $setting = substr($setting, strlen($this->getSetting()));
@@ -143,7 +144,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      *
      * @return string A character string containing settings and a random salt
      */
-    protected function getGeneratedSalt()
+    protected function getGeneratedSalt(): string
     {
         return GeneralUtility::makeInstance(Random::class)->generateRandomBytes($this->getSaltLength());
     }
@@ -155,7 +156,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $salt
      * @return string
      */
-    protected function getStoredSalt($salt)
+    protected function getStoredSalt(string $salt): string
     {
         if (!strncmp('$', $salt, 1)) {
             if (!strncmp($this->getSetting(), $salt, strlen($this->getSetting()))) {
@@ -171,7 +172,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      *
      * @return string String for mapping an int to the corresponding base 64 character
      */
-    protected function getItoa64()
+    protected function getItoa64(): string
     {
         return self::ITOA64;
     }
@@ -183,7 +184,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $salt Optional custom salt with setting to use
      * @return string|null Salted hashed password
      */
-    public function getHashedPassword($password, $salt = null)
+    public function getHashedPassword(string $password, string $salt = null)
     {
         $saltedPW = null;
         if ($password !== '') {
@@ -207,7 +208,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $hashCount
      * @see setHashCount()
      */
-    public function getHashCount()
+    public function getHashCount(): int
     {
         return isset(self::$hashCount) ? self::$hashCount : self::HASH_COUNT;
     }
@@ -220,7 +221,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $maxHashCount
      * @see setMaxHashCount()
      */
-    public function getMaxHashCount()
+    public function getMaxHashCount(): int
     {
         return isset(self::$maxHashCount) ? self::$maxHashCount : self::MAX_HASH_COUNT;
     }
@@ -230,7 +231,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      *
      * @return bool Method available
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
         return function_exists('hash_pbkdf2');
     }
@@ -243,7 +244,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $minHashCount
      * @see setMinHashCount()
      */
-    public function getMinHashCount()
+    public function getMinHashCount(): int
     {
         return isset(self::$minHashCount) ? self::$minHashCount : self::MIN_HASH_COUNT;
     }
@@ -256,7 +257,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      *
      * @return int Length of a PBKDF2 salt in bytes
      */
-    public function getSaltLength()
+    public function getSaltLength(): int
     {
         return self::$saltLengthPbkdf2;
     }
@@ -269,7 +270,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      *
      * @return string Setting string of PBKDF2 salted hashes
      */
-    public function getSetting()
+    public function getSetting(): string
     {
         return self::$settingPbkdf2;
     }
@@ -285,7 +286,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $saltedPW Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE
      */
-    public function isHashUpdateNeeded($saltedPW)
+    public function isHashUpdateNeeded(string $saltedPW): bool
     {
         // Check whether this was an updated password.
         if (strncmp($saltedPW, $this->getSetting(), strlen($this->getSetting())) || !$this->isValidSalt($saltedPW)) {
@@ -305,7 +306,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt($salt)
+    public function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -335,7 +336,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
      */
-    public function isValidSaltedPW($saltedPW)
+    public function isValidSaltedPW(string $saltedPW): bool
     {
         $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
         if ($isValid) {
@@ -352,9 +353,9 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $hashCount
      * @see getHashCount()
      */
-    public function setHashCount($hashCount = null)
+    public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = !is_null($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = !is_null($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**
@@ -365,9 +366,9 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $maxHashCount
      * @see getMaxHashCount()
      */
-    public function setMaxHashCount($maxHashCount = null)
+    public function setMaxHashCount(int $maxHashCount = null)
     {
-        self::$maxHashCount = !is_null($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
+        self::$maxHashCount = $maxHashCount ?? self::MAX_HASH_COUNT;
     }
 
     /**
@@ -378,9 +379,9 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @see $minHashCount
      * @see getMinHashCount()
      */
-    public function setMinHashCount($minHashCount = null)
+    public function setMinHashCount(int $minHashCount = null)
     {
-        self::$minHashCount = !is_null($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
+        self::$minHashCount = $minHashCount ?? self::MIN_HASH_COUNT;
     }
 
     /**
@@ -391,7 +392,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param int $count The number of characters (bytes) to encode.
      * @return string Encoded string
      */
-    public function base64Encode($input, $count)
+    public function base64Encode(string $input, int $count): string
     {
         $input = substr($input, 0, $count);
         return rtrim(str_replace('+', '.', base64_encode($input)), " =\r\n\t\0\x0B");
@@ -404,7 +405,7 @@ class Pbkdf2Salt extends AbstractSalt implements SaltInterface
      * @param string $value
      * @return string
      */
-    public function base64Decode($value)
+    public function base64Decode(string $value): string
     {
         return base64_decode(str_replace('.', '+', $value));
     }

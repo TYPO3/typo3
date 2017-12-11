@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -28,21 +29,14 @@ interface SaltInterface
      * @param string $saltedHashPW Salted hash to compare plain-text password with
      * @return bool TRUE, if plaintext password is correct, otherwise FALSE
      */
-    public function checkPassword($plainPW, $saltedHashPW);
-
-    /**
-     * Returns length of required salt.
-     *
-     * @return int Length of required salt
-     */
-    public function getSaltLength();
+    public function checkPassword(string $plainPW, string $saltedHashPW): bool;
 
     /**
      * Returns whether all prequesites for the hashing methods are matched
      *
      * @return bool Method available
      */
-    public function isAvailable();
+    public function isAvailable(): bool;
 
     /**
      * Method creates a salted hash for a given plaintext password
@@ -51,7 +45,7 @@ interface SaltInterface
      * @param string $salt Optional custom salt to use
      * @return string Salted hashed password
      */
-    public function getHashedPassword($password, $salt = null);
+    public function getHashedPassword(string $password, string $salt = null);
 
     /**
      * Checks whether a user's hashed password needs to be replaced with a new hash.
@@ -65,15 +59,7 @@ interface SaltInterface
      * @param string $passString Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE
      */
-    public function isHashUpdateNeeded($passString);
-
-    /**
-     * Method determines if a given string is a valid salt
-     *
-     * @param string $salt String to check
-     * @return bool TRUE if it's valid salt, otherwise FALSE
-     */
-    public function isValidSalt($salt);
+    public function isHashUpdateNeeded(string $passString): bool;
 
     /**
      * Method determines if a given string is a valid salted hashed password.
@@ -81,5 +67,5 @@ interface SaltInterface
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
      */
-    public function isValidSaltedPW($saltedPW);
+    public function isValidSaltedPW(string $saltedPW): bool;
 }

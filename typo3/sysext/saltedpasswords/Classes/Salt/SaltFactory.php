@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -14,6 +15,9 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
+
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
@@ -24,7 +28,7 @@ class SaltFactory
      * An instance of the salted hashing method.
      * This member is set in the getSaltingInstance() function.
      *
-     * @var \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt
+     * @var SaltInterface
      */
     protected static $instance = null;
 
@@ -34,7 +38,7 @@ class SaltFactory
      *
      * @return array
      */
-    public static function getRegisteredSaltedHashingMethods()
+    public static function getRegisteredSaltedHashingMethods(): array
     {
         $saltMethods = static::getDefaultSaltMethods();
         if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'])) {
@@ -58,13 +62,13 @@ class SaltFactory
      *
      * @return array
      */
-    protected static function getDefaultSaltMethods()
+    protected static function getDefaultSaltMethods(): array
     {
         return [
-            \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class
+            Md5Salt::class => Md5Salt::class,
+            BlowfishSalt::class => BlowfishSalt::class,
+            PhpassSalt::class => PhpassSalt::class,
+            Pbkdf2Salt::class => Pbkdf2Salt::class
         ];
     }
 
@@ -78,7 +82,7 @@ class SaltFactory
      *
      * @param string|null $saltedHash Salted hashed password to determine the type of used method from or NULL to reset to the default type
      * @param string $mode The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-     * @return SaltInterface An instance of salting hash method class
+     * @return SaltInterface|null An instance of salting hash method class or null if given hash is not supported
      */
     public static function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE)
     {
@@ -94,9 +98,9 @@ class SaltFactory
                     self::$instance = null;
                 }
             } else {
-                $classNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
+                $classNameToUse = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
                 $availableClasses = static::getRegisteredSaltedHashingMethods();
-                self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($availableClasses[$classNameToUse]);
+                self::$instance = GeneralUtility::makeInstance($availableClasses[$classNameToUse]);
             }
         }
         return self::$instance;
@@ -111,17 +115,17 @@ class SaltFactory
      * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
      * @return bool TRUE, if salting hashing method has been found, otherwise FALSE
      */
-    public static function determineSaltingHashingMethod($saltedHash, $mode = TYPO3_MODE)
+    public static function determineSaltingHashingMethod(string $saltedHash, $mode = TYPO3_MODE): bool
     {
         $registeredMethods = static::getRegisteredSaltedHashingMethods();
-        $defaultClassName = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
+        $defaultClassName = SaltedPasswordsUtility::getDefaultSaltingHashingMethod($mode);
         $defaultReference = $registeredMethods[$defaultClassName];
         unset($registeredMethods[$defaultClassName]);
         // place the default method first in the order
         $registeredMethods = [$defaultClassName => $defaultReference] + $registeredMethods;
         $methodFound = false;
         foreach ($registeredMethods as $method) {
-            $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($method);
+            $objectInstance = GeneralUtility::makeInstance($method);
             if ($objectInstance instanceof SaltInterface) {
                 $methodFound = $objectInstance->isValidSaltedPW($saltedHash);
                 if ($methodFound) {
@@ -137,13 +141,13 @@ class SaltFactory
      * Method sets a custom salting hashing method class.
      *
      * @param string $resource Object resource to use (e.g. \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class)
-     * @return \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt An instance of salting hashing method object
+     * @return SaltInterface|null An instance of salting hashing method object or null
      */
-    public static function setPreferredHashingMethod($resource)
+    public static function setPreferredHashingMethod(string $resource)
     {
         self::$instance = null;
-        $objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($resource);
-        if (is_object($objectInstance) && is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt::class)) {
+        $objectInstance = GeneralUtility::makeInstance($resource);
+        if ($objectInstance instanceof SaltInterface) {
             self::$instance = $objectInstance;
         }
         return self::$instance;

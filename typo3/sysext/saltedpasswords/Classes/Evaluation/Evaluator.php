@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
+use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
+
 /**
  * Class implementing salted evaluation methods.
  */
@@ -49,20 +52,19 @@ class Evaluator
      */
     public function evaluateFieldValue($value, $is_in, &$set)
     {
-        $isEnabled = $this->mode ? \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled($this->mode) : \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled();
+        $isEnabled = $this->mode ? SaltedPasswordsUtility::isUsageEnabled($this->mode) : SaltedPasswordsUtility::isUsageEnabled();
         if ($isEnabled) {
             $isMD5 = preg_match('/[0-9abcdef]{32,32}/', $value);
             $hashingMethod = substr($value, 0, 2);
             $isDeprecatedSaltedHash = ($hashingMethod === 'C$' || $hashingMethod === 'M$');
-            /** @var $objInstanceSaltedPW \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
-            $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, $this->mode);
+            $objInstanceSaltedPW = SaltFactory::getSaltingInstance(null, $this->mode);
             if ($isMD5) {
                 $set = true;
                 $value = 'M' . $objInstanceSaltedPW->getHashedPassword($value);
             } else {
                 // Determine method used for the (possibly) salted hashed password
                 $tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
-                $tempObjInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($tempValue);
+                $tempObjInstanceSaltedPW = SaltFactory::getSaltingInstance($tempValue);
                 if (!is_object($tempObjInstanceSaltedPW)) {
                     $set = true;
                     $value = $objInstanceSaltedPW->getHashedPassword($value);

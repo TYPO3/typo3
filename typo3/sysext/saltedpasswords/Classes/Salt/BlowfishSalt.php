@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -87,7 +88,7 @@ class BlowfishSalt extends Md5Salt
      * @param string $salt A salt to apply setting to
      * @return string Salt with setting
      */
-    protected function applySettingsToSalt($salt)
+    protected function applySettingsToSalt(string $salt): string
     {
         $saltWithSettings = $salt;
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -104,7 +105,7 @@ class BlowfishSalt extends Md5Salt
      * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
      * @return int Used hashcount for given hash string
      */
-    protected function getCountLog2($setting)
+    protected function getCountLog2(string $setting): int
     {
         $countLog2 = null;
         $setting = substr($setting, strlen($this->getSetting()));
@@ -124,7 +125,7 @@ class BlowfishSalt extends Md5Salt
      * @see $hashCount
      * @see setHashCount()
      */
-    public function getHashCount()
+    public function getHashCount(): int
     {
         return isset(self::$hashCount) ? self::$hashCount : self::HASH_COUNT;
     }
@@ -137,7 +138,7 @@ class BlowfishSalt extends Md5Salt
      * @see $maxHashCount
      * @see setMaxHashCount()
      */
-    public function getMaxHashCount()
+    public function getMaxHashCount(): int
     {
         return isset(self::$maxHashCount) ? self::$maxHashCount : self::MAX_HASH_COUNT;
     }
@@ -147,9 +148,9 @@ class BlowfishSalt extends Md5Salt
      *
      * @return bool Method available
      */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
-        return CRYPT_BLOWFISH;
+        return (bool)CRYPT_BLOWFISH;
     }
 
     /**
@@ -160,7 +161,7 @@ class BlowfishSalt extends Md5Salt
      * @see $minHashCount
      * @see setMinHashCount()
      */
-    public function getMinHashCount()
+    public function getMinHashCount(): int
     {
         return isset(self::$minHashCount) ? self::$minHashCount : self::MIN_HASH_COUNT;
     }
@@ -173,7 +174,7 @@ class BlowfishSalt extends Md5Salt
      *
      * @return int Length of a Blowfish salt in bytes
      */
-    public function getSaltLength()
+    public function getSaltLength(): int
     {
         return self::$saltLengthBlowfish;
     }
@@ -186,7 +187,7 @@ class BlowfishSalt extends Md5Salt
      *
      * @return string Setting string of Blowfish salted hashes
      */
-    public function getSetting()
+    public function getSetting(): string
     {
         return self::$settingBlowfish;
     }
@@ -202,7 +203,7 @@ class BlowfishSalt extends Md5Salt
      * @param string $saltedPW Salted hash to check if it needs an update
      * @return bool TRUE if salted hash needs an update, otherwise FALSE
      */
-    public function isHashUpdateNeeded($saltedPW)
+    public function isHashUpdateNeeded(string $saltedPW): bool
     {
         // Check whether this was an updated password.
         if (strncmp($saltedPW, '$2', 2) || !$this->isValidSalt($saltedPW)) {
@@ -222,7 +223,7 @@ class BlowfishSalt extends Md5Salt
      * @param string $salt String to check
      * @return bool TRUE if it's valid salt, otherwise FALSE
      */
-    public function isValidSalt($salt)
+    public function isValidSalt(string $salt): bool
     {
         $isValid = ($skip = false);
         $reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
@@ -252,7 +253,7 @@ class BlowfishSalt extends Md5Salt
      * @param string $saltedPW String to check
      * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
      */
-    public function isValidSaltedPW($saltedPW)
+    public function isValidSaltedPW(string $saltedPW): bool
     {
         $isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
         if ($isValid) {
@@ -269,9 +270,9 @@ class BlowfishSalt extends Md5Salt
      * @see $hashCount
      * @see getHashCount()
      */
-    public function setHashCount($hashCount = null)
+    public function setHashCount(int $hashCount = null)
     {
-        self::$hashCount = !is_null($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+        self::$hashCount = !is_null($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
     }
 
     /**
@@ -282,9 +283,9 @@ class BlowfishSalt extends Md5Salt
      * @see $maxHashCount
      * @see getMaxHashCount()
      */
-    public function setMaxHashCount($maxHashCount = null)
+    public function setMaxHashCount(int $maxHashCount = null)
     {
-        self::$maxHashCount = !is_null($maxHashCount) && is_int($maxHashCount) ? $maxHashCount : self::MAX_HASH_COUNT;
+        self::$maxHashCount = $maxHashCount ?? self::MAX_HASH_COUNT;
     }
 
     /**
@@ -295,8 +296,8 @@ class BlowfishSalt extends Md5Salt
      * @see $minHashCount
      * @see getMinHashCount()
      */
-    public function setMinHashCount($minHashCount = null)
+    public function setMinHashCount(int $minHashCount = null)
     {
-        self::$minHashCount = !is_null($minHashCount) && is_int($minHashCount) ? $minHashCount : self::MIN_HASH_COUNT;
+        self::$minHashCount = $minHashCount ?? self::MIN_HASH_COUNT;
     }
 }

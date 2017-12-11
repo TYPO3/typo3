@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /*
@@ -16,9 +17,9 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 
 /**
  * Abstract class with methods needed to be extended
- * in a salted hashing class.
+ * in a salted hashing class that composes an own salted password hash.
  */
-abstract class AbstractSalt
+abstract class AbstractComposedSalt implements SaltInterface
 {
     /**
      * Method applies settings (prefix, optional hash count, optional suffix)
@@ -27,28 +28,43 @@ abstract class AbstractSalt
      * @param string $salt A salt to apply setting to
      * @return string Salt with setting
      */
-    abstract protected function applySettingsToSalt($salt);
+    abstract protected function applySettingsToSalt(string $salt): string;
 
     /**
      * Generates a random base salt settings for the hash.
      *
      * @return string A string containing settings and a random salt
      */
-    abstract protected function getGeneratedSalt();
+    abstract protected function getGeneratedSalt(): string;
 
     /**
      * Returns a string for mapping an int to the corresponding base 64 character.
      *
      * @return string String for mapping an int to the corresponding base 64 character
      */
-    abstract protected function getItoa64();
+    abstract protected function getItoa64(): string;
 
     /**
      * Returns setting string to indicate type of hashing method.
      *
      * @return string Setting string of hashing method
      */
-    abstract protected function getSetting();
+    abstract protected function getSetting(): string;
+
+    /**
+     * Returns length of required salt.
+     *
+     * @return int Length of required salt
+     */
+    abstract public function getSaltLength(): int;
+
+    /**
+     * Method determines if a given string is a valid salt
+     *
+     * @param string $salt String to check
+     * @return bool TRUE if it's valid salt, otherwise FALSE
+     */
+    abstract public function isValidSalt(string $salt): bool;
 
     /**
      * Encodes bytes into printable base 64 using the *nix standard from crypt().
@@ -57,7 +73,7 @@ abstract class AbstractSalt
      * @param int $count The number of characters (bytes) to encode.
      * @return string Encoded string
      */
-    public function base64Encode($input, $count)
+    public function base64Encode(string $input, int $count): string
     {
         $output = '';
         $i = 0;
@@ -91,7 +107,7 @@ abstract class AbstractSalt
      * @param int $byteLength Length of bytes to calculate in base64 chars
      * @return int Required length of base64 characters
      */
-    protected function getLengthBase64FromBytes($byteLength)
+    protected function getLengthBase64FromBytes(int $byteLength): int
     {
         // Calculates bytes in bits in base64
         return (int)ceil($byteLength * 8 / 6);
