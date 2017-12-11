@@ -59,13 +59,13 @@ class CategoryTreeCest
         $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
         $I->wait(1);
         $I->executeJS('$(\'a[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
-        $I->wait(1);
+        $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
         // Change title and level to root
         $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');
-        $I->click('.identifier-7 text.node-name');
-        $I->click('.identifier-3 text.node-name');
+        $I->click('.identifier-0_7 text.node-name');
+        $I->click('.identifier-0_3 text.node-name');
         $I->click('button[name="_savedok"]');
         // Wait for tree and check if isset level-1-4
         $I->waitForElement('.svg-tree-wrapper svg');

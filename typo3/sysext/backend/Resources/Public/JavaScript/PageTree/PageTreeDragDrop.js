@@ -91,7 +91,7 @@ define([
           tree.settings.allowRecursiveDelete
         ) {
           _this.dropZoneDelete = tree.nodesContainer
-            .select('.node[data-uid="' + node.identifier + '"]')
+            .select('.node[data-uid="' + node.stateIdentifier + '"]')
             .append('g')
             .attr('class', 'nodes-drop-zone')
             .attr('height', tree.settings.nodeHeight);
@@ -139,7 +139,7 @@ define([
         var $svg = $(this).closest('svg');
         var $nodesBg = $svg.find('.nodes-bg');
         var $nodesWrap = $svg.find('.nodes-wrapper');
-        var $nodeBg = $nodesBg.find('.node-bg[data-uid=' + node.identifier + ']');
+        var $nodeBg = $nodesBg.find('.node-bg[data-uid=' + node.stateIdentifier + ']');
         var $nodeDd = $svg.siblings('.node-dd');
 
         if ($nodeBg.length && (!node.isDragged)) {
@@ -174,7 +174,7 @@ define([
         tree.settings.nodeDragPosition = false;
 
         if (node.isOver
-          || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.identifier) !== -1)
+          || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.stateIdentifier) !== -1)
           || !tree.isOverSvg) {
 
           _this.addNodeDdClass({ $nodeDd: $nodeDd, $nodesWrap: $nodesWrap, className: 'nodrop' });
@@ -250,7 +250,7 @@ define([
 
         if (
           !(node.isOver
-            || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.identifier) !== -1)
+            || (tree.settings.nodeOver.node && tree.settings.nodeOver.node.parentsUid.indexOf(node.stateIdentifier) !== -1)
             || !tree.settings.canNodeDrag
             || !tree.isOverSvg
           )

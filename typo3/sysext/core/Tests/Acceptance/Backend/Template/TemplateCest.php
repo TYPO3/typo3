@@ -49,7 +49,7 @@ class TemplateCest
         $I->wantTo('show templates overview on root page (uid = 0)');
         $I->switchToIFrame();
         // click on root page
-        $I->click('.node.identifier-0');
+        $I->click('.node.identifier-0_0');
         $I->switchToIFrame('list_frame');
         $I->waitForElementVisible('#ts-overview');
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
@@ -57,7 +57,7 @@ class TemplateCest
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
         $I->switchToIFrame();
         // click on website root page
-        $I->click('.node.identifier-1');
+        $I->click('.node.identifier-0_1');
         $I->switchToIFrame('list_frame');
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
@@ -80,7 +80,7 @@ class TemplateCest
     {
         $I->wantTo('create a new site template');
         $I->switchToIFrame();
-        $I->click('.node.identifier-1');
+        $I->click('.node.identifier-0_1');
         $I->switchToIFrame('list_frame');
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");

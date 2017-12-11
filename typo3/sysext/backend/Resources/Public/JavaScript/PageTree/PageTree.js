@@ -109,7 +109,7 @@ define(['jquery',
       var title = TYPO3.lang.pagetree_networkErrorTitle;
       var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
-      if (error && (error.target.status || error.target.statusText)) {
+      if (error && error.target && (error.target.status || error.target.statusText)) {
         title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
       }
 
@@ -199,7 +199,7 @@ define(['jquery',
 
     PageTree.prototype.nodeRightClick = function (node) {
       d3.event.preventDefault();
-      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.identifier + ']');
+      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.stateIdentifier + ']');
 
       if ($node.length) {
         ContextMenu.show(
@@ -213,7 +213,7 @@ define(['jquery',
     };
 
     PageTree.prototype.contextmenu = function (node) {
-      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.identifier + ']');
+      var $node = $(node).closest('svg').find('.nodes .node[data-uid=' + this.stateIdentifier + ']');
 
       if ($node.length) {
         ContextMenu.show(
@@ -391,8 +391,8 @@ define(['jquery',
               _this.loadData();
             } else {
               node.name = node.newName;
-              _this.svg.select('.node-placeholder[data-uid="' + node.identifier + '"]').remove();
-              _this.update();
+              _this.svg.select('.node-placeholder[data-uid="' + node.stateIdentifier + '"]').remove();
+              _this.loadData();
               _this.nodesRemovePlaceholder();
             }
           } else {

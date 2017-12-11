@@ -196,6 +196,7 @@ define(
           .on('mouseout', function () {
             _this.isOverSvg = false;
           });
+
         this.container = this.svg
           .append('g')
           .attr('class', 'nodes-wrapper')
@@ -269,7 +270,7 @@ define(
             var title = TYPO3.lang.pagetree_networkErrorTitle;
             var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
-            if (error.target.status || error.target.statusText) {
+            if (error && error.target && (error.target.status || error.target.statusText)) {
               title += ' - ' + (error.target.status || '')  + ' ' + (error.target.statusText || '');
             }
 
@@ -312,7 +313,7 @@ define(
               var currentNode = nodes[i];
               if (currentNode.depth < currentDepth) {
                 node.parents.push(i);
-                node.parentsUid.push(nodes[i].identifier);
+                node.parentsUid.push(nodes[i].stateIdentifier);
                 currentDepth = currentNode.depth;
               }
             }
@@ -320,12 +321,18 @@ define(
             node.open = true;
           }
 
+          // create stateIdentifier if doesn't exist (for category tree)
+          if (!node.stateIdentifier) {
+            var parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
+            node.stateIdentifier = parentId + '_' + node.identifier;
+          }
+
           if (typeof node.checked === 'undefined') {
             node.checked = false;
             _this.settings.unselectableElements.push(node.identifier);
           }
 
-          //dispatch event
+          // dispatch event
           _this.dispatch.call('prepareLoadedNode', _this, node);
           return node;
         });
@@ -371,7 +378,7 @@ define(
         var pathAboveMounts = 0;
 
         this.data.nodes.forEach(function (n, i) {
-          //delete n.children;
+          // delete n.children;
           n.x = n.depth * _this.settings.indentWidth;
 
           if (n.readableRootline) {
@@ -436,11 +443,11 @@ define(
 
         var visibleNodes = this.data.nodes.slice(position, position + visibleRows);
         var nodes = this.nodesContainer.selectAll('.node').data(visibleNodes, function (d) {
-          return d.identifier;
+          return d.stateIdentifier;
         });
 
         var nodesBg = this.nodesBgContainer.selectAll('.node-bg').data(visibleNodes, function (d) {
-          return d.identifier;
+          return d.stateIdentifier;
         });
 
         // delete nodes without corresponding data
@@ -488,7 +495,7 @@ define(
             .attr('xlink:href', this.getIconOverlayId);
         }
 
-        //dispatch event
+        // dispatch event
         this.dispatch.call('updateNodes', this, nodes);
       },
 
@@ -504,7 +511,7 @@ define(
           .merge(nodesBg)
           .attr('width', '100%')
           .attr('height', this.settings.nodeHeight)
-          .attr('data-uid', this.getNodeIdentifier)
+          .attr('data-uid', this.getNodeStateIdentifier)
           .attr('transform', this.getNodeBgTransform)
           .on('mouseover', function (node) {
             _this.nodeBgEvents().mouseOver(node, this);
@@ -530,7 +537,7 @@ define(
         var self = {};
 
         self.mouseOver = function (node, element) {
-          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.identifier + '"]');
+          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.stateIdentifier + '"]');
 
           node.isOver = true;
           _this.settings.nodeOver.node = node;
@@ -544,7 +551,7 @@ define(
         };
 
         self.mouseOut = function (node, element) {
-          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.identifier + '"]');
+          var elementNodeBg = _this.svg.select('.nodes-bg .node-bg[data-uid="' + node.stateIdentifier + '"]');
 
           node.isOver = false;
           _this.settings.nodeOver.node = false;
@@ -558,7 +565,7 @@ define(
         };
 
         self.click = function (node, element) {
-          var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-uid=' + node.identifier + ']');
+          var $nodeBg = $(element).closest('svg').find('.nodes-bg .node-bg[data-uid=' + node.stateIdentifier + ']');
 
           _this.nodes.forEach(function (node) {
             if (node.selected === true) {
@@ -597,12 +604,12 @@ define(
           .exit()
           .remove();
 
-        //create
+        // create
         links.enter()
           .append('path')
           .attr('class', 'link')
 
-          //create + update
+          // create + update
           .merge(links)
           .attr('d', this.getLinkPath.bind(_this));
       },
@@ -625,7 +632,7 @@ define(
           var icons = this.iconsContainer
             .selectAll('.icon-def')
             .data(iconsArray, function (i) {
-              return i.identifier;
+              return i.stateIdentifier;
             });
 
           icons
@@ -636,7 +643,7 @@ define(
               return 'icon-' + i.identifier;
             })
             .append(function (i) {
-              //workaround for IE11 where you can't simply call .html(content) on svg
+              // workaround for IE11 where you can't simply call .html(content) on svg
               var parser = new DOMParser();
               var markupText = i.icon.replace('<svg', '<g').replace('/svg>', '/g>');
               markupText = "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>" + markupText + '</svg>';
@@ -734,7 +741,7 @@ define(
           .attr('class', this.getNodeClass)
           .attr('transform', this.getNodeTransform)
           .attr('data-table', 'pages')
-          .attr('data-uid', this.getNodeIdentifier)
+          .attr('data-uid', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
           .on('mouseover', function (node) {
             _this.nodeBgEvents().mouseOver(node, this);
@@ -772,6 +779,16 @@ define(
       },
 
       /**
+       * Computes the tree item state identifier based on the data
+       *
+       * @param {Node} node
+       * @returns {String}
+       */
+      getNodeStateIdentifier: function (node) {
+        return node.stateIdentifier;
+      },
+
+      /**
        * Computes the tree item label based on the data
        *
        * @param {Node} node
@@ -788,7 +805,7 @@ define(
        * @returns {String}
        */
       getNodeClass: function (node) {
-        return 'node identifier-' + node.identifier;
+        return 'node identifier-' + node.stateIdentifier;
       },
 
       /**
@@ -991,7 +1008,7 @@ define(
             this.exclusiveSelectedNode = node;
           } else if (exclusiveKeys.indexOf('' + node.identifier) === -1 && this.exclusiveSelectedNode) {
 
-            //current node is not exclusive, but other exclusive node is already selected
+            // current node is not exclusive, but other exclusive node is already selected
             this.exclusiveSelectedNode.checked = false;
             this.dispatch.call('nodeSelectedAfter', this, this.exclusiveSelectedNode);
             this.exclusiveSelectedNode = null;
