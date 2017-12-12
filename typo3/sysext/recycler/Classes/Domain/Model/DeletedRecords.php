@@ -121,7 +121,7 @@ class DeletedRecords
         $deletedRecords = $this->loadData($id, $table, $depth, '', $filter)->getDeletedRows();
         $countTotal = 0;
         foreach ($this->table as $tableName) {
-            $countTotal += count($deletedRecords[$tableName]);
+            $countTotal += isset($deletedRecords[$tableName]) ? count($deletedRecords[$tableName]) : 0;
         }
         return $countTotal;
     }
