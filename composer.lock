@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee8fd70e59c3f86ff7728b866e54149c",
+    "content-hash": "f97dca50e21002a44cc3ede3fee3f025",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -1524,16 +1524,16 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.4.5",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "0ef630f82f12aa611fb44a3e1e5491fc98b97e78"
+                "reference": "68a206451b8d479049a8886bdb0001134bfe03ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/0ef630f82f12aa611fb44a3e1e5491fc98b97e78",
-                "reference": "0ef630f82f12aa611fb44a3e1e5491fc98b97e78",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/68a206451b8d479049a8886bdb0001134bfe03ac",
+                "reference": "68a206451b8d479049a8886bdb0001134bfe03ac",
                 "shasum": ""
             },
             "require": {
@@ -1554,7 +1554,7 @@
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -1568,16 +1568,14 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Opitz",
-                    "email": "christian.opitz@netresearch.de"
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 },
                 {
-                    "name": "Lars Peipmann",
-                    "email": "lars@peipmann.de"
-                },
-                {
-                    "name": "Helmut Hummel",
-                    "email": "info@helhum.io"
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "role": "Developer"
                 }
             ],
             "description": "TYPO3 CMS Installers",
@@ -1589,7 +1587,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2017-11-06T11:44:16+00:00"
+            "time": "2017-12-12T14:04:22+00:00"
         },
         {
             "name": "typo3fluid/fluid",
