@@ -236,7 +236,7 @@ class FileSystemNavigationFrameController
         if ($this->foldertree->getAjaxStatus() === false) {
             return $response->withStatus(500);
         }
-        return GeneralUtility::makeInstance(JsonResponse::class, $tree);
+        return GeneralUtility::makeInstance(JsonResponse::class, [$tree]);
     }
 
     /**
