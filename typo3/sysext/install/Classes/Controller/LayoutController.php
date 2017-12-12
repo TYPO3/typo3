@@ -104,7 +104,12 @@ class LayoutController extends AbstractController
     public function executeSilentLegacyExtConfExtensionConfigurationUpdateAction(): ResponseInterface
     {
         $configurationManager = new ConfigurationManager();
-        $oldExtConfSettings = $configurationManager->getConfigurationValueByPath('EXT/extConf');
+        try {
+            $oldExtConfSettings = $configurationManager->getConfigurationValueByPath('EXT/extConf');
+        } catch (\RuntimeException $e) {
+            // The old 'extConf' array may not exist anymore, set to empty array if so.
+            $oldExtConfSettings = [];
+        }
         $newExtensionSettings = $configurationManager->getConfigurationValueByPath('EXTENSIONS');
         foreach ($oldExtConfSettings as $extensionName => $extensionSettings) {
             if (!array_key_exists($extensionName, $newExtensionSettings)) {
