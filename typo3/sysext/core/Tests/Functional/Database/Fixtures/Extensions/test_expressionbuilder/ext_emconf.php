@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'ExpressionBuilder Test',
     'description' => 'ExpressionBuilder Test',
     'category' => 'example',
-    'version' => '0.0.1',
+    'version' => '9.0.0',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -12,7 +12,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'lolli@schwarzbu.ch',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.0.0-9.0.99',
+            'typo3' => '9.0.0-9.0.0',
         ],
         'conflicts' => [],
         'suggests' => [],
