@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -161,6 +162,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $this->cacheManager->flushCachesInGroup('system');
         }
+        $this->saveDefaultConfiguration($extensionKey);
+        Bootstrap::getInstance()->populateLocalConfiguration();
         $this->reloadCaches();
         $this->processExtensionSetup($extensionKey);
 
@@ -177,7 +180,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $this->importInitialFiles($extension['siteRelPath'], $extensionKey);
         $this->processDatabaseUpdates($extension);
         $this->processRuntimeDatabaseUpdates($extensionKey);
-        $this->saveDefaultConfiguration($extensionKey);
     }
 
     /**
