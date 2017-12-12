@@ -3472,15 +3472,12 @@ class PageLayoutView implements LoggerAwareInterface
         $constraints = [];
         $currentPid = (int)$currentPid;
         $tablePidField = $table === 'pages' ? 'uid' : 'pid';
-        // Make query, only if table is valid and a search string is actually defined:
+        // Make query only if table is valid and a search string is actually defined
         if (empty($this->searchString)) {
             return '';
         }
 
         $searchableFields = $this->getSearchFields($table);
-        if (empty($searchableFields)) {
-            return '';
-        }
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
             foreach ($searchableFields as $fieldName) {
@@ -3510,7 +3507,7 @@ class PageLayoutView implements LoggerAwareInterface
                     );
                 }
             }
-        } else {
+        } elseif (!empty($searchableFields)) {
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
             foreach ($searchableFields as $fieldName) {
                 if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
@@ -3551,7 +3548,7 @@ class PageLayoutView implements LoggerAwareInterface
                 }
             }
         }
-        // If no search field conditions have been build ensure no results are returned
+        // If no search field conditions have been built ensure no results are returned
         if (empty($constraints)) {
             return '0=1';
         }
