@@ -41,9 +41,8 @@ class ImageScriptServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     protected function setUp()
     {
-        $this->subject = new ImageService();
         $this->environmentService = $this->createMock(EnvironmentService::class);
-        $this->inject($this->subject, 'environmentService', $this->environmentService);
+        $this->subject = new ImageService($this->environmentService);
         GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'foo.bar';
     }
