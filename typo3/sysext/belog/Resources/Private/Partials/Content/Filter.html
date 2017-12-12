@@ -108,12 +108,15 @@
 			<div class="input-group input-group-sm">
 				<f:form.textfield
 						name="manualDateStart"
-						value="{f:if(condition: constraint.startTimestamp, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.startTimestamp}')}\")}"
+						value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStart}')}\")}"
 						id="manualDateStart"
 						class="form-control input-sm t3js-datetimepicker t3js-clearable"
 						data="{date-type: 'datetime'}"
 						/>
-				<f:form.hidden property="startTimestamp" value="{constraint.startTimestamp}" />
+				<f:form.hidden
+						property="manualDateStart"
+						value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
+				/>
 				<span class="input-group-btn">
 					<label class="btn btn-default" for="manualDateStart">
 						<span class="fa fa-calendar"></span>
@@ -128,12 +131,14 @@
 			<div class="input-group input-group-sm">
 				<f:form.textfield
 						name="manualDateStop"
-						value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.endTimestamp}')}"
+						value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStop}')}"
 						id="manualDateStop"
 						class="form-control input-sm t3js-datetimepicker t3js-clearable"
 						data="{date-type: 'datetime'}"
 						/>
-				<f:form.hidden property="endTimestamp" />
+				<f:form.hidden property="manualDateStop"
+						value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
+				/>
 				<span class="input-group-btn">
 					<label class="btn btn-default" for="manualDateStop">
 						<span class="fa fa-calendar"></span>

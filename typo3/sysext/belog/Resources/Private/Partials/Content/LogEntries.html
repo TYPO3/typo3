@@ -9,8 +9,8 @@
 		<f:translate
 			key="timeInfo"
 			arguments="{
-				0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-				1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+				0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
+				1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
 			}"
 		/>
 		<p>
@@ -42,8 +42,8 @@
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
 										0: '{f:translate(key:\'forNonPageRelatedActions\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
+										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
 									}"
 								/>
 							</f:if>
@@ -52,8 +52,8 @@
 									key="logForNonPageRelatedActionsOrRootLevelOrPage"
 									arguments="{
 										0: '{f:translate(key:\'forRootLevel\')}',
-										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+										1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
+										2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
 									}"
 								/>
 							</f:if>
@@ -76,8 +76,8 @@
 											1:\\\'{pid}\\\'
 										}\'
 									)}',
-									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+									1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
+									2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
 								}"
 								/>
 							</f:format.raw>
@@ -89,8 +89,8 @@
 						key="logForNonPageRelatedActionsOrRootLevelOrPage"
 						arguments="{
 							0: '',
-							1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-							2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+							1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStart}\')}',
+							2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'{constraint.manualDateStop}\')}'
 						}"
 					/>
 				</f:else>
