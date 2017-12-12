@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * Abstract class with methods needed to be extended
  * in a salted hashing class that composes an own salted password hash.
  */
-abstract class AbstractComposedSalt implements SaltInterface
+abstract class AbstractComposedSalt implements ComposedSaltInterface
 {
     /**
      * Method applies settings (prefix, optional hash count, optional suffix)
