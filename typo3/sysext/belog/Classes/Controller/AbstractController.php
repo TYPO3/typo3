@@ -357,12 +357,33 @@ abstract class AbstractController extends ActionController
                 $startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
                 break;
             case self::TIMEFRAME_CUSTOM:
-                $startTime = $constraint->getStartTimestamp();
-                if ($constraint->getEndTimestamp() > $constraint->getStartTimestamp()) {
-                    $endTime = $constraint->getEndTimestamp();
-                } else {
-                    $endTime = $GLOBALS['EXEC_TIME'];
+                $startDate = $constraint->getManualDateStart();
+                $endDate = $constraint->getManualDateStop();
+                $endTime = $GLOBALS['EXEC_TIME'];
+                if (!$startDate) {
+                    $startDate = \DateTime::createFromFormat(
+                        'U',
+                        0
+                    );
+                    $constraint->setManualDateStart(
+                        $startDate
+                    );
                 }
+
+                if (!$endDate) {
+                    $endDate = \DateTime::createFromFormat(
+                        'U',
+                        $endTime
+                    )->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+                    $constraint->setManualDateStop(
+                        $endDate
+                    );
+                }
+                $startTime = $startDate->getTimestamp();
+                if ($endDate->getTimestamp() > $startDate->getTimestamp()) {
+                    $endTime = $endDate->getTimestamp();
+                }
+
                 break;
             default:
         }
