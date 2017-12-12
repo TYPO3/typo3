@@ -752,8 +752,7 @@ define([
         .append('input')
         .attr('class', 'node-edit')
         .style('top', function () {
-          var top = _this.tree.data.nodes.indexOf(newNode) * _this.tree.settings.nodeHeight;
-          top = top + 15; //svg margin top
+          var top = newNode.y + 15; //svg margin top
           return top + 'px';
         })
         .style('left', (newNode.x + _this.tree.textPosition + 5) + 'px')

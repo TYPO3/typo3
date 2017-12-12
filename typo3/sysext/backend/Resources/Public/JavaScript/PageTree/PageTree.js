@@ -412,8 +412,7 @@ define(['jquery',
         .append('input')
         .attr('class', 'node-edit')
         .style('top', function () {
-          var top = _this.data.nodes.indexOf(node) * _this.settings.nodeHeight;
-          top = top + 15; //svg margin top
+          var top = node.y + 15; //svg margin top
           return top + 'px';
         })
         .style('left', (node.x + _this.textPosition + 5) + 'px')

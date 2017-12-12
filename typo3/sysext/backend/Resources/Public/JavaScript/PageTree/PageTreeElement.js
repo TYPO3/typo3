@@ -46,25 +46,23 @@ define(['jquery',
      * @param {String} selector
      */
     PageTreeElement.initialize = function (selector) {
-      $(document).ready(function () {
+      $(function () {
         var $element = $(selector);
+
+        if ($element.html().trim().length !== 0) {
+          return;
+        }
+
         var tree = new PageTree();
+        $element.append(PageTreeElement.template);
 
-        if ($element.html().trim().length === 0) {
-          $element.append(PageTreeElement.template);
-        }
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function (spinner) {
+          $('.node-loader').append(spinner);
+        });
 
-        if ($('.node-loader').html().trim().length === 0) {
-          Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function (spinner) {
-            $('.node-loader').append(spinner);
-          });
-        }
-
-        if ($('.svg-tree-loader').html().trim().length === 0) {
-          Icons.getIcon('spinner-circle-light', Icons.sizes.large).done(function (spinner) {
-            $('.svg-tree-loader').append(spinner);
-          });
-        }
+        Icons.getIcon('spinner-circle-light', Icons.sizes.large).done(function (spinner) {
+          $('.svg-tree-loader').append(spinner);
+        });
 
         var dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
         var configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
@@ -74,9 +72,9 @@ define(['jquery',
             dataUrl: dataUrl,
             showIcons: true,
           }));
-        });
 
-        Viewport.NavigationContainer.setComponentInstance(tree);
+          Viewport.NavigationContainer.setComponentInstance(tree);
+        });
 
         if (!$('#svg-toolbar').data('tree-show-toolbar')) {
           var pageTreeToolbar = new PageTreeToolbar();
